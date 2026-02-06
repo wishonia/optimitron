@@ -61,9 +61,29 @@ optomitron/
 │   ├── db/           # 🗄️ Prisma schema + database
 │   │   └── All survey responses, health data, preferences
 │   │
-│   └── web/          # 🌐 Next.js (Phase 3 — after libraries work)
-│       └── Multi-tenant jurisdiction dashboard
+│   ├── web/          # 🌐 Next.js (Phase 3 — after libraries work)
+│   │   └── Multi-tenant jurisdiction dashboard
+│   │
+│   └── treasury/     # 💎 IAB Treasury (Phase 4 — after web works)
+│       └── Smart contracts, token, alignment-based fund distribution
 ```
+
+### Phase 4: Treasury / Incentive Alignment Bonds (Future)
+
+Citizens donate to a transparent crypto treasury. Smart contracts automatically distribute campaign funds to politicians based on their Citizen Alignment Scores. No middleman.
+
+Flow: Citizens donate → Treasury holds funds → Alignment scores update on-chain → Smart contracts release funds to high-alignment campaigns → AI agents run ads/social media for those candidates
+
+**Paper**: `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/incentive-alignment-bonds-paper.qmd` ([iab.warondisease.org](https://iab.warondisease.org))
+
+**DO NOT build this yet.** Prerequisites:
+1. ✅ Causal engine working
+2. ⬜ RAPPA collecting real preferences  
+3. ⬜ Voting record data flowing in
+4. ⬜ Alignment scores published
+5. ⬜ THEN treasury makes sense
+
+Existing Solidity contracts in the old wishocracy repo (`/mnt/e/code/wishocracy/contracts/`) can be a starting point.
 
 ## Jurisdiction Model ("Government OS")
 

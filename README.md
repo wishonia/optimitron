@@ -26,6 +26,7 @@ what they want    →    what actually works    →    optimal allocation
 | [`@optomitron/obg`](packages/obg/) | Optimal Budget Generator (diminishing returns, cost-effectiveness, Budget Impact Score) | 🟡 Alpha |
 | [`@optomitron/data`](packages/data/) | Data fetchers (OECD, World Bank, FRED, WHO, Congress) | 🔴 Stub |
 | [`@optomitron/db`](packages/db/) | Prisma schema for response collection and storage | 🔴 Stub |
+| `@optomitron/treasury` | IAB smart contracts, token, alignment-based campaign funding | ⚪ Planned |
 
 ## The Core Insight
 
@@ -74,6 +75,10 @@ Alignment scores show which officials represent citizen preferences
 ```
 
 The database is multi-tenant — every jurisdiction is a tenant with its own items, participants, officials, and data. Cross-jurisdiction comparison ("City A spends X on education and gets Y outcomes vs. City B") is a core feature.
+
+### Incentive Alignment Bonds (Phase 4)
+
+Citizens donate to a transparent crypto treasury. Smart contracts automatically fund campaigns of politicians whose voting records align with citizen preferences. See the [IAB paper](https://iab.warondisease.org).
 
 ## Development
 
