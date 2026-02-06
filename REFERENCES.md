@@ -32,7 +32,7 @@ Every algorithm in this codebase originates from one of these papers. The **loca
 
 **Local QMD source files** are in the disease-eradication-plan repo:
 ```
-/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/*.qmd
+https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/
 ```
 
 ---
@@ -152,7 +152,7 @@ Technologies for Layer 3 (on-chain submission) and Layer 5 (incentives).
 Existing Solidity contracts from the Wishocracy repo serve as a starting point for Phase 5 (Incentive Alignment Bonds):
 
 ```
-/mnt/e/code/wishocracy/contracts/
+https://github.com/mikepsinn/wishocracy/tree/main/contracts/
 ├── genie-dao-factory.sol    # DAO creation and governance
 ├── wish-ubi.sol             # Universal basic income distribution
 └── wishing-well.sol         # Treasury and fund allocation

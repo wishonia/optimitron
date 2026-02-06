@@ -16,11 +16,11 @@ These papers define the algorithms you're implementing. **Read the local QMD fil
 
 | Paper | Local Path (read this!) | Web URL |
 |-------|------------------------|---------|
-| **dFDA Spec** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/dfda-spec-paper.qmd` | https://dfda-spec.warondisease.org |
-| **Optimocracy** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/optimocracy-paper.qmd` | https://optimocracy.warondisease.org |
-| **Optimal Policy Generator** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/optimal-policy-generator-spec.qmd` | https://opg.warondisease.org |
-| **Optimal Budget Generator** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/optimal-budget-generator-spec.qmd` | https://obg.warondisease.org |
-| **Wishocracy** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/wishocracy-paper.qmd` | https://wishocracy.warondisease.org |
+| **dFDA Spec** | `https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/dfda-spec-paper.qmd` | https://dfda-spec.warondisease.org |
+| **Optimocracy** | `https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/optimocracy-paper.qmd` | https://optimocracy.warondisease.org |
+| **Optimal Policy Generator** | `https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/optimal-policy-generator-spec.qmd` | https://opg.warondisease.org |
+| **Optimal Budget Generator** | `https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/optimal-budget-generator-spec.qmd` | https://obg.warondisease.org |
+| **Wishocracy** | `https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/wishocracy-paper.qmd` | https://wishocracy.warondisease.org |
 
 **Before implementing an algorithm, read the relevant paper section.** The QMD files have:
 - Exact mathematical formulas
@@ -74,7 +74,7 @@ Citizens donate to a transparent crypto treasury. Smart contracts automatically 
 
 Flow: Citizens donate → Treasury holds funds → Alignment scores update on-chain → Smart contracts release funds to high-alignment campaigns → AI agents run ads/social media for those candidates
 
-**Paper**: `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/incentive-alignment-bonds-paper.qmd` ([iab.warondisease.org](https://iab.warondisease.org))
+**Paper**: `https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/incentive-alignment-bonds-paper.qmd` ([iab.warondisease.org](https://iab.warondisease.org))
 
 **DO NOT build this yet.** Prerequisites:
 1. ✅ Causal engine working
@@ -83,7 +83,7 @@ Flow: Citizens donate → Treasury holds funds → Alignment scores update on-ch
 4. ⬜ Alignment scores published
 5. ⬜ THEN treasury makes sense
 
-Existing Solidity contracts in the old wishocracy repo (`/mnt/e/code/wishocracy/contracts/`) can be a starting point.
+Existing Solidity contracts in the old wishocracy repo (`https://github.com/mikepsinn/wishocracy/tree/main/contracts/`) can be a starting point.
 
 ## Jurisdiction Model ("Government OS")
 
