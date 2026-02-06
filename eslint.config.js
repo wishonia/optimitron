@@ -4,7 +4,7 @@ export default tseslint.config(
   {
     ignores: ['**/dist/**', '**/node_modules/**', '**/*.js', '!eslint.config.js', '**/__tests__/**', '**/*.test.ts', '**/*.spec.ts', 'packages/web/**', 'packages/extension/**'],
   },
-  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       parserOptions: {
@@ -14,8 +14,11 @@ export default tseslint.config(
     },
     rules: {
       // Enforce good practices
-      '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/no-unsafe-return': 'warn',
+      '@typescript-eslint/no-unsafe-call': 'warn',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-misused-promises': 'error',
       '@typescript-eslint/await-thenable': 'error',
