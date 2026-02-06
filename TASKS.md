@@ -22,9 +22,9 @@ Tasks are ordered by priority. Work top-to-bottom. Mark status as you go.
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 4 | Tests for `@optomitron/causal` temporal alignment | done | dFDA paper examples |
-| 5 | Tests for `@optomitron/causal` Bradford Hill scoring | done | |
-| 6 | Tests for `@optomitron/causal` PIS calculation | done | |
+| 4 | Tests for `@optomitron/optimizer` temporal alignment | done | dFDA paper examples |
+| 5 | Tests for `@optomitron/optimizer` Bradford Hill scoring | done | |
+| 6 | Tests for `@optomitron/optimizer` PIS calculation | done | |
 | 7 | Tests for `@optomitron/wishocracy` aggregateComparisons() | done | Wishocracy paper's Alice scenario |
 | 8 | Tests for `@optomitron/wishocracy` principalEigenvector() | done | Verified against known AHP examples |
 | 9 | Tests for `@optomitron/wishocracy` consistencyRatio() | done | CR < 0.1 for consistent matrices |

@@ -44,7 +44,7 @@ Optomitron connects four things:
 │          │                 │                      │                  │
 │          ▼                 ▼                      ▼                  │
 │   ┌────────────────────────────────────────────────────────────┐    │
-│   │            @optomitron/causal  (runs locally)              │    │
+│   │            @optomitron/optimizer  (runs locally)              │    │
 │   │     Temporal alignment → Bradford Hill → PIS → Optimal     │    │
 │   └──────────────────────────┬─────────────────────────────────┘    │
 │                              │                                      │
@@ -224,7 +224,7 @@ optomitron/
 
 ### Key Design Principle: Domain Agnosticism
 
-`@optomitron/causal` is **completely domain-agnostic**. It takes any two time series and answers: *Does changing X cause Y to change? By how much? What's the optimal value of X?*
+`@optomitron/optimizer` is **completely domain-agnostic**. It takes any two time series and answers: *Does changing X cause Y to change? By how much? What's the optimal value of X?*
 
 | Domain | Predictor (X) | Outcome (Y) | Question |
 |--------|--------------|-------------|----------|
@@ -258,7 +258,7 @@ The library doesn't know what it's optimizing. Domain-specific packages (`opg`, 
 **Local storage:** SQLite (Electron) or IndexedDB (browser) — data never leaves the device.
 
 **What runs locally:**
-- `@optomitron/causal` — the entire pipeline is pure TypeScript, zero server dependency
+- `@optomitron/optimizer` — the entire pipeline is pure TypeScript, zero server dependency
   - Temporal alignment of predictor/outcome time series
   - Bradford Hill criteria scoring via saturation functions
   - Predictor Impact Score (PIS) calculation
@@ -339,8 +339,8 @@ The library doesn't know what it's optimizing. Domain-specific packages (`opg`, 
 
 | Function | Algorithm | Package |
 |----------|-----------|---------|
-| **Meta-analysis** | Weighted average of PIS scores across submissions, adjusting for sample size and evidence quality | `@optomitron/causal` |
-| **Population treatment rankings** | Aggregate effect sizes + confidence intervals across all anonymous submitters | `@optomitron/causal` |
+| **Meta-analysis** | Weighted average of PIS scores across submissions, adjusting for sample size and evidence quality | `@optomitron/optimizer` |
+| **Population treatment rankings** | Aggregate effect sizes + confidence intervals across all anonymous submitters | `@optomitron/optimizer` |
 | **Citizen preference weights** | Eigenvector aggregation of RAPPA submissions, with convergence analysis and matrix completion for sparse pairs | `@optomitron/wishocracy` |
 | **Policy recommendations** | OPG: enact/replace/repeal/maintain based on cross-jurisdiction quasi-experimental evidence + Bradford Hill CCS scoring | `@optomitron/opg` |
 | **Budget optimization** | OBG: diminishing returns modeling + cost-effectiveness threshold analysis → Optimal Spending Levels per category | `@optomitron/obg` |
@@ -489,7 +489,7 @@ Chain                        Aggregation Server (Layer 4)
 
 ## Core Algorithms
 
-### Predictor Impact Score (PIS) — `@optomitron/causal`
+### Predictor Impact Score (PIS) — `@optomitron/optimizer`
 
 The PIS operationalizes Bradford Hill causality criteria into a single composite metric for automated signal detection from time series data.
 
@@ -586,7 +586,7 @@ Two estimation methods, take the one with better fit:
 
 **Status:** 🟡 Alpha — packages exist with tests, APIs stabilizing.
 
-- [x] `@optomitron/causal` — temporal alignment, Bradford Hill, PIS, effect size, optimal values
+- [x] `@optomitron/optimizer` — temporal alignment, Bradford Hill, PIS, effect size, optimal values
 - [x] `@optomitron/wishocracy` — pairwise aggregation, eigenvector weights, alignment scores, convergence analysis, matrix completion
 - [x] `@optomitron/opg` — welfare function, jurisdiction model, policy types, Bradford Hill CCS, method weights
 - [x] `@optomitron/obg` — diminishing returns, cost-effectiveness, BIS, spending gap analysis
@@ -660,7 +660,7 @@ The algorithms in this codebase are defined in the following papers. **Read the 
 
 | Paper | Implements | Local QMD | Web |
 |-------|-----------|-----------|-----|
-| **dFDA Specification** | `@optomitron/causal` — PIS, temporal alignment, Bradford Hill, effect size | `knowledge/appendix/dfda-spec-paper.qmd` | [dfda-spec.warondisease.org](https://dfda-spec.warondisease.org) |
+| **dFDA Specification** | `@optomitron/optimizer` — PIS, temporal alignment, Bradford Hill, effect size | `knowledge/appendix/dfda-spec-paper.qmd` | [dfda-spec.warondisease.org](https://dfda-spec.warondisease.org) |
 | **Wishocracy** | `@optomitron/wishocracy` — RAPPA, eigenvector, alignment scores, convergence | `knowledge/appendix/wishocracy-paper.qmd` | [wishocracy.warondisease.org](https://wishocracy.warondisease.org) |
 | **Optimal Policy Generator** | `@optomitron/opg` — Policy Impact Score, CCS, method weights, welfare function | `knowledge/appendix/optimal-policy-generator-spec.qmd` | [opg.warondisease.org](https://opg.warondisease.org) |
 | **Optimal Budget Generator** | `@optomitron/obg` — Diminishing returns, OSL, BIS, cost-effectiveness | `knowledge/appendix/optimal-budget-generator-spec.qmd` | [obg.warondisease.org](https://obg.warondisease.org) |

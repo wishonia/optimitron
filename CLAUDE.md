@@ -30,7 +30,7 @@ These papers define the algorithms you're implementing. **Read the local QMD fil
 - Bradford Hill scoring functions with saturation constants
 
 ### How to Use the Papers
-1. Working on `@optomitron/causal`? → Read dFDA Spec (PIS, temporal alignment, effect size)
+1. Working on `@optomitron/optimizer`? → Read dFDA Spec (PIS, temporal alignment, effect size)
 2. Working on `@optomitron/wishocracy`? → Read Wishocracy (RAPPA, eigenvector, Citizen Alignment Scores)
 3. Working on `@optomitron/opg`? → Read Optimal Policy Generator (Policy Impact Score, CCS)
 4. Working on `@optomitron/obg`? → Read Optimal Budget Generator (OSL, diminishing returns, BIS)
@@ -113,7 +113,7 @@ Any jurisdiction (city, county, state, country) should be able to deploy Optomit
 
 ## The Core Insight
 
-`@optomitron/causal` is **completely domain-agnostic**. It takes any two time series and answers: "Does changing X cause Y to change? By how much? What's the optimal value of X?"
+`@optomitron/optimizer` is **completely domain-agnostic**. It takes any two time series and answers: "Does changing X cause Y to change? By how much? What's the optimal value of X?"
 
 This works for ANY optimization problem with time series data:
 
@@ -134,10 +134,10 @@ All use the same pipeline: **Temporal alignment** → **Bradford Hill criteria**
 **The library doesn't know what it's optimizing.** It just sees predictor time series and outcome time series. The domain-specific packages (opg, obg, wishocracy) add context on top.
 
 ### Implications for Code
-- **NEVER put domain-specific logic in `@optomitron/causal`** — no references to "drugs", "policies", "budgets", "politicians"
+- **NEVER put domain-specific logic in `@optomitron/optimizer`** — no references to "drugs", "policies", "budgets", "politicians"
 - Use generic terms: predictor, outcome, variable, measurement, effect
 - Domain-specific naming belongs in opg/obg/wishocracy/data
-- A business analyst should be able to `npm install @optomitron/causal` and use it for revenue optimization without ever seeing the word "government"
+- A business analyst should be able to `npm install @optomitron/optimizer` and use it for revenue optimization without ever seeing the word "government"
 
 ## Package Dependencies
 

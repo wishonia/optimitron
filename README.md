@@ -66,7 +66,7 @@ npx tsx packages/examples/src/alignment-demo.ts
 
 | Package | Description | Tests | Status |
 |---------|-------------|:-----:|--------|
-| [`@optomitron/causal`](packages/causal/) | 🧠 Domain-agnostic causal inference — temporal alignment, Bradford Hill criteria, Predictor Impact Score, effect sizes, optimal values | 4 suites · 176 cases | 🟡 Alpha |
+| [`@optomitron/optimizer`](packages/optimizer/) | 🧠 Domain-agnostic causal inference — temporal alignment, Bradford Hill criteria, Predictor Impact Score, effect sizes, optimal values | 4 suites · 176 cases | 🟡 Alpha |
 | [`@optomitron/wishocracy`](packages/wishocracy/) | 🗳️ RAPPA preference aggregation — pairwise comparisons, eigenvector weights, Citizen Alignment Scores, matrix completion, convergence analysis | 9 suites · 162 cases | 🟡 Alpha |
 | [`@optomitron/opg`](packages/opg/) | 📋 Optimal Policy Generator — policy scoring, Causal Confidence Score, jurisdiction analysis, Bradford Hill for policy evaluation | 7 suites · 213 cases | 🟡 Alpha |
 | [`@optomitron/obg`](packages/obg/) | 💰 Optimal Budget Generator — diminishing returns modeling, cost-effectiveness analysis, Budget Impact Score, Optimal Spending Levels | 6 suites · 143 cases | 🟡 Alpha |
@@ -114,7 +114,7 @@ Your health data never leaves your device. Optomitron's causal engine is **pure 
 - **Optionally share** anonymized effect sizes to help build population-level knowledge
 
 ```typescript
-import { calculatePredictorImpactScore } from '@optomitron/causal';
+import { calculatePredictorImpactScore } from '@optomitron/optimizer';
 
 const result = calculatePredictorImpactScore(
   magnesiumIntake,   // predictor time series
@@ -148,7 +148,7 @@ The database is multi-tenant: every jurisdiction is a tenant with its own priori
 
 ### 📈 Same Engine, Different Domain
 
-`@optomitron/causal` is **completely domain-agnostic**. It doesn't know the difference between a drug and an ad campaign. Feed it any two time series and it answers: *Does X cause Y? By how much? What's the optimal value of X?*
+`@optomitron/optimizer` is **completely domain-agnostic**. It doesn't know the difference between a drug and an ad campaign. Feed it any two time series and it answers: *Does X cause Y? By how much? What's the optimal value of X?*
 
 | Domain | Predictor (X) | Outcome (Y) | Question |
 |--------|--------------|-------------|----------|
@@ -206,7 +206,7 @@ pnpm install
 pnpm check
 
 # Run tests for a specific package
-pnpm --filter @optomitron/causal test
+pnpm --filter @optomitron/optimizer test
 
 # Build all packages
 pnpm build
@@ -230,7 +230,7 @@ Every algorithm in this codebase is defined in a published paper with exact form
 
 | Paper | Implements | Web |
 |-------|-----------|-----|
-| **dFDA Specification** | `@optomitron/causal` — PIS, temporal alignment, Bradford Hill, effect sizes | [dfda-spec.warondisease.org](https://dfda-spec.warondisease.org) |
+| **dFDA Specification** | `@optomitron/optimizer` — PIS, temporal alignment, Bradford Hill, effect sizes | [dfda-spec.warondisease.org](https://dfda-spec.warondisease.org) |
 | **Wishocracy** | `@optomitron/wishocracy` — RAPPA, eigenvector weights, Citizen Alignment Scores | [wishocracy.warondisease.org](https://wishocracy.warondisease.org) |
 | **Optimal Policy Generator** | `@optomitron/opg` — Policy Impact Score, Causal Confidence Score, method weights | [opg.warondisease.org](https://opg.warondisease.org) |
 | **Optimal Budget Generator** | `@optomitron/obg` — Diminishing returns, Optimal Spending Level, Budget Impact Score | [obg.warondisease.org](https://obg.warondisease.org) |

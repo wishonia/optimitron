@@ -10,7 +10,7 @@
     "demo:alignment": "tsx src/alignment-demo.ts"
   },
   "dependencies": {
-    "@optomitron/causal": "workspace:*",
+    "@optomitron/optimizer": "workspace:*",
     "@optomitron/wishocracy": "workspace:*"
   },
   "devDependencies": {

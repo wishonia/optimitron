@@ -392,7 +392,7 @@ Plus quick action buttons (New Study, Search Trials, Import Data) and inbox prev
 
 ### **Should Port? YES — MEDIUM PRIORITY**
 
-**Target package:** `packages/causal` or new `packages/modeling`
+**Target package:** `packages/optimizer` or new `packages/modeling`
 
 1. **PopulationInterventionModel** — The abstract model framework is well-designed and directly relevant to Optomitron's policy impact modeling.
 
@@ -405,7 +405,7 @@ Plus quick action buttons (New Study, Search Trials, Import Data) and inbox prev
 **Modifications needed:**
 - Integrate with Optomitron's `GlobalVariableRelationship` / `UserVariableRelationship` for real data-driven modeling
 - Add causal inference algorithms (the package is currently just a framework, no actual statistical methods)
-- Consider merging with or extending Optomitron's existing `packages/causal` package
+- Consider merging with or extending Optomitron's existing `packages/optimizer` package
 
 ---
 
@@ -560,7 +560,7 @@ Well-organized multi-schema PostgreSQL:
 |---|---|---|---|
 | Variable search UI pattern | `apps/web/components/genericVariables/` | `packages/web` | Medium |
 | Variable charts pattern (swap Highcharts for Recharts) | `apps/web/components/globalVariables/global-variable-charts.tsx` | `packages/web` | Medium |
-| PopulationInterventionModel framework | `packages/mathematical-modeling/` | `packages/causal` or `packages/modeling` | Medium |
+| PopulationInterventionModel framework | `packages/mathematical-modeling/` | `packages/optimizer` or `packages/modeling` | Medium |
 | Camera capture component | `apps/fdai/components/camera-capture.tsx` | `packages/chat-ui` | Small |
 | NutritionFactsLabel component | `apps/web/components/NutritionFactsLabel.tsx` | `packages/web` | Small |
 | Onboarding flow (symptom selection) | `apps/web/components/dfda/onboarding-symptoms.tsx` | `packages/web` | Medium |
