@@ -5,6 +5,15 @@
  * for automated signal detection from time series data.
  * 
  * @see dFDA Spec: "Predictor Impact Score" section
+ * 
+ * CureDAO equivalent: QM Score (CorrelationQmScoreProperty)
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationQmScoreProperty.php
+ * CureDAO simplified QM Score = |coefficient| × statisticalSignificance × interestingFactor
+ * CureDAO legacy QM Score (Stats::qmScore): factors in skewness, kurtosis, predictive difference
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Utils/Stats.php#L160
+ * 
+ * CureDAO statistical significance uses product of 6 saturation factors:
+ * https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationStatisticalSignificanceProperty.php
  */
 
 import type {
@@ -43,6 +52,10 @@ export function saturation(value: number, sigConstant: number): number {
 /**
  * Calculate strength score from correlation
  * S_strength = 1 - e^(-|r| / r_sig)
+ * 
+ * CureDAO uses |r| directly multiplied by significance rather than saturation,
+ * but the saturation constants in statisticalSignificance are similar: 1 - exp(-x/30)
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationStatisticalSignificanceProperty.php#L40
  */
 export function scoreStrength(correlation: number, sigConstant: number = 0.3): number {
   return 1 - Math.exp(-Math.abs(correlation) / sigConstant);
@@ -58,6 +71,10 @@ export function scoreConsistency(subjectCount: number): number {
 /**
  * Calculate temporality factor
  * φ_temporal = |r_forward| / (|r_forward| + |r_reverse|)
+ * 
+ * CureDAO equivalent: predictivePearsonCorrelationCoefficient = forward - reverse
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationPredictivePearsonCorrelationCoefficientProperty.php
+ * CureDAO uses subtraction; Optomitron uses ratio. Both penalize reverse causation.
  */
 export function scoreTemporality(
   forwardCorrelation: number,
@@ -114,6 +131,15 @@ export function scoreZFactor(zScore: number): number {
 
 /**
  * Calculate optimal predictor values
+ * 
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationValuePredictingHighOutcomeProperty.php
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationValuePredictingLowOutcomeProperty.php
+ * CureDAO splits pairs into high/low effect groups using mean as cutoff,
+ * then averages cause values within each group.
+ * 
+ * TODO: Port from CureDAO — grouped cause value rounding for actionable display
+ * CureDAO rounds optimal values to practical amounts (e.g., nearest 50mg).
+ * See CorrelationGroupedCauseValueClosestToValuePredictingHighOutcomeProperty.php
  */
 export function calculateOptimalValues(pairs: AlignedPair[]): OptimalValue {
   const outcomeValues = pairs.map(p => p.outcomeValue);
@@ -153,6 +179,10 @@ export function calculateOptimalValues(pairs: AlignedPair[]): OptimalValue {
 
 /**
  * Validate data quality for analysis
+ * 
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L2657
+ * CureDAO validates: minimum unique values (≥2), minimum changes,
+ * chronological ordering, minimum pairs, variance in both cause and effect.
  */
 export function validateDataQuality(pairs: AlignedPair[]): DataQuality {
   const failureReasons: string[] = [];
@@ -235,6 +265,16 @@ export function getRecommendation(
 
 /**
  * Calculate complete Predictor Impact Score
+ * 
+ * CureDAO equivalent: analyzePartially() + analyzeFully() pipeline
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L610
+ * CureDAO pipeline: setPairs → Pearson/Spearman → baseline stats → optimal values →
+ *   effect predictions → optimalPearsonProduct → statisticalSignificance → QmScore →
+ *   reversePearson → correlationsOverDelays/Durations
+ * 
+ * TODO: Port from CureDAO — auto-generate reverse pairs from the same data
+ * TODO: Port from CureDAO — vote-weighted significance (upVotes+4)/(upVotes+downVotes+4)
+ * TODO: Port from CureDAO — interesting factor filtering (same-category, non-controllable)
  */
 export function calculatePredictorImpactScore(
   forwardPairs: AlignedPair[],
