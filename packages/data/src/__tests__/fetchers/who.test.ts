@@ -156,9 +156,9 @@ describe('WHO GHO Fetcher', () => {
       });
 
       await fetchGHOIndicator('WHOSIS_000001', { jurisdictions: ['USA', 'GBR'] });
-      const callUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]?.[0] as string;
-      expect(callUrl).toContain("SpatialDim eq 'USA'");
-      expect(callUrl).toContain("SpatialDim eq 'GBR'");
+      const callUrl1 = decodeURIComponent((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]?.[0] as string);
+      expect(callUrl1).toContain("SpatialDim eq 'USA'");
+      expect(callUrl1).toContain("SpatialDim eq 'GBR'");
     });
 
     it('builds filter with period', async () => {
@@ -170,9 +170,9 @@ describe('WHO GHO Fetcher', () => {
       await fetchGHOIndicator('WHOSIS_000001', {
         period: { startYear: 2015, endYear: 2020 },
       });
-      const callUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]?.[0] as string;
-      expect(callUrl).toContain("TimeDim ge '2015'");
-      expect(callUrl).toContain("TimeDim le '2020'");
+      const callUrl2 = decodeURIComponent((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]?.[0] as string);
+      expect(callUrl2).toContain("TimeDim ge '2015'");
+      expect(callUrl2).toContain("TimeDim le '2020'");
     });
 
     it('includes sex filter (BTSX)', async () => {
@@ -182,8 +182,8 @@ describe('WHO GHO Fetcher', () => {
       });
 
       await fetchGHOIndicator('WHOSIS_000001');
-      const callUrl = (globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]?.[0] as string;
-      expect(callUrl).toContain("Dim1 eq 'BTSX'");
+      const callUrl3 = decodeURIComponent((globalThis.fetch as ReturnType<typeof vi.fn>).mock.calls[0]?.[0] as string);
+      expect(callUrl3).toContain("Dim1 eq 'BTSX'");
     });
   });
 

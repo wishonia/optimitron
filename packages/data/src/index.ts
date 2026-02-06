@@ -38,7 +38,8 @@ export * from './types.js';
 export * from './sources/index.js';
 
 // API fetchers (OECD, World Bank, WHO, FRED)
-export * from './fetchers/index.js';
+// Exported as namespace to avoid name collisions with legacy sources
+export * as fetchers from './fetchers/index.js';
 
 // CSV loader (Gapminder-format parser)
 export * from './csv-loader.js';
