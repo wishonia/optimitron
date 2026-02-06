@@ -7,15 +7,21 @@
   "scripts": {
     "demo:budget": "tsx src/federal-budget-demo.ts",
     "demo:causal": "tsx src/causal-analysis-demo.ts",
-    "demo:alignment": "tsx src/alignment-demo.ts"
+    "demo:alignment": "tsx src/alignment-demo.ts",
+    "test": "vitest run",
+    "test:integration": "vitest run src/integration-tests/"
   },
   "dependencies": {
+    "@optomitron/data": "workspace:*",
+    "@optomitron/obg": "workspace:*",
+    "@optomitron/opg": "workspace:*",
     "@optomitron/optimizer": "workspace:*",
     "@optomitron/wishocracy": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.2.1",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
   }
 }
