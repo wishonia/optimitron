@@ -15,7 +15,7 @@ Tasks are ordered by priority. Work top-to-bottom. Mark status as you go.
 | # | Task | Status | Notes |
 |---|------|--------|-------|
 | 1 | Fix build — `pnpm build` passing for ALL packages | done | All 6 packages build: causal, rappa, opg, obg, data, db. Issue was missing node_modules. |
-| 2 | Add vitest config to all packages | todo | |
+| 2 | Add vitest config to all packages | done | vitest.config.ts + smoke tests for causal, rappa, opg, obg, data. 27 tests passing. |
 | 3 | Resolve type errors from `core` → `opg`/`obg` split | done | Types already correctly placed; build passes with strict mode |
 
 ## P1: Tests for Existing Code
