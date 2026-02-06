@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "build": "prisma generate && tsc",
-    "test": "echo 'No tests yet (needs DATABASE_URL)'",
+    "test": "vitest run",
     "test:watch": "vitest"
   },
   "prisma": {
