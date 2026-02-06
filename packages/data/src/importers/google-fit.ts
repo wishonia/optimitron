@@ -27,6 +27,7 @@
  */
 
 import type { ParsedHealthRecord } from './apple-health.js';
+import { resolveVariableName } from './standard-variable-names.js';
 import { buildImportSummary, type ImportSummary } from './types.js';
 
 // ---------------------------------------------------------------------------
@@ -278,6 +279,11 @@ export function parseGoogleFitExport(files: GoogleFitExportFiles): ParsedHealthR
     for (const [hint, json] of Object.entries(files.rawData)) {
       records.push(...parseGoogleFitFile(json, hint));
     }
+  }
+
+  // Normalize variable names to canonical forms
+  for (const record of records) {
+    record.variableName = resolveVariableName(record.variableName, 'google_fit');
   }
 
   return records;

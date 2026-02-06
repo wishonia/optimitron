@@ -20,6 +20,7 @@
  */
 
 import type { ParsedHealthRecord } from './apple-health.js';
+import { resolveVariableName } from './standard-variable-names.js';
 import { buildImportSummary, type ImportSummary } from './types.js';
 
 // ---------------------------------------------------------------------------
@@ -230,6 +231,11 @@ export function parseStravaActivitiesCsv(csv: string): ParsedHealthRecord[] {
     if (power != null && power > 0) {
       records.push(rec(`${activityType} Average Power`, 'Physical Activity', power, 'Watts', 'W', dateStr, undefined, note));
     }
+  }
+
+  // Normalize variable names to canonical forms
+  for (const record of records) {
+    record.variableName = resolveVariableName(record.variableName, 'strava');
   }
 
   return records;

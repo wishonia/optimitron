@@ -200,7 +200,7 @@ describe('Fitbit importer', () => {
       expect(summary.totalRecords).toBe(records.length);
       expect(summary.sourceNames).toEqual(['Fitbit']);
       expect(summary.dateRange).not.toBeNull();
-      expect(summary.variableCounts['Daily Step Count']).toBe(2);
+      expect(summary.variableCounts['Steps']).toBe(2);
     });
   });
 });

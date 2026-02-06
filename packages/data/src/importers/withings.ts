@@ -23,6 +23,7 @@
  */
 
 import type { ParsedHealthRecord } from './apple-health.js';
+import { resolveVariableName } from './standard-variable-names.js';
 import { buildImportSummary, type ImportSummary } from './types.js';
 
 // ---------------------------------------------------------------------------
@@ -408,6 +409,11 @@ export function parseWithingsExport(files: WithingsExportFiles): ParsedHealthRec
   if (files.sleep) records.push(...parseWithingsSleepFile(files.sleep));
   if (files.activity) records.push(...parseWithingsActivityFile(files.activity));
   if (files.heartRate) records.push(...parseWithingsHeartRateFile(files.heartRate));
+
+  // Normalize variable names to canonical forms
+  for (const record of records) {
+    record.variableName = resolveVariableName(record.variableName, 'withings');
+  }
 
   return records;
 }

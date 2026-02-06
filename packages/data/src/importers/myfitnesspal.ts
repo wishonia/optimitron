@@ -17,6 +17,7 @@
  */
 
 import type { ParsedHealthRecord } from './apple-health.js';
+import { resolveVariableName } from './standard-variable-names.js';
 import { buildImportSummary, type ImportSummary } from './types.js';
 
 // ---------------------------------------------------------------------------
@@ -207,6 +208,11 @@ export function parseMyFitnessPalExport(csv: string): ParsedHealthRecord[] {
     }
   }
 
+  // Normalize variable names to canonical forms
+  for (const record of records) {
+    record.variableName = resolveVariableName(record.variableName, 'myfitnesspal');
+  }
+
   return records;
 }
 
@@ -245,6 +251,11 @@ export function parseMyFitnessPalExercise(csv: string): ParsedHealthRecord[] {
         records.push(makeRecord(`${name} Duration`, 'Physical Activity', val, 'Minutes', 'min', dateStr));
       }
     }
+  }
+
+  // Normalize variable names to canonical forms
+  for (const record of records) {
+    record.variableName = resolveVariableName(record.variableName, 'myfitnesspal');
   }
 
   return records;

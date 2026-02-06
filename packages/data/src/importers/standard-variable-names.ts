@@ -187,11 +187,13 @@ export const IMPORTER_VARIABLE_MAPS: Record<string, Record<string, string>> = {
 
   oura: {
     // Oura Ring API names → canonical
+    'Daily Step Count': 'Steps',
     'Calories Burned':  'Active Energy',
   },
 
   withings: {
     // Withings Health Mate names → canonical
+    'Daily Step Count': 'Steps',
   },
 
   myfitnesspal: {

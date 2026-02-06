@@ -16,6 +16,7 @@
  */
 
 import type { ParsedHealthRecord } from './apple-health.js';
+import { resolveVariableName } from './standard-variable-names.js';
 import { buildImportSummary, type ImportSummary } from './types.js';
 
 // ---------------------------------------------------------------------------
@@ -257,6 +258,11 @@ export function parseCronometerExport(csv: string): ParsedHealthRecord[] {
     }
   }
 
+  // Normalize variable names to canonical forms
+  for (const record of records) {
+    record.variableName = resolveVariableName(record.variableName, 'cronometer');
+  }
+
   return records;
 }
 
@@ -300,6 +306,11 @@ export function parseCronometerFoodDiary(csv: string): ParsedHealthRecord[] {
         ...(note ? { note } : {}),
       });
     }
+  }
+
+  // Normalize variable names to canonical forms
+  for (const record of records) {
+    record.variableName = resolveVariableName(record.variableName, 'cronometer');
   }
 
   return records;

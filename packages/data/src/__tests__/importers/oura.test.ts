@@ -114,7 +114,7 @@ describe('Oura importer', () => {
 
     it('parses activity records', () => {
       const records = parseOuraExport(OURA_EXPORT_V1);
-      const steps = records.find((r) => r.variableName === 'Daily Step Count');
+      const steps = records.find((r) => r.variableName === 'Steps');
       expect(steps).toBeDefined();
       expect(steps!.value).toBe(9500);
 
@@ -143,7 +143,7 @@ describe('Oura importer', () => {
       const sleepScore = records.find((r) => r.variableName === 'Overall Sleep Score');
       expect(sleepScore!.value).toBe(90);
 
-      const steps = records.find((r) => r.variableName === 'Daily Step Count');
+      const steps = records.find((r) => r.variableName === 'Steps');
       expect(steps!.value).toBe(11000);
 
       const readiness = records.find((r) => r.variableName === 'Daily Readiness Score');

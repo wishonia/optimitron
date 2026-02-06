@@ -50,5 +50,14 @@ export * from './catalog.js';
 // Health data importers (Apple Health, etc.)
 export * from './importers/index.js';
 
+// Unit conversion system
+export * from './unit-conversion.js';
+
+// Daily value aggregation
+export * from './daily-aggregation.js';
+
+// Measurement validation
+export * from './measurement-validation.js';
+
 // Version
 export const VERSION = '0.1.0';
