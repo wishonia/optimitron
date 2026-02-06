@@ -12,7 +12,7 @@
 //   These models form a general-purpose quantified-self / data collection
 //   platform. Any variable (health, economic, environmental, policy outcome)
 //   can be tracked, aggregated, and analyzed for causal relationships.
-//   Inspired by the QuantiModo open-source schema.
+//   Inspired by the CureDAO open-source API. This is the Optomitron schema.
 //
 // LAYER 2 — Domain-Specific Governance
 //   Jurisdiction, Item, Participant, PairwiseComparison, PreferenceWeight,

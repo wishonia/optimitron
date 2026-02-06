@@ -1,7 +1,7 @@
 /**
  * MyFitnessPal Export Importer
  *
- * QuantiModo reference: https://github.com/mikepsinn/quantimodo-api/blob/main/app/DataSources/Connectors/MyFitnessPalConnector.php
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/MyFitnessPalConnector.php
  *
  * Parses MyFitnessPal CSV export files (Food Diary and Exercise).
  * Users can export from Settings → Diary Settings → Export.

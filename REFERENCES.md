@@ -7,7 +7,7 @@
 ## Table of Contents
 
 - [Papers (Source of All Algorithms)](#papers-source-of-all-algorithms)
-- [Source Schema (QuantiModo Database)](#source-schema-quantimodo-database)
+- [Optomitron Schema (QuantiModo Heritage)](#optomitron-schema-quantimodo-heritage)
 - [Data APIs](#data-apis)
 - [Health Data Standards](#health-data-standards)
 - [Proof of Personhood / Identity](#proof-of-personhood--identity)
@@ -37,9 +37,9 @@ https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/append
 
 ---
 
-## Source Schema (QuantiModo Database)
+## Optomitron Schema (QuantiModo Heritage)
 
-The Prisma schema in `@optomitron/db` was ported from the QuantiModo/Quantimodo PostgreSQL database. We extracted the essential ~8 tables needed for the universal measurement system from the original 115-table schema.
+The Optomitron schema (`@optomitron/db`) was inspired by the QuantiModo PostgreSQL database. We extracted and modernized the essential models for the universal measurement system from the original 115-table schema.
 
 **Source Repository:** [mikepsinn/quantimodo-api](https://github.com/mikepsinn/quantimodo-api)
 
@@ -106,7 +106,7 @@ External APIs used by `@optomitron/data` and planned integrations. See [DATA_SOU
 
 ## Health Data Standards
 
-Standards referenced for data import/export and interoperability. Optomitron does **not** use these as its internal schema — the internal schema derives from the QuantiModo measurement system (see above).
+Standards referenced for data import/export and interoperability. Optomitron has its own schema (see `@optomitron/db`) — inspired by QuantiModo but redesigned for modern TypeScript, local-first architecture, and domain-agnostic use.
 
 | Standard | URL | Usage in Optomitron |
 |----------|-----|---------------------|

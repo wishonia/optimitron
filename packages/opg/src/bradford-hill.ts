@@ -5,6 +5,16 @@
  * into quantitative scoring functions that produce scores in [0, 1].
  * 
  * @see https://opg.warondisease.org/#sec-bradford-hill
+ * 
+ * CureDAO implements these criteria implicitly across multiple files:
+ * - Strength: |correlation coefficient| — https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationForwardPearsonCorrelationCoefficientProperty.php
+ * - Consistency: number_of_users in AggregateCorrelation — https://github.com/mikepsinn/curedao-api/blob/main/app/Models/AggregateCorrelation.php
+ * - Temporality: forward vs reverse Pearson — https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationPredictivePearsonCorrelationCoefficientProperty.php
+ * - Gradient: optimal value spread (value_predicting_high vs low) — https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationValuePredictingHighOutcomeProperty.php
+ * - Experiment: statistical significance composite — https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationStatisticalSignificanceProperty.php
+ * 
+ * This OPG module explicitly names and weights the criteria for policy evaluation.
+ * The optimizer package (@optomitron/optimizer) also has Bradford Hill scoring for health data.
  */
 
 export interface BradfordHillScores {

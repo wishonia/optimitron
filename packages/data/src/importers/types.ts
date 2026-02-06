@@ -3,6 +3,11 @@
  *
  * Every importer produces `ParsedHealthRecord[]` — a flat, uniform format
  * that the rest of Optomitron can consume without knowing the data source.
+ *
+ * CureDAO equivalent: MeasurementSet / Measurement model
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Slim/Model/Measurement/MeasurementSet.php
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Measurement.php
+ * CureDAO normalizes all imported data into Measurement rows with common units.
  */
 
 // Re-export the canonical ParsedHealthRecord from the Apple Health importer
