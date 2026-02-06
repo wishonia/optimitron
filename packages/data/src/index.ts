@@ -1,0 +1,41 @@
+/**
+ * @optomitron/data
+ * 
+ * Data fetchers for Optomitron - OECD, World Bank, Census, WHO, etc.
+ * 
+ * Provides unified access to public data sources for:
+ * - Government spending by category
+ * - Health outcomes (life expectancy, mortality)
+ * - Economic indicators (GDP, income, unemployment)
+ * - Policy data
+ * 
+ * @example
+ * ```typescript
+ * import {
+ *   fetchOECDSpending,
+ *   fetchWorldBankHealthData,
+ *   OECD_SPENDING_CATEGORIES,
+ *   WB_INDICATORS,
+ * } from '@optomitron/data';
+ * 
+ * // Fetch health spending for OECD countries
+ * const spending = await fetchOECDSpending({
+ *   categories: ['HEALTH', 'EDUCATION'],
+ *   period: { startYear: 2018, endYear: 2022 },
+ * });
+ * 
+ * // Fetch health outcomes
+ * const health = await fetchWorldBankHealthData({
+ *   jurisdictions: ['USA', 'GBR', 'DEU', 'JPN'],
+ * });
+ * ```
+ */
+
+// Types
+export * from './types.js';
+
+// Data sources
+export * from './sources/index.js';
+
+// Version
+export const VERSION = '0.1.0';

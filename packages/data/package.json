@@ -1,0 +1,32 @@
+{
+  "name": "@optomitron/data",
+  "version": "0.1.0",
+  "description": "Data fetchers for Optomitron - OECD, World Bank, Census, WHO, etc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "data",
+    "oecd",
+    "world-bank",
+    "census",
+    "who",
+    "economics",
+    "health-data"
+  ],
+  "author": "Mike P. Sinn <m@thinkbynumbers.org>",
+  "license": "MIT",
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  }
+}
