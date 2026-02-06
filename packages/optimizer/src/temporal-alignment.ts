@@ -132,9 +132,33 @@ export function alignOutcomeBased(
           break;
         case 'none':
           continue; // Skip this pair
-        case 'interpolation':
-          // TODO: Implement linear interpolation
-          continue;
+        case 'interpolation': {
+          // Linear interpolation between nearest known predictor values
+          const midpoint = (windowStart + windowEnd) / 2;
+          // Find nearest before and after midpoint
+          let before: { time: number; value: number } | undefined;
+          let after: { time: number; value: number } | undefined;
+          for (const pm of predictorMeasurements) {
+            const t = toUnixMs(pm.timestamp);
+            if (t <= midpoint) {
+              if (!before || t > before.time) before = { time: t, value: pm.value };
+            }
+            if (t >= midpoint) {
+              if (!after || t < after.time) after = { time: t, value: pm.value };
+            }
+          }
+          if (before && after && before.time !== after.time) {
+            const fraction = (midpoint - before.time) / (after.time - before.time);
+            predictorValue = before.value + (after.value - before.value) * fraction;
+          } else if (before) {
+            predictorValue = before.value;
+          } else if (after) {
+            predictorValue = after.value;
+          } else {
+            continue; // No data points at all
+          }
+          break;
+        }
         default:
           continue;
       }

@@ -254,3 +254,36 @@ export function getStandardDefinition(
 ): StandardVariableDefinition | undefined {
   return STANDARD_VARIABLES[canonicalName];
 }
+
+/**
+ * Mapping from importer category names to canonical category names.
+ * Importers use plural/variant forms; canonical uses singular forms
+ * matching STANDARD_VARIABLES and the VariableCategory seed data.
+ */
+const CATEGORY_ALIASES: Record<string, string> = {
+  // Plural → singular
+  'Vital Signs': 'Vital Sign',
+  'Foods': 'Food',
+  'Nutrients': 'Nutrient',
+  'Treatments': 'Treatment',
+  // Variant names
+  'Physique': 'Physical Measurement',
+  'Body Measurements': 'Physical Measurement',
+  'Exercise': 'Physical Activity',
+  'Workout': 'Physical Activity',
+  'Workouts': 'Physical Activity',
+  'Activities': 'Activity',
+};
+
+/**
+ * Resolve an importer category name to its canonical form.
+ * If no alias is found, returns the input unchanged.
+ *
+ * @example
+ * resolveCategory('Vital Signs') // → 'Vital Sign'
+ * resolveCategory('Foods')       // → 'Food'
+ * resolveCategory('Sleep')       // → 'Sleep' (already canonical)
+ */
+export function resolveCategory(importerCategory: string): string {
+  return CATEGORY_ALIASES[importerCategory] ?? importerCategory;
+}
