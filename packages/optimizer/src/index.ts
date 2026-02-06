@@ -15,10 +15,10 @@
  * - OPG: predictor=policy, outcome=welfare metrics
  * - OBG: predictor=spending, outcome=welfare metrics
  * 
- * CureDAO equivalent: QMUserCorrelation analysis pipeline
- * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php
- * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMCorrelation.php
- * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMAggregateCorrelation.php
+ * legacy API equivalent: QMUserCorrelation analysis pipeline
+ * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php
+ * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMCorrelation.php
+ * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMAggregateCorrelation.php
  * See CUREDAO_GAPS.md in repo root for full cross-reference audit.
  * 
  * @example

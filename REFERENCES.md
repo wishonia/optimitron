@@ -7,7 +7,7 @@
 ## Table of Contents
 
 - [Papers (Source of All Algorithms)](#papers-source-of-all-algorithms)
-- [Optomitron Schema (QuantiModo Heritage)](#optomitron-schema-quantimodo-heritage)
+- [Optomitron Schema (Legacy Reference)](#optomitron-schema-legacy-reference)
 - [Data APIs](#data-apis)
 - [Health Data Standards](#health-data-standards)
 - [Proof of Personhood / Identity](#proof-of-personhood--identity)
@@ -37,17 +37,17 @@ https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/append
 
 ---
 
-## Optomitron Schema (QuantiModo Heritage)
+## Optomitron Schema (Legacy Reference)
 
-The Optomitron schema (`@optomitron/db`) was inspired by the QuantiModo PostgreSQL database. We extracted and modernized the essential models for the universal measurement system from the original 115-table schema.
+The Optomitron schema (`@optomitron/db`) was inspired by the legacy PostgreSQL database. We extracted and modernized the essential models for the universal measurement system from the original 115-table schema.
 
-**Source Repository:** [mikepsinn/quantimodo-api](https://github.com/mikepsinn/quantimodo-api)
+**Source Repository:** [mikepsinn/curedao-api](https://github.com/mikepsinn/curedao-api)
 
 **Schema Location:** `database/ddl/postgres-v0/public/`
 
 ### Table Mapping
 
-| QuantiModo DDL File | Optomitron Model | Purpose |
+| Legacy DDL File | Optomitron Model | Purpose |
 |------------------|-----------------|---------|
 | `measurements.sql` | `Measurement` | Individual data points (timestamp, value, unit, source) |
 | `variables.sql` | `GlobalVariable` | Canonical variable definitions (name, category, default unit, combination method) |
@@ -58,7 +58,7 @@ The Optomitron schema (`@optomitron/db`) was inspired by the QuantiModo PostgreS
 | `correlations.sql` | `UserVariableRelationship` | Per-user causal analysis results (PIS, effect size, optimal value) |
 | `aggregate_correlations.sql` | `GlobalVariableRelationship` | Population-level aggregated causal analysis results |
 
-**Note:** The original QuantiModo database has 115 tables covering OAuth, social features, purchases, studies, and more. We intentionally ported only the core measurement and analysis tables — the minimal set needed for the universal measurement system and causal inference pipeline.
+**Note:** The original legacy database has 115 tables covering OAuth, social features, purchases, studies, and more. We intentionally ported only the core measurement and analysis tables — the minimal set needed for the universal measurement system and causal inference pipeline.
 
 ---
 
@@ -106,7 +106,7 @@ External APIs used by `@optomitron/data` and planned integrations. See [DATA_SOU
 
 ## Health Data Standards
 
-Standards referenced for data import/export and interoperability. Optomitron has its own schema (see `@optomitron/db`) — inspired by QuantiModo but redesigned for modern TypeScript, local-first architecture, and domain-agnostic use.
+Standards referenced for data import/export and interoperability. Optomitron has its own schema (see `@optomitron/db`) — inspired by a prior project but redesigned for modern TypeScript, local-first architecture, and domain-agnostic use.
 
 | Standard | URL | Usage in Optomitron |
 |----------|-----|---------------------|

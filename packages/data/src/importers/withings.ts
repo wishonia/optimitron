@@ -1,7 +1,7 @@
 /**
  * Withings (Health Mate) Export Importer
  *
- * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/WithingsConnector.php
+ * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/WithingsConnector.php
  *
  * Parses Withings CSV exports from the Health Mate app.
  * Export contains separate CSV files: weight.csv, blood_pressure.csv,

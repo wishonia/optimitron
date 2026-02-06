@@ -1,7 +1,7 @@
 /**
  * Google Fit / Google Takeout Export Importer
  *
- * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/GoogleFitConnector.php
+ * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/GoogleFitConnector.php
  *
  * Parses Google Fit data from a Google Takeout export. The Takeout zip
  * contains JSON files under `Takeout/Fit/` organised by data type:

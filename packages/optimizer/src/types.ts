@@ -7,14 +7,14 @@ import { z } from 'zod';
  * The predictor can be a drug, policy, or spending level.
  * The outcome can be a symptom, welfare metric, or any measurable value.
  * 
- * CureDAO model references:
+ * Legacy model references:
  * - Measurement type → https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Measurement.php
  * - TimeSeries → https://github.com/mikepsinn/curedao-api/blob/main/app/Models/UserVariable.php
  * - PredictorConfig → https://github.com/mikepsinn/curedao-api/blob/main/app/Models/UserVariable.php (onset_delay, duration_of_action, filling_value)
  * - AlignedPair → https://github.com/mikepsinn/curedao-api/blob/main/app/Slim/Model/Measurement/Pair.php
  * - CorrelationResult → https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Correlation.php
- * - PredictorImpactScore → CureDAO's qm_score column on correlations table
- * - BradfordHillScores → implicit in CureDAO's scoring system, explicit here
+ * - PredictorImpactScore → Legacy API's qm_score column on correlations table
+ * - BradfordHillScores → implicit in Legacy API's scoring system, explicit here
  */
 
 /**

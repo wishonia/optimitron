@@ -5,10 +5,10 @@
  * The export contains per-type JSON files: sleep-*.json, steps-*.json,
  * heart_rate-*.json, exercise-*.json, body-*.json, etc.
  *
- * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/FitbitConnector.php
- * CureDAO's FitbitConnector is a live OAuth2 connector (vs this file-based parser).
- * CureDAO extracts: sleep stages, heart rate zones, intraday activity, body composition, food logging.
- * CureDAO Fitbit API SDK: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/Fitbit/Api/
+ * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/FitbitConnector.php
+ * Legacy API's FitbitConnector is a live OAuth2 connector (vs this file-based parser).
+ * Legacy API extracts: sleep stages, heart rate zones, intraday activity, body composition, food logging.
+ * legacy API Fitbit API SDK: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/Fitbit/Api/
  *
  * @example
  * ```typescript

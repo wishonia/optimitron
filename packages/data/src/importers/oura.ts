@@ -1,7 +1,7 @@
 /**
  * Oura Ring Export Importer
  *
- * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/OuraConnector.php
+ * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/OuraConnector.php
  *
  * Parses Oura Ring JSON export data. Users can export their data from the
  * Oura web dashboard. The export contains daily summaries for sleep,

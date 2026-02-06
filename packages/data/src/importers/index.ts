@@ -4,11 +4,11 @@
  * All importers produce `ParsedHealthRecord[]` — a flat, uniform format
  * that works across all data sources.
  *
- * CureDAO connector reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/
- * CureDAO uses live OAuth2 API connectors; Optomitron uses file-based export parsers.
- * CureDAO base connector class: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/OAuth2Connector.php
+ * Connector reference: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/
+ * Legacy API uses live OAuth2 API connectors; Optomitron uses file-based export parsers.
+ * Legacy base connector class: https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/OAuth2Connector.php
  *
- * Connector mapping (CureDAO → Optomitron):
+ * Connector mapping (legacy API → Optomitron):
  *   FitbitConnector.php     → fitbit.ts (export parser only)
  *   OuraConnector.php       → oura.ts (export parser only)
  *   WithingsConnector.php   → withings.ts (export parser only)
@@ -16,14 +16,14 @@
  *   StravaConnector.php     → strava.ts (export parser only)
  *   MyFitnessPalConnector.php → myfitnesspal.ts (export parser only)
  *
- * TODO: Port from CureDAO — live OAuth2 connector framework
- * CureDAO has full OAuth2 flows with token refresh, rate limiting, pagination.
+ * TODO: Port from legacy API — live OAuth2 connector framework
+ * Legacy API has full OAuth2 flows with token refresh, rate limiting, pagination.
  * See https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/OAuth2Connector.php
  *
- * TODO: Port from CureDAO — Weather connector (environmental data)
+ * TODO: Port from legacy API — Weather connector (environmental data)
  * See https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/WeatherConnector.php
  *
- * TODO: Port from CureDAO — Air Quality connector
+ * TODO: Port from legacy API — Air Quality connector
  * See https://github.com/mikepsinn/curedao-api/blob/main/app/DataSources/Connectors/AirQualityConnector.php
  */
 export * from './types.js';

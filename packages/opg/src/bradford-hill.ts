@@ -6,7 +6,7 @@
  * 
  * @see https://opg.warondisease.org/#sec-bradford-hill
  * 
- * CureDAO implements these criteria implicitly across multiple files:
+ * legacy API implements these criteria implicitly across multiple files:
  * - Strength: |correlation coefficient| — https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationForwardPearsonCorrelationCoefficientProperty.php
  * - Consistency: number_of_users in AggregateCorrelation — https://github.com/mikepsinn/curedao-api/blob/main/app/Models/AggregateCorrelation.php
  * - Temporality: forward vs reverse Pearson — https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationPredictivePearsonCorrelationCoefficientProperty.php
