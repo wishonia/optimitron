@@ -343,14 +343,115 @@ model UserVariableRelationship {
   effectVariableId String
   effectVariable   GlobalVariable @relation("UserRelEffect", fields: [effectVariableId], references: [id])
 
-  /// Pearson or Spearman correlation coefficient
-  correlation Float
+  // -- Statistical fields --
+
+  /// Pearson correlation with cause preceding effect (expected causal direction)
+  forwardPearsonCorrelation Float
+
+  /// Pearson correlation with effect preceding cause — if reverse > forward,
+  /// the assumed causal direction may be wrong
+  reversePearsonCorrelation Float
+
+  /// Spearman rank correlation (assesses monotonic relationships, linear or not)
+  forwardSpearmanCorrelation Float?
 
   /// Statistical significance (< 0.05 = significant)
   pValue Float?
 
+  /// Student's t-value (function of correlation and sample size)
+  tValue Float?
+
+  /// Threshold t-value from lookup table that t must exceed for significance
+  criticalTValue Float?
+
+  /// Margin of error around the effect size
+  confidenceInterval Float?
+
+  /// A function of the effect size and sample size
+  statisticalSignificance Float?
+
+  /// Standard deviations from the mean — z > 2 means p < 0.05
+  zScore Float?
+
+  /// Number of cause-effect measurement pairs used in the analysis
+  numberOfPairs Int
+
+  /// Number of days of data included in the analysis
+  numberOfDays Int?
+
+  /// Strongest Pearson correlation found across all onset delay permutations
+  strongestPearsonCorrelation Float?
+
+  /// Optimal Pearson product (correlation × statistical significance)
+  optimalPearsonProduct Float?
+
+  // -- Temporal parameters --
+
+  /// Time after cause measurement before a perceivable effect is observed (seconds)
+  onsetDelay Int
+
+  /// Time over which the cause produces a perceivable effect following onset (seconds)
+  durationOfAction Int
+
+  /// The onset delay (seconds) that produced the strongest Pearson correlation
+  onsetDelayWithStrongestCorrelation Int?
+
+  // -- Effect / prediction fields --
+
+  /// Cause value that predicts an above-average outcome (in cause's default unit)
+  valuePredictingHighOutcome Float?
+
+  /// Cause value that predicts a below-average outcome (in cause's default unit)
+  valuePredictingLowOutcome Float?
+
+  /// Percent change in outcome typically seen when predictor value is high
+  predictsHighEffectChange Int?
+
+  /// Percent change in outcome typically seen when predictor value is low
+  predictsLowEffectChange Int?
+
+  /// Average outcome value across all measurements
+  averageEffect Float?
+
+  /// Average outcome value following an above-average cause value
+  averageEffectFollowingHighCause Float?
+
+  /// Average outcome value following a below-average cause value
+  averageEffectFollowingLowCause Float?
+
   /// Standardized effect size (Cohen's d or similar)
   effectSize Float?
+
+  // -- Baseline / treatment comparison --
+
+  /// Average daily cause value during non-treatment (baseline) periods
+  causeBaselineAveragePerDay Float?
+
+  /// Average daily cause value during treatment periods
+  causeTreatmentAveragePerDay Float?
+
+  /// Average outcome value during baseline (no treatment) periods
+  effectBaselineAverage Float?
+
+  /// Standard deviation of outcome during baseline periods
+  effectBaselineStandardDeviation Float?
+
+  /// Average outcome value during follow-up (post-treatment) periods
+  effectFollowUpAverage Float?
+
+  /// Percent change in outcome from baseline to follow-up
+  effectFollowUpPercentChangeFromBaseline Float?
+
+  // -- Quality / meta fields --
+
+  /// Magnitude of change: "VERY STRONG" | "STRONG" | "MODERATE" | "WEAK" | "VERY WEAK"
+  strengthLevel String?
+
+  /// Confidence that strength will persist: "HIGH" | "MEDIUM" | "LOW"
+  confidenceLevel String?
+
+  /// Direction: "POSITIVE" | "NEGATIVE" | "NONE"
+  relationship String?
 
   /// Predictor Impact Score — composite importance metric
   predictorImpactScore Float?
@@ -358,14 +459,23 @@ model UserVariableRelationship {
   /// Letter grade summarizing evidence quality: A/B/C/D/F
   evidenceGrade String?
 
-  /// Number of measurement pairs used in the analysis
-  sampleSize Int
+  /// Number of times the cause measurement value changed from the preceding value
+  causeChanges Int?
 
-  /// Optimal onset delay found during analysis (seconds)
-  onsetDelay Int?
+  /// Number of times the effect measurement value changed from the preceding value
+  effectChanges Int?
 
-  /// Optimal duration of action found during analysis (seconds)
-  durationOfAction Int?
+  /// True if the relationship is obvious, uncontrollable, or low confidence
+  boring Boolean?
+
+  /// True if the outcome variable is something the user wants to optimize
+  outcomeIsGoal Boolean?
+
+  /// True if the predictor variable is directly controllable by the user
+  predictorIsControllable Boolean?
+
+  /// True if there is a plausible mechanism of action for this relationship
+  plausiblyCausal Boolean?
 
   /// The predictor value associated with the best outcome
   optimalValue Float?
@@ -397,14 +507,115 @@ model GlobalVariableRelationship {
   effectVariableId String
   effectVariable   GlobalVariable @relation("GlobalRelEffect", fields: [effectVariableId], references: [id])
 
-  /// Pearson or Spearman correlation coefficient (best individual)
-  correlation Float
+  // -- Statistical fields --
+
+  /// Pearson correlation with cause preceding effect (expected causal direction)
+  forwardPearsonCorrelation Float
+
+  /// Pearson correlation with effect preceding cause — if reverse > forward,
+  /// the assumed causal direction may be wrong
+  reversePearsonCorrelation Float
+
+  /// Spearman rank correlation (assesses monotonic relationships, linear or not)
+  forwardSpearmanCorrelation Float?
 
   /// Statistical significance (< 0.05 = significant)
   pValue Float?
 
+  /// Student's t-value (function of correlation and sample size)
+  tValue Float?
+
+  /// Threshold t-value from lookup table that t must exceed for significance
+  criticalTValue Float?
+
+  /// Margin of error around the effect size
+  confidenceInterval Float?
+
+  /// A function of the effect size and sample size
+  statisticalSignificance Float?
+
+  /// Standard deviations from the mean — z > 2 means p < 0.05
+  zScore Float?
+
+  /// Number of cause-effect measurement pairs used in the analysis
+  numberOfPairs Int
+
+  /// Number of days of data included in the analysis
+  numberOfDays Int?
+
+  /// Strongest Pearson correlation found across all onset delay permutations
+  strongestPearsonCorrelation Float?
+
+  /// Optimal Pearson product (correlation × statistical significance)
+  optimalPearsonProduct Float?
+
+  // -- Temporal parameters --
+
+  /// Time after cause measurement before a perceivable effect is observed (seconds)
+  onsetDelay Int
+
+  /// Time over which the cause produces a perceivable effect following onset (seconds)
+  durationOfAction Int
+
+  /// The onset delay (seconds) that produced the strongest Pearson correlation
+  onsetDelayWithStrongestCorrelation Int?
+
+  // -- Effect / prediction fields --
+
+  /// Cause value that predicts an above-average outcome (in cause's default unit)
+  valuePredictingHighOutcome Float?
+
+  /// Cause value that predicts a below-average outcome (in cause's default unit)
+  valuePredictingLowOutcome Float?
+
+  /// Percent change in outcome typically seen when predictor value is high
+  predictsHighEffectChange Int?
+
+  /// Percent change in outcome typically seen when predictor value is low
+  predictsLowEffectChange Int?
+
+  /// Average outcome value across all measurements
+  averageEffect Float?
+
+  /// Average outcome value following an above-average cause value
+  averageEffectFollowingHighCause Float?
+
+  /// Average outcome value following a below-average cause value
+  averageEffectFollowingLowCause Float?
+
   /// Standardized effect size (Cohen's d or similar)
   effectSize Float?
+
+  // -- Baseline / treatment comparison --
+
+  /// Average daily cause value during non-treatment (baseline) periods
+  causeBaselineAveragePerDay Float?
+
+  /// Average daily cause value during treatment periods
+  causeTreatmentAveragePerDay Float?
+
+  /// Average outcome value during baseline (no treatment) periods
+  effectBaselineAverage Float?
+
+  /// Standard deviation of outcome during baseline periods
+  effectBaselineStandardDeviation Float?
+
+  /// Average outcome value during follow-up (post-treatment) periods
+  effectFollowUpAverage Float?
+
+  /// Percent change in outcome from baseline to follow-up
+  effectFollowUpPercentChangeFromBaseline Float?
+
+  // -- Quality / meta fields --
+
+  /// Magnitude of change: "VERY STRONG" | "STRONG" | "MODERATE" | "WEAK" | "VERY WEAK"
+  strengthLevel String?
+
+  /// Confidence that strength will persist: "HIGH" | "MEDIUM" | "LOW"
+  confidenceLevel String?
+
+  /// Direction: "POSITIVE" | "NEGATIVE" | "NONE"
+  relationship String?
 
   /// Predictor Impact Score — composite importance metric
   predictorImpactScore Float?
@@ -412,14 +623,23 @@ model GlobalVariableRelationship {
   /// Letter grade summarizing evidence quality: A/B/C/D/F
   evidenceGrade String?
 
-  /// Number of measurement pairs used in the analysis
-  sampleSize Int
+  /// Number of times the cause measurement value changed from the preceding value
+  causeChanges Int?
 
-  /// Optimal onset delay found during analysis (seconds)
-  onsetDelay Int?
+  /// Number of times the effect measurement value changed from the preceding value
+  effectChanges Int?
 
-  /// Optimal duration of action found during analysis (seconds)
-  durationOfAction Int?
+  /// True if the relationship is obvious, uncontrollable, or low confidence
+  boring Boolean?
+
+  /// True if the outcome variable is something the user wants to optimize
+  outcomeIsGoal Boolean?
+
+  /// True if the predictor variable is directly controllable by the user
+  predictorIsControllable Boolean?
+
+  /// True if there is a plausible mechanism of action for this relationship
+  plausiblyCausal Boolean?
 
   /// The predictor value associated with the best outcome
   optimalValue Float?
@@ -429,21 +649,14 @@ model GlobalVariableRelationship {
   /// Number of users whose data contributed to this analysis
   numberOfUsers Int
 
-  /// Correlation aggregated across all users (weighted mean)
-  aggregateCorrelation Float
+  /// Overall quality/importance score aggregated across users (QM score)
+  aggregateQmScore Float?
 
-  /// P-value of the aggregate analysis
-  aggregatePValue Float?
+  /// Community votes: how many users found this relationship useful
+  numberOfUpVotes Int?
 
-  /// Effect size of the aggregate analysis
-  aggregateEffectSize Float?
-
-  /// Forward Pearson: correlation with cause preceding effect (expected direction)
-  forwardPearson Float?
-
-  /// Reverse Pearson: correlation with effect preceding cause (temporality check —
-  /// if reverse > forward, causality direction may be wrong)
-  reversePearson Float?
+  /// Community votes: how many users found this relationship not useful
+  numberOfDownVotes Int?
 
   /// When this analysis was last computed
   analyzedAt DateTime
