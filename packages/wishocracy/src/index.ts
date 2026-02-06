@@ -10,6 +10,7 @@
 
 export * from './types.js';
 export * from './pairwise.js';
+export * from './weighted-aggregation.js';
 export * from './alignment.js';
 export * from './convergence.js';
 export * from './matrix-completion.js';
