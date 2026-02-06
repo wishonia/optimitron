@@ -6,7 +6,7 @@
 //
 // LAYER 1 — Universal Measurement System (domain-agnostic)
 //   GlobalVariable, VariableCategory, Unit, UserVariable, Measurement,
-//   TrackingReminder, CausalAnalysis
+//   TrackingReminder, UserVariableRelationship, GlobalVariableRelationship
 //   These models form a general-purpose quantified-self / data collection
 //   platform. Any variable (health, economic, environmental, policy outcome)
 //   can be tracked, aggregated, and analyzed for causal relationships.
@@ -20,8 +20,8 @@
 //   alignment scoring. They are scoped to jurisdictions (multi-tenant).
 //
 // The two layers can interoperate: governance Items can reference
-// GlobalVariables as outcome metrics, and CausalAnalysis can link policy
-// variables to health/economic outcomes.
+// GlobalVariables as outcome metrics, and UserVariableRelationship /
+// GlobalVariableRelationship can link policy variables to health/economic outcomes.
 // ============================================================================
 
 generator client {
@@ -170,11 +170,13 @@ model GlobalVariable {
   updatedAt DateTime @updatedAt
 
   // -- Relations --
-  userVariables     UserVariable[]
-  measurements      Measurement[]
-  trackingReminders TrackingReminder[]
-  causalAsCause     CausalAnalysis[]   @relation("CausalCause")
-  causalAsEffect    CausalAnalysis[]   @relation("CausalEffect")
+  userVariables               UserVariable[]
+  measurements                Measurement[]
+  trackingReminders           TrackingReminder[]
+  userRelationshipsAsCause    UserVariableRelationship[]   @relation("UserRelCause")
+  userRelationshipsAsEffect   UserVariableRelationship[]   @relation("UserRelEffect")
+  globalRelationshipsAsCause  GlobalVariableRelationship[] @relation("GlobalRelCause")
+  globalRelationshipsAsEffect GlobalVariableRelationship[] @relation("GlobalRelEffect")
 
   @@index([variableCategoryId])
   @@index([defaultUnitId])
@@ -324,22 +326,22 @@ model TrackingReminder {
   @@index([active])
 }
 
-/// Precomputed causal analysis results between variable pairs.
-/// Stores Predictor Impact Scores (PIS), correlations, and optimal parameters.
-/// userId = null means this is an aggregate analysis across all users.
-model CausalAnalysis {
+/// Personal n-of-1 causal analysis between two variables for a single user.
+/// Replaces CureDAO's `correlations` table. Each row answers:
+/// "For THIS user, how does variable A predict variable B?"
+model UserVariableRelationship {
   id String @id @default(cuid())
+
+  /// The user who owns this analysis
+  userId String
 
   /// The predictor / cause variable
   causeVariableId String
-  causeVariable   GlobalVariable @relation("CausalCause", fields: [causeVariableId], references: [id])
+  causeVariable   GlobalVariable @relation("UserRelCause", fields: [causeVariableId], references: [id])
 
   /// The outcome / effect variable
   effectVariableId String
-  effectVariable   GlobalVariable @relation("CausalEffect", fields: [effectVariableId], references: [id])
-
-  /// If null, this is a population-level aggregate. If set, it's a personal analysis.
-  userId String?
+  effectVariable   GlobalVariable @relation("UserRelEffect", fields: [effectVariableId], references: [id])
 
   /// Pearson or Spearman correlation coefficient
   correlation Float
@@ -374,11 +376,86 @@ model CausalAnalysis {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([causeVariableId, effectVariableId, userId])
+  @@unique([userId, causeVariableId, effectVariableId])
+  @@index([userId])
   @@index([causeVariableId])
   @@index([effectVariableId])
-  @@index([userId])
   @@index([analyzedAt])
+}
+
+/// Population-level causal analysis aggregated across all users.
+/// Replaces CureDAO's `aggregate_correlations` table. Each row answers:
+/// "Across ALL users, how does variable A predict variable B?"
+model GlobalVariableRelationship {
+  id String @id @default(cuid())
+
+  /// The predictor / cause variable
+  causeVariableId String
+  causeVariable   GlobalVariable @relation("GlobalRelCause", fields: [causeVariableId], references: [id])
+
+  /// The outcome / effect variable
+  effectVariableId String
+  effectVariable   GlobalVariable @relation("GlobalRelEffect", fields: [effectVariableId], references: [id])
+
+  /// Pearson or Spearman correlation coefficient (best individual)
+  correlation Float
+
+  /// Statistical significance (< 0.05 = significant)
+  pValue Float?
+
+  /// Standardized effect size (Cohen's d or similar)
+  effectSize Float?
+
+  /// Predictor Impact Score — composite importance metric
+  predictorImpactScore Float?
+
+  /// Letter grade summarizing evidence quality: A/B/C/D/F
+  evidenceGrade String?
+
+  /// Number of measurement pairs used in the analysis
+  sampleSize Int
+
+  /// Optimal onset delay found during analysis (seconds)
+  onsetDelay Int?
+
+  /// Optimal duration of action found during analysis (seconds)
+  durationOfAction Int?
+
+  /// The predictor value associated with the best outcome
+  optimalValue Float?
+
+  // -- Aggregate-specific fields --
+
+  /// Number of users whose data contributed to this analysis
+  numberOfUsers Int
+
+  /// Correlation aggregated across all users (weighted mean)
+  aggregateCorrelation Float
+
+  /// P-value of the aggregate analysis
+  aggregatePValue Float?
+
+  /// Effect size of the aggregate analysis
+  aggregateEffectSize Float?
+
+  /// Forward Pearson: correlation with cause preceding effect (expected direction)
+  forwardPearson Float?
+
+  /// Reverse Pearson: correlation with effect preceding cause (temporality check —
+  /// if reverse > forward, causality direction may be wrong)
+  reversePearson Float?
+
+  /// When this analysis was last computed
+  analyzedAt DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([causeVariableId, effectVariableId])
+  @@index([causeVariableId])
+  @@index([effectVariableId])
+  @@index([analyzedAt])
+  @@index([numberOfUsers])
 }
 
 // ============================================================================
