@@ -36,6 +36,109 @@ datasource db {
 }
 
 // ============================================================================
+// ENUMS
+// ============================================================================
+
+/// How to aggregate multiple measurements within a time window
+enum CombinationOperation {
+  SUM
+  MEAN
+}
+
+/// How to handle missing data points in a time series
+enum FillingType {
+  /// Treat missing as zero (e.g., "no dose taken" = 0 mg)
+  ZERO
+  /// Leave gaps (don't interpolate or assume)
+  NONE
+  /// Linearly interpolate between nearest values
+  INTERPOLATION
+}
+
+/// Whether higher values are better or worse
+enum Valence {
+  /// Higher is better (e.g., mood, energy)
+  POSITIVE
+  /// Lower is better (e.g., pain, anxiety)
+  NEGATIVE
+  /// No inherent direction (e.g., heart rate)
+  NEUTRAL
+}
+
+/// Measurement scale type (determines valid mathematical operations)
+enum MeasurementScale {
+  /// Categories with no order (e.g., blood type)
+  NOMINAL
+  /// Ordered categories (e.g., 1-5 rating)
+  ORDINAL
+  /// Equal intervals, arbitrary zero (e.g., temperature in °F)
+  INTERVAL
+  /// Equal intervals, true zero (e.g., weight in kg, duration in seconds)
+  RATIO
+}
+
+/// Processing/analysis status for variables and relationships
+enum AnalysisStatus {
+  /// Waiting to be analyzed
+  WAITING
+  /// Analysis currently running
+  ANALYZING
+  /// Analysis complete
+  DONE
+  /// Analysis failed
+  ERROR
+}
+
+/// Magnitude of a predictor-outcome relationship
+enum StrengthLevel {
+  VERY_STRONG
+  STRONG
+  MODERATE
+  WEAK
+  VERY_WEAK
+}
+
+/// Confidence that an observed relationship will persist with more data
+enum ConfidenceLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+/// Direction of a predictor-outcome relationship
+enum RelationshipDirection {
+  POSITIVE
+  NEGATIVE
+  NONE
+}
+
+/// Letter grade summarizing overall evidence quality
+enum EvidenceGrade {
+  A
+  B
+  C
+  D
+  F
+}
+
+/// Status of a tracking reminder notification
+enum NotificationStatus {
+  PENDING
+  SENT
+  TRACKED
+  SKIPPED
+  SNOOZED
+}
+
+/// Level of government for a jurisdiction
+enum JurisdictionType {
+  CITY
+  COUNTY
+  STATE
+  COUNTRY
+}
+
+// ============================================================================
 // LAYER 1 — Universal Measurement System
 // ============================================================================
 
@@ -59,11 +162,11 @@ model Unit {
   /// Maximum allowed value for a single measurement in this unit
   maximumValue Float?
 
-  /// How to handle missing data: "zero" | "none" | "interpolation" | "value"
-  fillingType String @default("none")
+  /// How to handle missing data for this unit
+  fillingType FillingType @default(NONE)
 
-  /// Measurement scale: "nominal" | "ordinal" | "interval" | "ratio"
-  scale String @default("ratio")
+  /// Measurement scale type (determines valid mathematical operations)
+  scale MeasurementScale @default(RATIO)
 
   /// JSON-encoded conversion steps to convert to the category's base unit.
   /// Each step is an operation (multiply, add, etc.) applied sequentially.
@@ -112,8 +215,8 @@ model VariableCategory {
   /// Relation to the default Unit for this category
   defaultUnit Unit? @relation("VariableCategoryDefaultUnit", fields: [defaultUnitId], references: [id])
 
-  /// How to aggregate multiple measurements within a time window: "SUM" | "MEAN"
-  combinationOperation String @default("SUM")
+  /// How to aggregate multiple measurements within a time window
+  combinationOperation CombinationOperation @default(SUM)
 
   /// Default onset delay for variables in this category (seconds)
   onsetDelay Int @default(0)
@@ -121,8 +224,8 @@ model VariableCategory {
   /// Default duration of action for variables in this category (seconds)
   durationOfAction Int @default(86400)
 
-  /// If true, variables in this category can only be predictors (causes), never outcomes
-  causeOnly Boolean @default(false)
+  /// If true, variables in this category can only be predictors, never outcomes
+  predictorOnly Boolean @default(false)
 
   /// If true, variables in this category are outcomes people want to optimize
   outcome Boolean?
@@ -169,8 +272,8 @@ model GlobalVariable {
   /// Relation to the default Unit
   defaultUnit Unit @relation("GlobalVariableDefaultUnit", fields: [defaultUnitId], references: [id])
 
-  /// How to aggregate within a time window: "SUM" (e.g. mg taken) or "MEAN" (e.g. mood rating)
-  combinationOperation String @default("SUM")
+  /// How to aggregate within a time window: SUM (e.g. mg taken) or MEAN (e.g. mood rating)
+  combinationOperation CombinationOperation @default(SUM)
 
   /// Seconds before this variable's effect begins after a measurement
   onsetDelay Int?
@@ -178,14 +281,14 @@ model GlobalVariable {
   /// Seconds the effect of a measurement lasts
   durationOfAction Int?
 
-  /// How to handle missing data for this variable: "zero" | "none" | "interpolation" | "value"
-  fillingType String @default("none")
+  /// How to handle missing data for this variable
+  fillingType FillingType @default(NONE)
 
-  /// Value to substitute for missing data when fillingType is "value" (-1 = none, 0 = zero-fill)
-  fillingValue Float? @default(-1)
+  /// Value to substitute for missing data when fillingType is INTERPOLATION
+  fillingValue Float?
 
   /// If true, this variable can only be a predictor, never an outcome
-  causeOnly Boolean @default(false)
+  predictorOnly Boolean @default(false)
 
   /// If true, this variable is an outcome people want to optimize
   outcome Boolean?
@@ -224,7 +327,7 @@ model GlobalVariable {
   skewness Float?
 
   /// Processing status: "WAITING" | "ANALYZING" | "DONE" | "ERROR"
-  status String @default("WAITING")
+  status AnalysisStatus @default(WAITING)
 
   /// When the last statistical analysis began for this variable
   analysisStartedAt DateTime?
@@ -241,8 +344,8 @@ model GlobalVariable {
   /// Comma-separated synonyms for search (e.g. "Advil,Motrin" for Ibuprofen)
   synonyms String?
 
-  /// Is higher better? "positive" | "negative" | "neutral"
-  valence String @default("neutral")
+  /// Is higher better? POSITIVE = higher is better, NEGATIVE = lower is better
+  valence Valence @default(NEUTRAL)
 
   /// When this record was created
   createdAt DateTime @default(now())
@@ -294,8 +397,8 @@ model UserVariable {
   /// Personal override for duration of action (seconds)
   durationOfAction Int?
 
-  /// How to handle missing data for this user: "zero" | "none" | "interpolation" | "value"
-  fillingType String @default("none")
+  /// How to handle missing data for this user's variable
+  fillingType FillingType @default(NONE)
 
   /// Personal override for the fill value when fillingType is "value"
   fillingValue Float?
@@ -345,7 +448,7 @@ model UserVariable {
   maximumRecordedValue Float?
 
   /// Processing status: "WAITING" | "ANALYZING" | "DONE" | "ERROR"
-  status String @default("WAITING")
+  status AnalysisStatus @default(WAITING)
 
   /// When the last statistical analysis began for this user-variable
   analysisStartedAt DateTime?
