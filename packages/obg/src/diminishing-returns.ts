@@ -52,8 +52,10 @@ export function fitLogModel(
   let denominator = 0;
   
   for (let i = 0; i < n; i++) {
-    numerator += (logSpending[i] - meanLogS) * (outcomes[i] - meanY);
-    denominator += (logSpending[i] - meanLogS) ** 2;
+    const ls = logSpending[i]!;
+    const oi = outcomes[i]!;
+    numerator += (ls - meanLogS) * (oi - meanY);
+    denominator += (ls - meanLogS) ** 2;
   }
   
   const beta = numerator / denominator;
@@ -61,7 +63,7 @@ export function fitLogModel(
   
   // Calculate R²
   const predictions = logSpending.map(ls => alpha + beta * ls);
-  const ssRes = outcomes.reduce((sum, y, i) => sum + (y - predictions[i]) ** 2, 0);
+  const ssRes = outcomes.reduce((sum, y, i) => sum + (y - predictions[i]!) ** 2, 0);
   const ssTot = outcomes.reduce((sum, y) => sum + (y - meanY) ** 2, 0);
   const r2 = 1 - ssRes / ssTot;
   
@@ -78,7 +80,7 @@ export function fitSaturationModel(
 ): DiminishingReturnsModel {
   // Use median spending as initial gamma estimate
   const sortedSpending = [...data.map(d => d.spending)].sort((a, b) => a - b);
-  const gamma = initialGamma ?? sortedSpending[Math.floor(sortedSpending.length / 2)];
+  const gamma = initialGamma ?? sortedSpending[Math.floor(sortedSpending.length / 2)]!;
   
   const n = data.length;
   const outcomes = data.map(d => d.outcome);
@@ -94,8 +96,10 @@ export function fitSaturationModel(
   let denominator = 0;
   
   for (let i = 0; i < n; i++) {
-    numerator += (transformed[i] - meanX) * (outcomes[i] - meanY);
-    denominator += (transformed[i] - meanX) ** 2;
+    const ti = transformed[i]!;
+    const oi = outcomes[i]!;
+    numerator += (ti - meanX) * (oi - meanY);
+    denominator += (ti - meanX) ** 2;
   }
   
   const beta = numerator / denominator;
@@ -103,7 +107,7 @@ export function fitSaturationModel(
   
   // Calculate R²
   const predictions = transformed.map(x => alpha + beta * x);
-  const ssRes = outcomes.reduce((sum, y, i) => sum + (y - predictions[i]) ** 2, 0);
+  const ssRes = outcomes.reduce((sum, y, i) => sum + (y - predictions[i]!) ** 2, 0);
   const ssTot = outcomes.reduce((sum, y) => sum + (y - meanY) ** 2, 0);
   const r2 = 1 - ssRes / ssTot;
   
@@ -174,15 +178,15 @@ export function estimateOSL(
   const bootstrapOSLs: number[] = [];
   for (let i = 0; i < bootstrapSamples; i++) {
     const sample = Array.from({ length: data.length }, () => 
-      data[Math.floor(Math.random() * data.length)]
+      data[Math.floor(Math.random() * data.length)]!
     );
     const bootModel = model.type === 'log' ? fitLogModel(sample) : fitSaturationModel(sample);
     bootstrapOSLs.push(findOSL(bootModel, opportunityCost));
   }
   
   bootstrapOSLs.sort((a, b) => a - b);
-  const ciLow = bootstrapOSLs[Math.floor(bootstrapSamples * 0.025)];
-  const ciHigh = bootstrapOSLs[Math.floor(bootstrapSamples * 0.975)];
+  const ciLow = bootstrapOSLs[Math.floor(bootstrapSamples * 0.025)] ?? oslUsd;
+  const ciHigh = bootstrapOSLs[Math.floor(bootstrapSamples * 0.975)] ?? oslUsd;
   
   return {
     oslUsd,

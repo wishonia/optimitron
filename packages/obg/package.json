@@ -11,7 +11,9 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@optomitron/causal": "workspace:*"
+    "@optomitron/causal": "workspace:*",
+    "@optomitron/opg": "workspace:*",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

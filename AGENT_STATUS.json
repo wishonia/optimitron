@@ -1,9 +1,9 @@
 {
-  "status": "idle",
+  "status": "working",
   "lastRun": null,
   "lastTask": null,
   "lastCompletedAt": null,
-  "currentTask": null,
-  "startedAt": null,
+  "currentTask": "Fix build",
+  "startedAt": "2026-02-06T18:38:00.000Z",
   "commits": []
 }

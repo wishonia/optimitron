@@ -92,7 +92,7 @@ export async function fetchWorldBankIndicator(
       return [];
     }
     
-    const [_meta, data]: [WBApiResponse, WBApiResponse['data']] = await response.json();
+    const [_meta, data] = await response.json() as [WBApiResponse, WBApiResponse['data']];
     
     if (!data) return [];
     
@@ -238,7 +238,7 @@ export async function fetchWorldBankCountries(): Promise<Array<{
   
   try {
     const response = await fetch(url);
-    const [_meta, data] = await response.json();
+    const [_meta, data] = await response.json() as [unknown, Array<{ id: string; iso2Code: string; name: string; region: { id: string; value: string }; incomeLevel: { value: string } }>];
     
     return data
       .filter((c: any) => c.region.id !== 'NA') // Exclude aggregates

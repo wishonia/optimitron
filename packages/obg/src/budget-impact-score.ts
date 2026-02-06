@@ -7,9 +7,9 @@
  * @see https://obg.warondisease.org/#budget-impact-score-bis
  */
 
-import type { AnalysisMethod } from '../opg/bradford-hill.js';
-import { METHOD_WEIGHTS } from '../opg/bradford-hill.js';
-import type { EvidenceGrade } from '../types/index.js';
+import type { AnalysisMethod } from '@optomitron/opg';
+import { METHOD_WEIGHTS } from '@optomitron/opg';
+import type { EvidenceGrade } from '@optomitron/opg';
 
 export interface EffectEstimate {
   beta: number;           // Effect size

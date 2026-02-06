@@ -109,7 +109,7 @@ export async function fetchOECDSpending(
       return [];
     }
     
-    const data: OECDApiResponse = await response.json();
+    const data = await response.json() as OECDApiResponse;
     return parseOECDSpendingResponse(data, categories);
   } catch (error) {
     console.error('Error fetching OECD spending data:', error);
@@ -140,9 +140,9 @@ function parseOECDSpendingResponse(
   
   for (const [key, value] of Object.entries(observations)) {
     const indices = key.split(':').map(Number);
-    const countryIndex = indices[0];
-    const categoryIndex = indices[1];
-    const yearIndex = indices[indices.length - 1];
+    const countryIndex = indices[0] ?? 0;
+    const categoryIndex = indices[1] ?? 0;
+    const yearIndex = indices[indices.length - 1] ?? 0;
     
     const country = countryDim[countryIndex]?.id;
     const category = categoryDim[categoryIndex]?.name ?? categoryDim[categoryIndex]?.id;
@@ -196,7 +196,7 @@ export async function fetchOECDHealthExpenditure(
       return [];
     }
     
-    const data: OECDApiResponse = await response.json();
+    const data = await response.json() as OECDApiResponse;
     // Parse similar to spending response
     return parseOECDHealthResponse(data);
   } catch (error) {

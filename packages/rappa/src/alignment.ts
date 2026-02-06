@@ -68,26 +68,27 @@ export function calculatePreferenceGaps(
   items: Array<{ id: string; name: string; currentAllocationPct?: number; currentAllocationUsd?: number }>,
   totalBudgetUsd?: number
 ): PreferenceGap[] {
-  return citizenPreferences
-    .map(pref => {
-      const item = items.find(i => i.id === pref.itemId);
-      if (!item) return null;
-      
-      const preferredPct = pref.weight * 100;
-      const actualPct = item.currentAllocationPct ?? 0;
-      const gapPct = preferredPct - actualPct;
-      
-      return {
-        itemId: pref.itemId,
-        itemName: item.name,
-        preferredPct,
-        actualPct,
-        gapPct,
-        gapUsd: totalBudgetUsd ? (gapPct / 100) * totalBudgetUsd : undefined,
-      };
-    })
-    .filter((g): g is PreferenceGap => g !== null)
-    .sort((a, b) => Math.abs(b.gapPct) - Math.abs(a.gapPct)); // Largest gaps first
+  const gaps: PreferenceGap[] = [];
+  
+  for (const pref of citizenPreferences) {
+    const item = items.find(i => i.id === pref.itemId);
+    if (!item) continue;
+    
+    const preferredPct = pref.weight * 100;
+    const actualPct = item.currentAllocationPct ?? 0;
+    const gapPct = preferredPct - actualPct;
+    
+    gaps.push({
+      itemId: pref.itemId,
+      itemName: item.name,
+      preferredPct,
+      actualPct,
+      gapPct,
+      gapUsd: totalBudgetUsd ? (gapPct / 100) * totalBudgetUsd : undefined,
+    });
+  }
+  
+  return gaps.sort((a, b) => Math.abs(b.gapPct) - Math.abs(a.gapPct)); // Largest gaps first
 }
 
 /**

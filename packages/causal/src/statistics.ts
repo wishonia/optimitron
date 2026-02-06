@@ -40,8 +40,8 @@ export function pearsonCorrelation(x: number[], y: number[]): number {
   let denomY = 0;
   
   for (let i = 0; i < n; i++) {
-    const dx = x[i] - meanX;
-    const dy = y[i] - meanY;
+    const dx = x[i]! - meanX;
+    const dy = y[i]! - meanY;
     numerator += dx * dy;
     denomX += dx * dx;
     denomY += dy * dy;
@@ -79,14 +79,14 @@ function toRanks(values: number[]): number[] {
   while (i < indexed.length) {
     // Find all tied values
     let j = i;
-    while (j < indexed.length && indexed[j].value === indexed[i].value) {
+    while (j < indexed.length && indexed[j]!.value === indexed[i]!.value) {
       j++;
     }
     
     // Assign average rank to all tied values
     const avgRank = (i + j + 1) / 2; // +1 because ranks are 1-indexed
     for (let k = i; k < j; k++) {
-      ranks[indexed[k].index] = avgRank;
+      ranks[indexed[k]!.index] = avgRank;
     }
     
     i = j;
@@ -191,9 +191,9 @@ function gamma(z: number): number {
     1.5056327351493116e-7,
   ];
   
-  let x = c[0];
+  let x = c[0]!;
   for (let i = 1; i < g + 2; i++) {
-    x += c[i] / (z + i);
+    x += c[i]! / (z + i);
   }
   
   const t = z + g + 0.5;
