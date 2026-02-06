@@ -326,13 +326,34 @@ model GlobalVariable {
   /// Skewness of the measurement distribution (measures asymmetry)
   skewness Float?
 
-  /// Processing status: "WAITING" | "ANALYZING" | "DONE" | "ERROR"
+  /// Number of distinct values recorded across all users
+  numberOfUniqueValues Int?
+
+  /// Most frequently recorded value
+  mostCommonValue Float?
+
+  /// Second most frequently recorded value
+  secondMostCommonValue Float?
+
+  /// Lowest value ever recorded for this variable (any user)
+  minimumRecordedValue Float?
+
+  /// Highest value ever recorded for this variable (any user)
+  maximumRecordedValue Float?
+
+  /// Number of users who track this variable
+  numberOfUserVariables Int @default(0)
+
+  /// Processing status for statistical analysis
   status AnalysisStatus @default(WAITING)
 
-  /// When the last statistical analysis began for this variable
+  /// When analysis was last requested
+  analysisRequestedAt DateTime?
+
+  /// When the last statistical analysis began
   analysisStartedAt DateTime?
 
-  /// When the last statistical analysis completed for this variable
+  /// When the last statistical analysis completed
   analysisEndedAt DateTime?
 
   /// URL of the variable's representative image / icon
@@ -419,9 +440,6 @@ model UserVariable {
 
   /// Timestamp of this user's earliest measurement for this variable
   earliestMeasurementStartAt DateTime?
-
-  /// Timestamp of this user's most recent measurement (alias kept for backward compat)
-  lastMeasurementAt DateTime?
 
   /// Arithmetic mean of this user's measurements
   mean Float?
@@ -524,6 +542,12 @@ model Measurement {
 
   /// Name of the app, device, or integration that provided this data (e.g. "Fitbit", "manual")
   sourceName String?
+
+  /// Link to the integration connection that imported this measurement (null if manual entry)
+  connectionId String?
+
+  /// Relation to the IntegrationConnection
+  connection IntegrationConnection? @relation(fields: [connectionId], references: [id])
 
   /// Latitude of the user's location at time of measurement
   latitude Float?
@@ -642,7 +666,7 @@ model TrackingReminderNotification {
   trackedValue Float?
 
   /// Status of this notification: "pending" | "sent" | "tracked" | "skipped" | "snoozed"
-  status String @default("pending")
+  status NotificationStatus @default(PENDING)
 
   /// When this record was created
   createdAt DateTime @default(now())
@@ -747,7 +771,7 @@ model UserVariableRelationship {
   predictsLowOutcomeChange Int?
 
   /// Average outcome value across all measurements
-  averageOutcomeChange Float?
+  averageOutcome Float?
 
   /// Average outcome value following an above-average predictor value
   averageOutcomeFollowingHighPredictor Float?
@@ -786,20 +810,20 @@ model UserVariableRelationship {
 
   // -- Quality / meta fields --
 
-  /// Magnitude of change: "VERY STRONG" | "STRONG" | "MODERATE" | "WEAK" | "VERY WEAK"
-  strengthLevel String?
+  /// Magnitude of the predictor-outcome relationship
+  strengthLevel StrengthLevel?
 
-  /// Confidence that strength will persist: "HIGH" | "MEDIUM" | "LOW"
-  confidenceLevel String?
+  /// Confidence that this relationship will persist with more data
+  confidenceLevel ConfidenceLevel?
 
   /// Direction: "POSITIVE" | "NEGATIVE" | "NONE"
-  relationship String?
+  relationship RelationshipDirection?
 
   /// Predictor Impact Score — composite importance metric
   predictorImpactScore Float?
 
   /// Letter grade summarizing evidence quality: A/B/C/D/F
-  evidenceGrade String?
+  evidenceGrade EvidenceGrade?
 
   /// Number of times the predictor measurement value changed from the preceding value
   predictorChanges Int?
@@ -807,8 +831,8 @@ model UserVariableRelationship {
   /// Number of times the outcome measurement value changed from the preceding value
   outcomeChanges Int?
 
-  /// True if the relationship is obvious, uncontrollable, or low confidence
-  boring Boolean?
+  /// True if the relationship is obvious, uncontrollable, or too low confidence to be actionable
+  trivial Boolean?
 
   /// True if the outcome variable is something the user wants to optimize
   outcomeIsGoal Boolean?
@@ -927,7 +951,7 @@ model GlobalVariableRelationship {
   predictsLowOutcomeChange Int?
 
   /// Average outcome value across all measurements
-  averageOutcomeChange Float?
+  averageOutcome Float?
 
   /// Average outcome value following an above-average predictor value
   averageOutcomeFollowingHighPredictor Float?
@@ -966,20 +990,20 @@ model GlobalVariableRelationship {
 
   // -- Quality / meta fields --
 
-  /// Magnitude of change: "VERY STRONG" | "STRONG" | "MODERATE" | "WEAK" | "VERY WEAK"
-  strengthLevel String?
+  /// Magnitude of the predictor-outcome relationship
+  strengthLevel StrengthLevel?
 
-  /// Confidence that strength will persist: "HIGH" | "MEDIUM" | "LOW"
-  confidenceLevel String?
+  /// Confidence that this relationship will persist with more data
+  confidenceLevel ConfidenceLevel?
 
   /// Direction: "POSITIVE" | "NEGATIVE" | "NONE"
-  relationship String?
+  relationship RelationshipDirection?
 
   /// Predictor Impact Score — composite importance metric
   predictorImpactScore Float?
 
   /// Letter grade summarizing evidence quality: A/B/C/D/F
-  evidenceGrade String?
+  evidenceGrade EvidenceGrade?
 
   /// Number of times the predictor measurement value changed from the preceding value
   predictorChanges Int?
@@ -987,8 +1011,8 @@ model GlobalVariableRelationship {
   /// Number of times the outcome measurement value changed from the preceding value
   outcomeChanges Int?
 
-  /// True if the relationship is obvious, uncontrollable, or low confidence
-  boring Boolean?
+  /// True if the relationship is obvious, uncontrollable, or too low confidence to be actionable
+  trivial Boolean?
 
   /// True if the outcome variable is something the user wants to optimize
   outcomeIsGoal Boolean?
@@ -1089,7 +1113,106 @@ model IntegrationProvider {
   /// Soft-delete timestamp; non-null means this record is logically deleted
   deletedAt DateTime?
 
+  // -- Relations --
+  connections IntegrationConnection[]
+
   @@index([enabled])
+}
+
+/// A user's connection to an integration provider (e.g., "User #42 connected to Fitbit")
+model IntegrationConnection {
+  /// Unique identifier for this connection
+  id String @id @default(cuid())
+
+  /// ID of the user who connected this integration
+  userId String
+
+  /// The integration provider
+  providerId String
+
+  /// Relation to the IntegrationProvider
+  provider IntegrationProvider @relation(fields: [providerId], references: [id])
+
+  /// Whether this connection is currently active and syncing
+  enabled Boolean @default(true)
+
+  /// Encrypted OAuth2 access token (if applicable)
+  accessToken String?
+
+  /// Encrypted OAuth2 refresh token (if applicable)
+  refreshToken String?
+
+  /// When the access token expires
+  tokenExpiresAt DateTime?
+
+  /// When data was last successfully synced from this connection
+  lastSyncAt DateTime?
+
+  /// When the next sync is scheduled
+  nextSyncAt DateTime?
+
+  /// Total number of measurements imported via this connection
+  totalMeasurementsImported Int @default(0)
+
+  /// Human-readable error message from the last failed sync (null if last sync succeeded)
+  lastSyncError String?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
+  // -- Relations --
+  syncLogs     IntegrationSyncLog[]
+  measurements Measurement[]
+
+  @@unique([userId, providerId])
+  @@index([userId])
+  @@index([providerId])
+  @@index([enabled])
+}
+
+/// Log of each sync attempt for an integration connection
+model IntegrationSyncLog {
+  /// Unique identifier for this sync log entry
+  id String @id @default(cuid())
+
+  /// The connection that was synced
+  connectionId String
+
+  /// Relation to the IntegrationConnection
+  connection IntegrationConnection @relation(fields: [connectionId], references: [id])
+
+  /// When this sync started
+  startedAt DateTime @default(now())
+
+  /// When this sync completed (null if still running or failed before completion)
+  completedAt DateTime?
+
+  /// Whether this sync was successful
+  success Boolean @default(false)
+
+  /// Number of new measurements imported in this sync
+  newMeasurements Int @default(0)
+
+  /// Number of existing measurements updated in this sync
+  updatedMeasurements Int @default(0)
+
+  /// Error message if the sync failed
+  errorMessage String?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
+  @@index([connectionId])
+  @@index([startedAt])
 }
 
 // ============================================================================
@@ -1104,8 +1227,8 @@ model Jurisdiction {
   /// Human-readable name (e.g. "California", "United States")
   name String
 
-  /// Level of government: "city" | "county" | "state" | "country"
-  type String
+  /// Level of government
+  type JurisdictionType
 
   /// Parent jurisdiction ID for hierarchy (e.g. city → county → state → country)
   parentId String?
