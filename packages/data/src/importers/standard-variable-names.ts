@@ -231,7 +231,7 @@ export function resolveVariableName(
   // Check importer-specific mapping first
   const importerMap = IMPORTER_VARIABLE_MAPS[importerKey];
   if (importerMap?.[nativeName]) {
-    return importerMap[nativeName]!;
+    return importerMap[nativeName];
   }
 
   // If the name is already canonical, return it
