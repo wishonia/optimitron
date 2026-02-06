@@ -6,16 +6,29 @@ Optomitron is a **time series causal inference engine** for evidence-based gover
 
 ## Papers (Required Reading)
 
-These papers define the algorithms you're implementing:
+These papers define the algorithms you're implementing. **Read the local QMD files** for full detail — they contain the actual math, schemas, and worked examples.
 
-| Paper | URL | Key Concepts |
-|-------|-----|--------------|
-| **dFDA Spec** | https://dfda-spec.warondisease.org | Predictor Impact Score (PIS), temporal alignment, Bradford Hill criteria |
-| **Optimocracy** | https://optimocracy.warondisease.org | Two-metric welfare function (income + health), SuperPAC mechanism |
-| **Optimal Policy Generator** | https://opg.warondisease.org | Policy recommendations (enact/replace/repeal/maintain), jurisdiction analysis |
-| **Optimal Budget Generator** | https://obg.warondisease.org | Optimal Spending Levels (OSL), diminishing returns, Budget Impact Score (BIS) |
+| Paper | Local Path (read this!) | Web URL |
+|-------|------------------------|---------|
+| **dFDA Spec** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/dfda-spec-paper.qmd` | https://dfda-spec.warondisease.org |
+| **Optimocracy** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/optimocracy-paper.qmd` | https://optimocracy.warondisease.org |
+| **Optimal Policy Generator** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/optimal-policy-generator-spec.qmd` | https://opg.warondisease.org |
+| **Optimal Budget Generator** | `/mnt/e/code/obsidian/websites/disease-eradication-plan/knowledge/appendix/optimal-budget-generator-spec.qmd` | https://obg.warondisease.org |
 
-**Before making changes, understand the methodology from these papers.**
+**Before implementing an algorithm, read the relevant paper section.** The QMD files have:
+- Exact mathematical formulas
+- Worked examples with real numbers
+- SQL schemas for data structures
+- Parameter values and justifications
+- Bradford Hill scoring functions with saturation constants
+
+### How to Use the Papers
+1. Working on `@optomitron/causal`? → Read dFDA Spec (PIS, temporal alignment, effect size)
+2. Working on OPG? → Read Optimal Policy Generator (Policy Impact Score, CCS, jurisdiction analysis)
+3. Working on OBG? → Read Optimal Budget Generator (OSL, diminishing returns, BIS)
+4. Working on welfare metrics? → Read Optimocracy (two-metric welfare function)
+
+The papers are large (1000-2000 lines each). Read the specific section relevant to what you're implementing — don't try to read them all at once.
 
 ## Architecture
 
