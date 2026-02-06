@@ -62,5 +62,8 @@ export * from './measurement-validation.js';
 // Variable statistics (user-level & global aggregation)
 export * from './variable-statistics.js';
 
+// Curated datasets (US federal budget, evidence-based policies)
+export * from './datasets/index.js';
+
 // Version
 export const VERSION = '0.1.0';

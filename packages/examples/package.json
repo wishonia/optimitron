@@ -8,6 +8,8 @@
     "demo:budget": "tsx src/federal-budget-demo.ts",
     "demo:causal": "tsx src/causal-analysis-demo.ts",
     "demo:alignment": "tsx src/alignment-demo.ts",
+    "generate:budget": "tsx src/us-federal-analysis/generate-budget-analysis.ts",
+    "generate:policy": "tsx src/us-federal-analysis/generate-policy-analysis.ts",
     "test": "vitest run",
     "test:integration": "vitest run src/integration-tests/"
   },
