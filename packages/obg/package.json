@@ -1,5 +1,6 @@
 {
   "name": "@optomitron/obg",
+  "homepage": "https://obg.warondisease.org",
   "version": "0.1.0",
   "description": "Optimal Budget Generator - diminishing returns, cost-effectiveness, Budget Impact Score",
   "main": "dist/index.js",

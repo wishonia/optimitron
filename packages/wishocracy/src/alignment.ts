@@ -4,6 +4,9 @@
  * Compares aggregated citizen preference weights to politician voting records
  * to produce Citizen Alignment Scores.
  * 
+ * @see https://wishocracy.warondisease.org — Wishocracy paper (Citizen Alignment Score)
+ * @see https://optimocracy.warondisease.org — Optimocracy paper (welfare function)
+ * 
  * @see Wishocracy paper: "Citizen Alignment Scores" section
  */
 

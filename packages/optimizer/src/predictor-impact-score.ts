@@ -4,7 +4,7 @@
  * Composite metric operationalizing Bradford Hill causality criteria
  * for automated signal detection from time series data.
  * 
- * @see dFDA Spec: "Predictor Impact Score" section
+ * @see https://dfda-spec.warondisease.org — dFDA Specification: "Predictor Impact Score" section
  * 
  * legacy API equivalent: QM Score (CorrelationQmScoreProperty)
  * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationQmScoreProperty.php

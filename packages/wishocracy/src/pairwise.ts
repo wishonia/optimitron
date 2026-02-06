@@ -4,6 +4,8 @@
  * Aggregates individual pairwise comparisons into a comparison matrix.
  * Uses geometric mean for ratio aggregation (standard in AHP).
  * 
+ * @see https://wishocracy.warondisease.org — Wishocracy paper (RAPPA algorithm)
+ * 
  * @see Wishocracy paper: "Core Mechanism" section
  */
 

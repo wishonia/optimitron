@@ -1,5 +1,6 @@
 {
   "name": "@optomitron/opg",
+  "homepage": "https://opg.warondisease.org",
   "version": "0.1.0",
   "description": "Optimal Policy Generator - policy scoring, jurisdiction analysis, Bradford Hill",
   "main": "dist/index.js",

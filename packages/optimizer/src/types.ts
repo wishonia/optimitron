@@ -7,6 +7,8 @@ import { z } from 'zod';
  * The predictor can be a drug, policy, or spending level.
  * The outcome can be a symptom, welfare metric, or any measurable value.
  * 
+ * @see https://dfda-spec.warondisease.org — dFDA Specification (the paper this package implements)
+ * 
  * Legacy model references:
  * - Measurement type → https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Measurement.php
  * - TimeSeries → https://github.com/mikepsinn/curedao-api/blob/main/app/Models/UserVariable.php

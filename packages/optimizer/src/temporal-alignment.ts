@@ -5,7 +5,7 @@
  * - Onset delay (δ): Time before effect begins
  * - Duration of action (τ): Time window over which effect persists
  * 
- * @see dFDA Spec: "Temporal Alignment" section
+ * @see https://dfda-spec.warondisease.org — dFDA Specification: "Temporal Alignment" section
  * 
  * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L899
  * Legacy API uses two pairing strategies:

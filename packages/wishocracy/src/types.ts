@@ -3,6 +3,8 @@ import { z } from 'zod';
 /**
  * Core types for RAPPA (Randomized Aggregated Pairwise Preference Allocation)
  * 
+ * @see https://wishocracy.warondisease.org — Wishocracy paper
+ * 
  * @see https://zenodo.org/records/18205882
  */
 

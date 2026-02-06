@@ -4,8 +4,9 @@
  * Core statistical functions for correlation, effect size,
  * and significance testing.
  * 
- * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Utils/Stats.php
- * Reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationForwardPearsonCorrelationCoefficientProperty.php
+ * @see https://dfda-spec.warondisease.org — dFDA Specification (sections on correlation, effect size, significance)
+ * @see https://github.com/mikepsinn/curedao-api/blob/main/app/Utils/Stats.php
+ * @see https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationForwardPearsonCorrelationCoefficientProperty.php
  */
 
 import type { AlignedPair, CorrelationResult, EffectSize } from './types.js';
