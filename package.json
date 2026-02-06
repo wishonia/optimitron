@@ -15,11 +15,15 @@
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "lint": "pnpm -r lint",
+    "lint": "eslint 'packages/*/src/**/*.ts'",
+    "typecheck": "pnpm -r exec tsc --noEmit",
+    "check": "pnpm typecheck && pnpm lint && pnpm test",
     "report": "pnpm --filter @optomitron/core report"
   },
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "eslint": "^9.0.0",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.0.0"
   },
   "packageManager": "pnpm@8.14.0",
   "engines": {

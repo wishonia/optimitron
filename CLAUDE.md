@@ -112,6 +112,19 @@ pnpm --filter @optomitron/causal test  # Test specific package
 - Aim for >90% coverage on calculation modules
 - Data fetchers: mock the HTTP responses, don't hit real APIs in tests
 
+### Type Safety & Linting
+Before committing, always run:
+```bash
+pnpm check    # runs: typecheck + lint + test
+```
+
+- **TypeScript strict mode** is ON (noUncheckedIndexedAccess, noImplicitOverride)
+- **ESLint** uses typescript-eslint strict rules
+- **No `any`** — use proper types or `unknown` with type guards
+- **No floating promises** — always await or void
+- **No unused variables** — prefix with `_` if intentionally unused
+- **All tsconfigs extend `tsconfig.base.json`** — don't override strict settings
+
 ### Code Style
 - Use Zod for runtime type validation
 - Export types from `types.ts`
