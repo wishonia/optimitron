@@ -6,6 +6,14 @@
  * - Duration of action (τ): Time window over which effect persists
  * 
  * @see dFDA Spec: "Temporal Alignment" section
+ * 
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L899
+ * CureDAO uses two pairing strategies:
+ *   - setPairsBasedOnDailyCauseValues() → predictor-based (when cause has no filling value)
+ *   - setPairsBasedOnDailyEffectValues() → outcome-based (when cause has filling value, e.g. zero for treatments)
+ * Selection logic: if cause.hasFillingValue() → outcome-based, else → predictor-based
+ * 
+ * CureDAO pair creation: https://github.com/mikepsinn/curedao-api/blob/main/app/Slim/View/Request/Pair/GetPairRequest.php
  */
 
 import type {
@@ -59,6 +67,9 @@ export function meanValue(measurements: Measurement[]): number {
  *   - Look back δ seconds (onset delay buffer)
  *   - Sample predictor values in window [t_o - δ - τ, t_o - δ]
  *   - If no predictor values, use filling value
+ * 
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L961
+ * CureDAO's setPairsBasedOnDailyEffectValues() → GetPairRequest::createPairForEachEffectMeasurement()
  */
 export function alignOutcomeBased(
   predictor: TimeSeries,
@@ -150,6 +161,9 @@ export function alignOutcomeBased(
  *   - Look forward δ seconds (onset delay)
  *   - Sample outcome values in window [t_p + δ, t_p + δ + τ]
  *   - Skip if no outcome values in window
+ * 
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L936
+ * CureDAO's setPairsBasedOnDailyCauseValues() → GetPairRequest::createAbsolutePairs()
  */
 export function alignPredictorBased(
   predictor: TimeSeries,
@@ -219,6 +233,15 @@ export function alignTimeSeries(
  * 
  * Grid search over physiologically plausible ranges to find
  * parameters that yield strongest correlation.
+ * 
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L1876
+ * CureDAO's calculateCorrelationsOverOnsetDelaysAndGenerateChartConfig() iterates onset delays,
+ * getCoefficientsByDuration() iterates durations. Stores strongest_pearson_correlation_coefficient
+ * and onset_delay_with_strongest_pearson_correlation.
+ * 
+ * TODO: Port from CureDAO — store strongest_pearson_correlation and optimal_onset_delay separately
+ * CureDAO saves CorrelationStrongestPearsonCorrelationCoefficientProperty and
+ * CorrelationOnsetDelayWithStrongestPearsonCorrelationProperty as DB columns.
  */
 export function optimizeTemporalParameters(
   predictor: TimeSeries,

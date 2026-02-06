@@ -3,6 +3,9 @@
  * 
  * Core statistical functions for correlation, effect size,
  * and significance testing.
+ * 
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Utils/Stats.php
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationForwardPearsonCorrelationCoefficientProperty.php
  */
 
 import type { AlignedPair, CorrelationResult, EffectSize } from './types.js';
@@ -27,6 +30,8 @@ export function std(values: number[], ddof: number = 0): number {
 
 /**
  * Calculate Pearson correlation coefficient
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Utils/Stats.php#L352
+ * CureDAO uses covariance/(stddevX × stddevY); equivalent formula here.
  */
 export function pearsonCorrelation(x: number[], y: number[]): number {
   if (x.length !== y.length || x.length < 2) return NaN;
@@ -55,6 +60,7 @@ export function pearsonCorrelation(x: number[], y: number[]): number {
 
 /**
  * Calculate Spearman rank correlation
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationForwardSpearmanCorrelationCoefficientProperty.php
  */
 export function spearmanCorrelation(x: number[], y: number[]): number {
   if (x.length !== y.length || x.length < 2) return NaN;
@@ -202,6 +208,9 @@ function gamma(z: number): number {
 
 /**
  * Calculate correlation with full statistics
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L610
+ * CureDAO's analyzePartially() calls ForwardPearsonCorrelationCoefficientProperty::calculate(),
+ * ForwardSpearmanCorrelationCoefficientProperty::calculate(), then sets confidence intervals.
  */
 export function calculateCorrelation(pairs: AlignedPair[]): CorrelationResult {
   const x = pairs.map(p => p.predictorValue);
@@ -235,6 +244,14 @@ export function calculateCorrelation(pairs: AlignedPair[]): CorrelationResult {
 
 /**
  * Calculate effect size (baseline vs follow-up comparison)
+ * CureDAO reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php#L2811
+ * CureDAO's calculateOutcomeBaselineStatistics() and generateBaselineAndFollowupPairs() split pairs
+ * by mean cause value and compare outcome means. Also computes z-score as |percentChange|/RSD.
+ * CureDAO z-score: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationZScoreProperty.php
+ *
+ * TODO: Port from CureDAO — separate t-test p-value for high vs low predictor outcome groups
+ * CureDAO calculates a dedicated p-value using t-test between the two outcome groups, with
+ * confidence interval and critical t-value. See QMUserCorrelation.php#L2373
  */
 export function calculateEffectSize(pairs: AlignedPair[]): EffectSize {
   const predictorValues = pairs.map(p => p.predictorValue);
