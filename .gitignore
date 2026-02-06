@@ -51,3 +51,4 @@ packages/db/prisma/dev.db
 # Terraform / infra state
 *.tfstate
 *.tfstate.backup
+*.timestamp-*
