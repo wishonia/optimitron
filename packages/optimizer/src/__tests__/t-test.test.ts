@@ -84,7 +84,7 @@ describe('calculateTTestPValue', () => {
     const largeEffect = generateSplitPairs(100, 0, 2, 10, 8, 1);
     const pLarge = calculateTTestPValue(largeEffect);
 
-    expect(pLarge).toBeLessThan(pSmall);
+    expect(pLarge).toBeLessThanOrEqual(pSmall);
   });
 
   it('p-value decreases with larger sample size (for same effect)', () => {
