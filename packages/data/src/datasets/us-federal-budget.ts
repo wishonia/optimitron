@@ -1290,8 +1290,8 @@ export function getHistoricalSeries(
 export function getSpendingCAGR(categoryName: string): number | undefined {
   const series = getHistoricalSeries(categoryName);
   if (!series || series.length < 2) return undefined;
-  const first = series[0];
-  const last = series[series.length - 1];
+  const first = series[0]!;
+  const last = series[series.length - 1]!;
   const years = last.year - first.year;
   if (years === 0 || first.amount === 0) return undefined;
   return Math.pow(last.amount / first.amount, 1 / years) - 1;
