@@ -37,5 +37,11 @@ export * from './types.js';
 // Data sources
 export * from './sources/index.js';
 
+// CSV loader (Gapminder-format parser)
+export * from './csv-loader.js';
+
+// Economic data catalog
+export * from './catalog.js';
+
 // Version
 export const VERSION = '0.1.0';
