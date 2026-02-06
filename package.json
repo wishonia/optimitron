@@ -35,6 +35,10 @@
       "eslint --fix",
       "bash -c 'pnpm typecheck'",
       "bash -c 'pnpm test'"
+    ],
+    "packages/db/prisma/**/*.prisma": [
+      "bash -c 'pnpm --filter @optomitron/db exec prisma validate'",
+      "bash -c 'pnpm --filter @optomitron/db exec prisma format'"
     ]
   },
   "packageManager": "pnpm@8.14.0",
