@@ -13,9 +13,14 @@ import type { Measurement, TimeSeries, PredictorConfig } from '../types.js';
 
 // ─── Helper Factories ───────────────────────────────────────────────
 
-/** Create a measurement at a given hour offset from epoch */
+// Base epoch: Jan 1 2024 00:00 UTC in seconds
+const BASE_EPOCH_SEC = 1704067200;
+
+/** Create a measurement at a given hour offset from base epoch.
+ *  Timestamps are in Unix SECONDS so toUnixMs converts them properly.
+ */
 function m(hourOffset: number, value: number): Measurement {
-  return { timestamp: hourOffset * 3600 * 1000, value };
+  return { timestamp: BASE_EPOCH_SEC + hourOffset * 3600, value };
 }
 
 /** Create a measurement from a Unix second timestamp */
@@ -96,12 +101,15 @@ describe('getMeasurementsInWindow', () => {
     m(0, 10), m(1, 20), m(2, 30), m(3, 40), m(4, 50),
   ];
 
+  // After toUnixMs, measurements are at BASE_EPOCH_SEC * 1000 + h * 3600 * 1000
+  const baseMs = BASE_EPOCH_SEC * 1000;
+
   it('returns measurements within [start, end] inclusive', () => {
-    // Window from hour 1 to hour 3
+    // Window from hour 1 to hour 3 (in ms)
     const result = getMeasurementsInWindow(
       measurements,
-      1 * 3600 * 1000,
-      3 * 3600 * 1000
+      baseMs + 1 * 3600 * 1000,
+      baseMs + 3 * 3600 * 1000
     );
     expect(result).toHaveLength(3);
     expect(result.map(r => r.value)).toEqual([20, 30, 40]);
@@ -110,8 +118,8 @@ describe('getMeasurementsInWindow', () => {
   it('returns empty array when no measurements in window', () => {
     const result = getMeasurementsInWindow(
       measurements,
-      10 * 3600 * 1000,
-      20 * 3600 * 1000
+      baseMs + 10 * 3600 * 1000,
+      baseMs + 20 * 3600 * 1000
     );
     expect(result).toHaveLength(0);
   });
@@ -119,8 +127,8 @@ describe('getMeasurementsInWindow', () => {
   it('handles exact boundary matches', () => {
     const result = getMeasurementsInWindow(
       measurements,
-      0,
-      0 // Exactly at the first measurement
+      baseMs, // Exactly at the first measurement
+      baseMs
     );
     expect(result).toHaveLength(1);
     expect(result[0]!.value).toBe(10);
