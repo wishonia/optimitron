@@ -1,12 +1,15 @@
 /**
  * @optomitron/core
  * 
- * Optimal Policy & Budget Generator - Evidence-based governance calculations
+ * High-level API for Optimal Policy & Budget Generator
+ * 
+ * Built on @optomitron/causal for time series causal inference.
  * 
  * This library implements the algorithms from:
  * - Optimocracy: https://optimocracy.warondisease.org
  * - Optimal Policy Generator (OPG): https://opg.warondisease.org
  * - Optimal Budget Generator (OBG): https://obg.warondisease.org
+ * - dFDA: https://dfda-spec.warondisease.org
  * 
  * @example
  * ```typescript
@@ -23,7 +26,10 @@
  * ```
  */
 
-// Types
+// Re-export causal inference engine
+export * from '@optomitron/causal';
+
+// Domain-specific types
 export * from './types/index.js';
 
 // Optimal Policy Generator
