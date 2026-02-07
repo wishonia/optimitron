@@ -18,8 +18,8 @@
 - [x] Codex critical review — identified major methodology issues
 - **Lesson**: US-only (N=23) is statistically fragile. Need cross-country panel.
 
-## Phase 4: Cross-Country Panel Data 🔄 IN PROGRESS
-- [ ] OECD 23-country budget/outcome panel (2000-2022, ~500 obs) — subagent running
+## Phase 4: Cross-Country Panel Data ✅ COMPLETE
+- [x] OECD 23-country budget/outcome panel (2000-2022, 529 obs) — report in `reports/us-optimal-budget-v4.md`
 - [ ] Include BOTH per-capita PPP spending AND % GDP (per-capita is primary)
 - [ ] Swap US deflator from CPI to GDP deflator
 - [ ] Add World Bank PPP constant dollar series for all spending categories
