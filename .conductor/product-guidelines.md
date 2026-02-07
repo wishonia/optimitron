@@ -58,6 +58,21 @@ Always use the MOST DIRECT outcome for each spending category, not just generic 
 Generic outcomes (LE, GDP/capita) are SUPPLEMENTARY — they show the full chain but dilute the signal.
 Run analyses with BOTH direct and generic outcomes, lead with direct in reports.
 
+### Optimization Framing: Minimum Effective Spending
+The analysis shows that more government spending doesn't detectably improve outcomes in rich OECD countries.
+Therefore the optimization question is NOT "how much should you spend to maximize outcomes" but rather
+"what's the MINIMUM you can spend without outcomes getting worse?"
+
+This is the "minimum effective dose" approach:
+1. Find the spending FLOOR per category — below which outcomes detectably worsen
+2. Everything above that floor is waste or captured by intermediaries
+3. The optimal budget = floor level for each category
+4. Efficient frontier countries (high outcomes, low spending) are the benchmark
+5. "Overspend ratio" = current spending / floor level — the key metric
+
+Example: Japan spends $4,200/cap on health, lives 4 years longer than US at $10,000/cap.
+The floor is ~$3,500-4,000/cap. The US overspends by 2.5x for zero additional benefit.
+
 ### Confound Control (CRITICAL)
 Cross-country correlations are confounded by wealth. Rich countries spend more on EVERYTHING and have better outcomes. Every cross-country analysis MUST:
 

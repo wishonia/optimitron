@@ -34,6 +34,17 @@ Key finding: Health and Education spending → LE **flip negative** after contro
 
 Implication: Only Social Protection and R&D have robust cross-country evidence. Health/Education correlations were entirely wealth confounding.
 
+## Phase 4c: Minimum Effective Spending / Efficient Frontier 🔄 IN PROGRESS
+Key reframing: Since more spending doesn't detectably improve outcomes in rich OECD countries,
+the optimal level is the MINIMUM spending that doesn't produce worse outcomes ("minimum effective dose").
+
+- [ ] Decile analysis: for each category, find the floor spending level where outcomes stop improving
+- [ ] Efficient frontier countries: highest outcomes per dollar (e.g., Japan: $4.2K health, +4yr LE vs US)
+- [ ] Overspend ratios: US spending / floor level per category
+- [ ] "If US spent at efficient frontier levels, total budget = $X vs $Y" headline
+- [ ] Integrate into OBG library: `findMinimumEffectiveSpending()` function
+- [ ] Tests encoding expected findings (Japan/Korea efficient, US inefficient on health)
+
 ## Phase 5: Robust Panel Analysis (v5)
 - [ ] N-of-1 within each country, then aggregate across countries
 - [ ] Lead with change-from-baseline + z-score (NOT Pearson r)
