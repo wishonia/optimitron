@@ -203,6 +203,15 @@ importers:
 
   packages/web:
     dependencies:
+      '@optomitron/data':
+        specifier: workspace:^
+        version: link:../data
+      '@optomitron/obg':
+        specifier: workspace:^
+        version: link:../obg
+      '@optomitron/opg':
+        specifier: workspace:^
+        version: link:../opg
       '@radix-ui/react-accordion':
         specifier: ^1.2.12
         version: 1.2.12(@types/react-dom@18.3.7(@types/react@18.3.28))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

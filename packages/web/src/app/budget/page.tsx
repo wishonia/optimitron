@@ -146,8 +146,12 @@ export default function BudgetPage() {
             </thead>
             <tbody>
               {sorted.map((cat) => (
-                <tr key={cat.name} className="border-b border-black hover:bg-cyan-50 cursor-pointer">
-                  <td className="py-3 px-2 text-black font-bold underline">{cat.name}</td>
+                <tr key={cat.name} className="border-b border-black hover:bg-cyan-50">
+                  <td className="py-3 px-2 text-black font-bold">
+                    <Link href={`/budget/${slugify(cat.name)}`} className="underline hover:text-pink-500 transition-colors">
+                      {cat.name}
+                    </Link>
+                  </td>
                   <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.currentSpending)}</td>
                   <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.optimalSpending)}</td>
                   <td className={`py-3 px-2 text-right font-black ${cat.gap >= 0 ? "text-emerald-600" : "text-red-600"}`}>
