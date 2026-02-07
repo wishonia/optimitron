@@ -226,7 +226,7 @@ export default function PoliticiansPage() {
                     <Link
                       href={`/politicians/${pol.id}`}
                       className="text-white font-semibold hover:text-primary-400 transition-colors"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
                       {pol.name}
                     </Link>

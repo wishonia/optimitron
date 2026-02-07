@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import politiciansData from "@/data/politicians.json";
 
@@ -79,8 +79,8 @@ function scoreLabel(score: number): string {
 }
 
 export default function PoliticianDetailPage() {
-  const params = useParams();
-  const id = params.id as string;
+  const pathname = usePathname();
+  const id = pathname.split("/").pop() ?? "";
   const pol = politicians.find((p) => p.id === id);
 
   if (!pol) {
