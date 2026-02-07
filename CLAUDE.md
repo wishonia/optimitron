@@ -153,8 +153,17 @@ wishocracy ← (standalone pure math, NO db imports)
 Key rules:
 - **`causal` depends on NOTHING** — it's the foundation
 - **`wishocracy` has ZERO database imports** — pure functions only
-- **`db` is for the web app layer** — libraries never import it
+- **`db` exports pure TS interfaces** — libraries may import TYPE-ONLY exports (not Prisma client)
 - **No circular deps** — if you need something from both directions, it belongs in `causal`
+
+### Type Sharing Strategy
+The Prisma schema is the single source of truth. `@optomitron/db` exports:
+1. **Pure TS interfaces** — for ALL packages (`import type { ... } from '@optomitron/db'`)
+2. **Zod schemas** — for runtime validation (namespaced as `schemas`)
+3. **Prisma client** — for web/API layer ONLY (never in library packages)
+
+Libraries use `import type` (compile-time only, zero runtime cost, works in browser).
+See `AGENTS.md` for full architectural rules.
 
 ## Hard Rules
 
