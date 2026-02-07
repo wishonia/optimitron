@@ -25,3 +25,4 @@ export * from './us-foreign-aid.js';
 export * from './us-death-penalty.js';
 export * from './us-climate-spending.js';
 export * from './oecd-budget-panel.js';
+export * from './oecd-direct-outcomes.js';
