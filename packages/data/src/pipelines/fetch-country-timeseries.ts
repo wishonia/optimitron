@@ -17,6 +17,7 @@ import {
   fetchTaxRevenue, fetchGovExpenditure, fetchMilitaryExpenditure,
   fetchRDExpenditure, fetchEducationExpenditure, fetchGiniIndex,
   fetchInfantMortality, fetchHomicideRate, fetchGniPerCapita,
+  fetchGovDebt, fetchGovRevenue, fetchLaborForceParticipation,
 } from '../fetchers/world-bank.js';
 import { fetchWHOLifeExpectancy, fetchWHOHealthyLifeExpectancy, fetchWHOUHCIndex } from '../fetchers/who.js';
 import { fetchFREDSeries } from '../fetchers/fred.js';
@@ -299,6 +300,33 @@ export async function fetchAllCountryData(
     mergeIntoCountries(countries, dataPointsToTimeSeries(homData, 'homicide_rate', 'Homicide Rate (per 100K)'), 'homicide_rate');
     sources.push('World Bank WDI (VC.IHR.PSRC.P5)');
     console.log(`     ✅ ${homData.length} data points`);
+  } catch (e) { console.log(`     ⚠️ Failed: ${e}`); }
+
+  // 18. Government debt (% GDP) — accumulated deferred taxation
+  try {
+    console.log('  📊 World Bank: Government debt...');
+    const debtData = await fetchGovDebt(options);
+    mergeIntoCountries(countries, dataPointsToTimeSeries(debtData, 'gov_debt_pct_gdp', 'Government Debt (% GDP)'), 'gov_debt_pct_gdp');
+    sources.push('World Bank WDI (GC.DOD.TOTL.GD.ZS)');
+    console.log(`     ✅ ${debtData.length} data points`);
+  } catch (e) { console.log(`     ⚠️ Failed: ${e}`); }
+
+  // 19. Government revenue (% GDP) — explicit tax + fee burden
+  try {
+    console.log('  📊 World Bank: Government revenue...');
+    const revData = await fetchGovRevenue(options);
+    mergeIntoCountries(countries, dataPointsToTimeSeries(revData, 'gov_revenue_pct_gdp', 'Government Revenue (% GDP)'), 'gov_revenue_pct_gdp');
+    sources.push('World Bank WDI (GC.REV.XGRT.GD.ZS)');
+    console.log(`     ✅ ${revData.length} data points`);
+  } catch (e) { console.log(`     ⚠️ Failed: ${e}`); }
+
+  // 20. Labor force participation (% of 15+)
+  try {
+    console.log('  📊 World Bank: Labor force participation...');
+    const lfpData = await fetchLaborForceParticipation(options);
+    mergeIntoCountries(countries, dataPointsToTimeSeries(lfpData, 'labor_force_participation', 'Labor Force Participation (% of 15+)'), 'labor_force_participation');
+    sources.push('World Bank WDI (SL.TLF.CACT.ZS)');
+    console.log(`     ✅ ${lfpData.length} data points`);
   } catch (e) { console.log(`     ⚠️ Failed: ${e}`); }
 
   // Count unique variables

@@ -321,3 +321,19 @@ export async function fetchGniPerCapita(options: FetchOptions = {}): Promise<Dat
 export async function fetchPovertyRate(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchWorldBankIndicator(WB_INDICATOR_CODES.POVERTY_RATE, options);
 }
+
+/**
+ * Fetch government debt (% of GDP) — the deferred tax bill.
+ * Total government spending = explicit taxes + deficit (borrowing) + inflation.
+ * Debt/GDP measures accumulated deferred taxation.
+ */
+export async function fetchGovDebt(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.GOV_DEBT_PCT_GDP, options);
+}
+
+/**
+ * Fetch labor force participation rate (% of 15+ population).
+ */
+export async function fetchLaborForceParticipation(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.LABOR_FORCE_PARTICIPATION, options);
+}
