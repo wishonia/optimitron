@@ -79,6 +79,36 @@ function toTS(data: Array<{year: number; value: number}>, id: string, name: stri
 // Convert, filter nulls, run analysis with onset 1yr / duration 3yr
 ```
 
+## Critical Review Gate (Codex with High Thinking)
+
+Before committing **analysis code or methodology changes**, run Codex as a reviewer:
+
+```bash
+cd /mnt/e/code/optomitron
+codex exec "You are a critical reviewer. Examine this code/output for:
+1. Methodological flaws (confounders, selection bias, ecological fallacy)
+2. Statistical errors (wrong test, violated assumptions, multiple comparisons)
+3. Data quality issues (missing years, interpolation artifacts, unit mismatches)
+4. Conclusions that overreach the evidence
+5. Code bugs or logic errors
+
+Be harsh. Flag anything suspicious. Suggest fixes.
+
+Files to review:
+$(cat <file-to-review>)" --full-auto
+```
+
+### When to review:
+- ✅ **Always**: Analysis scripts, optimizer changes, report generation, methodology code
+- ✅ **Always**: New dataset files (verify source accuracy, check for obvious data errors)
+- ⏭️ **Skip**: Boilerplate, docs, config, CI, simple refactors
+
+### Review workflow:
+1. Subagent/Gemini produces output
+2. **Before committing**: Run Codex review on the output
+3. If issues found: fix or document as known limitations
+4. Commit with review notes in commit message if significant
+
 ## Monitoring
 - Gemini progress: `~/.gemini/tmp/*/chats/session-*.json`
 - Codex: background exec session — poll for output
