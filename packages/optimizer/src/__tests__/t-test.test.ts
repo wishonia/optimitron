@@ -53,10 +53,13 @@ describe('calculateTTestPValue', () => {
   });
 
   it('returns high p-value when there is no real difference', () => {
-    // Both groups have outcome ~5 with same noise
-    const pairs = generateSplitPairs(200, 0, 5, 10, 5, 2);
+    // Both groups have outcome ~5 with same noise.
+    // Use a fixed seed-like approach: large N + small noise → p should be high.
+    // With random data, ~5% of the time p < 0.05 by definition, so use a
+    // generous threshold and large sample to avoid flakiness.
+    const pairs = generateSplitPairs(500, 0, 5, 10, 5, 0.5);
     const p = calculateTTestPValue(pairs);
-    expect(p).toBeGreaterThan(0.05);
+    expect(p).toBeGreaterThan(0.01);
   });
 
   it('returns 1 for fewer than 4 pairs', () => {
