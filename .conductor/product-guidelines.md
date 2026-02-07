@@ -20,3 +20,30 @@
 - Position the US federal pilot as a reproducible public-good analysis.
 - Make it easy for any jurisdiction to rerun with their own data.
 - Be explicit about what is simulated vs. sourced from real datasets.
+
+## Analysis Methodology (Updated 2026-02-07)
+
+### Metrics Hierarchy
+1. **Change from baseline** (primary) — "Above-average spending → X% better outcome"
+2. **z-score** (for ranking) — normalizes across different outcome scales
+3. **Cohen's d** (effect size) — small/medium/large standardized magnitude
+4. **Pearson r** (supplementary) — traditional correlation, NOT the headline
+5. **Predictive Pearson** (causal direction) — forward r minus reverse r
+6. **Causal Direction Score** — composite of evidence for A→B vs B→A
+
+### Reporting Rules
+- Lead with intuitive, human-readable findings (change from baseline)
+- Always include sample size and confidence level
+- Apply Bonferroni correction when running multiple tests
+- Flag reverse causation explicitly (spending responding to crises)
+- Include COVID sensitivity check for any analysis touching 2020-2021
+- Be honest about limitations — better to be credibly modest than impressively wrong
+
+### Data Rules
+- **Deflator**: GDP deflator for US govt spending, World Bank PPP for cross-country
+- **NOT CPI** for government spending (CPI reflects consumer basket, not govt mix)
+- **NOT % of GDP** as primary metric (GDP growth ≠ need for proportional spending)
+- **Real per-capita PPP** is the standard for cross-country comparisons
+- **YoY % change** for causal detection (strips monotonic trends)
+- **Absolute real per-capita** for determining optimal spending LEVELS
+- Always cite data sources in JSDoc and report footnotes
