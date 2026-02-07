@@ -11,6 +11,9 @@ export type * from '@prisma/client';
 export * as schemas from './zod/index.js';
 
 
+// Shared database-adjacent types (re-exports from Prisma + custom interfaces)
+export * from './types.js';
+
 // FillingType case conversion utilities
 export {
   fillingTypeToPrisma,
