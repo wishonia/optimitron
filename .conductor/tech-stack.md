@@ -1,32 +1,58 @@
 # Tech Stack
 
 ## Languages and Runtime
-- TypeScript (strict)
+- TypeScript (strict mode)
 - Node.js >= 18
-- ESM modules across packages
+- ESM modules across all packages
 
 ## Monorepo Tooling
 - pnpm workspaces
-- Vitest for tests
-- eslint (typescript-eslint) for linting
+- Vitest for all tests
+- eslint (typescript-eslint, `recommendedTypeChecked`)
+- Pre-commit hooks: secret detection + typecheck + lint + tests
 
-## Core Libraries
-- @optomitron/optimizer (causal inference)
-- @optomitron/wishocracy (preference aggregation)
-- @optomitron/opg (policy generator)
-- @optomitron/obg (budget generator)
-- @optomitron/data (data sources + importers)
+## Core Libraries (ZERO database imports, pure functions only)
+- `@optomitron/optimizer` — Causal inference engine (domain-agnostic, no policy/health words)
+- `@optomitron/wishocracy` — RAPPA preference aggregation
+- `@optomitron/opg` — Optimal Policy Generator (depends on optimizer)
+- `@optomitron/obg` — Optimal Budget Generator (depends on optimizer)
+- `@optomitron/data` — Data fetchers + importers + static datasets (depends on optimizer for TimeSeries type)
 
-## Data and Validation
-- Zod schemas in core packages
-- Prisma + Postgres for persistence
+## Data Layer
+- Prisma schema → single source of truth for types
+- Zod validators auto-generated from Prisma (planned)
+- Two runtimes: Postgres server + PGlite (browser)
+- cr-sqlite for p2p device sync (Phase 2)
 
-## UI and Apps
+## Data Sources
+- **APIs**: OECD, World Bank, WHO GHO, FRED, Congress.gov
+- **Health Importers**: Apple Health, Fitbit, Oura, MFP, Withings, Google Fit, Cronometer, Strava, CSV
+- **Static Datasets**: `packages/data/src/datasets/us-*.ts` (drug war, Laffer, min wage, healthcare, etc.)
+- **economic-data submodule**: 65 CSVs of international comparison data
+
+## Web
 - Next.js 14 + React 18 (packages/web)
-- Tailwind CSS + framer-motion
-- Chrome extension built with esbuild
+- Tailwind CSS + shadcn/ui + framer-motion
+- GitHub Pages auto-deploy on push to main
+- Static data files: `packages/web/src/data/*.json`
+
+## Extension
+- Chrome Manifest V3
+- esbuild bundler
+- chrome.storage.local for Phase 1, PGlite for Phase 2
+
+## Key Conventions
+- **predictor/outcome** terminology (not cause/effect)
+- **GlobalVariable** not "variables", **UserVariableRelationship** not "correlations"
+- **FK names match target model**: `globalVariableId`, `predictorGlobalVariableId`
+- **deletedAt on all models** (soft deletes)
+- **No domain words in optimizer**: no "drugs", "policies", "budgets", "politicians"
+- **Change from baseline + z-score** as primary metrics (Pearson is supplementary)
+- **YoY percent change** for causal direction detection (strips monotonic trends)
+- **N-of-1 longitudinal** over cross-sectional analysis
 
 ## Build
-- tsc for library builds
-- tsup for chat-ui
-- esbuild for the extension
+- `tsc` for library builds
+- `tsup` for chat-ui
+- `esbuild` for extension
+- `next build && next export` for web (static export)

@@ -1,31 +1,60 @@
 # Optomitron Product Context
 
 ## Summary
-Optomitron is a domain-agnostic optimization engine for time series data. It uses causal inference and preference aggregation to recommend optimal actions across individuals, businesses, and governments.
+Optomitron is a domain-agnostic causal inference and optimization engine. It analyzes time-series data to determine what causes what, then recommends optimal values — for government budgets, health interventions, business metrics, or anything measurable.
+
+## Vision
+"What if every dollar spent — by a government, a hospital, or a person — was backed by causal evidence of its actual impact?"
 
 ## Primary Users
-- Individuals who want evidence-based personal health, habit, and lifestyle optimization.
-- Jurisdictions (city, county, state, federal) seeking data-driven budgeting and policy ranking.
-- Researchers, watchdogs, and civic orgs that need transparent, reproducible analysis.
-- Businesses that want causal impact and optimal value recommendations from time series data.
+- **Citizens** — see how their government's budget compares to the evidence-optimal budget
+- **Researchers / Think Tanks** — reproducible causal analysis on public data ($99-999/mo API)
+- **Jurisdictions** — data-driven budgeting and policy ranking for any level of government
+- **Health Trackers** — personal N-of-1 causal inference on lifestyle data (Phase 2)
+- **Businesses** — causal impact analysis on revenue/growth time series
 
-## Problem
-Decisions are routinely made with correlation or politics rather than causal evidence. Budgets, policies, and personal health choices lack reproducible, transparent analysis of what causes what.
+## Architecture (5 Layers)
+1. **Local** — Data collection + on-device causal inference (PGlite, Chrome extension)
+2. **Identity** — Privacy-preserving identity (DID, future ZK proofs)
+3. **On-Chain** — Anonymous submission of aggregate insights
+4. **Aggregation** — Global causal inference + preference aggregation (Wishocracy/RAPPA)
+5. **Incentives** — Alignment bonds, political accountability (Phase 4)
 
-## Product Goals
-- Provide a universal causal inference engine that is agnostic to domain.
-- Translate causal results into optimal values, policy ranks, and budget allocations.
-- Preserve privacy by keeping personal data local whenever possible.
-- Support multi-tenant, jurisdiction-specific deployments with shared methodology.
-- Ship a reproducible pilot report for the US federal budget as the initial target.
+## Core Packages
+| Package | Purpose | Tests |
+|---------|---------|-------|
+| `@optomitron/optimizer` | Domain-agnostic causal inference engine | 393 |
+| `@optomitron/wishocracy` | RAPPA preference aggregation | 202 |
+| `@optomitron/opg` | Optimal Policy Generator | 241 |
+| `@optomitron/obg` | Optimal Budget Generator | 247 |
+| `@optomitron/data` | Data fetchers, importers, datasets | 589+ |
+| `@optomitron/db` | Prisma schema + Zod validators | 60 |
+| `@optomitron/chat-ui` | Conversational health tracking | 87 |
+| `@optomitron/web` | Next.js website | — |
+| `@optomitron/extension` | Chrome extension (Digital Twin Safe) | — |
+| `@optomitron/examples` | Runnable demos | 78 |
 
-## Non-Goals (For Now)
-- Full replacement of democratic processes or legal authority.
-- Production-grade identity, ZK proofs, or on-chain systems in v1.
-- Medical or legal advice. Outputs are informational and decision-support only.
+## Current State (Feb 2026)
+- **~1,900+ tests** passing across all packages
+- **Website LIVE**: https://mikepsinn.github.io/optomitron/
+- **Real analyses running**: US budget optimization (231 countries), Drug War, Laffer Curve, Healthcare, Minimum Wage
+- **Key finding**: US R&D should be $603B (currently $75B); Education $307B (currently $102B)
+- **Key analyses**: Drug control spending has zero effect on overdose deaths (r=0.026); US healthcare spending negatively correlates with life expectancy in YoY changes
+
+## Revenue Strategy
+1. **Free**: Citizen preference collection, public misconception analyses
+2. **Paid API** ($99-999/mo): Researcher/think tank access to causal inference engine
+3. **Premium**: SuperPAC/campaign alignment data, jurisdiction deployment
+4. **Grants**: Gitcoin, Optimism RetroPGF, VitaDAO, NSF SBIR, Knight Foundation
+
+## Non-Goals (v1)
+- Full replacement of democratic processes
+- Production ZK proofs or on-chain identity
+- Medical or legal advice — outputs are informational only
+- Govtech procurement sales — we're a public good, not a vendor
 
 ## Success Metrics
-- A reproducible, data-sourced pilot report that passes independent review.
-- One funding commitment for a pilot deployment.
-- Demonstrated ability to swap data sources without reworking the core engine.
-- Clear, measurable improvements in transparency and decision quality in the pilot scope.
+- Reproducible pilot report that passes independent review
+- First funding commitment (grant or pilot deployment)
+- 15 misconception analyses with compelling, shareable findings
+- Universal optimal budget report: "How the US Should Spend $6.7T"
