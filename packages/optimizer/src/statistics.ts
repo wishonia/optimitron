@@ -9,7 +9,7 @@
  * @see https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/CorrelationForwardPearsonCorrelationCoefficientProperty.php
  */
 
-import type { AlignedPair, CorrelationResult, EffectSize, UserCorrelationSummary, AggregateCorrelation } from './types.js';
+import type { AlignedPair, CorrelationResult, EffectSize, UserCorrelationSummary, AggregateCorrelation, DiminishingReturnsResult } from './types.js';
 
 /**
  * Calculate mean of an array
@@ -507,5 +507,105 @@ export function aggregateCorrelations(userCorrelations: UserCorrelationSummary[]
       return Math.abs(u.forwardPearson) * u.statisticalSignificance;
     })),
     totalPairs,
+  };
+}
+
+/**
+ * Calculate partial correlation of x and y controlling for z.
+ *
+ * Formula: r_xy.z = (r_xy - (r_xz * r_yz)) / sqrt((1 - r_xz^2) * (1 - r_yz^2))
+ *
+ * @param x - Primary variable 1 (e.g. predictor)
+ * @param y - Primary variable 2 (e.g. outcome)
+ * @param z - Control variable (confounder)
+ */
+export function partialCorrelation(x: number[], y: number[], z: number[]): number {
+  if (x.length !== y.length || x.length !== z.length || x.length < 3) return NaN;
+
+  const rxy = pearsonCorrelation(x, y);
+  const rxz = pearsonCorrelation(x, z);
+  const ryz = pearsonCorrelation(y, z);
+
+  // If any pairwise correlation is NaN (e.g. zero variance), return NaN
+  if (isNaN(rxy) || isNaN(rxz) || isNaN(ryz)) return NaN;
+
+  // If control variable explains 100% of variance in x or y, partial correlation is undefined
+  // (denominator becomes 0 or imaginary)
+  if (Math.abs(rxz) >= 0.9999999 || Math.abs(ryz) >= 0.9999999) return NaN;
+
+  const numerator = rxy - (rxz * ryz);
+  const denominator = Math.sqrt((1 - rxz * rxz) * (1 - ryz * ryz));
+
+  if (denominator === 0) return NaN;
+
+  return numerator / denominator;
+}
+
+/**
+ * Detect diminishing returns in the relationship between x and y.
+ *
+ * Logic:
+ * 1. Sort data by x (predictor).
+ * 2. Split into two halves (lower x range and higher x range).
+ * 3. Calculate linear regression slope for each half.
+ * 4. If slope of second half is significantly lower than first half (ratio < 0.5), return true.
+ *
+ * @param x - Predictor variable values
+ * @param y - Outcome variable values
+ * @returns Object containing detection status and slope details
+ */
+export function diminishingReturnsDetection(x: number[], y: number[]): DiminishingReturnsResult {
+  if (x.length !== y.length || x.length < 6) { // Need enough points for 2 slopes
+    return { detected: false, firstHalfSlope: NaN, secondHalfSlope: NaN, slopeRatio: NaN };
+  }
+
+  // Create pairs and sort by x to handle non-monotonic input
+  const pairs = x.map((xi, i) => ({ x: xi, y: y[i]! }));
+  pairs.sort((a, b) => a.x - b.x);
+
+  const mid = Math.floor(pairs.length / 2);
+  // Ensure enough points in each half (at least 3 to get a variance)
+  if (mid < 3) {
+    return { detected: false, firstHalfSlope: NaN, secondHalfSlope: NaN, slopeRatio: NaN };
+  }
+  
+  const firstHalf = pairs.slice(0, mid);
+  const secondHalf = pairs.slice(mid);
+
+  // Helper to calculate slope: m = r * (sy / sx)
+  const getSlope = (p: { x: number, y: number }[]): number => {
+    const px = p.map(v => v.x);
+    const py = p.map(v => v.y);
+    const sx = std(px, 1);
+    if (sx === 0) return 0; // No variance in x -> undefined slope (vertical), treat as 0 for this purpose
+    const sy = std(py, 1);
+    const r = pearsonCorrelation(px, py);
+    return r * (sy / sx);
+  };
+
+  const m1 = getSlope(firstHalf);
+  const m2 = getSlope(secondHalf);
+
+  if (isNaN(m1) || isNaN(m2)) {
+    return { detected: false, firstHalfSlope: m1, secondHalfSlope: m2, slopeRatio: NaN };
+  }
+
+  // Avoid division by zero if m1 is 0
+  if (Math.abs(m1) < 1e-9) {
+    return { detected: false, firstHalfSlope: m1, secondHalfSlope: m2, slopeRatio: m2 > m1 ? Infinity : -Infinity };
+  }
+
+  const ratio = m2 / m1;
+
+  // Detect if:
+  // 1. First half has positive slope (we are looking for diminishing *returns*, i.e. improvement)
+  // 2. Second half slope is significantly less (less than 50% of first half)
+  const detected = m1 > 0 && ratio < 0.5;
+
+  return {
+    detected,
+    firstHalfSlope: m1,
+    secondHalfSlope: m2,
+    slopeRatio: ratio,
   };
 }

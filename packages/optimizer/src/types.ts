@@ -107,9 +107,27 @@ export const CorrelationResultSchema = z.object({
   standardError: z.number().optional(),
   /** 95% confidence interval */
   confidenceInterval: z.tuple([z.number(), z.number()]).optional(),
+  /** Partial correlation coefficient (controlling for a confounder) */
+  partialR: z.number().optional(),
 });
 
 export type CorrelationResult = z.infer<typeof CorrelationResultSchema>;
+
+/**
+ * Diminishing returns detection result
+ */
+export const DiminishingReturnsResultSchema = z.object({
+  /** Whether diminishing returns were detected */
+  detected: z.boolean(),
+  /** Slope of the first half of the data range */
+  firstHalfSlope: z.number(),
+  /** Slope of the second half of the data range */
+  secondHalfSlope: z.number(),
+  /** Ratio of second slope to first slope */
+  slopeRatio: z.number(),
+});
+
+export type DiminishingReturnsResult = z.infer<typeof DiminishingReturnsResultSchema>;
 
 /**
  * Effect size metrics

@@ -8,6 +8,8 @@ import {
   tToPValue,
   calculateCorrelation,
   calculateEffectSize,
+  partialCorrelation,
+  diminishingReturnsDetection,
 } from '../statistics.js';
 import type { AlignedPair } from '../types.js';
 
@@ -536,5 +538,137 @@ describe('statistics edge cases', () => {
     expect(result.baselineN).toBe(0);
     // baselineMean will be NaN
     expect(result.baselineMean).toBeNaN();
+  });
+});
+
+// ─── partialCorrelation ──────────────────────────────────────────────
+
+describe('partialCorrelation', () => {
+  it('removes spurious correlation driven by a confounder', () => {
+    // Z causes X and Y. X and Y should be uncorrelated controlling for Z.
+    // Z = uniform(0, 10)
+    // X = 2*Z + noise
+    // Y = 3*Z + noise
+    const z: number[] = [];
+    const x: number[] = [];
+    const y: number[] = [];
+    
+    for(let i=0; i<50; i++) {
+      const zi = Math.random() * 10;
+      z.push(zi);
+      x.push(2 * zi + (Math.random() - 0.5)); // High correlation with Z
+      y.push(3 * zi + (Math.random() - 0.5)); // High correlation with Z
+    }
+    
+    // Raw correlation between X and Y should be high
+    const r_xy = pearsonCorrelation(x, y);
+    expect(r_xy).toBeGreaterThan(0.9);
+    
+    // Partial correlation controlling for Z should be near 0
+    const r_xy_z = partialCorrelation(x, y, z);
+    expect(Math.abs(r_xy_z)).toBeLessThan(0.3);
+  });
+
+  it('preserves correlation when Z is unrelated', () => {
+    // X causes Y. Z is noise.
+    const z: number[] = [];
+    const x: number[] = [];
+    const y: number[] = [];
+    
+    for(let i=0; i<50; i++) {
+      const xi = Math.random() * 10;
+      x.push(xi);
+      y.push(2 * xi + (Math.random() - 0.5));
+      z.push(Math.random()); // Unrelated
+    }
+    
+    const r_xy = pearsonCorrelation(x, y);
+    const r_xy_z = partialCorrelation(x, y, z);
+    
+    // Should be very similar
+    expect(Math.abs(r_xy - r_xy_z)).toBeLessThan(0.1);
+  });
+
+  it('returns NaN for insufficient data', () => {
+    expect(partialCorrelation([1, 2], [3, 4], [5, 6])).toBeNaN();
+  });
+
+  it('returns NaN if Z explains 100% of variance', () => {
+    // X = Z
+    const z = [1, 2, 3, 4, 5];
+    const x = [1, 2, 3, 4, 5];
+    const y = [5, 4, 3, 2, 1];
+    expect(partialCorrelation(x, y, z)).toBeNaN();
+  });
+});
+
+// ─── diminishingReturnsDetection ─────────────────────────────────────
+
+describe('diminishingReturnsDetection', () => {
+  it('detects diminishing returns in logarithmic data', () => {
+    // y = ln(x)
+    const x: number[] = [];
+    const y: number[] = [];
+    for(let i=1; i<=20; i++) {
+      x.push(i);
+      y.push(Math.log(i));
+    }
+    
+    const result = diminishingReturnsDetection(x, y);
+    
+    expect(result.detected).toBe(true);
+    expect(result.firstHalfSlope).toBeGreaterThan(result.secondHalfSlope);
+    expect(result.slopeRatio).toBeLessThan(0.6); // log flattens significantly
+  });
+
+  it('does not detect diminishing returns in linear data', () => {
+    // y = 2x
+    const x: number[] = [];
+    const y: number[] = [];
+    for(let i=0; i<20; i++) {
+      x.push(i);
+      y.push(2 * i + Math.random() * 0.1);
+    }
+    
+    const result = diminishingReturnsDetection(x, y);
+    
+    expect(result.detected).toBe(false);
+    expect(result.slopeRatio).toBeCloseTo(1.0, 0);
+  });
+
+  it('does not detect diminishing returns in exponential data (increasing returns)', () => {
+    // y = x^2
+    const x: number[] = [];
+    const y: number[] = [];
+    for(let i=0; i<20; i++) {
+      x.push(i);
+      y.push(i * i);
+    }
+    
+    const result = diminishingReturnsDetection(x, y);
+    
+    expect(result.detected).toBe(false);
+    expect(result.secondHalfSlope).toBeGreaterThan(result.firstHalfSlope);
+  });
+
+  it('handles small sample size gracefully', () => {
+    const x = [1, 2, 3];
+    const y = [1, 2, 3];
+    const result = diminishingReturnsDetection(x, y);
+    expect(result.detected).toBe(false);
+    expect(result.slopeRatio).toBeNaN();
+  });
+
+  it('handles negative slope (not "diminishing returns" in positive sense)', () => {
+    // y = -x
+    const x: number[] = [];
+    const y: number[] = [];
+    for(let i=0; i<20; i++) {
+      x.push(i);
+      y.push(-i);
+    }
+    
+    const result = diminishingReturnsDetection(x, y);
+    expect(result.detected).toBe(false); // slope1 is negative
   });
 });
