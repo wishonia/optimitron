@@ -2,6 +2,15 @@
 
 **Read this FIRST before making any changes.**
 
+## Documentation
+
+Detailed docs live in `docs/`. Read the relevant ones before working:
+- `docs/TYPE_SYSTEM.md` — How types flow from Prisma → all packages
+- `docs/CONVENTIONS.md` — Naming, commits, domain agnosticism, testing
+- `.conductor/product.md` — Product context and user personas
+- `.conductor/tech-stack.md` — Language, frameworks, tooling
+- `.conductor/workflow.md` — Development workflow
+
 ## Critical Architecture Rules
 
 ### 1. Type System — Single Source of Truth
