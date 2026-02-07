@@ -1,0 +1,603 @@
+{
+  "generatedAt": "2026-02-07T08:03:03.166Z",
+  "period": "2000-2022",
+  "usAveragePeriod": "2018-2022",
+  "oecdMedianPeriod": "2018-2022",
+  "categories": [
+    {
+      "category": "health",
+      "label": "Health",
+      "outcome": {
+        "lifeExpectancyYears": {
+          "n": 529,
+          "simpleR": 0.16834230079256382,
+          "partialR": -0.10228756603457548,
+          "rXZ": 0.7927675789710685,
+          "rYZ": 0.28766773372622223,
+          "logModel": {
+            "n": 529,
+            "a": 67.09304497819582,
+            "b": 1.6526536186671557,
+            "r2": 0.10800749356847983
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 2083.230188679246,
+              "avgOutcome": 79.03679245283021
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 2881.955283018868,
+              "avgOutcome": 80.77169811320756
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 3464.2930188679247,
+              "avgOutcome": 80.45943396226416
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 4086.761132075471,
+              "avgOutcome": 81.32452830188677
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 5653.4073333333345,
+              "avgOutcome": 81.06857142857143
+            }
+          ]
+        },
+        "infantMortalityPer1000": {
+          "n": 529,
+          "simpleR": 0.10007382990490372,
+          "partialR": 0.2674234619747953,
+          "rXZ": 0.7927675789710685,
+          "rYZ": -0.07873825518109533,
+          "logModel": {
+            "n": 529,
+            "a": 4.25447179206815,
+            "b": -0.09095005230617524,
+            "r2": 0.0010734401661887105
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 2083.230188679246,
+              "avgOutcome": 3.8358490566037733
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 2881.955283018868,
+              "avgOutcome": 3.5047169811320753
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 3464.2930188679247,
+              "avgOutcome": 3.496226415094339
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 4086.761132075471,
+              "avgOutcome": 3.1320754716981125
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 5653.4073333333345,
+              "avgOutcome": 3.606666666666666
+            }
+          ]
+        }
+      },
+      "usAverages2018_2022": {
+        "spendingPerCapitaPpp": 9922.912,
+        "lifeExpectancyYears": 77.66,
+        "infantMortalityPer1000": 5.2
+      },
+      "oecdMedian2018_2022": {
+        "spendingPerCapitaPpp": 4311.6
+      },
+      "marginalReturn": {
+        "lifeExpectancyYears": {
+          "atUs": 0.00016654925677736087,
+          "atOecdMedian": 0.00038330402139974846
+        },
+        "infantMortalityPer1000": {
+          "atUs": -0.0000091656614818488,
+          "atOecdMedian": -0.000021094269483758982
+        }
+      },
+      "verdict": "negative",
+      "signFlip": {
+        "lifeExpectancyYears": true,
+        "infantMortalityPer1000": false
+      }
+    },
+    {
+      "category": "education",
+      "label": "Education",
+      "outcome": {
+        "lifeExpectancyYears": {
+          "n": 529,
+          "simpleR": 0.15277656444215354,
+          "partialR": -0.0753865317829015,
+          "rXZ": 0.7082675002323241,
+          "rYZ": 0.28766773372622223,
+          "logModel": {
+            "n": 529,
+            "a": 72.63663822846532,
+            "b": 1.0430863149370466,
+            "r2": 0.03261915413197369
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 1231.0280188679246,
+              "avgOutcome": 80.22169811320755
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 1658.7151886792453,
+              "avgOutcome": 80.11603773584906
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 1979.2365094339625,
+              "avgOutcome": 80.7188679245283
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 2292.641886792454,
+              "avgOutcome": 80.84999999999998
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 3016.527047619047,
+              "avgOutcome": 80.75142857142856
+            }
+          ]
+        },
+        "infantMortalityPer1000": {
+          "n": 529,
+          "simpleR": -0.08268715923502168,
+          "partialR": -0.038251252963265564,
+          "rXZ": 0.7082675002323241,
+          "rYZ": -0.07873825518109533,
+          "logModel": {
+            "n": 529,
+            "a": 4.450938490499614,
+            "b": -0.12367181292057133,
+            "r2": 0.0015047189120254156
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 1231.0280188679246,
+              "avgOutcome": 3.1528301886792445
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 1658.7151886792453,
+              "avgOutcome": 3.917924528301886
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 1979.2365094339625,
+              "avgOutcome": 3.7509433962264147
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 2292.641886792454,
+              "avgOutcome": 3.4292452830188664
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 3016.527047619047,
+              "avgOutcome": 3.321904761904762
+            }
+          ]
+        }
+      },
+      "usAverages2018_2022": {
+        "spendingPerCapitaPpp": 2856.62,
+        "lifeExpectancyYears": 77.66,
+        "infantMortalityPer1000": 5.2
+      },
+      "oecdMedian2018_2022": {
+        "spendingPerCapitaPpp": 2244.55
+      },
+      "marginalReturn": {
+        "lifeExpectancyYears": {
+          "atUs": 0.000365147032134847,
+          "atOecdMedian": 0.0004647195718237716
+        },
+        "infantMortalityPer1000": {
+          "atUs": -0.000043293057151658725,
+          "atOecdMedian": -0.00005509871151035678
+        }
+      },
+      "verdict": "bogus",
+      "signFlip": {
+        "lifeExpectancyYears": true,
+        "infantMortalityPer1000": false
+      }
+    },
+    {
+      "category": "military",
+      "label": "Military",
+      "outcome": {
+        "lifeExpectancyYears": {
+          "n": 529,
+          "simpleR": -0.11403986847821278,
+          "partialR": -0.16414470208877194,
+          "rXZ": 0.1443344628366443,
+          "rYZ": 0.28766773372622223,
+          "logModel": {
+            "n": 529,
+            "a": 82.23613000838131,
+            "b": -0.27115402910062053,
+            "r2": 0.006190684728666795
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 295.76188679245286,
+              "avgOutcome": 80.51981132075474
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 388.9888679245284,
+              "avgOutcome": 80.5990566037736
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 501.63735849056644,
+              "avgOutcome": 80.50754716981133
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 661.788679245283,
+              "avgOutcome": 80.64716981132078
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 1320.5019047619046,
+              "avgOutcome": 80.3809523809524
+            }
+          ]
+        },
+        "infantMortalityPer1000": {
+          "n": 529,
+          "simpleR": 0.30307091751483106,
+          "partialR": 0.3187524921541077,
+          "rXZ": 0.1443344628366443,
+          "rYZ": -0.07873825518109533,
+          "logModel": {
+            "n": 529,
+            "a": 0.5801194882219591,
+            "b": 0.4667537648718725,
+            "r2": 0.060195489162454985
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 295.76188679245286,
+              "avgOutcome": 3.525471698113207
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 388.9888679245284,
+              "avgOutcome": 3.3075471698113197
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 501.63735849056644,
+              "avgOutcome": 3.253773584905662
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 661.788679245283,
+              "avgOutcome": 3.587735849056603
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 1320.5019047619046,
+              "avgOutcome": 3.903809523809523
+            }
+          ]
+        }
+      },
+      "usAverages2018_2022": {
+        "spendingPerCapitaPpp": 1969.2699999999998,
+        "lifeExpectancyYears": 77.66,
+        "infantMortalityPer1000": 5.2
+      },
+      "oecdMedian2018_2022": {
+        "spendingPerCapitaPpp": 553.8
+      },
+      "marginalReturn": {
+        "lifeExpectancyYears": {
+          "atUs": -0.00013769266230665198,
+          "atOecdMedian": -0.000489624465692706
+        },
+        "infantMortalityPer1000": {
+          "atUs": 0.00023701867436759435,
+          "atOecdMedian": 0.000842820088248235
+        }
+      },
+      "verdict": "negative",
+      "signFlip": {
+        "lifeExpectancyYears": false,
+        "infantMortalityPer1000": false
+      }
+    },
+    {
+      "category": "social",
+      "label": "Social Protection",
+      "outcome": {
+        "lifeExpectancyYears": {
+          "n": 529,
+          "simpleR": 0.3014360999621315,
+          "partialR": 0.17527506027526993,
+          "rXZ": 0.5673143682365684,
+          "rYZ": 0.28766773372622223,
+          "logModel": {
+            "n": 529,
+            "a": 66.27832183450788,
+            "b": 1.588660400330513,
+            "r2": 0.10460254239333133
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 4812.387264150943,
+              "avgOutcome": 79.33962264150944
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 6853.4319811320765,
+              "avgOutcome": 80.71792452830188
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 8508.370849056604,
+              "avgOutcome": 80.81981132075471
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 9956.664528301888,
+              "avgOutcome": 80.5009433962264
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 11598.564380952379,
+              "avgOutcome": 81.28476190476194
+            }
+          ]
+        },
+        "infantMortalityPer1000": {
+          "n": 529,
+          "simpleR": -0.3615164196573964,
+          "partialR": -0.3859542703712634,
+          "rXZ": 0.5673143682365684,
+          "rYZ": -0.07873825518109533,
+          "logModel": {
+            "n": 529,
+            "a": 11.575645962818058,
+            "b": -0.8984671135066739,
+            "r2": 0.1097908622106828
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 4812.387264150943,
+              "avgOutcome": 3.937735849056604
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 6853.4319811320765,
+              "avgOutcome": 3.8358490566037755
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 8508.370849056604,
+              "avgOutcome": 3.5433962264150956
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 9956.664528301888,
+              "avgOutcome": 3.421698113207545
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 11598.564380952379,
+              "avgOutcome": 2.8295238095238093
+            }
+          ]
+        }
+      },
+      "usAverages2018_2022": {
+        "spendingPerCapitaPpp": 11867.8,
+        "lifeExpectancyYears": 77.66,
+        "infantMortalityPer1000": 5.2
+      },
+      "oecdMedian2018_2022": {
+        "spendingPerCapitaPpp": 9899.58
+      },
+      "marginalReturn": {
+        "lifeExpectancyYears": {
+          "atUs": 0.00013386309175504414,
+          "atOecdMedian": 0.00016047755564685702
+        },
+        "infantMortalityPer1000": {
+          "atUs": -0.00007570629042507237,
+          "atOecdMedian": -0.00009075810423337898
+        }
+      },
+      "verdict": "survives",
+      "signFlip": {
+        "lifeExpectancyYears": false,
+        "infantMortalityPer1000": false
+      }
+    },
+    {
+      "category": "rd",
+      "label": "R&D",
+      "outcome": {
+        "lifeExpectancyYears": {
+          "n": 529,
+          "simpleR": 0.3033992954777384,
+          "partialR": 0.18931184743923996,
+          "rXZ": 0.5140693258776663,
+          "rYZ": 0.28766773372622223,
+          "logModel": {
+            "n": 529,
+            "a": 72.88950358966297,
+            "b": 1.1453211314267449,
+            "r2": 0.10279717212808548
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 365.8459905660378,
+              "avgOutcome": 80.06981132075471
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 636.1637169811319,
+              "avgOutcome": 79.78490566037733
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 830.7189245283021,
+              "avgOutcome": 80.711320754717
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 1141.8807641509436,
+              "avgOutcome": 80.86132075471698
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 1474.082742857143,
+              "avgOutcome": 81.23523809523813
+            }
+          ]
+        },
+        "infantMortalityPer1000": {
+          "n": 529,
+          "simpleR": -0.24050962158197842,
+          "partialR": -0.23393295128632408,
+          "rXZ": 0.5140693258776663,
+          "rYZ": -0.07873825518109533,
+          "logModel": {
+            "n": 529,
+            "a": 6.737069713901118,
+            "b": -0.48292741446907617,
+            "r2": 0.05997524978502078
+          },
+          "quintiles": [
+            {
+              "quintile": 1,
+              "count": 106,
+              "avgSpending": 365.8459905660378,
+              "avgOutcome": 3.659433962264149
+            },
+            {
+              "quintile": 2,
+              "count": 106,
+              "avgSpending": 636.1637169811319,
+              "avgOutcome": 3.987735849056605
+            },
+            {
+              "quintile": 3,
+              "count": 106,
+              "avgSpending": 830.7189245283021,
+              "avgOutcome": 3.48490566037736
+            },
+            {
+              "quintile": 4,
+              "count": 106,
+              "avgSpending": 1141.8807641509436,
+              "avgOutcome": 3.1849056603773582
+            },
+            {
+              "quintile": 5,
+              "count": 105,
+              "avgSpending": 1474.082742857143,
+              "avgOutcome": 3.2552380952380955
+            }
+          ]
+        }
+      },
+      "usAverages2018_2022": {
+        "spendingPerCapitaPpp": 1828.3744,
+        "lifeExpectancyYears": 77.66,
+        "infantMortalityPer1000": 5.2
+      },
+      "oecdMedian2018_2022": {
+        "spendingPerCapitaPpp": 1096.6799999999998
+      },
+      "marginalReturn": {
+        "lifeExpectancyYears": {
+          "atUs": 0.0006264149899641697,
+          "atOecdMedian": 0.0010443530760356212
+        },
+        "infantMortalityPer1000": {
+          "atUs": -0.00026412938972951937,
+          "atOecdMedian": -0.00044035399065276673
+        }
+      },
+      "verdict": "survives",
+      "signFlip": {
+        "lifeExpectancyYears": false,
+        "infantMortalityPer1000": false
+      }
+    }
+  ]
+}
