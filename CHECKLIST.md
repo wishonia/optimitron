@@ -7,15 +7,15 @@ Last updated: 2026-02-06.
 
 | Package | Tests | Status |
 |---------|-------|--------|
-| @optomitron/optimizer | 176 | ✅ |
-| @optomitron/wishocracy | 162 | ✅ |
-| @optomitron/opg | 213 | ✅ |
-| @optomitron/obg | 146 | ✅ |
-| @optomitron/data | 296 | ✅ |
-| @optomitron/db | 0 | ⚠️ Needs schema validation tests |
+| @optomitron/optimizer | 369 | ✅ |
+| @optomitron/wishocracy | 202 | ✅ |
+| @optomitron/opg | 241 | ✅ |
+| @optomitron/obg | 175 | ✅ |
+| @optomitron/data | 546 | ✅ |
+| @optomitron/db | 60 | ⚠️ Needs schema validation tests |
 | @optomitron/chat-ui | 87 | ✅ |
 | @optomitron/examples (integration) | 78 | ✅ |
-| **Total** | **1,158** | |
+| **Total** | **~1,737** | |
 
 ---
 
@@ -38,25 +38,25 @@ Last updated: 2026-02-06.
 - [x] ESM-compatible module (import.meta.url)
 
 ### ❌ Not Yet Implemented
-- [ ] **Reverse Pearson correlation** — swap predictor/outcome roles to verify causality direction (HIGH)
+- [x] **Reverse Pearson correlation** — swap predictor/outcome roles to verify causality direction (HIGH)
   - Legacy: `CorrelationReversePearsonCorrelationCoefficientProperty`
-- [ ] **Predictive Pearson** — `forwardPearson - reversePearson` as causality strength metric (HIGH)
+- [x] **Predictive Pearson** — `forwardPearson - reversePearson` as causality strength metric (HIGH)
   - Legacy: `CorrelationPredictivePearsonCorrelationCoefficientProperty`
-- [ ] **Aggregate correlation pipeline** — weight-average user-level relationships into global relationships (HIGH)
+- [x] **Aggregate correlation pipeline** — weight-average user-level relationships into global relationships (HIGH)
   - Legacy: `QMAggregateCorrelation::analyzeFully()`
 - [ ] **Vote-weighted significance** — Bayesian prior: `(upVotes + 4) / (upVotes + downVotes + 4)` (MEDIUM)
   - Legacy: `CorrelationStatisticalSignificanceProperty`
-- [ ] **Interesting factor / trivial filtering** — filter obvious correlations (same category, non-controllable) (MEDIUM)
+- [x] **Interesting factor / trivial filtering** — filter obvious correlations (same category, non-controllable) (MEDIUM)
   - Legacy: `isInteresting()` in `HasCorrelationCoefficient`
-- [ ] **T-test p-value** — separate p-value for high vs low predictor outcome groups (MEDIUM)
+- [x] **T-test p-value** — separate p-value for high vs low predictor outcome groups (MEDIUM)
   - Legacy: `QMUserCorrelation` t-test between outcome groups
 - [ ] **Correlation over delays/durations storage** — JSON map `{delay: correlation}` for visualization (LOW)
   - Legacy: `correlations_over_delays`, `correlations_over_durations`
 - [ ] **Strongest Pearson at optimal delay** — stored separately from forward correlation (LOW)
 - [ ] **Optimal Pearson Product** — `|r| × changeSpread` composite metric (LOW)
-- [ ] **Grouped cause value rounding** — round optimal values to practical amounts (LOW)
+- [x] **Grouped cause value rounding** — round optimal values to practical amounts (LOW)
 - [ ] **Skewness/kurtosis in scoring** — penalize non-normal distributions (LOW)
-- [ ] **Interpolation** — declared in types but not implemented in temporal alignment (MEDIUM)
+- [x] **Interpolation** — declared in types but not implemented in temporal alignment (MEDIUM)
 
 ### Test Gaps
 - [ ] Edge cases: zero-variance data, single data point, identical timestamps
@@ -83,9 +83,9 @@ Last updated: 2026-02-06.
 ### ❌ Not Yet Implemented
 - [ ] **Sybil resistance** — proof of personhood integration (Phase 3, Worldcoin/Holonym)
 - [ ] **Delegation/liquid democracy** — delegate your comparisons to a trusted proxy (LOW)
-- [ ] **Time-weighted preferences** — recent comparisons weighted more (MEDIUM)
+- [x] **Time-weighted preferences** — recent comparisons weighted more (MEDIUM)
 - [ ] **Category-level aggregation** — aggregate within categories before cross-category (LOW)
-- [ ] **Confidence-weighted aggregation** — weight by participant's consistency ratio (MEDIUM)
+- [x] **Confidence-weighted aggregation** — weight by participant's consistency ratio (MEDIUM)
 
 ### Test Gaps
 - [ ] Very large matrices (100+ items) performance
@@ -108,7 +108,7 @@ Last updated: 2026-02-06.
 - [ ] **Constraint satisfaction** — budget limits, legal constraints, political feasibility (MEDIUM)
 - [ ] **Sensitivity analysis** — how robust is the optimal policy to parameter changes (MEDIUM)
 - [ ] **Policy simulation** — Monte Carlo simulation of policy outcomes (LOW)
-- [ ] **Markdown report generation** — formatted policy recommendation reports (HIGH)
+- [x] **Markdown report generation** — formatted policy recommendation reports (HIGH)
 
 ### Test Gaps
 - [ ] Cross-jurisdiction policy comparison
@@ -126,10 +126,10 @@ Last updated: 2026-02-06.
 - [x] NaN guards for edge cases (zero spending, zero SE)
 
 ### ❌ Not Yet Implemented
-- [ ] **Optimal spending levels** — find spending level that maximizes marginal return (HIGH)
-- [ ] **Budget reallocation recommendations** — suggest transfers between categories (HIGH)
+- [x] **Optimal spending levels** — find spending level that maximizes marginal return (HIGH)
+- [x] **Budget reallocation recommendations** — suggest transfers between categories (HIGH)
 - [ ] **Multi-year budget projection** — project outcomes over time with spending scenarios (MEDIUM)
-- [ ] **Markdown report generation** — formatted budget recommendation reports (HIGH)
+- [x] **Markdown report generation** — formatted budget recommendation reports (HIGH)
 - [ ] **Equity weighting** — weight outcomes by population served (LOW)
 
 ### Test Gaps
@@ -161,13 +161,13 @@ Last updated: 2026-02-06.
 - [x] Economic data CSV loader (ESM-compatible)
 
 ### ❌ Not Yet Implemented
-- [ ] **Unit conversion system** — runtime conversion between measurement units (HIGH)
+- [x] **Unit conversion system** — runtime conversion between measurement units (HIGH)
   - Schema has `conversionSteps` field but no runtime logic
   - Legacy: `QMUnit::convertTo()` with 100+ unit definitions
-- [ ] **Daily value aggregation** — aggregate raw measurements into daily values with filling (HIGH)
+- [x] **Daily value aggregation** — aggregate raw measurements into daily values with filling (HIGH)
   - SUM for treatments, MEAN for vitals, filling for missing days
   - Legacy: `getDailyMeasurementsWithTagsAndFillingInTimeRange()`
-- [ ] **Measurement validation** — validate values against variable min/max and unit constraints (HIGH)
+- [x] **Measurement validation** — validate values against variable min/max and unit constraints (HIGH)
   - Legacy: `validateValueForCommonVariableAndUnit()`
 - [ ] **Variable tagging / common tags** — hierarchical variable relationships (MEDIUM)
   - "Advil 200mg" → "Ibuprofen" → "NSAIDs"
@@ -176,7 +176,7 @@ Last updated: 2026-02-06.
   - Legacy: `QMUserVariable::calculateAttributes()`
 - [ ] **Global variable statistics** — aggregate stats across all users (MEDIUM)
   - Legacy: `QMCommonVariable`
-- [ ] **Importer normalization** — wire `resolveVariableName` into all importers (HIGH)
+- [x] **Importer normalization** — wire `resolveVariableName` into all importers (HIGH)
   - Standard names exist but importers don't call the resolver
 - [ ] **Weather data fetcher** — environmental correlates (MEDIUM)
 - [ ] **Air quality data fetcher** — PM2.5, AQI, pollen (MEDIUM)
@@ -205,8 +205,8 @@ Last updated: 2026-02-06.
 - [x] Seed script (31 units, 15 categories, 50 variables, 51 jurisdictions, 20 budget items)
 
 ### ❌ Not Yet Implemented
-- [ ] **Zod validators** — auto-generate from Prisma via `zod-prisma-types` (HIGH)
-- [ ] **Variable category seed data** — sensible defaults per category (onset delay, duration, filling, combination op) (HIGH)
+- [x] **Zod validators** — auto-generate from Prisma via `zod-prisma-types` (HIGH)
+- [x] **Variable category seed data** — sensible defaults per category (onset delay, duration, filling, combination op) (HIGH)
   - Legacy has ~30 hardcoded category classes with defaults
 - [ ] **Schema validation tests** — test that seed data matches schema constraints (MEDIUM)
 - [ ] **Migration setup** — needs DATABASE_URL for `prisma migrate` (MEDIUM)
@@ -251,8 +251,8 @@ Last updated: 2026-02-06.
 ## Cross-Package Features (Not Assigned)
 
 ### ❌ Not Yet Implemented
-- [ ] **End-to-end pipeline function** — single function: measurements → daily values → alignment → correlation → PIS → report (HIGH)
-- [ ] **Markdown report generation** — formatted analysis reports for any pipeline output (HIGH)
+- [x] **End-to-end pipeline function** — single function: measurements → daily values → alignment → correlation → PIS → report (HIGH)
+- [x] **Markdown report generation** — formatted analysis reports for any pipeline output (HIGH)
 - [ ] **API routes** — Express/Hono API for submitting data and querying results (MEDIUM)
 - [ ] **PGlite integration** — Postgres-in-browser for local-first (Phase 2)
 - [ ] **cr-sqlite sync** — P2P device synchronization (Phase 2)
