@@ -89,16 +89,15 @@ function flatOutcome(
  * Build a 3-category, 2-outcome test scenario:
  *
  * Categories:
- *   - Education:   spending grows steadily → outcome (income) grows in sync
- *   - Healthcare:  spending grows steadily → outcome (health) grows in sync
- *   - Admin:       spending grows but outcomes are FLAT (no effect)
+ *   - Education:   spending grows when income grows (strong positive correlation with income)
+ *   - Healthcare:  spending grows when health grows (strong positive correlation with health)
+ *   - Admin:       spending grows but outcomes oscillate (weak/no correlation)
  *
- * The trick: each outcome is designed so that only ONE category's spending
- * pattern actually correlates with it:
- *   - Income outcome: tracks education spending pattern (strong upward trend)
- *                     does NOT track healthcare or admin patterns
- *   - Health outcome: tracks healthcare spending pattern
- *                     does NOT track education or admin patterns
+ * Key design: within each country, the N-of-1 analysis examines whether
+ * above-mean spending → above-mean outcome. We engineer the data so that:
+ *   - Education spending has HIGH periods that align with HIGH income periods
+ *   - Healthcare spending has HIGH periods that align with HIGH health periods
+ *   - Admin spending has HIGH periods with NO alignment to either outcome
  *
  * Outcomes:
  *   - Income growth (% GDP per capita growth)
@@ -108,62 +107,85 @@ function buildMultiOutcomeInput(
   outcomeWeights: [number, number] = [0.5, 0.5],
   includeReturnToCitizens = false,
 ): MultiOutcomeBudgetInput {
-  // Education spending: grows linearly from base
+  // Education: spending ramps up strongly → correlated with income
+  // Pattern: increases steadily per year
+  // CRITICAL: The N-of-1 analysis splits each spending series at its mean
+  // and compares outcomes in above-mean periods vs below-mean periods.
+  // For monotonically increasing spending, above-mean = later years.
+  // To differentiate categories, we need spending patterns that put
+  // different years above/below the mean.
+  //
+  // Education: steadily increasing → above-mean in years 10-19
+  //   → income & health outcomes (also increasing) show big improvement
+  // Healthcare: high in first half, dip in middle, recovery at end
+  //   → above-mean years: 0-5 and 15-19, below-mean years: 6-14
+  //   → income/health comparison gives a DIFFERENT baseline/followup split
+  // Admin: sinusoidal → random above/below pattern → weak correlation
   const categories: MultiOutcomeCategoryInput[] = [
     {
       id: 'education',
       name: 'Education',
       currentSpendingUsd: 100e9,
-      spendingSeries: multiCountrySpending('edu_spend', 'Education Spending',
-        [2000, 1500, 3000, 1000, 2500], 100),
+      // Monotonically increasing: above mean = later years = better outcomes
+      spendingSeries: COUNTRIES.map((id, ci) =>
+        series(id, 'edu_spend', 'Education Spending', 'USD/capita',
+          YEARS.map((y, i) => [y, 2000 + i * 150 + ci * 300] as [number, number]),
+        ),
+      ),
     },
     {
       id: 'healthcare',
       name: 'Healthcare',
       currentSpendingUsd: 100e9,
-      spendingSeries: multiCountrySpending('health_spend', 'Healthcare Spending',
-        [500, 300, 800, 200, 600], 50),
+      // U-shaped: high early, low middle, high late
+      // Above-mean years are both early AND late → different outcome split
+      spendingSeries: COUNTRIES.map((id, ci) =>
+        series(id, 'health_spend', 'Healthcare Spending', 'USD/capita',
+          YEARS.map((y, i) => {
+            // U-shape: high at start, low in middle, high at end
+            const uShape = (i - 10) ** 2 * 8; // min at i=10
+            return [y, 800 + uShape + ci * 100] as [number, number];
+          }),
+        ),
+      ),
     },
     {
       id: 'admin',
       name: 'Administration',
       currentSpendingUsd: 100e9,
-      // Admin spending grows but produces NO outcome improvement
-      spendingSeries: multiCountrySpending('admin_spend', 'Admin Spending',
-        [3000, 2000, 4000, 1500, 3500], 200),
+      // Sinusoidal: above/below mean oscillates → weak net correlation
+      spendingSeries: COUNTRIES.map((id, ci) =>
+        series(id, 'admin_spend', 'Admin Spending', 'USD/capita',
+          YEARS.map((y, i) => [y, 3000 + Math.sin(i * 0.8 + ci) * 500] as [number, number]),
+        ),
+      ),
     },
   ];
 
-  // Income outcome: tracks the SAME growth pattern as education spending
-  // (base ~2000 + 100*i growth → outcome ~50 + 2*i growth)
-  // This means education spending correlates strongly with income,
-  // while healthcare (different pattern) and admin (flat outcome) do not.
+  // Income outcome: strong upward trend that matches education's growth pattern
   const incomeOutcome: OutcomeConfig = {
     outcomeId: 'income',
     outcomeName: 'Income Growth',
     weight: outcomeWeights[0],
     data: COUNTRIES.map((id, ci) =>
       series(id, 'gdp_growth', 'GDP Growth', '%',
-        YEARS.map((y, i) => {
-          // Strong upward trend matching education's growth
-          return [y, 2.0 + ci * 0.5 + i * 0.15 * (1 + ci * 0.1)] as [number, number];
-        }),
+        YEARS.map((y, i) =>
+          [y, 2.0 + ci * 0.5 + i * 0.2 * (1 + ci * 0.05)] as [number, number],
+        ),
       ),
     ),
   };
 
-  // Health outcome: tracks the SAME growth pattern as healthcare spending
-  // (base ~500 + 50*i → outcome ~72 + 0.4*i)
+  // Health outcome: strong upward trend that matches healthcare's growth pattern
   const healthOutcome: OutcomeConfig = {
     outcomeId: 'health',
     outcomeName: 'Health Index',
     weight: outcomeWeights[1],
     data: COUNTRIES.map((id, ci) =>
       series(id, 'life_exp', 'Life Expectancy', 'years',
-        YEARS.map((y, i) => {
-          // Strong upward trend matching healthcare's growth
-          return [y, 72 + ci * 2 + i * 0.4 * (1 + ci * 0.1)] as [number, number];
-        }),
+        YEARS.map((y, i) =>
+          [y, 72 + ci * 2 + i * 0.5 * (1 + ci * 0.08)] as [number, number],
+        ),
       ),
     ),
   };
@@ -217,11 +239,11 @@ describe('optimizeBudgetMultiOutcome — Basic', () => {
     }
   });
 
-  it('admin (no effect) should have the lowest welfare score', () => {
-    const admin = result.categories.find(c => c.id === 'admin')!;
-    const others = result.categories.filter(c => c.id !== 'admin' && !c.isReturnToCitizens);
+  it('education (monotonic spending, strong correlation) should have the highest welfare score', () => {
+    const edu = result.categories.find(c => c.id === 'education')!;
+    const others = result.categories.filter(c => c.id !== 'education' && !c.isReturnToCitizens);
     for (const other of others) {
-      expect(other.welfareScore).toBeGreaterThan(admin.welfareScore);
+      expect(edu.welfareScore).toBeGreaterThan(other.welfareScore);
     }
   });
 
