@@ -1,5 +1,6 @@
 {
   "jurisdiction": "United States of America",
+  "totalBudget": 6707000000000,
   "categories": [
     {
       "name": "Interest on Debt",
@@ -636,7 +637,7 @@
     }
   ],
   "topRecommendations": [],
-  "generatedAt": "2026-02-07T03:47:30.072Z",
+  "generatedAt": "2026-02-07T04:02:05.095Z",
   "generatedBy": "@optomitron/obg",
   "note": "Generated from real US federal budget data using diminishing returns analysis. Not mock data."
 }

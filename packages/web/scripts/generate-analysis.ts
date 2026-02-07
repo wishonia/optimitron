@@ -51,7 +51,7 @@ interface BudgetCategoryOutput {
 }
 
 function generateBudgetAnalysis() {
-  const totalBudget = US_FEDERAL_BUDGET.totalBudget;
+  const totalBudget = US_FEDERAL_BUDGET.categories.reduce((sum, cat) => sum + cat.spending * 1e9, 0);
   const categories: BudgetCategoryOutput[] = [];
 
   for (const cat of US_FEDERAL_BUDGET.categories) {
