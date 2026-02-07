@@ -2,6 +2,10 @@ import Link from "next/link";
 import budgetData from "@/data/us-budget-analysis.json";
 import { slugify } from "@/lib/slugify";
 
+/* ------------------------------------------------------------------ */
+/*  Types & Data                                                      */
+/* ------------------------------------------------------------------ */
+
 interface Category {
   name: string;
   currentSpending: number;
@@ -23,155 +27,302 @@ interface BudgetData {
 
 const data = budgetData as BudgetData;
 
-export function generateStaticParams() {
-  return data.categories.map((c) => ({ slug: slugify(c.name) }));
-}
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                           */
+/* ------------------------------------------------------------------ */
 
 function fmt(n: number): string {
   if (Math.abs(n) >= 1e12) return `$${(n / 1e12).toFixed(2)}T`;
-  if (Math.abs(n) >= 1e9) return `$${(n / 1e9).toFixed(0)}B`;
+  if (Math.abs(n) >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;
   if (Math.abs(n) >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
   return `$${n.toFixed(0)}`;
 }
 
+function pct(n: number): string {
+  return `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
+}
+
 function trendIcon(trend: string): string {
-  if (trend === "increasing" || trend === "improving") return "📈";
-  if (trend === "decreasing" || trend === "declining") return "📉";
-  return "➡️";
+  const t = trend.toLowerCase();
+  if (t === "increasing" || t === "improving") return "↑";
+  if (t === "decreasing") return "↓";
+  return "→";
 }
 
-function recColor(rec: string): string {
-  if (rec === "increase") return "bg-emerald-100 border-emerald-500 text-emerald-800";
-  if (rec === "decrease") return "bg-red-100 border-red-500 text-red-800";
-  return "bg-yellow-100 border-yellow-500 text-yellow-800";
+function trendColor(trend: string): string {
+  const t = trend.toLowerCase();
+  if (t === "increasing" || t === "improving") return "text-emerald-600";
+  if (t === "decreasing") return "text-red-600";
+  return "text-black/50";
 }
 
-function recLabel(rec: string): string {
-  if (rec === "increase") return "⬆️ INCREASE FUNDING";
-  if (rec === "decrease") return "⬇️ DECREASE FUNDING";
-  return "➡️ MAINTAIN CURRENT LEVELS";
+/* ------------------------------------------------------------------ */
+/*  Static params                                                     */
+/* ------------------------------------------------------------------ */
+
+export function generateStaticParams() {
+  return data.categories.map((c) => ({ slug: slugify(c.name) }));
 }
 
-export default function BudgetCategoryPage({ params }: { params: { slug: string } }) {
-  const cat = data.categories.find((c) => slugify(c.name) === params.slug);
+/* ------------------------------------------------------------------ */
+/*  Page                                                              */
+/* ------------------------------------------------------------------ */
+
+export default async function BudgetCategoryPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const cat = data.categories.find((c) => slugify(c.name) === slug);
 
   if (!cat) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-24 text-center">
-        <h1 className="text-3xl font-black text-black mb-4">Category Not Found</h1>
-        <Link href="/budget" className="text-pink-500 font-bold hover:underline">← Back to Budget</Link>
+      <div className="mx-auto max-w-4xl px-4 py-20 text-center">
+        <h1 className="text-3xl font-black uppercase text-black mb-4">Category Not Found</h1>
+        <Link href="/budget" className="text-pink-500 font-bold underline">
+          ← Back to Budget Dashboard
+        </Link>
       </div>
     );
   }
 
-  const maxVal = Math.max(cat.currentSpending, cat.optimalSpending);
-  const gapAbs = Math.abs(cat.gap);
-  const isUnder = cat.gap > 0;
+  const maxBar = Math.max(cat.currentSpending, cat.optimalSpending);
+  const currentPct = (cat.currentSpending / maxBar) * 100;
+  const optimalPct = (cat.optimalSpending / maxBar) * 100;
+  const isIncrease = cat.recommendation === "increase";
+  const totalOptimal = data.categories.reduce((s, c) => s + c.optimalSpending, 0);
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
-      <Link href="/budget" className="text-sm font-bold text-black/50 hover:text-pink-500 transition-colors mb-6 inline-block uppercase">
+      {/* Back link */}
+      <Link
+        href="/budget"
+        className="inline-block mb-6 text-sm font-bold text-black/50 hover:text-black transition-colors uppercase"
+      >
         ← All Budget Categories
       </Link>
 
       {/* Hero */}
-      <div className="bg-white border-4 border-black p-8 mb-8" style={{ boxShadow: "8px 8px 0px 0px rgba(0,0,0,1)" }}>
-        <h1 className="text-3xl md:text-4xl font-black uppercase text-black mb-2">{cat.name}</h1>
-        <div className="flex flex-wrap gap-6 mt-6">
-          <div>
-            <div className="text-xs font-black uppercase text-black/50">Current Spending</div>
-            <div className="text-3xl font-black text-black">{fmt(cat.currentSpending)}</div>
+      <div className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 sm:p-8 mb-8">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-black mb-4">
+          {cat.name}
+        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="border-2 border-black p-4 bg-cyan-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-bold uppercase text-black/60 mb-1">Current Spending</div>
+            <div className="text-2xl sm:text-3xl font-black text-black">{fmt(cat.currentSpending)}</div>
           </div>
-          <div>
-            <div className="text-xs font-black uppercase text-black/50">Optimal Spending</div>
-            <div className="text-3xl font-black text-pink-500">{fmt(cat.optimalSpending)}</div>
+          <div className="border-2 border-black p-4 bg-yellow-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-bold uppercase text-black/60 mb-1">Optimal Spending</div>
+            <div className="text-2xl sm:text-3xl font-black text-black">{fmt(cat.optimalSpending)}</div>
           </div>
-          <div>
-            <div className="text-xs font-black uppercase text-black/50">Gap</div>
-            <div className={`text-3xl font-black ${isUnder ? "text-emerald-600" : "text-red-600"}`}>
-              {isUnder ? "+" : "-"}{fmt(gapAbs)}
+          <div
+            className={`border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
+              isIncrease ? "bg-emerald-300" : "bg-red-300"
+            }`}
+          >
+            <div className="text-xs font-bold uppercase text-black/60 mb-1">Gap</div>
+            <div className="text-2xl sm:text-3xl font-black text-black">
+              {fmt(Math.abs(cat.gap))} ({pct(cat.gapPercent)})
             </div>
           </div>
         </div>
       </div>
 
-      {/* Recommendation */}
-      <div className={`border-l-4 p-6 mb-8 ${recColor(cat.recommendation)}`}>
-        <div className="text-lg font-black uppercase">{recLabel(cat.recommendation)}</div>
-        <p className="mt-2 text-sm font-medium">
-          {isUnder
-            ? `This category is underfunded by ${fmt(gapAbs)} (${cat.gapPercent.toFixed(1)}%). Increasing funding would improve outcomes based on diminishing returns analysis.`
-            : `This category is overfunded by ${fmt(gapAbs)} (${Math.abs(cat.gapPercent).toFixed(1)}%). Reallocating excess funding to underfunded categories would improve overall welfare.`}
-        </p>
-        <p className="mt-1 text-xs font-medium opacity-70">
-          Marginal return: {cat.marginalReturn.toFixed(4)} welfare units per $1B
-        </p>
-      </div>
-
-      {/* Current vs Optimal Bar Chart */}
-      <div className="bg-white border-2 border-black p-6 mb-8" style={{ boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)" }}>
+      {/* Bar chart: Current vs Optimal */}
+      <section className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
         <h2 className="text-lg font-black uppercase text-black mb-4">📊 Current vs Optimal</h2>
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div>
             <div className="flex items-center justify-between mb-1">
               <span className="text-sm font-bold text-black">Current</span>
-              <span className="text-sm font-black text-black">{fmt(cat.currentSpending)}</span>
+              <span className="text-sm font-bold text-black/60">{fmt(cat.currentSpending)}</span>
             </div>
-            <div className="h-8 bg-gray-100 border-2 border-black">
-              <div className="h-full bg-cyan-300" style={{ width: `${(cat.currentSpending / maxVal) * 100}%` }} />
+            <div className="h-8 bg-gray-100 border-2 border-black overflow-hidden">
+              <div
+                className="h-full bg-cyan-300 border-r-2 border-black"
+                style={{ width: `${currentPct}%` }}
+              />
             </div>
           </div>
           <div>
             <div className="flex items-center justify-between mb-1">
               <span className="text-sm font-bold text-black">Optimal</span>
-              <span className="text-sm font-black text-pink-500">{fmt(cat.optimalSpending)}</span>
+              <span className="text-sm font-bold text-black/60">{fmt(cat.optimalSpending)}</span>
             </div>
-            <div className="h-8 bg-gray-100 border-2 border-black">
-              <div className="h-full bg-pink-400" style={{ width: `${(cat.optimalSpending / maxVal) * 100}%` }} />
+            <div className="h-8 bg-gray-100 border-2 border-black overflow-hidden">
+              <div
+                className="h-full bg-yellow-300 border-r-2 border-black"
+                style={{ width: `${optimalPct}%` }}
+              />
             </div>
           </div>
         </div>
-      </div>
+        <div className="mt-3 text-xs font-bold text-black/40">
+          Marginal return per dollar: {(cat.marginalReturn * 100).toFixed(2)}%
+        </div>
+      </section>
 
       {/* Outcome Metrics */}
-      <div className="bg-white border-2 border-black p-6 mb-8" style={{ boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)" }}>
+      <section className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
         <h2 className="text-lg font-black uppercase text-black mb-4">📈 Outcome Metrics</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {cat.outcomeMetrics.map((m) => (
-            <div key={m.name} className="border-2 border-black p-4 bg-yellow-50">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-black">{m.name}</span>
-                <span className="text-lg">{trendIcon(m.trend)}</span>
+            <div
+              key={m.name}
+              className="border-2 border-black p-4 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            >
+              <div className="text-xs font-bold uppercase text-black/50 mb-1">{m.name}</div>
+              <div className="flex items-end gap-2">
+                <span className="text-2xl font-black text-black">
+                  {typeof m.value === "number" && m.value < 1
+                    ? m.value.toFixed(2)
+                    : m.value.toLocaleString()}
+                </span>
+                <span className={`text-lg font-black ${trendColor(m.trend)}`}>
+                  {trendIcon(m.trend)}
+                </span>
               </div>
-              <div className="text-2xl font-black text-black mt-1">{m.value}</div>
-              <div className="text-xs font-medium text-black/50 capitalize">{m.trend}</div>
+              <div className="text-xs text-black/40 font-bold capitalize mt-1">{m.trend}</div>
             </div>
           ))}
         </div>
-      </div>
+      </section>
+
+      {/* Recommendation Callout */}
+      <section
+        className={`border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8 ${
+          isIncrease ? "bg-emerald-100" : "bg-red-100"
+        }`}
+      >
+        <h2 className="text-lg font-black uppercase text-black mb-2">
+          {isIncrease ? "↑ RECOMMENDATION: INCREASE" : "↓ RECOMMENDATION: DECREASE"}
+        </h2>
+        <p className="text-black/70 font-medium mb-3">
+          {isIncrease
+            ? `Spending on ${cat.name} should be increased by ${fmt(Math.abs(cat.gap))} (${pct(cat.gapPercent)}) to reach the optimal allocation of ${fmt(cat.optimalSpending)}.`
+            : `Spending on ${cat.name} should be decreased by ${fmt(Math.abs(cat.gap))} (${pct(Math.abs(cat.gapPercent))}) to reach the optimal allocation of ${fmt(cat.optimalSpending)}.`}
+        </p>
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="border-2 border-black p-3 bg-white">
+            <div className="text-xs font-bold uppercase text-black/50">Marginal Return</div>
+            <div className="text-xl font-black text-black">{(cat.marginalReturn * 100).toFixed(2)}%</div>
+          </div>
+          <div className="border-2 border-black p-3 bg-white">
+            <div className="text-xs font-bold uppercase text-black/50">Share of Total Budget</div>
+            <div className="text-xl font-black text-black">
+              {((cat.currentSpending / data.totalBudget) * 100).toFixed(1)}%
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Budget Context */}
+      <section className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+        <h2 className="text-lg font-black uppercase text-black mb-4">💰 Budget Context</h2>
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm font-bold text-black/70">
+            <span>Category share (current)</span>
+            <span>{((cat.currentSpending / data.totalBudget) * 100).toFixed(1)}%</span>
+          </div>
+          <div className="h-4 bg-gray-100 border-2 border-black overflow-hidden">
+            <div
+              className="h-full bg-pink-500"
+              style={{ width: `${(cat.currentSpending / data.totalBudget) * 100}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-sm font-bold text-black/70 mt-3">
+            <span>Category share (optimal)</span>
+            <span>
+              {((cat.optimalSpending / totalOptimal) * 100).toFixed(1)}%
+            </span>
+          </div>
+          <div className="h-4 bg-gray-100 border-2 border-black overflow-hidden">
+            <div
+              className="h-full bg-yellow-300"
+              style={{ width: `${(cat.optimalSpending / totalOptimal) * 100}%` }}
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Methodology */}
-      <div className="bg-white border-2 border-black p-6" style={{ boxShadow: "4px 4px 0px 0px rgba(0,0,0,1)" }}>
-        <h2 className="text-lg font-black uppercase text-black mb-3">📐 How is Optimal Calculated?</h2>
-        <div className="space-y-3 text-sm text-black/80 font-medium">
+      <section className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+        <h2 className="text-lg font-black uppercase text-black mb-4">
+          🔬 How Is Optimal Calculated?
+        </h2>
+        <div className="space-y-4 text-sm text-black/70 font-medium">
           <p>
-            <strong>Diminishing Returns Model:</strong> Each budget category follows a log-linear relationship between
-            spending and outcomes. The first dollar spent has the highest marginal return; each additional dollar
-            produces less improvement. The "optimal" point is where marginal returns equalize across all categories.
+            The <strong className="text-black">Optimal Budget Generator (OBG)</strong> uses a
+            diminishing-returns framework to allocate spending across categories. Each budget
+            category is modeled with a concave utility function — the first dollar spent on a
+            category produces more welfare than the billionth dollar.
           </p>
+          <div className="border-2 border-black bg-yellow-50 p-4">
+            <h3 className="text-sm font-black text-black uppercase mb-2">
+              Budget Impact Score (BIS)
+            </h3>
+            <p>
+              Each category&apos;s <strong className="text-black">BIS</strong> is computed from
+              outcome metrics weighted by their importance to overall welfare. The BIS captures
+              how effectively each marginal dollar translates into measurable improvements in
+              health, education, security, and quality of life.
+            </p>
+          </div>
+          <div className="border-2 border-black bg-cyan-50 p-4">
+            <h3 className="text-sm font-black text-black uppercase mb-2">
+              Diminishing Returns Model
+            </h3>
+            <p>
+              Spending follows a logarithmic utility curve:{" "}
+              <code className="bg-black text-white px-1 text-xs font-bold">U(x) = α · ln(x + 1)</code>{" "}
+              where α is calibrated from the category&apos;s marginal return coefficient. The optimal
+              allocation equalizes the marginal utility per dollar across all categories — the
+              point where reallocating $1 from any category to another would not improve total
+              welfare.
+            </p>
+          </div>
+          <div className="border-2 border-black bg-pink-50 p-4">
+            <h3 className="text-sm font-black text-black uppercase mb-2">
+              Marginal Return ({(cat.marginalReturn * 100).toFixed(2)}% for {cat.name})
+            </h3>
+            <p>
+              The marginal return of{" "}
+              <strong className="text-black">{(cat.marginalReturn * 100).toFixed(2)}%</strong> means
+              each additional dollar currently spent on {cat.name} produces{" "}
+              {(cat.marginalReturn * 100).toFixed(2)} cents of welfare value. Categories with
+              higher marginal returns are underfunded relative to their potential; those with
+              lower returns are overfunded.
+            </p>
+          </div>
           <p>
-            <strong>Budget Impact Score (BIS):</strong> Combines outcome elasticity (how much outcomes change per
-            dollar), cost-effectiveness ratios, and current spending levels to rank where additional funding would
-            have the most impact.
-          </p>
-          <p>
-            <strong>Data Sources:</strong> Congressional Budget Office (CBO), Office of Management and Budget (OMB),
-            Bureau of Labor Statistics, WHO, World Bank. Historical spending data from FY2015-FY2025.
+            The total budget constraint is maintained at{" "}
+            <strong className="text-black">{fmt(data.totalBudget)}</strong>.
+            The optimizer reallocates within this envelope to maximize aggregate welfare measured
+            by the BIS-weighted outcome metrics across all {data.categories.length} categories.
           </p>
           <p className="text-xs text-black/50">
-            See the <a href="https://obg.warondisease.org" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline">Optimal Budget Generator paper</a> for full methodology.
+            See the{" "}
+            <a href="https://obg.warondisease.org" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline">
+              Optimal Budget Generator paper
+            </a>{" "}
+            for full methodology.
           </p>
         </div>
+      </section>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/budget"
+          className="inline-block border-2 border-black bg-black text-white px-4 py-2 font-bold text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-none transition-shadow"
+        >
+          ← All Categories
+        </Link>
+        <p className="text-xs text-black/40 font-bold">
+          Generated {new Date(data.generatedAt).toLocaleDateString()} · Optomitron OBG
+        </p>
       </div>
     </div>
   );

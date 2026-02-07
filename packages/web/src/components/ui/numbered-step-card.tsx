@@ -31,7 +31,7 @@ export function NumberedStepCard({
   return (
     <Card
       className={cn(
-        "p-6 sm:p-8 border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
+        "p-6 sm:p-8 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
         colorClasses[color],
         className
       )}

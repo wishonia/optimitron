@@ -18,7 +18,7 @@ export function WishocracyLoadingCard({ isLoading }: WishocracyLoadingCardProps)
           transition={{ duration: 0.3 }}
           className="max-w-2xl mx-auto mb-12"
         >
-          <Card className="bg-background border-4 border-primary p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <Card className="bg-background border-4 border-black p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex flex-col items-center">
               <motion.div
                 animate={{
@@ -42,17 +42,17 @@ export function WishocracyLoadingCard({ isLoading }: WishocracyLoadingCardProps)
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
-                  className="w-3 h-3 bg-brutal-cyan border-2 border-primary"
+                  className="w-3 h-3 bg-brutal-cyan border-2 border-black"
                 />
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
-                  className="w-3 h-3 bg-brutal-pink border-2 border-primary"
+                  className="w-3 h-3 bg-brutal-pink border-2 border-black"
                 />
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
-                  className="w-3 h-3 bg-brutal-cyan border-2 border-primary"
+                  className="w-3 h-3 bg-brutal-cyan border-2 border-black"
                 />
               </div>
             </div>

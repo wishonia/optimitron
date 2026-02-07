@@ -13,7 +13,7 @@ export function ProgressIndicator({ current, total }: ProgressIndicatorProps) {
       <div className="text-center font-black text-base md:text-lg mb-2 uppercase">
         {current} of {total} possible pairs completed!
       </div>
-      <div className="h-8 bg-background border-4 border-primary relative overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="h-8 bg-background border-4 border-black relative overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div
           className="h-full bg-brutal-pink transition-all duration-300"
           style={{ width: `${percent}%` }}

@@ -20,7 +20,7 @@ export default function WishocracySection() {
   const shareUrl = typeof window !== "undefined" ? window.location.href : ""
 
   return (
-    <section className="bg-brutal-yellow pt-4 pb-32 border-b-4 border-primary min-h-screen">
+    <section className="bg-brutal-yellow pt-4 pb-32 border-b-4 border-black min-h-screen">
       <div className="mx-auto max-w-6xl px-4">
 
         {/* Loading Genie */}

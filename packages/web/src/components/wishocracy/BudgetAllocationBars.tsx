@@ -84,7 +84,7 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
           placeholder="Search programs..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="border-2 border-primary"
+          className="border-2 border-black"
         />
         <Button
           onClick={() => setSortBy(
@@ -94,7 +94,7 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
           )}
           variant="outline"
           size="sm"
-          className="w-full font-bold uppercase border-2 border-primary"
+          className="w-full font-bold uppercase border-2 border-black"
         >
           <ArrowUpDown className="w-4 h-4 mr-2" />
           Sort by: {sortBy === "user" ? "Your Priorities" : sortBy === "average" ? "Community Average" : "Gov Spending"}
@@ -110,9 +110,9 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
                 <span className="uppercase">{category.name}</span>
               </div>
               {/* Your allocation bar */}
-              <div className="h-6 bg-muted border-2 border-primary relative overflow-visible">
+              <div className="h-6 bg-muted border-2 border-black relative overflow-visible">
                 <div
-                  className="h-full bg-brutal-cyan border-r-2 border-primary transition-all duration-300"
+                  className="h-full bg-brutal-cyan border-r-2 border-black transition-all duration-300"
                   style={{ width: `${percentage}%` }}
                 />
                 <span
@@ -125,7 +125,7 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
               {/* Community average allocation bar */}
               <div className="h-6 bg-muted border-2 border-brutal-pink relative overflow-visible">
                 <div
-                  className="h-full bg-brutal-pink border-r-2 border-primary transition-all duration-300"
+                  className="h-full bg-brutal-pink border-r-2 border-black transition-all duration-300"
                   style={{ width: `${avgPercent}%` }}
                 />
                 <span
@@ -152,10 +152,10 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
           )
         })}
       </div>
-      <div className="mt-4 pt-4 border-t-2 border-primary">
+      <div className="mt-4 pt-4 border-t-2 border-black">
         <div className="flex items-center justify-center gap-3 text-xs mb-2 flex-wrap">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-brutal-cyan border-2 border-primary" />
+            <div className="w-4 h-4 bg-brutal-cyan border-2 border-black" />
             <span className="font-bold">Your Priorities</span>
           </div>
           <div className="flex items-center gap-2">
@@ -163,7 +163,7 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
             <span className="font-bold">Community Avg</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-black border-2 border-primary" />
+            <div className="w-4 h-4 bg-black border-2 border-black" />
             <span className="font-bold">Gov Spending</span>
           </div>
         </div>

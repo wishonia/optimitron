@@ -30,7 +30,7 @@ const colorClasses: Record<ComparisonColor, string> = {
 
 function ComparisonSideDisplay({ value, label, subtitle, color = "default" }: ComparisonSide) {
   return (
-    <div className="bg-background border-4 border-primary p-6 text-center">
+    <div className="bg-background border-4 border-black p-6 text-center">
       <div className={cn("text-4xl font-black mb-2", colorClasses[color])}>
         {value}
       </div>
@@ -46,7 +46,7 @@ export function ComparisonCard({ left, right, className, title }: ComparisonCard
   return (
     <Card
       className={cn(
-        "border-4 border-primary p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
+        "border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
         className
       )}
     >

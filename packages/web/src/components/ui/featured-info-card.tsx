@@ -31,7 +31,7 @@ export function FeaturedInfoCard({
   return (
     <Card
       className={cn(
-        "border-4 border-primary p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
+        "border-4 border-black p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
         bgClasses[bgColor],
         centered && "text-center",
         className

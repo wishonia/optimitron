@@ -34,14 +34,14 @@ export function IconBoxCard({
   return (
     <Card
       className={cn(
-        "border-4 border-primary p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-card",
+        "border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-card",
         className
       )}
     >
       <div className="flex items-center justify-between mb-4">
         <div
           className={cn(
-            "border-4 border-primary w-16 h-16 flex items-center justify-center",
+            "border-4 border-black w-16 h-16 flex items-center justify-center",
             iconBgClasses[iconBgColor]
           )}
         >

@@ -53,7 +53,7 @@ export function BrutalCard({
   return (
     <Card
       className={cn(
-        "border-4 border-primary",
+        "border-4 border-black",
         paddingClasses[padding],
         shadowClasses[shadowSize],
         bgClasses[bgColor],

@@ -86,7 +86,7 @@ export function BudgetPairSlider({
   // Guard against invalid categories
   if (!catA || !catB) {
     return (
-      <Card className="bg-background border-4 border-primary p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-4xl mx-auto">
+      <Card className="bg-background border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-4xl mx-auto">
         <p className="text-center text-red-500 font-bold">
           Error: Invalid category data. Please refresh the page.
         </p>
@@ -95,7 +95,7 @@ export function BudgetPairSlider({
   }
 
   return (
-    <Card className="bg-background border-4 border-primary p-6 md:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-4xl mx-auto">
+    <Card className="bg-background border-4 border-black p-6 md:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-4xl mx-auto">
       {/* Instructions */}
       <p className="text-center text-sm text-muted-foreground mb-6">
         Of total funding available for both, drag slider to indicate how much should go to one vs the other.
@@ -148,7 +148,7 @@ export function BudgetPairSlider({
             max="100"
             value={displayValue}
             onChange={(e) => handleSliderChange(Number(e.target.value))}
-            className="w-full h-4 bg-background border-4 border-primary rounded-none appearance-none cursor-pointer slider-brutal"
+            className="w-full h-4 bg-background border-4 border-black rounded-none appearance-none cursor-pointer slider-brutal"
             style={{
               background: `linear-gradient(to right, #FF6B9D ${allocation}%, #00D9FF ${allocation}%)`,
             }}
@@ -178,7 +178,7 @@ export function BudgetPairSlider({
         >
           <Button
             onClick={handleSubmit}
-            className="w-full h-16 text-xl font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+            className="w-full h-16 text-xl font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
           >
             SUBMIT CHOICE
           </Button>

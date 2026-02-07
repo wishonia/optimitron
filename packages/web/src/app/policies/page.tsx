@@ -3,13 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import policyData from "@/data/us-policy-analysis.json";
-
-function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
+import { slugify } from "@/lib/slugify";
 
 interface BradfordHillScores {
   strength: number;

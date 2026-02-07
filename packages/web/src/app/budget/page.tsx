@@ -2,13 +2,7 @@
 
 import Link from "next/link";
 import budgetData from "@/data/us-budget-analysis.json";
-
-function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-}
+import { slugify } from "@/lib/slugify";
 
 interface Category {
   name: string;

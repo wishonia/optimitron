@@ -71,7 +71,7 @@ export function WishocracyCompletionCard({
       </div>
 
       {/* Top Priorities Summary */}
-      <div className="bg-background border-4 border-primary p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6">
+      <div className="bg-background border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6">
         <h3 className="font-black text-lg uppercase mb-4 text-center">
           Your Top Priorities
         </h3>
@@ -95,14 +95,14 @@ export function WishocracyCompletionCard({
         </div>
 
         {/* View Complete List Button */}
-        <div className="mt-4 pt-4 border-t-2 border-primary">
+        <div className="mt-4 pt-4 border-t-2 border-black">
           <Button
             onClick={() => {
               const completeList = document.querySelector('[data-complete-list]')
               completeList?.scrollIntoView({ behavior: 'smooth', block: 'start' })
             }}
             variant="outline"
-            className="w-full font-bold uppercase border-2 border-primary hover:bg-brutal-cyan/20"
+            className="w-full font-bold uppercase border-2 border-black hover:bg-brutal-cyan/20"
           >
             View Complete Budget Allocation ↓
           </Button>

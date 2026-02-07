@@ -63,7 +63,7 @@ export function IconHeading({
     <div className={cn("flex items-center gap-4", className)}>
       <div
         className={cn(
-          "border-4 border-primary flex items-center justify-center flex-shrink-0",
+          "border-4 border-black flex items-center justify-center flex-shrink-0",
           iconBoxColors[iconColor],
           sizes.box
         )}

@@ -25,9 +25,9 @@ const bgClasses: Record<SectionBgColor, string> = {
 }
 
 const borderClasses: Record<BorderPosition, string> = {
-  top: "border-t-4 border-primary",
-  bottom: "border-b-4 border-primary",
-  both: "border-t-4 border-b-4 border-primary",
+  top: "border-t-4 border-black",
+  bottom: "border-b-4 border-black",
+  both: "border-t-4 border-b-4 border-black",
   none: "",
 }
 
