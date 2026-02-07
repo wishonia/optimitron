@@ -232,7 +232,22 @@ export function runFullAnalysis(
   const pValue = forwardCorrelation.pValue;
 
   // 4. Reverse Pearson & predictive Pearson
-  const reversePearsonR = calculateReversePearson(pairs);
+  // Reverse alignment: swap roles — outcome becomes the "predictor" with the same lag.
+  // This tests: does outcome at time T predict predictor at time T+lag?
+  // If reverseR ≈ forwardR, no causal direction is detectable.
+  // If forwardR >> reverseR, the assumed direction (predictor → outcome) is supported.
+  const reversePairs = alignTimeSeries(outcome, predictor, {
+    onsetDelaySeconds: onsetDelay,
+    durationOfActionSeconds: durationOfAction,
+    fillingType,
+    fillingValue,
+  });
+  const reversePearsonR = reversePairs.length >= 2
+    ? pearsonCorrelation(
+        reversePairs.map(p => p.predictorValue),
+        reversePairs.map(p => p.outcomeValue),
+      )
+    : forwardPearson; // Fall back to forward if insufficient data (yields predictive = 0)
   const predictivePearsonR = calculatePredictivePearson(forwardPearson, reversePearsonR);
 
   // 5. Baseline / follow-up
