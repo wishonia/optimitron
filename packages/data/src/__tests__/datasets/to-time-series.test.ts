@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import {
   healthComparisonToTimeSeries,
   drugPolicyToTimeSeries,
@@ -181,5 +181,50 @@ describe('Dataset → TimeSeries converters', () => {
       const series = healthCountryToTimeSeries(sgp!);
       expect(series).toHaveLength(8);
     });
+  });
+});
+
+// ─── Demo: Country Analysis ──────────────────────────────────────────────────
+
+describe('Demo: Country Analysis (spending vs life expectancy)', () => {
+  // Lazy import to avoid issues if the demo file doesn't exist
+  let analyzeSpendingVsLifeExpectancy: typeof import('../../datasets/demo-country-analysis.js')['analyzeSpendingVsLifeExpectancy'];
+  let getSingaporeVsUSTimeSeries: typeof import('../../datasets/demo-country-analysis.js')['getSingaporeVsUSTimeSeries'];
+
+  beforeAll(async () => {
+    const mod = await import('../../datasets/demo-country-analysis.js');
+    analyzeSpendingVsLifeExpectancy = mod.analyzeSpendingVsLifeExpectancy;
+    getSingaporeVsUSTimeSeries = mod.getSingaporeVsUSTimeSeries;
+  });
+
+  it('analyzes spending vs life expectancy across all countries', () => {
+    const result = analyzeSpendingVsLifeExpectancy();
+    expect(result.countries.length).toBeGreaterThanOrEqual(15);
+    expect(result.pearsonR).toBeGreaterThan(-1);
+    expect(result.pearsonR).toBeLessThan(1);
+  });
+
+  it('identifies top-efficiency countries', () => {
+    const result = analyzeSpendingVsLifeExpectancy();
+    expect(result.topEfficiency.length).toBe(5);
+    // Thailand, Costa Rica, or India should be among the most efficient
+    // (high life expectancy per dollar spent)
+    const topCountries = result.topEfficiency.map((e) => e.country);
+    // At least one low-spending, reasonable-life-expectancy country
+    expect(topCountries.some((c) => ['Thailand', 'India', 'Costa Rica', 'Cuba'].includes(c))).toBe(true);
+  });
+
+  it('loads Singapore and US health TimeSeries', () => {
+    const { singapore, us } = getSingaporeVsUSTimeSeries();
+    expect(singapore.length).toBe(8);
+    expect(us.length).toBe(8);
+  });
+
+  it('Singapore spends less but lives longer', () => {
+    const result = analyzeSpendingVsLifeExpectancy();
+    const sg = result.countries.find((c) => c.iso3 === 'SGP')!;
+    const us = result.countries.find((c) => c.iso3 === 'USA')!;
+    expect(sg.spending).toBeLessThan(us.spending);
+    expect(sg.lifeExpectancy).toBeGreaterThan(us.lifeExpectancy);
   });
 });
