@@ -7,8 +7,7 @@ const architectureLayers = [
     name: "Digital Twin Safe",
     description:
       "All personal data stays on your device. The causal engine runs locally in pure TypeScript — no server, no surveillance, no data leaving your control.",
-    color: "from-emerald-500/20 to-emerald-600/5",
-    borderColor: "border-emerald-500/30",
+    color: "bg-emerald-200",
   },
   {
     layer: 2,
@@ -16,8 +15,7 @@ const architectureLayers = [
     name: "Decentralized Identity",
     description:
       "Proof-of-personhood via zero-knowledge proofs. One person, one vote — verified humanity without revealing identity.",
-    color: "from-blue-500/20 to-blue-600/5",
-    borderColor: "border-blue-500/30",
+    color: "bg-cyan-200",
   },
   {
     layer: 3,
@@ -25,8 +23,7 @@ const architectureLayers = [
     name: "Anonymous On-Chain",
     description:
       "Anonymized effect sizes and preference weights stored on a public chain. No single entity owns the data — it belongs to the commons.",
-    color: "from-purple-500/20 to-purple-600/5",
-    borderColor: "border-purple-500/30",
+    color: "bg-purple-200",
   },
   {
     layer: 4,
@@ -34,8 +31,7 @@ const architectureLayers = [
     name: "Aggregation Server",
     description:
       "Meta-analysis across all submissions produces population-level insights: treatment rankings, policy scores, and politician alignment.",
-    color: "from-amber-500/20 to-amber-600/5",
-    borderColor: "border-amber-500/30",
+    color: "bg-yellow-200",
   },
   {
     layer: 5,
@@ -43,8 +39,7 @@ const architectureLayers = [
     name: "Incentive Layer",
     description:
       "Data contribution tokens and Incentive Alignment Bonds automatically fund campaigns for politicians who represent citizen preferences.",
-    color: "from-pink-500/20 to-pink-600/5",
-    borderColor: "border-pink-500/30",
+    color: "bg-pink-200",
   },
 ];
 
@@ -86,25 +81,22 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-500/5 via-purple-500/5 to-transparent pointer-events-none" />
+      <section className="relative overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 relative">
           <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 text-sm text-primary-400 mb-8">
-              <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-300 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-sm font-bold text-black mb-8">
+              <span className="w-2 h-2 bg-black animate-pulse" />
               Open source · MIT Licensed
             </div>
-            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight leading-tight">
-              <span className="bg-gradient-to-r from-primary-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                Optomitron
-              </span>
+            <h1 className="text-5xl sm:text-7xl font-black tracking-tight leading-tight text-black">
+              Optomitron
             </h1>
-            <p className="mt-6 text-xl sm:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed">
+            <p className="mt-6 text-xl sm:text-2xl text-black max-w-4xl mx-auto leading-relaxed">
               Optimizes everyone&apos;s health, wealth, and happiness — as well as that of humanity — using{" "}
-              <span className="text-white font-medium">time series data</span> and{" "}
-              <span className="text-white font-medium">causal inference</span>.
+              <span className="bg-yellow-300 px-1 font-bold">time series data</span> and{" "}
+              <span className="bg-pink-300 px-1 font-bold">causal inference</span>.
             </p>
-            <p className="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-3xl mx-auto">
+            <p className="mt-4 text-lg text-black/60 max-w-3xl mx-auto font-medium">
               The operating system for evidence-based decision-making. Whether you&apos;re a person
               tracking supplements, a government allocating budgets, or a business optimizing spend —
               the math is the same.
@@ -112,19 +104,19 @@ export default function Home() {
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/dashboard"
-                className="px-8 py-3.5 rounded-xl bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors text-lg shadow-lg shadow-primary-600/25"
+                className="px-8 py-3.5 bg-pink-500 text-white font-black uppercase text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
               >
                 View Dashboard
               </Link>
               <Link
                 href="/import"
-                className="px-8 py-3.5 rounded-xl border border-gray-300 dark:border-gray-700 font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-lg"
+                className="px-8 py-3.5 bg-white text-black font-black uppercase text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-cyan-300 transition-all"
               >
                 Import Your Data
               </Link>
               <Link
                 href="/preferences"
-                className="px-8 py-3.5 rounded-xl border border-gray-300 dark:border-gray-700 font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-lg"
+                className="px-8 py-3.5 bg-white text-black font-black uppercase text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-yellow-300 transition-all"
               >
                 Express Preferences
               </Link>
@@ -134,11 +126,11 @@ export default function Home() {
           {/* Stats bar */}
           <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
             {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl font-bold bg-gradient-to-r from-primary-500 to-purple-500 bg-clip-text text-transparent">
+              <div key={stat.label} className="text-center p-4 border-2 border-black bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                <div className="text-3xl font-black text-pink-500">
                   {stat.value}
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">{stat.label}</div>
+                <div className="text-sm text-black/60 font-bold mt-1 uppercase">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -148,8 +140,8 @@ export default function Home() {
       {/* Five-Layer Architecture */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold">Five-Layer Architecture</h2>
-          <p className="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">Five-Layer Architecture</h2>
+          <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
             A decentralized system that turns raw data into optimal decisions while keeping
             your personal data private and the public knowledge open.
           </p>
@@ -158,18 +150,18 @@ export default function Home() {
           {architectureLayers.map((layer) => (
             <div
               key={layer.layer}
-              className={`p-6 sm:p-8 rounded-2xl border ${layer.borderColor} bg-gradient-to-r ${layer.color} transition-all hover:scale-[1.01]`}
+              className={`p-6 sm:p-8 border-2 border-black ${layer.color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
             >
               <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
                 <div className="flex items-center gap-4 shrink-0">
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-gray-200/50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-300">
+                  <span className="text-xs font-black px-2.5 py-1 bg-black text-white">
                     Layer {layer.layer}
                   </span>
                   <span className="text-3xl">{layer.emoji}</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold">{layer.name}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">
+                  <h3 className="text-xl font-black text-black">{layer.name}</h3>
+                  <p className="text-black/70 mt-1 leading-relaxed font-medium">
                     {layer.description}
                   </p>
                 </div>
@@ -182,8 +174,8 @@ export default function Home() {
       {/* Use Cases */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold">One Engine, Every Domain</h2>
-          <p className="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">One Engine, Every Domain</h2>
+          <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
             Feed any two time series and Optomitron answers: Does changing X cause Y to change?
             By how much? What&apos;s the optimal value of X?
           </p>
@@ -192,16 +184,16 @@ export default function Home() {
           {useCases.map((useCase) => (
             <div
               key={useCase.title}
-              className="p-8 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-primary-500/50 transition-all hover:shadow-lg hover:shadow-primary-500/5 flex flex-col"
+              className="p-8 border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex flex-col"
             >
               <div className="text-4xl mb-4">{useCase.icon}</div>
-              <h3 className="text-xl font-semibold mb-3">{useCase.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed flex-grow">
+              <h3 className="text-xl font-black text-black mb-3">{useCase.title}</h3>
+              <p className="text-black/60 text-sm leading-relaxed flex-grow font-medium">
                 {useCase.description}
               </p>
               <Link
                 href={useCase.href}
-                className="mt-6 inline-flex items-center text-sm font-medium text-primary-500 hover:text-primary-400 transition-colors"
+                className="mt-6 inline-flex items-center text-sm font-black text-pink-500 hover:text-pink-700 uppercase transition-colors"
               >
                 {useCase.cta} &rarr;
               </Link>
@@ -212,8 +204,8 @@ export default function Home() {
 
       {/* Pipeline */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-gray-100 dark:from-gray-900 to-gray-50 dark:to-gray-950 border border-gray-200 dark:border-gray-800">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12">How It Works</h2>
+        <div className="p-8 sm:p-12 bg-cyan-100 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-2xl sm:text-3xl font-black text-center mb-12 uppercase tracking-tight text-black">How It Works</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             {[
               { step: 1, icon: "📥", title: "Collect", desc: "Import time series data from wearables, government stats, or business metrics" },
@@ -223,12 +215,12 @@ export default function Home() {
               { step: 5, icon: "💡", title: "Recommend", desc: "Generate actionable recommendations: dosage, policy, budget, candidate" },
             ].map((item) => (
               <div key={item.step} className="text-center">
-                <div className="w-12 h-12 rounded-full bg-primary-500/10 border border-primary-500/20 flex items-center justify-center mx-auto mb-4 text-lg font-bold text-primary-500">
+                <div className="w-12 h-12 bg-pink-500 border-2 border-black flex items-center justify-center mx-auto mb-4 text-lg font-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   {item.step}
                 </div>
                 <div className="text-2xl mb-2">{item.icon}</div>
-                <h3 className="font-semibold mb-1">{item.title}</h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{item.desc}</p>
+                <h3 className="font-black text-black mb-1 uppercase">{item.title}</h3>
+                <p className="text-xs text-black/60 leading-relaxed font-medium">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -237,22 +229,22 @@ export default function Home() {
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="text-center p-12 rounded-3xl bg-gradient-to-r from-primary-600/10 via-purple-600/10 to-pink-600/10 border border-primary-500/20">
-          <h2 className="text-3xl font-bold mb-4">
-            The \.75 Trillion Question
+        <div className="text-center p-12 bg-yellow-300 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-3xl font-black mb-4 uppercase tracking-tight text-black">
+            The $6.75 Trillion Question
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-4 leading-relaxed">
+          <p className="text-black/70 max-w-2xl mx-auto mb-4 leading-relaxed font-medium">
             The US federal government allocates its budget based on political negotiation, not evidence.
             Nobody knows the optimal amount to spend on education vs. healthcare vs. defense.
           </p>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-black/70 max-w-2xl mx-auto mb-8 leading-relaxed font-medium">
             Optomitron changes that. Any jurisdiction — city, county, state, or country — can deploy
             evidence-based governance.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/preferences"
-              className="px-8 py-3 rounded-xl bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors shadow-lg shadow-primary-600/25"
+              className="px-8 py-3 bg-black text-white font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Express Your Preferences
             </Link>
@@ -260,7 +252,7 @@ export default function Home() {
               href="https://github.com/mikepsinn/optomitron"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 rounded-xl border border-gray-300 dark:border-gray-700 font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               View Source on GitHub &rarr;
             </a>

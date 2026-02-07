@@ -136,3 +136,18 @@
     height: 0;
   }
 }
+
+/* Neobrutalist card utility */
+.card {
+  @apply bg-white border-2 border-black p-6;
+  box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+}
+
+.card-hover {
+  @apply bg-white border-2 border-black p-6 transition-all;
+  box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+}
+.card-hover:hover {
+  box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+  transform: translate(2px, 2px);
+}

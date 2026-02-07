@@ -28,9 +28,9 @@ const politicians = politiciansData as Politician[];
 type SortKey = "alignmentScore" | "name" | "state";
 
 function scoreColor(score: number): string {
-  if (score >= 0.7) return "text-emerald-400";
-  if (score >= 0.5) return "text-yellow-400";
-  return "text-red-400";
+  if (score >= 0.7) return "text-emerald-600";
+  if (score >= 0.5) return "text-yellow-600";
+  return "text-red-600";
 }
 
 function scoreBgColor(score: number): string {
@@ -40,9 +40,9 @@ function scoreBgColor(score: number): string {
 }
 
 function partyColor(party: string): string {
-  if (party === "D") return "bg-blue-600/20 text-blue-400";
-  if (party === "R") return "bg-red-600/20 text-red-400";
-  return "bg-purple-600/20 text-purple-400";
+  if (party === "D") return "bg-blue-200 text-blue-800 border-blue-800";
+  if (party === "R") return "bg-red-200 text-red-800 border-red-800";
+  return "bg-purple-200 text-purple-800 border-purple-800";
 }
 
 function partyLabel(party: string): string {
@@ -106,13 +106,13 @@ export default function PoliticiansPage() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2">
+        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black mb-2">
           🏛️ Politician Alignment Scores
         </h1>
-        <p className="text-slate-400">
+        <p className="text-black/60 font-medium">
           How well do politicians represent average citizen preferences? Scores compare voting
           records to aggregated citizen budget priorities from the{" "}
-          <Link href="/vote" className="text-primary-400 hover:underline">
+          <Link href="/vote" className="text-pink-500 hover:underline decoration-2 underline-offset-4 font-bold">
             Wishocracy voting system
           </Link>
           .
@@ -140,11 +140,11 @@ export default function PoliticiansPage() {
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-8">
         <div>
-          <label className="text-xs text-slate-400 block mb-1">Party</label>
+          <label className="text-xs text-black/50 block mb-1 font-bold uppercase">Party</label>
           <select
             value={partyFilter}
             onChange={(e) => setPartyFilter(e.target.value)}
-            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+            className="bg-white border-2 border-black px-3 py-2 text-sm text-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             <option value="all">All Parties</option>
             <option value="D">Democrat</option>
@@ -153,11 +153,11 @@ export default function PoliticiansPage() {
           </select>
         </div>
         <div>
-          <label className="text-xs text-slate-400 block mb-1">Chamber</label>
+          <label className="text-xs text-black/50 block mb-1 font-bold uppercase">Chamber</label>
           <select
             value={chamberFilter}
             onChange={(e) => setChamberFilter(e.target.value)}
-            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+            className="bg-white border-2 border-black px-3 py-2 text-sm text-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             <option value="all">Both Chambers</option>
             <option value="senate">Senate</option>
@@ -165,11 +165,11 @@ export default function PoliticiansPage() {
           </select>
         </div>
         <div>
-          <label className="text-xs text-slate-400 block mb-1">State</label>
+          <label className="text-xs text-black/50 block mb-1 font-bold uppercase">State</label>
           <select
             value={stateFilter}
             onChange={(e) => setStateFilter(e.target.value)}
-            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+            className="bg-white border-2 border-black px-3 py-2 text-sm text-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             {states.map((s) => (
               <option key={s} value={s}>
@@ -179,11 +179,11 @@ export default function PoliticiansPage() {
           </select>
         </div>
         <div>
-          <label className="text-xs text-slate-400 block mb-1">Sort by</label>
+          <label className="text-xs text-black/50 block mb-1 font-bold uppercase">Sort by</label>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortKey)}
-            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
+            className="bg-white border-2 border-black px-3 py-2 text-sm text-black font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             <option value="alignmentScore">Alignment Score</option>
             <option value="name">Name</option>
@@ -191,10 +191,10 @@ export default function PoliticiansPage() {
           </select>
         </div>
         <div>
-          <label className="text-xs text-slate-400 block mb-1">Order</label>
+          <label className="text-xs text-black/50 block mb-1 font-bold uppercase">Order</label>
           <button
             onClick={() => setSortAsc(!sortAsc)}
-            className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white hover:bg-slate-700 transition-colors"
+            className="bg-white border-2 border-black px-3 py-2 text-sm text-black font-bold hover:bg-cyan-300 transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             {sortAsc ? "↑ Ascending" : "↓ Descending"}
           </button>
@@ -202,7 +202,7 @@ export default function PoliticiansPage() {
       </div>
 
       {/* Results count */}
-      <p className="text-sm text-slate-500 mb-4">
+      <p className="text-sm text-black/50 mb-4 font-bold">
         Showing {filtered.length} of {politicians.length} politicians
       </p>
 
@@ -216,7 +216,7 @@ export default function PoliticiansPage() {
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 {/* Rank */}
-                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-sm font-bold text-slate-300">
+                <span className="flex-shrink-0 w-8 h-8 bg-black flex items-center justify-center text-sm font-black text-black">
                   {i + 1}
                 </span>
 
@@ -225,24 +225,24 @@ export default function PoliticiansPage() {
                   <div className="flex flex-wrap items-center gap-2 mb-1">
                     <Link
                       href={`/politicians/${pol.id}`}
-                      className="text-white font-semibold hover:text-primary-400 transition-colors"
+                      className="text-black font-black hover:text-pink-500 transition-colors"
                       onClick={(e: React.MouseEvent) => e.stopPropagation()}
                     >
                       {pol.name}
                     </Link>
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${partyColor(pol.party)}`}>
+                    <span className={`text-xs font-bold px-2 py-0.5 border ${partyColor(pol.party)}`}>
                       {partyLabel(pol.party)}
                     </span>
-                    <span className="text-xs text-slate-500 px-2 py-0.5 rounded bg-slate-700/50">
+                    <span className="text-xs text-black/50 px-2 py-0.5 bg-gray-100 border border-black font-bold">
                       {chamberLabel(pol.chamber)}
                     </span>
-                    <span className="text-xs text-slate-500">{pol.state}</span>
+                    <span className="text-xs text-black/50 font-bold">{pol.state}</span>
                   </div>
                   <div className="flex flex-wrap gap-1">
                     {pol.topAligned.slice(0, 3).map((area) => (
                       <span
                         key={area}
-                        className="text-[10px] bg-emerald-600/20 text-emerald-400 px-1.5 py-0.5 rounded"
+                        className="text-[10px] bg-emerald-200 text-emerald-800 px-1.5 py-0.5 border border-emerald-800 font-bold"
                       >
                         ✓ {area}
                       </span>
@@ -250,7 +250,7 @@ export default function PoliticiansPage() {
                     {pol.topMisaligned.slice(0, 2).map((area) => (
                       <span
                         key={area}
-                        className="text-[10px] bg-red-600/20 text-red-400 px-1.5 py-0.5 rounded"
+                        className="text-[10px] bg-red-200 text-red-800 px-1.5 py-0.5 border border-red-800 font-bold"
                       >
                         ✗ {area}
                       </span>
@@ -261,21 +261,21 @@ export default function PoliticiansPage() {
                 {/* Score */}
                 <div className="flex items-center gap-4 flex-shrink-0">
                   <div className="text-center">
-                    <div className={`text-2xl font-bold ${scoreColor(pol.alignmentScore)}`}>
+                    <div className={`text-2xl font-black ${scoreColor(pol.alignmentScore)}`}>
                       {(pol.alignmentScore * 100).toFixed(0)}%
                     </div>
-                    <div className="text-[10px] text-slate-500">Alignment</div>
+                    <div className="text-[10px] text-black/50 font-bold uppercase">Alignment</div>
                   </div>
                   {/* Score bar */}
                   <div className="w-24 hidden sm:block">
-                    <div className="h-3 bg-slate-700 rounded-full overflow-hidden">
+                    <div className="h-3 bg-gray-100 border border-black overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${scoreBgColor(pol.alignmentScore)}`}
+                        className={`h-full ${scoreBgColor(pol.alignmentScore)}`}
                         style={{ width: `${pol.alignmentScore * 100}%` }}
                       />
                     </div>
                   </div>
-                  <span className="text-slate-500 text-lg">
+                  <span className="text-black/50 text-lg font-black">
                     {expanded === pol.id ? "▲" : "▼"}
                   </span>
                 </div>
@@ -284,26 +284,26 @@ export default function PoliticiansPage() {
 
             {/* Expanded detail */}
             {expanded === pol.id && (
-              <div className="mt-4 pt-4 border-t border-slate-700/50 space-y-4">
+              <div className="mt-4 pt-4 border-t-2 border-black space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Budget Alignment */}
                   <div>
-                    <h4 className="text-xs text-slate-500 uppercase tracking-wider mb-3">
+                    <h4 className="text-xs text-black/50 uppercase tracking-wider mb-3 font-black">
                       Budget Category Alignment
                     </h4>
                     <div className="space-y-2">
                       {Object.entries(pol.budgetAlignment).map(([key, val]) => (
                         <div key={key} className="flex items-center gap-2">
-                          <span className="text-xs text-slate-400 w-28 truncate">
+                          <span className="text-xs text-black/60 w-28 truncate font-bold">
                             {budgetCategoryLabels[key] ?? key}
                           </span>
-                          <div className="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+                          <div className="flex-1 h-3 bg-gray-100 border border-black overflow-hidden">
                             <div
-                              className={`h-full rounded-full ${scoreBgColor(val)}`}
+                              className={`h-full ${scoreBgColor(val)}`}
                               style={{ width: `${val * 100}%` }}
                             />
                           </div>
-                          <span className={`text-xs w-10 text-right font-medium ${scoreColor(val)}`}>
+                          <span className={`text-xs w-10 text-right font-black ${scoreColor(val)}`}>
                             {(val * 100).toFixed(0)}%
                           </span>
                         </div>
@@ -313,31 +313,31 @@ export default function PoliticiansPage() {
 
                   {/* Key Votes */}
                   <div>
-                    <h4 className="text-xs text-slate-500 uppercase tracking-wider mb-3">
+                    <h4 className="text-xs text-black/50 uppercase tracking-wider mb-3 font-black">
                       Key Votes
                     </h4>
                     <div className="space-y-2">
                       {pol.keyVotes.map((vote) => (
                         <div
                           key={vote.bill}
-                          className={`flex items-start gap-2 p-2 rounded-lg ${
+                          className={`flex items-start gap-2 p-2 border-2 ${
                             vote.aligned
-                              ? "bg-emerald-600/10 border border-emerald-600/20"
-                              : "bg-red-600/10 border border-red-600/20"
+                              ? "bg-emerald-50 border-emerald-800"
+                              : "bg-red-50 border-red-800"
                           }`}
                         >
                           <span className="flex-shrink-0 mt-0.5">
                             {vote.aligned ? "✅" : "❌"}
                           </span>
                           <div>
-                            <p className="text-sm text-slate-300">{vote.bill}</p>
-                            <p className="text-xs text-slate-500">
-                              Voted <span className="font-medium text-slate-400">{vote.vote}</span>
+                            <p className="text-sm text-black/70 font-medium">{vote.bill}</p>
+                            <p className="text-xs text-black/50 font-bold">
+                              Voted <span className="text-black">{vote.vote}</span>
                               {" · "}
                               {vote.aligned ? (
-                                <span className="text-emerald-400">Aligned with citizens</span>
+                                <span className="text-emerald-600">Aligned with citizens</span>
                               ) : (
-                                <span className="text-red-400">Misaligned with citizens</span>
+                                <span className="text-red-600">Misaligned with citizens</span>
                               )}
                             </p>
                           </div>
@@ -351,7 +351,7 @@ export default function PoliticiansPage() {
                 <div className="pt-2">
                   <Link
                     href={`/politicians/${pol.id}`}
-                    className="inline-flex items-center text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors"
+                    className="inline-flex items-center text-sm font-black text-pink-500 hover:text-pink-700 uppercase transition-colors"
                   >
                     View full profile →
                   </Link>
@@ -364,18 +364,18 @@ export default function PoliticiansPage() {
 
       {filtered.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-slate-400">No politicians match the selected filters.</p>
+          <p className="text-black/60 font-medium">No politicians match the selected filters.</p>
         </div>
       )}
 
-      <p className="text-xs text-slate-500 mt-8">
+      <p className="text-xs text-black/40 mt-8 font-bold">
         Alignment scores compare politician voting records to aggregated citizen preferences.
         Scores are illustrative; production scores use the{" "}
         <a
           href="https://wishocracy.warondisease.org"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary-400 hover:underline"
+          className="text-pink-500 hover:underline decoration-2 underline-offset-4"
         >
           Wishocracy algorithm
         </a>
@@ -388,7 +388,7 @@ export default function PoliticiansPage() {
 function SummaryCard({
   label,
   value,
-  color = "text-white",
+  color = "text-black",
 }: {
   label: string;
   value: string;
@@ -396,8 +396,8 @@ function SummaryCard({
 }) {
   return (
     <div className="card text-center">
-      <div className={`text-2xl font-bold ${color}`}>{value}</div>
-      <div className="text-xs text-slate-400 mt-1">{label}</div>
+      <div className={`text-2xl font-black ${color}`}>{value}</div>
+      <div className="text-xs text-black/50 mt-1 font-bold uppercase">{label}</div>
     </div>
   );
 }

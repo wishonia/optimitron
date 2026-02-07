@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navLinks = [
+  { href: "/budget", label: "Optimal Budget" },
+  { href: "/policies", label: "Optimal Policies" },
+  { href: "/compare", label: "Compare Countries" },
   { href: "/vote", label: "Vote" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/preferences", label: "Preferences" },
-  { href: "/politicians", label: "Politicians" },
-  { href: "/import", label: "Import" },
-  { href: "/settings", label: "Settings" },
+  // { href: "/politicians", label: "Politicians" }, // Hidden — looks too partisan
+  { href: "/about", label: "About" },
 ];
 
 export default function Navbar() {
@@ -18,25 +18,25 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm sticky top-0 z-50">
+    <nav className="border-b-4 border-black bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center gap-8">
             <Link
               href="/"
-              className="text-xl font-bold bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent"
+              className="text-xl font-black uppercase tracking-tight text-black hover:text-pink-500 transition-colors"
             >
-              Optomitron
+              ⚡ Optomitron
             </Link>
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm px-3 py-2 rounded-lg transition-colors ${
+                  className={`text-sm font-bold uppercase px-3 py-2 border-2 transition-all ${
                     pathname === link.href
-                      ? "text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/50 font-medium"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                      ? "border-black bg-yellow-300 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                      : "border-transparent text-black hover:border-black hover:bg-cyan-200 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                   }`}
                 >
                   {link.label}
@@ -51,7 +51,7 @@ export default function Navbar() {
               href="https://github.com/mikepsinn/optomitron"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400"
+              className="text-sm font-bold px-4 py-2 border-2 border-black bg-white hover:bg-black hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
             >
               GitHub ↗
             </a>
@@ -60,19 +60,19 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="md:hidden p-2 border-2 border-black hover:bg-yellow-300 transition-colors"
             aria-label="Toggle menu"
           >
             <svg
-              className="w-6 h-6 text-gray-600 dark:text-gray-400"
+              className="w-6 h-6 text-black"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
               {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M4 6h16M4 12h16M4 18h16" />
               )}
             </svg>
           </button>
@@ -81,17 +81,17 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+        <div className="md:hidden border-t-4 border-black bg-white">
           <div className="px-4 py-3 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block text-sm px-3 py-2 rounded-lg transition-colors ${
+                className={`block text-sm font-bold uppercase px-3 py-2 border-2 transition-all ${
                   pathname === link.href
-                    ? "text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/50 font-medium"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+                    ? "border-black bg-yellow-300 text-black"
+                    : "border-transparent text-black hover:border-black hover:bg-cyan-200"
                 }`}
               >
                 {link.label}
@@ -101,7 +101,7 @@ export default function Navbar() {
               href="https://github.com/mikepsinn/optomitron"
               target="_blank"
               rel="noopener noreferrer"
-              className="block text-sm px-3 py-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="block text-sm font-bold px-3 py-2 border-2 border-black hover:bg-black hover:text-white transition-all"
             >
               GitHub ↗
             </a>

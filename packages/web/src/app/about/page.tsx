@@ -53,20 +53,20 @@ export default function AboutPage() {
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
       {/* Mission */}
       <section className="mb-16">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-6">
+        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black mb-6">
           What is Optomitron?
         </h1>
-        <div className="prose prose-invert prose-slate max-w-none space-y-4">
-          <p className="text-lg text-slate-300 leading-relaxed">
-            <strong className="text-white">Optomitron optimizes everyone&apos;s health, wealth, and happiness</strong> — as well as
+        <div className="max-w-none space-y-4">
+          <p className="text-lg text-black/80 leading-relaxed font-medium">
+            <strong className="text-black font-black">Optomitron optimizes everyone&apos;s health, wealth, and happiness</strong> — as well as
             that of humanity — using time series data and causal inference.
           </p>
-          <p className="text-slate-400">
+          <p className="text-black/60 font-medium">
             We&apos;re building the operating system for evidence-based decision-making. Whether you&apos;re a person
             trying to figure out if magnesium helps you sleep, a city deciding where to spend its budget,
             or a business optimizing ad spend — the math is the same.
           </p>
-          <p className="text-slate-400">
+          <p className="text-black/60 font-medium">
             Optomitron provides a universal causal inference engine that takes any two time series and answers:
             <em> Does changing X cause Y to change? By how much? What&apos;s the optimal value of X?</em>
           </p>
@@ -79,24 +79,24 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="card">
             <div className="text-3xl mb-3">🏛️</div>
-            <h3 className="text-white font-bold mb-2">Governments fly blind</h3>
-            <p className="text-sm text-slate-400">
+            <h3 className="text-black font-black mb-2">Governments fly blind</h3>
+            <p className="text-sm text-black/60 font-medium">
               The US allocates a $6.75 trillion budget based on political negotiation, not evidence.
               Nobody knows the optimal amount to spend on education vs. healthcare vs. defense.
             </p>
           </div>
           <div className="card">
             <div className="text-3xl mb-3">🧑‍⚕️</div>
-            <h3 className="text-white font-bold mb-2">Individuals fly blind</h3>
-            <p className="text-sm text-slate-400">
+            <h3 className="text-black font-black mb-2">Individuals fly blind</h3>
+            <p className="text-sm text-black/60 font-medium">
               77% of Americans take dietary supplements but almost none know whether they actually work
               for them. Health decisions are based on anecdote, not data.
             </p>
           </div>
           <div className="card">
             <div className="text-3xl mb-3">📈</div>
-            <h3 className="text-white font-bold mb-2">Businesses guess</h3>
-            <p className="text-sm text-slate-400">
+            <h3 className="text-black font-black mb-2">Businesses guess</h3>
+            <p className="text-sm text-black/60 font-medium">
               Marketing budgets, pricing strategies, and feature investments are set by intuition and
               A/B tests that measure correlation, not causation.
             </p>
@@ -107,7 +107,7 @@ export default function AboutPage() {
       {/* How it works */}
       <section className="mb-16">
         <h2 className="section-title">Architecture</h2>
-        <div className="card font-mono text-sm text-slate-400 overflow-x-auto">
+        <div className="card font-mono text-sm text-black/60 overflow-x-auto bg-cyan-100">
           <pre>{`
  ┌─────────────┐     ┌──────────────────┐     ┌──────────────────┐
  │  COLLECT     │     │  INFER           │     │  RECOMMEND       │
@@ -129,9 +129,9 @@ export default function AboutPage() {
             { n: "5", t: "Recommend", d: "Generate actionable, graded recommendations" },
           ].map((s) => (
             <div key={s.n} className="card text-center py-4">
-              <div className="text-primary-400 font-bold text-lg">{s.n}</div>
-              <div className="text-white font-semibold text-sm">{s.t}</div>
-              <div className="text-xs text-slate-500 mt-1">{s.d}</div>
+              <div className="text-pink-500 font-black text-lg">{s.n}</div>
+              <div className="text-black font-black text-sm uppercase">{s.t}</div>
+              <div className="text-xs text-black/50 mt-1 font-medium">{s.d}</div>
             </div>
           ))}
         </div>
@@ -140,7 +140,7 @@ export default function AboutPage() {
       {/* Papers */}
       <section className="mb-16">
         <h2 className="section-title">📄 Papers</h2>
-        <p className="text-sm text-slate-400 mb-6">
+        <p className="text-sm text-black/60 mb-6 font-medium">
           Every algorithm in this codebase is defined in a published paper with exact formulas,
           worked examples, and parameter justifications.
         </p>
@@ -151,14 +151,14 @@ export default function AboutPage() {
               href={p.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="card group"
+              className="card group hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
             >
-              <h3 className="text-white font-bold group-hover:text-primary-400 transition-colors">
+              <h3 className="text-black font-black group-hover:text-pink-500 transition-colors">
                 {p.title}
               </h3>
-              <p className="text-xs text-slate-500 mt-1">{p.pkg}</p>
-              <p className="text-sm text-slate-400 mt-2">{p.desc}</p>
-              <span className="text-xs text-primary-400 mt-2 inline-block">Read paper →</span>
+              <p className="text-xs text-black/40 mt-1 font-bold">{p.pkg}</p>
+              <p className="text-sm text-black/60 mt-2 font-medium">{p.desc}</p>
+              <span className="text-xs text-pink-500 mt-2 inline-block font-black uppercase">Read paper →</span>
             </a>
           ))}
         </div>
@@ -167,21 +167,21 @@ export default function AboutPage() {
       {/* Packages */}
       <section className="mb-16">
         <h2 className="section-title">📦 Packages</h2>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-700">
-                <th className="text-left py-3 px-2 text-slate-400 font-medium">Package</th>
-                <th className="text-left py-3 px-2 text-slate-400 font-medium">Description</th>
-                <th className="text-center py-3 px-2 text-slate-400 font-medium">Status</th>
+              <tr className="border-b-2 border-black bg-yellow-300">
+                <th className="text-left py-3 px-2 text-black font-black uppercase">Package</th>
+                <th className="text-left py-3 px-2 text-black font-black uppercase">Description</th>
+                <th className="text-center py-3 px-2 text-black font-black uppercase">Status</th>
               </tr>
             </thead>
             <tbody>
               {packages.map((p) => (
-                <tr key={p.name} className="border-b border-slate-800">
-                  <td className="py-2 px-2 font-mono text-xs text-primary-400">{p.name}</td>
-                  <td className="py-2 px-2 text-slate-300">{p.desc}</td>
-                  <td className="py-2 px-2 text-center text-xs">{p.status}</td>
+                <tr key={p.name} className="border-b border-black">
+                  <td className="py-2 px-2 font-mono text-xs text-pink-600 font-bold">{p.name}</td>
+                  <td className="py-2 px-2 text-black/70 font-medium">{p.desc}</td>
+                  <td className="py-2 px-2 text-center text-xs font-bold">{p.status}</td>
                 </tr>
               ))}
             </tbody>
@@ -191,10 +191,10 @@ export default function AboutPage() {
 
       {/* Coming soon */}
       <section className="mb-16">
-        <div className="card border-primary-500/30 text-center">
+        <div className="card border-pink-500 text-center bg-pink-50">
           <div className="text-4xl mb-4">🔮</div>
-          <h3 className="text-xl font-bold text-white mb-2">Coming Soon</h3>
-          <p className="text-slate-400 mb-4">
+          <h3 className="text-xl font-black text-black mb-2 uppercase">Coming Soon</h3>
+          <p className="text-black/60 mb-4 font-medium">
             Personal health optimization. Your data stays on your device. The causal engine runs
             locally in your browser. Discover which treatments, supplements, and habits actually
             improve <em>your</em> outcomes.
@@ -203,7 +203,7 @@ export default function AboutPage() {
             href="https://github.com/mikepsinn/optomitron"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-2 text-sm font-semibold text-white hover:bg-primary-700 transition-colors"
+            className="inline-flex items-center gap-2 bg-black px-6 py-2 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
           >
             Star on GitHub
           </a>
@@ -216,11 +216,11 @@ export default function AboutPage() {
           href="https://github.com/mikepsinn/optomitron"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-slate-400 hover:text-primary-400 transition-colors"
+          className="text-sm text-black/60 hover:text-pink-500 transition-colors font-bold"
         >
           github.com/mikepsinn/optomitron
         </a>
-        <p className="text-xs text-slate-500 mt-2">
+        <p className="text-xs text-black/40 mt-2 font-bold">
           MIT License © Mike P. Sinn
         </p>
       </section>

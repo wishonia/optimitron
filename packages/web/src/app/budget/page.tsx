@@ -49,10 +49,10 @@ export default function BudgetPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2">
+        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black mb-2">
           🇺🇸 US Federal Budget Dashboard
         </h1>
-        <p className="text-slate-400">
+        <p className="text-black/60 font-medium">
           Current vs. optimal spending analysis for {data.categories.length} budget categories. Total budget: {fmt(data.totalBudget)}.
         </p>
       </div>
@@ -61,7 +61,7 @@ export default function BudgetPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
         <SummaryCard label="Total Current" value={fmt(totalCurrent)} />
         <SummaryCard label="Total Optimal" value={fmt(totalOptimal)} />
-        <SummaryCard label="Net Reallocation" value={fmt(totalOptimal - totalCurrent)} color={totalOptimal > totalCurrent ? "text-emerald-400" : "text-red-400"} />
+        <SummaryCard label="Net Reallocation" value={fmt(totalOptimal - totalCurrent)} color={totalOptimal > totalCurrent ? "text-emerald-600" : "text-red-600"} />
         <SummaryCard label="Categories Analyzed" value={String(data.categories.length)} />
       </div>
 
@@ -70,12 +70,12 @@ export default function BudgetPage() {
         <h2 className="section-title">🏆 Top 5 Recommendations</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {data.topRecommendations.slice(0, 5).map((rec, i) => (
-            <div key={i} className="card border-primary-500/30">
+            <div key={i} className="card border-pink-500">
               <div className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-600/20 text-primary-400 flex items-center justify-center text-sm font-bold">
+                <span className="flex-shrink-0 w-8 h-8 bg-pink-500 text-white flex items-center justify-center text-sm font-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   {i + 1}
                 </span>
-                <p className="text-sm text-slate-300">{rec}</p>
+                <p className="text-sm text-black/70 font-medium">{rec}</p>
               </div>
             </div>
           ))}
@@ -89,12 +89,12 @@ export default function BudgetPage() {
           {sorted.map((cat) => (
             <div key={cat.name} className="card">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
-                <h3 className="text-sm font-semibold text-white">{cat.name}</h3>
+                <h3 className="text-sm font-black text-black">{cat.name}</h3>
                 <span
-                  className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                  className={`text-xs font-black px-2 py-0.5 border-2 border-black ${
                     cat.recommendation === "increase"
-                      ? "bg-emerald-600/20 text-emerald-400"
-                      : "bg-red-600/20 text-red-400"
+                      ? "bg-emerald-300 text-black"
+                      : "bg-red-300 text-black"
                   }`}
                 >
                   {cat.recommendation === "increase" ? "↑ Increase" : "↓ Decrease"} {pct(cat.gapPercent)}
@@ -102,24 +102,24 @@ export default function BudgetPage() {
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500 w-16">Current</span>
-                  <div className="flex-1 h-5 bg-slate-700/50 rounded-full overflow-hidden">
+                  <span className="text-xs text-black/50 w-16 font-bold">Current</span>
+                  <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
                     <div
-                      className="h-full bar-current rounded-full"
+                      className="h-full bar-current"
                       style={{ width: `${(cat.currentSpending / maxSpending) * 100}%` }}
                     />
                   </div>
-                  <span className="text-xs text-slate-400 w-20 text-right">{fmt(cat.currentSpending)}</span>
+                  <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.currentSpending)}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-500 w-16">Optimal</span>
-                  <div className="flex-1 h-5 bg-slate-700/50 rounded-full overflow-hidden">
+                  <span className="text-xs text-black/50 w-16 font-bold">Optimal</span>
+                  <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
                     <div
-                      className="h-full bar-optimal rounded-full"
+                      className="h-full bar-optimal"
                       style={{ width: `${(cat.optimalSpending / maxSpending) * 100}%` }}
                     />
                   </div>
-                  <span className="text-xs text-slate-400 w-20 text-right">{fmt(cat.optimalSpending)}</span>
+                  <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.optimalSpending)}</span>
                 </div>
               </div>
             </div>
@@ -130,36 +130,36 @@ export default function BudgetPage() {
       {/* Table */}
       <section>
         <h2 className="section-title">📋 Full Category Breakdown</h2>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-700">
-                <th className="text-left py-3 px-2 text-slate-400 font-medium">Category</th>
-                <th className="text-right py-3 px-2 text-slate-400 font-medium">Current</th>
-                <th className="text-right py-3 px-2 text-slate-400 font-medium">Optimal</th>
-                <th className="text-right py-3 px-2 text-slate-400 font-medium">Gap</th>
-                <th className="text-right py-3 px-2 text-slate-400 font-medium">Gap %</th>
-                <th className="text-center py-3 px-2 text-slate-400 font-medium">Action</th>
+              <tr className="border-b-2 border-black bg-yellow-300">
+                <th className="text-left py-3 px-2 text-black font-black uppercase">Category</th>
+                <th className="text-right py-3 px-2 text-black font-black uppercase">Current</th>
+                <th className="text-right py-3 px-2 text-black font-black uppercase">Optimal</th>
+                <th className="text-right py-3 px-2 text-black font-black uppercase">Gap</th>
+                <th className="text-right py-3 px-2 text-black font-black uppercase">Gap %</th>
+                <th className="text-center py-3 px-2 text-black font-black uppercase">Action</th>
               </tr>
             </thead>
             <tbody>
               {sorted.map((cat) => (
-                <tr key={cat.name} className="border-b border-slate-800 hover:bg-slate-800/50">
-                  <td className="py-3 px-2 text-white font-medium">{cat.name}</td>
-                  <td className="py-3 px-2 text-right text-slate-300">{fmt(cat.currentSpending)}</td>
-                  <td className="py-3 px-2 text-right text-slate-300">{fmt(cat.optimalSpending)}</td>
-                  <td className={`py-3 px-2 text-right font-medium ${cat.gap >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                <tr key={cat.name} className="border-b border-black hover:bg-cyan-50">
+                  <td className="py-3 px-2 text-black font-bold">{cat.name}</td>
+                  <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.currentSpending)}</td>
+                  <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.optimalSpending)}</td>
+                  <td className={`py-3 px-2 text-right font-black ${cat.gap >= 0 ? "text-emerald-600" : "text-red-600"}`}>
                     {fmt(Math.abs(cat.gap))}
                   </td>
-                  <td className={`py-3 px-2 text-right ${cat.gap >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+                  <td className={`py-3 px-2 text-right font-bold ${cat.gap >= 0 ? "text-emerald-600" : "text-red-600"}`}>
                     {pct(cat.gapPercent)}
                   </td>
                   <td className="py-3 px-2 text-center">
                     <span
-                      className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${
+                      className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-black ${
                         cat.recommendation === "increase"
-                          ? "bg-emerald-600/20 text-emerald-400"
-                          : "bg-red-600/20 text-red-400"
+                          ? "bg-emerald-300 text-black"
+                          : "bg-red-300 text-black"
                       }`}
                     >
                       {cat.recommendation}
@@ -172,18 +172,18 @@ export default function BudgetPage() {
         </div>
       </section>
 
-      <p className="text-xs text-slate-500 mt-8">
+      <p className="text-xs text-black/40 mt-8 font-bold">
         Generated {new Date(data.generatedAt).toLocaleDateString()} · Source: Optomitron OBG (Optimal Budget Generator)
       </p>
     </div>
   );
 }
 
-function SummaryCard({ label, value, color = "text-white" }: { label: string; value: string; color?: string }) {
+function SummaryCard({ label, value, color = "text-black" }: { label: string; value: string; color?: string }) {
   return (
     <div className="card text-center">
-      <div className={`text-2xl font-bold ${color}`}>{value}</div>
-      <div className="text-xs text-slate-400 mt-1">{label}</div>
+      <div className={`text-2xl font-black ${color}`}>{value}</div>
+      <div className="text-xs text-black/50 mt-1 font-bold uppercase">{label}</div>
     </div>
   );
 }
