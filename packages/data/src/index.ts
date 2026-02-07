@@ -65,6 +65,9 @@ export * from './variable-statistics.js';
 // Curated datasets (US federal budget, evidence-based policies)
 export * from './datasets/index.js';
 
+// Inflation-adjustment & per-capita utilities
+export * from './utils/index.js';
+
 // Version
 export const VERSION = '0.1.0';
 export * from './pipelines/fetch-country-timeseries.js';

@@ -17,5 +17,8 @@ export * from './us-healthcare-spending.js';
 export * from './us-police-spending.js';
 export * from './us-incarceration.js';
 export * from './us-gun-data.js';
+export * from './us-outcomes.js';
+export * from './us-budget-categories.js';
+
 
 
