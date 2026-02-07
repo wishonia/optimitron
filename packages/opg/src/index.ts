@@ -2,6 +2,7 @@
 export * from './welfare.js';
 export * from './jurisdiction.js';
 export * from './policy.js';
+export * from './policy-mapping.js';
 export * from './budget.js';
 export * from './bradford-hill.js';
 export * from './report.js';
