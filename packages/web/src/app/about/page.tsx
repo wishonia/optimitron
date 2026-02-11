@@ -7,7 +7,7 @@ const papers = [
   },
   {
     title: "Wishocracy",
-    desc: "RAPPA, eigenvector weights, Citizen Alignment Scores",
+    desc: "RAPPA pairwise preference aggregation, eigenvector weights",
     pkg: "@optomitron/wishocracy",
     href: "https://wishocracy.warondisease.org",
   },
@@ -23,12 +23,13 @@ const papers = [
     pkg: "@optomitron/obg",
     href: "https://obg.warondisease.org",
   },
-  {
-    title: "Incentive Alignment Bonds",
-    desc: "IAB mechanism, smart contract campaign funding",
-    pkg: "@optomitron/treasury",
-    href: "https://iab.warondisease.org",
-  },
+  // IAB paper hidden for now — Phase 4 (politician funding) not ready yet
+  // {
+  //   title: "Incentive Alignment Bonds",
+  //   desc: "IAB mechanism, smart contract campaign funding",
+  //   pkg: "@optomitron/treasury",
+  //   href: "https://iab.warondisease.org",
+  // },
   {
     title: "Optimocracy",
     desc: "Two-metric welfare function (shared by OPG + OBG)",
@@ -108,18 +109,38 @@ export default function AboutPage() {
       {/* How it works */}
       <section className="mb-16">
         <h2 className="section-title">Architecture</h2>
-        <div className="card font-mono text-sm text-black/60 overflow-x-auto bg-cyan-100">
-          <pre>{`
- ┌─────────────┐     ┌──────────────────┐     ┌──────────────────┐
- │  COLLECT     │     │  INFER           │     │  RECOMMEND       │
- │              │     │                  │     │                  │
- │  Health data │────▶│  Temporal        │────▶│  Personal optimal│
- │  Preferences │     │  alignment       │     │  values & doses  │
- │  Outcomes    │     │  Bradford Hill   │     │  Policy rankings │
- │  Spending    │     │  Effect sizes    │     │  Budget levels   │
- │  Policies    │     │  PIS scoring     │     │  Alignment scores│
- └─────────────┘     └──────────────────┘     └──────────────────┘`}
-          </pre>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 items-stretch">
+          {[
+            {
+              label: "COLLECT",
+              color: "bg-cyan-100",
+              items: ["Health data", "Preferences", "Outcomes", "Spending", "Policies"],
+            },
+            {
+              label: "INFER",
+              color: "bg-yellow-100",
+              items: ["Temporal alignment", "Bradford Hill", "Effect sizes", "PIS scoring"],
+            },
+            {
+              label: "RECOMMEND",
+              color: "bg-pink-100",
+              items: ["Policy rankings", "Budget levels", "Preference weights", "Optimal values"],
+            },
+          ].map((stage: { label: string; color: string; items: string[] }, i: number) => (
+            <div key={stage.label} className="flex items-stretch">
+              <div className={`card ${stage.color} flex-1`}>
+                <h3 className="text-black font-black text-sm uppercase mb-3">{stage.label}</h3>
+                <ul className="space-y-1">
+                  {stage.items.map((item: string) => (
+                    <li key={item} className="text-sm text-black/60 font-medium">{item}</li>
+                  ))}
+                </ul>
+              </div>
+              {i < 2 && (
+                <div className="hidden md:flex items-center px-2 text-black/40 text-2xl font-black">&rarr;</div>
+              )}
+            </div>
+          ))}
         </div>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-5 gap-3">
           {[

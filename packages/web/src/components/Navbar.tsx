@@ -10,7 +10,6 @@ const navLinks = [
   { href: "/misconceptions", label: "Myth vs Data" },
   { href: "/compare", label: "Compare Countries" },
   { href: "/vote", label: "Vote" },
-  // { href: "/politicians", label: "Politicians" }, // Hidden — looks too partisan
   { href: "/about", label: "About" },
 ];
 
