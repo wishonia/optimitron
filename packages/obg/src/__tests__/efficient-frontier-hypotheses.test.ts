@@ -4,7 +4,7 @@
  * These tests encode expected real-world findings using realistic data patterns:
  * - Japan and South Korea achieve good health outcomes at low spending (efficient)
  * - The US spends far more than the floor for comparable outcomes (inefficient)
- * - Defense spending shows diminishing returns above a modest floor
+ * - Military spending shows diminishing returns above a modest floor
  *
  * Uses all three new functions together: findMinimumEffectiveSpending,
  * efficientFrontier, and overspendRatio.
@@ -37,8 +37,8 @@ const healthDeciles: SpendingDecileCategory = {
 };
 
 const defenseDeciles: SpendingDecileCategory = {
-  categoryId: 'defense',
-  categoryName: 'Defense',
+  categoryId: 'military',
+  categoryName: 'Military',
   deciles: [
     { decile: 1, avgSpending: 50, outcome: 0.9 },    // Conflict risk (lower=better)
     { decile: 2, avgSpending: 200, outcome: 0.3 },
@@ -70,12 +70,12 @@ const healthCountries: EfficiencyCategory = {
 };
 
 const countrySpendingData: CountrySpending[] = [
-  { countryCode: 'JP', countryName: 'Japan', spending: { health: 3600, defense: 400 } },
-  { countryCode: 'KR', countryName: 'South Korea', spending: { health: 3200, defense: 750 } },
-  { countryCode: 'US', countryName: 'United States', spending: { health: 11000, defense: 2200 } },
-  { countryCode: 'SE', countryName: 'Sweden', spending: { health: 5800, defense: 600 } },
-  { countryCode: 'DE', countryName: 'Germany', spending: { health: 6700, defense: 500 } },
-  { countryCode: 'GB', countryName: 'United Kingdom', spending: { health: 4500, defense: 900 } },
+  { countryCode: 'JP', countryName: 'Japan', spending: { health: 3600, military: 400 } },
+  { countryCode: 'KR', countryName: 'South Korea', spending: { health: 3200, military: 750 } },
+  { countryCode: 'US', countryName: 'United States', spending: { health: 11000, military: 2200 } },
+  { countryCode: 'SE', countryName: 'Sweden', spending: { health: 5800, military: 600 } },
+  { countryCode: 'DE', countryName: 'Germany', spending: { health: 6700, military: 500 } },
+  { countryCode: 'GB', countryName: 'United Kingdom', spending: { health: 4500, military: 900 } },
 ];
 
 // ─── H1: Health spending has a low floor — more spending doesn't help ──

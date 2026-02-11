@@ -446,9 +446,9 @@
       ]
     },
     {
-      "name": "Defense Spending Efficiency Audit & Reform",
+      "name": "Military Spending Efficiency Audit & Reform",
       "type": "regulation",
-      "category": "defense",
+      "category": "military",
       "description": "Achieve clean DoD audit, reduce procurement waste, close redundant bases",
       "recommendationType": "replace",
       "evidenceGrade": "C",
@@ -579,5 +579,5 @@
     "Enact: National Clean Energy Standard (Grade B, welfare +40)",
     "Enact: Federal Incentives for Zoning Reform (Grade B, welfare +40)"
   ],
-  "generatedAt": "2026-02-11T06:13:14.954Z"
+  "generatedAt": "2026-02-11T06:47:28.912Z"
 }

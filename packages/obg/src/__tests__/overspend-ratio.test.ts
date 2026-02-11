@@ -17,8 +17,8 @@ describe('overspendRatio', () => {
       outcomeGap: 1,
     },
     {
-      categoryId: 'defense',
-      categoryName: 'Defense',
+      categoryId: 'military',
+      categoryName: 'Military',
       floorDecile: 2,
       floorSpending: 500,
       floorOutcome: 0.5,
@@ -33,17 +33,17 @@ describe('overspendRatio', () => {
     {
       countryCode: 'US',
       countryName: 'United States',
-      spending: { health: 10000, defense: 1800 },
+      spending: { health: 10000, military: 1800 },
     },
     {
       countryCode: 'JP',
       countryName: 'Japan',
-      spending: { health: 4000, defense: 400 },
+      spending: { health: 4000, military: 400 },
     },
     {
       countryCode: 'KR',
       countryName: 'South Korea',
-      spending: { health: 2800, defense: 600 },
+      spending: { health: 2800, military: 600 },
     },
   ];
 
@@ -51,7 +51,7 @@ describe('overspendRatio', () => {
     const results = overspendRatio(floors, countries);
     expect(results.byCategory).toHaveLength(2);
     expect(results.byCategory[0]!.categoryId).toBe('health');
-    expect(results.byCategory[1]!.categoryId).toBe('defense');
+    expect(results.byCategory[1]!.categoryId).toBe('military');
   });
 
   it('US shows high overspend on healthcare', () => {
@@ -126,9 +126,9 @@ describe('overspendRatio', () => {
     expect(results.byCategory[0]!.avgOverspendRatio).toBe(0);
   });
 
-  it('handles defense category with US high spender', () => {
+  it('handles military category with US high spender', () => {
     const results = overspendRatio(floors, countries);
-    const defense = results.byCategory.find((r) => r.categoryId === 'defense')!;
+    const defense = results.byCategory.find((r) => r.categoryId === 'military')!;
     const us = defense.countries.find((c) => c.countryCode === 'US')!;
     expect(us.overspendRatio).toBe(3.6);
     expect(us.excessSpending).toBe(1300);

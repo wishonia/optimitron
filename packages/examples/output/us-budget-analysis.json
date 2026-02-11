@@ -149,7 +149,7 @@
       ]
     },
     {
-      "name": "Defense",
+      "name": "Military",
       "currentSpending": 886000000000,
       "optimalSpending": 166992000000,
       "gap": -719008000000,
@@ -255,27 +255,6 @@
           "name": "Clean Water Access %",
           "value": 99.2,
           "trend": "stable"
-        }
-      ]
-    },
-    {
-      "name": "Veterans Benefits",
-      "currentSpending": 270000000000,
-      "optimalSpending": 235796334012.21994,
-      "gap": -34203665987.78006,
-      "gapPercent": -12.66802443991854,
-      "marginalReturn": 0.017487632738840277,
-      "recommendation": "decrease",
-      "outcomeMetrics": [
-        {
-          "name": "Veteran Unemployment Rate",
-          "value": 3.5,
-          "trend": "decreasing"
-        },
-        {
-          "name": "VA Healthcare Satisfaction",
-          "value": 67,
-          "trend": "increasing"
         }
       ]
     },
@@ -393,6 +372,27 @@
           "trend": "increasing"
         }
       ]
+    },
+    {
+      "name": "Veterans Benefits",
+      "currentSpending": 270000000000,
+      "optimalSpending": 270000000000,
+      "gap": 0,
+      "gapPercent": 0,
+      "marginalReturn": 0,
+      "recommendation": "maintain",
+      "outcomeMetrics": [
+        {
+          "name": "Veteran Unemployment Rate",
+          "value": 3.5,
+          "trend": "decreasing"
+        },
+        {
+          "name": "VA Healthcare Satisfaction",
+          "value": 67,
+          "trend": "increasing"
+        }
+      ]
     }
   ],
   "topRecommendations": [
@@ -402,10 +402,10 @@
     "Increase Education by $1207.9B (+507.5%)",
     "Increase Transportation & Infrastructure by $495.1B (+294.7%)",
     "Increase Science & Space (NASA, NSF) by $380.0B (+469.2%)",
-    "Decrease Defense by $719.0B (-81.2%)",
+    "Decrease Military by $719.0B (-81.2%)",
     "Increase Community & Regional Development by $61.8B (+150.8%)",
     "Increase Energy Programs by $50.4B (+93.4%)",
     "Increase International Affairs & Aid by $80.4B (+118.2%)"
   ],
-  "generatedAt": "2026-02-11T06:38:20.130Z"
+  "generatedAt": "2026-02-11T06:47:09.714Z"
 }

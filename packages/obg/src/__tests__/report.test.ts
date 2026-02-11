@@ -64,19 +64,19 @@ function makeFullResult(overrides: Partial<BudgetOptimizationResult> = {}): Budg
   const education = makeCategoryAnalysis();
   const defense = makeCategoryAnalysis({
     category: makeCategory({
-      id: 'defense',
+      id: 'military',
       name: 'Military',
       spendingType: 'program',
       currentSpendingUsd: 850_000_000_000,
     }),
     oslEstimate: makeOSL({
-      categoryId: 'defense',
+      categoryId: 'military',
       oslUsd: 459_000_000_000,
       evidenceGrade: 'C',
       budgetImpactScore: 0.50,
     }),
     gap: makeGap({
-      categoryId: 'defense',
+      categoryId: 'military',
       categoryName: 'Military',
       currentSpendingUsd: 850_000_000_000,
       oslUsd: 459_000_000_000,

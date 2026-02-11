@@ -47,8 +47,8 @@ const SPENDING_CATEGORIES: SpendingDecileCategory[] = [
     ],
   },
   {
-    categoryId: 'defense',
-    categoryName: 'Defense',
+    categoryId: 'military',
+    categoryName: 'Military',
     deciles: [
       { decile: 1, avgSpending: 180, outcome: 1.8 },     // Conflict incidents per 100k
       { decile: 2, avgSpending: 350, outcome: 0.9 },
@@ -137,16 +137,16 @@ const HEALTH_COUNTRIES: EfficiencyCategory = {
 };
 
 const COUNTRY_SPENDING: CountrySpending[] = [
-  { countryCode: 'JP', countryName: 'Japan', spending: { health: 3400, defense: 400, education: 2400, social_protection: 5200, rd: 1100 } },
-  { countryCode: 'KR', countryName: 'South Korea', spending: { health: 2400, defense: 750, education: 2600, social_protection: 2800, rd: 1400 } },
-  { countryCode: 'ES', countryName: 'Spain', spending: { health: 2800, defense: 320, education: 2000, social_protection: 5600, rd: 400 } },
-  { countryCode: 'SE', countryName: 'Sweden', spending: { health: 5200, defense: 600, education: 3400, social_protection: 8200, rd: 1200 } },
-  { countryCode: 'DE', countryName: 'Germany', spending: { health: 5800, defense: 520, education: 2800, social_protection: 7600, rd: 1100 } },
-  { countryCode: 'GB', countryName: 'United Kingdom', spending: { health: 3800, defense: 900, education: 2600, social_protection: 5800, rd: 600 } },
-  { countryCode: 'FR', countryName: 'France', spending: { health: 4100, defense: 680, education: 2400, social_protection: 8000, rd: 800 } },
-  { countryCode: 'US', countryName: 'United States', spending: { health: 10200, defense: 2400, education: 3200, social_protection: 4200, rd: 1800 } },
-  { countryCode: 'CA', countryName: 'Canada', spending: { health: 4300, defense: 450, education: 2800, social_protection: 4800, rd: 500 } },
-  { countryCode: 'AU', countryName: 'Australia', spending: { health: 4400, defense: 550, education: 3000, social_protection: 5000, rd: 600 } },
+  { countryCode: 'JP', countryName: 'Japan', spending: { health: 3400, military: 400, education: 2400, social_protection: 5200, rd: 1100 } },
+  { countryCode: 'KR', countryName: 'South Korea', spending: { health: 2400, military: 750, education: 2600, social_protection: 2800, rd: 1400 } },
+  { countryCode: 'ES', countryName: 'Spain', spending: { health: 2800, military: 320, education: 2000, social_protection: 5600, rd: 400 } },
+  { countryCode: 'SE', countryName: 'Sweden', spending: { health: 5200, military: 600, education: 3400, social_protection: 8200, rd: 1200 } },
+  { countryCode: 'DE', countryName: 'Germany', spending: { health: 5800, military: 520, education: 2800, social_protection: 7600, rd: 1100 } },
+  { countryCode: 'GB', countryName: 'United Kingdom', spending: { health: 3800, military: 900, education: 2600, social_protection: 5800, rd: 600 } },
+  { countryCode: 'FR', countryName: 'France', spending: { health: 4100, military: 680, education: 2400, social_protection: 8000, rd: 800 } },
+  { countryCode: 'US', countryName: 'United States', spending: { health: 10200, military: 2400, education: 3200, social_protection: 4200, rd: 1800 } },
+  { countryCode: 'CA', countryName: 'Canada', spending: { health: 4300, military: 450, education: 2800, social_protection: 4800, rd: 500 } },
+  { countryCode: 'AU', countryName: 'Australia', spending: { health: 4400, military: 550, education: 3000, social_protection: 5000, rd: 600 } },
 ];
 
 // ---------------------------------------------------------------------------
@@ -154,16 +154,16 @@ const COUNTRY_SPENDING: CountrySpending[] = [
 // ---------------------------------------------------------------------------
 
 const healthFloors = findMinimumEffectiveSpending(
-  SPENDING_CATEGORIES.filter(c => c.categoryId !== 'defense'),
+  SPENDING_CATEGORIES.filter(c => c.categoryId !== 'military'),
   { outcomeTolerance: 2, outcomeDirection: 'higher' },
 );
 
-const defenseFloors = findMinimumEffectiveSpending(
-  SPENDING_CATEGORIES.filter(c => c.categoryId === 'defense'),
+const militaryFloors = findMinimumEffectiveSpending(
+  SPENDING_CATEGORIES.filter(c => c.categoryId === 'military'),
   { outcomeTolerance: 0.1, outcomeDirection: 'lower' },
 );
 
-const allFloors = [...healthFloors, ...defenseFloors];
+const allFloors = [...healthFloors, ...militaryFloors];
 
 const frontierResults = efficientFrontier([HEALTH_COUNTRIES]);
 
@@ -262,7 +262,7 @@ function generateReport(): string {
   // US-specific summary
   const usHealth = overspendResults.find(r => r.categoryId === 'health')
     ?.countries.find(c => c.countryCode === 'US');
-  const usDefense = overspendResults.find(r => r.categoryId === 'defense')
+  const _usMilitary = overspendResults.find(r => r.categoryId === 'military')
     ?.countries.find(c => c.countryCode === 'US');
 
   lines.push('## US Summary');
@@ -293,7 +293,7 @@ function generateReport(): string {
   lines.push('');
   lines.push('1. **Healthcare:** Restructure toward efficiency, not volume. Countries spending');
   lines.push('   $2,800-4,000/capita achieve better outcomes than the US at $10,200/capita.');
-  lines.push('2. **Defense:** Diminishing returns are steep above ~$520/capita. The US spends');
+  lines.push('2. **Military:** Diminishing returns are steep above ~$520/capita. The US spends');
   lines.push('   4.6x the floor for marginal security improvements.');
   lines.push('3. **Education:** PISA scores peak at ~$2,000/capita and *decline* with higher');
   lines.push('   spending. The US spends 60% more than the optimal level.');
@@ -308,7 +308,7 @@ function generateReport(): string {
   lines.push('');
   lines.push('- Cross-country comparisons cannot establish causation; institutional differences matter.');
   lines.push('- Decile analysis averages over heterogeneous countries within each bin.');
-  lines.push('- PPP adjustments are imperfect for healthcare and defense spending.');
+  lines.push('- PPP adjustments are imperfect for healthcare and military spending.');
   lines.push('- The "floor" depends on tolerance parameter choice (±2 outcome units used here).');
   lines.push('- Spending composition matters as much as level — this analysis addresses level only.');
   lines.push('- US healthcare spending includes large private component; government-only comparisons differ.');

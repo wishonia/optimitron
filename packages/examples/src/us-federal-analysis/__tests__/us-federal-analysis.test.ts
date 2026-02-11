@@ -100,12 +100,12 @@ describe('Budget Analysis JSON', () => {
     expect(date.getTime()).not.toBeNaN();
   });
 
-  it('should include Defense as a category', () => {
-    const defense = budgetJson.categories.find(
-      (c: any) => c.name.includes('Defense'),
+  it('should include Military as a category', () => {
+    const military = budgetJson.categories.find(
+      (c: any) => c.name.includes('Military'),
     );
-    expect(defense).toBeDefined();
-    expect(defense.currentSpending).toBeGreaterThan(500_000_000_000);
+    expect(military).toBeDefined();
+    expect(military.currentSpending).toBeGreaterThan(500_000_000_000);
   });
 
   it('should include Social Security as a category', () => {

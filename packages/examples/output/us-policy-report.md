@@ -26,7 +26,7 @@ Actions: 8 enact, 7 modify, 4 repeal, 0 maintain.
 | 12 | Shift Drug Policy from Criminal to Health Approach | Modify | 35.0 | C (Possible association) | Moderate |
 | 13 | Occupational Licensing Reform | Enact | 27.0 | B (Probable causal relationship) | High |
 | 14 | NEPA & Permitting Reform | Enact | 25.0 | C (Possible association) | Moderate |
-| 15 | Defense Spending Efficiency Audit & Reform | Modify | 17.0 | C (Possible association) | Moderate |
+| 15 | Military Spending Efficiency Audit & Reform | Modify | 17.0 | C (Possible association) | Moderate |
 | 16 | Penny Coin Continuation | Repeal | -1.0 | D (Weak evidence) | Low |
 | 17 | Ethanol Fuel Mandate (Renewable Fuel Standard) | Repeal | -3.0 | D (Weak evidence) | Low |
 | 18 | Abstinence-Only Sex Education | Repeal | -10.0 | D (Weak evidence) | Low |
@@ -272,7 +272,7 @@ Actions: 8 enact, 7 modify, 4 repeal, 0 maintain.
 | Analogy | 0.65 | Moderate |
 | Specificity | 0.42 | Weak |
 
-### Defense Spending Efficiency Audit & Reform
+### Military Spending Efficiency Audit & Reform
 
 **Evidence Grade:** C — Possible association
 **Causal Confidence Score:** 0.44 (Moderate)
@@ -443,7 +443,7 @@ Actions: 8 enact, 7 modify, 4 repeal, 0 maintain.
    - Current: Federal mandatory minimums for drug possession/distribution → Recommended: Repeal mandatory minimums; redirect to treatment (Portugal model)
    - Blocking factors: political
    - Causal confidence: Low (0.33)
-16. **Modify: Defense Spending Efficiency Audit & Reform** — Possible association (Grade C), welfare impact: 17.0
+16. **Modify: Military Spending Efficiency Audit & Reform** — Possible association (Grade C), welfare impact: 17.0
    - Priority score: 5.68; Policy impact score: 0.33
    - GAO estimates $100-200B in potential savings. Allied nations achieve comparable readiness at lower cost.
    - Current: DoD has failed 6 consecutive audits → Recommended: Clean audit by 2028, 5% efficiency savings

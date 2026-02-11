@@ -167,8 +167,8 @@ const CATEGORIES: CategorySeed[] = [
     ],
   },
   {
-    id: 'defense',
-    name: 'Defense',
+    id: 'military',
+    name: 'Military',
     spendingBillions: 886,
     spendingType: 'program',
     // Per-capita spending. US spends ~$2,637/cap — far above peers.
@@ -243,17 +243,9 @@ const CATEGORIES: CategorySeed[] = [
     name: 'Veterans Benefits',
     spendingBillions: 270,
     spendingType: 'program',
-    // ESTIMATED outcome scores — no OECD mapping; hand-constructed estimates
-    historicalData: [
-      { spending: 500, outcome: 58, jurisdiction: 'US', year: 2020 },
-      { spending: 600, outcome: 62, jurisdiction: 'US', year: 2022 },
-      { spending: 720, outcome: 65, jurisdiction: 'US', year: 2024 },
-      { spending: 804, outcome: 67, jurisdiction: 'US', year: 2025 },
-      { spending: 300, outcome: 55, jurisdiction: 'UK', year: 2023 },
-      { spending: 250, outcome: 50, jurisdiction: 'CA', year: 2023 },
-      { spending: 400, outcome: 60, jurisdiction: 'AU', year: 2023 },
-      { spending: 150, outcome: 42, jurisdiction: 'KR', year: 2023 },
-    ],
+    discretionary: false,
+    // Non-discretionary: legally mandated entitlements. Analysis skipped.
+    historicalData: [],
     effectEstimates: [
       { beta: 0.30, standardError: 0.10, method: 'before_after', year: 2021 },
       { beta: 0.35, standardError: 0.12, method: 'event_study', year: 2019 },
@@ -794,7 +786,7 @@ const OECD_DATA_MAPPINGS: Record<string, {
 }> = {
   medicare: { spendingField: 'healthSpendingPerCapitaPpp', outcomeField: 'lifeExpectancyYears' },
   medicaid: { spendingField: 'healthSpendingPerCapitaPpp', outcomeField: 'infantMortalityPer1000', negateOutcome: true },
-  defense: { spendingField: 'militarySpendingPerCapitaPpp', outcomeField: 'lifeExpectancyYears' },
+  military: { spendingField: 'militarySpendingPerCapitaPpp', outcomeField: 'lifeExpectancyYears' },
   social_security: { spendingField: 'socialSpendingPerCapitaPpp', outcomeField: 'lifeExpectancyYears' },
   income_security: { spendingField: 'socialSpendingPerCapitaPpp', outcomeField: 'giniIndex', negateOutcome: true },
   science_space: { spendingField: 'rdSpendingPerCapitaPpp', outcomeField: 'gdpPerCapitaPpp' },

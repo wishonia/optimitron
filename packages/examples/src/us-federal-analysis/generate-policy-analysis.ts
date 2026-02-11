@@ -518,9 +518,9 @@ const POLICIES: PolicySeed[] = [
   },
   {
     id: 'defense_audit',
-    name: 'Defense Spending Efficiency Audit & Reform',
+    name: 'Military Spending Efficiency Audit & Reform',
     type: 'regulation',
-    categoryId: 'defense',
+    categoryId: 'military',
     description: 'Achieve clean DoD audit, reduce procurement waste, close redundant bases',
     isContinuous: false,
     standardizedEffect: 0.20,
