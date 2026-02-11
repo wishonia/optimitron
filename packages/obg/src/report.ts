@@ -117,6 +117,20 @@ function describeAction(action: string, categoryName: string, gapUsd: number, ga
 }
 
 /**
+ * Map recommendation actions to concise labels.
+ */
+function actionLabel(action: string): string {
+  switch (action) {
+    case 'scale_up': return 'Scale up';
+    case 'increase': return 'Increase';
+    case 'maintain': return 'Maintain';
+    case 'decrease': return 'Decrease';
+    case 'eliminate': return 'Eliminate';
+    default: return 'Adjust';
+  }
+}
+
+/**
  * Describe the evidence grade.
  */
 function describeGrade(grade: string): string {
@@ -175,17 +189,18 @@ export function generateBudgetReport(analysis: BudgetOptimizationResult): string
   );
   lines.push('');
   lines.push(`- **Jurisdiction:** ${analysis.jurisdictionName} (${analysis.jurisdictionId})`);
-  lines.push(`- **Fiscal Year:** ${analysis.fiscalYear}`);
-  lines.push(`- **Total Current Budget:** ${formatUsd(analysis.totalBudgetUsd)}`);
-  lines.push(`- **Total Optimal Budget:** ${formatUsd(analysis.totalOptimalUsd)}`);
-  lines.push('');
+      lines.push(`- **Fiscal Year:** ${analysis.fiscalYear}`);
+      lines.push(`- **Total Current Budget:** ${formatUsd(analysis.totalBudgetUsd)}`);
+      lines.push(`- **Total Optimal Budget:** ${formatUsd(analysis.totalOptimalUsd)}`);
+      lines.push(`- **Budget Delta (Optimal - Current):** ${formatGapUsd(analysis.totalOptimalUsd - analysis.totalBudgetUsd)}`);
+      lines.push('');
 
   // --- Current vs Optimal Allocation ---
   if (analysis.categories.length > 0) {
     lines.push('## Current vs Optimal Allocation');
     lines.push('');
-    lines.push('| Category | Current ($) | Current (%) | Optimal ($) | Optimal (%) | Gap |');
-    lines.push('|----------|------------|-------------|------------|-------------|-----|');
+    lines.push('| Category | Current ($) | Current (%) | Optimal ($) | Optimal (%) | Gap ($) | Gap (%) | Action | Evidence |');
+    lines.push('|----------|------------|-------------|------------|-------------|---------|---------|--------|----------|');
 
     const sortedByGap = [...analysis.categories].sort(
       (a, b) => Math.abs(b.gap.gapUsd) - Math.abs(a.gap.gapUsd)
@@ -205,7 +220,10 @@ export function generateBudgetReport(analysis: BudgetOptimizationResult): string
         `| ${formatNum(currentPct)}% ` +
         `| ${formatUsd(cat.oslEstimate.oslUsd)} ` +
         `| ${formatNum(optimalPct)}% ` +
-        `| ${formatGapUsd(cat.gap.gapUsd)} |`
+        `| ${formatGapUsd(cat.gap.gapUsd)} ` +
+        `| ${formatPct(cat.gap.gapPct)} ` +
+        `| ${actionLabel(cat.gap.recommendedAction)} ` +
+        `| ${cat.oslEstimate.evidenceGrade} (${describeGrade(cat.oslEstimate.evidenceGrade)}) |`
       );
     }
     lines.push('');
@@ -266,6 +284,14 @@ export function generateBudgetReport(analysis: BudgetOptimizationResult): string
           cat.gap.gapPct
         );
         lines.push(`${i + 1}. ${desc}`);
+        lines.push(
+          `   - Priority score: ${formatNum(cat.gap.priorityScore, 2)}; ` +
+          `BIS: ${formatNum(cat.oslEstimate.budgetImpactScore, 2)}; ` +
+          `Evidence: ${cat.oslEstimate.evidenceGrade} (${describeGrade(cat.oslEstimate.evidenceGrade)})`
+        );
+        if (cat.marginalReturn !== undefined) {
+          lines.push(`   - Marginal return: ${formatNum(cat.marginalReturn, 4)}`);
+        }
       }
       lines.push('');
     }
@@ -274,6 +300,40 @@ export function generateBudgetReport(analysis: BudgetOptimizationResult): string
       lines.push('**Already near optimal:**');
       for (const cat of maintained) {
         lines.push(`- ${cat.gap.categoryName}`);
+      }
+      lines.push('');
+    }
+  }
+
+  // --- Efficient Frontier ---
+  lines.push('## Efficient Frontier (Reallocation Priority)');
+  lines.push('');
+
+  if (analysis.categories.length === 0) {
+    lines.push('No categories available for frontier ranking.');
+    lines.push('');
+  } else {
+    const frontier = [...analysis.categories]
+      .filter((c) => c.gap.recommendedAction !== 'maintain')
+      .sort((a, b) => b.gap.priorityScore - a.gap.priorityScore);
+
+    if (frontier.length === 0) {
+      lines.push('Current allocation is already near the efficient frontier.');
+      lines.push('');
+    } else {
+      lines.push('| Rank | Category | Reallocation Move | Priority Score | Gap ($) | BIS | Evidence |');
+      lines.push('|------|----------|-------------------|----------------|---------|-----|----------|');
+      for (let i = 0; i < frontier.length; i++) {
+        const cat = frontier[i]!;
+        lines.push(
+          `| ${i + 1} ` +
+          `| ${cat.category.name} ` +
+          `| ${actionLabel(cat.gap.recommendedAction)} ` +
+          `| ${formatNum(cat.gap.priorityScore, 2)} ` +
+          `| ${formatGapUsd(cat.gap.gapUsd)} ` +
+          `| ${formatNum(cat.oslEstimate.budgetImpactScore, 2)} ` +
+          `| ${cat.oslEstimate.evidenceGrade} (${describeGrade(cat.oslEstimate.evidenceGrade)}) |`
+        );
       }
       lines.push('');
     }

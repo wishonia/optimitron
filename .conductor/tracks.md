@@ -2,8 +2,10 @@
 
 | ID | Title | Status | Priority | Owner | Updated |
 | --- | --- | --- | --- | --- | --- |
-| optimal-budget-v2 | OBG Minimum Effective Spending + Efficient Frontier | **active** | **P0 #1** | wishonia | 2026-02-07 |
-| opg-core-v1 | OPG Evidence + Policy Scoring Expansion | active | P0 #2 | wishonia | 2026-02-07 |
+| policy-evaluation-v1 | 3-Layer Policy Evaluation Pipeline | **active** | **P0 #1** | wishonia | 2026-02-07 |
+| optimal-budget-v2 | OBG Minimum Effective Spending + Efficient Frontier | **done** | - | wishonia | 2026-02-07 |
+| opg-core-v1 | OPG Evidence + Policy Scoring Expansion | **done** | - | wishonia | 2026-02-07 |
+| report-quality-v1 | OPG/OBG Markdown Report Quality Improvements | **done** | P1 | wishonia | 2026-02-07 |
 | data-infrastructure-v2 | OECD + Direct Outcomes + FRED Improvements | active | P1 | wishonia | 2026-02-07 |
 | testing-strategy-v1 | Hypothesis-Driven Tests for Findings | active | P1 | wishonia | 2026-02-07 |
 | optimizer-core-v2 | Partial Correlations + Diminishing Returns | **paused** | P2 | wishonia | 2026-02-07 |

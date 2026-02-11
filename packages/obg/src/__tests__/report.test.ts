@@ -181,7 +181,7 @@ describe('generateBudgetReport', () => {
   it('contains current vs optimal allocation table', () => {
     const report = generateBudgetReport(makeFullResult());
     expect(report).toContain('## Current vs Optimal Allocation');
-    expect(report).toContain('| Category | Current ($) | Current (%) | Optimal ($) | Optimal (%) | Gap |');
+    expect(report).toContain('| Category | Current ($) | Current (%) | Optimal ($) | Optimal (%) | Gap ($) | Gap (%) | Action | Evidence |');
     expect(report).toContain('Education');
     expect(report).toContain('Military');
     expect(report).toContain('Healthcare');
@@ -235,6 +235,8 @@ describe('generateBudgetReport', () => {
     expect(report).toContain('## Top Recommendations');
     expect(report).toContain('Increase Education');
     expect(report).toContain('Decrease Military');
+    expect(report).toContain('Priority score: 195500000000');
+    expect(report).toContain('Evidence: C (Moderate evidence)');
   });
 
   it('sorts recommendations by priority score', () => {
@@ -265,6 +267,13 @@ describe('generateBudgetReport', () => {
     expect(report).toContain('## Budget Impact Scores');
     expect(report).toContain('| Category | BIS | Grade');
     expect(report).toContain('Strong evidence');
+  });
+
+  it('contains efficient frontier reallocation table', () => {
+    const report = generateBudgetReport(makeFullResult());
+    expect(report).toContain('## Efficient Frontier (Reallocation Priority)');
+    expect(report).toContain('| Rank | Category | Reallocation Move | Priority Score | Gap ($) | BIS | Evidence |');
+    expect(report).toContain('| 1 | Military | Decrease');
   });
 
   it('sorts BIS table by score descending', () => {
@@ -333,6 +342,7 @@ describe('generateBudgetReport', () => {
     const result = makeFullResult({ categories: [maintained] });
     const report = generateBudgetReport(result);
     expect(report).toContain('All categories are at or near optimal spending levels');
+    expect(report).toContain('Current allocation is already near the efficient frontier');
   });
 
   it('handles scale_up recommendation', () => {
@@ -394,7 +404,7 @@ describe('generateBudgetReport', () => {
       if (line.startsWith('|') && line.endsWith('|')) {
         // Table rows should have consistent pipe count
         const pipeCount = (line.match(/\|/g) || []).length;
-        expect(pipeCount).toBeGreaterThanOrEqual(2);
+        expect(pipeCount).toBeGreaterThanOrEqual(4);
       }
     }
   });

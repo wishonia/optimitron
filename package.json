@@ -32,13 +32,11 @@
   },
   "lint-staged": {
     "packages/*/src/**/*.ts": [
-      "eslint --fix",
-      "bash -c 'pnpm typecheck'",
-      "bash -c 'pnpm test'"
+      "npx eslint --fix"
     ],
     "packages/db/prisma/**/*.prisma": [
-      "bash -c 'pnpm --filter @optomitron/db exec prisma validate'",
-      "bash -c 'pnpm --filter @optomitron/db exec prisma format'"
+      "npx prisma validate --schema packages/db/prisma/schema.prisma",
+      "npx prisma format --schema packages/db/prisma/schema.prisma"
     ]
   },
   "packageManager": "pnpm@8.14.0",

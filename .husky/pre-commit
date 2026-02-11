@@ -15,7 +15,6 @@ if [ -z "$STAGED_FILES" ]; then
 fi
 
 # Check for common secret patterns in staged file contents
-FOUND=0
 PATTERNS="AKIA[0-9A-Z]{16}|sk-ant-api|ghp_[a-zA-Z0-9]{36}|xox[baprs]-[a-zA-Z0-9]|-----BEGIN.*PRIVATE KEY"
 
 MATCHES=$(echo "$STAGED_FILES" | xargs grep -lE "$PATTERNS" 2>/dev/null || true)
@@ -32,4 +31,6 @@ fi
 echo "✅ No secrets found"
 
 # 2. Run lint-staged
-npx lint-staged
+# Add node_modules/.bin to PATH so lint-staged can find eslint, tsc, etc.
+export PATH="./node_modules/.bin:$PATH"
+node ./node_modules/lint-staged/bin/lint-staged.js

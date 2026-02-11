@@ -231,4 +231,4 @@ Follow conventional commits:
 
 ## Contact
 
-This repo is owned by Mike P. Sinn (@mikepsinn). If you need clarification on methodology, reference the papers above or ask via Telegram.
+Email me at mike@warondisease.org.

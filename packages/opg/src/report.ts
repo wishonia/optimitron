@@ -91,10 +91,18 @@ function welfareScore(rec: PolicyRecommendation): number {
  */
 function describeBHScore(score: number | null | undefined): string {
   if (score === null || score === undefined) return 'N/A';
-  if (score >= 0.8) return `${fmt(score, 2)} (Strong)`;
-  if (score >= 0.5) return `${fmt(score, 2)} (Moderate)`;
-  if (score >= 0.2) return `${fmt(score, 2)} (Weak)`;
-  return `${fmt(score, 2)} (Minimal)`;
+  return fmt(score, 2);
+}
+
+/**
+ * Describe Bradford Hill criterion strength label.
+ */
+function describeBHAssessment(score: number | null | undefined): string {
+  if (score === null || score === undefined) return 'Not available';
+  if (score >= 0.8) return 'Strong';
+  if (score >= 0.5) return 'Moderate';
+  if (score >= 0.2) return 'Weak';
+  return 'Minimal';
 }
 
 /**
@@ -103,6 +111,31 @@ function describeBHScore(score: number | null | undefined): string {
 function formatBlockingFactors(factors?: string[]): string {
   if (!factors || factors.length === 0) return 'None identified';
   return factors.map(f => f.replace(/_/g, ' ')).join(', ');
+}
+
+/**
+ * Summarize recommendation counts.
+ */
+function recommendationCounts(policies: PolicyAnalysis[]): {
+  enact: number;
+  replace: number;
+  repeal: number;
+  maintain: number;
+} {
+  let enact = 0;
+  let replace = 0;
+  let repeal = 0;
+  let maintain = 0;
+  for (const { recommendation } of policies) {
+    switch (recommendation.recommendationType) {
+      case 'enact': enact += 1; break;
+      case 'replace': replace += 1; break;
+      case 'repeal': repeal += 1; break;
+      case 'maintain': maintain += 1; break;
+      default: break;
+    }
+  }
+  return { enact, replace, repeal, maintain };
 }
 
 // ---------------------------------------------------------------------------
@@ -141,6 +174,13 @@ export function generatePolicyReport(analysis: PolicyRankingResult): string {
   if (analysis.overallWelfareScore !== undefined) {
     lines.push(`Overall welfare score: **${fmt(analysis.overallWelfareScore)}**.`);
   }
+  if (policies.length > 0) {
+    const counts = recommendationCounts(policies);
+    lines.push(
+      `Actions: ${counts.enact} enact, ${counts.replace} modify, ` +
+      `${counts.repeal} repeal, ${counts.maintain} maintain.`
+    );
+  }
   lines.push('');
 
   // --- Top Policies by Welfare Impact ---
@@ -152,8 +192,8 @@ export function generatePolicyReport(analysis: PolicyRankingResult): string {
 
     lines.push('## Top Policies by Welfare Impact');
     lines.push('');
-    lines.push('| Rank | Policy | Welfare Score | Evidence Grade | Causal Confidence |');
-    lines.push('|------|--------|--------------|----------------|-------------------|');
+    lines.push('| Rank | Policy | Recommendation | Welfare Score | Evidence | Causal Confidence |');
+    lines.push('|------|--------|----------------|--------------|----------|-------------------|');
 
     for (let i = 0; i < ranked.length; i++) {
       const p = ranked[i]!;
@@ -164,8 +204,9 @@ export function generatePolicyReport(analysis: PolicyRankingResult): string {
       lines.push(
         `| ${i + 1} ` +
         `| ${p.policy.name} ` +
+        `| ${describeRecommendationType(p.recommendation.recommendationType)} ` +
         `| ${fmt(ws)} ` +
-        `| ${grade} ` +
+        `| ${grade} (${describeGrade(grade)}) ` +
         `| ${confidence} |`
       );
     }
@@ -188,15 +229,15 @@ export function generatePolicyReport(analysis: PolicyRankingResult): string {
         lines.push('');
         lines.push('| Criterion | Score | Assessment |');
         lines.push('|-----------|-------|------------|');
-        lines.push(`| Strength | ${describeBHScore(bh.strength)} |`);
-        lines.push(`| Consistency | ${describeBHScore(bh.consistency)} |`);
-        lines.push(`| Temporality | ${describeBHScore(bh.temporality)} |`);
-        lines.push(`| Gradient | ${describeBHScore(bh.gradient)} |`);
-        lines.push(`| Experiment | ${describeBHScore(bh.experiment)} |`);
-        lines.push(`| Plausibility | ${describeBHScore(bh.plausibility)} |`);
-        lines.push(`| Coherence | ${describeBHScore(bh.coherence)} |`);
-        lines.push(`| Analogy | ${describeBHScore(bh.analogy)} |`);
-        lines.push(`| Specificity | ${describeBHScore(bh.specificity)} |`);
+        lines.push(`| Strength | ${describeBHScore(bh.strength)} | ${describeBHAssessment(bh.strength)} |`);
+        lines.push(`| Consistency | ${describeBHScore(bh.consistency)} | ${describeBHAssessment(bh.consistency)} |`);
+        lines.push(`| Temporality | ${describeBHScore(bh.temporality)} | ${describeBHAssessment(bh.temporality)} |`);
+        lines.push(`| Gradient | ${describeBHScore(bh.gradient)} | ${describeBHAssessment(bh.gradient)} |`);
+        lines.push(`| Experiment | ${describeBHScore(bh.experiment)} | ${describeBHAssessment(bh.experiment)} |`);
+        lines.push(`| Plausibility | ${describeBHScore(bh.plausibility)} | ${describeBHAssessment(bh.plausibility)} |`);
+        lines.push(`| Coherence | ${describeBHScore(bh.coherence)} | ${describeBHAssessment(bh.coherence)} |`);
+        lines.push(`| Analogy | ${describeBHScore(bh.analogy)} | ${describeBHAssessment(bh.analogy)} |`);
+        lines.push(`| Specificity | ${describeBHScore(bh.specificity)} | ${describeBHAssessment(bh.specificity)} |`);
         lines.push('');
       }
     } else {
@@ -237,6 +278,7 @@ export function generatePolicyReport(analysis: PolicyRankingResult): string {
             `${describeGrade(grade)} (Grade ${grade}), ` +
             `welfare impact: ${fmt(ws)}`
           );
+          lines.push(`   - Priority score: ${fmt(rec.priorityScore, 2)}; Policy impact score: ${fmt(rec.policyImpactScore, 2)}`);
 
           if (rec.rationale) {
             lines.push(`   - ${rec.rationale}`);
@@ -247,8 +289,11 @@ export function generatePolicyReport(analysis: PolicyRankingResult): string {
           if (rec.blockingFactors && rec.blockingFactors.length > 0) {
             lines.push(`   - Blocking factors: ${formatBlockingFactors(rec.blockingFactors)}`);
           }
+          if (rec.similarJurisdictions && rec.similarJurisdictions.length > 0) {
+            lines.push(`   - Similar jurisdictions: ${rec.similarJurisdictions.join(', ')}`);
+          }
           if (confidence !== '—') {
-            lines.push(`   - Causal confidence: ${confidence}`);
+            lines.push(`   - Causal confidence: ${confidence} (${fmt(p.causalConfidenceScore ?? NaN, 2)})`);
           }
         }
         lines.push('');

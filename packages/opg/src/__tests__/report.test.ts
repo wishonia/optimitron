@@ -173,7 +173,7 @@ describe('generatePolicyReport', () => {
   it('contains top policies welfare impact table', () => {
     const report = generatePolicyReport(makeFullResult());
     expect(report).toContain('## Top Policies by Welfare Impact');
-    expect(report).toContain('| Rank | Policy | Welfare Score | Evidence Grade | Causal Confidence |');
+    expect(report).toContain('| Rank | Policy | Recommendation | Welfare Score | Evidence | Causal Confidence |');
     expect(report).toContain('Universal Pre-K');
     expect(report).toContain('Tobacco Excise Tax');
     expect(report).toContain('Primary Seat Belt Enforcement');
@@ -241,6 +241,7 @@ describe('generatePolicyReport', () => {
   it('includes evidence grade description in Bradford Hill section', () => {
     const report = generatePolicyReport(makeFullResult());
     expect(report).toContain('Strong causal evidence');
+    expect(report).toContain('| Strength | 0.85 | Strong |');
   });
 
   it('contains recommendations section', () => {
@@ -281,6 +282,16 @@ describe('generatePolicyReport', () => {
   it('shows rationale when present', () => {
     const report = generatePolicyReport(makeFullResult());
     expect(report).toContain('Below-median tobacco tax with strong evidence for increase');
+  });
+
+  it('shows similar jurisdictions when present', () => {
+    const report = generatePolicyReport(makeFullResult());
+    expect(report).toContain('Similar jurisdictions: FL, CA');
+  });
+
+  it('shows priority and impact scores in recommendations', () => {
+    const report = generatePolicyReport(makeFullResult());
+    expect(report).toContain('Priority score: 0.90; Policy impact score: 0.85');
   });
 
   it('shows current → recommended for replace recommendations', () => {
@@ -390,7 +401,7 @@ describe('generatePolicyReport', () => {
     for (const line of lines) {
       if (line.startsWith('|') && line.endsWith('|')) {
         const pipeCount = (line.match(/\|/g) || []).length;
-        expect(pipeCount).toBeGreaterThanOrEqual(2);
+        expect(pipeCount).toBeGreaterThanOrEqual(4);
       }
     }
   });

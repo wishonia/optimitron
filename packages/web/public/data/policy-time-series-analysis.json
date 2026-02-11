@@ -1,0 +1,902 @@
+{
+  "generatedAt": "2026-02-07T21:05:33.389Z",
+  "engine": "@optomitron/optimizer runFullAnalysis()",
+  "description": "US policy analyses computed from real time-series data through the causal inference pipeline",
+  "totalAnalyses": 14,
+  "summary": {
+    "counterproductive": 4,
+    "effective": 1,
+    "neutral": 9
+  },
+  "analyses": [
+    {
+      "name": "Gun Ownership vs Gun Homicide Rate",
+      "category": "safety",
+      "policyDescription": "Evidence-based gun safety regulation",
+      "outcomeDirection": "lower",
+      "predictorName": "Estimated Guns per 100 People",
+      "outcomeName": "Gun Homicide Rate per 100K",
+      "dataPoints": 24,
+      "yearRange": "2000-2023",
+      "levelsCorrelation": 0.7098429216105552,
+      "yoyCorrelation": 0.541,
+      "yoyN": 23,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": 0.081,
+          "n": 22
+        },
+        {
+          "lag": 2,
+          "correlation": -0.123,
+          "n": 21
+        },
+        {
+          "lag": 3,
+          "correlation": 0.016,
+          "n": 20
+        }
+      ],
+      "pValue": 0.07466255929540619,
+      "reversePearson": 0.7257246782029831,
+      "predictivePearson": -0.015881756592427965,
+      "effectSize": {
+        "zScore": 4.1959638444360055,
+        "percentChange": 22.610722610722636
+      },
+      "bradfordHillScores": {
+        "strength": 0.9061580290951564,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.892628799253965,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.599327712257018,
+      "predictorImpactScore": 0.009032109227094447,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 3.8999999999999995,
+        "followupMean": 4.781818181818182,
+        "change": 0.8818181818181827,
+        "percentChange": 22.610722610722636
+      },
+      "interpretation": "COUNTERPRODUCTIVE: Increases in the predictor are associated with worse outcomes (YoY r=0.541, levels r=0.710).",
+      "caveats": [
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Healthcare Spending vs Life Expectancy",
+      "category": "health",
+      "policyDescription": "Singapore-style universal healthcare with market competition",
+      "outcomeDirection": "higher",
+      "predictorName": "US Health Spending per Capita (PPP)",
+      "outcomeName": "US Life Expectancy",
+      "dataPoints": 24,
+      "yearRange": "2000-2023",
+      "levelsCorrelation": 0.3391854978749639,
+      "yoyCorrelation": -0.431,
+      "yoyN": 23,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": -0.067,
+          "n": 22
+        },
+        {
+          "lag": 2,
+          "correlation": 0.409,
+          "n": 21
+        },
+        {
+          "lag": 3,
+          "correlation": 0.302,
+          "n": 20
+        }
+      ],
+      "pValue": 1,
+      "reversePearson": 0.2639242205149892,
+      "predictivePearson": 0.07526127735997468,
+      "effectSize": {
+        "zScore": 0.7055299539280786,
+        "percentChange": 0.609747871952911
+      },
+      "bradfordHillScores": {
+        "strength": 0.6771664217802781,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.34866391290148224,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.5134436574050889,
+      "predictorImpactScore": 0,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 77.75769230769232,
+        "followupMean": 78.23181818181817,
+        "change": 0.4741258741258463,
+        "percentChange": 0.609747871952911
+      },
+      "interpretation": "COUNTERPRODUCTIVE: Increases in the predictor are associated with worse outcomes (YoY r=-0.431, levels r=0.339).",
+      "caveats": [
+        "Levels and YoY correlations disagree in direction, suggesting confounding.",
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Executions vs Murder Rate",
+      "category": "justice",
+      "policyDescription": "Death penalty abolition (no deterrent effect)",
+      "outcomeDirection": "lower",
+      "predictorName": "Annual Executions",
+      "outcomeName": "Homicide Rate per 100K",
+      "dataPoints": 48,
+      "yearRange": "1976-2023",
+      "levelsCorrelation": -0.575069346618956,
+      "yoyCorrelation": -0.378,
+      "yoyN": 44,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": -0.147,
+          "n": 43
+        },
+        {
+          "lag": 2,
+          "correlation": 0.082,
+          "n": 42
+        },
+        {
+          "lag": 3,
+          "correlation": 0.066,
+          "n": 41
+        }
+      ],
+      "pValue": 0.0000018676315727272907,
+      "reversePearson": -0.5373084768552786,
+      "predictivePearson": -0.03776086976367743,
+      "effectSize": {
+        "zScore": 1.2033428201249785,
+        "percentChange": -26.344031588539035
+      },
+      "bradfordHillScores": {
+        "strength": 0.8529375308196836,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.57729869741364,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.5583776455774849,
+      "predictorImpactScore": 0.007836883474002885,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 7.83888888888889,
+        "followupMean": 5.773809523809525,
+        "change": -2.0650793650793657,
+        "percentChange": -26.344031588539035
+      },
+      "interpretation": "ASSOCIATED WITH IMPROVEMENT: Increases in the predictor are associated with better outcomes (YoY r=-0.378, levels r=-0.575).",
+      "caveats": [
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Renewable Energy Investment vs CO2 Emissions",
+      "category": "environment",
+      "policyDescription": "Carbon fee-and-dividend (BC model)",
+      "outcomeDirection": "lower",
+      "predictorName": "Renewable Energy Investment (Billions)",
+      "outcomeName": "CO2 Emissions (Million Metric Tons)",
+      "dataPoints": 24,
+      "yearRange": "2000-2023",
+      "levelsCorrelation": -0.9252039606113436,
+      "yoyCorrelation": 0.345,
+      "yoyN": 23,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": -0.35,
+          "n": 22
+        },
+        {
+          "lag": 2,
+          "correlation": -0.048,
+          "n": 21
+        },
+        {
+          "lag": 3,
+          "correlation": 0.172,
+          "n": 20
+        }
+      ],
+      "pValue": 4.448899268718256e-10,
+      "reversePearson": -0.8987458380804,
+      "predictivePearson": -0.026458122530943595,
+      "effectSize": {
+        "zScore": 4.607514022103215,
+        "percentChange": -11.280465102958438
+      },
+      "bradfordHillScores": {
+        "strength": 0.9542248175229201,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.7744660966311903,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.5915392773464612,
+      "predictorImpactScore": 0.013099960400271437,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 5819.5,
+        "followupMean": 5163.033333333334,
+        "change": -656.4666666666662,
+        "percentChange": -11.280465102958438
+      },
+      "interpretation": "COUNTERPRODUCTIVE: Increases in the predictor are associated with worse outcomes (YoY r=0.345, levels r=-0.925).",
+      "caveats": [
+        "Levels and YoY correlations disagree in direction, suggesting confounding.",
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Abstinence Education Funding vs Teen Birth Rate",
+      "category": "education",
+      "policyDescription": "Evidence-based sex education",
+      "outcomeDirection": "lower",
+      "predictorName": "Federal Abstinence Education Funding (Millions)",
+      "outcomeName": "Teen Birth Rate per 1,000",
+      "dataPoints": 26,
+      "yearRange": "1998-2023",
+      "levelsCorrelation": 0.13813963733333823,
+      "yoyCorrelation": 0.292,
+      "yoyN": 25,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": 0.377,
+          "n": 24
+        },
+        {
+          "lag": 2,
+          "correlation": 0.283,
+          "n": 23
+        },
+        {
+          "lag": 3,
+          "correlation": 0.469,
+          "n": 22
+        }
+      ],
+      "pValue": 1,
+      "reversePearson": 0.11986043892940698,
+      "predictivePearson": 0.018279198403931246,
+      "effectSize": {
+        "zScore": 0.2591541964667333,
+        "percentChange": -9.530505286609088
+      },
+      "bradfordHillScores": {
+        "strength": 0.3690101220023797,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.2960409555147493,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.4733570732756855,
+      "predictorImpactScore": 0,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 32.59583333333334,
+        "followupMean": 29.489285714285717,
+        "change": -3.106547619047621,
+        "percentChange": -9.530505286609088
+      },
+      "interpretation": "COUNTERPRODUCTIVE: Increases in the predictor are associated with worse outcomes (YoY r=0.292, levels r=0.138).",
+      "caveats": [
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Minimum Wage vs Unemployment Rate",
+      "category": "labor",
+      "policyDescription": "Minimum wage indexed to median wage",
+      "outcomeDirection": "lower",
+      "predictorName": "Federal Minimum Wage (Nominal)",
+      "outcomeName": "Unemployment Rate",
+      "dataPoints": 56,
+      "yearRange": "1968-2023",
+      "levelsCorrelation": -0.11466852054981973,
+      "yoyCorrelation": 0.184,
+      "yoyN": 55,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": 0.358,
+          "n": 54
+        },
+        {
+          "lag": 2,
+          "correlation": 0.078,
+          "n": 53
+        },
+        {
+          "lag": 3,
+          "correlation": -0.119,
+          "n": 52
+        }
+      ],
+      "pValue": 0.3963080159009218,
+      "reversePearson": -0.050795381074534414,
+      "predictivePearson": -0.0638731394752853,
+      "effectSize": {
+        "zScore": 0.665677191969459,
+        "percentChange": -15.019220208676545
+      },
+      "bradfordHillScores": {
+        "strength": 0.3176608121149529,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.08853589396185792,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.4445954764489835,
+      "predictorImpactScore": 0.0007053871647200143,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 6.503571428571427,
+        "followupMean": 5.5267857142857135,
+        "change": -0.9767857142857137,
+        "percentChange": -15.019220208676545
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=0.184, levels r=-0.115).",
+      "caveats": [
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Incarceration Rate vs Violent Crime Rate",
+      "category": "justice",
+      "policyDescription": "Criminal justice reform — reduce incarceration focus",
+      "outcomeDirection": "lower",
+      "predictorName": "Incarceration Rate per 100K",
+      "outcomeName": "Violent Crime Rate per 100K",
+      "dataPoints": 44,
+      "yearRange": "1980-2023",
+      "levelsCorrelation": -0.5156985054309509,
+      "yoyCorrelation": 0.089,
+      "yoyN": 43,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": 0.131,
+          "n": 42
+        },
+        {
+          "lag": 2,
+          "correlation": 0.08,
+          "n": 41
+        },
+        {
+          "lag": 3,
+          "correlation": 0.153,
+          "n": 40
+        }
+      ],
+      "pValue": 0.00009590465177167218,
+      "reversePearson": -0.4705496255136882,
+      "predictivePearson": -0.045148879917262685,
+      "effectSize": {
+        "zScore": 0.8579267918074919,
+        "percentChange": -19.552819690298374
+      },
+      "bradfordHillScores": {
+        "strength": 0.8207538033938352,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.7053082110944061,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.5690249551613645,
+      "predictorImpactScore": 0.005243546600170675,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 581.9083333333333,
+        "followupMean": 468.1288461538462,
+        "change": -113.77948717948709,
+        "percentChange": -19.552819690298374
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=0.089, levels r=-0.516).",
+      "caveats": [
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Federal Regulation Pages vs New Business Applications",
+      "category": "economy",
+      "policyDescription": "NEPA & permitting reform",
+      "outcomeDirection": "higher",
+      "predictorName": "Federal Register Pages",
+      "outcomeName": "New Business Applications",
+      "dataPoints": 20,
+      "yearRange": "1990-2023",
+      "levelsCorrelation": 0.23476373930506814,
+      "yoyCorrelation": -0.07,
+      "yoyN": 19,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": 0.252,
+          "n": 18
+        },
+        {
+          "lag": 2,
+          "correlation": 0.175,
+          "n": 17
+        },
+        {
+          "lag": 3,
+          "correlation": -0.294,
+          "n": 16
+        }
+      ],
+      "pValue": 1,
+      "reversePearson": 0.42626341388876204,
+      "predictivePearson": -0.1914996745836939,
+      "effectSize": {
+        "zScore": 0.2220288839005406,
+        "percentChange": 6.147911805324061
+      },
+      "bradfordHillScores": {
+        "strength": 0.5427595134319108,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.15298459082158525,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.4767674095797263,
+      "predictorImpactScore": 0,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 3181666.6666666665,
+        "followupMean": 3377272.727272727,
+        "change": 195606.06060606055,
+        "percentChange": 6.147911805324061
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=-0.070, levels r=0.235).",
+      "caveats": [
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Healthcare Spending vs Infant Mortality",
+      "category": "health",
+      "policyDescription": "Healthcare restructuring toward efficiency",
+      "outcomeDirection": "lower",
+      "predictorName": "US Health Spending per Capita (PPP)",
+      "outcomeName": "US Infant Mortality Rate",
+      "dataPoints": 24,
+      "yearRange": "2000-2023",
+      "levelsCorrelation": -0.9537991717497161,
+      "yoyCorrelation": 0.062,
+      "yoyN": 23,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": 0.463,
+          "n": 22
+        },
+        {
+          "lag": 2,
+          "correlation": 0.121,
+          "n": 21
+        },
+        {
+          "lag": 3,
+          "correlation": -0.106,
+          "n": 20
+        }
+      ],
+      "pValue": 1.4150882003644281e-12,
+      "reversePearson": -0.9510271799148109,
+      "predictivePearson": -0.002771991834905174,
+      "effectSize": {
+        "zScore": 2.6614824130872026,
+        "percentChange": -13.986830926083254
+      },
+      "bradfordHillScores": {
+        "strength": 0.9583864969776084,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.8018998557331287,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.5950498816305309,
+      "predictorImpactScore": 0.011057588381495514,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 6.584615384615383,
+        "followupMean": 5.663636363636363,
+        "change": -0.9209790209790203,
+        "percentChange": -13.986830926083254
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=0.062, levels r=-0.954).",
+      "caveats": [
+        "Levels correlation (r=-0.954) is likely spurious — shared time trends. Year-over-year change correlation (r=0.062) shows no meaningful relationship.",
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Police Spending vs Violent Crime Rate",
+      "category": "justice",
+      "policyDescription": "Community investment vs policing approach",
+      "outcomeDirection": "lower",
+      "predictorName": "Total Police Spending (Billions)",
+      "outcomeName": "Violent Crime Rate per 100K",
+      "dataPoints": 34,
+      "yearRange": "1990-2023",
+      "levelsCorrelation": -0.8998992422432659,
+      "yoyCorrelation": -0.06,
+      "yoyN": 33,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": -0.27,
+          "n": 32
+        },
+        {
+          "lag": 2,
+          "correlation": -0.426,
+          "n": 31
+        },
+        {
+          "lag": 3,
+          "correlation": -0.426,
+          "n": 30
+        }
+      ],
+      "pValue": 0,
+      "reversePearson": -0.9001906779024301,
+      "predictivePearson": 0.00029143565916422975,
+      "effectSize": {
+        "zScore": 1.7501779396983557,
+        "percentChange": -33.81784104956732
+      },
+      "bradfordHillScores": {
+        "strength": 0.9501962073793859,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.8563978959805336,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.6001951872582177,
+      "predictorImpactScore": 0.011519380638877488,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 590.0470588235294,
+        "followupMean": 390.5058823529412,
+        "change": -199.54117647058814,
+        "percentChange": -33.81784104956732
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=-0.060, levels r=-0.900).",
+      "caveats": [
+        "Levels correlation (r=-0.900) is likely spurious — shared time trends. Year-over-year change correlation (r=-0.060) shows no meaningful relationship.",
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Drug Control Spending vs Overdose Deaths",
+      "category": "health",
+      "policyDescription": "Shift drug policy from criminal to health approach (Portugal model)",
+      "outcomeDirection": "lower",
+      "predictorName": "Federal Drug Control Spending (Billions)",
+      "outcomeName": "Drug Overdose Deaths",
+      "dataPoints": 25,
+      "yearRange": "1999-2023",
+      "levelsCorrelation": 0.978667927178097,
+      "yoyCorrelation": -0.055,
+      "yoyN": 24,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": -0.249,
+          "n": 23
+        },
+        {
+          "lag": 2,
+          "correlation": 0.151,
+          "n": 22
+        },
+        {
+          "lag": 3,
+          "correlation": 0.163,
+          "n": 21
+        }
+      ],
+      "pValue": 4.042560057845443e-17,
+      "reversePearson": 0.99027537670558,
+      "predictivePearson": -0.011607449527482938,
+      "effectSize": {
+        "zScore": 5.069809958673709,
+        "percentChange": 155.7543353564427
+      },
+      "bradfordHillScores": {
+        "strength": 0.9616969757559408,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.8412258471271057,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.5997872672052319,
+      "predictorImpactScore": 0.014773013621343494,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 34416.05882352941,
+        "followupMean": 88020.5625,
+        "change": 53604.50367647059,
+        "percentChange": 155.7543353564427
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=-0.055, levels r=0.979).",
+      "caveats": [
+        "Levels correlation (r=0.979) is likely spurious — shared time trends. Year-over-year change correlation (r=-0.055) shows no meaningful relationship.",
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Foreign Aid vs Global Extreme Poverty",
+      "category": "foreign_policy",
+      "policyDescription": "Strategic foreign aid investment",
+      "outcomeDirection": "lower",
+      "predictorName": "Total ODA (Billions)",
+      "outcomeName": "Global Extreme Poverty %",
+      "dataPoints": 34,
+      "yearRange": "1990-2023",
+      "levelsCorrelation": -0.8710717023663469,
+      "yoyCorrelation": 0.053,
+      "yoyN": 33,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": 0.033,
+          "n": 32
+        },
+        {
+          "lag": 2,
+          "correlation": -0.099,
+          "n": 31
+        },
+        {
+          "lag": 3,
+          "correlation": -0.164,
+          "n": 30
+        }
+      ],
+      "pValue": 0,
+      "reversePearson": -0.8692114347697288,
+      "predictivePearson": -0.0018602675966180593,
+      "effectSize": {
+        "zScore": 3.049864275781353,
+        "percentChange": -57.942588619879466
+      },
+      "bradfordHillScores": {
+        "strength": 0.94517299098566,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.7921079422021713,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.5924937239057635,
+      "predictorImpactScore": 0.014429777178012677,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 28.79117647058824,
+        "followupMean": 12.108823529411765,
+        "change": -16.682352941176475,
+        "percentChange": -57.942588619879466
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=0.053, levels r=-0.871).",
+      "caveats": [
+        "Levels correlation (r=-0.871) is likely spurious — shared time trends. Year-over-year change correlation (r=0.053) shows no meaningful relationship.",
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Drug Control Spending vs Overdose Death Rate",
+      "category": "health",
+      "policyDescription": "Shift drug policy from criminal to health approach",
+      "outcomeDirection": "lower",
+      "predictorName": "Federal Drug Control Spending (Billions)",
+      "outcomeName": "Overdose Death Rate per 100K",
+      "dataPoints": 25,
+      "yearRange": "1999-2023",
+      "levelsCorrelation": 0.9763231357380677,
+      "yoyCorrelation": -0.041,
+      "yoyN": 24,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": -0.241,
+          "n": 23
+        },
+        {
+          "lag": 2,
+          "correlation": 0.158,
+          "n": 22
+        },
+        {
+          "lag": 3,
+          "correlation": 0.174,
+          "n": 21
+        }
+      ],
+      "pValue": 1.3919399516911205e-16,
+      "reversePearson": 0.9887604126078938,
+      "predictivePearson": -0.012437276869826097,
+      "effectSize": {
+        "zScore": 5.035326803212236,
+        "percentChange": 135.41612399062245
+      },
+      "bradfordHillScores": {
+        "strength": 0.961396427402707,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.8412258471271057,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.5997538729437615,
+      "predictorImpactScore": 0.014709122650929097,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 11.291176470588239,
+        "followupMean": 26.581249999999997,
+        "change": 15.290073529411758,
+        "percentChange": 135.41612399062245
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=-0.041, levels r=0.976).",
+      "caveats": [
+        "Levels correlation (r=0.976) is likely spurious — shared time trends. Year-over-year change correlation (r=-0.041) shows no meaningful relationship.",
+        "Observational data — correlation does not establish causation."
+      ]
+    },
+    {
+      "name": "Top Tax Rate vs GDP Growth",
+      "category": "economy",
+      "policyDescription": "Optimal tax policy (evidence shows no Laffer effect at current rates)",
+      "outcomeDirection": "higher",
+      "predictorName": "Top Marginal Tax Rate",
+      "outcomeName": "Real GDP Growth Rate",
+      "dataPoints": 74,
+      "yearRange": "1950-2023",
+      "levelsCorrelation": 0.31438702252760903,
+      "yoyCorrelation": 0.016,
+      "yoyN": 73,
+      "laggedCorrelations": [
+        {
+          "lag": 1,
+          "correlation": 0.076,
+          "n": 72
+        },
+        {
+          "lag": 2,
+          "correlation": 0.034,
+          "n": 71
+        },
+        {
+          "lag": 3,
+          "correlation": 0.078,
+          "n": 70
+        }
+      ],
+      "pValue": 0.004951943125409031,
+      "reversePearson": 0.28385597269102764,
+      "predictivePearson": 0.030531049836581392,
+      "effectSize": {
+        "zScore": 0.7438868359409531,
+        "percentChange": 37.85013233348039
+      },
+      "bradfordHillScores": {
+        "strength": 0.6493465067229609,
+        "consistency": 0.09516258196404048,
+        "temporality": 1,
+        "gradient": 0.24098280833693428,
+        "experiment": 0.5,
+        "plausibility": 0.7,
+        "coherence": 0.5,
+        "analogy": 0.5,
+        "specificity": 0.3
+      },
+      "bradfordHillTotal": 0.4983879885582151,
+      "predictorImpactScore": 0.0042200990541839,
+      "dataQuality": {
+        "issues": []
+      },
+      "baselineFollowup": {
+        "baselineMean": 2.698809523809523,
+        "followupMean": 3.7203124999999995,
+        "change": 1.0215029761904764,
+        "percentChange": 37.85013233348039
+      },
+      "interpretation": "NO CLEAR RELATIONSHIP: Year-over-year changes in the predictor do not predict changes in outcomes (YoY r=0.016, levels r=0.314).",
+      "caveats": [
+        "Observational data — correlation does not establish causation."
+      ]
+    }
+  ]
+}
