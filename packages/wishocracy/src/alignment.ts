@@ -23,11 +23,11 @@ export function calculateAlignmentScore(
   politicianVotes: Map<string, number>, // itemId → allocation % they voted for
   politicianId: string
 ): AlignmentScore {
-  let totalWeightedDistance = 0;
+  let totalWeightedAlignment = 0;
   let totalWeight = 0;
   let votesCompared = 0;
   const categoryScores: Record<string, number> = {};
-  
+
   for (const pref of citizenPreferences) {
     const votedPct = politicianVotes.get(pref.itemId);
 
@@ -35,35 +35,32 @@ export function calculateAlignmentScore(
 
     votesCompared++;
 
-    // Relative distance: |preferredPct - votedPct| / preferredPct, capped at 1.0.
-    // A politician who votes 10% for a 5% category is 100% off (distance = 1.0),
-    // while one who votes 6% for a 5% category is 20% off (distance = 0.2).
-    // This spreads scores meaningfully instead of compressing to ~99%.
-    // Capping at 1.0 prevents small categories from dominating the score
-    // (a 20% category voted at 80% would be 300% off uncapped, but capped = 1.0).
+    // Per-category alignment: min/max ratio, naturally bounded [0, 1].
+    //   - Perfect match → 1.0
+    //   - Citizens want 5%, politician votes 10% → 5/10 = 0.50
+    //   - Citizens want 80%, politician votes 20% → 20/80 = 0.25
+    // Symmetric: over-allocating and under-allocating by the same ratio penalize equally.
     const preferredPct = pref.weight * 100;
-    const relativeDistance = preferredPct > 0
-      ? Math.min(1, Math.abs(preferredPct - votedPct) / preferredPct)
-      : 0;
-    const weight = pref.weight; // Items citizens care more about weigh more
+    const maxVal = Math.max(preferredPct, votedPct);
+    const minVal = Math.min(preferredPct, votedPct);
+    const itemAlignment = maxVal > 0 ? minVal / maxVal : 1; // both 0 → agree
+    const weight = pref.weight;
 
-    totalWeightedDistance += relativeDistance * weight;
+    totalWeightedAlignment += itemAlignment * weight;
     totalWeight += weight;
 
-    // Per-item alignment (0-100%) using relative distance (already capped at 1)
-    const itemAlignment = (1 - relativeDistance) * 100;
-    categoryScores[pref.itemId] = Math.max(0, Math.min(100, itemAlignment));
+    categoryScores[pref.itemId] = itemAlignment * 100;
   }
-  
+
   // If no votes were compared, alignment is unknown — return 0
   if (votesCompared === 0) {
     return { politicianId, score: 0, votesCompared: 0, categoryScores };
   }
 
-  // Overall alignment: 100% = perfect match, 0% = total misalignment
-  // avgWeightedDistance is now relative (0 = perfect, 1 = 100% off, >1 = more than 100% off)
-  const avgWeightedDistance = totalWeight > 0 ? totalWeightedDistance / totalWeight : 0;
-  const score = Math.max(0, Math.min(100, (1 - avgWeightedDistance) * 100));
+  // Weighted average of per-category alignment ratios
+  const score = totalWeight > 0
+    ? (totalWeightedAlignment / totalWeight) * 100
+    : 0;
   
   return {
     politicianId,
