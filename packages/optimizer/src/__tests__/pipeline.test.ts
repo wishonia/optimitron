@@ -414,6 +414,15 @@ describe('generateMarkdownReport', () => {
     expect(report).toContain('daily');
   });
 
+  it('uses consistent predictor-split labels in optimal values section', () => {
+    // Should show predictor-split: "High <predictor> days (avg X): Outcome = Y"
+    expect(report).toContain('High Vitamin D days (avg');
+    expect(report).toContain('Low Vitamin D days (avg');
+    // Should NOT mix outcome-split with predictor-split
+    expect(report).not.toContain('Value predicting high outcome');
+    expect(report).not.toContain('Value predicting low outcome');
+  });
+
   it('contains correlation description', () => {
     // Should contain one of the correlation descriptions
     const descriptions = [

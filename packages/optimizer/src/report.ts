@@ -178,12 +178,12 @@ export function generateMarkdownReport(result: FullAnalysisResult): string {
   lines.push('## Optimal Values');
   lines.push('');
   lines.push(
-    `- Value predicting high outcome: ${fmt(optimalValues.valuePredictingHighOutcome)}${pUnit} → ` +
-    `${outcomeName}: ${fmt(optimalValues.averageOutcomeFollowingHighPredictor)}${oUnit}`,
+    `- High ${predictorName} days (avg ${fmt(optimalValues.averageDailyHighPredictor)}${pUnit}): ` +
+    `${outcomeName} = ${fmt(optimalValues.averageOutcomeFollowingHighPredictor)}${oUnit}`,
   );
   lines.push(
-    `- Value predicting low outcome: ${fmt(optimalValues.valuePredictingLowOutcome)}${pUnit} → ` +
-    `${outcomeName}: ${fmt(optimalValues.averageOutcomeFollowingLowPredictor)}${oUnit}`,
+    `- Low ${predictorName} days (avg ${fmt(optimalValues.averageDailyLowPredictor)}${pUnit}): ` +
+    `${outcomeName} = ${fmt(optimalValues.averageOutcomeFollowingLowPredictor)}${oUnit}`,
   );
   lines.push(`- Practical recommendation: **Target: ${fmt(practicalValue, 0)}${pUnit} ${predictorName} daily**`);
   lines.push('');

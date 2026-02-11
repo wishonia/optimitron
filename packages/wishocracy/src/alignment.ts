@@ -16,7 +16,7 @@ import type { PreferenceWeight, AlignmentScore, PreferenceGap } from './types.js
  * Calculate Citizen Alignment Score for a politician
  * 
  * Compares how a politician's votes align with citizen preferences.
- * Score = 1 - (weighted distance between preference and voting vectors)
+ * Score = weighted average of min(preferred, voted) / max(preferred, voted) per category
  */
 export function calculateAlignmentScore(
   citizenPreferences: PreferenceWeight[],

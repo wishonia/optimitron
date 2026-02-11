@@ -235,7 +235,7 @@ describe('generateBudgetReport', () => {
     expect(report).toContain('## Top Recommendations');
     expect(report).toContain('Increase Education');
     expect(report).toContain('Decrease Military');
-    expect(report).toContain('Priority score: 195500000000');
+    expect(report).toContain('Priority: 100/100');
     expect(report).toContain('Evidence: C (Possible association)');
   });
 
@@ -272,7 +272,7 @@ describe('generateBudgetReport', () => {
   it('contains efficient frontier reallocation table', () => {
     const report = generateBudgetReport(makeFullResult());
     expect(report).toContain('## Efficient Frontier (Reallocation Priority)');
-    expect(report).toContain('| Rank | Category | Reallocation Move | Priority Score | Gap ($) | BIS | Evidence |');
+    expect(report).toContain('| Rank | Category | Reallocation Move | Priority | Gap ($) | BIS | Evidence |');
     expect(report).toContain('| 1 | Military | Decrease');
   });
 
@@ -360,19 +360,21 @@ describe('generateBudgetReport', () => {
     expect(report).toContain('massive underinvestment');
   });
 
-  it('handles eliminate recommendation', () => {
-    const eliminate = makeCategoryAnalysis({
+  it('handles major_decrease recommendation', () => {
+    const majorDecrease = makeCategoryAnalysis({
       gap: makeGap({
-        recommendedAction: 'eliminate',
+        recommendedAction: 'major_decrease',
         categoryName: 'Agricultural Subsidies',
         gapUsd: -25_000_000_000,
-        gapPct: -100,
+        gapPct: -75,
       }),
     });
-    const result = makeFullResult({ categories: [eliminate] });
+    const result = makeFullResult({ categories: [majorDecrease] });
     const report = generateBudgetReport(result);
-    expect(report).toContain('Eliminate Agricultural Subsidies');
-    expect(report).toContain('negative welfare impact');
+    expect(report).toContain('Major decrease in Agricultural Subsidies');
+    expect(report).toContain('significant overinvestment');
+    // Should never say "Eliminate"
+    expect(report).not.toContain('Eliminate');
   });
 
   it('handles saturation diminishing returns model', () => {

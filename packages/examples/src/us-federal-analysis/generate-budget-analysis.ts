@@ -583,8 +583,14 @@ function runCategoryAnalysis(seed: CategorySeed): CategoryAnalysis {
     oslPerCapita = currentPerCapita;
   }
 
-  // Clamp to reasonable policy range: 50% to 200% of current
-  oslPerCapita = Math.max(currentPerCapita * 0.5, Math.min(oslPerCapita, currentPerCapita * 2.0));
+  // Clamp to observed data range: don't extrapolate beyond 150% of max observed value
+  // This is methodologically defensible — we avoid recommending spending levels
+  // that have never been observed in cross-country data
+  const maxObservedSpending = Math.max(...seed.historicalData.map(d => d.spending));
+  const minObservedSpending = Math.min(...seed.historicalData.map(d => d.spending));
+  const upperBound = maxObservedSpending * 1.5;
+  const lowerBound = Math.max(minObservedSpending * 0.5, 0);
+  oslPerCapita = Math.max(lowerBound, Math.min(oslPerCapita, upperBound));
 
   const oslUsd = oslPerCapita * US_POPULATION;
   const mr = marginalReturn(currentPerCapita, drModel);
@@ -598,37 +604,62 @@ function runCategoryAnalysis(seed: CategorySeed): CategoryAnalysis {
     currentSpendingUsd > 0 ? (gapUsd / currentSpendingUsd) * 100 : 0;
 
   // Determine recommended action
+  // When R² < 0.1, the model explains nothing — don't make recommendations
+  const lowModelFit = drModel.r2 < 0.1;
   let recommendedAction: SpendingGap['recommendedAction'];
-  if (gapPct > 50) recommendedAction = 'scale_up';
-  else if (gapPct > 10) recommendedAction = 'increase';
-  else if (gapPct > -10) recommendedAction = 'maintain';
-  else if (gapPct > -50) recommendedAction = 'decrease';
-  else recommendedAction = 'eliminate';
+  if (lowModelFit) {
+    recommendedAction = 'maintain';
+  } else if (gapPct > 50) {
+    recommendedAction = 'scale_up';
+  } else if (gapPct > 10) {
+    recommendedAction = 'increase';
+  } else if (gapPct > -10) {
+    recommendedAction = 'maintain';
+  } else if (gapPct > -50) {
+    recommendedAction = 'decrease';
+  } else {
+    recommendedAction = 'major_decrease';
+  }
 
-  const priorityScore = calculatePriorityScore(gapUsd, bisResult.score);
+  // When model fit is too low, don't recommend reallocation
+  const effectiveOslUsd = lowModelFit ? currentSpendingUsd : oslUsd;
+  const effectiveGapUsd = lowModelFit ? 0 : gapUsd;
+  const effectiveGapPct = lowModelFit ? 0 : gapPct;
+
+  const priorityScore = calculatePriorityScore(effectiveGapUsd, bisResult.score);
 
   // Welfare effect estimate (proportional to marginal return & BIS)
   const incomeEffect = mr * bisResult.score * 0.5;
   const healthEffect = mr * bisResult.score * 0.3;
 
+  // Build methodology notes with quality flags
+  const notes: string[] = [`${drModel.type} model, R²=${drModel.r2.toFixed(3)}, N=${drModel.n}`];
+  if (lowModelFit) {
+    notes.push('LOW FIT: insufficient evidence for reallocation');
+  }
+  const beyondData = oslPerCapita > maxObservedSpending;
+  if (beyondData) {
+    notes.push('OSL capped — beyond observed data range');
+  }
+
   const oslEstimate: OSLEstimate = {
     categoryId: seed.id,
     estimationMethod: 'diminishing_returns',
-    oslUsd,
-    oslPerCapita: oslUsd / US_POPULATION,
-    oslPctGdp: (oslUsd / US_GDP) * 100,
+    oslUsd: effectiveOslUsd,
+    oslPerCapita: effectiveOslUsd / US_POPULATION,
+    oslPctGdp: (effectiveOslUsd / US_GDP) * 100,
     evidenceGrade: bisResult.grade,
     budgetImpactScore: bisResult.score,
-    methodologyNotes: `${drModel.type} model, R²=${drModel.r2.toFixed(3)}, N=${drModel.n}`,
+    methodologyNotes: notes.join(' — '),
   };
 
   const gap: SpendingGap = {
     categoryId: seed.id,
     categoryName: seed.name,
     currentSpendingUsd,
-    oslUsd,
-    gapUsd,
-    gapPct,
+    oslUsd: effectiveOslUsd,
+    gapUsd: effectiveGapUsd,
+    gapPct: effectiveGapPct,
     budgetImpactScore: bisResult.score,
     priorityScore,
     welfareEffect: {
@@ -693,7 +724,7 @@ function mapRecommendation(
     case 'increase':
       return 'increase';
     case 'decrease':
-    case 'eliminate':
+    case 'major_decrease':
       return 'decrease';
     default:
       return 'maintain';

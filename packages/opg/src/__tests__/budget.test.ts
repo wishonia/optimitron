@@ -225,7 +225,7 @@ describe('SpendingGapSchema', () => {
   });
 
   it('accepts all recommended actions', () => {
-    const actions = ['scale_up', 'increase', 'maintain', 'decrease', 'eliminate'] as const;
+    const actions = ['scale_up', 'increase', 'maintain', 'decrease', 'major_decrease'] as const;
     for (const action of actions) {
       expect(SpendingGapSchema.safeParse({
         categoryId: 'x',

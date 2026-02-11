@@ -109,8 +109,8 @@ function describeAction(action: string, categoryName: string, gapUsd: number, ga
       return `Maintain ${categoryName} spending — near optimal level`;
     case 'decrease':
       return `Decrease ${categoryName} spending by ${formatUsd(Math.abs(gapUsd))} (${formatPct(gapPct)}) — below diminishing returns threshold`;
-    case 'eliminate':
-      return `Eliminate ${categoryName} spending (${formatUsd(Math.abs(gapUsd))}) — negative welfare impact`;
+    case 'major_decrease':
+      return `Major decrease in ${categoryName} spending by ${formatUsd(Math.abs(gapUsd))} (${formatPct(gapPct)}) — significant overinvestment`;
     default:
       return `Adjust ${categoryName} by ${formatGapUsd(gapUsd)}`;
   }
@@ -125,7 +125,7 @@ function actionLabel(action: string): string {
     case 'increase': return 'Increase';
     case 'maintain': return 'Maintain';
     case 'decrease': return 'Decrease';
-    case 'eliminate': return 'Eliminate';
+    case 'major_decrease': return 'Major decrease';
     default: return 'Adjust';
   }
 }
@@ -186,6 +186,14 @@ export function generateBudgetReport(
 ): string {
   const { constrainToCurrentBudget = false } = options ?? {};
   const lines: string[] = [];
+
+  // Compute max priority score for normalization to 0-100 scale
+  const maxPriorityScore = Math.max(
+    ...analysis.categories.map(c => Math.abs(c.gap.priorityScore)),
+    1, // Avoid division by zero
+  );
+  const normalizePriority = (score: number): number =>
+    (Math.abs(score) / maxPriorityScore) * 100;
 
   // --- Title ---
   lines.push(`# Budget Optimization Report: ${analysis.jurisdictionName}`);
@@ -319,9 +327,14 @@ export function generateBudgetReport(
       lines.push(`- **Current Spending:** ${formatUsd(cat.category.currentSpendingUsd)}`);
       lines.push(`- **Optimal Spending Level:** ${formatUsd(cat.oslEstimate.oslUsd)}`);
       if (cat.marginalReturn !== undefined) {
-        lines.push(`- **Marginal Return:** ${cat.marginalReturn.toFixed(4)}`);
+        const rawMR = cat.marginalReturn;
+        const displayMR = Math.min(Math.abs(rawMR), 1.0);
+        const mrSign = rawMR < 0 ? '-' : '';
+        const mrNote = Math.abs(rawMR) > 1.0 ? ` (raw: ${formatNum(rawMR, 2)} — likely model overfitting)` : '';
+        lines.push(`- **Marginal Return:** ${mrSign}${displayMR.toFixed(4)}${mrNote}`);
       }
-      lines.push(`- **Model:** ${describeModelType(model.type)} (R² = ${formatNum(model.r2, 2)})`);
+      const modelFitWarning = model.r2 < 0.3 ? ' ⚠️ Low fit — treat with caution' : '';
+      lines.push(`- **Model:** ${describeModelType(model.type)} (R² = ${formatNum(model.r2, 2)})${modelFitWarning}`);
       lines.push(`- **Status:** ${status}`);
       lines.push('');
     }
@@ -363,12 +376,16 @@ export function generateBudgetReport(
         );
         lines.push(`${i + 1}. ${desc}`);
         lines.push(
-          `   - Priority score: ${formatNum(cat.gap.priorityScore, 2)}; ` +
+          `   - Priority: ${formatNum(normalizePriority(cat.gap.priorityScore), 1)}/100; ` +
           `BIS: ${formatNum(cat.oslEstimate.budgetImpactScore, 2)}; ` +
           `Evidence: ${cat.oslEstimate.evidenceGrade} (${describeGrade(cat.oslEstimate.evidenceGrade)})`
         );
         if (cat.marginalReturn !== undefined) {
-          lines.push(`   - Marginal return: ${formatNum(cat.marginalReturn, 4)}`);
+          const rawMR = cat.marginalReturn;
+          const displayMR = Math.min(Math.abs(rawMR), 1.0);
+          const mrSign = rawMR < 0 ? '-' : '';
+          const mrNote = Math.abs(rawMR) > 1.0 ? ` (raw: ${formatNum(rawMR, 2)} — likely model overfitting)` : '';
+          lines.push(`   - Marginal return: ${mrSign}${displayMR.toFixed(4)}${mrNote}`);
         }
       }
       lines.push('');
@@ -399,15 +416,15 @@ export function generateBudgetReport(
       lines.push('Current allocation is already near the efficient frontier.');
       lines.push('');
     } else {
-      lines.push('| Rank | Category | Reallocation Move | Priority Score | Gap ($) | BIS | Evidence |');
-      lines.push('|------|----------|-------------------|----------------|---------|-----|----------|');
+      lines.push('| Rank | Category | Reallocation Move | Priority | Gap ($) | BIS | Evidence |');
+      lines.push('|------|----------|-------------------|----------|---------|-----|----------|');
       for (let i = 0; i < frontier.length; i++) {
         const cat = frontier[i]!;
         lines.push(
           `| ${i + 1} ` +
           `| ${cat.category.name} ` +
           `| ${actionLabel(cat.gap.recommendedAction)} ` +
-          `| ${formatNum(cat.gap.priorityScore, 2)} ` +
+          `| ${formatNum(normalizePriority(cat.gap.priorityScore), 1)}/100 ` +
           `| ${formatGapUsd(cat.gap.gapUsd)} ` +
           `| ${formatNum(cat.oslEstimate.budgetImpactScore, 2)} ` +
           `| ${cat.oslEstimate.evidenceGrade} (${describeGrade(cat.oslEstimate.evidenceGrade)}) |`

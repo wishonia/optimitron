@@ -53,7 +53,7 @@ export const SpendingGapSchema = z.object({
   budgetImpactScore: z.number(),
   priorityScore: z.number(),
   welfareEffect: WelfareEffectSchema,
-  recommendedAction: z.enum(['scale_up', 'increase', 'maintain', 'decrease', 'eliminate']),
+  recommendedAction: z.enum(['scale_up', 'increase', 'maintain', 'decrease', 'major_decrease']),
 });
 
 export type SpendingGap = z.infer<typeof SpendingGapSchema>;

@@ -83,8 +83,8 @@ A daily average of **4500 IU Vitamin D Supplementation** is associated with a **
 
 ## Optimal Values
 
-- Value predicting high outcome: 4391.39 IU → Overall Mood: 7.05 1-10
-- Value predicting low outcome: 3623.60 IU → Overall Mood: 6.50 1-10
+- High Vitamin D Supplementation days (avg 4747.71 IU): Overall Mood = 7.05 1-10
+- Low Vitamin D Supplementation days (avg 2838.16 IU): Overall Mood = 6.50 1-10
 - Practical recommendation: **Target: 4500 IU Vitamin D Supplementation daily**
 
 ## Data Quality
@@ -121,8 +121,8 @@ A daily average of **8 hours Sleep Duration** is associated with a **7.5% improv
 
 ## Optimal Values
 
-- Value predicting high outcome: 7.38 hours → Overall Mood: 7.10 1-10
-- Value predicting low outcome: 7.00 hours → Overall Mood: 6.60 1-10
+- High Sleep Duration days (avg 7.66 hours): Overall Mood = 7.10 1-10
+- Low Sleep Duration days (avg 6.79 hours): Overall Mood = 6.60 1-10
 - Practical recommendation: **Target: 8 hours Sleep Duration daily**
 
 ## Data Quality
@@ -159,8 +159,8 @@ A daily average of **3 cups Coffee Intake** is associated with a **2.8% worsenin
 
 ## Optimal Values
 
-- Value predicting high outcome: 2.28 cups → Sleep Duration: 7.08 hours
-- Value predicting low outcome: 2.67 cups → Sleep Duration: 7.29 hours
+- High Coffee Intake days (avg 3.37 cups): Sleep Duration = 7.08 hours
+- Low Coffee Intake days (avg 1.61 cups): Sleep Duration = 7.29 hours
 - Practical recommendation: **Target: 3 cups Coffee Intake daily**
 
 ## Data Quality
@@ -197,8 +197,8 @@ A daily average of **4500 IU Vitamin D Supplementation** is associated with a **
 
 ## Optimal Values
 
-- Value predicting high outcome: 4283.54 IU → Sleep Duration: 7.23 hours
-- Value predicting low outcome: 3801.55 IU → Sleep Duration: 7.15 hours
+- High Vitamin D Supplementation days (avg 5000.00 IU): Sleep Duration = 7.23 hours
+- Low Vitamin D Supplementation days (avg 2697.37 IU): Sleep Duration = 7.15 hours
 - Practical recommendation: **Target: 4500 IU Vitamin D Supplementation daily**
 
 ## Data Quality

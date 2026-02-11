@@ -197,7 +197,7 @@ describe('SpendingGapSchema', () => {
         incomeEffect: -0.05,
         healthEffect: -0.02,
       },
-      recommendedAction: 'eliminate',
+      recommendedAction: 'major_decrease',
     };
     expect(SpendingGapSchema.safeParse(gap).success).toBe(true);
   });
@@ -215,7 +215,7 @@ describe('SpendingGapSchema', () => {
       welfareEffect: { incomeEffect: 0, healthEffect: 0 },
     };
 
-    for (const action of ['scale_up', 'increase', 'maintain', 'decrease', 'eliminate']) {
+    for (const action of ['scale_up', 'increase', 'maintain', 'decrease', 'major_decrease']) {
       expect(
         SpendingGapSchema.safeParse({ ...base, recommendedAction: action }).success,
       ).toBe(true);
