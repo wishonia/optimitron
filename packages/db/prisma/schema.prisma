@@ -5,7 +5,7 @@
 // Two-layer architecture:
 //
 // LAYER 1 — Universal Measurement System (domain-agnostic)
-//   GlobalVariable, VariableCategory, Unit, NOf1Variable, Measurement,
+//   GlobalVariable, VariableCategory, Unit, Subject, NOf1Variable, Measurement,
 //   TrackingReminder, TrackingReminderNotification,
 //   NOf1VariableRelationship, AggregateVariableRelationship,
 //   IntegrationProvider
@@ -154,6 +154,18 @@ enum JurisdictionType {
   COUNTY
   STATE
   COUNTRY
+}
+
+/// Classification of an analysis subject
+enum SubjectType {
+  /// A single person/account
+  USER
+  /// A jurisdictional entity (country/state/city)
+  JURISDICTION
+  /// A grouped cohort (e.g., age band, treatment arm)
+  COHORT
+  /// An organization or institution
+  ORGANIZATION
 }
 
 // ============================================================================
@@ -424,6 +436,38 @@ model GlobalVariable {
   @@index([name])
 }
 
+/// Generic analysis subject for N-of-1 and aggregate pipelines.
+/// Enables modeling users, jurisdictions, cohorts, and organizations
+/// under one identity type without overloading measurement `Unit`.
+model Subject {
+  /// Unique identifier for this subject
+  id String @id @default(cuid())
+
+  /// Subject classification
+  subjectType SubjectType @default(USER)
+
+  /// External source identifier, if available
+  externalId String? @unique
+
+  /// Human-readable subject label
+  displayName String?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
+  // -- Relations --
+  nOf1Variables             NOf1Variable[]
+  nOf1VariableRelationships NOf1VariableRelationship[]
+
+  @@index([subjectType])
+}
+
 /// Per-unit instance of a GlobalVariable with personal overrides and running stats.
 /// Created automatically when a user first tracks a variable.
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/UserVariable.php
@@ -437,6 +481,12 @@ model NOf1Variable {
 
   /// ID of the user who owns this variable instance
   userId String
+
+  /// Optional generic subject owner ID (migration path from user-only ownership)
+  subjectId String?
+
+  /// Relation to Subject
+  subject Subject? @relation(fields: [subjectId], references: [id])
 
   /// ID of the canonical GlobalVariable this is an instance of
   globalVariableId String
@@ -527,6 +577,7 @@ model NOf1Variable {
 
   @@unique([userId, globalVariableId])
   @@index([userId])
+  @@index([subjectId])
   @@index([globalVariableId])
 }
 
@@ -734,8 +785,11 @@ model NOf1VariableRelationship {
   /// Unique identifier for this subject-level relationship
   id String @id @default(cuid())
 
-  /// The n-of-1 entity analyzed (user, jurisdiction, cohort, etc.)
+  /// The analyzed subject (user, jurisdiction, cohort, etc.)
   subjectId String
+
+  /// Relation to the analyzed Subject
+  subject Subject @relation(fields: [subjectId], references: [id])
 
   /// The predictor (input/cause) variable in this relationship
   predictorGlobalVariableId String

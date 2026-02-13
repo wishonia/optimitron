@@ -65,4 +65,9 @@
    - Replaced `nOf1EntityId`/`nOf1EntityName` with `subjectId`/`subjectName` in optimizer + db relationship contracts.
    - Updated pair-study n-of-1 scope key to `subject_n_of_1`.
    - Intentionally kept `userId` unchanged for ownership/auth semantics and kept `NOf1Variable` model naming unchanged for now.
+17. [x] Add DB subject identity foundation for phased migration.
+   - Added `SubjectType` enum and `Subject` model in Prisma + Zod contracts.
+   - Linked `NOf1VariableRelationship.subjectId` to `Subject` as an explicit FK relation.
+   - Added optional `NOf1Variable.subjectId` relation for forward-compatible ownership migration.
+   - Added validator coverage for `SubjectType` and `Subject` model defaults/invalid values.
 

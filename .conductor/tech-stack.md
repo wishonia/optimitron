@@ -46,6 +46,7 @@
 - **GlobalVariable** not "variables"; use **NOf1VariableRelationship** / **AggregateVariableRelationship** across optimizer and db (not "correlations")
 - **FK names match target model**: `globalVariableId`, `predictorGlobalVariableId`, and `unitId` only for `Unit` references
 - **N-of-1 identity fields are not measurement units**: use `subjectId` instead of `unitId` in analysis/report contracts
+- **Subject identity foundation**: `Subject` model + `SubjectType` enum support user/jurisdiction/cohort/organization identities
 - **deletedAt on all models** (soft deletes)
 - **No domain words in optimizer**: no "drugs", "policies", "budgets", "politicians"
 - **Change from baseline + z-score** as primary metrics (Pearson is supplementary)

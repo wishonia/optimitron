@@ -16,6 +16,7 @@ Ship a web-native explorer with:
   - aggregate-level: `AggregateVariableRelationship` summaries
 - Canonical relationship naming is aligned across optimizer contracts and db models.
 - Pair-study scope identity uses `subjectId` (not `unitId`) to avoid collision with measurement `Unit` identifiers.
+- Added `Subject` model foundation in DB contracts to support user/jurisdiction/cohort/organization analysis identities.
 - Unit metadata standardization dependency:
   - Add UCUM-coded unit support in DB/data contracts and normalization pipelines.
   - Enforce FK naming so `<modelName>Id` only refers to that model (e.g., `unitId` only for `Unit`).

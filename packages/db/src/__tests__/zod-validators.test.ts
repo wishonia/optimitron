@@ -13,10 +13,12 @@ import {
   EvidenceGradeSchema,
   NotificationStatusSchema,
   JurisdictionTypeSchema,
+  SubjectTypeSchema,
   // Models
   UnitSchema,
   VariableCategorySchema,
   GlobalVariableSchema,
+  SubjectSchema,
   NOf1VariableSchema,
   MeasurementSchema,
   TrackingReminderSchema,
@@ -91,6 +93,16 @@ const validJurisdiction = {
   code: 'US',
   currency: 'USD',
   population: 330000000,
+  createdAt: now,
+  updatedAt: now,
+  deletedAt: null,
+};
+
+const validSubject = {
+  id: 'subject_1',
+  subjectType: 'USER' as const,
+  externalId: 'user_abc',
+  displayName: 'Primary User',
   createdAt: now,
   updatedAt: now,
   deletedAt: null,
@@ -199,6 +211,16 @@ describe('Enum schemas', () => {
 
   it('16. JurisdictionType — rejects "PROVINCE"', () => {
     expect(JurisdictionTypeSchema.safeParse('PROVINCE').success).toBe(false);
+  });
+
+  it('17. SubjectType — accepts all valid values', () => {
+    for (const val of ['USER', 'JURISDICTION', 'COHORT', 'ORGANIZATION']) {
+      expect(SubjectTypeSchema.parse(val)).toBe(val);
+    }
+  });
+
+  it('18. SubjectType — rejects invalid value', () => {
+    expect(SubjectTypeSchema.safeParse('TEAM').success).toBe(false);
   });
 });
 
@@ -339,6 +361,34 @@ describe('JurisdictionSchema', () => {
     if (result.success) {
       expect(result.data.currency).toBe('USD');
     }
+  });
+});
+
+// ============================================================================
+// MODEL TESTS — Subject
+// ============================================================================
+
+describe('SubjectSchema', () => {
+  it('30. validates a correct Subject', () => {
+    const result = SubjectSchema.safeParse(validSubject);
+    expect(result.success).toBe(true);
+  });
+
+  it('31. applies default SubjectType USER when omitted', () => {
+    const { subjectType, ...noSubjectType } = validSubject;
+    const result = SubjectSchema.safeParse(noSubjectType);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.subjectType).toBe('USER');
+    }
+  });
+
+  it('32. rejects invalid SubjectType', () => {
+    const result = SubjectSchema.safeParse({
+      ...validSubject,
+      subjectType: 'TEAM',
+    });
+    expect(result.success).toBe(false);
   });
 });
 
@@ -580,6 +630,7 @@ describe('Additional models', () => {
     const data = {
       id: 'uv_1',
       userId: 'user_1',
+      subjectId: 'subject_1',
       globalVariableId: 'gv_1',
       createdAt: now,
       updatedAt: now,

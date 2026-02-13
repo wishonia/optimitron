@@ -12,7 +12,7 @@
 import { z } from 'zod';
 
 // ============================================================================
-// ENUMS (12)
+// ENUMS (13)
 // ============================================================================
 
 export const CombinationOperationSchema = z.enum(['SUM', 'MEAN']);
@@ -63,11 +63,14 @@ export type NotificationStatus = z.infer<typeof NotificationStatusSchema>;
 export const JurisdictionTypeSchema = z.enum(['CITY', 'COUNTY', 'STATE', 'COUNTRY']);
 export type JurisdictionType = z.infer<typeof JurisdictionTypeSchema>;
 
-// 12 enums in the schema:
+export const SubjectTypeSchema = z.enum(['USER', 'JURISDICTION', 'COHORT', 'ORGANIZATION']);
+export type SubjectType = z.infer<typeof SubjectTypeSchema>;
+
+// 13 enums in the schema:
 // 1. CombinationOperation  2. FillingType  3. Valence  4. MeasurementScale
 // 5. UnitCodeSystem  6. AnalysisStatus  7. StrengthLevel  8. ConfidenceLevel
 // 9. RelationshipDirection  10. EvidenceGrade  11. NotificationStatus
-// 12. JurisdictionType
+// 12. JurisdictionType  13. SubjectType
 
 // ============================================================================
 // HELPER: coerce string dates to Date objects
@@ -163,10 +166,23 @@ export const GlobalVariableSchema = z.object({
 });
 export type GlobalVariableType = z.infer<typeof GlobalVariableSchema>;
 
+/** Zod schema for the Subject model */
+export const SubjectSchema = z.object({
+  id: z.string(),
+  subjectType: SubjectTypeSchema.default('USER'),
+  externalId: z.string().nullable().optional(),
+  displayName: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type SubjectType_ = z.infer<typeof SubjectSchema>;
+
 /** Zod schema for the NOf1Variable model */
 export const NOf1VariableSchema = z.object({
   id: z.string(),
   userId: z.string(),
+  subjectId: z.string().nullable().optional(),
   globalVariableId: z.string(),
   defaultUnitId: z.string().nullable().optional(),
   onsetDelay: z.number().int().nullable().optional(),
