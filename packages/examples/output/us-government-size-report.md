@@ -1,29 +1,34 @@
-# Government Size Analysis: OECD Panel (2000-2022)
+# Government Size Analysis: World Bank Panel (1990-2023)
 
 ## Summary
 
-Evidence-weighted N-of-1 analysis suggests an optimal modeled spending share of **40.4% of GDP** (band: **38.0% - 46.5%**).
+Evidence-weighted N-of-1 analysis suggests an optimal government spending share of **32.1% of GDP** (band: **21.5% - 37.8%**).
 
-- **US latest modeled share (2022):** 50.8%
-- **US gap to central estimate:** +10.3 percentage points
-- **US status vs inferred band:** above optimal band
+- **US latest spending share (2023):** 24.9%
+- **US gap to central estimate:** -7.2 percentage points
+- **US status vs inferred band:** within optimal band
 
 ## Predictor Definition
 
-Modeled Public Spending Basket (% GDP) =
-- Health spending % GDP
-- Education spending % GDP
-- Military spending % GDP
-- Social spending % GDP
-- R&D spending % GDP
-
-This is a large OECD spending basket, not full general-government spending.
+Government Expenditure (% GDP):
+- World Bank WDI `GC.XPN.TOTL.GD.ZS`
+- Includes total general government spending share relative to GDP (not category-level decomposition).
 
 ## Data Coverage
 
-- Jurisdictions: 23
-- Years: 2000-2022
-- Country-year observations: 529
+- Jurisdictions: 47
+- Years: 1990-2023
+- Country-year observations: 1402
+
+## Temporal Sensitivity (Start Year)
+
+All scenarios use the same methodology and countries where data is available; only the start year changes.
+
+| Start Year | End Year | Country-Years | Jurisdictions | Optimal % GDP | Inferred Band | US % GDP | US Status |
+|-----------:|---------:|--------------:|--------------:|--------------:|--------------|---------:|----------|
+| 1990 | 2023 | 1402 | 47 | 32.1 | 21.5-37.8 | 24.9 | within optimal band (primary) |
+| 1995 | 2023 | 1233 | 47 | 32.6 | 22.2-38.6 | 24.9 | within optimal band |
+| 2000 | 2023 | 1036 | 47 | 32.7 | 23.1-38.7 | 24.9 | within optimal band |
 
 ## Spending Levels vs Typical Outcomes
 
@@ -34,34 +39,37 @@ Cross-country panel proxies are used here because direct country-year series for
 - Real after-tax median income level proxy: GDP per capita PPP level
 - Real after-tax median income growth proxy: Real GDP per capita YoY growth
 
-| Spending Level (% GDP) | Country-Years | Jurisdictions | Typical Healthy Life Years (proxy level) | Typical Healthy Life Years Growth (proxy) | Typical Real After-Tax Median Income (proxy level) | Typical Real After-Tax Median Income Growth (proxy) |
-|------------------------|-------------:|--------------:|-----------------------------------------:|-------------------------------------------:|----------------------------------------------------:|-----------------------------------------------------:|
-| <25% | 15 | 2 | 78.8 | +0.400 | $29,330 | +4.92% |
-| 25-30% | 18 | 2 | 80.4 | +0.400 | $38,855 | +3.20% |
-| 30-35% | 74 | 10 | 79.5 | +0.200 | $32,410 | +2.04% |
-| 35-40% | 142 | 16 | 81.3 | +0.200 | $37,720 | +1.57% |
-| 40-45% | 126 | 16 | 80.8 | +0.200 | $36,250 | +1.09% |
-| 45-50% | 108 | 13 | 80.6 | +0.200 | $39,295 | +1.34% |
-| >=50% | 46 | 10 | 81.0 | +0.100 | $38,535 | +1.05% |
+| Spending Level (% GDP) | Country-Years | Jurisdictions | Typical Healthy Life Years (proxy level) | Typical Healthy Life Years Growth (proxy) | Typical Real After-Tax Median Income (proxy level) | Typical Real After-Tax Median Income Growth (proxy) | Notes |
+|------------------------|-------------:|--------------:|-----------------------------------------:|-------------------------------------------:|----------------------------------------------------:|-----------------------------------------------------:|-------|
+| <20% | 330 | 20 | 75.3 | +0.271 | $15,458 | +5.22% | — |
+| 20-25% | 127 | 20 | 77.1 | +0.200 | $23,474 | +4.51% | — |
+| 25-30% | 135 | 23 | 76.5 | +0.190 | $22,201 | +4.93% | — |
+| 30-35% | 259 | 29 | 77.0 | +0.229 | $26,949 | +5.74% | — |
+| 35-40% | 248 | 29 | 77.6 | +0.202 | $28,110 | +4.98% | — |
+| 40-45% | 181 | 22 | 78.9 | +0.205 | $29,108 | +4.27% | — |
+| 45-50% | 99 | 17 | 79.9 | +0.205 | $28,921 | +3.87% | — |
+| >=50% | 23 | 9 | 80.4 | +0.198 | $26,608 | +1.90% | Small sample: interpret cautiously |
 
 ## Outcome-Level Results
 
 | Outcome | Direction | Weight | N | +/- | Mean r | Mean % Change | Optimal %GDP (Median) | IQR | Confidence |
 |---------|-----------|-------:|---:|-----|-------:|--------------:|----------------------:|-----|------------|
-| Life Expectancy | Higher is better | 0.35 | 23 | 21/2 | 0.663 | +2.03% | 40.7 | 38.3-46.5 | B (0.70) |
-| GDP per Capita (PPP) | Higher is better | 0.35 | 23 | 21/2 | 0.565 | +7.31% | 40.2 | 38.2-46.9 | B (0.67) |
-| Infant Mortality | Lower is better (negated) | 0.15 | 23 | 21/2 | 0.688 | -19.76% | 40.6 | 38.2-47.0 | B (0.72) |
-| Income Inequality (Gini) | Lower is better (negated) | 0.15 | 22 | 10/12 | -0.030 | +0.91% | 40.1 | 35.3-44.0 | D (0.24) |
+| Life Expectancy | Higher is better | 0.35 | 47 | 32/15 | 0.305 | +2.12% | 32.4 | 21.4-37.9 | C (0.50) |
+| GDP per Capita (PPP) | Higher is better | 0.35 | 47 | 34/13 | 0.301 | +39.39% | 32.2 | 21.9-38.0 | C (0.53) |
+| Infant Mortality | Lower is better (negated) | 0.15 | 47 | 33/14 | 0.328 | -13.78% | 32.0 | 21.2-37.5 | C (0.53) |
+| Income Inequality (Gini) | Lower is better (negated) | 0.15 | 45 | 21/24 | 0.078 | -1.18% | 30.8 | 21.1-37.8 | D (0.30) |
 
 ## Method
 
-- Run N-of-1 longitudinal causal analysis within each jurisdiction (2000-2022).
+- Run N-of-1 longitudinal causal analysis within each jurisdiction.
 - Estimate per-jurisdiction optimal predictor value from high-outcome periods.
 - Aggregate outcome-level medians and uncertainty bands (IQR).
 - Combine outcomes via outcome-weighted average with evidence modulation (0.2 + 0.8*confidence).
+- Report start-year sensitivity to show temporal robustness of the estimate.
 
 ## Limitations
 
-- Predictor is a spending basket available in this dataset, not total government spending.
-- OECD high-income panel may not generalize globally.
-- Macro outcomes are affected by time-varying confounders (wars, crises, pandemics).
+- This is cross-country observational panel analysis; confounding remains possible.
+- Government spending % GDP captures scale, not composition quality.
+- Healthy life years and after-tax median income are represented by in-repo proxies in the level table.
+- Indicator revisions in source databases can shift historical estimates over time.

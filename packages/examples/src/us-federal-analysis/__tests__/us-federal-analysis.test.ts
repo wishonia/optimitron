@@ -235,6 +235,7 @@ describe('Government Size Analysis JSON', () => {
     expect(governmentSizeJson.predictor.name).toContain('% GDP');
     expect(governmentSizeJson.predictor.coverage.jurisdictions).toBeGreaterThanOrEqual(20);
     expect(governmentSizeJson.predictor.coverage.observations).toBeGreaterThan(400);
+    expect(governmentSizeJson.predictor.coverage.yearMin).toBeLessThanOrEqual(1990);
   });
 
   it('should include four outcome analyses', () => {
@@ -275,6 +276,15 @@ describe('Government Size Analysis JSON', () => {
     expect(us.modeledSpendingPctGdp).toBeGreaterThan(0);
     expect(['above_optimal_band', 'below_optimal_band', 'within_optimal_band']).toContain(us.status);
   });
+
+  it('should include temporal sensitivity scenarios', () => {
+    expect(governmentSizeJson.sensitivity).toBeDefined();
+    expect(Array.isArray(governmentSizeJson.sensitivity.startYearScenarios)).toBe(true);
+    const starts = governmentSizeJson.sensitivity.startYearScenarios.map((s: any) => s.startYear);
+    expect(starts).toContain(1990);
+    expect(starts).toContain(1995);
+    expect(starts).toContain(2000);
+  });
 });
 
 describe('Government Size Report Markdown', () => {
@@ -287,6 +297,7 @@ describe('Government Size Report Markdown', () => {
 
   it('should include an outcome table and limitations', () => {
     expect(governmentSizeMarkdown).toContain('| Outcome | Direction | Weight |');
+    expect(governmentSizeMarkdown).toContain('## Temporal Sensitivity (Start Year)');
     expect(governmentSizeMarkdown).toContain('## Spending Levels vs Typical Outcomes');
     expect(governmentSizeMarkdown).toContain('Typical Healthy Life Years (proxy level)');
     expect(governmentSizeMarkdown).toContain('Typical Healthy Life Years Growth (proxy)');
