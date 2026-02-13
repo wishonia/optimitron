@@ -3,7 +3,7 @@
   "title": "Hypothesis-Driven Tests for Findings",
   "status": "active",
   "owner": "wishonia",
-  "priority": "P0",
+  "priority": "P1",
   "effort": "M",
   "agentTier": "Codex",
   "dependencies": [
@@ -12,5 +12,5 @@
     "opg-core-v1"
   ],
   "createdAt": "2026-02-07",
-  "updatedAt": "2026-02-07"
+  "updatedAt": "2026-02-13"
 }

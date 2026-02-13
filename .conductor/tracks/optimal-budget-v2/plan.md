@@ -11,6 +11,10 @@ The key insight: more spending doesn't improve outcomes. The optimal level is th
 - [x] 5. Generate `reports/us-optimal-budget-v6.md` with minimum effective framing
 - [x] 6. Generate JSON for web (`efficient-frontier.json` already exists from ad-hoc script)
 
+## Post-Completion Updates
+- [x] Add adaptive spending-bin summaries in government-size outputs (2026-02-13).
+- [x] Add companion spending per-capita PPP tier table so scale analysis is not limited to `% GDP` (2026-02-13).
+
 ## DEFERRED — Only add if needed
 - ~~Wire partial correlations into OBG report~~ (already proven in scripts, adds complexity)
 - ~~COVID sensitivity toggle~~ (nice-to-have, not core)

@@ -1,14 +1,16 @@
 {
-  "id": "optimal-budget-v2",
-  "title": "OBG Minimum Effective Spending + Efficient Frontier",
-  "status": "done",
+  "id": "policy-evaluation-v1",
+  "title": "3-Layer Policy Evaluation Pipeline",
+  "status": "active",
   "owner": "wishonia",
   "priority": "P0",
   "effort": "L",
   "agentTier": "Codex",
   "dependencies": [
+    "optimal-budget-v2",
+    "opg-core-v1",
     "data-infrastructure-v2",
-    "optimizer-core-v2"
+    "testing-strategy-v1"
   ],
   "createdAt": "2026-02-07",
   "updatedAt": "2026-02-13"

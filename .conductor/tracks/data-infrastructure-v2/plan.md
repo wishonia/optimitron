@@ -8,3 +8,7 @@
 4. Add GDP deflator option for US spending conversion.
 5. Add caching and versioning metadata for static datasets.
 6. Improve FRED fetcher reliability (keys, rate-limit handling).
+7. [x] Publish dual-scale spending diagnostics in government-size outputs: `% GDP` bins + derived per-capita PPP bins.
+   - Added adaptive binning metadata to JSON and companion markdown table (2026-02-13).
+8. [x] Ensure reproducible workspace execution for examples by building upstream package deps before generation/tests.
+   - `packages/examples/package.json` now runs `build:deps` ahead of `generate:*`, demos, and tests (2026-02-13).

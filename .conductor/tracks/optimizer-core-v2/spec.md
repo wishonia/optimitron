@@ -7,6 +7,7 @@ Core optimizer utilities need first-class confound control and diminishing retur
 - Add partial correlation utility for confound control.
 - Add diminishing returns detection hooks.
 - Extend analysis outputs with optional partial correlation metrics.
+- Add reusable adaptive numeric binning utilities for analysis/visualization tables.
 
 ## API Changes
 - `runFullAnalysis` accepts optional `confoundSeries`.
@@ -21,3 +22,4 @@ Core optimizer utilities need first-class confound control and diminishing retur
 - Partial correlation results match expected values on synthetic tests.
 - Diminishing returns detection passes known slope-change scenarios.
 - Report generator includes `partialR` when present.
+- Adaptive binning produces stable, minimum-sample bins with test coverage.
