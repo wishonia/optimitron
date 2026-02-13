@@ -77,58 +77,58 @@ async function seedUnits() {
 
   const units: Prisma.UnitUncheckedCreateInput[] = [
     // Weight
-    { name: "Milligrams", abbreviatedName: "mg", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Grams", abbreviatedName: "g", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Kilograms", abbreviatedName: "kg", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
-    { name: "Ounces", abbreviatedName: "oz", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Pounds", abbreviatedName: "lb", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "Milligrams", abbreviatedName: "mg", ucumCode: "mg", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Grams", abbreviatedName: "g", ucumCode: "g", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Kilograms", abbreviatedName: "kg", ucumCode: "kg", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "Ounces", abbreviatedName: "oz", ucumCode: "[oz_av]", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Pounds", abbreviatedName: "lb", ucumCode: "[lb_av]", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
 
     // Volume
-    { name: "Milliliters", abbreviatedName: "mL", unitCategoryId: "Volume", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Liters", abbreviatedName: "L", unitCategoryId: "Volume", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Fluid Ounces", abbreviatedName: "fl oz", unitCategoryId: "Volume", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Cups", abbreviatedName: "cups", unitCategoryId: "Volume", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Milliliters", abbreviatedName: "mL", ucumCode: "mL", unitCategoryId: "Volume", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Liters", abbreviatedName: "L", ucumCode: "L", unitCategoryId: "Volume", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Fluid Ounces", abbreviatedName: "fl oz", ucumCode: "[foz_us]", unitCategoryId: "Volume", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Cups", abbreviatedName: "cups", ucumCode: "[cup_us]", unitCategoryId: "Volume", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
 
     // Count
-    { name: "Count", abbreviatedName: "count", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Servings", abbreviatedName: "servings", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Doses", abbreviatedName: "doses", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Tablets", abbreviatedName: "tablets", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Capsules", abbreviatedName: "capsules", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Applications", abbreviatedName: "applications", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Sprays", abbreviatedName: "sprays", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Drops", abbreviatedName: "drops", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Count", abbreviatedName: "count", ucumCode: "{count}", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Servings", abbreviatedName: "servings", ucumCode: "{serving}", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Doses", abbreviatedName: "doses", ucumCode: "{dose}", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Tablets", abbreviatedName: "tablets", ucumCode: "{tablet}", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Capsules", abbreviatedName: "capsules", ucumCode: "{capsule}", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Applications", abbreviatedName: "applications", ucumCode: "{application}", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Sprays", abbreviatedName: "sprays", ucumCode: "{spray}", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Drops", abbreviatedName: "drops", ucumCode: "[drp]", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
 
     // Rating
-    { name: "1 to 5 Rating", abbreviatedName: "1-5", unitCategoryId: "Rating", scale: MeasurementScale.ORDINAL, fillingType: FillingType.NONE, manualTracking: true, minimumValue: 1, maximumValue: 5 },
-    { name: "1 to 10 Rating", abbreviatedName: "1-10", unitCategoryId: "Rating", scale: MeasurementScale.ORDINAL, fillingType: FillingType.NONE, manualTracking: true, minimumValue: 1, maximumValue: 10 },
-    { name: "Percent", abbreviatedName: "%", unitCategoryId: "Rating", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true, minimumValue: 0, maximumValue: 100 },
+    { name: "1 to 5 Rating", abbreviatedName: "1-5", ucumCode: "{score_5}", unitCategoryId: "Rating", scale: MeasurementScale.ORDINAL, fillingType: FillingType.NONE, manualTracking: true, minimumValue: 1, maximumValue: 5 },
+    { name: "1 to 10 Rating", abbreviatedName: "1-10", ucumCode: "{score_10}", unitCategoryId: "Rating", scale: MeasurementScale.ORDINAL, fillingType: FillingType.NONE, manualTracking: true, minimumValue: 1, maximumValue: 10 },
+    { name: "Percent", abbreviatedName: "%", ucumCode: "%", unitCategoryId: "Rating", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true, minimumValue: 0, maximumValue: 100 },
 
     // Currency
-    { name: "US Dollars", abbreviatedName: "USD", unitCategoryId: "Currency", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
-    { name: "Euros", abbreviatedName: "EUR", unitCategoryId: "Currency", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
-    { name: "British Pounds", abbreviatedName: "GBP", unitCategoryId: "Currency", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "US Dollars", abbreviatedName: "USD", ucumCode: "[USD]", unitCategoryId: "Currency", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "Euros", abbreviatedName: "EUR", ucumCode: "[EUR]", unitCategoryId: "Currency", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "British Pounds", abbreviatedName: "GBP", ucumCode: "[GBP]", unitCategoryId: "Currency", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
 
     // Duration
-    { name: "Seconds", abbreviatedName: "s", unitCategoryId: "Duration", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Minutes", abbreviatedName: "min", unitCategoryId: "Duration", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Hours", abbreviatedName: "h", unitCategoryId: "Duration", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Seconds", abbreviatedName: "s", ucumCode: "s", unitCategoryId: "Duration", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Minutes", abbreviatedName: "min", ucumCode: "min", unitCategoryId: "Duration", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Hours", abbreviatedName: "h", ucumCode: "h", unitCategoryId: "Duration", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
 
     // Other
-    { name: "International Units", abbreviatedName: "IU", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Micrograms", abbreviatedName: "mcg", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Calories", abbreviatedName: "kcal", unitCategoryId: "Energy", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Steps", abbreviatedName: "steps", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Beats Per Minute", abbreviatedName: "bpm", unitCategoryId: "Frequency", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: false },
-    { name: "Yes/No", abbreviatedName: "yes/no", unitCategoryId: "Rating", scale: MeasurementScale.NOMINAL, fillingType: FillingType.ZERO, manualTracking: true, minimumValue: 0, maximumValue: 1 },
-    { name: "Millimeters of Mercury", abbreviatedName: "mmHg", unitCategoryId: "Pressure", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
-    { name: "Degrees Fahrenheit", abbreviatedName: "°F", unitCategoryId: "Temperature", scale: MeasurementScale.INTERVAL, fillingType: FillingType.NONE, manualTracking: true },
-    { name: "Degrees Celsius", abbreviatedName: "°C", unitCategoryId: "Temperature", scale: MeasurementScale.INTERVAL, fillingType: FillingType.NONE, manualTracking: true },
-    { name: "Index", abbreviatedName: "index", unitCategoryId: "Rating", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: false },
-    { name: "Milligrams per Deciliter", abbreviatedName: "mg/dL", unitCategoryId: "Concentration", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
-    { name: "Meters", abbreviatedName: "m", unitCategoryId: "Distance", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Kilometers", abbreviatedName: "km", unitCategoryId: "Distance", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
-    { name: "Miles", abbreviatedName: "mi", unitCategoryId: "Distance", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "International Units", abbreviatedName: "IU", ucumCode: "[iU]", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Micrograms", abbreviatedName: "mcg", ucumCode: "ug", unitCategoryId: "Weight", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Calories", abbreviatedName: "kcal", ucumCode: "kcal", unitCategoryId: "Energy", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Steps", abbreviatedName: "steps", ucumCode: "{step}", unitCategoryId: "Count", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Beats Per Minute", abbreviatedName: "bpm", ucumCode: "{beat}/min", unitCategoryId: "Frequency", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: false },
+    { name: "Yes/No", abbreviatedName: "yes/no", ucumCode: "{boolean}", unitCategoryId: "Rating", scale: MeasurementScale.NOMINAL, fillingType: FillingType.ZERO, manualTracking: true, minimumValue: 0, maximumValue: 1 },
+    { name: "Millimeters of Mercury", abbreviatedName: "mmHg", ucumCode: "mm[Hg]", unitCategoryId: "Pressure", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "Degrees Fahrenheit", abbreviatedName: "°F", ucumCode: "[degF]", unitCategoryId: "Temperature", scale: MeasurementScale.INTERVAL, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "Degrees Celsius", abbreviatedName: "°C", ucumCode: "Cel", unitCategoryId: "Temperature", scale: MeasurementScale.INTERVAL, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "Index", abbreviatedName: "index", ucumCode: "{index}", unitCategoryId: "Rating", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: false },
+    { name: "Milligrams per Deciliter", abbreviatedName: "mg/dL", ucumCode: "mg/dL", unitCategoryId: "Concentration", scale: MeasurementScale.RATIO, fillingType: FillingType.NONE, manualTracking: true },
+    { name: "Meters", abbreviatedName: "m", ucumCode: "m", unitCategoryId: "Distance", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Kilometers", abbreviatedName: "km", ucumCode: "km", unitCategoryId: "Distance", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
+    { name: "Miles", abbreviatedName: "mi", ucumCode: "[mi_i]", unitCategoryId: "Distance", scale: MeasurementScale.RATIO, fillingType: FillingType.ZERO, manualTracking: true },
   ];
 
   const created: Record<string, string> = {};
@@ -588,7 +588,7 @@ async function seedJurisdictions() {
       name,
       type: JurisdictionType.STATE,
       code,
-      parentId: us.id,
+      parentJurisdictionId: us.id,
       currency: "USD",
       population,
     });

@@ -12,30 +12,30 @@ export const PAIR_STUDY_SCHEMA_VERSION = '2026-02-13';
 
 export const PairStudyScopeSchema = z.enum([
   'aggregate_n_of_1',
-  'unit_n_of_1',
+  'subject_n_of_1',
 ]);
 export type PairStudyScope = z.infer<typeof PairStudyScopeSchema>;
 
 export const PairStudyScopeContextSchema = z
   .object({
     scope: PairStudyScopeSchema,
-    nOf1EntityId: z.string().regex(VARIABLE_ID_PATTERN).optional(),
-    unitName: z.string().min(1).optional(),
+    subjectId: z.string().regex(VARIABLE_ID_PATTERN).optional(),
+    subjectName: z.string().min(1).optional(),
   })
   .superRefine((context, ctx) => {
-    if (context.scope === 'unit_n_of_1' && !context.nOf1EntityId) {
+    if (context.scope === 'subject_n_of_1' && !context.subjectId) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'nOf1EntityId is required for unit_n_of_1 scope.',
-        path: ['nOf1EntityId'],
+        message: 'subjectId is required for subject_n_of_1 scope.',
+        path: ['subjectId'],
       });
     }
 
-    if (context.scope === 'aggregate_n_of_1' && context.nOf1EntityId) {
+    if (context.scope === 'aggregate_n_of_1' && context.subjectId) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'nOf1EntityId is only valid for unit_n_of_1 scope.',
-        path: ['nOf1EntityId'],
+        message: 'subjectId is only valid for subject_n_of_1 scope.',
+        path: ['subjectId'],
       });
     }
   });
@@ -54,8 +54,8 @@ export const PairStudyCoverageSchema = z
   .object({
     observations: z.number().int().min(0),
     alignedPairs: z.number().int().min(0),
-    includedUnits: z.number().int().min(0),
-    skippedUnits: z.number().int().min(0).default(0),
+    includedSubjects: z.number().int().min(0),
+    skippedSubjects: z.number().int().min(0).default(0),
     yearMin: z.number().int().optional(),
     yearMax: z.number().int().optional(),
     predictorMissingFraction: z.number().min(0).max(1).optional(),
@@ -113,7 +113,7 @@ export const PairStudyBinRowSchema = z
     upperBound: z.number(),
     isUpperInclusive: z.boolean(),
     observations: z.number().int().min(0),
-    units: z.number().int().min(0),
+    subjects: z.number().int().min(0),
     predictorMean: z.number().nullable(),
     predictorMedian: z.number().nullable(),
     metrics: z.record(z.string(), z.number().nullable()).default({}),
@@ -209,7 +209,7 @@ export const PairStudyOptimalValueSchema = z
     predictorUnit: z.string().min(1).optional(),
     confidenceLevel: z.number().min(0.5).max(0.999).default(0.95),
     supportObservations: z.number().int().min(0),
-    supportUnits: z.number().int().min(0),
+    supportSubjects: z.number().int().min(0),
     expectedOutcomeMetrics: z.record(z.string(), z.number().nullable()).default({}),
     method: z.string().min(1),
   })
@@ -314,7 +314,7 @@ export interface BuildPairStudyIdOptions {
   scope: PairStudyScope;
   predictorId: string;
   outcomeId: string;
-  nOf1EntityId?: string;
+  subjectId?: string;
 }
 
 function sanitizeIdSegment(value: string): string {
@@ -335,12 +335,12 @@ export function buildPairStudyId(options: BuildPairStudyIdOptions): string {
     throw new Error('scope, predictorId, and outcomeId must include at least one alphanumeric character.');
   }
 
-  if (options.scope === 'unit_n_of_1') {
-    const unit = sanitizeIdSegment(options.nOf1EntityId ?? '');
-    if (!unit) {
-      throw new Error('nOf1EntityId is required for unit_n_of_1 scope.');
+  if (options.scope === 'subject_n_of_1') {
+    const subject = sanitizeIdSegment(options.subjectId ?? '');
+    if (!subject) {
+      throw new Error('subjectId is required for subject_n_of_1 scope.');
     }
-    return `${scope}:${unit}:${predictor}:${outcome}`;
+    return `${scope}:${subject}:${predictor}:${outcome}`;
   }
 
   return `${scope}:${predictor}:${outcome}`;
@@ -365,3 +365,4 @@ export function collectPairStudyQualityFlags(result: PairStudyResult): PairStudy
 export function hasBlockingQualityFlags(result: PairStudyResult): boolean {
   return collectPairStudyQualityFlags(result).some(flag => flag.severity === 'error');
 }
+

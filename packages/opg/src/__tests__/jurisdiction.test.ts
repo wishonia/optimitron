@@ -51,7 +51,7 @@ describe('JurisdictionSchema', () => {
       id: 'TX',
       name: 'Texas',
       type: 'state',
-      parentId: 'US',
+      parentJurisdictionId: 'US',
       isoCode: 'US-TX',
       population: 29500000,
       gdpPerCapita: 65000,
@@ -79,7 +79,7 @@ describe('JurisdictionSchema', () => {
       id: 'austin-tx',
       name: 'Austin',
       type: 'city',
-      parentId: 'TX',
+      parentJurisdictionId: 'TX',
       population: 1000000,
     });
     expect(result.success).toBe(true);
@@ -90,7 +90,7 @@ describe('JurisdictionSchema', () => {
       id: 'DE-BY',
       name: 'Bavaria',
       type: 'region',
-      parentId: 'DE',
+      parentJurisdictionId: 'DE',
     });
     expect(result.success).toBe(true);
   });

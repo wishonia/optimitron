@@ -11,34 +11,34 @@ import { runFullAnalysis } from './pipeline.js';
 import { aggregateNOf1VariableRelationships } from './statistics.js';
 
 export interface NOf1VariableRelationshipInput {
-  unitId: string;
-  unitName?: string;
+  subjectId: string;
+  subjectName?: string;
   predictor: TimeSeries;
   outcome: TimeSeries;
 }
 
 export interface VariableRelationshipRunnerInput {
-  units: NOf1VariableRelationshipInput[];
+  subjects: NOf1VariableRelationshipInput[];
   analysisConfig?: AnalysisConfig;
   minimumPairs?: number;
-  onUnitError?: 'skip' | 'throw';
+  onSubjectError?: 'skip' | 'throw';
 }
 
-export interface SkippedUnit {
-  unitId: string;
+export interface SkippedSubject {
+  subjectId: string;
   reason: string;
 }
 
 export interface NOf1VariableRelationshipResult {
-  unitId: string;
-  unitName?: string;
+  subjectId: string;
+  subjectName?: string;
   analysis: FullAnalysisResult;
   nOf1VariableRelationship: NOf1VariableRelationship;
 }
 
 export interface VariableRelationshipRunnerResult {
-  unitResults: NOf1VariableRelationshipResult[];
-  skippedUnits: SkippedUnit[];
+  subjectResults: NOf1VariableRelationshipResult[];
+  skippedSubjects: SkippedSubject[];
   aggregateVariableRelationship: AggregateVariableRelationship;
   analyzedAt: string;
 }
@@ -69,11 +69,11 @@ export function deriveStatisticalSignificance(
 }
 
 export function toNOf1VariableRelationship(
-  unitId: string,
+  subjectId: string,
   analysis: FullAnalysisResult,
 ): NOf1VariableRelationship {
   return {
-    unitId,
+    subjectId,
     forwardPearson: analysis.forwardPearson,
     reversePearson: analysis.reversePearson,
     predictivePearson: analysis.predictivePearson,
@@ -92,68 +92,69 @@ export function toNOf1VariableRelationship(
 }
 
 /**
- * Run per-unit N-of-1 analyses and aggregate them into one relationship.
+ * Run per-subject N-of-1 analyses and aggregate them into one relationship.
  *
- * The optimizer stays domain-agnostic; "unit" can be a user, cohort,
- * organization, or any entity with longitudinal predictor/outcome series.
+ * The optimizer stays domain-agnostic; a "subject" can be a user, cohort,
+ * organization, or any unit with longitudinal predictor/outcome series.
  */
 export function runVariableRelationshipAnalysis(
   input: VariableRelationshipRunnerInput,
 ): VariableRelationshipRunnerResult {
   const minimumPairs = input.minimumPairs ?? DEFAULT_MINIMUM_PAIRS;
-  const onUnitError = input.onUnitError ?? 'skip';
+  const onSubjectError = input.onSubjectError ?? 'skip';
   const analysisConfig: AnalysisConfig = {
     analysisMode: 'individual',
     ...input.analysisConfig,
   };
 
-  const unitResults: NOf1VariableRelationshipResult[] = [];
-  const skippedUnits: SkippedUnit[] = [];
+  const subjectResults: NOf1VariableRelationshipResult[] = [];
+  const skippedSubjects: SkippedSubject[] = [];
 
-  for (const unit of input.units) {
+  for (const subject of input.subjects) {
     try {
       const analysis = runFullAnalysis(
-        unit.predictor,
-        unit.outcome,
+        subject.predictor,
+        subject.outcome,
         analysisConfig,
       );
 
       if (analysis.numberOfPairs < minimumPairs) {
-        skippedUnits.push({
-          unitId: unit.unitId,
+        skippedSubjects.push({
+          subjectId: subject.subjectId,
           reason: `Insufficient pairs (${analysis.numberOfPairs} < ${minimumPairs}).`,
         });
         continue;
       }
 
-      unitResults.push({
-        unitId: unit.unitId,
-        unitName: unit.unitName,
+      subjectResults.push({
+        subjectId: subject.subjectId,
+        subjectName: subject.subjectName,
         analysis,
-        nOf1VariableRelationship: toNOf1VariableRelationship(unit.unitId, analysis),
+        nOf1VariableRelationship: toNOf1VariableRelationship(subject.subjectId, analysis),
       });
     } catch (error) {
-      if (onUnitError === 'throw') {
+      if (onSubjectError === 'throw') {
         throw error;
       }
 
       const message = error instanceof Error ? error.message : String(error);
-      skippedUnits.push({
-        unitId: unit.unitId,
+      skippedSubjects.push({
+        subjectId: subject.subjectId,
         reason: message,
       });
     }
   }
 
   const aggregateVariableRelationship = aggregateNOf1VariableRelationships(
-    unitResults.map(result => result.nOf1VariableRelationship),
+    subjectResults.map(result => result.nOf1VariableRelationship),
   );
 
   return {
-    unitResults,
-    skippedUnits,
+    subjectResults,
+    skippedSubjects,
     aggregateVariableRelationship,
     analyzedAt: new Date().toISOString(),
   };
 }
+
 

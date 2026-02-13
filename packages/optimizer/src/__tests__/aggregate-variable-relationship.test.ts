@@ -9,7 +9,7 @@ import { aggregateNOf1VariableRelationships } from '../statistics.js';
 import type { NOf1VariableRelationship } from '../types.js';
 
 /** Helper to create a unit variable relationship summary */
-function makeUnit(overrides: Partial<NOf1VariableRelationship> & { unitId: string }): NOf1VariableRelationship {
+function makeUnit(overrides: Partial<NOf1VariableRelationship> & { subjectId: string }): NOf1VariableRelationship {
   return {
     forwardPearson: 0.5,
     reversePearson: 0.3,
@@ -42,7 +42,7 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Single unit passthrough ───────────────────────────
   it('should pass through single unit values', () => {
     const unit = makeUnit({
-      unitId: 'user1',
+      subjectId: 'user1',
       forwardPearson: 0.7,
       reversePearson: 0.4,
       predictivePearson: 0.3,
@@ -72,8 +72,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Two units with similar results ────────────────────
   it('should aggregate near individual values for two similar units', () => {
     const units = [
-      makeUnit({ unitId: 'u1', forwardPearson: 0.6, reversePearson: 0.3, predictivePearson: 0.3, effectSize: 12, statisticalSignificance: 0.85, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', forwardPearson: 0.65, reversePearson: 0.32, predictivePearson: 0.33, effectSize: 13, statisticalSignificance: 0.87, numberOfPairs: 110 }),
+      makeUnit({ subjectId: 'u1', forwardPearson: 0.6, reversePearson: 0.3, predictivePearson: 0.3, effectSize: 12, statisticalSignificance: 0.85, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', forwardPearson: 0.65, reversePearson: 0.32, predictivePearson: 0.33, effectSize: 13, statisticalSignificance: 0.87, numberOfPairs: 110 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -87,11 +87,11 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Five units with varied results ────────────────────
   it('should compute weighted average for five diverse units', () => {
     const units = [
-      makeUnit({ unitId: 'u1', forwardPearson: 0.9, statisticalSignificance: 0.95, numberOfPairs: 500 }),
-      makeUnit({ unitId: 'u2', forwardPearson: 0.3, statisticalSignificance: 0.5, numberOfPairs: 50 }),
-      makeUnit({ unitId: 'u3', forwardPearson: 0.6, statisticalSignificance: 0.7, numberOfPairs: 200 }),
-      makeUnit({ unitId: 'u4', forwardPearson: -0.2, statisticalSignificance: 0.3, numberOfPairs: 30 }),
-      makeUnit({ unitId: 'u5', forwardPearson: 0.5, statisticalSignificance: 0.8, numberOfPairs: 300 }),
+      makeUnit({ subjectId: 'u1', forwardPearson: 0.9, statisticalSignificance: 0.95, numberOfPairs: 500 }),
+      makeUnit({ subjectId: 'u2', forwardPearson: 0.3, statisticalSignificance: 0.5, numberOfPairs: 50 }),
+      makeUnit({ subjectId: 'u3', forwardPearson: 0.6, statisticalSignificance: 0.7, numberOfPairs: 200 }),
+      makeUnit({ subjectId: 'u4', forwardPearson: -0.2, statisticalSignificance: 0.3, numberOfPairs: 30 }),
+      makeUnit({ subjectId: 'u5', forwardPearson: 0.5, statisticalSignificance: 0.8, numberOfPairs: 300 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -104,9 +104,9 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── High significance unit should dominate ────────────
   it('should let high significance unit dominate the aggregate', () => {
     const units = [
-      makeUnit({ unitId: 'dominant', forwardPearson: 0.9, statisticalSignificance: 10.0, numberOfPairs: 1000 }),
-      makeUnit({ unitId: 'minor1', forwardPearson: -0.5, statisticalSignificance: 0.1, numberOfPairs: 20 }),
-      makeUnit({ unitId: 'minor2', forwardPearson: -0.3, statisticalSignificance: 0.1, numberOfPairs: 20 }),
+      makeUnit({ subjectId: 'dominant', forwardPearson: 0.9, statisticalSignificance: 10.0, numberOfPairs: 1000 }),
+      makeUnit({ subjectId: 'minor1', forwardPearson: -0.5, statisticalSignificance: 0.1, numberOfPairs: 20 }),
+      makeUnit({ subjectId: 'minor2', forwardPearson: -0.3, statisticalSignificance: 0.1, numberOfPairs: 20 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -118,9 +118,9 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Equal significance → simple mean ──────────────────
   it('should reduce to simple mean when all significances are equal', () => {
     const units = [
-      makeUnit({ unitId: 'u1', forwardPearson: 0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', forwardPearson: 0.4, statisticalSignificance: 1.0, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u3', forwardPearson: 0.2, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', forwardPearson: 0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', forwardPearson: 0.4, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u3', forwardPearson: 0.2, statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -132,8 +132,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── All zero significance → fall back to simple mean ──
   it('should fall back to simple mean when all significances are zero', () => {
     const units = [
-      makeUnit({ unitId: 'u1', forwardPearson: 0.7, statisticalSignificance: 0, numberOfPairs: 50 }),
-      makeUnit({ unitId: 'u2', forwardPearson: 0.3, statisticalSignificance: 0, numberOfPairs: 50 }),
+      makeUnit({ subjectId: 'u1', forwardPearson: 0.7, statisticalSignificance: 0, numberOfPairs: 50 }),
+      makeUnit({ subjectId: 'u2', forwardPearson: 0.3, statisticalSignificance: 0, numberOfPairs: 50 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -144,8 +144,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Optional fields: all present ──────────────────────
   it('should aggregate optional fields when all units have them', () => {
     const units = [
-      makeUnit({ unitId: 'u1', statisticalSignificance: 1.0, valuePredictingHighOutcome: 100, valuePredictingLowOutcome: 10, optimalDailyValue: 55, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', statisticalSignificance: 1.0, valuePredictingHighOutcome: 80, valuePredictingLowOutcome: 20, optimalDailyValue: 50, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', statisticalSignificance: 1.0, valuePredictingHighOutcome: 100, valuePredictingLowOutcome: 10, optimalDailyValue: 55, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', statisticalSignificance: 1.0, valuePredictingHighOutcome: 80, valuePredictingLowOutcome: 20, optimalDailyValue: 50, numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -157,8 +157,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Optional fields: partially present ────────────────
   it('should handle optional fields when only some units have them', () => {
     const units = [
-      makeUnit({ unitId: 'u1', statisticalSignificance: 1.0, valuePredictingHighOutcome: 100, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', statisticalSignificance: 1.0, valuePredictingHighOutcome: 100, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -171,8 +171,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Optional fields: none present ─────────────────────
   it('should return null for optional fields when no units have them', () => {
     const units = [
-      makeUnit({ unitId: 'u1', numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -185,8 +185,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Negative correlations aggregate correctly ─────────
   it('should handle all-negative forward correlations', () => {
     const units = [
-      makeUnit({ unitId: 'u1', forwardPearson: -0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', forwardPearson: -0.6, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', forwardPearson: -0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', forwardPearson: -0.6, statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -197,8 +197,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Mixed positive and negative ──────────────────────
   it('should handle mixed positive and negative correlations', () => {
     const units = [
-      makeUnit({ unitId: 'u1', forwardPearson: 0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', forwardPearson: -0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', forwardPearson: 0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', forwardPearson: -0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -208,9 +208,9 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Total pairs accumulates correctly ─────────────────
   it('should correctly sum total pairs across all units', () => {
     const units = [
-      makeUnit({ unitId: 'u1', numberOfPairs: 150 }),
-      makeUnit({ unitId: 'u2', numberOfPairs: 250 }),
-      makeUnit({ unitId: 'u3', numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', numberOfPairs: 150 }),
+      makeUnit({ subjectId: 'u2', numberOfPairs: 250 }),
+      makeUnit({ subjectId: 'u3', numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -220,8 +220,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Weighted average PIS ──────────────────────────────
   it('should compute weighted average PIS as |forwardPearson| × significance', () => {
     const units = [
-      makeUnit({ unitId: 'u1', forwardPearson: 0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', forwardPearson: 0.4, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', forwardPearson: 0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', forwardPearson: 0.4, statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -233,8 +233,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Effect follow-up percent change ───────────────────
   it('should aggregate outcomeFollowUpPercentChangeFromBaseline', () => {
     const units = [
-      makeUnit({ unitId: 'u1', statisticalSignificance: 1.0, outcomeFollowUpPercentChangeFromBaseline: 20, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', statisticalSignificance: 1.0, outcomeFollowUpPercentChangeFromBaseline: 30, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', statisticalSignificance: 1.0, outcomeFollowUpPercentChangeFromBaseline: 20, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', statisticalSignificance: 1.0, outcomeFollowUpPercentChangeFromBaseline: 30, numberOfPairs: 100 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -244,8 +244,8 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Predictive Pearson aggregation ────────────────────
   it('should aggregate predictive Pearson correctly', () => {
     const units = [
-      makeUnit({ unitId: 'u1', predictivePearson: 0.4, statisticalSignificance: 2.0, numberOfPairs: 200 }),
-      makeUnit({ unitId: 'u2', predictivePearson: 0.1, statisticalSignificance: 0.5, numberOfPairs: 50 }),
+      makeUnit({ subjectId: 'u1', predictivePearson: 0.4, statisticalSignificance: 2.0, numberOfPairs: 200 }),
+      makeUnit({ subjectId: 'u2', predictivePearson: 0.1, statisticalSignificance: 0.5, numberOfPairs: 50 }),
     ];
     const result = aggregateNOf1VariableRelationships(units);
 
@@ -257,7 +257,7 @@ describe('aggregateNOf1VariableRelationships', () => {
   // ─── Large number of units ─────────────────────────────
   it('should handle 100 units efficiently', () => {
     const units = Array.from({ length: 100 }, (_, i) => makeUnit({
-      unitId: `user${i}`,
+      subjectId: `user${i}`,
       forwardPearson: 0.5 + (i % 10) * 0.05 - 0.25,
       statisticalSignificance: 0.5 + Math.random() * 0.5,
       numberOfPairs: 50 + i,
@@ -275,9 +275,9 @@ describe('aggregateNOf1VariableRelationships', () => {
     // Legacy PHP: weight_i = significance_i / avg(significance)
     // Then: result = mean(value_i * weight_i)
     const units = [
-      makeUnit({ unitId: 'u1', forwardPearson: 0.9, statisticalSignificance: 0.6, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u2', forwardPearson: 0.1, statisticalSignificance: 1.2, numberOfPairs: 100 }),
-      makeUnit({ unitId: 'u3', forwardPearson: 0.5, statisticalSignificance: 0.9, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u1', forwardPearson: 0.9, statisticalSignificance: 0.6, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u2', forwardPearson: 0.1, statisticalSignificance: 1.2, numberOfPairs: 100 }),
+      makeUnit({ subjectId: 'u3', forwardPearson: 0.5, statisticalSignificance: 0.9, numberOfPairs: 100 }),
     ];
 
     const avgSig = (0.6 + 1.2 + 0.9) / 3; // = 0.9
@@ -290,5 +290,7 @@ describe('aggregateNOf1VariableRelationships', () => {
     expect(result.aggregateForwardPearson).toBeCloseTo(expectedForward, 10);
   });
 });
+
+
 
 

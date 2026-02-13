@@ -274,7 +274,7 @@ export type DataQuality = z.infer<typeof DataQualitySchema>;
  * @see https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Correlation.php
  */
 export const NOf1VariableRelationshipSchema = z.object({
-  unitId: z.string(),
+  subjectId: z.string(),
   /** Forward Pearson r (predictor → outcome) */
   forwardPearson: z.number(),
   /** Reverse Pearson r (outcome → predictor) */
@@ -334,4 +334,5 @@ export const AggregateVariableRelationshipSchema = z.object({
 });
 
 export type AggregateVariableRelationship = z.infer<typeof AggregateVariableRelationshipSchema>;
+
 

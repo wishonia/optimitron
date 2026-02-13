@@ -34,10 +34,35 @@
     - schema/contract tests
     - ranking correctness tests
     - route-level smoke tests
-12. [ ] Enforce n-of-1 entity ID naming consistency across explorer contracts.
-   - Replace ambiguous analysis identity fields named `unitId` with `nOf1EntityId` in explorer-facing schemas/helpers.
-   - Keep `unitId` reserved for `Unit` model references only.
-13. [ ] Add UCUM-based unit standardization plan and implementation tasks.
-   - Add `ucumCode` support in unit definitions and ingestion normalization.
-   - Define enum/validator strategy so unit code system is explicit and constrained.
-   - Add tests to verify UCUM mapping, normalization, and round-trip conversion behavior.
+12. [x] Enforce n-of-1 subject ID naming consistency across explorer contracts.
+   - Replaced ambiguous analysis identity fields named `unitId` with `subjectId` in explorer-facing schemas/helpers.
+   - Kept `unitId` reserved for `Unit` model references only.
+13. [x] Add UCUM-based unit standardization foundation.
+   - Added `UnitCodeSystem` enum with `UCUM` to DB schema and Zod contracts.
+   - Added required `ucumCode` on `Unit` and seeded UCUM codes for baseline units.
+   - Added validator tests for unit code system defaults and required `ucumCode`.
+   - Follow-up: broaden importer/unit-conversion normalization rules to canonical UCUM equivalents during ingestion.
+14. [x] Align foreign-key field names to explicit target model IDs.
+   - Renamed ambiguous FK fields in Prisma + Zod contracts:
+     - `connectionId` -> `integrationConnectionId`
+     - `providerId` -> `integrationProviderId`
+     - `parentId` -> `parentJurisdictionId`
+     - `runId` -> `aggregationRunId`
+   - Added missing `AlignmentScore -> AggregationRun` relation and back-reference on `AggregationRun`.
+   - Updated seed and validator tests to match renamed FK fields.
+15. [x] Remove residual analysis-level "unit" ambiguity in explorer contracts.
+   - Renamed runner payload keys to subject terminology:
+     - `units` -> `subjects`
+     - `onUnitError` -> `onSubjectError`
+     - `unitResults` -> `subjectResults`
+     - `skippedUnits` -> `skippedSubjects`
+   - Renamed pair-study coverage/bin/optimal support fields:
+     - `includedUnits` -> `includedSubjects`
+     - `skippedUnits` -> `skippedSubjects`
+     - `units` -> `subjects` (bin rows)
+     - `supportUnits` -> `supportSubjects`
+16. [x] Standardize n-of-1 identity name to `subjectId`.
+   - Replaced `nOf1EntityId`/`nOf1EntityName` with `subjectId`/`subjectName` in optimizer + db relationship contracts.
+   - Updated pair-study n-of-1 scope key to `subject_n_of_1`.
+   - Intentionally kept `userId` unchanged for ownership/auth semantics and kept `NOf1Variable` model naming unchanged for now.
+

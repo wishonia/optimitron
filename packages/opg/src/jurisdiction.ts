@@ -21,7 +21,7 @@ export const JurisdictionSchema = z.object({
   id: z.string(),
   name: z.string(),
   type: JurisdictionTypeSchema,
-  parentId: z.string().optional(),
+  parentJurisdictionId: z.string().optional(),
   isoCode: z.string().optional(),
   population: z.number().optional(),
   gdpPerCapita: z.number().optional(),

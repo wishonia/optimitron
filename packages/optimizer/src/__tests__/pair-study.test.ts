@@ -47,8 +47,8 @@ function createValidPairStudyResult(): PairStudyResult {
     coverage: {
       observations: 1300,
       alignedPairs: 1170,
-      includedUnits: 92,
-      skippedUnits: 14,
+      includedSubjects: 92,
+      skippedSubjects: 14,
       yearMin: 1980,
       yearMax: 2023,
       predictorMissingFraction: 0.04,
@@ -79,7 +79,7 @@ function createValidPairStudyResult(): PairStudyResult {
       predictorUnit: 'index points',
       confidenceLevel: 0.9,
       supportObservations: 740,
-      supportUnits: 76,
+      supportSubjects: 76,
       expectedOutcomeMetrics: {
         outcome_growth: 0.18,
         outcome_level: 75.6,
@@ -121,7 +121,7 @@ function createValidPairStudyResult(): PairStudyResult {
             upperBound: 20,
             isUpperInclusive: false,
             observations: 520,
-            units: 63,
+            subjects: 63,
             predictorMean: 15.2,
             predictorMedian: 15.0,
             metrics: {
@@ -137,7 +137,7 @@ function createValidPairStudyResult(): PairStudyResult {
             upperBound: 40,
             isUpperInclusive: true,
             observations: 650,
-            units: 71,
+            subjects: 71,
             predictorMean: 28.4,
             predictorMedian: 27.9,
             metrics: {
@@ -148,7 +148,7 @@ function createValidPairStudyResult(): PairStudyResult {
               {
                 severity: 'warning',
                 code: 'sample.tail.low_coverage',
-                message: 'Upper tail has fewer units than central bins.',
+                message: 'Upper tail has fewer subjects than central bins.',
               },
             ],
           },
@@ -203,9 +203,9 @@ describe('PairStudyResultSchema', () => {
     expect(parsed.dataFlow).toEqual([]);
   });
 
-  it('requires nOf1EntityId for unit_n_of_1 scope', () => {
+  it('requires subjectId for subject_n_of_1 scope', () => {
     const invalid = createValidPairStudyResult();
-    invalid.scope = { scope: 'unit_n_of_1' };
+    invalid.scope = { scope: 'subject_n_of_1' };
 
     const parsed = PairStudyResultSchema.safeParse(invalid);
     expect(parsed.success).toBe(false);
@@ -245,14 +245,14 @@ describe('pair-study helpers', () => {
     );
   });
 
-  it('buildPairStudyId requires n-of-1 entity ID for n-of-1 scope', () => {
+  it('buildPairStudyId requires subject ID for n-of-1 scope', () => {
     expect(() =>
       buildPairStudyId({
-        scope: 'unit_n_of_1',
+        scope: 'subject_n_of_1',
         predictorId: 'predictor.test',
         outcomeId: 'outcome.test',
       }),
-    ).toThrow('nOf1EntityId is required');
+    ).toThrow('subjectId is required');
   });
 
   it('validatePairStudyResult parses valid payloads', () => {
@@ -281,3 +281,4 @@ describe('pair-study helpers', () => {
     expect(hasBlockingQualityFlags(result)).toBe(true);
   });
 });
+

@@ -46,7 +46,7 @@ describe('toNOf1VariableRelationship', () => {
     const analysis = runFullAnalysis(predictor, outcome, { analysisMode: 'individual' });
     const relationship = toNOf1VariableRelationship('unit_a', analysis);
 
-    expect(relationship.unitId).toBe('unit_a');
+    expect(relationship.subjectId).toBe('unit_a');
     expect(relationship.numberOfPairs).toBe(analysis.numberOfPairs);
     expect(relationship.valuePredictingHighOutcome).toBeCloseTo(
       analysis.optimalValues.valuePredictingHighOutcome,
@@ -59,16 +59,16 @@ describe('toNOf1VariableRelationship', () => {
 });
 
 describe('runVariableRelationshipAnalysis', () => {
-  it('runs unit-level analyses and produces an aggregate relationship', () => {
+  it('runs n-of-1 entity analyses and produces an aggregate relationship', () => {
     const result = runVariableRelationshipAnalysis({
-      units: [
+      subjects: [
         {
-          unitId: 'unit_a',
+          subjectId: 'unit_a',
           predictor: makeSeries('p.a', 'Predictor A', [1, 2, 3, 4, 5, 6, 7, 8]),
           outcome: makeSeries('o.a', 'Outcome A', [2, 4, 6, 8, 10, 12, 14, 16]),
         },
         {
-          unitId: 'unit_b',
+          subjectId: 'unit_b',
           predictor: makeSeries('p.b', 'Predictor B', [1, 2, 3, 4, 5, 6, 7, 8]),
           outcome: makeSeries('o.b', 'Outcome B', [16, 14, 12, 10, 8, 6, 4, 2]),
         },
@@ -76,48 +76,50 @@ describe('runVariableRelationshipAnalysis', () => {
       minimumPairs: 2,
     });
 
-    expect(result.unitResults).toHaveLength(2);
-    expect(result.skippedUnits).toHaveLength(0);
+    expect(result.subjectResults).toHaveLength(2);
+    expect(result.skippedSubjects).toHaveLength(0);
     expect(result.aggregateVariableRelationship.numberOfUnits).toBe(2);
     expect(result.aggregateVariableRelationship.totalPairs).toBeGreaterThan(0);
   });
 
-  it('skips units with insufficient pairs', () => {
+  it('skips subjects with insufficient pairs', () => {
     const result = runVariableRelationshipAnalysis({
-      units: [
+      subjects: [
         {
-          unitId: 'valid',
+          subjectId: 'valid',
           predictor: makeSeries('p.valid', 'Predictor Valid', [1, 2, 3, 4]),
           outcome: makeSeries('o.valid', 'Outcome Valid', [2, 3, 4, 5]),
         },
         {
-          unitId: 'too_short',
+          subjectId: 'too_short',
           predictor: makeSeries('p.short', 'Predictor Short', [1]),
           outcome: makeSeries('o.short', 'Outcome Short', [2]),
         },
       ],
-      onUnitError: 'skip',
+      onSubjectError: 'skip',
     });
 
-    expect(result.unitResults).toHaveLength(1);
-    expect(result.skippedUnits).toHaveLength(1);
-    expect(result.skippedUnits[0]?.unitId).toBe('too_short');
+    expect(result.subjectResults).toHaveLength(1);
+    expect(result.skippedSubjects).toHaveLength(1);
+    expect(result.skippedSubjects[0]?.subjectId).toBe('too_short');
     expect(result.aggregateVariableRelationship.numberOfUnits).toBe(1);
   });
 
-  it('throws when configured with onUnitError=throw', () => {
+  it('throws when configured with onSubjectError=throw', () => {
     expect(() =>
       runVariableRelationshipAnalysis({
-        units: [
+        subjects: [
           {
-            unitId: 'bad_unit',
+            subjectId: 'bad_unit',
             predictor: makeSeries('p.bad', 'Predictor Bad', [1]),
             outcome: makeSeries('o.bad', 'Outcome Bad', [2]),
           },
         ],
-        onUnitError: 'throw',
+        onSubjectError: 'throw',
       }),
     ).toThrow('Insufficient aligned pairs');
   });
 });
+
+
 

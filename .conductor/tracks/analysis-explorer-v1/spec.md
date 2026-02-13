@@ -12,10 +12,10 @@ Ship a web-native explorer with:
 ## Scope
 - Variable registry for predictors and outcomes (IDs, units, directionality, valid transforms, lag windows, coverage).
 - Generic pair-analysis runner using canonical relationship semantics:
-  - unit-level: `NOf1VariableRelationship` summaries
+  - subject-level: `NOf1VariableRelationship` summaries
   - aggregate-level: `AggregateVariableRelationship` summaries
 - Canonical relationship naming is aligned across optimizer contracts and db models.
-- Pair-study scope identity uses `nOf1EntityId` (not `unitId`) to avoid collision with measurement `Unit` identifiers.
+- Pair-study scope identity uses `subjectId` (not `unitId`) to avoid collision with measurement `Unit` identifiers.
 - Unit metadata standardization dependency:
   - Add UCUM-coded unit support in DB/data contracts and normalization pipelines.
   - Enforce FK naming so `<modelName>Id` only refers to that model (e.g., `unitId` only for `Unit`).
@@ -39,8 +39,8 @@ Ship a web-native explorer with:
 
 ## Acceptance Criteria
 - Any predictor/outcome in the registry can render a study payload without custom code paths.
-- Pair analysis is computed once via unit/aggregate relationship primitives, then adapted for explorer/report views.
-- Pair-study contract uses `nOf1EntityId` for n-of-1 scope identity; `unitId` remains reserved for measurement-unit references.
+- Pair analysis is computed once via subject/aggregate relationship primitives, then adapted for explorer/report views.
+- Pair-study contract uses `subjectId` for n-of-1 scope identity; `unitId` remains reserved for measurement-unit references.
 - Outcome hubs rank predictors with effect size, confidence, and multiple-testing-adjusted significance.
 - Users can click from an outcome ranking row to a predictor/outcome study page.
 - Study pages expose both global aggregate and jurisdiction N-of-1 evidence summaries.
@@ -49,3 +49,4 @@ Ship a web-native explorer with:
 - Sparse pair coverage can yield unstable rankings without adequate quality thresholds.
 - Multiple comparison risk can create misleading "top predictors" if corrections are omitted.
 - Runtime generation cost may be high without precompute/caching strategy.
+

@@ -89,6 +89,12 @@ enum MeasurementScale {
   RATIO
 }
 
+/// Coding system used for unit identifiers
+enum UnitCodeSystem {
+  /// Unified Code for Units of Measure
+  UCUM
+}
+
 /// Processing/analysis status for variables and relationships
 enum AnalysisStatus {
   /// Waiting to be analyzed
@@ -167,6 +173,12 @@ model Unit {
 
   /// Short form shown in UI (e.g. "mg")
   abbreviatedName String @unique
+
+  /// Unit coding system (currently UCUM-only)
+  codeSystem UnitCodeSystem @default(UCUM)
+
+  /// UCUM code (e.g. "mg", "kg", "mm[Hg]")
+  ucumCode String @unique
 
   /// Grouping: Weight, Volume, Count, Rating, Currency, Percent, Duration, etc.
   unitCategoryId String
@@ -573,10 +585,10 @@ model Measurement {
   sourceName String?
 
   /// Link to the integration connection that imported this measurement (null if manual entry)
-  connectionId String?
+  integrationConnectionId String?
 
   /// Relation to the IntegrationConnection
-  connection IntegrationConnection? @relation(fields: [connectionId], references: [id])
+  integrationConnection IntegrationConnection? @relation(fields: [integrationConnectionId], references: [id])
 
   /// Latitude of the user's location at time of measurement
   latitude Float?
@@ -713,17 +725,17 @@ model TrackingReminderNotification {
   @@index([notifyAt])
 }
 
-/// Unit-level n-of-1 causal inference analysis between two variables.
-/// Each row answers: "For THIS unit, how does variable A predict variable B?"
+/// Subject-level n-of-1 causal inference analysis between two variables.
+/// Each row answers: "For THIS subject, how does variable A predict variable B?"
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Correlation.php
 /// legacy API analysis pipeline: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php
 /// legacy API calculation properties: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/
 model NOf1VariableRelationship {
-  /// Unique identifier for this unit-level relationship
+  /// Unique identifier for this subject-level relationship
   id String @id @default(cuid())
 
-  /// The analysis unit (user, jurisdiction, cohort, etc.)
-  unitId String
+  /// The n-of-1 entity analyzed (user, jurisdiction, cohort, etc.)
+  subjectId String
 
   /// The predictor (input/cause) variable in this relationship
   predictorGlobalVariableId String
@@ -892,19 +904,19 @@ model NOf1VariableRelationship {
   /// Soft-delete timestamp; non-null means this record is logically deleted
   deletedAt DateTime?
 
-  @@unique([unitId, predictorGlobalVariableId, outcomeGlobalVariableId])
-  @@index([unitId])
+  @@unique([subjectId, predictorGlobalVariableId, outcomeGlobalVariableId])
+  @@index([subjectId])
   @@index([predictorGlobalVariableId])
   @@index([outcomeGlobalVariableId])
   @@index([analyzedAt])
 }
 
-/// Population-level causal inference analysis aggregated across all units.
-/// Each row answers: "Across ALL units, how does variable A predict variable B?"
+/// Population-level causal inference analysis aggregated across all subjects.
+/// Each row answers: "Across ALL subjects, how does variable A predict variable B?"
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/AggregateCorrelation.php
 /// legacy API analysis pipeline: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMAggregateCorrelation.php
-/// legacy API aggregates unit-level correlations via weighted averaging by statistical significance.
-/// TODO: Port from legacy — weighted aggregation pipeline across units
+/// legacy API aggregates subject-level correlations via weighted averaging by statistical significance.
+/// TODO: Port from legacy — weighted aggregation pipeline across subjects
 model AggregateVariableRelationship {
   /// Unique identifier for this aggregate-level relationship
   id String @id @default(cuid())
@@ -1066,10 +1078,10 @@ model AggregateVariableRelationship {
 
   // -- Aggregate-specific fields --
 
-  /// Number of units whose data contributed to this analysis
+  /// Number of subjects whose data contributed to this analysis
   numberOfUnits Int
 
-  /// Overall quality/importance score aggregated across units (QM score)
+  /// Overall quality/importance score aggregated across subjects (QM score)
   aggregateQmScore Float?
 
   /// Community votes: how many units found this relationship useful
@@ -1169,10 +1181,10 @@ model IntegrationConnection {
   userId String
 
   /// The integration provider
-  providerId String
+  integrationProviderId String
 
   /// Relation to the IntegrationProvider
-  provider IntegrationProvider @relation(fields: [providerId], references: [id])
+  integrationProvider IntegrationProvider @relation(fields: [integrationProviderId], references: [id])
 
   /// Whether this connection is currently active and syncing
   enabled Boolean @default(true)
@@ -1211,9 +1223,9 @@ model IntegrationConnection {
   syncLogs     IntegrationSyncLog[]
   measurements Measurement[]
 
-  @@unique([userId, providerId])
+  @@unique([userId, integrationProviderId])
   @@index([userId])
-  @@index([providerId])
+  @@index([integrationProviderId])
   @@index([enabled])
 }
 
@@ -1224,10 +1236,10 @@ model IntegrationSyncLog {
   id String @id @default(cuid())
 
   /// The connection that was synced
-  connectionId String
+  integrationConnectionId String
 
   /// Relation to the IntegrationConnection
-  connection IntegrationConnection @relation(fields: [connectionId], references: [id])
+  integrationConnection IntegrationConnection @relation(fields: [integrationConnectionId], references: [id])
 
   /// When this sync started
   startedAt DateTime @default(now())
@@ -1253,7 +1265,7 @@ model IntegrationSyncLog {
   /// Soft-delete timestamp; non-null means this record is logically deleted
   deletedAt DateTime?
 
-  @@index([connectionId])
+  @@index([integrationConnectionId])
   @@index([startedAt])
 }
 
@@ -1273,10 +1285,10 @@ model Jurisdiction {
   type JurisdictionType
 
   /// Parent jurisdiction ID for hierarchy (e.g. city → county → state → country)
-  parentId String?
+  parentJurisdictionId String?
 
   /// Relation to the parent Jurisdiction
-  parent Jurisdiction? @relation("JurisdictionHierarchy", fields: [parentId], references: [id])
+  parent Jurisdiction? @relation("JurisdictionHierarchy", fields: [parentJurisdictionId], references: [id])
 
   /// Child jurisdictions in the hierarchy
   children Jurisdiction[] @relation("JurisdictionHierarchy")
@@ -1306,7 +1318,7 @@ model Jurisdiction {
   aggregationRuns AggregationRun[]
 
   @@index([type])
-  @@index([parentId])
+  @@index([parentJurisdictionId])
 }
 
 /// A priority/wish/budget item that can be compared in pairwise evaluations
@@ -1449,10 +1461,10 @@ model PreferenceWeight {
   id String @id @default(cuid())
 
   /// Which calculation run produced this weight
-  runId String
+  aggregationRunId String
 
   /// Relation to the AggregationRun
-  run AggregationRun @relation(fields: [runId], references: [id])
+  aggregationRun AggregationRun @relation(fields: [aggregationRunId], references: [id])
 
   /// The item this weight applies to
   itemId String
@@ -1481,8 +1493,8 @@ model PreferenceWeight {
   /// Soft-delete timestamp; non-null means this record is logically deleted
   deletedAt DateTime?
 
-  @@unique([runId, itemId])
-  @@index([runId])
+  @@unique([aggregationRunId, itemId])
+  @@index([aggregationRunId])
 }
 
 /// Record of each aggregation calculation (eigenvector computation run)
@@ -1521,7 +1533,8 @@ model AggregationRun {
   deletedAt DateTime?
 
   // -- Relations --
-  weights PreferenceWeight[]
+  weights         PreferenceWeight[]
+  alignmentScores AlignmentScore[]
 
   @@index([jurisdictionId])
 }
@@ -1620,7 +1633,10 @@ model AlignmentScore {
   politician Politician @relation(fields: [politicianId], references: [id])
 
   /// Which aggregation run's weights were used to compute this score
-  runId String
+  aggregationRunId String
+
+  /// Relation to the AggregationRun
+  aggregationRun AggregationRun @relation(fields: [aggregationRunId], references: [id])
 
   /// Overall alignment score (0-100%)
   score Float
@@ -1637,6 +1653,6 @@ model AlignmentScore {
   /// Soft-delete timestamp; non-null means this record is logically deleted
   deletedAt DateTime?
 
-  @@unique([politicianId, runId])
+  @@unique([politicianId, aggregationRunId])
   @@index([score])
 }

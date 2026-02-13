@@ -27,6 +27,9 @@ export type Valence = z.infer<typeof ValenceSchema>;
 export const MeasurementScaleSchema = z.enum(['NOMINAL', 'ORDINAL', 'INTERVAL', 'RATIO']);
 export type MeasurementScale = z.infer<typeof MeasurementScaleSchema>;
 
+export const UnitCodeSystemSchema = z.enum(['UCUM']);
+export type UnitCodeSystem = z.infer<typeof UnitCodeSystemSchema>;
+
 export const AnalysisStatusSchema = z.enum(['WAITING', 'ANALYZING', 'DONE', 'ERROR']);
 export type AnalysisStatus = z.infer<typeof AnalysisStatusSchema>;
 
@@ -60,12 +63,11 @@ export type NotificationStatus = z.infer<typeof NotificationStatusSchema>;
 export const JurisdictionTypeSchema = z.enum(['CITY', 'COUNTY', 'STATE', 'COUNTRY']);
 export type JurisdictionType = z.infer<typeof JurisdictionTypeSchema>;
 
-// The 12th enum — we use a barrel for completeness. Prisma doesn't have a 12th,
-// but the task description says 12 enums. Let's count:
+// 12 enums in the schema:
 // 1. CombinationOperation  2. FillingType  3. Valence  4. MeasurementScale
-// 5. AnalysisStatus  6. StrengthLevel  7. ConfidenceLevel  8. RelationshipDirection
-// 9. EvidenceGrade  10. NotificationStatus  11. JurisdictionType
-// That's 11 enums in the schema. All accounted for.
+// 5. UnitCodeSystem  6. AnalysisStatus  7. StrengthLevel  8. ConfidenceLevel
+// 9. RelationshipDirection  10. EvidenceGrade  11. NotificationStatus
+// 12. JurisdictionType
 
 // ============================================================================
 // HELPER: coerce string dates to Date objects
@@ -82,6 +84,8 @@ export const UnitSchema = z.object({
   id: z.string(),
   name: z.string(),
   abbreviatedName: z.string(),
+  codeSystem: UnitCodeSystemSchema.default('UCUM'),
+  ucumCode: z.string(),
   unitCategoryId: z.string(),
   minimumValue: z.number().nullable().optional(),
   maximumValue: z.number().nullable().optional(),
@@ -205,7 +209,7 @@ export const MeasurementSchema = z.object({
   duration: z.number().int().nullable().optional(),
   note: z.string().nullable().optional(),
   sourceName: z.string().nullable().optional(),
-  connectionId: z.string().nullable().optional(),
+  integrationConnectionId: z.string().nullable().optional(),
   latitude: z.number().nullable().optional(),
   longitude: z.number().nullable().optional(),
   createdAt: dateSchema,
@@ -256,7 +260,7 @@ export type TrackingReminderNotificationType = z.infer<
 /** Zod schema for the NOf1VariableRelationship model */
 export const NOf1VariableRelationshipSchema = z.object({
   id: z.string(),
-  unitId: z.string(),
+  subjectId: z.string(),
   predictorGlobalVariableId: z.string(),
   outcomeGlobalVariableId: z.string(),
   forwardPearsonCorrelation: z.number(),
@@ -400,7 +404,7 @@ export type IntegrationProviderType = z.infer<typeof IntegrationProviderSchema>;
 export const IntegrationConnectionSchema = z.object({
   id: z.string(),
   userId: z.string(),
-  providerId: z.string(),
+  integrationProviderId: z.string(),
   enabled: z.boolean().default(true),
   accessToken: z.string().nullable().optional(),
   refreshToken: z.string().nullable().optional(),
@@ -418,7 +422,7 @@ export type IntegrationConnectionType = z.infer<typeof IntegrationConnectionSche
 /** Zod schema for the IntegrationSyncLog model */
 export const IntegrationSyncLogSchema = z.object({
   id: z.string(),
-  connectionId: z.string(),
+  integrationConnectionId: z.string(),
   startedAt: dateSchema,
   completedAt: nullableDateSchema,
   success: z.boolean().default(false),
@@ -439,7 +443,7 @@ export const JurisdictionSchema = z.object({
   id: z.string(),
   name: z.string(),
   type: JurisdictionTypeSchema,
-  parentId: z.string().nullable().optional(),
+  parentJurisdictionId: z.string().nullable().optional(),
   code: z.string().nullable().optional(),
   currency: z.string().default('USD'),
   population: z.number().int().nullable().optional(),
@@ -497,7 +501,7 @@ export type PairwiseComparisonType = z.infer<typeof PairwiseComparisonSchema>;
 /** Zod schema for the PreferenceWeight model */
 export const PreferenceWeightSchema = z.object({
   id: z.string(),
-  runId: z.string(),
+  aggregationRunId: z.string(),
   itemId: z.string(),
   weight: z.number(),
   rank: z.number().int(),
@@ -558,7 +562,7 @@ export type PoliticianVoteType = z.infer<typeof PoliticianVoteSchema>;
 export const AlignmentScoreSchema = z.object({
   id: z.string(),
   politicianId: z.string(),
-  runId: z.string(),
+  aggregationRunId: z.string(),
   score: z.number(),
   votesCompared: z.number().int(),
   createdAt: dateSchema,
@@ -566,3 +570,4 @@ export const AlignmentScoreSchema = z.object({
   deletedAt: nullableDateSchema,
 });
 export type AlignmentScoreType = z.infer<typeof AlignmentScoreSchema>;
+

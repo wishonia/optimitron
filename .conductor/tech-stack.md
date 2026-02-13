@@ -45,7 +45,7 @@
 - **predictor/outcome** terminology (not cause/effect)
 - **GlobalVariable** not "variables"; use **NOf1VariableRelationship** / **AggregateVariableRelationship** across optimizer and db (not "correlations")
 - **FK names match target model**: `globalVariableId`, `predictorGlobalVariableId`, and `unitId` only for `Unit` references
-- **N-of-1 identity fields are not measurement units**: use `nOf1EntityId` instead of `unitId` in analysis/report contracts
+- **N-of-1 identity fields are not measurement units**: use `subjectId` instead of `unitId` in analysis/report contracts
 - **deletedAt on all models** (soft deletes)
 - **No domain words in optimizer**: no "drugs", "policies", "budgets", "politicians"
 - **Change from baseline + z-score** as primary metrics (Pearson is supplementary)
@@ -58,3 +58,4 @@
 - `tsup` for chat-ui
 - `esbuild` for extension
 - `next build && next export` for web (static export)
+

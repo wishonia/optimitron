@@ -5,6 +5,7 @@ import {
   FillingTypeSchema,
   ValenceSchema,
   MeasurementScaleSchema,
+  UnitCodeSystemSchema,
   AnalysisStatusSchema,
   StrengthLevelSchema,
   ConfidenceLevelSchema,
@@ -55,7 +56,7 @@ const validMeasurement = {
   duration: null,
   note: 'Took with food',
   sourceName: 'manual',
-  connectionId: null,
+  integrationConnectionId: null,
   latitude: null,
   longitude: null,
   createdAt: now,
@@ -67,6 +68,8 @@ const validUnit = {
   id: 'unit_mg',
   name: 'Milligrams',
   abbreviatedName: 'mg',
+  codeSystem: 'UCUM' as const,
+  ucumCode: 'mg',
   unitCategoryId: 'weight',
   minimumValue: 0,
   maximumValue: null,
@@ -84,7 +87,7 @@ const validJurisdiction = {
   id: 'jur_us',
   name: 'United States',
   type: 'COUNTRY' as const,
-  parentId: null,
+  parentJurisdictionId: null,
   code: 'US',
   currency: 'USD',
   population: 330000000,
@@ -95,7 +98,7 @@ const validJurisdiction = {
 
 const validNOf1VariableRelationship = {
   id: 'uvr_1',
-  unitId: 'unit_1',
+  subjectId: 'entity_1',
   predictorGlobalVariableId: 'gv_pred',
   outcomeGlobalVariableId: 'gv_out',
   forwardPearsonCorrelation: 0.65,
@@ -145,51 +148,56 @@ describe('Enum schemas', () => {
     }
   });
 
-  it('7. AnalysisStatus — accepts valid, rejects invalid', () => {
+  it('7. UnitCodeSystem — only UCUM is allowed', () => {
+    expect(UnitCodeSystemSchema.parse('UCUM')).toBe('UCUM');
+    expect(UnitCodeSystemSchema.safeParse('SI').success).toBe(false);
+  });
+
+  it('8. AnalysisStatus — accepts valid, rejects invalid', () => {
     expect(AnalysisStatusSchema.parse('WAITING')).toBe('WAITING');
     expect(AnalysisStatusSchema.parse('DONE')).toBe('DONE');
     expect(AnalysisStatusSchema.safeParse('RUNNING').success).toBe(false);
   });
 
-  it('8. StrengthLevel — accepts all 5 values', () => {
+  it('9. StrengthLevel — accepts all 5 values', () => {
     for (const val of ['VERY_STRONG', 'STRONG', 'MODERATE', 'WEAK', 'VERY_WEAK']) {
       expect(StrengthLevelSchema.parse(val)).toBe(val);
     }
   });
 
-  it('9. ConfidenceLevel — accepts HIGH, MEDIUM, LOW', () => {
+  it('10. ConfidenceLevel — accepts HIGH, MEDIUM, LOW', () => {
     expect(ConfidenceLevelSchema.parse('HIGH')).toBe('HIGH');
     expect(ConfidenceLevelSchema.parse('LOW')).toBe('LOW');
   });
 
-  it('10. RelationshipDirection — accepts valid, rejects "UP"', () => {
+  it('11. RelationshipDirection — accepts valid, rejects "UP"', () => {
     expect(RelationshipDirectionSchema.parse('POSITIVE')).toBe('POSITIVE');
     expect(RelationshipDirectionSchema.safeParse('UP').success).toBe(false);
   });
 
-  it('11. EvidenceGrade — accepts A through F', () => {
+  it('12. EvidenceGrade — accepts A through F', () => {
     for (const val of ['A', 'B', 'C', 'D', 'F']) {
       expect(EvidenceGradeSchema.parse(val)).toBe(val);
     }
   });
 
-  it('12. EvidenceGrade — rejects "E" (not in enum)', () => {
+  it('13. EvidenceGrade — rejects "E" (not in enum)', () => {
     expect(EvidenceGradeSchema.safeParse('E').success).toBe(false);
   });
 
-  it('13. NotificationStatus — accepts all 5 values', () => {
+  it('14. NotificationStatus — accepts all 5 values', () => {
     for (const val of ['PENDING', 'SENT', 'TRACKED', 'SKIPPED', 'SNOOZED']) {
       expect(NotificationStatusSchema.parse(val)).toBe(val);
     }
   });
 
-  it('14. JurisdictionType — accepts CITY, COUNTY, STATE, COUNTRY', () => {
+  it('15. JurisdictionType — accepts CITY, COUNTY, STATE, COUNTRY', () => {
     for (const val of ['CITY', 'COUNTY', 'STATE', 'COUNTRY']) {
       expect(JurisdictionTypeSchema.parse(val)).toBe(val);
     }
   });
 
-  it('15. JurisdictionType — rejects "PROVINCE"', () => {
+  it('16. JurisdictionType — rejects "PROVINCE"', () => {
     expect(JurisdictionTypeSchema.safeParse('PROVINCE').success).toBe(false);
   });
 });
@@ -278,11 +286,12 @@ describe('UnitSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('25. applies defaults for fillingType and scale', () => {
+  it('25. applies defaults for codeSystem, fillingType, and scale', () => {
     const minimal = {
       id: 'u1',
       name: 'Grams',
       abbreviatedName: 'g',
+      ucumCode: 'g',
       unitCategoryId: 'weight',
       createdAt: now,
       updatedAt: now,
@@ -290,11 +299,18 @@ describe('UnitSchema', () => {
     const result = UnitSchema.safeParse(minimal);
     expect(result.success).toBe(true);
     if (result.success) {
+      expect(result.data.codeSystem).toBe('UCUM');
       expect(result.data.fillingType).toBe('NONE');
       expect(result.data.scale).toBe('RATIO');
       expect(result.data.advanced).toBe(false);
       expect(result.data.manualTracking).toBe(true);
     }
+  });
+
+  it('26. fails when "ucumCode" is missing', () => {
+    const { ucumCode, ...noUcumCode } = validUnit;
+    const result = UnitSchema.safeParse(noUcumCode);
+    expect(result.success).toBe(false);
   });
 });
 
@@ -303,12 +319,12 @@ describe('UnitSchema', () => {
 // ============================================================================
 
 describe('JurisdictionSchema', () => {
-  it('26. validates a correct Jurisdiction', () => {
+  it('27. validates a correct Jurisdiction', () => {
     const result = JurisdictionSchema.safeParse(validJurisdiction);
     expect(result.success).toBe(true);
   });
 
-  it('27. fails with invalid JurisdictionType', () => {
+  it('28. fails with invalid JurisdictionType', () => {
     const result = JurisdictionSchema.safeParse({
       ...validJurisdiction,
       type: 'PROVINCE',
@@ -316,7 +332,7 @@ describe('JurisdictionSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('28. applies default currency "USD"', () => {
+  it('29. applies default currency "USD"', () => {
     const { currency, ...noCurrency } = validJurisdiction;
     const result = JurisdictionSchema.safeParse(noCurrency);
     expect(result.success).toBe(true);
@@ -338,9 +354,9 @@ describe('NOf1VariableRelationshipSchema', () => {
     expect(result.success).toBe(true);
   });
 
-  it('30. fails when unitId is missing', () => {
-    const { unitId, ...noUnitId } = validNOf1VariableRelationship;
-    const result = NOf1VariableRelationshipSchema.safeParse(noUnitId);
+  it('30. fails when subjectId is missing', () => {
+    const { subjectId, ...noSubjectId } = validNOf1VariableRelationship;
+    const result = NOf1VariableRelationshipSchema.safeParse(noSubjectId);
     expect(result.success).toBe(false);
   });
 
@@ -445,7 +461,7 @@ describe('Governance models', () => {
     const data = {
       id: 'as_1',
       politicianId: 'pol_1',
-      runId: 'run_1',
+      aggregationRunId: 'run_1',
       score: 87.5,
       votesCompared: 42,
       createdAt: now,
@@ -458,7 +474,7 @@ describe('Governance models', () => {
     const data = {
       id: 'as_1',
       politicianId: 'pol_1',
-      runId: 'run_1',
+      aggregationRunId: 'run_1',
       votesCompared: 42,
       createdAt: now,
       updatedAt: now,
@@ -501,7 +517,7 @@ describe('Preference elicitation models', () => {
   it('41. validates a PreferenceWeight', () => {
     const data = {
       id: 'pw_1',
-      runId: 'run_1',
+      aggregationRunId: 'run_1',
       itemId: 'item_1',
       weight: 0.15,
       rank: 3,
@@ -514,7 +530,7 @@ describe('Preference elicitation models', () => {
   it('42. PreferenceWeight fails when rank is a float', () => {
     const data = {
       id: 'pw_1',
-      runId: 'run_1',
+      aggregationRunId: 'run_1',
       itemId: 'item_1',
       weight: 0.15,
       rank: 3.7,
@@ -661,7 +677,7 @@ describe('Additional models', () => {
     const data = {
       id: 'ic_1',
       userId: 'user_1',
-      providerId: 'ip_1',
+      integrationProviderId: 'ip_1',
       createdAt: now,
       updatedAt: now,
     };
@@ -671,7 +687,7 @@ describe('Additional models', () => {
   it('53. validates an IntegrationSyncLog', () => {
     const data = {
       id: 'isl_1',
-      connectionId: 'ic_1',
+      integrationConnectionId: 'ic_1',
       startedAt: now,
       createdAt: now,
     };
@@ -743,3 +759,4 @@ describe('Edge cases', () => {
     expect(UnitSchema.safeParse(noAbbrev).success).toBe(false);
   });
 });
+
