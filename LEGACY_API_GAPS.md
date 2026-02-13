@@ -100,11 +100,11 @@ Performed 2026-02-06. Legacy source: https://github.com/mikepsinn/curedao-api/bl
 ## 2. Features NOT Yet Ported to Optomitron
 
 ### ❌ Aggregate Correlation (Population-Level Analysis Pipeline)
-- **Legacy API**: `QMAggregateCorrelation::analyzeFully()` — aggregates UnitVariableRelationships across multiple users via weighted averaging by statistical significance.
+- **Legacy API**: `QMAggregateCorrelation::analyzeFully()` — aggregates NOf1VariableRelationships across multiple users via weighted averaging by statistical significance.
   - [QMAggregateCorrelation.php#L642](https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMAggregateCorrelation.php#L642)
 - **Priority**: HIGH
 - **Target package**: `packages/optimizer/src/` — add `aggregate-correlations.ts`
-- **Description**: Takes all user-level UnitVariableRelationships for the same predictor-outcome pair and produces a single AggregateVariableRelationship with weighted-average statistics.
+- **Description**: Takes all user-level NOf1VariableRelationships for the same predictor-outcome pair and produces a single AggregateVariableRelationship with weighted-average statistics.
 
 ### ❌ Vote-Weighted Statistical Significance
 - **Legacy API**: Users can upvote/downvote correlations. Vote significance = `(upVotes + 4) / (upVotes + downVotes + 4)` (Bayesian prior). This multiplies into statistical significance.

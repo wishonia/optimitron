@@ -4,13 +4,13 @@ import type {
 } from './pipeline.js';
 import type {
   TimeSeries,
-  UnitVariableRelationship,
+  NOf1VariableRelationship,
   AggregateVariableRelationship,
 } from './types.js';
 import { runFullAnalysis } from './pipeline.js';
-import { aggregateUnitVariableRelationships } from './statistics.js';
+import { aggregateNOf1VariableRelationships } from './statistics.js';
 
-export interface UnitVariableRelationshipInput {
+export interface NOf1VariableRelationshipInput {
   unitId: string;
   unitName?: string;
   predictor: TimeSeries;
@@ -18,7 +18,7 @@ export interface UnitVariableRelationshipInput {
 }
 
 export interface VariableRelationshipRunnerInput {
-  units: UnitVariableRelationshipInput[];
+  units: NOf1VariableRelationshipInput[];
   analysisConfig?: AnalysisConfig;
   minimumPairs?: number;
   onUnitError?: 'skip' | 'throw';
@@ -29,15 +29,15 @@ export interface SkippedUnit {
   reason: string;
 }
 
-export interface UnitVariableRelationshipResult {
+export interface NOf1VariableRelationshipResult {
   unitId: string;
   unitName?: string;
   analysis: FullAnalysisResult;
-  unitVariableRelationship: UnitVariableRelationship;
+  nOf1VariableRelationship: NOf1VariableRelationship;
 }
 
 export interface VariableRelationshipRunnerResult {
-  unitResults: UnitVariableRelationshipResult[];
+  unitResults: NOf1VariableRelationshipResult[];
   skippedUnits: SkippedUnit[];
   aggregateVariableRelationship: AggregateVariableRelationship;
   analyzedAt: string;
@@ -68,10 +68,10 @@ export function deriveStatisticalSignificance(
   return clamp01(0.7 * pComponent + 0.3 * pairComponent);
 }
 
-export function toUnitVariableRelationship(
+export function toNOf1VariableRelationship(
   unitId: string,
   analysis: FullAnalysisResult,
-): UnitVariableRelationship {
+): NOf1VariableRelationship {
   return {
     unitId,
     forwardPearson: analysis.forwardPearson,
@@ -107,7 +107,7 @@ export function runVariableRelationshipAnalysis(
     ...input.analysisConfig,
   };
 
-  const unitResults: UnitVariableRelationshipResult[] = [];
+  const unitResults: NOf1VariableRelationshipResult[] = [];
   const skippedUnits: SkippedUnit[] = [];
 
   for (const unit of input.units) {
@@ -130,7 +130,7 @@ export function runVariableRelationshipAnalysis(
         unitId: unit.unitId,
         unitName: unit.unitName,
         analysis,
-        unitVariableRelationship: toUnitVariableRelationship(unit.unitId, analysis),
+        nOf1VariableRelationship: toNOf1VariableRelationship(unit.unitId, analysis),
       });
     } catch (error) {
       if (onUnitError === 'throw') {
@@ -145,8 +145,8 @@ export function runVariableRelationshipAnalysis(
     }
   }
 
-  const aggregateVariableRelationship = aggregateUnitVariableRelationships(
-    unitResults.map(result => result.unitVariableRelationship),
+  const aggregateVariableRelationship = aggregateNOf1VariableRelationships(
+    unitResults.map(result => result.nOf1VariableRelationship),
   );
 
   return {

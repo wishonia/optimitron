@@ -144,7 +144,7 @@ export const GlobalVariableSchema = z.object({
   secondMostCommonValue: z.number().nullable().optional(),
   minimumRecordedValue: z.number().nullable().optional(),
   maximumRecordedValue: z.number().nullable().optional(),
-  numberOfUnitVariables: z.number().int().default(0),
+  numberOfNOf1Variables: z.number().int().default(0),
   status: AnalysisStatusSchema.default('WAITING'),
   analysisRequestedAt: nullableDateSchema,
   analysisStartedAt: nullableDateSchema,
@@ -159,8 +159,8 @@ export const GlobalVariableSchema = z.object({
 });
 export type GlobalVariableType = z.infer<typeof GlobalVariableSchema>;
 
-/** Zod schema for the UnitVariable model */
-export const UnitVariableSchema = z.object({
+/** Zod schema for the NOf1Variable model */
+export const NOf1VariableSchema = z.object({
   id: z.string(),
   userId: z.string(),
   globalVariableId: z.string(),
@@ -189,13 +189,13 @@ export const UnitVariableSchema = z.object({
   updatedAt: dateSchema,
   deletedAt: nullableDateSchema,
 });
-export type UnitVariableType = z.infer<typeof UnitVariableSchema>;
+export type NOf1VariableType = z.infer<typeof NOf1VariableSchema>;
 
 /** Zod schema for the Measurement model */
 export const MeasurementSchema = z.object({
   id: z.string(),
   userId: z.string(),
-  unitVariableId: z.string(),
+  nOf1VariableId: z.string(),
   globalVariableId: z.string(),
   startTime: dateSchema,
   value: z.number(),
@@ -218,7 +218,7 @@ export type MeasurementType = z.infer<typeof MeasurementSchema>;
 export const TrackingReminderSchema = z.object({
   id: z.string(),
   userId: z.string(),
-  unitVariableId: z.string(),
+  nOf1VariableId: z.string(),
   globalVariableId: z.string(),
   defaultValue: z.number().nullable().optional(),
   reminderStartTime: z.string(),
@@ -253,8 +253,8 @@ export type TrackingReminderNotificationType = z.infer<
   typeof TrackingReminderNotificationSchema
 >;
 
-/** Zod schema for the UnitVariableRelationship model */
-export const UnitVariableRelationshipSchema = z.object({
+/** Zod schema for the NOf1VariableRelationship model */
+export const NOf1VariableRelationshipSchema = z.object({
   id: z.string(),
   unitId: z.string(),
   predictorGlobalVariableId: z.string(),
@@ -308,8 +308,8 @@ export const UnitVariableRelationshipSchema = z.object({
   updatedAt: dateSchema,
   deletedAt: nullableDateSchema,
 });
-export type UnitVariableRelationshipType = z.infer<
-  typeof UnitVariableRelationshipSchema
+export type NOf1VariableRelationshipType = z.infer<
+  typeof NOf1VariableRelationshipSchema
 >;
 
 /** Zod schema for the AggregateVariableRelationship model */

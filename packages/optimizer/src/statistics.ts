@@ -13,7 +13,7 @@ import type {
   AlignedPair,
   CorrelationResult,
   EffectSize,
-  UnitVariableRelationship,
+  NOf1VariableRelationship,
   AggregateVariableRelationship,
   DiminishingReturnsResult,
 } from './types.js';
@@ -425,11 +425,11 @@ export function calculatePredictivePearson(forwardR: number, reverseR: number): 
  * @see https://github.com/mikepsinn/curedao-api/blob/main/app/Traits/HasMany/HasManyCorrelations.php#L57
  * @see https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMAggregateCorrelation.php
  */
-export function aggregateUnitVariableRelationships(
-  unitVariableRelationships: UnitVariableRelationship[],
+export function aggregateNOf1VariableRelationships(
+  nOf1VariableRelationships: NOf1VariableRelationship[],
 ): AggregateVariableRelationship {
   // Edge case: no units
-  if (unitVariableRelationships.length === 0) {
+  if (nOf1VariableRelationships.length === 0) {
     return {
       numberOfUnits: 0,
       aggregateForwardPearson: 0,
@@ -446,11 +446,11 @@ export function aggregateUnitVariableRelationships(
     };
   }
 
-  const n = unitVariableRelationships.length;
+  const n = nOf1VariableRelationships.length;
 
   // Calculate average statistical significance for normalization
   const avgSignificance =
-    unitVariableRelationships.reduce((sum, u) => sum + u.statisticalSignificance, 0) / n;
+    nOf1VariableRelationships.reduce((sum, u) => sum + u.statisticalSignificance, 0) / n;
 
   /**
    * Weighted average following the legacy PHP pattern:
@@ -466,7 +466,7 @@ export function aggregateUnitVariableRelationships(
     let count = 0;
     for (let i = 0; i < values.length; i++) {
       const val = values[i]!;
-      const sig = unitVariableRelationships[i]!.statisticalSignificance;
+      const sig = nOf1VariableRelationships[i]!.statisticalSignificance;
       const weight = avgSignificance > 0 ? sig / avgSignificance : 1;
       sum += val * weight;
       count++;
@@ -480,10 +480,10 @@ export function aggregateUnitVariableRelationships(
    * Returns null if no units have the field defined.
    */
   function weightedAvgOptional(
-    extractor: (u: UnitVariableRelationship) => number | undefined,
+    extractor: (u: NOf1VariableRelationship) => number | undefined,
   ): number | null {
     const validEntries: { value: number; significance: number }[] = [];
-    for (const u of unitVariableRelationships) {
+    for (const u of nOf1VariableRelationships) {
       const val = extractor(u);
       if (val !== undefined && val !== null) {
         validEntries.push({ value: val, significance: u.statisticalSignificance });
@@ -500,22 +500,22 @@ export function aggregateUnitVariableRelationships(
     return sum / validEntries.length;
   }
 
-  const totalPairs = unitVariableRelationships.reduce((sum, u) => sum + u.numberOfPairs, 0);
+  const totalPairs = nOf1VariableRelationships.reduce((sum, u) => sum + u.numberOfPairs, 0);
 
   return {
     numberOfUnits: n,
-    aggregateForwardPearson: weightedAvg(unitVariableRelationships.map(u => u.forwardPearson)),
-    aggregateReversePearson: weightedAvg(unitVariableRelationships.map(u => u.reversePearson)),
-    aggregatePredictivePearson: weightedAvg(unitVariableRelationships.map(u => u.predictivePearson)),
-    aggregateEffectSize: weightedAvg(unitVariableRelationships.map(u => u.effectSize)),
+    aggregateForwardPearson: weightedAvg(nOf1VariableRelationships.map(u => u.forwardPearson)),
+    aggregateReversePearson: weightedAvg(nOf1VariableRelationships.map(u => u.reversePearson)),
+    aggregatePredictivePearson: weightedAvg(nOf1VariableRelationships.map(u => u.predictivePearson)),
+    aggregateEffectSize: weightedAvg(nOf1VariableRelationships.map(u => u.effectSize)),
     aggregateStatisticalSignificance: weightedAvg(
-      unitVariableRelationships.map(u => u.statisticalSignificance),
+      nOf1VariableRelationships.map(u => u.statisticalSignificance),
     ),
     aggregateValuePredictingHighOutcome: weightedAvgOptional(u => u.valuePredictingHighOutcome),
     aggregateValuePredictingLowOutcome: weightedAvgOptional(u => u.valuePredictingLowOutcome),
     aggregateOptimalDailyValue: weightedAvgOptional(u => u.optimalDailyValue),
     aggregateOutcomeFollowUpPercentChangeFromBaseline: weightedAvgOptional(u => u.outcomeFollowUpPercentChangeFromBaseline),
-    weightedAveragePIS: weightedAvg(unitVariableRelationships.map(u => {
+    weightedAveragePIS: weightedAvg(nOf1VariableRelationships.map(u => {
       // PIS approximation: |forwardPearson| × statisticalSignificance
       // This mirrors the legacy qm_score weighting
       return Math.abs(u.forwardPearson) * u.statisticalSignificance;

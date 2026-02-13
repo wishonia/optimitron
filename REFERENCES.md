@@ -51,11 +51,11 @@ The Optomitron schema (`@optomitron/db`) was inspired by the legacy PostgreSQL d
 |------------------|-----------------|---------|
 | `measurements.sql` | `Measurement` | Individual data points (timestamp, value, unit, source) |
 | `variables.sql` | `GlobalVariable` | Canonical variable definitions (name, category, default unit, combination method) |
-| `user_variables.sql` | `UnitVariable` | Per-unit variable settings (onset delay, duration of action, filling type, personal stats) |
+| `user_variables.sql` | `NOf1Variable` | Per-unit variable settings (onset delay, duration of action, filling type, personal stats) |
 | `units.sql` | `Unit` | Unit definitions with conversion factors (mg, hours, rating/5, etc.) |
 | `variable_categories.sql` | `VariableCategory` | Variable groupings (Treatments, Symptoms, Biomarkers, Foods, etc.) |
 | `tracking_reminders.sql` | `TrackingReminder` | Scheduled measurement prompts |
-| `correlations.sql` | `UnitVariableRelationship` | Per-unit causal analysis results (PIS, effect size, optimal value) |
+| `correlations.sql` | `NOf1VariableRelationship` | Per-unit causal analysis results (PIS, effect size, optimal value) |
 | `aggregate_correlations.sql` | `AggregateVariableRelationship` | Population-level aggregated causal analysis results |
 
 **Note:** The original legacy database has 115 tables covering OAuth, social features, purchases, studies, and more. We intentionally ported only the core measurement and analysis tables — the minimal set needed for the universal measurement system and causal inference pipeline.

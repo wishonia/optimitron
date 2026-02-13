@@ -19,23 +19,23 @@ export type PairStudyScope = z.infer<typeof PairStudyScopeSchema>;
 export const PairStudyScopeContextSchema = z
   .object({
     scope: PairStudyScopeSchema,
-    unitId: z.string().regex(VARIABLE_ID_PATTERN).optional(),
+    nOf1EntityId: z.string().regex(VARIABLE_ID_PATTERN).optional(),
     unitName: z.string().min(1).optional(),
   })
   .superRefine((context, ctx) => {
-    if (context.scope === 'unit_n_of_1' && !context.unitId) {
+    if (context.scope === 'unit_n_of_1' && !context.nOf1EntityId) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'unitId is required for unit_n_of_1 scope.',
-        path: ['unitId'],
+        message: 'nOf1EntityId is required for unit_n_of_1 scope.',
+        path: ['nOf1EntityId'],
       });
     }
 
-    if (context.scope === 'aggregate_n_of_1' && context.unitId) {
+    if (context.scope === 'aggregate_n_of_1' && context.nOf1EntityId) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'unitId is only valid for unit_n_of_1 scope.',
-        path: ['unitId'],
+        message: 'nOf1EntityId is only valid for unit_n_of_1 scope.',
+        path: ['nOf1EntityId'],
       });
     }
   });
@@ -314,7 +314,7 @@ export interface BuildPairStudyIdOptions {
   scope: PairStudyScope;
   predictorId: string;
   outcomeId: string;
-  unitId?: string;
+  nOf1EntityId?: string;
 }
 
 function sanitizeIdSegment(value: string): string {
@@ -336,9 +336,9 @@ export function buildPairStudyId(options: BuildPairStudyIdOptions): string {
   }
 
   if (options.scope === 'unit_n_of_1') {
-    const unit = sanitizeIdSegment(options.unitId ?? '');
+    const unit = sanitizeIdSegment(options.nOf1EntityId ?? '');
     if (!unit) {
-      throw new Error('unitId is required for unit_n_of_1 scope.');
+      throw new Error('nOf1EntityId is required for unit_n_of_1 scope.');
     }
     return `${scope}:${unit}:${predictor}:${outcome}`;
   }

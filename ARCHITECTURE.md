@@ -704,21 +704,21 @@ This maps directly onto clinical trial methodology:
 ```
 Jurisdiction: Singapore
   → System User: "Singapore (aggregate)"
-    → UnitVariable: "Life Expectancy"
+    → NOf1Variable: "Life Expectancy"
       → Measurements: [82.3, 83.1, ..., 84.1] (yearly)
-    → UnitVariable: "Healthcare Spending % GDP"
+    → NOf1Variable: "Healthcare Spending % GDP"
       → Measurements: [4.0, 4.0, ..., 4.1] (yearly)
 
 Jurisdiction: Singapore
   → Real User: "Alice (citizen)"
-    → UnitVariable: "Overall Mood"
+    → NOf1Variable: "Overall Mood"
       → Measurements: [7, 8, 6, 7, ...] (daily)
     → linked to Jurisdiction → whose policy variables are the "treatment"
 ```
 
 ### Aggregation Pipeline
 
-`UnitVariableRelationship` = one unit's predictor→outcome analysis
+`NOf1VariableRelationship` = one unit's predictor→outcome analysis
 `AggregateVariableRelationship` = aggregated across all units (weighted by significance)
 
 The aggregate correlation pipeline (`aggregateCorrelationPipeline()`) combines individual analyses into population-level findings. This is the same function whether aggregating across:
@@ -731,11 +731,11 @@ The aggregate correlation pipeline (`aggregateCorrelationPipeline()`) combines i
 | Model | Meaning |
 |-------|---------|
 | `GlobalVariable` | Universal variable definition (e.g., "Life Expectancy") |
-| `UnitVariable` | One entity's instance of a variable (e.g., Singapore's life expectancy) |
+| `NOf1Variable` | One entity's instance of a variable (e.g., Singapore's life expectancy) |
 | `Measurement` | A single data point (e.g., 84.1 years in 2023) |
-| `UnitVariableRelationship` | One entity's predictor→outcome analysis |
+| `NOf1VariableRelationship` | One entity's predictor→outcome analysis |
 | `AggregateVariableRelationship` | Aggregated relationship across all entities |
 | `Jurisdiction` | Hierarchy metadata (type, parent, population) |
 
-"Global" consistently means "the universal/aggregated version" (not "worldwide"). It mirrors the `GlobalVariable`/`UnitVariable` pattern.
+"Global" consistently means "the universal/aggregated version" (not "worldwide"). It mirrors the `GlobalVariable`/`NOf1Variable` pattern.
 

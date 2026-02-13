@@ -4,8 +4,8 @@
    - Implemented in `@optomitron/optimizer/src/outcome-mega-study-ranking.ts`.
    - Includes row schema, ranking payload schema, and multiple-testing metadata.
 2. [x] Normalize relationship naming in optimizer-facing contracts.
-   - `UnitVariableRelationship` and `AggregateVariableRelationship` are canonical.
-   - Runner payload fields now use `unitVariableRelationship` and `aggregateVariableRelationship`.
+   - `NOf1VariableRelationship` and `AggregateVariableRelationship` are canonical.
+   - Runner payload fields now use `nOf1VariableRelationship` and `aggregateVariableRelationship`.
    - `@optomitron/db` models and Zod schemas use the same canonical names.
 3. [ ] Define JSON schema for pair study payload.
 4. [ ] Define JSON schema for jurisdiction N-of-1 summary payload.

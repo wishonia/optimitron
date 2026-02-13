@@ -5,11 +5,11 @@
  * @see https://github.com/mikepsinn/curedao-api/blob/main/app/Traits/HasMany/HasManyCorrelations.php#L57
  */
 import { describe, it, expect } from 'vitest';
-import { aggregateUnitVariableRelationships } from '../statistics.js';
-import type { UnitVariableRelationship } from '../types.js';
+import { aggregateNOf1VariableRelationships } from '../statistics.js';
+import type { NOf1VariableRelationship } from '../types.js';
 
 /** Helper to create a unit variable relationship summary */
-function makeUnit(overrides: Partial<UnitVariableRelationship> & { unitId: string }): UnitVariableRelationship {
+function makeUnit(overrides: Partial<NOf1VariableRelationship> & { unitId: string }): NOf1VariableRelationship {
   return {
     forwardPearson: 0.5,
     reversePearson: 0.3,
@@ -21,10 +21,10 @@ function makeUnit(overrides: Partial<UnitVariableRelationship> & { unitId: strin
   };
 }
 
-describe('aggregateUnitVariableRelationships', () => {
+describe('aggregateNOf1VariableRelationships', () => {
   // ─── Empty array ───────────────────────────────────────
   it('should return sensible defaults for empty array', () => {
-    const result = aggregateUnitVariableRelationships([]);
+    const result = aggregateNOf1VariableRelationships([]);
     expect(result.numberOfUnits).toBe(0);
     expect(result.aggregateForwardPearson).toBe(0);
     expect(result.aggregateReversePearson).toBe(0);
@@ -54,7 +54,7 @@ describe('aggregateUnitVariableRelationships', () => {
       optimalDailyValue: 30,
       outcomeFollowUpPercentChangeFromBaseline: 25,
     });
-    const result = aggregateUnitVariableRelationships([unit]);
+    const result = aggregateNOf1VariableRelationships([unit]);
 
     expect(result.numberOfUnits).toBe(1);
     expect(result.aggregateForwardPearson).toBeCloseTo(0.7, 5);
@@ -75,7 +75,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', forwardPearson: 0.6, reversePearson: 0.3, predictivePearson: 0.3, effectSize: 12, statisticalSignificance: 0.85, numberOfPairs: 100 }),
       makeUnit({ unitId: 'u2', forwardPearson: 0.65, reversePearson: 0.32, predictivePearson: 0.33, effectSize: 13, statisticalSignificance: 0.87, numberOfPairs: 110 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.numberOfUnits).toBe(2);
     expect(result.aggregateForwardPearson).toBeCloseTo(0.625, 1);
@@ -93,7 +93,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u4', forwardPearson: -0.2, statisticalSignificance: 0.3, numberOfPairs: 30 }),
       makeUnit({ unitId: 'u5', forwardPearson: 0.5, statisticalSignificance: 0.8, numberOfPairs: 300 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.numberOfUnits).toBe(5);
     // High significance units (u1, u5) should pull the aggregate up
@@ -108,7 +108,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'minor1', forwardPearson: -0.5, statisticalSignificance: 0.1, numberOfPairs: 20 }),
       makeUnit({ unitId: 'minor2', forwardPearson: -0.3, statisticalSignificance: 0.1, numberOfPairs: 20 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     // The dominant unit (significance=10.0) should heavily influence the result
     // avgSignificance ≈ 3.4, so dominant's weight ≈ 10/3.4 ≈ 2.94 vs minor's ≈ 0.03
@@ -122,7 +122,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u2', forwardPearson: 0.4, statisticalSignificance: 1.0, numberOfPairs: 100 }),
       makeUnit({ unitId: 'u3', forwardPearson: 0.2, statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     // When all weights are equal (weight = sig/avgSig = 1), weighted avg = simple mean
     const simpleMean = (0.8 + 0.4 + 0.2) / 3;
@@ -135,7 +135,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', forwardPearson: 0.7, statisticalSignificance: 0, numberOfPairs: 50 }),
       makeUnit({ unitId: 'u2', forwardPearson: 0.3, statisticalSignificance: 0, numberOfPairs: 50 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     // With zero significance, weights default to 1, so result = simple mean
     expect(result.aggregateForwardPearson).toBeCloseTo(0.5, 5);
@@ -147,7 +147,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', statisticalSignificance: 1.0, valuePredictingHighOutcome: 100, valuePredictingLowOutcome: 10, optimalDailyValue: 55, numberOfPairs: 100 }),
       makeUnit({ unitId: 'u2', statisticalSignificance: 1.0, valuePredictingHighOutcome: 80, valuePredictingLowOutcome: 20, optimalDailyValue: 50, numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.aggregateValuePredictingHighOutcome).toBeCloseTo(90, 5);
     expect(result.aggregateValuePredictingLowOutcome).toBeCloseTo(15, 5);
@@ -160,7 +160,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', statisticalSignificance: 1.0, valuePredictingHighOutcome: 100, numberOfPairs: 100 }),
       makeUnit({ unitId: 'u2', statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     // Only u1 has valuePredictingHighOutcome, so aggregate = u1's value
     expect(result.aggregateValuePredictingHighOutcome).toBeCloseTo(100, 5);
@@ -174,7 +174,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', numberOfPairs: 100 }),
       makeUnit({ unitId: 'u2', numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.aggregateValuePredictingHighOutcome).toBeNull();
     expect(result.aggregateValuePredictingLowOutcome).toBeNull();
@@ -188,7 +188,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', forwardPearson: -0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
       makeUnit({ unitId: 'u2', forwardPearson: -0.6, statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.aggregateForwardPearson).toBeCloseTo(-0.7, 5);
     expect(result.aggregateForwardPearson).toBeLessThan(0);
@@ -200,7 +200,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', forwardPearson: 0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
       makeUnit({ unitId: 'u2', forwardPearson: -0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.aggregateForwardPearson).toBeCloseTo(0, 5);
   });
@@ -212,7 +212,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u2', numberOfPairs: 250 }),
       makeUnit({ unitId: 'u3', numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.totalPairs).toBe(500);
   });
@@ -223,7 +223,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', forwardPearson: 0.8, statisticalSignificance: 1.0, numberOfPairs: 100 }),
       makeUnit({ unitId: 'u2', forwardPearson: 0.4, statisticalSignificance: 1.0, numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     // PIS for u1 = |0.8| × 1.0 = 0.8, for u2 = |0.4| × 1.0 = 0.4
     // Simple mean (equal significance) = 0.6
@@ -236,7 +236,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', statisticalSignificance: 1.0, outcomeFollowUpPercentChangeFromBaseline: 20, numberOfPairs: 100 }),
       makeUnit({ unitId: 'u2', statisticalSignificance: 1.0, outcomeFollowUpPercentChangeFromBaseline: 30, numberOfPairs: 100 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.aggregateOutcomeFollowUpPercentChangeFromBaseline).toBeCloseTo(25, 5);
   });
@@ -247,7 +247,7 @@ describe('aggregateUnitVariableRelationships', () => {
       makeUnit({ unitId: 'u1', predictivePearson: 0.4, statisticalSignificance: 2.0, numberOfPairs: 200 }),
       makeUnit({ unitId: 'u2', predictivePearson: 0.1, statisticalSignificance: 0.5, numberOfPairs: 50 }),
     ];
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     // avgSig = 1.25, weight1 = 2.0/1.25 = 1.6, weight2 = 0.5/1.25 = 0.4
     // weighted = (0.4*1.6 + 0.1*0.4) / 2 = (0.64 + 0.04) / 2 = 0.34
@@ -262,7 +262,7 @@ describe('aggregateUnitVariableRelationships', () => {
       statisticalSignificance: 0.5 + Math.random() * 0.5,
       numberOfPairs: 50 + i,
     }));
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
 
     expect(result.numberOfUnits).toBe(100);
     expect(result.totalPairs).toBeGreaterThan(5000);
@@ -286,7 +286,7 @@ describe('aggregateUnitVariableRelationships', () => {
     const w3 = 0.9 / avgSig;
     const expectedForward = (0.9 * w1 + 0.1 * w2 + 0.5 * w3) / 3;
 
-    const result = aggregateUnitVariableRelationships(units);
+    const result = aggregateNOf1VariableRelationships(units);
     expect(result.aggregateForwardPearson).toBeCloseTo(expectedForward, 10);
   });
 });

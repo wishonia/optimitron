@@ -6,7 +6,7 @@
  *
  * Ported from legacy CureDAO API:
  * - QMUserVariable::calculateAttributes() (legacy API naming)
- * - UnitVariable-equivalent property calculators (Mean, Median, Skewness, Kurtosis, etc.)
+ * - NOf1Variable-equivalent property calculators (Mean, Median, Skewness, Kurtosis, etc.)
  * - QMCommonVariable aggregation
  *
  * @see https://dfda-spec.warondisease.org
@@ -18,9 +18,9 @@
 
 /**
  * Statistics calculated from a single unit's measurements for one variable.
- * Mirrors the statistical fields on the Prisma `UnitVariable` model.
+ * Mirrors the statistical fields on the Prisma `NOf1Variable` model.
  */
-export interface UnitVariableStatistics {
+export interface NOf1VariableStatistics {
   /** Arithmetic mean of measurement values */
   mean: number;
   /** Median of measurement values */
@@ -61,7 +61,7 @@ export interface UnitVariableStatistics {
  */
 export interface GlobalVariableStatistics {
   /** Number of units that track this variable */
-  numberOfUnitVariables: number;
+  numberOfNOf1Variables: number;
   /** Weighted mean across all units (weighted by numberOfMeasurements) */
   globalMean: number;
   /** Weighted standard deviation across all units */
@@ -129,10 +129,10 @@ function topNMostCommon(values: number[], n: number): (number | null)[] {
  * Kurtosis uses excess kurtosis (Fisher definition, normal distribution = 0):
  *   G₂ = ((n(n+1)) / ((n-1)(n-2)(n-3))) × Σ((xi-mean)/stddev)⁴ − (3(n-1)²)/((n-2)(n-3))
  */
-export function calculateUnitVariableStatistics(
+export function calculateNOf1VariableStatistics(
   values: number[],
   timestamps?: Date[],
-): UnitVariableStatistics {
+): NOf1VariableStatistics {
   const n = values.length;
 
   // ── Empty array ────────────────────────────────────────────────────────
@@ -267,11 +267,11 @@ export function calculateUnitVariableStatistics(
  * @param unitStats Array of per-unit statistics for the same global variable
  */
 export function aggregateGlobalStatistics(
-  unitStats: UnitVariableStatistics[],
+  unitStats: NOf1VariableStatistics[],
 ): GlobalVariableStatistics {
   if (unitStats.length === 0) {
     return {
-      numberOfUnitVariables: 0,
+      numberOfNOf1Variables: 0,
       globalMean: 0,
       globalStandardDeviation: 0,
       globalMinimumRecordedValue: 0,
@@ -296,7 +296,7 @@ export function aggregateGlobalStatistics(
   // If all units had 0 measurements
   if (totalMeasurements === 0) {
     return {
-      numberOfUnitVariables: unitStats.length,
+      numberOfNOf1Variables: unitStats.length,
       globalMean: 0,
       globalStandardDeviation: 0,
       globalMinimumRecordedValue: 0,
@@ -319,7 +319,7 @@ export function aggregateGlobalStatistics(
   const globalStandardDeviation = Math.sqrt(globalVariance);
 
   return {
-    numberOfUnitVariables: unitStats.length,
+    numberOfNOf1Variables: unitStats.length,
     globalMean,
     globalStandardDeviation,
     globalMinimumRecordedValue: globalMin === Infinity ? 0 : globalMin,

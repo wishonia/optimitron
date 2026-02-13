@@ -16,11 +16,11 @@ import {
   UnitSchema,
   VariableCategorySchema,
   GlobalVariableSchema,
-  UnitVariableSchema,
+  NOf1VariableSchema,
   MeasurementSchema,
   TrackingReminderSchema,
   TrackingReminderNotificationSchema,
-  UnitVariableRelationshipSchema,
+  NOf1VariableRelationshipSchema,
   AggregateVariableRelationshipSchema,
   JurisdictionSchema,
   PoliticianSchema,
@@ -45,7 +45,7 @@ const now = new Date();
 const validMeasurement = {
   id: 'clx1234567890',
   userId: 'user_abc',
-  unitVariableId: 'uvar_abc',
+  nOf1VariableId: 'uvar_abc',
   globalVariableId: 'gvar_abc',
   startTime: now,
   value: 200,
@@ -93,7 +93,7 @@ const validJurisdiction = {
   deletedAt: null,
 };
 
-const validUnitVariableRelationship = {
+const validNOf1VariableRelationship = {
   id: 'uvr_1',
   unitId: 'unit_1',
   predictorGlobalVariableId: 'gv_pred',
@@ -247,7 +247,7 @@ describe('MeasurementSchema', () => {
     const minimal = {
       id: 'meas_1',
       userId: 'user_1',
-      unitVariableId: 'uv_1',
+      nOf1VariableId: 'uv_1',
       globalVariableId: 'gv_1',
       startTime: now,
       value: 5,
@@ -327,32 +327,32 @@ describe('JurisdictionSchema', () => {
 });
 
 // ============================================================================
-// MODEL TESTS — UnitVariableRelationship
+// MODEL TESTS — NOf1VariableRelationship
 // ============================================================================
 
-describe('UnitVariableRelationshipSchema', () => {
-  it('29. validates a correct UnitVariableRelationship', () => {
-    const result = UnitVariableRelationshipSchema.safeParse(
-      validUnitVariableRelationship,
+describe('NOf1VariableRelationshipSchema', () => {
+  it('29. validates a correct NOf1VariableRelationship', () => {
+    const result = NOf1VariableRelationshipSchema.safeParse(
+      validNOf1VariableRelationship,
     );
     expect(result.success).toBe(true);
   });
 
   it('30. fails when unitId is missing', () => {
-    const { unitId, ...noUnitId } = validUnitVariableRelationship;
-    const result = UnitVariableRelationshipSchema.safeParse(noUnitId);
+    const { unitId, ...noUnitId } = validNOf1VariableRelationship;
+    const result = NOf1VariableRelationshipSchema.safeParse(noUnitId);
     expect(result.success).toBe(false);
   });
 
   it('31. fails when forwardPearsonCorrelation is missing', () => {
-    const { forwardPearsonCorrelation, ...noCorr } = validUnitVariableRelationship;
-    const result = UnitVariableRelationshipSchema.safeParse(noCorr);
+    const { forwardPearsonCorrelation, ...noCorr } = validNOf1VariableRelationship;
+    const result = NOf1VariableRelationshipSchema.safeParse(noCorr);
     expect(result.success).toBe(false);
   });
 
   it('32. accepts nullable enum fields', () => {
-    const result = UnitVariableRelationshipSchema.safeParse({
-      ...validUnitVariableRelationship,
+    const result = NOf1VariableRelationshipSchema.safeParse({
+      ...validNOf1VariableRelationship,
       strengthLevel: 'STRONG',
       confidenceLevel: 'HIGH',
       relationship: 'POSITIVE',
@@ -362,8 +362,8 @@ describe('UnitVariableRelationshipSchema', () => {
   });
 
   it('33. fails with invalid enum value for strengthLevel', () => {
-    const result = UnitVariableRelationshipSchema.safeParse({
-      ...validUnitVariableRelationship,
+    const result = NOf1VariableRelationshipSchema.safeParse({
+      ...validNOf1VariableRelationship,
       strengthLevel: 'SUPER_STRONG',
     });
     expect(result.success).toBe(false);
@@ -560,7 +560,7 @@ describe('Additional models', () => {
     expect(result.success).toBe(true);
   });
 
-  it('45. validates a UnitVariable', () => {
+  it('45. validates a NOf1Variable', () => {
     const data = {
       id: 'uv_1',
       userId: 'user_1',
@@ -568,14 +568,14 @@ describe('Additional models', () => {
       createdAt: now,
       updatedAt: now,
     };
-    expect(UnitVariableSchema.safeParse(data).success).toBe(true);
+    expect(NOf1VariableSchema.safeParse(data).success).toBe(true);
   });
 
   it('46. validates a TrackingReminder', () => {
     const data = {
       id: 'tr_1',
       userId: 'user_1',
-      unitVariableId: 'uv_1',
+      nOf1VariableId: 'uv_1',
       globalVariableId: 'gv_1',
       reminderStartTime: '08:00',
       reminderFrequency: 86400,

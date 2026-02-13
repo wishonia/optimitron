@@ -203,7 +203,7 @@ describe('PairStudyResultSchema', () => {
     expect(parsed.dataFlow).toEqual([]);
   });
 
-  it('requires unitId for unit_n_of_1 scope', () => {
+  it('requires nOf1EntityId for unit_n_of_1 scope', () => {
     const invalid = createValidPairStudyResult();
     invalid.scope = { scope: 'unit_n_of_1' };
 
@@ -245,14 +245,14 @@ describe('pair-study helpers', () => {
     );
   });
 
-  it('buildPairStudyId requires unit ID for n-of-1 scope', () => {
+  it('buildPairStudyId requires n-of-1 entity ID for n-of-1 scope', () => {
     expect(() =>
       buildPairStudyId({
         scope: 'unit_n_of_1',
         predictorId: 'predictor.test',
         outcomeId: 'outcome.test',
       }),
-    ).toThrow('unitId is required');
+    ).toThrow('nOf1EntityId is required');
   });
 
   it('validatePairStudyResult parses valid payloads', () => {

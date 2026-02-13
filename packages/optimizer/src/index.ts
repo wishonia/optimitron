@@ -76,7 +76,7 @@ export {
   calculateReversePearson,
   calculatePredictivePearson,
   partialCorrelation,
-  aggregateUnitVariableRelationships,
+  aggregateNOf1VariableRelationships,
 } from './statistics.js';
 
 // Adaptive binning

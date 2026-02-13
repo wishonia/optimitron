@@ -1,12 +1,12 @@
 # Plan: Universal Predictor-Outcome Explorer + Outcome Hubs (v1)
 
 1. [x] Normalize core relationship terminology in optimizer and db.
-   - Renamed `UserVariableRelationship` -> `UnitVariableRelationship`.
+   - Renamed `UserVariableRelationship` -> `NOf1VariableRelationship`.
    - Renamed `GlobalVariableRelationship` -> `AggregateVariableRelationship`.
-   - Renamed `UserVariable` -> `UnitVariable` and `numberOfUserVariables` -> `numberOfUnitVariables`.
-   - Renamed aggregation helper `aggregateGlobalVariableRelationships` -> `aggregateUnitVariableRelationships`.
-   - Updated runner payload fields to `unitVariableRelationship` and `aggregateVariableRelationship`.
-   - Updated Prisma models and Zod schemas to `UnitVariableRelationship` / `AggregateVariableRelationship`.
+   - Renamed `UserVariable` -> `NOf1Variable` and `numberOfUserVariables` -> `numberOfNOf1Variables`.
+   - Renamed aggregation helper `aggregateGlobalVariableRelationships` -> `aggregateNOf1VariableRelationships`.
+   - Updated runner payload fields to `nOf1VariableRelationship` and `aggregateVariableRelationship`.
+   - Updated Prisma models and Zod schemas to `NOf1VariableRelationship` / `AggregateVariableRelationship`.
    - Renamed aggregate count field `numberOfUsers` -> `numberOfUnits`.
 2. [x] Define `VariableRegistry` contract for predictors/outcomes.
    - Implemented in `@optomitron/data` via `src/variable-registry.ts` + tests.
@@ -17,7 +17,7 @@
    - Explicitly treated as a presentation/report adapter over unit/aggregate relationship semantics (not a separate inference path).
 4. [x] Build a reusable pair-analysis runner (aggregate + jurisdiction support).
    - Implemented in `@optomitron/optimizer` via `src/variable-relationship-runner.ts` + tests.
-   - Produces unit-level `UnitVariableRelationship` summaries + aggregate `AggregateVariableRelationship`.
+   - Produces unit-level `NOf1VariableRelationship` summaries + aggregate `AggregateVariableRelationship`.
 5. [x] Define and implement outcome "mega study" ranking method.
    - Implemented in `@optomitron/optimizer` via `src/outcome-mega-study-ranking.ts` + tests.
    - Includes configurable multiple-testing correction (`benjamini_hochberg`, `bonferroni`, `none`), confidence scoring, deterministic tie-breaking, and per-outcome grouped rankings.
@@ -34,3 +34,10 @@
     - schema/contract tests
     - ranking correctness tests
     - route-level smoke tests
+12. [ ] Enforce n-of-1 entity ID naming consistency across explorer contracts.
+   - Replace ambiguous analysis identity fields named `unitId` with `nOf1EntityId` in explorer-facing schemas/helpers.
+   - Keep `unitId` reserved for `Unit` model references only.
+13. [ ] Add UCUM-based unit standardization plan and implementation tasks.
+   - Add `ucumCode` support in unit definitions and ingestion normalization.
+   - Define enum/validator strategy so unit code system is explicit and constrained.
+   - Add tests to verify UCUM mapping, normalization, and round-trip conversion behavior.

@@ -273,7 +273,7 @@ export type DataQuality = z.infer<typeof DataQualitySchema>;
  *
  * @see https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Correlation.php
  */
-export const UnitVariableRelationshipSchema = z.object({
+export const NOf1VariableRelationshipSchema = z.object({
   unitId: z.string(),
   /** Forward Pearson r (predictor → outcome) */
   forwardPearson: z.number(),
@@ -297,7 +297,7 @@ export const UnitVariableRelationshipSchema = z.object({
   outcomeFollowUpPercentChangeFromBaseline: z.number().optional(),
 });
 
-export type UnitVariableRelationship = z.infer<typeof UnitVariableRelationshipSchema>;
+export type NOf1VariableRelationship = z.infer<typeof NOf1VariableRelationshipSchema>;
 
 /**
  * Population-level aggregate variable relationship across multiple units.

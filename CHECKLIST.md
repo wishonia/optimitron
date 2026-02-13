@@ -197,7 +197,7 @@ Last updated: 2026-02-06.
 
 ### ✅ Implemented
 - [x] 24 models, 12 enums, ~300+ documented fields
-- [x] Layer 1: Universal measurement (Unit, VariableCategory, GlobalVariable, UnitVariable, Measurement, TrackingReminder, TrackingReminderNotification, UnitVariableRelationship, AggregateVariableRelationship, IntegrationProvider, IntegrationConnection, IntegrationSyncLog)
+- [x] Layer 1: Universal measurement (Unit, VariableCategory, GlobalVariable, NOf1Variable, Measurement, TrackingReminder, TrackingReminderNotification, NOf1VariableRelationship, AggregateVariableRelationship, IntegrationProvider, IntegrationConnection, IntegrationSyncLog)
 - [x] Layer 2: Governance (Jurisdiction, Item, Participant, PairwiseComparison, PreferenceWeight, AggregationRun, Politician, PoliticianVote, AlignmentScore)
 - [x] JSDoc on every field
 - [x] deletedAt on all models (soft deletes)

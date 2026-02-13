@@ -5,9 +5,9 @@
 // Two-layer architecture:
 //
 // LAYER 1 — Universal Measurement System (domain-agnostic)
-//   GlobalVariable, VariableCategory, Unit, UnitVariable, Measurement,
+//   GlobalVariable, VariableCategory, Unit, NOf1Variable, Measurement,
 //   TrackingReminder, TrackingReminderNotification,
-//   UnitVariableRelationship, AggregateVariableRelationship,
+//   NOf1VariableRelationship, AggregateVariableRelationship,
 //   IntegrationProvider
 //   These models form a general-purpose quantified-self / data collection
 //   platform. Any variable (health, economic, environmental, policy outcome)
@@ -22,7 +22,7 @@
 //   alignment scoring. They are scoped to jurisdictions (multi-tenant).
 //
 // The two layers can interoperate: governance Items can reference
-// GlobalVariables as outcome metrics, and UnitVariableRelationship /
+// GlobalVariables as outcome metrics, and NOf1VariableRelationship /
 // AggregateVariableRelationship can link policy variables to health/economic outcomes.
 // ============================================================================
 
@@ -205,7 +205,7 @@ model Unit {
   // -- Relations --
   globalVariables      GlobalVariable[]   @relation("GlobalVariableDefaultUnit")
   variableCategories   VariableCategory[] @relation("VariableCategoryDefaultUnit")
-  unitVariables        UnitVariable[]     @relation("UnitVariableDefaultUnit")
+  nOf1Variables        NOf1Variable[]     @relation("NOf1VariableDefaultUnit")
   measurements         Measurement[]      @relation("MeasurementUnit")
   measurementsOriginal Measurement[]      @relation("MeasurementOriginalUnit")
 
@@ -363,7 +363,7 @@ model GlobalVariable {
   maximumRecordedValue Float?
 
   /// Number of users who track this variable
-  numberOfUnitVariables Int @default(0)
+  numberOfNOf1Variables Int @default(0)
 
   /// Processing status for statistical analysis
   status AnalysisStatus @default(WAITING)
@@ -399,11 +399,11 @@ model GlobalVariable {
   deletedAt DateTime?
 
   // -- Relations --
-  unitVariables                     UnitVariable[]
+  nOf1Variables                     NOf1Variable[]
   measurements                      Measurement[]
   trackingReminders                 TrackingReminder[]
-  unitRelationshipsAsPredictor      UnitVariableRelationship[]      @relation("UnitRelPredictorGlobal")
-  unitRelationshipsAsOutcome        UnitVariableRelationship[]      @relation("UnitRelOutcomeGlobal")
+  nOf1RelationshipsAsPredictor      NOf1VariableRelationship[]      @relation("NOf1RelPredictorGlobal")
+  nOf1RelationshipsAsOutcome        NOf1VariableRelationship[]      @relation("NOf1RelOutcomeGlobal")
   aggregateRelationshipsAsPredictor AggregateVariableRelationship[] @relation("AggregateRelPredictorGlobal")
   aggregateRelationshipsAsOutcome   AggregateVariableRelationship[] @relation("AggregateRelOutcomeGlobal")
 
@@ -419,7 +419,7 @@ model GlobalVariable {
 /// legacy API daily aggregation: QMUserVariable::getDailyMeasurementsWithTagsAndFillingInTimeRange()
 /// TODO: Port from legacy — running statistics calculation (mean, median, stddev, kurtosis, skewness)
 /// TODO: Port from legacy — daily value aggregation pipeline
-model UnitVariable {
+model NOf1Variable {
   /// Unique identifier for this unit-variable instance
   id String @id @default(cuid())
 
@@ -436,7 +436,7 @@ model UnitVariable {
   defaultUnitId String?
 
   /// Relation to the user's preferred Unit
-  defaultUnit Unit? @relation("UnitVariableDefaultUnit", fields: [defaultUnitId], references: [id])
+  defaultUnit Unit? @relation("NOf1VariableDefaultUnit", fields: [defaultUnitId], references: [id])
 
   /// Personal override for onset delay (seconds)
   onsetDelay Int?
@@ -531,10 +531,10 @@ model Measurement {
   userId String
 
   /// Link to the unit's personal variable instance
-  unitVariableId String
+  nOf1VariableId String
 
-  /// Relation to the UnitVariable
-  unitVariable UnitVariable @relation(fields: [unitVariableId], references: [id])
+  /// Relation to the NOf1Variable
+  nOf1Variable NOf1Variable @relation(fields: [nOf1VariableId], references: [id])
 
   /// Link to the canonical GlobalVariable being measured
   globalVariableId String
@@ -596,7 +596,7 @@ model Measurement {
   @@unique([userId, globalVariableId, startTime])
   @@index([userId])
   @@index([globalVariableId])
-  @@index([unitVariableId])
+  @@index([nOf1VariableId])
   @@index([startTime])
   @@index([userId, globalVariableId, startTime])
 }
@@ -612,10 +612,10 @@ model TrackingReminder {
   userId String
 
   /// Link to the unit's personal variable instance
-  unitVariableId String
+  nOf1VariableId String
 
-  /// Relation to the UnitVariable
-  unitVariable UnitVariable @relation(fields: [unitVariableId], references: [id])
+  /// Relation to the NOf1Variable
+  nOf1Variable NOf1Variable @relation(fields: [nOf1VariableId], references: [id])
 
   /// Link to the canonical GlobalVariable being tracked
   globalVariableId String
@@ -718,7 +718,7 @@ model TrackingReminderNotification {
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Correlation.php
 /// legacy API analysis pipeline: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMUserCorrelation.php
 /// legacy API calculation properties: https://github.com/mikepsinn/curedao-api/blob/main/app/Properties/Correlation/
-model UnitVariableRelationship {
+model NOf1VariableRelationship {
   /// Unique identifier for this unit-level relationship
   id String @id @default(cuid())
 
@@ -729,13 +729,13 @@ model UnitVariableRelationship {
   predictorGlobalVariableId String
 
   /// Relation to the predictor GlobalVariable
-  predictorGlobalVariable GlobalVariable @relation("UnitRelPredictorGlobal", fields: [predictorGlobalVariableId], references: [id])
+  predictorGlobalVariable GlobalVariable @relation("NOf1RelPredictorGlobal", fields: [predictorGlobalVariableId], references: [id])
 
   /// The outcome (effect/result) variable in this relationship
   outcomeGlobalVariableId String
 
   /// Relation to the outcome GlobalVariable
-  outcomeGlobalVariable GlobalVariable @relation("UnitRelOutcomeGlobal", fields: [outcomeGlobalVariableId], references: [id])
+  outcomeGlobalVariable GlobalVariable @relation("NOf1RelOutcomeGlobal", fields: [outcomeGlobalVariableId], references: [id])
 
   // -- Statistical fields --
 

@@ -4,7 +4,7 @@ import type { TimeSeries } from '../types.js';
 import {
   deriveStatisticalSignificance,
   runVariableRelationshipAnalysis,
-  toUnitVariableRelationship,
+  toNOf1VariableRelationship,
 } from '../variable-relationship-runner.js';
 import { runFullAnalysis } from '../pipeline.js';
 
@@ -39,12 +39,12 @@ describe('deriveStatisticalSignificance', () => {
   });
 });
 
-describe('toUnitVariableRelationship', () => {
+describe('toNOf1VariableRelationship', () => {
   it('maps a full analysis to relationship summary fields', () => {
     const predictor = makeSeries('p', 'Predictor', [1, 2, 3, 4, 5, 6, 7, 8]);
     const outcome = makeSeries('o', 'Outcome', [2, 4, 6, 8, 10, 12, 14, 16]);
     const analysis = runFullAnalysis(predictor, outcome, { analysisMode: 'individual' });
-    const relationship = toUnitVariableRelationship('unit_a', analysis);
+    const relationship = toNOf1VariableRelationship('unit_a', analysis);
 
     expect(relationship.unitId).toBe('unit_a');
     expect(relationship.numberOfPairs).toBe(analysis.numberOfPairs);
