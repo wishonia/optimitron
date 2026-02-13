@@ -62,6 +62,9 @@ export * from './measurement-validation.js';
 // Variable statistics (user-level & global aggregation)
 export * from './variable-statistics.js';
 
+// Canonical predictor/outcome registry for explorer workflows
+export * from './variable-registry.js';
+
 // Curated datasets (US federal budget, evidence-based policies)
 export * from './datasets/index.js';
 

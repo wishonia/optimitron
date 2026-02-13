@@ -12,3 +12,8 @@
    - Added adaptive binning metadata to JSON and companion markdown table (2026-02-13).
 8. [x] Ensure reproducible workspace execution for examples by building upstream package deps before generation/tests.
    - `packages/examples/package.json` now runs `build:deps` ahead of `generate:*`, demos, and tests (2026-02-13).
+9. [x] Define and publish `VariableRegistry` seed dataset for all predictor/outcome IDs.
+   - Implemented in `packages/data/src/variable-registry.ts` with exported schema + helper APIs.
+   - Includes units, directionality, coverage windows/status, transforms, and lag defaults.
+10. [ ] Add precompute index metadata for heavy pair analyses.
+   - Hash inputs and store freshness/provenance for explorer cache invalidation.

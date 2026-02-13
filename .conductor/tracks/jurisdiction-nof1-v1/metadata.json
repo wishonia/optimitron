@@ -1,0 +1,16 @@
+{
+  "id": "jurisdiction-nof1-v1",
+  "title": "Jurisdiction N-of-1 Drilldown Pages and APIs",
+  "status": "active",
+  "owner": "wishonia",
+  "priority": "P1",
+  "effort": "M",
+  "agentTier": "Codex",
+  "dependencies": [
+    "analysis-explorer-v1",
+    "data-infrastructure-v2",
+    "testing-strategy-v1"
+  ],
+  "createdAt": "2026-02-13",
+  "updatedAt": "2026-02-13"
+}

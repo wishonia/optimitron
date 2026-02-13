@@ -26,6 +26,7 @@ The current data backbone mixes real OECD panel series with synthetic direct out
 - Fetchers with caching and versioning
 - JSDoc documentation of all sources
 - Dual-scale downstream outputs where applicable (`% GDP` and per-capita PPP views)
+- Variable registry coverage metadata (predictor/outcome availability by jurisdiction and period)
 
 ## Acceptance Criteria
 - All sources have documented provenance and versioning metadata.

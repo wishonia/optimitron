@@ -11,6 +11,7 @@ Define a hypothesis-driven test format and require each report claim to map to a
 - Minimum effective spending logic
 - Policy scoring and evidence grades
 - Output-contract tests for generated analysis artifacts (JSON + markdown)
+- Multiple-comparison controls and uncertainty labeling for large predictor ranking screens
 
 ## Acceptance Criteria
 - Each report claim has a test mapped in code.

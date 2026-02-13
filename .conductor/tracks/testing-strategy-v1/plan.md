@@ -8,3 +8,5 @@
 6. [x] Add tests for adaptive binning and report output contracts.
    - `@optomitron/optimizer`: adaptive binning unit tests.
    - `@optomitron/examples`: assertions for low-spending `% GDP` tiers and per-capita PPP tier output.
+7. [ ] Add tests for ranking stability under multiple-testing correction (FDR/Bonferroni as configured).
+8. [ ] Add UI-contract tests for uncertainty/quality badges on outcome hub and pair study pages.

@@ -1,0 +1,15 @@
+{
+  "id": "web-integration-v2",
+  "title": "Wire Library Outputs to Pages + JSON Schema",
+  "status": "active",
+  "owner": "wishonia",
+  "priority": "P1",
+  "effort": "M",
+  "agentTier": "Codex",
+  "dependencies": [
+    "analysis-explorer-v1",
+    "data-infrastructure-v2"
+  ],
+  "createdAt": "2026-02-13",
+  "updatedAt": "2026-02-13"
+}

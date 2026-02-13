@@ -2,10 +2,13 @@
 
 | ID | Title | Status | Priority | Owner | Updated |
 | --- | --- | --- | --- | --- | --- |
+| analysis-explorer-v1 | Universal Predictor-Outcome Explorer + Outcome Hubs | **active** | **P0** | wishonia | 2026-02-13 |
 | policy-evaluation-v1 | 3-Layer Policy Evaluation Pipeline | **active** | **P0** | wishonia | 2026-02-13 |
 | optimal-budget-v2 | OBG Minimum Effective Spending + Efficient Frontier | **done** | - | wishonia | 2026-02-13 |
 | opg-core-v1 | OPG Evidence + Policy Scoring Expansion | **done** | - | wishonia | 2026-02-07 |
 | report-quality-v1 | OPG/OBG Markdown Report Quality Improvements | **done** | P1 | wishonia | 2026-02-07 |
+| web-integration-v2 | Wire Library Outputs to Pages + JSON Schema | **active** | P1 | wishonia | 2026-02-13 |
+| jurisdiction-nof1-v1 | Jurisdiction N-of-1 Drilldown Pages and APIs | **active** | P1 | wishonia | 2026-02-13 |
 | data-infrastructure-v2 | OECD + Direct Outcomes + FRED Improvements | **active** | P1 | wishonia | 2026-02-13 |
 | testing-strategy-v1 | Hypothesis-Driven Tests for Findings | **active** | P1 | wishonia | 2026-02-13 |
 | optimizer-core-v2 | Partial Correlations + Diminishing Returns | **paused** | P2 | wishonia | 2026-02-13 |

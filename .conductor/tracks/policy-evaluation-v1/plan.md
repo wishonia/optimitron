@@ -71,6 +71,12 @@ and cross-jurisdiction panels.
 - [ ] 10. Update web page to show 3-layer evidence for each policy
 - [ ] 11. Generate markdown report: `reports/policy-evaluations.md`
 
+## Coordination Note
+- Generic predictor/outcome explorer and outcome-level mega studies are tracked in:
+  - `analysis-explorer-v1`
+  - `web-integration-v2`
+  - `jurisdiction-nof1-v1`
+
 ## Priority
 Start with items 1-2 (types), then 4-5 (natural experiments — most impactful),
 then 7-8 (aggregation). Layer 1 is already done.
