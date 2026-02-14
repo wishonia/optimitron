@@ -46,6 +46,10 @@ export const WB_INDICATOR_CODES = {
   CLEAN_WATER_ACCESS: 'SH.H2O.SMDW.ZS',
   /** Homicide rate (per 100K) */
   HOMICIDE_RATE: 'VC.IHR.PSRC.P5',
+  /** Primary completion rate (% of relevant age group) */
+  PRIMARY_COMPLETION_RATE: 'SE.PRM.CMPT.ZS',
+  /** Battle-related deaths (count) */
+  BATTLE_RELATED_DEATHS: 'VC.BTL.DETH',
   /** Government health expenditure (% of GDP) — the policy lever */
   GOV_HEALTH_EXPENDITURE_PCT_GDP: 'SH.XPD.GHED.GD.ZS',
   /** Private domestic health expenditure (% of current health expenditure) */
@@ -267,6 +271,20 @@ export async function fetchInfantMortality(options: FetchOptions = {}): Promise<
  */
 export async function fetchHomicideRate(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchWorldBankIndicator(WB_INDICATOR_CODES.HOMICIDE_RATE, options);
+}
+
+/**
+ * Fetch primary completion rate (% of relevant age group).
+ */
+export async function fetchPrimaryCompletionRate(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.PRIMARY_COMPLETION_RATE, options);
+}
+
+/**
+ * Fetch battle-related deaths (count).
+ */
+export async function fetchBattleRelatedDeaths(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.BATTLE_RELATED_DEATHS, options);
 }
 
 /**

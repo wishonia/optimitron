@@ -11,21 +11,29 @@
 - Included subjects: 159
 - Skipped subjects: 0
 - Total aligned pairs: 10494
-- Evidence grade: A
-- Data sufficiency: sufficient
-- Reliability score: 0.799 (high)
-- Quality tier: exploratory
+- Signal grade: A (very strong)
+- Data status: enough data
+- Confidence score: 0.799 (higher confidence)
+- Signal tag: early signal
 - Direction: positive
-- Derived uncertainty score: 0.0670 (1 - aggregate significance, not NHST p-value)
+- Uncertainty score: 0.0670 (lower is better)
+
+## Quick Meanings
+
+- `Recommended level`: main value to try first.
+- `Data-backed level`: level directly supported by seen data.
+- `Backup level`: safer fallback from the middle of the data.
+- `Math-only guess`: unconstrained model output for technical comparison.
+- `Not enough data`: we cannot safely recommend a level yet.
 
 ## Key Numeric Takeaways
 
-- Decision-target Military Expenditure Per Capita (PPP) level for higher Healthy Life Expectancy (HALE): 546.11 international $/person (support constrained).
-- Observed-support target from binned response curve: 546.11 international $/person.
-- Model-derived optimum is within observed support but outside the highest-outcome bin; this reflects smooth objective optimization vs coarse bin averages.
+- Recommended Military Expenditure Per Capita (PPP) level for higher Healthy Life Expectancy (HALE): 546.11 international $/person (data-backed level).
+- Best level directly seen in the grouped data: 546.11 international $/person.
+- Math-only guess is inside seen data but outside the best-performing bucket, so we still use the data-backed level.
 - Best observed bin anchor (median/mean) is 487.80 international $/person; model-optimal minus observed-anchor difference is -99.893 (-20.5%).
-- Robust sensitivity (trimmed 10-90% predictor range) suggests 509.10 international $/person.
-- Raw vs robust optimal differs by 31.2%, indicating strong tail influence.
+- Backup level check (middle 10-90% of data) suggests 509.10 international $/person.
+- The math-only guess and backup level differ by 31.2%, which means extreme values may matter a lot.
 - Minimum effective level (first consistently positive zone): 18.849 international $/person.
 - Diminishing returns likely begin near 28.250 international $/person.
 - Saturation/plateau zone starts around 546.11 international $/person and extends through 2197.4 international $/person.
@@ -34,9 +42,9 @@
 
 ## Decision Summary
 
-- Interpretation: Stronger evidence for directional signal relative to other predictors in this report.
-- Directional hint: higher Military Expenditure Per Capita (PPP) is associated with better Healthy Life Expectancy (HALE).
-- Signal strength: relatively stronger within this report set.
+- Interpretation: Stronger signal compared with most other predictors in this report.
+- Pattern hint: higher Military Expenditure Per Capita (PPP) tends to go with better Healthy Life Expectancy (HALE).
+- Signal strength: stronger in this report set.
 
 ## Plain-Language Summary
 
@@ -44,13 +52,13 @@
 - The estimate uses 159 subjects and 10494 aligned predictor-outcome observations.
 - Best observed mean outcome appears in predictor bin [405.15, 641.54) (mean outcome 67.710).
 - A minimum effective predictor level appears near 18.849 international $/person in the binned response curve.
-- Reliability score is 0.799 (high); data sufficiency is sufficient.
+- Confidence score is 0.799 (higher confidence); data status is enough data.
 - Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better).
 
 ## Quality Warnings
 
-- Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.
-- Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.
+- Forward and direction signals disagree; direction may be unstable.
+- Some country-level direction scores are unusually high; this can happen with this scoring method.
 - Top temporal profiles are close (score delta 0.0023); temporal assumptions are not yet robust.
 - Robustness check: trimmed-range optimal differs by 31.2% from raw optimal; tail observations materially influence target.
 
@@ -60,51 +68,51 @@
 
 | Metric | Value |
 |--------|------:|
-| Aggregate forward Pearson | 0.3974 |
-| Aggregate reverse Pearson | 0.5398 |
-| Aggregate directional score (forward - reverse) | -0.1424 |
-| Aggregate effect size (% baseline delta) | 3.1328 |
-| Aggregate statistical significance | 0.9330 |
-| Weighted average PIS | 0.5124 |
-| Aggregate value predicting high outcome | 387.9048 |
-| Aggregate value predicting low outcome | 369.1217 |
-| Aggregate optimal daily value | 387.9048 |
-| Decision target value (reader-facing) | 546.11 international $/person (support constrained) |
-| Model-derived optimum (diagnostics) | 387.90 international $/person |
-| Support-constrained optimal value | 546.11 international $/person |
-| Support-constrained optimal range | [451.65, 771.61) |
-| Response-curve robust optimal value | 526.49 international $/person |
-| Raw model optimal within observed range | yes |
-| Raw model optimal within support-constrained range | no |
-| Observed predictor range | [0.0063, 27448.6207] |
-| Model-derived optimal extrapolative? | no (within observed range) |
-| Model-derived optimal outside best observed bin? | yes |
-| Raw best observed range | [405.15, 641.54) |
-| Robust best observed range (trimmed) | [432.28, 639.59] |
-| Raw best observed outcome mean | 67.710 |
-| Robust best observed outcome mean | 68.065 |
-| Robust optimal value (bin median) | 509.10 international $/person |
-| Raw vs robust optimal delta | 121.19 (+31.2%) |
-| Robustness retained fraction | 80.0% (8394/10494) |
-| Data sufficiency status | sufficient |
-| Data sufficiency reasons | none |
-| Reliability score | 0.7991 (high) |
+| Forward correlation | 0.3974 |
+| Reverse correlation | 0.5398 |
+| Direction score (forward - reverse) | -0.1424 |
+| Effect size (% change from baseline) | 3.1328 |
+| Significance score | 0.9330 |
+| Weighted PIS | 0.5124 |
+| Value linked with higher outcome | 387.9048 |
+| Value linked with lower outcome | 369.1217 |
+| Math-only best daily value | 387.9048 |
+| Recommended level (reader-facing) | 546.11 international $/person (data-backed level) |
+| Math-only guess (technical) | 387.90 international $/person |
+| Data-backed level | 546.11 international $/person |
+| Data-backed range | [451.65, 771.61) |
+| Backup level (middle-data check) | 526.49 international $/person |
+| Math-only guess inside seen data range? | yes |
+| Math-only guess inside data-backed range? | no |
+| Seen data range | [0.0063, 27448.6207] |
+| Math-only guess outside seen data? | no (within observed range) |
+| Math-only guess outside best observed bucket? | yes |
+| Best observed range | [405.15, 641.54) |
+| Best observed range (middle-data check) | [432.28, 639.59] |
+| Best observed outcome average | 67.710 |
+| Best observed outcome average (middle-data check) | 68.065 |
+| Backup level (bucket median) | 509.10 international $/person |
+| Math-only vs backup difference | 121.19 (+31.2%) |
+| Middle-data share kept | 80.0% (8394/10494) |
+| Data status | enough data |
+| Data-status details | none |
+| Confidence score | 0.7991 (higher confidence) |
 | Reliability support component | 1.0000 |
 | Reliability significance component | 0.9330 |
 | Reliability directional component | 0.9496 |
 | Reliability temporal-stability component | 0.0753 |
 | Reliability robustness component | 0.7640 |
-| Quality tier | exploratory |
+| Signal tag | early signal |
 
 ### Response-Curve Diagnostics
 
 | Diagnostic | Result |
 |------------|--------|
-| Minimum effective level (MED) | 18.849 international $/person (z=13.43) |
-| Diminishing-returns knee | 28.250 international $/person (ratio=0.175) |
-| Saturation / plateau range | [451.65, 7414.1] |
-| Support-constrained target reason | identified |
-| Raw to support delta | -158.21 (-29.0%) |
+| Minimum useful level | 18.849 international $/person (z=13.43) |
+| Point where gains start slowing | 28.250 international $/person (ratio=0.175) |
+| Flat zone range | [451.65, 7414.1] |
+| Why this data-backed level was chosen | identified |
+| Math-only guess minus data-backed level | -158.21 (-29.0%) |
 
 ### Temporal Sensitivity
 

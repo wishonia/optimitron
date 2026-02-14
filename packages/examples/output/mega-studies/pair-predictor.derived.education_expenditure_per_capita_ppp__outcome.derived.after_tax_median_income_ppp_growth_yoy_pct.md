@@ -11,18 +11,26 @@
 - Included subjects: 216
 - Skipped subjects: 0
 - Total aligned pairs: 6924
-- Evidence grade: C
-- Data sufficiency: sufficient
-- Reliability score: 0.720 (moderate)
-- Quality tier: exploratory
+- Signal grade: C (moderate)
+- Data status: enough data
+- Confidence score: 0.720 (medium confidence)
+- Signal tag: early signal
 - Direction: positive
-- Derived uncertainty score: 0.3147 (1 - aggregate significance, not NHST p-value)
+- Uncertainty score: 0.3147 (lower is better)
+
+## Quick Meanings
+
+- `Recommended level`: main value to try first.
+- `Data-backed level`: level directly supported by seen data.
+- `Backup level`: safer fallback from the middle of the data.
+- `Math-only guess`: unconstrained model output for technical comparison.
+- `Not enough data`: we cannot safely recommend a level yet.
 
 ## Key Numeric Takeaways
 
-- Decision-target Education Expenditure Per Capita (PPP) level for higher After-Tax Median Income Growth (YoY %): 413.14 international $/person (support constrained).
-- Observed-support target from binned response curve: 413.14 international $/person.
-- Robust sensitivity (trimmed 10-90% predictor range) suggests 544.13 international $/person.
+- Recommended Education Expenditure Per Capita (PPP) level for higher After-Tax Median Income Growth (YoY %): 413.14 international $/person (data-backed level).
+- Best level directly seen in the grouped data: 413.14 international $/person.
+- Backup level check (middle 10-90% of data) suggests 544.13 international $/person.
 - Minimum effective level (first consistently positive zone): 55.100 international $/person.
 - Diminishing returns likely begin near 100.74 international $/person.
 - Saturation/plateau zone starts around 229.25 international $/person and extends through 2736.7 international $/person.
@@ -31,9 +39,9 @@
 
 ## Decision Summary
 
-- Interpretation: Exploratory evidence only; use primarily for hypothesis generation.
-- Directional hint: higher Education Expenditure Per Capita (PPP) is associated with better After-Tax Median Income Growth (YoY %).
-- Signal strength: moderate-to-weak; avoid hard policy conclusions from this pair alone.
+- Interpretation: Early signal only; use this mainly to guide more testing.
+- Pattern hint: higher Education Expenditure Per Capita (PPP) tends to go with better After-Tax Median Income Growth (YoY %).
+- Signal strength: weak to moderate; avoid strong conclusions from this pair alone.
 
 ## Plain-Language Summary
 
@@ -41,13 +49,13 @@
 - The estimate uses 216 subjects and 6924 aligned predictor-outcome observations.
 - Best observed mean outcome appears in predictor bin [510.99, 751.14) (mean outcome 5.154).
 - A minimum effective predictor level appears near 55.100 international $/person in the binned response curve.
-- Reliability score is 0.720 (moderate); data sufficiency is sufficient.
+- Confidence score is 0.720 (medium confidence); data status is enough data.
 - Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better).
 
 ## Quality Warnings
 
-- Weak aggregate significance (<0.70).
-- Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.
+- Weak significance score (<0.70).
+- Forward and direction signals disagree; direction may be unstable.
 - Top temporal profiles are close (score delta 0.0153); temporal assumptions are not yet robust.
 
 ## Appendix: Technical Diagnostics
@@ -56,51 +64,51 @@
 
 | Metric | Value |
 |--------|------:|
-| Aggregate forward Pearson | 0.1155 |
-| Aggregate reverse Pearson | 0.1832 |
-| Aggregate directional score (forward - reverse) | -0.0676 |
-| Aggregate effect size (% baseline delta) | 112.8001 |
-| Aggregate statistical significance | 0.6853 |
-| Weighted average PIS | 0.1846 |
-| Aggregate value predicting high outcome | 685.8691 |
-| Aggregate value predicting low outcome | 659.3175 |
-| Aggregate optimal daily value | 685.8691 |
-| Decision target value (reader-facing) | 413.14 international $/person (support constrained) |
-| Model-derived optimum (diagnostics) | 685.87 international $/person |
-| Support-constrained optimal value | 413.14 international $/person |
-| Support-constrained optimal range | [352.67, 486.04) |
-| Response-curve robust optimal value | 395.61 international $/person |
-| Raw model optimal within observed range | yes |
-| Raw model optimal within support-constrained range | no |
-| Observed predictor range | [0.0000, 7006.1701] |
-| Model-derived optimal extrapolative? | no (within observed range) |
-| Model-derived optimal outside best observed bin? | no |
-| Raw best observed range | [510.99, 751.14) |
-| Robust best observed range (trimmed) | [478.16, 631.39) |
-| Raw best observed outcome mean | 5.154 |
-| Robust best observed outcome mean | 4.995 |
-| Robust optimal value (bin median) | 544.13 international $/person |
-| Raw vs robust optimal delta | -141.74 (-20.7%) |
-| Robustness retained fraction | 80.0% (5539/6924) |
-| Data sufficiency status | sufficient |
-| Data sufficiency reasons | none |
-| Reliability score | 0.7202 (moderate) |
+| Forward correlation | 0.1155 |
+| Reverse correlation | 0.1832 |
+| Direction score (forward - reverse) | -0.0676 |
+| Effect size (% change from baseline) | 112.8001 |
+| Significance score | 0.6853 |
+| Weighted PIS | 0.1846 |
+| Value linked with higher outcome | 685.8691 |
+| Value linked with lower outcome | 659.3175 |
+| Math-only best daily value | 685.8691 |
+| Recommended level (reader-facing) | 413.14 international $/person (data-backed level) |
+| Math-only guess (technical) | 685.87 international $/person |
+| Data-backed level | 413.14 international $/person |
+| Data-backed range | [352.67, 486.04) |
+| Backup level (middle-data check) | 395.61 international $/person |
+| Math-only guess inside seen data range? | yes |
+| Math-only guess inside data-backed range? | no |
+| Seen data range | [0.0000, 7006.1701] |
+| Math-only guess outside seen data? | no (within observed range) |
+| Math-only guess outside best observed bucket? | no |
+| Best observed range | [510.99, 751.14) |
+| Best observed range (middle-data check) | [478.16, 631.39) |
+| Best observed outcome average | 5.154 |
+| Best observed outcome average (middle-data check) | 4.995 |
+| Backup level (bucket median) | 544.13 international $/person |
+| Math-only vs backup difference | -141.74 (-20.7%) |
+| Middle-data share kept | 80.0% (5539/6924) |
+| Data status | enough data |
+| Data-status details | none |
+| Confidence score | 0.7202 (medium confidence) |
 | Reliability support component | 1.0000 |
 | Reliability significance component | 0.6853 |
 | Reliability directional component | 0.4510 |
 | Reliability temporal-stability component | 0.5097 |
 | Reliability robustness component | 0.8815 |
-| Quality tier | exploratory |
+| Signal tag | early signal |
 
 ### Response-Curve Diagnostics
 
 | Diagnostic | Result |
 |------------|--------|
-| Minimum effective level (MED) | 55.100 international $/person (z=1.87) |
-| Diminishing-returns knee | 100.74 international $/person (ratio=0.054) |
-| Saturation / plateau range | [192.60, 6745.6] |
-| Support-constrained target reason | identified |
-| Raw to support delta | 272.73 (+66.0%) |
+| Minimum useful level | 55.100 international $/person (z=1.87) |
+| Point where gains start slowing | 100.74 international $/person (ratio=0.054) |
+| Flat zone range | [192.60, 6745.6] |
+| Why this data-backed level was chosen | identified |
+| Math-only guess minus data-backed level | 272.73 (+66.0%) |
 
 ### Temporal Sensitivity
 

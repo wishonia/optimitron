@@ -9,9 +9,10 @@ Current explorer reports are readable and actionable, but major methodological g
 - Growth outcomes can be too noisy (especially HALE YoY), producing low-confidence recommendations.
 - Report semantics currently mix internal scoring and decision confidence in ways that can confuse readers.
 - Education recommendations can be distorted when broad spending totals are optimized without direct student-performance outcomes or composition decomposition.
+- Predictor recommendations can be misleading when they are evaluated only against broad macro outcomes instead of direct mission outcomes (for example, anti-overdose spending vs overdose outcomes).
 
 ## Objective
-Increase decision usefulness and causal credibility by calibrating temporal assumptions, tightening recommendation gates, improving welfare outcome data quality, and separating diagnostic model outputs from decision-grade guidance.
+Increase decision usefulness and causal credibility by calibrating temporal assumptions, tightening recommendation gates, improving welfare outcome data quality, separating diagnostic model outputs from decision-grade guidance, and enforcing direct-objective evidence contracts per predictor.
 
 ## Scope
 - Temporal model calibration:
@@ -35,6 +36,11 @@ Increase decision usefulness and causal credibility by calibrating temporal assu
   - decompose education predictors so budget guidance distinguishes instructional vs administrative composition
   - require direct student-performance outcome support for high-confidence education scale recommendations
   - prevent out-of-support extrapolated education targets from appearing as primary recommendations
+- Direct-objective reliability:
+  - map each discretionary predictor to one or more direct mission outcomes
+  - require direct mission-outcome evidence before large scale-up recommendations
+  - apply welfare guardrails (income/HALE level + growth) so direct gains do not hide broad harm
+  - handle low-base-rate outcomes with minimum-event support rules and longer aggregation windows
 
 ## Deliverables
 - Temporal profile schema in variable registry and pair overrides.
@@ -46,6 +52,8 @@ Increase decision usefulness and causal credibility by calibrating temporal assu
 - Report contract update with model-optimal vs decision-optimal fields.
 - Confidence-label refactor for reader-first sections.
 - Education outcome-source integration plan (international + US companion) and decomposition-ready predictor contract.
+- Predictor objective-profile registry (direct outcomes + guardrails + lag defaults + minimum-support rules).
+- Direct-objective recommendation gate and fallback wording contract.
 
 ## Acceptance Criteria
 - Reports no longer rely on one fixed duration for all predictor/outcome pairs.
@@ -59,8 +67,12 @@ Increase decision usefulness and causal credibility by calibrating temporal assu
 - Reader-facing recommendation tables prioritize decision-optimal ranges, with raw model-optimal values retained in diagnostics.
 - Confidence semantics in summaries no longer imply classical causal certainty when based on internal scoring heuristics.
 - Education recommendations are composition-aware and suppressed/downgraded when direct learning-outcome support is insufficient.
+- Every discretionary predictor shown in recommendation tables has at least one mapped direct mission outcome, or is explicitly excluded.
+- Large scale-up recommendations are suppressed when direct mission-outcome support is insufficient, even if macro association looks favorable.
+- Recommendation pages show direct-outcome evidence and welfare-guardrail status together.
 
 ## Risks
 - Temporal profile search can increase compute time and overfitting risk.
 - Direct income sources may have limited country/year coverage.
 - Stronger gating may reduce the number of "actionable" rows, which can feel less decisive without clear explanation.
+- Direct mission outcomes may have sparse or inconsistent coverage across countries/years, requiring explicit fallback/exclusion behavior.

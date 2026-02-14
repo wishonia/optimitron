@@ -11,40 +11,48 @@
 - Included subjects: 82
 - Skipped subjects: 0
 - Total aligned pairs: 1722
-- Evidence grade: F
-- Data sufficiency: insufficient_data
-- Reliability score: 0.490 (low)
-- Quality tier: insufficient
+- Signal grade: F (very weak)
+- Data status: not enough data
+- Confidence score: 0.490 (lower confidence)
+- Signal tag: not enough data
 - Direction: neutral
-- Derived uncertainty score: 0.8059 (1 - aggregate significance, not NHST p-value)
+- Uncertainty score: 0.8059 (lower is better)
+
+## Quick Meanings
+
+- `Recommended level`: main value to try first.
+- `Data-backed level`: level directly supported by seen data.
+- `Backup level`: safer fallback from the middle of the data.
+- `Math-only guess`: unconstrained model output for technical comparison.
+- `Not enough data`: we cannot safely recommend a level yet.
 
 ## Key Numeric Takeaways
 
-- No decision target is emitted for R&D Share of Government Spending -> Healthy Life Expectancy Growth (YoY %) because minimum data-sufficiency thresholds were not met.
-- Blocking reasons: aligned-pair support below minimum (1722 < 2000).
+- No recommended level is shown for R&D Share of Government Spending -> Healthy Life Expectancy Growth (YoY %) because there is not enough data.
+- Why: aligned-pair support below minimum (1722 < 2000).
 - Observed support in this run: 82 subjects, 1722 aligned pairs, 10 predictor bins, 16 temporal candidates with valid results.
-- Use this pair for diagnostics only until sufficiency thresholds are satisfied.
+- Use this pair for background learning only until we have enough data.
 
 ## Decision Summary
 
-- Interpretation: insufficient data for recommendation-grade inference under current hard sufficiency gates.
-- Recommendation status: no primary target is emitted from this pair until support thresholds are met.
-- Blocking reasons: aligned-pair support below minimum (1722 < 2000).
+- Interpretation: not enough data for a safe recommendation.
+- Recommendation status: no recommended level until data improves.
+- Why: aligned-pair support below minimum (1722 < 2000).
 
 ## Plain-Language Summary
 
 - No strong directional pattern is detected between R&D Share of Government Spending and Healthy Life Expectancy Growth (YoY %).
 - The estimate uses 82 subjects and 1722 aligned predictor-outcome observations.
 - Best observed mean outcome appears in predictor bin [9.525, 20.356] (mean outcome 0.44588).
-- Reliability score is 0.490 (low); data sufficiency is insufficient_data.
+- Confidence score is 0.490 (lower confidence); data status is not enough data.
 - Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better).
 
 ## Quality Warnings
 
-- Weak aggregate significance (<0.70).
-- Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.
+- Weak significance score (<0.70).
+- Some country-level direction scores are unusually high; this can happen with this scoring method.
 - Robustness check: trimmed-range optimal differs by 32.5% from raw optimal; tail observations materially influence target.
-- Data sufficiency warning: aligned-pair support below minimum (1722 < 2000)
+- Data status warning: aligned-pair support below minimum (1722 < 2000)
 
 ## Appendix: Technical Diagnostics
 
@@ -52,51 +60,51 @@
 
 | Metric | Value |
 |--------|------:|
-| Aggregate forward Pearson | 0.0009 |
-| Aggregate reverse Pearson | -0.1450 |
-| Aggregate directional score (forward - reverse) | 0.1459 |
-| Aggregate effect size (% baseline delta) | 283.7272 |
-| Aggregate statistical significance | 0.1941 |
-| Weighted average PIS | 0.0698 |
-| Aggregate value predicting high outcome | 3.4806 |
-| Aggregate value predicting low outcome | 3.5086 |
-| Aggregate optimal daily value | 3.4806 |
-| Decision target value (reader-facing) | N/A (unavailable) |
-| Model-derived optimum (diagnostics) | 3.481 % of government expenditure |
-| Support-constrained optimal value | 13.243 % of government expenditure |
-| Support-constrained optimal range | [10.327, 20.356] |
-| Response-curve robust optimal value | 0.99475 % of government expenditure |
-| Raw model optimal within observed range | yes |
-| Raw model optimal within support-constrained range | no |
-| Observed predictor range | [0.0487, 35.0684] |
-| Model-derived optimal extrapolative? | no (within observed range) |
-| Model-derived optimal outside best observed bin? | yes |
-| Raw best observed range | [9.525, 20.356] |
-| Robust best observed range (trimmed) | [4.384, 5.030) |
-| Raw best observed outcome mean | 0.44588 |
-| Robust best observed outcome mean | 0.31515 |
-| Robust optimal value (bin median) | 4.613 % of government expenditure |
-| Raw vs robust optimal delta | 1.133 (+32.5%) |
-| Robustness retained fraction | 79.9% (1376/1722) |
-| Data sufficiency status | insufficient_data |
-| Data sufficiency reasons | aligned-pair support below minimum (1722 < 2000) |
-| Reliability score | 0.4900 (low) |
+| Forward correlation | 0.0009 |
+| Reverse correlation | -0.1450 |
+| Direction score (forward - reverse) | 0.1459 |
+| Effect size (% change from baseline) | 283.7272 |
+| Significance score | 0.1941 |
+| Weighted PIS | 0.0698 |
+| Value linked with higher outcome | 3.4806 |
+| Value linked with lower outcome | 3.5086 |
+| Math-only best daily value | 3.4806 |
+| Recommended level (reader-facing) | N/A (not enough data) |
+| Math-only guess (technical) | 3.481 % of government expenditure |
+| Data-backed level | 13.243 % of government expenditure |
+| Data-backed range | [10.327, 20.356] |
+| Backup level (middle-data check) | 0.99475 % of government expenditure |
+| Math-only guess inside seen data range? | yes |
+| Math-only guess inside data-backed range? | no |
+| Seen data range | [0.0487, 35.0684] |
+| Math-only guess outside seen data? | no (within observed range) |
+| Math-only guess outside best observed bucket? | yes |
+| Best observed range | [9.525, 20.356] |
+| Best observed range (middle-data check) | [4.384, 5.030) |
+| Best observed outcome average | 0.44588 |
+| Best observed outcome average (middle-data check) | 0.31515 |
+| Backup level (bucket median) | 4.613 % of government expenditure |
+| Math-only vs backup difference | 1.133 (+32.5%) |
+| Middle-data share kept | 79.9% (1376/1722) |
+| Data status | not enough data |
+| Data-status details | aligned-pair support below minimum (1722 < 2000) |
+| Confidence score | 0.4900 (lower confidence) |
 | Reliability support component | 0.4168 |
 | Reliability significance component | 0.1941 |
 | Reliability directional component | 0.9728 |
 | Reliability temporal-stability component | 1.0000 |
 | Reliability robustness component | 0.7495 |
-| Quality tier | insufficient |
+| Signal tag | not enough data |
 
 ### Response-Curve Diagnostics
 
 | Diagnostic | Result |
 |------------|--------|
-| Minimum effective level (MED) | Not identified (no_consistent_effective_dose_detected) |
-| Diminishing-returns knee | 1.027 % of government expenditure (ratio=0.069) |
-| Saturation / plateau range | [5.920, 20.356] |
-| Support-constrained target reason | identified |
-| Raw to support delta | -9.762 (-73.7%) |
+| Minimum useful level | Not identified (no_consistent_effective_dose_detected) |
+| Point where gains start slowing | 1.027 % of government expenditure (ratio=0.069) |
+| Flat zone range | [5.920, 20.356] |
+| Why this data-backed level was chosen | identified |
+| Math-only guess minus data-backed level | -9.762 (-73.7%) |
 
 ### Temporal Sensitivity
 

@@ -47,6 +47,7 @@ export interface MinimumEffectiveDoseOptions {
   minAbsoluteGain?: number;
   minZScore?: number;
   minConsecutiveBins?: number;
+  objective?: MinimumEffectiveDoseObjective;
 }
 
 export interface MinimumEffectiveDoseEstimate {
@@ -103,6 +104,10 @@ export interface SaturationRangeEstimate {
 }
 
 export type ResponseCurveObjective = 'maximize_outcome' | 'minimize_outcome';
+export type MinimumEffectiveDoseObjective =
+  | 'maximize_outcome'
+  | 'minimize_outcome'
+  | 'any_change';
 
 export interface SupportConstrainedTargetOptions {
   targetBinCount?: number;
@@ -414,14 +419,31 @@ function relativeGainPercent(gain: number, baseline: number): number | null {
 function computeDoseCandidate(
   baselineBin: ResponseCurveBin,
   candidateBin: ResponseCurveBin,
+  objective: MinimumEffectiveDoseObjective,
 ): EffectiveDoseCandidate {
-  const gain = candidateBin.outcomeMean - baselineBin.outcomeMean;
+  const rawDelta = candidateBin.outcomeMean - baselineBin.outcomeMean;
+  const gain =
+    objective === 'maximize_outcome'
+      ? rawDelta
+      : objective === 'minimize_outcome'
+        ? -rawDelta
+        : Math.abs(rawDelta);
   const relGain = relativeGainPercent(gain, baselineBin.outcomeMean);
   const combinedSem = Math.sqrt(
     baselineBin.outcomeSem ** 2 + candidateBin.outcomeSem ** 2,
   );
+  const rawZ =
+    combinedSem > 0
+      ? rawDelta / combinedSem
+      : rawDelta > 0
+        ? Number.POSITIVE_INFINITY
+        : Number.NEGATIVE_INFINITY;
   const zScore =
-    combinedSem > 0 ? gain / combinedSem : gain > 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY;
+    objective === 'maximize_outcome'
+      ? rawZ
+      : objective === 'minimize_outcome'
+        ? -rawZ
+        : Math.abs(rawZ);
   return {
     binIndex: candidateBin.binIndex,
     gain,
@@ -489,6 +511,7 @@ export function estimateMinimumEffectiveDose(
     1,
     options.minConsecutiveBins ?? DEFAULT_MIN_CONSECUTIVE_BINS,
   );
+  const objective = options.objective ?? 'maximize_outcome';
 
   const bins = buildResponseCurveBins(points, targetBinCount, minBinSize);
   const minBinCount = minConsecutiveBins + 1;
@@ -511,7 +534,7 @@ export function estimateMinimumEffectiveDose(
   }
   for (let start = 1; start <= bins.length - minConsecutiveBins; start++) {
     const window = bins.slice(start, start + minConsecutiveBins);
-    const candidates = window.map((bin) => computeDoseCandidate(baseline, bin));
+    const candidates = window.map((bin) => computeDoseCandidate(baseline, bin, objective));
     const allPassed = candidates.every((candidate) =>
       gainThresholdPassed(
         candidate,

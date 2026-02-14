@@ -299,11 +299,11 @@ describe("mega-study-generator helpers", () => {
     });
 
     expect(warnings).toHaveLength(5);
-    expect(warnings.join(" ")).toContain("Low subject coverage");
+    expect(warnings.join(" ")).toContain("Low country coverage");
     expect(warnings.join(" ")).toContain("Low aligned-pair count");
-    expect(warnings.join(" ")).toContain("Weak aggregate significance");
-    expect(warnings.join(" ")).toContain("Directional score exceeds");
-    expect(warnings.join(" ")).toContain("subject-level directional scores exceed");
+    expect(warnings.join(" ")).toContain("Weak significance score");
+    expect(warnings.join(" ")).toContain("Direction score is unusually high");
+    expect(warnings.join(" ")).toContain("country-level direction scores are unusually high");
   });
 
   it("derivePairQualityWarnings returns empty for high-quality signal", () => {
@@ -334,7 +334,7 @@ describe("mega-study-generator helpers", () => {
       maxSubjectDirectionalScore: 0.8,
     });
 
-    expect(warnings.join(" ")).toContain("Forward association sign conflicts");
+    expect(warnings.join(" ")).toContain("Forward and direction signals disagree");
   });
 
   it("directionFromSignal uses forward sign when directional evidence is sufficient", () => {
@@ -450,7 +450,7 @@ describe("mega-study-generator helpers", () => {
       aggregateOptimalDailyValue: 11,
     });
 
-    expect(warnings.join(" ")).toContain("outside the observed predictor range");
+    expect(warnings.join(" ")).toContain("outside the seen data range");
   });
 
   it("buildDistributionBuckets preserves total counts", () => {

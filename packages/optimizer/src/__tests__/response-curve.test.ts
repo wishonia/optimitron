@@ -150,6 +150,50 @@ describe('estimateMinimumEffectiveDose', () => {
     expect(result.reason).toBe('insufficient_samples');
     expect(result.support.sampleCount).toBe(40);
   });
+
+  it('supports minimize_outcome objective for beneficial decreases', () => {
+    const x = range(1, 360);
+    const y = x.map((value, index) => {
+      const base = value < 150 ? 30 : 24;
+      return base + Math.sin(index * 0.11) * 0.35;
+    });
+
+    const result = estimateMinimumEffectiveDose(x, y, {
+      objective: 'minimize_outcome',
+      minSamples: 120,
+      targetBinCount: 12,
+      minBinSize: 20,
+      minConsecutiveBins: 2,
+      minRelativeGainPercent: 3,
+      minZScore: 1,
+    });
+
+    expect(result.detected).toBe(true);
+    expect(result.minimumEffectiveDose).not.toBeNull();
+    expect(result.expectedGainAtDose).toBeGreaterThan(0);
+  });
+
+  it('supports any_change objective for harmful threshold shifts', () => {
+    const x = range(1, 360);
+    const y = x.map((value, index) => {
+      const base = value < 140 ? 20 : 28;
+      return base + Math.sin(index * 0.09) * 0.25;
+    });
+
+    const result = estimateMinimumEffectiveDose(x, y, {
+      objective: 'any_change',
+      minSamples: 120,
+      targetBinCount: 12,
+      minBinSize: 20,
+      minConsecutiveBins: 2,
+      minRelativeGainPercent: 5,
+      minZScore: 1,
+    });
+
+    expect(result.detected).toBe(true);
+    expect(result.minimumEffectiveDose).not.toBeNull();
+    expect(result.expectedGainAtDose).toBeGreaterThan(0);
+  });
 });
 
 describe('estimateSaturationRange', () => {

@@ -11,22 +11,30 @@
 - Included subjects: 148
 - Skipped subjects: 0
 - Total aligned pairs: 4853
-- Evidence grade: C
-- Data sufficiency: sufficient
-- Reliability score: 0.760 (high)
-- Quality tier: exploratory
+- Signal grade: C (moderate)
+- Data status: enough data
+- Confidence score: 0.760 (higher confidence)
+- Signal tag: early signal
 - Direction: negative
-- Derived uncertainty score: 0.3192 (1 - aggregate significance, not NHST p-value)
+- Uncertainty score: 0.3192 (lower is better)
+
+## Quick Meanings
+
+- `Recommended level`: main value to try first.
+- `Data-backed level`: level directly supported by seen data.
+- `Backup level`: safer fallback from the middle of the data.
+- `Math-only guess`: unconstrained model output for technical comparison.
+- `Not enough data`: we cannot safely recommend a level yet.
 
 ## Key Numeric Takeaways
 
-- Decision-target Military Share of Government Spending level for higher After-Tax Median Income Growth (YoY %): 4.734 % of government expenditure (support constrained).
-- Observed-support target from binned response curve: 4.734 % of government expenditure.
-- Model-derived optimum is within observed support but outside the highest-outcome bin; this reflects smooth objective optimization vs coarse bin averages.
+- Recommended Military Share of Government Spending level for higher After-Tax Median Income Growth (YoY %): 4.734 % of government expenditure (data-backed level).
+- Best level directly seen in the grouped data: 4.734 % of government expenditure.
+- Math-only guess is inside seen data but outside the best-performing bucket, so we still use the data-backed level.
 - Best observed bin anchor (median/mean) is 5.208 % of government expenditure; model-optimal minus observed-anchor difference is 4.577 (+87.9%).
-- Robust sensitivity (trimmed 10-90% predictor range) suggests 4.759 % of government expenditure.
-- Raw vs robust optimal differs by 51.4%, indicating strong tail influence.
-- Minimum effective level not reliably identified (no_consistent_effective_dose_detected).
+- Backup level check (middle 10-90% of data) suggests 4.759 % of government expenditure.
+- The math-only guess and backup level differ by 51.4%, which means extreme values may matter a lot.
+- Could not find a clear minimum useful level (no_consistent_effective_dose_detected).
 - Diminishing returns likely begin near 4.734 % of government expenditure.
 - Saturation/plateau zone starts around 10.950 % of government expenditure and extends through 13.996 % of government expenditure.
 - Highest observed mean After-Tax Median Income Growth (YoY %) appears when Military Share of Government Spending is in [4.760, 5.660) (mean outcome 5.170).
@@ -34,21 +42,21 @@
 
 ## Decision Summary
 
-- Interpretation: Exploratory evidence only; use primarily for hypothesis generation.
-- Directional hint: lower Military Share of Government Spending is associated with better After-Tax Median Income Growth (YoY %).
-- Signal strength: moderate-to-weak; avoid hard policy conclusions from this pair alone.
+- Interpretation: Early signal only; use this mainly to guide more testing.
+- Pattern hint: lower Military Share of Government Spending tends to go with better After-Tax Median Income Growth (YoY %).
+- Signal strength: weak to moderate; avoid strong conclusions from this pair alone.
 
 ## Plain-Language Summary
 
 - Higher Military Share of Government Spending tends to align with worse After-Tax Median Income Growth (YoY %).
 - The estimate uses 148 subjects and 4853 aligned predictor-outcome observations.
 - Best observed mean outcome appears in predictor bin [4.760, 5.660) (mean outcome 5.170).
-- Reliability score is 0.760 (high); data sufficiency is sufficient.
+- Confidence score is 0.760 (higher confidence); data status is enough data.
 - Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better).
 
 ## Quality Warnings
 
-- Weak aggregate significance (<0.70).
+- Weak significance score (<0.70).
 - Top temporal profiles are close (score delta 0.0223); temporal assumptions are not yet robust.
 - Robustness check: trimmed-range optimal differs by 51.4% from raw optimal; tail observations materially influence target.
 
@@ -58,51 +66,51 @@
 
 | Metric | Value |
 |--------|------:|
-| Aggregate forward Pearson | -0.1138 |
-| Aggregate reverse Pearson | 0.0153 |
-| Aggregate directional score (forward - reverse) | -0.1291 |
-| Aggregate effect size (% baseline delta) | 25.5839 |
-| Aggregate statistical significance | 0.6808 |
-| Weighted average PIS | 0.1834 |
-| Aggregate value predicting high outcome | 9.7847 |
-| Aggregate value predicting low outcome | 10.2187 |
-| Aggregate optimal daily value | 9.7847 |
-| Decision target value (reader-facing) | 4.734 % of government expenditure (support constrained) |
-| Model-derived optimum (diagnostics) | 9.785 % of government expenditure |
-| Support-constrained optimal value | 4.734 % of government expenditure |
-| Support-constrained optimal range | [4.395, 5.018) |
-| Response-curve robust optimal value | 4.508 % of government expenditure |
-| Raw model optimal within observed range | yes |
-| Raw model optimal within support-constrained range | no |
-| Observed predictor range | [0.4821, 100.9768] |
-| Model-derived optimal extrapolative? | no (within observed range) |
-| Model-derived optimal outside best observed bin? | yes |
-| Raw best observed range | [4.760, 5.660) |
-| Robust best observed range (trimmed) | [4.441, 5.096) |
-| Raw best observed outcome mean | 5.170 |
-| Robust best observed outcome mean | 5.460 |
-| Robust optimal value (bin median) | 4.759 % of government expenditure |
-| Raw vs robust optimal delta | -5.025 (-51.4%) |
-| Robustness retained fraction | 80.0% (3881/4853) |
-| Data sufficiency status | sufficient |
-| Data sufficiency reasons | none |
-| Reliability score | 0.7596 (high) |
+| Forward correlation | -0.1138 |
+| Reverse correlation | 0.0153 |
+| Direction score (forward - reverse) | -0.1291 |
+| Effect size (% change from baseline) | 25.5839 |
+| Significance score | 0.6808 |
+| Weighted PIS | 0.1834 |
+| Value linked with higher outcome | 9.7847 |
+| Value linked with lower outcome | 10.2187 |
+| Math-only best daily value | 9.7847 |
+| Recommended level (reader-facing) | 4.734 % of government expenditure (data-backed level) |
+| Math-only guess (technical) | 9.785 % of government expenditure |
+| Data-backed level | 4.734 % of government expenditure |
+| Data-backed range | [4.395, 5.018) |
+| Backup level (middle-data check) | 4.508 % of government expenditure |
+| Math-only guess inside seen data range? | yes |
+| Math-only guess inside data-backed range? | no |
+| Seen data range | [0.4821, 100.9768] |
+| Math-only guess outside seen data? | no (within observed range) |
+| Math-only guess outside best observed bucket? | yes |
+| Best observed range | [4.760, 5.660) |
+| Best observed range (middle-data check) | [4.441, 5.096) |
+| Best observed outcome average | 5.170 |
+| Best observed outcome average (middle-data check) | 5.460 |
+| Backup level (bucket median) | 4.759 % of government expenditure |
+| Math-only vs backup difference | -5.025 (-51.4%) |
+| Middle-data share kept | 80.0% (3881/4853) |
+| Data status | enough data |
+| Data-status details | none |
+| Confidence score | 0.7596 (higher confidence) |
 | Reliability support component | 0.8978 |
 | Reliability significance component | 0.6808 |
 | Reliability directional component | 0.8608 |
 | Reliability temporal-stability component | 0.7450 |
 | Reliability robustness component | 0.5405 |
-| Quality tier | exploratory |
+| Signal tag | early signal |
 
 ### Response-Curve Diagnostics
 
 | Diagnostic | Result |
 |------------|--------|
-| Minimum effective level (MED) | Not identified (no_consistent_effective_dose_detected) |
-| Diminishing-returns knee | 4.734 % of government expenditure (ratio=-0.356) |
-| Saturation / plateau range | [9.950, 15.368) |
-| Support-constrained target reason | identified |
-| Raw to support delta | 5.050 (+106.7%) |
+| Minimum useful level | Not identified (no_consistent_effective_dose_detected) |
+| Point where gains start slowing | 4.734 % of government expenditure (ratio=-0.356) |
+| Flat zone range | [9.950, 15.368) |
+| Why this data-backed level was chosen | identified |
+| Math-only guess minus data-backed level | 5.050 (+106.7%) |
 
 ### Temporal Sensitivity
 

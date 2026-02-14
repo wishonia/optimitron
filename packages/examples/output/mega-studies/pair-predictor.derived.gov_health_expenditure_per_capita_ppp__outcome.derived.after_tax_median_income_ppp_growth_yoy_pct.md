@@ -11,21 +11,29 @@
 - Included subjects: 229
 - Skipped subjects: 0
 - Total aligned pairs: 7356
-- Evidence grade: C
-- Data sufficiency: sufficient
-- Reliability score: 0.633 (moderate)
-- Quality tier: exploratory
+- Signal grade: C (moderate)
+- Data status: enough data
+- Confidence score: 0.633 (medium confidence)
+- Signal tag: early signal
 - Direction: positive
-- Derived uncertainty score: 0.3180 (1 - aggregate significance, not NHST p-value)
+- Uncertainty score: 0.3180 (lower is better)
+
+## Quick Meanings
+
+- `Recommended level`: main value to try first.
+- `Data-backed level`: level directly supported by seen data.
+- `Backup level`: safer fallback from the middle of the data.
+- `Math-only guess`: unconstrained model output for technical comparison.
+- `Not enough data`: we cannot safely recommend a level yet.
 
 ## Key Numeric Takeaways
 
-- Decision-target Government Health Expenditure Per Capita (PPP) level for higher After-Tax Median Income Growth (YoY %): 361.49 international $/person (support constrained).
-- Observed-support target from binned response curve: 361.49 international $/person.
-- Model-derived optimum is within observed support but outside the highest-outcome bin; this reflects smooth objective optimization vs coarse bin averages.
+- Recommended Government Health Expenditure Per Capita (PPP) level for higher After-Tax Median Income Growth (YoY %): 361.49 international $/person (data-backed level).
+- Best level directly seen in the grouped data: 361.49 international $/person.
+- Math-only guess is inside seen data but outside the best-performing bucket, so we still use the data-backed level.
 - Best observed bin anchor (median/mean) is 46.636 international $/person; model-optimal minus observed-anchor difference is 538.26 (+1154.2%).
-- Robust sensitivity (trimmed 10-90% predictor range) suggests 37.036 international $/person.
-- Raw vs robust optimal differs by 93.7%, indicating strong tail influence.
+- Backup level check (middle 10-90% of data) suggests 37.036 international $/person.
+- The math-only guess and backup level differ by 93.7%, which means extreme values may matter a lot.
 - Minimum effective level (first consistently positive zone): 35.834 international $/person.
 - Diminishing returns likely begin near 35.834 international $/person.
 - Saturation/plateau zone starts around 903.60 international $/person and extends through 2793.6 international $/person.
@@ -34,9 +42,9 @@
 
 ## Decision Summary
 
-- Interpretation: Exploratory evidence only; use primarily for hypothesis generation.
-- Directional hint: higher Government Health Expenditure Per Capita (PPP) is associated with better After-Tax Median Income Growth (YoY %).
-- Signal strength: moderate-to-weak; avoid hard policy conclusions from this pair alone.
+- Interpretation: Early signal only; use this mainly to guide more testing.
+- Pattern hint: higher Government Health Expenditure Per Capita (PPP) tends to go with better After-Tax Median Income Growth (YoY %).
+- Signal strength: weak to moderate; avoid strong conclusions from this pair alone.
 
 ## Plain-Language Summary
 
@@ -44,12 +52,12 @@
 - The estimate uses 229 subjects and 7356 aligned predictor-outcome observations.
 - Best observed mean outcome appears in predictor bin [34.371, 71.973) (mean outcome 5.158).
 - A minimum effective predictor level appears near 35.834 international $/person in the binned response curve.
-- Reliability score is 0.633 (moderate); data sufficiency is sufficient.
+- Confidence score is 0.633 (medium confidence); data status is enough data.
 - Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better).
 
 ## Quality Warnings
 
-- Weak aggregate significance (<0.70).
+- Weak significance score (<0.70).
 - Top temporal profiles are close (score delta 0.0056); temporal assumptions are not yet robust.
 - Robustness check: trimmed-range optimal differs by 93.7% from raw optimal; tail observations materially influence target.
 
@@ -59,51 +67,51 @@
 
 | Metric | Value |
 |--------|------:|
-| Aggregate forward Pearson | 0.0985 |
-| Aggregate reverse Pearson | -0.0320 |
-| Aggregate directional score (forward - reverse) | 0.1305 |
-| Aggregate effect size (% baseline delta) | 108.1561 |
-| Aggregate statistical significance | 0.6820 |
-| Weighted average PIS | 0.1837 |
-| Aggregate value predicting high outcome | 584.8956 |
-| Aggregate value predicting low outcome | 558.2327 |
-| Aggregate optimal daily value | 584.8956 |
-| Decision target value (reader-facing) | 361.49 international $/person (support constrained) |
-| Model-derived optimum (diagnostics) | 584.90 international $/person |
-| Support-constrained optimal value | 361.49 international $/person |
-| Support-constrained optimal range | [290.77, 429.10) |
-| Response-curve robust optimal value | 88.305 international $/person |
-| Raw model optimal within observed range | yes |
-| Raw model optimal within support-constrained range | no |
-| Observed predictor range | [0.2591, 8503.2455] |
-| Model-derived optimal extrapolative? | no (within observed range) |
-| Model-derived optimal outside best observed bin? | yes |
-| Raw best observed range | [34.371, 71.973) |
-| Robust best observed range (trimmed) | [27.900, 52.150) |
-| Raw best observed outcome mean | 5.158 |
-| Robust best observed outcome mean | 5.448 |
-| Robust optimal value (bin median) | 37.036 international $/person |
-| Raw vs robust optimal delta | -547.86 (-93.7%) |
-| Robustness retained fraction | 80.1% (5895/7356) |
-| Data sufficiency status | sufficient |
-| Data sufficiency reasons | none |
-| Reliability score | 0.6329 (moderate) |
+| Forward correlation | 0.0985 |
+| Reverse correlation | -0.0320 |
+| Direction score (forward - reverse) | 0.1305 |
+| Effect size (% change from baseline) | 108.1561 |
+| Significance score | 0.6820 |
+| Weighted PIS | 0.1837 |
+| Value linked with higher outcome | 584.8956 |
+| Value linked with lower outcome | 558.2327 |
+| Math-only best daily value | 584.8956 |
+| Recommended level (reader-facing) | 361.49 international $/person (data-backed level) |
+| Math-only guess (technical) | 584.90 international $/person |
+| Data-backed level | 361.49 international $/person |
+| Data-backed range | [290.77, 429.10) |
+| Backup level (middle-data check) | 88.305 international $/person |
+| Math-only guess inside seen data range? | yes |
+| Math-only guess inside data-backed range? | no |
+| Seen data range | [0.2591, 8503.2455] |
+| Math-only guess outside seen data? | no (within observed range) |
+| Math-only guess outside best observed bucket? | yes |
+| Best observed range | [34.371, 71.973) |
+| Best observed range (middle-data check) | [27.900, 52.150) |
+| Best observed outcome average | 5.158 |
+| Best observed outcome average (middle-data check) | 5.448 |
+| Backup level (bucket median) | 37.036 international $/person |
+| Math-only vs backup difference | -547.86 (-93.7%) |
+| Middle-data share kept | 80.1% (5895/7356) |
+| Data status | enough data |
+| Data-status details | none |
+| Confidence score | 0.6329 (medium confidence) |
 | Reliability support component | 1.0000 |
 | Reliability significance component | 0.6820 |
 | Reliability directional component | 0.8697 |
 | Reliability temporal-stability component | 0.1857 |
 | Reliability robustness component | 0.0704 |
-| Quality tier | exploratory |
+| Signal tag | early signal |
 
 ### Response-Curve Diagnostics
 
 | Diagnostic | Result |
 |------------|--------|
-| Minimum effective level (MED) | 35.834 international $/person (z=2.36) |
-| Diminishing-returns knee | 35.834 international $/person (ratio=-0.028) |
-| Saturation / plateau range | [660.26, 7046.4] |
-| Support-constrained target reason | identified |
-| Raw to support delta | 223.41 (+61.8%) |
+| Minimum useful level | 35.834 international $/person (z=2.36) |
+| Point where gains start slowing | 35.834 international $/person (ratio=-0.028) |
+| Flat zone range | [660.26, 7046.4] |
+| Why this data-backed level was chosen | identified |
+| Math-only guess minus data-backed level | 223.41 (+61.8%) |
 
 ### Temporal Sensitivity
 

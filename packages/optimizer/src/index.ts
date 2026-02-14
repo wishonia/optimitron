@@ -102,6 +102,7 @@ export type {
   DiminishingReturnsEstimate,
   MinimumEffectiveDoseOptions,
   MinimumEffectiveDoseEstimate,
+  MinimumEffectiveDoseObjective,
   SaturationRangeOptions,
   SaturationRangeEstimate,
   ResponseCurveObjective,

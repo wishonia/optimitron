@@ -11,31 +11,39 @@
 - Included subjects: 134
 - Skipped subjects: 0
 - Total aligned pairs: 2814
-- Evidence grade: F
-- Data sufficiency: sufficient
-- Reliability score: 0.508 (low)
-- Quality tier: insufficient
+- Signal grade: F (very weak)
+- Data status: enough data
+- Confidence score: 0.508 (lower confidence)
+- Signal tag: not enough data
 - Direction: positive
-- Derived uncertainty score: 0.8064 (1 - aggregate significance, not NHST p-value)
+- Uncertainty score: 0.8064 (lower is better)
+
+## Quick Meanings
+
+- `Recommended level`: main value to try first.
+- `Data-backed level`: level directly supported by seen data.
+- `Backup level`: safer fallback from the middle of the data.
+- `Math-only guess`: unconstrained model output for technical comparison.
+- `Not enough data`: we cannot safely recommend a level yet.
 
 ## Key Numeric Takeaways
 
-- Decision-target Education Share of Government Spending level for higher Healthy Life Expectancy Growth (YoY %): 33.378 % of government expenditure (support constrained).
-- Observed-support target from binned response curve: 33.378 % of government expenditure.
-- Model-derived optimum is within observed support but outside the highest-outcome bin; this reflects smooth objective optimization vs coarse bin averages.
+- Recommended Education Share of Government Spending level for higher Healthy Life Expectancy Growth (YoY %): 33.378 % of government expenditure (data-backed level).
+- Best level directly seen in the grouped data: 33.378 % of government expenditure.
+- Math-only guess is inside seen data but outside the best-performing bucket, so we still use the data-backed level.
 - Best observed bin anchor (median/mean) is 32.305 % of government expenditure; model-optimal minus observed-anchor difference is -12.865 (-39.8%).
-- Robust sensitivity (trimmed 10-90% predictor range) suggests 20.911 % of government expenditure.
+- Backup level check (middle 10-90% of data) suggests 20.911 % of government expenditure.
 - Minimum effective level (first consistently positive zone): 19.592 % of government expenditure.
 - Diminishing returns likely begin near 21.063 % of government expenditure.
-- No stable plateau zone detected (no_plateau_zone_detected).
+- Could not find a stable flat zone (no_plateau_zone_detected).
 - Highest observed mean Healthy Life Expectancy Growth (YoY %) appears when Education Share of Government Spending is in [28.681, 66.668] (mean outcome 0.72663).
 - Direction is positive in this analysis, so increasing this predictor is associated with better outcomes.
 
 ## Decision Summary
 
-- Interpretation: Exploratory evidence only; use primarily for hypothesis generation.
-- Directional hint: higher Education Share of Government Spending is associated with better Healthy Life Expectancy Growth (YoY %).
-- Signal strength: moderate-to-weak; avoid hard policy conclusions from this pair alone.
+- Interpretation: Early signal only; use this mainly to guide more testing.
+- Pattern hint: higher Education Share of Government Spending tends to go with better Healthy Life Expectancy Growth (YoY %).
+- Signal strength: weak to moderate; avoid strong conclusions from this pair alone.
 
 ## Plain-Language Summary
 
@@ -43,13 +51,13 @@
 - The estimate uses 134 subjects and 2814 aligned predictor-outcome observations.
 - Best observed mean outcome appears in predictor bin [28.681, 66.668] (mean outcome 0.72663).
 - A minimum effective predictor level appears near 19.592 % of government expenditure in the binned response curve.
-- Reliability score is 0.508 (low); data sufficiency is sufficient.
+- Confidence score is 0.508 (lower confidence); data status is enough data.
 - Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better).
 
 ## Quality Warnings
 
-- Weak aggregate significance (<0.70).
-- Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.
+- Weak significance score (<0.70).
+- Some country-level direction scores are unusually high; this can happen with this scoring method.
 - Top temporal profiles are close (score delta 0.0112); temporal assumptions are not yet robust.
 
 ## Appendix: Technical Diagnostics
@@ -58,51 +66,51 @@
 
 | Metric | Value |
 |--------|------:|
-| Aggregate forward Pearson | 0.0570 |
-| Aggregate reverse Pearson | -0.0053 |
-| Aggregate directional score (forward - reverse) | 0.0623 |
-| Aggregate effect size (% baseline delta) | -509.3767 |
-| Aggregate statistical significance | 0.1936 |
-| Weighted average PIS | 0.0687 |
-| Aggregate value predicting high outcome | 19.4401 |
-| Aggregate value predicting low outcome | 19.2136 |
-| Aggregate optimal daily value | 19.4401 |
-| Decision target value (reader-facing) | 33.378 % of government expenditure (support constrained) |
-| Model-derived optimum (diagnostics) | 19.440 % of government expenditure |
-| Support-constrained optimal value | 33.378 % of government expenditure |
-| Support-constrained optimal range | [29.476, 66.668] |
-| Response-curve robust optimal value | 20.449 % of government expenditure |
-| Raw model optimal within observed range | yes |
-| Raw model optimal within support-constrained range | no |
-| Observed predictor range | [0.0000, 70.8565] |
-| Model-derived optimal extrapolative? | no (within observed range) |
-| Model-derived optimal outside best observed bin? | yes |
-| Raw best observed range | [28.681, 66.668] |
-| Robust best observed range (trimmed) | [20.190, 21.607) |
-| Raw best observed outcome mean | 0.72663 |
-| Robust best observed outcome mean | 0.76818 |
-| Robust optimal value (bin median) | 20.911 % of government expenditure |
-| Raw vs robust optimal delta | 1.471 (+7.6%) |
-| Robustness retained fraction | 80.1% (2255/2814) |
-| Data sufficiency status | sufficient |
-| Data sufficiency reasons | none |
-| Reliability score | 0.5077 (low) |
+| Forward correlation | 0.0570 |
+| Reverse correlation | -0.0053 |
+| Direction score (forward - reverse) | 0.0623 |
+| Effect size (% change from baseline) | -509.3767 |
+| Significance score | 0.1936 |
+| Weighted PIS | 0.0687 |
+| Value linked with higher outcome | 19.4401 |
+| Value linked with lower outcome | 19.2136 |
+| Math-only best daily value | 19.4401 |
+| Recommended level (reader-facing) | 33.378 % of government expenditure (data-backed level) |
+| Math-only guess (technical) | 19.440 % of government expenditure |
+| Data-backed level | 33.378 % of government expenditure |
+| Data-backed range | [29.476, 66.668] |
+| Backup level (middle-data check) | 20.449 % of government expenditure |
+| Math-only guess inside seen data range? | yes |
+| Math-only guess inside data-backed range? | no |
+| Seen data range | [0.0000, 70.8565] |
+| Math-only guess outside seen data? | no (within observed range) |
+| Math-only guess outside best observed bucket? | yes |
+| Best observed range | [28.681, 66.668] |
+| Best observed range (middle-data check) | [20.190, 21.607) |
+| Best observed outcome average | 0.72663 |
+| Best observed outcome average (middle-data check) | 0.76818 |
+| Backup level (bucket median) | 20.911 % of government expenditure |
+| Math-only vs backup difference | 1.471 (+7.6%) |
+| Middle-data share kept | 80.1% (2255/2814) |
+| Data status | enough data |
+| Data-status details | none |
+| Confidence score | 0.5077 (lower confidence) |
 | Reliability support component | 0.6812 |
 | Reliability significance component | 0.1936 |
 | Reliability directional component | 0.4151 |
 | Reliability temporal-stability component | 0.3733 |
 | Reliability robustness component | 1.0000 |
-| Quality tier | insufficient |
+| Signal tag | not enough data |
 
 ### Response-Curve Diagnostics
 
 | Diagnostic | Result |
 |------------|--------|
-| Minimum effective level (MED) | 19.592 % of government expenditure (z=1.44) |
-| Diminishing-returns knee | 21.063 % of government expenditure (ratio=-1.124) |
-| Saturation / plateau range | Not identified (no_plateau_zone_detected) |
-| Support-constrained target reason | identified |
-| Raw to support delta | -13.938 (-41.8%) |
+| Minimum useful level | 19.592 % of government expenditure (z=1.44) |
+| Point where gains start slowing | 21.063 % of government expenditure (ratio=-1.124) |
+| Flat zone range | Not identified (no_plateau_zone_detected) |
+| Why this data-backed level was chosen | identified |
+| Math-only guess minus data-backed level | -13.938 (-41.8%) |
 
 ### Temporal Sensitivity
 

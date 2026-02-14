@@ -11,41 +11,49 @@
 - Included subjects: 95
 - Skipped subjects: 0
 - Total aligned pairs: 1995
-- Evidence grade: F
-- Data sufficiency: insufficient_data
-- Reliability score: 0.399 (low)
-- Quality tier: insufficient
+- Signal grade: F (very weak)
+- Data status: not enough data
+- Confidence score: 0.399 (lower confidence)
+- Signal tag: not enough data
 - Direction: negative
-- Derived uncertainty score: 0.7094 (1 - aggregate significance, not NHST p-value)
+- Uncertainty score: 0.7094 (lower is better)
+
+## Quick Meanings
+
+- `Recommended level`: main value to try first.
+- `Data-backed level`: level directly supported by seen data.
+- `Backup level`: safer fallback from the middle of the data.
+- `Math-only guess`: unconstrained model output for technical comparison.
+- `Not enough data`: we cannot safely recommend a level yet.
 
 ## Key Numeric Takeaways
 
-- No decision target is emitted for R&D Expenditure Per Capita (PPP) -> Healthy Life Expectancy Growth (YoY %) because minimum data-sufficiency thresholds were not met.
-- Blocking reasons: aligned-pair support below minimum (1995 < 2000).
+- No recommended level is shown for R&D Expenditure Per Capita (PPP) -> Healthy Life Expectancy Growth (YoY %) because there is not enough data.
+- Why: aligned-pair support below minimum (1995 < 2000).
 - Observed support in this run: 95 subjects, 1995 aligned pairs, 10 predictor bins, 16 temporal candidates with valid results.
-- Use this pair for diagnostics only until sufficiency thresholds are satisfied.
+- Use this pair for background learning only until we have enough data.
 
 ## Decision Summary
 
-- Interpretation: insufficient data for recommendation-grade inference under current hard sufficiency gates.
-- Recommendation status: no primary target is emitted from this pair until support thresholds are met.
-- Blocking reasons: aligned-pair support below minimum (1995 < 2000).
+- Interpretation: not enough data for a safe recommendation.
+- Recommendation status: no recommended level until data improves.
+- Why: aligned-pair support below minimum (1995 < 2000).
 
 ## Plain-Language Summary
 
 - Higher R&D Expenditure Per Capita (PPP) tends to align with worse Healthy Life Expectancy Growth (YoY %).
 - The estimate uses 95 subjects and 1995 aligned predictor-outcome observations.
 - Best observed mean outcome appears in predictor bin [0.19723, 4.621) (mean outcome 0.64005).
-- Reliability score is 0.399 (low); data sufficiency is insufficient_data.
+- Confidence score is 0.399 (lower confidence); data status is not enough data.
 - Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better).
 
 ## Quality Warnings
 
-- Weak aggregate significance (<0.70).
-- Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.
+- Weak significance score (<0.70).
+- Some country-level direction scores are unusually high; this can happen with this scoring method.
 - Top temporal profiles are close (score delta 0.0010); temporal assumptions are not yet robust.
 - Robustness check: trimmed-range optimal differs by 115.8% from raw optimal; tail observations materially influence target.
-- Data sufficiency warning: aligned-pair support below minimum (1995 < 2000)
+- Data status warning: aligned-pair support below minimum (1995 < 2000)
 
 ## Appendix: Technical Diagnostics
 
@@ -53,51 +61,51 @@
 
 | Metric | Value |
 |--------|------:|
-| Aggregate forward Pearson | -0.1693 |
-| Aggregate reverse Pearson | 0.0008 |
-| Aggregate directional score (forward - reverse) | -0.1701 |
-| Aggregate effect size (% baseline delta) | 90.9776 |
-| Aggregate statistical significance | 0.2906 |
-| Weighted average PIS | 0.1519 |
-| Aggregate value predicting high outcome | 228.0252 |
-| Aggregate value predicting low outcome | 264.2399 |
-| Aggregate optimal daily value | 228.0252 |
-| Decision target value (reader-facing) | N/A (unavailable) |
-| Model-derived optimum (diagnostics) | 228.03 international $/person |
-| Support-constrained optimal value | 1.894 international $/person |
-| Support-constrained optimal range | [0.19723, 3.816) |
-| Response-curve robust optimal value | 119.44 international $/person |
-| Raw model optimal within observed range | yes |
-| Raw model optimal within support-constrained range | no |
-| Observed predictor range | [0.1972, 3227.4604] |
-| Model-derived optimal extrapolative? | no (within observed range) |
-| Model-derived optimal outside best observed bin? | yes |
-| Raw best observed range | [0.19723, 4.621) |
-| Robust best observed range (trimmed) | [392.51, 642.18) |
-| Raw best observed outcome mean | 0.64005 |
-| Robust best observed outcome mean | 0.33103 |
-| Robust optimal value (bin median) | 492.19 international $/person |
-| Raw vs robust optimal delta | 264.16 (+115.8%) |
-| Robustness retained fraction | 80.0% (1596/1995) |
-| Data sufficiency status | insufficient_data |
-| Data sufficiency reasons | aligned-pair support below minimum (1995 < 2000) |
-| Reliability score | 0.3986 (low) |
+| Forward correlation | -0.1693 |
+| Reverse correlation | 0.0008 |
+| Direction score (forward - reverse) | -0.1701 |
+| Effect size (% change from baseline) | 90.9776 |
+| Significance score | 0.2906 |
+| Weighted PIS | 0.1519 |
+| Value linked with higher outcome | 228.0252 |
+| Value linked with lower outcome | 264.2399 |
+| Math-only best daily value | 228.0252 |
+| Recommended level (reader-facing) | N/A (not enough data) |
+| Math-only guess (technical) | 228.03 international $/person |
+| Data-backed level | 1.894 international $/person |
+| Data-backed range | [0.19723, 3.816) |
+| Backup level (middle-data check) | 119.44 international $/person |
+| Math-only guess inside seen data range? | yes |
+| Math-only guess inside data-backed range? | no |
+| Seen data range | [0.1972, 3227.4604] |
+| Math-only guess outside seen data? | no (within observed range) |
+| Math-only guess outside best observed bucket? | yes |
+| Best observed range | [0.19723, 4.621) |
+| Best observed range (middle-data check) | [392.51, 642.18) |
+| Best observed outcome average | 0.64005 |
+| Best observed outcome average (middle-data check) | 0.33103 |
+| Backup level (bucket median) | 492.19 international $/person |
+| Math-only vs backup difference | 264.16 (+115.8%) |
+| Middle-data share kept | 80.0% (1596/1995) |
+| Data status | not enough data |
+| Data-status details | aligned-pair support below minimum (1995 < 2000) |
+| Confidence score | 0.3986 (lower confidence) |
 | Reliability support component | 0.4829 |
 | Reliability significance component | 0.2906 |
 | Reliability directional component | 1.0000 |
 | Reliability temporal-stability component | 0.0345 |
 | Reliability robustness component | 0.0000 |
-| Quality tier | insufficient |
+| Signal tag | not enough data |
 
 ### Response-Curve Diagnostics
 
 | Diagnostic | Result |
 |------------|--------|
-| Minimum effective level (MED) | Not identified (no_consistent_effective_dose_detected) |
-| Diminishing-returns knee | Not identified (drop_below_detection_threshold) |
-| Saturation / plateau range | [107.26, 2098.3] |
-| Support-constrained target reason | identified |
-| Raw to support delta | 226.13 (+11941.0%) |
+| Minimum useful level | Not identified (no_consistent_effective_dose_detected) |
+| Point where gains start slowing | Not identified (drop_below_detection_threshold) |
+| Flat zone range | [107.26, 2098.3] |
+| Why this data-backed level was chosen | identified |
+| Math-only guess minus data-backed level | 226.13 (+11941.0%) |
 
 ### Temporal Sensitivity
 

@@ -956,7 +956,7 @@
         "The estimate uses 147 subjects and 9702 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [12137.9, 43487.5] (mean outcome 68.988).",
         "A minimum effective predictor level appears near 302.76 international $/person in the binned response curve.",
-        "Reliability score is 0.690 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.690 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -1244,8 +1244,8 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0019); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 102.2% from raw optimal; tail observations materially influence target."
       ],
@@ -2262,7 +2262,7 @@
         "The estimate uses 175 subjects and 5915 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [10869.0, 48525.1] (mean outcome 50585.9).",
         "A minimum effective predictor level appears near 314.42 international $/person in the binned response curve.",
-        "Reliability score is 0.566 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.566 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -2550,7 +2550,7 @@
       "evidenceGrade": "A",
       "direction": "neutral",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0006); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 67.4% from raw optimal; tail observations materially influence target."
       ],
@@ -3571,7 +3571,7 @@
         "The estimate uses 175 subjects and 5740 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [576.55, 979.24) (mean outcome 5.390).",
         "A minimum effective predictor level appears near 1837.8 international $/person in the binned response curve.",
-        "Reliability score is 0.590 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.590 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -3841,7 +3841,7 @@
       "evidenceGrade": "C",
       "direction": "positive",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
+        "Weak significance score (<0.70).",
         "Top temporal profiles are close (score delta 0.0005); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 76.5% from raw optimal; tail observations materially influence target."
       ],
@@ -4857,7 +4857,7 @@
         "Higher Government Expenditure Per Capita (PPP) tends to align with worse Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 147 subjects and 3087 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [20.664, 260.72) (mean outcome 1.070).",
-        "Reliability score is 0.407 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.407 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -5145,9 +5145,9 @@
       "evidenceGrade": "F",
       "direction": "negative",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0126); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 84.2% from raw optimal; tail observations materially influence target."
       ],
@@ -6167,7 +6167,7 @@
         "The estimate uses 179 subjects and 11814 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [1819.1, 5486.7] (mean outcome 69.427).",
         "A minimum effective predictor level appears near 16.917 international $/person in the binned response curve.",
-        "Reliability score is 0.692 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.692 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -6455,8 +6455,8 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0021); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 114.0% from raw optimal; tail observations materially influence target."
       ],
@@ -7473,7 +7473,7 @@
         "The estimate uses 229 subjects and 7585 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [1635.2, 5977.9] (mean outcome 46324.6).",
         "A minimum effective predictor level appears near 17.753 international $/person in the binned response curve.",
-        "Reliability score is 0.495 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.495 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -8781,7 +8781,7 @@
         "The estimate uses 229 subjects and 7356 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [34.371, 71.973) (mean outcome 5.158).",
         "A minimum effective predictor level appears near 35.834 international $/person in the binned response curve.",
-        "Reliability score is 0.633 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.633 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -9051,7 +9051,7 @@
       "evidenceGrade": "C",
       "direction": "positive",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
+        "Weak significance score (<0.70).",
         "Top temporal profiles are close (score delta 0.0056); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 93.7% from raw optimal; tail observations materially influence target."
       ],
@@ -10067,7 +10067,7 @@
         "Higher Government Health Expenditure Per Capita (PPP) tends to align with worse Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 179 subjects and 3759 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [0.25914, 13.927) (mean outcome 1.064).",
-        "Reliability score is 0.351 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.351 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -10331,8 +10331,8 @@
       "evidenceGrade": "F",
       "direction": "negative",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0039); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 96.5% from raw optimal; tail observations materially influence target."
       ],
@@ -11352,7 +11352,7 @@
         "The estimate uses 165 subjects and 10890 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [2046.9, 6496.0] (mean outcome 69.030).",
         "A minimum effective predictor level appears near 52.790 international $/person in the binned response curve.",
-        "Reliability score is 0.694 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.694 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -11640,7 +11640,7 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
+        "Forward and direction signals disagree; direction may be unstable.",
         "Top temporal profiles are close (score delta 0.0056); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 94.1% from raw optimal; tail observations materially influence target."
       ],
@@ -12657,7 +12657,7 @@
         "The estimate uses 216 subjects and 7140 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [1682.9, 6496.0] (mean outcome 54699.5).",
         "A minimum effective predictor level appears near 49.628 international $/person in the binned response curve.",
-        "Reliability score is 0.552 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.552 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -12945,7 +12945,7 @@
       "evidenceGrade": "A",
       "direction": "neutral",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0001); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 67.4% from raw optimal; tail observations materially influence target."
       ],
@@ -13966,7 +13966,7 @@
         "The estimate uses 216 subjects and 6924 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [510.99, 751.14) (mean outcome 5.154).",
         "A minimum effective predictor level appears near 55.100 international $/person in the binned response curve.",
-        "Reliability score is 0.720 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.720 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -14236,8 +14236,8 @@
       "evidenceGrade": "C",
       "direction": "positive",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
+        "Weak significance score (<0.70).",
+        "Forward and direction signals disagree; direction may be unstable.",
         "Top temporal profiles are close (score delta 0.0153); temporal assumptions are not yet robust."
       ],
       "topSubjects": [
@@ -15252,7 +15252,7 @@
         "Higher Education Expenditure Per Capita (PPP) tends to align with worse Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 165 subjects and 3465 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [9.238, 48.180) (mean outcome 1.097).",
-        "Reliability score is 0.413 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.413 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -15516,8 +15516,8 @@
       "evidenceGrade": "F",
       "direction": "negative",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
+        "Weak significance score (<0.70).",
+        "Forward and direction signals disagree; direction may be unstable.",
         "Top temporal profiles are close (score delta 0.0111); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 91.6% from raw optimal; tail observations materially influence target."
       ],
@@ -16537,7 +16537,7 @@
         "The estimate uses 95 subjects and 6270 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [984.07, 2227.7] (mean outcome 70.299).",
         "A minimum effective predictor level appears near 5.168 international $/person in the binned response curve.",
-        "Reliability score is 0.658 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.658 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -16825,8 +16825,8 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0040); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 130.7% from raw optimal; tail observations materially influence target."
       ],
@@ -17846,7 +17846,7 @@
         "The estimate uses 123 subjects and 4134 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [774.74, 2285.7] (mean outcome 53568.3).",
         "A minimum effective predictor level appears near 6.556 international $/person in the binned response curve.",
-        "Reliability score is 0.502 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.502 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -19149,7 +19149,7 @@
         "Higher R&D Expenditure Per Capita (PPP) tends to align with better After-Tax Median Income Growth (YoY %).",
         "The estimate uses 123 subjects and 4011 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [0.19723, 4.911) (mean outcome 5.327).",
-        "Reliability score is 0.664 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.664 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -19437,7 +19437,7 @@
       "evidenceGrade": "C",
       "direction": "positive",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
+        "Weak significance score (<0.70).",
         "Top temporal profiles are close (score delta 0.0201); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 93.6% from raw optimal; tail observations materially influence target."
       ],
@@ -20456,7 +20456,7 @@
         "Higher R&D Expenditure Per Capita (PPP) tends to align with worse Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 95 subjects and 1995 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [0.19723, 4.621) (mean outcome 0.64005).",
-        "Reliability score is 0.399 (low); data sufficiency is insufficient_data.",
+        "Confidence score is 0.399 (lower confidence); data status is not enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -20744,11 +20744,11 @@
       "evidenceGrade": "F",
       "direction": "negative",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0010); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 115.8% from raw optimal; tail observations materially influence target.",
-        "Data sufficiency warning: aligned-pair support below minimum (1995 < 2000)"
+        "Data status warning: aligned-pair support below minimum (1995 < 2000)"
       ],
       "topSubjects": [
         {
@@ -21766,7 +21766,7 @@
         "The estimate uses 159 subjects and 10494 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [405.15, 641.54) (mean outcome 67.710).",
         "A minimum effective predictor level appears near 18.849 international $/person in the binned response curve.",
-        "Reliability score is 0.799 (high); data sufficiency is sufficient.",
+        "Confidence score is 0.799 (higher confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -22054,8 +22054,8 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0023); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 31.2% from raw optimal; tail observations materially influence target."
       ],
@@ -23071,7 +23071,7 @@
         "The estimate uses 201 subjects and 6630 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [625.06, 21187.0] (mean outcome 49136.2).",
         "A minimum effective predictor level appears near 20.902 international $/person in the binned response curve.",
-        "Reliability score is 0.732 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.732 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -23335,8 +23335,8 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0055); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 25.4% from raw optimal; tail observations materially influence target."
       ],
@@ -24357,7 +24357,7 @@
         "The estimate uses 201 subjects and 6429 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [151.11, 211.92) (mean outcome 5.249).",
         "A minimum effective predictor level appears near 54.457 international $/person in the binned response curve.",
-        "Reliability score is 0.675 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.675 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -24597,8 +24597,8 @@
       "evidenceGrade": "C",
       "direction": "positive",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
+        "Weak significance score (<0.70).",
+        "Forward and direction signals disagree; direction may be unstable.",
         "Top temporal profiles are close (score delta 0.0079); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 54.9% from raw optimal; tail observations materially influence target."
       ],
@@ -25610,7 +25610,7 @@
         "Higher Military Expenditure Per Capita (PPP) tends to align with worse Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 159 subjects and 3339 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [0.91749, 16.666) (mean outcome 0.96572).",
-        "Reliability score is 0.324 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.324 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -25874,8 +25874,8 @@
       "evidenceGrade": "F",
       "direction": "negative",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
+        "Weak significance score (<0.70).",
+        "Forward and direction signals disagree; direction may be unstable.",
         "Top temporal profiles are close (score delta 0.0001); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 94.2% from raw optimal; tail observations materially influence target."
       ],
@@ -26895,7 +26895,7 @@
         "The estimate uses 126 subjects and 8316 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [11484.0, 42959.9] (mean outcome 69.705).",
         "A minimum effective predictor level appears near 237.92 international $/person in the binned response curve.",
-        "Reliability score is 0.700 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.700 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -27183,8 +27183,8 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0057); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 95.6% from raw optimal; tail observations materially influence target."
       ],
@@ -28201,7 +28201,7 @@
         "The estimate uses 148 subjects and 5001 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [10279.3, 47874.3] (mean outcome 50214.8).",
         "A minimum effective predictor level appears near 246.50 international $/person in the binned response curve.",
-        "Reliability score is 0.547 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.547 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -28489,7 +28489,7 @@
       "evidenceGrade": "A",
       "direction": "neutral",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0032); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 71.3% from raw optimal; tail observations materially influence target."
       ],
@@ -29510,7 +29510,7 @@
         "The estimate uses 148 subjects and 4853 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [457.16, 845.17) (mean outcome 5.931).",
         "A minimum effective predictor level appears near 251.59 international $/person in the binned response curve.",
-        "Reliability score is 0.570 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.570 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -30789,7 +30789,7 @@
         "Higher Civilian Government Expenditure Per Capita (PPP) tends to align with worse Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 126 subjects and 2646 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [7.604, 214.06) (mean outcome 1.110).",
-        "Reliability score is 0.367 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.367 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -31077,9 +31077,9 @@
       "evidenceGrade": "F",
       "direction": "negative",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0111); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 93.2% from raw optimal; tail observations materially influence target."
       ],
@@ -32099,7 +32099,7 @@
         "The estimate uses 141 subjects and 9306 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [20.671, 66.811] (mean outcome 67.739).",
         "A minimum effective predictor level appears near 6.559 % of government expenditure in the binned response curve.",
-        "Reliability score is 0.736 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.736 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -32387,8 +32387,8 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0029); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 39.9% from raw optimal; tail observations materially influence target."
       ],
@@ -33404,7 +33404,7 @@
         "The estimate uses 168 subjects and 5677 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [20.836, 65.863] (mean outcome 35031.9).",
         "A minimum effective predictor level appears near 6.606 % of government expenditure in the binned response curve.",
-        "Reliability score is 0.662 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.662 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -33692,8 +33692,8 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Forward and direction signals disagree; direction may be unstable.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0077); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 37.1% from raw optimal; tail observations materially influence target."
       ],
@@ -34709,7 +34709,7 @@
         "Higher Government Health Share of Government Spending tends to align with better After-Tax Median Income Growth (YoY %).",
         "The estimate uses 168 subjects and 5509 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [12.186, 13.363) (mean outcome 5.778).",
-        "Reliability score is 0.882 (high); data sufficiency is sufficient.",
+        "Confidence score is 0.882 (higher confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -34973,8 +34973,8 @@
       "evidenceGrade": "C",
       "direction": "positive",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0298); temporal assumptions are not yet robust."
       ],
       "topSubjects": [
@@ -35985,7 +35985,7 @@
         "Higher Government Health Share of Government Spending tends to align with worse Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 141 subjects and 2961 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [0.93053, 5.930) (mean outcome 0.57112).",
-        "Reliability score is 0.663 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.663 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -36267,8 +36267,8 @@
       "evidenceGrade": "F",
       "direction": "negative",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0241); temporal assumptions are not yet robust."
       ],
       "topSubjects": [
@@ -37283,7 +37283,7 @@
         "The estimate uses 134 subjects and 8844 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [12.846, 14.703) (mean outcome 65.740).",
         "A minimum effective predictor level appears near 12.940 % of government expenditure in the binned response curve.",
-        "Reliability score is 0.813 (high); data sufficiency is sufficient.",
+        "Confidence score is 0.813 (higher confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -37571,7 +37571,7 @@
       "evidenceGrade": "A",
       "direction": "neutral",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0162); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 25.5% from raw optimal; tail observations materially influence target."
       ],
@@ -38587,7 +38587,7 @@
         "The estimate uses 159 subjects and 5371 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [12.888, 14.666) (mean outcome 23743.9).",
         "A minimum effective predictor level appears near 11.702 % of government expenditure in the binned response curve.",
-        "Reliability score is 0.826 (high); data sufficiency is sufficient.",
+        "Confidence score is 0.826 (higher confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -38875,7 +38875,7 @@
       "evidenceGrade": "A",
       "direction": "neutral",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0213); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 31.3% from raw optimal; tail observations materially influence target."
       ],
@@ -39891,7 +39891,7 @@
         "No strong directional pattern is detected between Education Share of Government Spending and After-Tax Median Income Growth (YoY %).",
         "The estimate uses 159 subjects and 5212 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [12.937, 14.674) (mean outcome 5.598).",
-        "Reliability score is 0.730 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.730 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -40179,8 +40179,8 @@
       "evidenceGrade": "C",
       "direction": "neutral",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0064); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 30.2% from raw optimal; tail observations materially influence target."
       ],
@@ -41197,7 +41197,7 @@
         "The estimate uses 134 subjects and 2814 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [28.681, 66.668] (mean outcome 0.72663).",
         "A minimum effective predictor level appears near 19.592 % of government expenditure in the binned response curve.",
-        "Reliability score is 0.508 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.508 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -41485,8 +41485,8 @@
       "evidenceGrade": "F",
       "direction": "positive",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0112); temporal assumptions are not yet robust."
       ],
       "topSubjects": [
@@ -42499,7 +42499,7 @@
         "The estimate uses 82 subjects and 5412 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [9.390, 20.356] (mean outcome 69.965).",
         "A minimum effective predictor level appears near 4.042 % of government expenditure in the binned response curve.",
-        "Reliability score is 0.749 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.749 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -42787,7 +42787,7 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Robustness check: trimmed-range optimal differs by 89.1% from raw optimal; tail observations materially influence target."
       ],
       "topSubjects": [
@@ -43802,7 +43802,7 @@
         "The estimate uses 100 subjects and 3380 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [8.637, 26.042] (mean outcome 49865.4).",
         "A minimum effective predictor level appears near 3.602 % of government expenditure in the binned response curve.",
-        "Reliability score is 0.638 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.638 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -44084,7 +44084,7 @@
       "evidenceGrade": "A",
       "direction": "positive",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0146); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 85.4% from raw optimal; tail observations materially influence target."
       ],
@@ -45096,7 +45096,7 @@
         "Higher R&D Share of Government Spending tends to align with better After-Tax Median Income Growth (YoY %).",
         "The estimate uses 100 subjects and 3280 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [1.523, 2.042) (mean outcome 5.853).",
-        "Reliability score is 0.578 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.578 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -45378,7 +45378,7 @@
       "evidenceGrade": "B",
       "direction": "positive",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0094); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 59.2% from raw optimal; tail observations materially influence target."
       ],
@@ -46396,7 +46396,7 @@
         "No strong directional pattern is detected between R&D Share of Government Spending and Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 82 subjects and 1722 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [9.525, 20.356] (mean outcome 0.44588).",
-        "Reliability score is 0.490 (low); data sufficiency is insufficient_data.",
+        "Confidence score is 0.490 (lower confidence); data status is not enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -46684,10 +46684,10 @@
       "evidenceGrade": "F",
       "direction": "neutral",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Robustness check: trimmed-range optimal differs by 32.5% from raw optimal; tail observations materially influence target.",
-        "Data sufficiency warning: aligned-pair support below minimum (1722 < 2000)"
+        "Data status warning: aligned-pair support below minimum (1722 < 2000)"
       ],
       "topSubjects": [
         {
@@ -47696,7 +47696,7 @@
         "Higher Military Share of Government Spending tends to align with worse Healthy Life Expectancy (HALE).",
         "The estimate uses 126 subjects and 8316 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [2.653, 3.717) (mean outcome 65.359).",
-        "Reliability score is 0.642 (moderate); data sufficiency is sufficient.",
+        "Confidence score is 0.642 (medium confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -47978,7 +47978,7 @@
       "evidenceGrade": "A",
       "direction": "negative",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0149); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 61.0% from raw optimal; tail observations materially influence target."
       ],
@@ -48994,7 +48994,7 @@
         "The estimate uses 148 subjects and 5001 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [3.111, 4.156) (mean outcome 27010.6).",
         "A minimum effective predictor level appears near 3.389 % of government expenditure in the binned response curve.",
-        "Reliability score is 0.751 (high); data sufficiency is sufficient.",
+        "Confidence score is 0.751 (higher confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -49282,7 +49282,7 @@
       "evidenceGrade": "A",
       "direction": "negative",
       "qualityWarnings": [
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0133); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 56.2% from raw optimal; tail observations materially influence target."
       ],
@@ -50298,7 +50298,7 @@
         "Higher Military Share of Government Spending tends to align with worse After-Tax Median Income Growth (YoY %).",
         "The estimate uses 148 subjects and 4853 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [4.760, 5.660) (mean outcome 5.170).",
-        "Reliability score is 0.760 (high); data sufficiency is sufficient.",
+        "Confidence score is 0.760 (higher confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -50556,7 +50556,7 @@
       "evidenceGrade": "C",
       "direction": "negative",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
+        "Weak significance score (<0.70).",
         "Top temporal profiles are close (score delta 0.0223); temporal assumptions are not yet robust.",
         "Robustness check: trimmed-range optimal differs by 51.4% from raw optimal; tail observations materially influence target."
       ],
@@ -51568,7 +51568,7 @@
         "Higher Military Share of Government Spending tends to align with better Healthy Life Expectancy Growth (YoY %).",
         "The estimate uses 126 subjects and 2646 aligned predictor-outcome observations.",
         "Best observed mean outcome appears in predictor bin [16.650, 88.206] (mean outcome 0.63575).",
-        "Reliability score is 0.474 (low); data sufficiency is sufficient.",
+        "Confidence score is 0.474 (lower confidence); data status is enough data.",
         "Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better)."
       ],
       "predictorBinRows": [
@@ -51850,8 +51850,8 @@
       "evidenceGrade": "F",
       "direction": "positive",
       "qualityWarnings": [
-        "Weak aggregate significance (<0.70).",
-        "Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.",
+        "Weak significance score (<0.70).",
+        "Some country-level direction scores are unusually high; this can happen with this scoring method.",
         "Top temporal profiles are close (score delta 0.0082); temporal assumptions are not yet robust."
       ],
       "topSubjects": [

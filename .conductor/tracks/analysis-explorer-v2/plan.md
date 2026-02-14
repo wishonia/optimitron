@@ -81,6 +81,48 @@
 24. [ ] Add education recommendation reliability gate and fallback language.
    - Require direct-learning-outcome support before issuing large education spending scale-up/down guidance.
    - When direct outcome support is insufficient, label education recommendations as composition-exploratory and suppress large absolute budget deltas.
+25. [x] Add a predictor objective-profile registry.
+   - For each discretionary predictor, define:
+     - primary direct mission outcomes
+     - guardrail outcomes
+     - lag defaults and minimum support/event rules
+   - Exclude predictors from recommendation tables when no objective profile is defined.
+26. [ ] Add direct mission outcomes for non-education predictors.
+   - Drug-policy spending: overdose mortality and related harm outcomes.
+   - Military spending: external conflict/security outcomes.
+   - Health spending: avoidable mortality/HALE-related direct outcomes.
+   - Keep outcome-source provenance and coverage diagnostics in artifacts.
+27. [ ] Add two-stage recommendation gating (direct objective + guardrails).
+   - Stage 1: direct mission-outcome evidence must pass support/reliability thresholds.
+   - Stage 2: welfare guardrails (after-tax median income and HALE level/growth) must not materially regress.
+   - If either stage fails, suppress large scale-up recommendations and emit plain-language "no clear gain" guidance.
+28. [ ] Add rare-event support handling for low-base-rate outcomes.
+   - Require minimum event counts across lagged bins before recommendation eligibility.
+   - Use longer aggregation windows and rate-based reporting for sparse outcomes.
+   - Emit explicit low-event warnings instead of unstable numeric targets.
+29. [x] Add direct-objective-first report sections.
+  - In pair pages, show "What this spending is for" and direct-outcome results before macro spillover metrics.
+  - In mega studies, show recommendation rows only when direct objective and guardrail status are both visible.
+  - Keep technical diagnostics in appendix/debug outputs.
+32. [ ] Improve direct KPI coverage quality for education and security.
+   - Add learning-quality outcomes (for example harmonized test scores / PISA-compatible panels) beyond completion rates.
+   - Add population-normalized security outcomes (for example battle-related deaths per 100k) and non-fatal security KPIs where available.
+   - Keep sparse-series handling and low-event guards explicit in report output.
+33. [ ] Add direct military mission KPI for foreign attack/security incident prevention.
+   - Add internationally comparable source(s) for cross-border attacks / terrorism / hostile incidents where possible.
+   - Use this KPI as the primary military mission outcome once minimum coverage thresholds are met.
+   - Keep battle-related deaths as secondary context until primary source coverage is adequate.
+34. [x] Add single-pair pilot report for `drug war spending -> overdose deaths`.
+   - Build a focused US report with temporal profile search, adaptive bin table, support-constrained suggested level, MED, and slowdown knee.
+   - Include a death-rate sensitivity check to reduce population-growth confounding risk in interpretation.
+   - Keep wording simple and evidence-first for rapid review.
+30. [ ] Add "no-scale-up unless clear gain" decision policy tests.
+   - Add contract tests that block large recommendation deltas when direct mission outcomes show weak/null signal.
+   - Add regression fixtures for education-like failure modes (high spending, flat direct outcomes).
+31. [ ] Add optional welfare/net-value translation layer.
+   - Keep direct mission KPI outputs as primary report surface.
+   - Add optional configurable value weights to translate KPI deltas into a comparable net-value score.
+   - Keep assumptions explicit and separate from evidence-first tables.
 
 ## Progress Notes (2026-02-13)
 - Switched report-facing predictor set to discretionary PPP per-capita spending predictors.
@@ -144,6 +186,11 @@
   - pair pages now emit explicit insufficient-data decision summaries (blocking reasons + support stats)
   - outcome pages now show `Sufficiency-Gated Pairs`/`Insufficient-Data Status` sections when rows are excluded
   - index now reports `Pairs excluded from ranking by hard sufficiency gate` (current run: 2)
+- Simplified reader-facing terminology for lower reading level:
+  - added `Quick Meanings` glossary blocks to pair and outcome pages
+  - replaced technical labels with plain terms (`recommended level`, `data-backed level`, `backup level`, `math-only guess`, `not enough data`)
+  - renamed key outcome tables to plain-language headers (`Top Recommended Levels`, `Quick Confidence Table`, `Recommended Levels By Predictor`, `Predictor Summaries In Plain English`)
+  - translated confidence/data/signal labels in tables while keeping technical appendix details available
 - Added explicit backend reliability + sufficiency contracts for each pair:
   - `dataSufficiency` (`sufficient` / `insufficient_data`) with thresholded reasons
   - numeric `reliability` object with component scores (support/significance/directional/temporal/robustness), overall score, and band
@@ -160,7 +207,44 @@
   - `outcome.derived.after_tax_median_income_ppp`: similarly strong internal signal (`A` grades), exploratory status dominated by temporal instability + weak directional separation on several pairs.
   - `outcome.derived.after_tax_median_income_ppp_growth_yoy_pct`: mostly `B/C`, exploratory.
   - `outcome.derived.healthy_life_expectancy_growth_yoy_pct`: all `F` / insufficient under current reliability gates; treat as non-decision-grade until multi-horizon/gating upgrades land.
+- Added follow-up requirement for generalized direct-objective recommendation policy:
+  - move from macro-only associations to predictor-specific direct mission outcomes + guardrails
+  - enforce no-scale-up behavior when direct outcomes are weak/flat, even if broad macro correlations are positive
+- Added spending KPI tradeoff report artifact (evidence-first):
+  - new markdown output groups rows by spending predictor and prioritizes direct mission KPI rows
+  - each row now surfaces MED, slowdown knee, data-backed level, and tail marginal signal
+  - includes taxpayer-return benchmark label derived from marginal tail signal (positive / near-zero / negative / insufficient)
+- Added direct KPI outcome data series and wiring:
+  - `outcome.wb.primary_completion_rate_pct` via World Bank `SE.PRM.CMPT.ZS`
+  - `outcome.wb.battle_related_deaths` via World Bank `VC.BTL.DETH`
+  - expanded default outcome scope to include both direct KPI outcomes in mega-study generation
+- Simplified report semantics to reduce guardrail complexity:
+  - replaced guardrail-heavy lead framing with `Primary KPI Results` + optional `Secondary Outcome Checks`
+  - kept cross-outcome checks visible but secondary to direct spending KPI relationships
 - Next highest-priority implementation order:
-  1) Implement items 22-24 for education-specific reliability before shipping further education budget recommendations.
-  2) Implement item 14 (multi-horizon outcomes).
-  3) Implement item 8 (direct after-tax median income integration).
+  1) Implement items 26-28 (remaining direct-outcome expansion + recommendation gates + rare-event handling).
+  2) Implement item 32 (better education/security direct KPI coverage quality).
+  3) Implement items 22-24 as the next education reliability pass.
+  4) Implement item 14 (multi-horizon outcomes).
+  5) Implement item 8 (direct after-tax median income integration).
+
+## Progress Notes (2026-02-14)
+- Pivoted to a single clear-cut pilot pair before broader KPI expansion:
+  - implemented `drug war spending per capita -> overdose deaths` focused study module with:
+    - temporal lag/duration search
+    - adaptive spending bins
+    - support-constrained suggested level
+    - minimum effective dose + diminishing-returns knee diagnostics
+    - sensitivity check against overdose death rate
+  - outputs:
+    - `packages/examples/output/drug-war-overdose-study.md`
+    - `packages/examples/output/drug-war-overdose-study.json`
+- Added dedicated generation entrypoint:
+  - `pnpm --filter @optomitron/examples generate:drug-war-overdose`
+- Added tests for the new pilot analysis module:
+  - `packages/examples/src/us-federal-analysis/__tests__/drug-war-overdose-study.test.ts`
+- Added follow-up requirement to replace weak military proxy KPIs with a foreign-attack/security incident KPI source before military mission recommendations are trusted.
+- Refined MED handling for harmful/no-benefit trajectories:
+  - extended optimizer MED objective support (`maximize_outcome` / `minimize_outcome` / `any_change`)
+  - pilot report now sets MED to `$0` when higher spending shows no average improvement after selected lag/duration
+  - added separate `first detected change` threshold to show where measurable adverse/beneficial shift begins

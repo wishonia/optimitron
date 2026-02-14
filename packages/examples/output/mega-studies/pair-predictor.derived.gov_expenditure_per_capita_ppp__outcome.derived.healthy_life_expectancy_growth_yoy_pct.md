@@ -11,46 +11,54 @@
 - Included subjects: 147
 - Skipped subjects: 0
 - Total aligned pairs: 3087
-- Evidence grade: F
-- Data sufficiency: sufficient
-- Reliability score: 0.407 (low)
-- Quality tier: insufficient
+- Signal grade: F (very weak)
+- Data status: enough data
+- Confidence score: 0.407 (lower confidence)
+- Signal tag: not enough data
 - Direction: negative
-- Derived uncertainty score: 0.8151 (1 - aggregate significance, not NHST p-value)
+- Uncertainty score: 0.8151 (lower is better)
+
+## Quick Meanings
+
+- `Recommended level`: main value to try first.
+- `Data-backed level`: level directly supported by seen data.
+- `Backup level`: safer fallback from the middle of the data.
+- `Math-only guess`: unconstrained model output for technical comparison.
+- `Not enough data`: we cannot safely recommend a level yet.
 
 ## Key Numeric Takeaways
 
-- Decision-target Government Expenditure Per Capita (PPP) level for higher Healthy Life Expectancy Growth (YoY %): 138.29 international $/person (support constrained).
-- Observed-support target from binned response curve: 138.29 international $/person.
-- Model-derived optimum is within observed support but outside the highest-outcome bin; this reflects smooth objective optimization vs coarse bin averages.
+- Recommended Government Expenditure Per Capita (PPP) level for higher Healthy Life Expectancy Growth (YoY %): 138.29 international $/person (data-backed level).
+- Best level directly seen in the grouped data: 138.29 international $/person.
+- Math-only guess is inside seen data but outside the best-performing bucket, so we still use the data-backed level.
 - Best observed bin anchor (median/mean) is 162.53 international $/person; model-optimal minus observed-anchor difference is 4369.0 (+2688.1%).
-- Robust sensitivity (trimmed 10-90% predictor range) suggests 716.19 international $/person.
-- Raw vs robust optimal differs by 84.2%, indicating strong tail influence.
-- Minimum effective level not reliably identified (no_consistent_effective_dose_detected).
-- No reliable diminishing-returns knee detected (drop_below_detection_threshold).
+- Backup level check (middle 10-90% of data) suggests 716.19 international $/person.
+- The math-only guess and backup level differ by 84.2%, which means extreme values may matter a lot.
+- Could not find a clear minimum useful level (no_consistent_effective_dose_detected).
+- Could not find a clear point where gains start slowing down (drop_below_detection_threshold).
 - Saturation/plateau zone starts around 8422.5 international $/person and extends through 17825.6 international $/person.
 - Highest observed mean Healthy Life Expectancy Growth (YoY %) appears when Government Expenditure Per Capita (PPP) is in [20.664, 260.72) (mean outcome 1.070).
 - Direction is negative in this analysis, so lowering this predictor is associated with better outcomes.
 
 ## Decision Summary
 
-- Interpretation: Exploratory evidence only; use primarily for hypothesis generation.
-- Directional hint: lower Government Expenditure Per Capita (PPP) is associated with better Healthy Life Expectancy Growth (YoY %).
-- Signal strength: moderate-to-weak; avoid hard policy conclusions from this pair alone.
+- Interpretation: Early signal only; use this mainly to guide more testing.
+- Pattern hint: lower Government Expenditure Per Capita (PPP) tends to go with better Healthy Life Expectancy Growth (YoY %).
+- Signal strength: weak to moderate; avoid strong conclusions from this pair alone.
 
 ## Plain-Language Summary
 
 - Higher Government Expenditure Per Capita (PPP) tends to align with worse Healthy Life Expectancy Growth (YoY %).
 - The estimate uses 147 subjects and 3087 aligned predictor-outcome observations.
 - Best observed mean outcome appears in predictor bin [20.664, 260.72) (mean outcome 1.070).
-- Reliability score is 0.407 (low); data sufficiency is sufficient.
+- Confidence score is 0.407 (lower confidence); data status is enough data.
 - Outcome values in these summaries are welfare-aligned for cross-metric comparison (higher means better).
 
 ## Quality Warnings
 
-- Weak aggregate significance (<0.70).
-- Forward association sign conflicts with directional score sign; reverse-direction signal may dominate.
-- Some subject-level directional scores exceed |1|; this is valid because the score is a difference of two correlations.
+- Weak significance score (<0.70).
+- Forward and direction signals disagree; direction may be unstable.
+- Some country-level direction scores are unusually high; this can happen with this scoring method.
 - Top temporal profiles are close (score delta 0.0126); temporal assumptions are not yet robust.
 - Robustness check: trimmed-range optimal differs by 84.2% from raw optimal; tail observations materially influence target.
 
@@ -60,51 +68,51 @@
 
 | Metric | Value |
 |--------|------:|
-| Aggregate forward Pearson | -0.0877 |
-| Aggregate reverse Pearson | -0.1513 |
-| Aggregate directional score (forward - reverse) | 0.0636 |
-| Aggregate effect size (% baseline delta) | -357.3362 |
-| Aggregate statistical significance | 0.1849 |
-| Weighted average PIS | 0.0671 |
-| Aggregate value predicting high outcome | 4531.5144 |
-| Aggregate value predicting low outcome | 4726.0129 |
-| Aggregate optimal daily value | 4531.5144 |
-| Decision target value (reader-facing) | 138.29 international $/person (support constrained) |
-| Model-derived optimum (diagnostics) | 4531.5 international $/person |
-| Support-constrained optimal value | 138.29 international $/person |
-| Support-constrained optimal range | [20.664, 230.93) |
-| Response-curve robust optimal value | 4477.5 international $/person |
-| Raw model optimal within observed range | yes |
-| Raw model optimal within support-constrained range | no |
-| Observed predictor range | [8.5216, 63562.8926] |
-| Model-derived optimal extrapolative? | no (within observed range) |
-| Model-derived optimal outside best observed bin? | yes |
-| Raw best observed range | [20.664, 260.72) |
-| Robust best observed range (trimmed) | [576.55, 888.95) |
-| Raw best observed outcome mean | 1.070 |
-| Robust best observed outcome mean | 0.56265 |
-| Robust optimal value (bin median) | 716.19 international $/person |
-| Raw vs robust optimal delta | -3815.3 (-84.2%) |
-| Robustness retained fraction | 80.0% (2469/3087) |
-| Data sufficiency status | sufficient |
-| Data sufficiency reasons | none |
-| Reliability score | 0.4072 (low) |
+| Forward correlation | -0.0877 |
+| Reverse correlation | -0.1513 |
+| Direction score (forward - reverse) | 0.0636 |
+| Effect size (% change from baseline) | -357.3362 |
+| Significance score | 0.1849 |
+| Weighted PIS | 0.0671 |
+| Value linked with higher outcome | 4531.5144 |
+| Value linked with lower outcome | 4726.0129 |
+| Math-only best daily value | 4531.5144 |
+| Recommended level (reader-facing) | 138.29 international $/person (data-backed level) |
+| Math-only guess (technical) | 4531.5 international $/person |
+| Data-backed level | 138.29 international $/person |
+| Data-backed range | [20.664, 230.93) |
+| Backup level (middle-data check) | 4477.5 international $/person |
+| Math-only guess inside seen data range? | yes |
+| Math-only guess inside data-backed range? | no |
+| Seen data range | [8.5216, 63562.8926] |
+| Math-only guess outside seen data? | no (within observed range) |
+| Math-only guess outside best observed bucket? | yes |
+| Best observed range | [20.664, 260.72) |
+| Best observed range (middle-data check) | [576.55, 888.95) |
+| Best observed outcome average | 1.070 |
+| Best observed outcome average (middle-data check) | 0.56265 |
+| Backup level (bucket median) | 716.19 international $/person |
+| Math-only vs backup difference | -3815.3 (-84.2%) |
+| Middle-data share kept | 80.0% (2469/3087) |
+| Data status | enough data |
+| Data-status details | none |
+| Confidence score | 0.4072 (lower confidence) |
 | Reliability support component | 0.7472 |
 | Reliability significance component | 0.1849 |
 | Reliability directional component | 0.4240 |
 | Reliability temporal-stability component | 0.4206 |
 | Reliability robustness component | 0.1756 |
-| Quality tier | insufficient |
+| Signal tag | not enough data |
 
 ### Response-Curve Diagnostics
 
 | Diagnostic | Result |
 |------------|--------|
-| Minimum effective level (MED) | Not identified (no_consistent_effective_dose_detected) |
-| Diminishing-returns knee | Not identified (drop_below_detection_threshold) |
-| Saturation / plateau range | [6752.2, 48525.1] |
-| Support-constrained target reason | identified |
-| Raw to support delta | 4393.2 (+3176.8%) |
+| Minimum useful level | Not identified (no_consistent_effective_dose_detected) |
+| Point where gains start slowing | Not identified (drop_below_detection_threshold) |
+| Flat zone range | [6752.2, 48525.1] |
+| Why this data-backed level was chosen | identified |
+| Math-only guess minus data-backed level | 4393.2 (+3176.8%) |
 
 ### Temporal Sensitivity
 
