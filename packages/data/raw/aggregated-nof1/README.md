@@ -1,7 +1,7 @@
-# Aggregated N-of-1 Raw Data (Drug-War Proxy)
+# Aggregated N-of-1 Raw Data (Drug Enforcement)
 
 This folder contains the downloaded source files needed for a cross-jurisdiction
-aggregated N-of-1 analysis of a drug-war spending proxy vs overdose-like outcomes.
+aggregated N-of-1 analysis of drug-enforcement spending vs overdose-like outcomes.
 
 ## Files
 
@@ -20,12 +20,19 @@ aggregated N-of-1 analysis of a drug-war spending proxy vs overdose-like outcome
   - Source: World Bank indicator `SP.POP.TOTL`
 - `wb-poisoning-mortality-sh-sta-pois-p5.json`
   - Source: World Bank indicator `SH.STA.POIS.P5` (unintentional poisoning mortality per 100,000)
+- `unodc-cts-access-justice-2025.xlsx`
+  - Source: UNODC data portal (`Access & Functioning of Justice`, UN-CTS extract)
+  - Used fields: `Persons arrested/cautioned/suspected` by selected crime (`Drug trafficking`, `Drug possession`) and total arrests.
 - `download-manifest.json`
   - Download metadata (URL, file size, timestamp)
 - `derived-drug-war-proxy-panel.csv`
   - Joined panel for analysis (country-year rows)
 - `derived-drug-war-proxy-panel.coverage.json`
   - Coverage summary for the derived panel
+- `derived-drug-enforcement-panel.csv`
+  - Enriched panel with estimated drug-enforcement spending predictors
+- `derived-drug-enforcement-panel.coverage.json`
+  - Coverage summary for the enriched panel
 
 ## Derived Metrics
 
@@ -36,9 +43,21 @@ In `derived-drug-war-proxy-panel.csv`:
 - `publicOrderSafetySpendingPerCapitaPpp`
   - `(publicOrderSafetySpendingPctGdp / 100) * gdpPerCapitaPppCurrent`
 
+In `derived-drug-enforcement-panel.csv`:
+
+- `drugTraffickingArrestShare`
+  - `drugTraffickingArrestsCount / totalArrestsCount`
+- `drugLawArrestShare`
+  - `(drugTraffickingArrestsCount + drugPossessionArrestsCount) / totalArrestsCount`
+- `estimatedDrugTraffickingEnforcementSpendingPerCapitaPpp`
+  - `publicOrderSafetySpendingPerCapitaPpp * drugTraffickingArrestShare`
+- `estimatedDrugLawEnforcementSpendingPerCapitaPpp`
+  - `publicOrderSafetySpendingPerCapitaPpp * drugLawArrestShare`
+
 ## Important Caveats
 
-- `GF03` is a **proxy** for drug-war spending. It includes broader public order and safety spending, not only narcotics enforcement.
+- Base spending still comes from `GF03` (public order and safety), but the primary predictor now weights this by UNODC drug-arrest shares to approximate drug-enforcement allocation.
+- Estimated predictors are allocation proxies, not audited country ledger totals for narcotics enforcement budgets.
 - OECD outcome (`CICDPOSN`) is accidental poisoning mortality, which is overdose-adjacent but not a pure drug-overdose series.
 - World Bank poisoning mortality (`SH.STA.POIS.P5`) has broader jurisdiction coverage but is also not opioid-specific.
-- This panel is suitable for immediate aggregated N-of-1 prototyping, but a stricter drug-enforcement and overdose-specific panel should still be pursued.
+- This panel is suitable for immediate aggregated N-of-1 prototyping, but direct audited country-year drug-enforcement expenditure remains a priority data gap.

@@ -34,5 +34,11 @@
     "url": "https://api.worldbank.org/v2/country/all/indicator/SH.STA.POIS.P5?format=json&date=1995:2023&per_page=20000",
     "bytes": 2023316,
     "downloadedAt": "2026-02-14T14:46:24.1763177-06:00"
+  },
+  {
+    "file": "unodc-cts-access-justice-2025.xlsx",
+    "url": "https://data.unodc.org/sites/dataportal.unodc.org/files/2025-11/data_cts_access_and_functioning_of_justice.xlsx",
+    "bytes": 6990897,
+    "downloadedAt": "2026-02-14T15:16:36.0000000-06:00"
   }
 ]

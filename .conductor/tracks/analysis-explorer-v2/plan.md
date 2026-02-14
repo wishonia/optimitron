@@ -92,6 +92,10 @@
    - Military spending: external conflict/security outcomes.
    - Health spending: avoidable mortality/HALE-related direct outcomes.
    - Keep outcome-source provenance and coverage diagnostics in artifacts.
+35. [ ] Replace weighted drug-enforcement proxy with direct audited drug-enforcement expenditure where available.
+   - Add country-year direct spending ingestion from primary national/international budget sources.
+   - Keep weighted proxy path as explicit fallback only when direct spending is unavailable.
+   - Report direct-vs-proxy coverage split in study metadata.
 27. [ ] Add two-stage recommendation gating (direct objective + guardrails).
    - Stage 1: direct mission-outcome evidence must pass support/reliability thresholds.
    - Stage 2: welfare guardrails (after-tax median income and HALE level/growth) must not materially regress.
@@ -248,3 +252,35 @@
   - extended optimizer MED objective support (`maximize_outcome` / `minimize_outcome` / `any_change`)
   - pilot report now sets MED to `$0` when higher spending shows no average improvement after selected lag/duration
   - added separate `first detected change` threshold to show where measurable adverse/beneficial shift begins
+- Wired downloaded aggregated proxy panel into a runnable cross-jurisdiction report:
+  - added loader in `@optomitron/data` for `derived-drug-war-proxy-panel.csv`
+  - added aggregated generator + report templates in `@optomitron/examples`
+  - new artifacts:
+    - `packages/examples/output/drug-war-proxy-aggregated-study.md`
+    - `packages/examples/output/drug-war-proxy-aggregated-study.json`
+  - current baseline run: 36 included jurisdictions, 947 aligned lagged pairs, support-constrained suggested level around `$380 PPP/person`
+  - caveat remains explicit: predictor is COFOG `GF03` proxy (public order/safety), not narcotics-only spending.
+- Replaced raw GF03 predictor in aggregated drug analysis with estimated drug-enforcement spending.
+  - Added estimated predictor sources:
+    - `estimated_drug_trafficking_enforcement` (default)
+    - `estimated_drug_law_enforcement`
+  - Formula family:
+    - `GF03 PPP-per-capita spending × UNODC drug-arrest share`
+  - Updated generator output artifacts:
+    - `packages/examples/output/drug-enforcement-aggregated-study.md`
+    - `packages/examples/output/drug-enforcement-aggregated-study.json`
+  - Current baseline run (trafficking estimate): 23 included jurisdictions, 146 lag-aligned pairs, support-constrained suggested level around `$51.9 PPP/person`.
+  - Caveat remains explicit: predictor is a budget-allocation estimate (weighted proxy), not audited direct drug-enforcement ledger totals.
+- Added side-by-side generator for trafficking vs drug-law weighted predictors.
+  - New script:
+    - `pnpm --filter @optomitron/examples generate:drug-enforcement-aggregated-comparison`
+  - New artifacts:
+    - `packages/examples/output/drug-enforcement-aggregated-study-trafficking.md`
+    - `packages/examples/output/drug-enforcement-aggregated-study-trafficking.json`
+    - `packages/examples/output/drug-enforcement-aggregated-study-drug-law.md`
+    - `packages/examples/output/drug-enforcement-aggregated-study-drug-law.json`
+    - `packages/examples/output/drug-enforcement-aggregated-comparison.md`
+    - `packages/examples/output/drug-enforcement-aggregated-comparison.json`
+  - Current comparison snapshot:
+    - trafficking-weighted suggested level: `$51.9 PPP/person` (23 jurisdictions, 146 pairs)
+    - drug-law-weighted suggested level: `$23.2 PPP/person` (19 jurisdictions, 121 pairs)

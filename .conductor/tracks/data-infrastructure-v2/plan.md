@@ -60,3 +60,23 @@
    - Added local provenance metadata:
      - `download-manifest.json`
      - `derived-drug-war-proxy-panel.coverage.json`
+14. [x] Expose aggregated proxy panel as a typed dataset loader in `@optomitron/data`.
+   - Added `datasets/aggregated-nof1-drug-war-proxy.ts` with:
+     - typed row interface
+     - CSV parser
+     - default file loader
+   - Exported through `datasets/index.ts` and covered with parser/loader tests.
+15. [x] Add estimated drug-enforcement panel (cross-jurisdiction) and typed loader.
+   - Added UNODC input:
+     - `unodc-cts-access-justice-2025.xlsx` (UN-CTS arrests by selected crime + total arrests)
+   - Added enriched derived panel:
+     - `derived-drug-enforcement-panel.csv`
+     - `derived-drug-enforcement-panel.coverage.json`
+   - Predictor derivations:
+     - `estimatedDrugTraffickingEnforcementSpendingPerCapitaPpp`
+     - `estimatedDrugLawEnforcementSpendingPerCapitaPpp`
+     - both derived from GF03 PPP-per-capita spending weighted by UNODC arrest shares.
+   - Added typed dataset loader:
+     - `datasets/aggregated-nof1-drug-enforcement.ts`
+     - exported in `datasets/index.ts`
+     - parser/loader tests added.

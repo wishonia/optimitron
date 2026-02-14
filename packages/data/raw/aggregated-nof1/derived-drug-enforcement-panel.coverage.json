@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-02-14T21:21:05Z",
+  "baseRows": 996,
+  "years": {
+    "min": 1995,
+    "max": 2023,
+    "count": 29
+  },
+  "joinCoverage": {
+    "rowsWithTotalArrestsCount": 589,
+    "rowsWithDrugTraffickingAndTotal": 170,
+    "rowsWithDrugLawAndTotal": 144,
+    "estimatedDrugTraffickingPredictorRows": 170,
+    "estimatedDrugLawPredictorRows": 144,
+    "estimatedDrugTraffickingCountries": [
+      "AUS",
+      "BEL",
+      "BGR",
+      "CHE",
+      "COL",
+      "CZE",
+      "DEU",
+      "DNK",
+      "ESP",
+      "FIN",
+      "FRA",
+      "GRC",
+      "HRV",
+      "IRL",
+      "ISL",
+      "ITA",
+      "JPN",
+      "LTU",
+      "LUX",
+      "LVA",
+      "NLD",
+      "NOR",
+      "PRT",
+      "ROU",
+      "SVK",
+      "SVN",
+      "SWE",
+      "USA"
+    ],
+    "estimatedDrugLawCountries": [
+      "AUS",
+      "BEL",
+      "BGR",
+      "CHE",
+      "COL",
+      "CZE",
+      "DEU",
+      "DNK",
+      "ESP",
+      "FIN",
+      "FRA",
+      "GRC",
+      "HRV",
+      "IRL",
+      "ISL",
+      "JPN",
+      "LTU",
+      "LUX",
+      "LVA",
+      "NLD",
+      "NOR",
+      "ROU",
+      "SVK",
+      "SWE",
+      "USA"
+    ]
+  },
+  "predictorDistribution": {
+    "estimatedDrugTraffickingEnforcementSpendingPerCapitaPpp": {
+      "min": 0.035223102974,
+      "median": 28.963588047669,
+      "max": 122.361357321268
+    },
+    "estimatedDrugLawEnforcementSpendingPerCapitaPpp": {
+      "min": 15.50545407138,
+      "median": 108.508026351663,
+      "max": 408.437037287273
+    }
+  },
+  "sources": {
+    "basePanel": "packages/data/raw/aggregated-nof1/derived-drug-war-proxy-panel.csv",
+    "unodcArrests": "packages/data/raw/aggregated-nof1/unodc-cts-access-justice-2025.xlsx",
+    "formula": "estimatedDrugTraffickingEnforcementSpendingPerCapitaPpp = publicOrderSafetySpendingPerCapitaPpp * (drugTraffickingArrestsCount / totalArrestsCount)"
+  }
+}
