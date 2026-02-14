@@ -3,16 +3,22 @@ import { describe, expect, it } from "vitest";
 import {
   DEFAULT_REPORT_OUTCOME_IDS,
   buildAsciiDistributionChart,
+  buildDerivedDifferencePerCapitaPpp,
+  buildDerivedPercentGdpPerCapitaPpp,
+  buildDerivedShareOfVariablePercent,
   buildDistributionBuckets,
   buildFetchCacheKey,
   buildFixedWidthDistributionBuckets,
+  buildPairRobustnessSummary,
   buildPairTemporalProfileCandidates,
   buildPairBinSummaryRows,
   buildPppPerCapitaSummary,
+  derivePairQualityTier,
   derivePairQualityWarnings,
   isPercentGdpUnit,
   isReportEligibleOutcome,
   isReportEligiblePredictor,
+  resolveActionableOptimalValue,
   resolvePairTemporalProfile,
   scoreTemporalProfileCandidate,
   selectLagYears,
@@ -312,6 +318,46 @@ describe("mega-study-generator helpers", () => {
     ).toEqual([]);
   });
 
+  it("derivePairQualityTier classifies insufficient and exploratory tiers", () => {
+    expect(
+      derivePairQualityTier({
+        includedSubjects: 10,
+        totalPairs: 200,
+        aggregateStatisticalSignificance: 0.4,
+        aggregatePredictivePearson: 0.15,
+        temporalStabilityWarning: null,
+        robustnessDeltaPercent: 5,
+        actionabilityStatus: "exploratory",
+      }),
+    ).toBe("insufficient");
+
+    expect(
+      derivePairQualityTier({
+        includedSubjects: 120,
+        totalPairs: 5000,
+        aggregateStatisticalSignificance: 0.9,
+        aggregatePredictivePearson: 0.09,
+        temporalStabilityWarning: "close profiles",
+        robustnessDeltaPercent: 30,
+        actionabilityStatus: "exploratory",
+      }),
+    ).toBe("exploratory");
+  });
+
+  it("derivePairQualityTier returns strong for stable high-confidence actionable signals", () => {
+    expect(
+      derivePairQualityTier({
+        includedSubjects: 160,
+        totalPairs: 7000,
+        aggregateStatisticalSignificance: 0.93,
+        aggregatePredictivePearson: 0.12,
+        temporalStabilityWarning: null,
+        robustnessDeltaPercent: 8,
+        actionabilityStatus: "actionable",
+      }),
+    ).toBe("strong");
+  });
+
   it("derivePairQualityWarnings flags out-of-range optimal values", () => {
     const warnings = derivePairQualityWarnings({
       includedSubjects: 80,
@@ -351,6 +397,124 @@ describe("mega-study-generator helpers", () => {
     expect(maxOutcomeMean).toBeGreaterThan(10);
   });
 
+  it("buildDerivedPercentGdpPerCapitaPpp maps %GDP into per-capita PPP", () => {
+    const raw = new Map([
+      [
+        "predictor.wb.gov_expenditure_pct_gdp",
+        [
+          { jurisdictionIso3: "AAA", year: 2020, value: 20, source: "x" },
+          { jurisdictionIso3: "BBB", year: 2020, value: 30, source: "x" },
+        ],
+      ],
+      [
+        "outcome.wb.gdp_per_capita_ppp",
+        [
+          { jurisdictionIso3: "AAA", year: 2020, value: 10000, source: "y" },
+          { jurisdictionIso3: "BBB", year: 2020, value: 20000, source: "y" },
+        ],
+      ],
+    ]);
+    const derived = buildDerivedPercentGdpPerCapitaPpp(
+      raw,
+      "predictor.wb.gov_expenditure_pct_gdp",
+      "derived test",
+    );
+
+    expect(derived).toHaveLength(2);
+    expect(derived[0]?.value).toBe(2000);
+    expect(derived[1]?.value).toBe(6000);
+  });
+
+  it("buildDerivedShareOfVariablePercent computes sector share within total spending", () => {
+    const raw = new Map([
+      [
+        "predictor.wb.gov_health_expenditure_pct_gdp",
+        [
+          { jurisdictionIso3: "AAA", year: 2020, value: 4, source: "x" },
+          { jurisdictionIso3: "BBB", year: 2020, value: 6, source: "x" },
+        ],
+      ],
+      [
+        "predictor.wb.gov_expenditure_pct_gdp",
+        [
+          { jurisdictionIso3: "AAA", year: 2020, value: 20, source: "y" },
+          { jurisdictionIso3: "BBB", year: 2020, value: 30, source: "y" },
+        ],
+      ],
+    ]);
+    const share = buildDerivedShareOfVariablePercent(
+      raw,
+      "predictor.wb.gov_health_expenditure_pct_gdp",
+      "predictor.wb.gov_expenditure_pct_gdp",
+      "derived share test",
+    );
+
+    expect(share).toHaveLength(2);
+    expect(share[0]?.value).toBe(20);
+    expect(share[1]?.value).toBe(20);
+    expect(share[0]?.unit).toBe("% of government expenditure");
+  });
+
+  it("buildDerivedDifferencePerCapitaPpp computes non-negative per-capita differences", () => {
+    const raw = new Map([
+      [
+        "predictor.derived.gov_expenditure_per_capita_ppp",
+        [
+          { jurisdictionIso3: "AAA", year: 2020, value: 5000, source: "x" },
+          { jurisdictionIso3: "BBB", year: 2020, value: 4000, source: "x" },
+        ],
+      ],
+      [
+        "predictor.derived.military_expenditure_per_capita_ppp",
+        [
+          { jurisdictionIso3: "AAA", year: 2020, value: 1000, source: "y" },
+          { jurisdictionIso3: "BBB", year: 2020, value: 4500, source: "y" },
+        ],
+      ],
+    ]);
+    const diff = buildDerivedDifferencePerCapitaPpp(
+      raw,
+      "predictor.derived.gov_expenditure_per_capita_ppp",
+      "predictor.derived.military_expenditure_per_capita_ppp",
+      "derived diff test",
+    );
+
+    expect(diff).toHaveLength(1);
+    expect(diff[0]?.jurisdictionIso3).toBe("AAA");
+    expect(diff[0]?.value).toBe(4000);
+  });
+
+  it("buildPairRobustnessSummary reports trimmed sensitivity without dropping raw signal", () => {
+    const alignedPoints = [
+      { subjectId: "A", predictorValue: 1, outcomeValue: 10 },
+      { subjectId: "A", predictorValue: 2, outcomeValue: 11 },
+      { subjectId: "A", predictorValue: 3, outcomeValue: 12 },
+      { subjectId: "B", predictorValue: 4, outcomeValue: 13 },
+      { subjectId: "B", predictorValue: 5, outcomeValue: 14 },
+      { subjectId: "B", predictorValue: 6, outcomeValue: 15 },
+      { subjectId: "C", predictorValue: 7, outcomeValue: 16 },
+      { subjectId: "C", predictorValue: 8, outcomeValue: 17 },
+      { subjectId: "C", predictorValue: 9, outcomeValue: 18 },
+      { subjectId: "D", predictorValue: 1000, outcomeValue: 200 },
+    ];
+    const padded = [
+      ...alignedPoints,
+      ...Array.from({ length: 40 }, (_, idx) => ({
+        subjectId: `P${idx}`,
+        predictorValue: 10 + idx,
+        outcomeValue: 20 + idx,
+      })),
+    ];
+    const rows = buildPairBinSummaryRows(padded, 10);
+    const summary = buildPairRobustnessSummary(padded, rows, 500, 10, 0.1, 0.9);
+
+    expect(summary.rawPairCount).toBe(padded.length);
+    expect(summary.trimmedPairCount).toBeLessThan(summary.rawPairCount);
+    expect(summary.retainedFraction).toBeGreaterThan(0.7);
+    expect(summary.rawBestObservedRange).toBeTruthy();
+    expect(summary.robustBestObservedRange).toBeTruthy();
+  });
+
   it("buildFixedWidthDistributionBuckets returns non-uniform counts for skewed data", () => {
     const buckets = buildFixedWidthDistributionBuckets([0, 0, 0, 0, 10, 20, 30], 4);
     expect(buckets.length).toBeGreaterThan(1);
@@ -373,6 +537,17 @@ describe("mega-study-generator helpers", () => {
     expect(isPercentGdpUnit("% GDP")).toBe(true);
     expect(isPercentGdpUnit("% of GDP")).toBe(true);
     expect(isPercentGdpUnit("international $")).toBe(false);
+  });
+
+  it("resolveActionableOptimalValue stays raw (not clamped to observed range)", () => {
+    const pair = {
+      aggregateOptimalDailyValue: 20,
+      aggregateValuePredictingHighOutcome: 15,
+      predictorObservedMin: 0,
+      predictorObservedMax: 10,
+    } as Parameters<typeof resolveActionableOptimalValue>[0];
+
+    expect(resolveActionableOptimalValue(pair)).toBe(20);
   });
 
   it("buildPppPerCapitaSummary estimates PPP-equivalent levels for % GDP predictors", () => {

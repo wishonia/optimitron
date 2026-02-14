@@ -87,7 +87,19 @@ describe('variable registry', () => {
     expect(discretionary.length).toBeGreaterThan(0);
     expect(nonDiscretionary.length).toBeGreaterThan(0);
     expect(
-      nonDiscretionary.some((entry) => entry.id === 'predictor.derived.gov_expenditure_per_capita_ppp'),
+      discretionary.some((entry) => entry.id === 'predictor.derived.gov_expenditure_per_capita_ppp'),
+    ).toBe(true);
+    expect(
+      discretionary.some((entry) => entry.id === 'predictor.derived.military_expenditure_per_capita_ppp'),
+    ).toBe(true);
+    expect(
+      discretionary.some((entry) => entry.id === 'predictor.derived.gov_non_military_expenditure_per_capita_ppp'),
+    ).toBe(true);
+    expect(
+      discretionary.some((entry) => entry.id === 'predictor.derived.education_share_of_gov_expenditure_pct'),
+    ).toBe(true);
+    expect(
+      nonDiscretionary.some((entry) => entry.id === 'predictor.wb.tax_revenue_pct_gdp'),
     ).toBe(true);
     expect(
       nonDiscretionary.some((entry) => entry.id === 'predictor.wb.gov_debt_pct_gdp'),

@@ -13,13 +13,13 @@
 4. [x] Add temporal sensitivity outputs to pair-study artifacts.
    - Include selected profile, runner-up profiles, and score deltas.
    - Add instability warning when top profiles are too close.
-5. [ ] Add recommendation gating policy.
+5. [x] Add recommendation gating policy.
    - Hide or downgrade actionable recommendations when subject/pair support is below threshold.
    - Add plain-language fallback text for exploratory-only pairs.
-6. [ ] Add outlier robustness policy for actionable ranges.
+6. [x] Add outlier robustness policy for actionable ranges.
    - Add configurable winsorization/quantile support for extreme predictor ranges.
    - Surface robust range and raw range separately where useful.
-7. [ ] Add quality-tier badges for outcome reports.
+7. [x] Add quality-tier badges for outcome reports.
    - Add simple tiers (strong/moderate/exploratory/insufficient) driven by support + significance + stability.
 8. [ ] Integrate direct after-tax median disposable income source(s).
    - Add fetcher(s) and normalization pipeline for direct series where available.
@@ -35,8 +35,41 @@
 12. [ ] Update web pages to keep advanced diagnostics collapsed by default.
    - Reader-first summary always visible.
    - Technical appendix expandable with explicit caveats.
+13. [x] Add budget-allocation style derived predictors and report sections.
+   - Add derived sector-share predictors (`% of government expenditure`) for health, education, R&D, and military.
+   - Add derived civilian (non-military) per-capita spending predictor.
+   - Surface allocation-share table in outcome mega-study reports.
+14. [ ] Add multi-horizon outcome modeling and reliability selection.
+   - Keep level outcomes as primary decision targets.
+   - Add parallel growth horizons (`1y YoY`, `3y CAGR`, `5y CAGR` / long-difference variants).
+   - Choose default decision horizon per outcome by reliability score (support + stability + significance).
+15. [ ] Add hard data-sufficiency gates before pair scoring.
+   - Require minimum continuity/coverage thresholds before generating recommendations.
+   - Emit explicit "insufficient-data" outcome/pair pages instead of low-confidence pseudo-recommendations.
+16. [ ] Split report targets into model-optimal vs decision-optimal.
+   - Keep raw model-optimal target for diagnostics.
+   - Add support-constrained decision target/range (observed-support and robust-window bounded) for actionable guidance.
+   - Show explicit divergence metrics between model-optimal and decision-optimal.
+17. [ ] Refactor evidence semantics for human clarity.
+   - Separate `internal signal strength` from `decision confidence`.
+   - Replace ambiguous A-F emphasis in reader-first sections with calibrated confidence labels.
+   - Keep raw scoring components in technical appendix.
+18. [ ] Simplify report templates to prioritize actionability.
+   - In outcome pages, show a concise "recommended range + confidence + direction" table first.
+   - Hide/de-emphasize repetitive monitor-only sections when no actionable rows exist.
+   - Move bulky diagnostics (full subject tables, ASCII histograms) to expandable appendix/debug outputs.
+19. [ ] Add universal report contract for any predictor/outcome pair.
+   - Define required pair and outcome markdown sections and link behavior.
+   - Ensure report generation scales to arbitrary predictor/outcome selections with the same schema.
+20. [ ] Integrate optimizer MED/diminishing-returns outputs into pair reports.
+   - Show minimum effective dose (MED), diminishing-returns knee, and plateau-zone diagnostics when identifiable.
+   - Fall back to "no reliable MED/knee detected" when support is insufficient.
 
 ## Progress Notes (2026-02-13)
+- Switched report-facing predictor set to discretionary PPP per-capita spending predictors.
+  - Added derived per-capita PPP predictors for education, health, R&D, and military spending.
+  - Kept `% GDP` spending predictors available in registry but marked non-discretionary for report exclusion.
+  - Marked tax revenue `% GDP` non-discretionary for exclusion from report-facing predictor scope.
 - Completed deterministic temporal precedence wiring:
   - predictor registry temporal defaults
   - pair-level override map
@@ -50,4 +83,41 @@
   - selected profile score
   - top runner-ups with score deltas
   - instability warning when top profiles are too close
-- Next highest-priority implementation task: item 5 (recommendation gating), then item 6 (outlier robustness policy).
+- Added recommendation gating + fallback language:
+  - pair reports now carry `actionable` vs `exploratory` status and gate reasons
+  - exploratory pairs are downgraded to non-prescriptive guidance
+- Added outlier-robust sensitivity for predictor targets:
+  - trimmed (p10-p90) robustness summary alongside raw ranges
+  - raw-vs-robust optimal deltas surfaced in pair/outcome reports
+  - quality warning when tail influence materially shifts the target
+- Ported useful decision-oriented structure from US budget report into generalized outcome reports:
+  - Top Recommendations section (action verbs + status)
+  - Evidence Snapshot table (status, evidence, significance, directional score, support)
+- Added quality tiers to pair/outcome outputs:
+  - pair-level tier field (`strong`/`moderate`/`exploratory`/`insufficient`)
+  - tier counts in lead takeaway and tier columns in outcome tables/appendix
+- Current calibration snapshot after regeneration:
+  - quality tier distribution: 15 exploratory, 5 insufficient, 0 moderate, 0 strong
+  - mean absolute raw-vs-robust optimal delta is large (~81.5%), so tail influence remains material
+- Refactored outcome mega-study reports to lead with optimal-value clarity per predictor (human-readable targets), with ranking details moved to appendix.
+- Added budget-allocation style derived predictors to generalized analysis scope:
+  - `predictor.derived.gov_non_military_expenditure_per_capita_ppp`
+  - `predictor.derived.gov_health_share_of_gov_expenditure_pct`
+  - `predictor.derived.education_share_of_gov_expenditure_pct`
+  - `predictor.derived.rd_share_of_gov_expenditure_pct`
+  - `predictor.derived.military_share_of_gov_expenditure_pct`
+- Added `Budget Allocation Signals` section in outcome reports to mirror allocation-focused decision support from the US budget report.
+- Kept model-optimal targets raw (no clamping) and added explicit diagnostics for interpretability:
+  - pair reports now state when model-optimal is outside the highest-outcome observed bin despite being within global observed support
+  - outcome reports now include `Outside Best Observed Bin?` and bin-alignment counts in lead takeaway
+  - human-readable targets now call out bin-misaligned model optima to reduce confusion
+- Reliability snapshot after latest regeneration:
+  - `outcome.who.healthy_life_expectancy_years`: strong signal quality (`A` grades), but most pairs still exploratory due to temporal-stability gate.
+  - `outcome.derived.after_tax_median_income_ppp`: similarly strong internal signal (`A` grades), exploratory status dominated by temporal instability + weak directional separation on several pairs.
+  - `outcome.derived.after_tax_median_income_ppp_growth_yoy_pct`: mostly `B/C`, exploratory.
+  - `outcome.derived.healthy_life_expectancy_growth_yoy_pct`: all `F` / insufficient under current reliability gates; treat as non-decision-grade until multi-horizon/gating upgrades land.
+- Next highest-priority implementation order:
+  1) Implement optimizer-core-v2 foundational APIs first (MED, diminishing-returns knee, saturation/plateau, support-constrained targets).
+  2) Then implement item 14 (multi-horizon outcomes) and item 15 (hard sufficiency gates) in analysis-explorer.
+  3) Then implement item 16 (model vs decision optimum split) by consuming optimizer-core support-constrained outputs.
+  4) Then item 8 (direct after-tax median income integration).

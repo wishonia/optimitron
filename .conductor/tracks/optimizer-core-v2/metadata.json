@@ -1,9 +1,9 @@
 {
   "id": "optimizer-core-v2",
-  "title": "Partial Correlations + Diminishing Returns Detection",
-  "status": "paused",
+  "title": "Diminishing Returns + Minimum Effective Dose",
+  "status": "active",
   "owner": "wishonia",
-  "priority": "P2",
+  "priority": "P0",
   "effort": "M",
   "agentTier": "Codex",
   "dependencies": [],
