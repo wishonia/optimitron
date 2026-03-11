@@ -30,9 +30,9 @@ Optomitron is a domain-agnostic causal inference and optimization engine. It ana
 | `@optomitron/data` | Data fetchers, importers, datasets | 589+ |
 | `@optomitron/db` | Prisma schema + Zod validators | 60 |
 | `@optomitron/chat-ui` | Conversational health tracking | 87 |
-| `@optomitron/storage` | Storacha/IPFS content-addressed snapshots | — |
-| `@optomitron/hypercerts` | Hypercerts AT Protocol record mapping | — |
-| `@optomitron/agent` | Autonomous policy analyst (Google ADK + Gemini + ERC-8004) | — |
+| `@optomitron/storage` | Storacha/IPFS content-addressed snapshots | 20 |
+| `@optomitron/hypercerts` | Hypercerts AT Protocol record mapping | 15 |
+| `@optomitron/agent` | Autonomous policy analyst (Gemini + ERC-8004) | 14 |
 | `@optomitron/web` | Next.js website | — |
 | `@optomitron/extension` | Chrome extension (Digital Twin Safe) | — |
 | `@optomitron/examples` | Runnable demos | 78 |

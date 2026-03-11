@@ -1,0 +1,265 @@
+{
+  "runId": "sample-run-2026-03-11",
+  "startedAt": "2026-03-11T12:00:00.000Z",
+  "completedAt": "2026-03-11T12:01:30.000Z",
+  "status": "completed",
+  "manifestName": "Optomitron Policy Analyst",
+  "manifestVersion": "1.0.0",
+  "operatorWallet": "0x0000000000000000000000000000000000000000",
+  "erc8004Identity": "eip155:11155111:0x0000000000000000000000000000000000000000/0",
+  "jurisdictionId": "us-federal",
+  "discovery": {
+    "selectedTargets": [
+      {
+        "itemId": "preventive-care",
+        "itemName": "Preventive Care",
+        "preferredPct": 0.28,
+        "actualPct": 0.11,
+        "gapPct": 0.17,
+        "gapUsd": 45000000000,
+        "availableDataSources": [
+          "oecd-health-expenditure",
+          "world-bank-life-expectancy"
+        ],
+        "tractabilityScore": 0.92,
+        "rationale": "Large preference gap with established longitudinal spending and outcome datasets."
+      }
+    ],
+    "rationale": "Preventive care has the clearest tractable gap and the strongest available public evidence trail.",
+    "discardedItemIds": [
+      "other-transport"
+    ]
+  },
+  "plan": {
+    "plannedTargets": [
+      {
+        "itemId": "preventive-care",
+        "itemName": "Preventive Care",
+        "preferredPct": 0.28,
+        "actualPct": 0.11,
+        "gapPct": 0.17,
+        "gapUsd": 45000000000,
+        "availableDataSources": [
+          "oecd-health-expenditure",
+          "world-bank-life-expectancy"
+        ],
+        "tractabilityScore": 0.92,
+        "rationale": "Run first because the gap is large and public data coverage is high."
+      }
+    ],
+    "rationale": "Execute the highest-confidence policy gap first to maximize publishable evidence.",
+    "executionNotes": [
+      "Verify spending coverage before interpreting welfare gains.",
+      "Abort if aligned panel size is too small."
+    ]
+  },
+  "targetExecutions": [
+    {
+      "target": {
+        "itemId": "preventive-care",
+        "itemName": "Preventive Care",
+        "preferredPct": 0.28,
+        "actualPct": 0.11,
+        "gapPct": 0.17,
+        "gapUsd": 45000000000,
+        "availableDataSources": [
+          "oecd-health-expenditure",
+          "world-bank-life-expectancy"
+        ],
+        "tractabilityScore": 0.92,
+        "rationale": "Run first because the gap is large and public data coverage is high."
+      },
+      "attemptCount": 1,
+      "analysis": {
+        "target": {
+          "itemId": "preventive-care",
+          "itemName": "Preventive Care",
+          "preferredPct": 0.28,
+          "actualPct": 0.11,
+          "gapPct": 0.17,
+          "gapUsd": 45000000000,
+          "availableDataSources": [
+            "oecd-health-expenditure",
+            "world-bank-life-expectancy"
+          ],
+          "tractabilityScore": 0.92,
+          "rationale": "Run first because the gap is large and public data coverage is high."
+        },
+        "policyId": "us-federal-preventive-care-2026",
+        "policyName": "Preventive Care Reallocation",
+        "recommendation": "enact",
+        "policyDescription": "Increase funding for preventive care and early screening.",
+        "evidenceGrade": "A",
+        "welfareScore": 91.2,
+        "policyImpactScore": 0.88,
+        "causalConfidenceScore": 0.84,
+        "citizenPreferenceWeight": 0.28,
+        "governmentAllocationPct": 0.11,
+        "preferenceGapPct": 0.17,
+        "participantCount": 412,
+        "sourceUrls": [
+          "https://mikepsinn.github.io/optomitron/",
+          "https://github.com/mikepsinn/optomitron"
+        ],
+        "rawMetrics": {
+          "pis": 0.88,
+          "ccs": 0.84,
+          "welfare": 91.2,
+          "bradfordHillStrength": 0.79
+        },
+        "qualityChecks": {
+          "sufficientData": true,
+          "predictorDataPoints": 84,
+          "outcomeDataPoints": 84,
+          "alignedPairs": 73,
+          "evidenceSources": 4,
+          "notes": [
+            "Panel coverage spans multiple jurisdictions.",
+            "Confidence intervals remain directionally stable."
+          ]
+        }
+      },
+      "interpretation": {
+        "summary": "Preventive care appears materially underfunded relative to citizen priorities and is associated with better downstream outcomes.",
+        "confidenceAssessment": "Confidence is moderate to high because the effect direction is consistent across multiple public datasets.",
+        "caveats": [
+          "Outcome coverage is stronger for OECD countries than subnational jurisdictions.",
+          "Causal confidence would improve with finer-grained screening uptake data."
+        ],
+        "additionalDataNeeded": [
+          "Jurisdiction-level preventive screening utilization data",
+          "Longer-run mortality and quality-of-life follow-up"
+        ]
+      },
+      "verification": {
+        "verdict": "proceed",
+        "rationale": "Quality checks passed and the evidence base is sufficient for publication."
+      },
+      "publishReceipt": {
+        "activityUri": "at://did:plc:optomitron/org.hypercerts.claim.activity/1",
+        "evaluationUri": "at://did:plc:optomitron/org.hypercerts.context.evaluation/1",
+        "attachmentUris": [
+          "at://did:plc:optomitron/org.hypercerts.context.attachment/1"
+        ],
+        "measurementUris": [
+          "at://did:plc:optomitron/org.hypercerts.context.measurement/1",
+          "at://did:plc:optomitron/org.hypercerts.context.measurement/2",
+          "at://did:plc:optomitron/org.hypercerts.context.measurement/3"
+        ],
+        "policyStorageCid": "bafybeigdyrsamplepolicycid",
+        "aggregationStorageCid": "bafybeigdyrsampleaggregationcid",
+        "reputationTxHash": "0x1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "status": "completed"
+    }
+  ],
+  "steps": [
+    {
+      "step": "discover",
+      "status": "completed",
+      "startedAt": "2026-03-11T12:00:00.000Z",
+      "completedAt": "2026-03-11T12:00:05.000Z",
+      "reasoning": "Preventive care has the strongest combination of tractability, preference gap size, and available evidence.",
+      "toolCalls": []
+    },
+    {
+      "step": "plan",
+      "status": "completed",
+      "startedAt": "2026-03-11T12:00:05.000Z",
+      "completedAt": "2026-03-11T12:00:08.000Z",
+      "reasoning": "Run the highest-confidence gap first and abort if panel coverage is weak.",
+      "toolCalls": []
+    },
+    {
+      "step": "execute",
+      "status": "completed",
+      "startedAt": "2026-03-11T12:00:08.000Z",
+      "completedAt": "2026-03-11T12:00:50.000Z",
+      "toolCalls": [
+        {
+          "name": "analysis.execute",
+          "status": "success",
+          "inputSummary": "Preventive Care",
+          "outputSummary": "Preventive Care Reallocation",
+          "at": "2026-03-11T12:00:50.000Z"
+        }
+      ]
+    },
+    {
+      "step": "interpret",
+      "status": "completed",
+      "startedAt": "2026-03-11T12:00:50.000Z",
+      "completedAt": "2026-03-11T12:01:00.000Z",
+      "toolCalls": [
+        {
+          "name": "gemini.interpret",
+          "status": "success",
+          "inputSummary": "Preventive Care Reallocation",
+          "outputSummary": "Preventive care appears materially underfunded relative to citizen priorities and is associated with better downstream outcomes.",
+          "at": "2026-03-11T12:01:00.000Z"
+        }
+      ]
+    },
+    {
+      "step": "verify",
+      "status": "completed",
+      "startedAt": "2026-03-11T12:01:00.000Z",
+      "completedAt": "2026-03-11T12:01:05.000Z",
+      "toolCalls": [
+        {
+          "name": "gemini.verify",
+          "status": "success",
+          "inputSummary": "Preventive Care Reallocation",
+          "outputSummary": "proceed",
+          "at": "2026-03-11T12:01:05.000Z"
+        }
+      ]
+    },
+    {
+      "step": "publish",
+      "status": "completed",
+      "startedAt": "2026-03-11T12:01:05.000Z",
+      "completedAt": "2026-03-11T12:01:30.000Z",
+      "toolCalls": [
+        {
+          "name": "storage.storeAggregation",
+          "status": "success",
+          "outputSummary": "bafybeigdyrsampleaggregationcid",
+          "at": "2026-03-11T12:01:08.000Z"
+        },
+        {
+          "name": "hypercerts.publishPolicy",
+          "status": "success",
+          "inputSummary": "Preventive Care Reallocation",
+          "outputSummary": "at://did:plc:optomitron/org.hypercerts.claim.activity/1",
+          "at": "2026-03-11T12:01:15.000Z"
+        },
+        {
+          "name": "storage.storePolicyAnalysis",
+          "status": "success",
+          "outputSummary": "bafybeigdyrsamplepolicycid",
+          "at": "2026-03-11T12:01:22.000Z"
+        },
+        {
+          "name": "erc8004.recordReputation",
+          "status": "success",
+          "outputSummary": "0x1111111111111111111111111111111111111111111111111111111111111111",
+          "at": "2026-03-11T12:01:30.000Z"
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "activityUris": [
+      "at://did:plc:optomitron/org.hypercerts.claim.activity/1"
+    ],
+    "storageCids": [
+      "bafybeigdyrsampleaggregationcid",
+      "bafybeigdyrsamplepolicycid"
+    ],
+    "reputationTxHashes": [
+      "0x1111111111111111111111111111111111111111111111111111111111111111"
+    ]
+  },
+  "failures": []
+}

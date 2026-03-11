@@ -10,15 +10,19 @@
 - [x] Add package tests for upload/retrieve/history behavior.
 
 ## Phase 3: Hypercerts
-- [ ] Add record schemas and mapping helpers for activity claims, measurements, evaluations, and attachments.
-- [ ] Add publish/read helpers with injected AT Protocol clients.
-- [ ] Add package tests for mapping and publish flows.
+- [x] Add record schemas and mapping helpers for activity claims, measurements, evaluations, and attachments.
+- [x] Add publish/read helpers with injected AT Protocol clients.
+- [x] Add package tests for mapping and publish flows.
 
-## Phase 4: Autonomous Agent (Google ADK + Gemini + ERC-8004)
-- [ ] Define `FunctionTool`s (with Zod parameter schemas) wrapping each pipeline step: discover preference gaps, run causal analysis, generate policy/budget reports, publish hypercerts, store on Storacha.
-- [ ] Wire tools into a `LlmAgent` (`@google/adk`) with Gemini model for autonomous orchestration.
-- [ ] Add Gemini reasoning at each step: discovery rationale, result interpretation, verify/abort decisions, publish summaries.
-- [ ] Add ERC-8004 interaction helpers using ethers v6 interfaces (identity + reputation registries, Sepolia testnet).
-- [ ] Add `agent.json` manifest and `agent_log.json` structured execution logging.
-- [ ] Add safety guardrails: input validation, API response checks, insufficient-data abort, call/runtime caps.
-- [ ] Add end-to-end orchestration tests with mocked tools and publishers.
+## Phase 4: Autonomous Agent (Gemini + ERC-8004)
+- [x] Define typed agent schemas and injected adapters for each pipeline step: discover preference gaps, run causal analysis, publish hypercerts, and store Storacha receipts.
+- [x] Wire Gemini structured-output reasoning into discover, plan, interpret, verify, and publish decisions.
+- [x] Add ERC-8004 interaction helpers using ethers v6 interfaces for identity and reputation registries.
+- [x] Add `agent.json` manifest and `agent_log.json` structured execution logging.
+- [x] Add safety guardrails: input validation, API response checks, insufficient-data abort, and call/runtime caps.
+- [x] Add end-to-end orchestration tests with mocked tools and publishers.
+
+## Phase 5: Applications And Comms
+- [x] Add `docs/funding-the-commons-application.md`.
+- [x] Add `docs/crecimiento-application.md`.
+- [x] Add a publish-ready PL Genesis community vote X thread draft.

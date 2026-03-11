@@ -2,7 +2,7 @@
   "name": "Optomitron Policy Analyst",
   "version": "1.0.0",
   "operatorWallet": "0x0000000000000000000000000000000000000000",
-  "erc8004Identity": "0x0000000000000000000000000000000000000000",
+  "erc8004Identity": "eip155:11155111:0x0000000000000000000000000000000000000000/0",
   "erc8004RegistrationTx": "0x",
   "supportedTools": [
     "optomitron-optimizer",
@@ -11,10 +11,13 @@
     "optomitron-data-oecd",
     "optomitron-data-worldbank",
     "optomitron-data-who",
+    "google-gemini-reasoning",
     "hypercerts-atproto",
-    "storacha-storage"
+    "storacha-storage",
+    "erc8004-identity-registry",
+    "erc8004-reputation-registry"
   ],
-  "supportedTechStack": ["typescript", "node22", "atproto", "storacha", "erc8004"],
+  "supportedTechStack": ["typescript", "node22", "gemini", "atproto", "storacha", "erc8004"],
   "computeConstraints": {
     "maxAnalysesPerRun": 10,
     "maxAPICallsPerRun": 100,

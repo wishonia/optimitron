@@ -2,7 +2,7 @@
 
 ## Languages and Runtime
 - TypeScript (strict mode)
-- Node.js >= 18
+- Node.js >= 18 (`@optomitron/storage` and `@optomitron/agent` target Node 22+ workflows)
 - ESM modules across all packages
 
 ## Monorepo Tooling
@@ -19,7 +19,7 @@
 - `@optomitron/data` — Data fetchers + importers + static datasets (depends on optimizer for TimeSeries type)
 - `@optomitron/storage` — Storacha/IPFS content-addressed snapshot storage with CID history chains
 - `@optomitron/hypercerts` — Hypercerts AT Protocol record mapping (activity claims, measurements, evaluations)
-- `@optomitron/agent` — Autonomous policy analyst agent (Google ADK + Gemini + ERC-8004)
+- `@optomitron/agent` — Autonomous policy analyst agent (Gemini structured reasoning + ERC-8004)
 
 ## Data Layer
 - Prisma schema → single source of truth for types
@@ -60,7 +60,7 @@
 ## Decentralized Infrastructure
 - `@storacha/client` — Content-addressed storage (requires Node 22+)
 - `@atproto/oauth-client-node`, `@atproto/jwk-jose`, `@atproto/api` — AT Protocol (Hypercerts)
-- `@google/adk` — Google Agent Development Kit (autonomous agent orchestration with Gemini)
+- `@google/genai` — Gemini structured-output orchestration
 - `ethers` v6 — ERC-8004 on-chain agent identity (Sepolia testnet)
 
 ## Build
@@ -68,4 +68,3 @@
 - `tsup` for chat-ui
 - `esbuild` for extension
 - `next build && next export` for web (static export)
-

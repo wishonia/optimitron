@@ -6,12 +6,12 @@ Optomitron already has the core analysis and preference aggregation engines. Thi
 ## Objectives
 - Add a `@optomitron/storage` package that stores analysis and aggregation snapshots as linked Storacha/IPFS JSON payloads with verifiable history chains.
 - Add a `@optomitron/hypercerts` package that maps Optomitron and Wishocracy outputs into Hypercerts-compatible AT Protocol records.
-- Add a `@optomitron/agent` package built on Google ADK (`@google/adk`) that discovers preference gaps, plans analyses, executes internal tools via Gemini-orchestrated `FunctionTool`s, verifies outputs, and publishes results as hypercerts stored on Storacha. Includes ERC-8004 on-chain agent identity.
+- Add a `@optomitron/agent` package that uses Gemini structured-output reasoning to discover preference gaps, plan analyses, interpret results, verify outputs, and publish hypercerts and Storacha receipts. Includes ERC-8004 identity and reputation helper integration.
 
 ## Scope
 In scope:
 - Pure library packages with Zod schemas, mapping helpers, injected network adapters, and tests.
-- Google ADK agent with `LlmAgent` + `FunctionTool` definitions wrapping the Optomitron pipeline.
+- A typed Gemini orchestration layer with injected adapters wrapping the Optomitron pipeline.
 - Agent manifest/log generation plus ERC-8004 helper wrappers for identity and reputation calls.
 
 Out of scope (v1):
@@ -27,5 +27,5 @@ Out of scope (v1):
 ## Acceptance Criteria
 - New packages build under the monorepo and expose typed public APIs.
 - Core functions are covered by package tests.
-- Agent execution (via Google ADK `LlmAgent`) produces a structured run log and manifest.
+- Agent execution produces a structured run log and manifest through injected adapters and Gemini reasoning.
 - External network operations are abstracted behind adapters so tests run without credentials.

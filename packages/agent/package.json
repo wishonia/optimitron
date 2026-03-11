@@ -11,6 +11,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@google/genai": "^1.30.0",
     "@optomitron/data": "workspace:*",
     "@optomitron/hypercerts": "workspace:*",
     "@optomitron/obg": "workspace:*",
