@@ -26,7 +26,7 @@ async function getSessionIdentity(userId: string) {
   });
 }
 
-const providers = [
+const providers: NextAuthOptions["providers"] = [
   EmailProvider({
     from: process.env.EMAIL_FROM,
     maxAge: 24 * 60 * 60,

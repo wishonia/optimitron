@@ -1,4 +1,3 @@
-import type { Theme } from "next-auth/core/types";
 import type { SendVerificationRequestParams } from "next-auth/providers/email";
 import { sendResendEmail } from "@/lib/resend";
 
@@ -11,7 +10,11 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
-function buildMagicLinkHtml(url: string, host: string, theme: Theme) {
+function buildMagicLinkHtml(
+  url: string,
+  host: string,
+  theme: SendVerificationRequestParams["theme"],
+) {
   const escapedUrl = escapeHtml(url);
   const escapedHost = escapeHtml(host);
   const brandColor = theme.brandColor || "#111827";

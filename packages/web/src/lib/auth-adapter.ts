@@ -12,7 +12,7 @@ export function createAuthAdapter(): Adapter {
 
   return {
     ...adapter,
-    async createUser(user) {
+    async createUser(user: Parameters<NonNullable<Adapter["createUser"]>>[0]) {
       const username = await createUniqueUsername(getUserHandleSeed(user.name, user.email));
       const referralCode = await createUniqueReferralCode();
 

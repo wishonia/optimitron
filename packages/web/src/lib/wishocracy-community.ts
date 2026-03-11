@@ -97,7 +97,10 @@ function buildTopCategories(
 function dedupeLatestAllocations(
   allocations: WishocraticStoredAllocation[],
 ): Map<string, Array<WishocraticComparisonInput & { categoryA: BudgetCategoryId; categoryB: BudgetCategoryId }>> {
-  const latestByUserPair = new Map<string, WishocraticStoredAllocation>();
+  const latestByUserPair = new Map<
+    string,
+    WishocraticStoredAllocation & { categoryA: BudgetCategoryId; categoryB: BudgetCategoryId }
+  >();
 
   for (const allocation of allocations) {
     const normalized = normalizeWishocraticComparison(allocation);

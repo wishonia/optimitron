@@ -4,15 +4,33 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { AuthForm } from "@/components/auth/AuthForm";
 
+function getAuthErrorMessage(error: string | null) {
+  switch (error) {
+    case "OAuthAccountNotLinked":
+      return "That email is already attached to another sign-in method.";
+    case "AccessDenied":
+      return "Access denied.";
+    case "Verification":
+      return "That magic link is invalid or has expired.";
+    default:
+      return null;
+  }
+}
+
 function SignInContent() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams?.get("callbackUrl") || "/vote";
   const referralCode = searchParams?.get("ref") || null;
+  const initialError = getAuthErrorMessage(searchParams?.get("error") || null);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-yellow-300">
       <div className="w-full max-w-md">
-        <AuthForm callbackUrl={callbackUrl} referralCode={referralCode} />
+        <AuthForm
+          callbackUrl={callbackUrl}
+          referralCode={referralCode}
+          initialError={initialError}
+        />
       </div>
     </div>
   );

@@ -19,6 +19,7 @@ type AuthMode = "signup" | "signin";
 interface AuthFormProps {
   callbackUrl?: string;
   referralCode?: string | null;
+  initialError?: string | null;
   onSuccess?: () => void;
   compact?: boolean;
 }
@@ -26,6 +27,7 @@ interface AuthFormProps {
 export function AuthForm({
   callbackUrl = "/vote",
   referralCode,
+  initialError = null,
   onSuccess,
   compact = false,
 }: AuthFormProps) {
@@ -36,16 +38,50 @@ export function AuthForm({
   const [password, setPassword] = useState("");
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(true);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [infoMessage, setInfoMessage] = useState("");
+  const [pendingAction, setPendingAction] = useState<"credentials" | "google" | "magic" | null>(null);
 
   const isSignup = mode === "signup";
+  const isLoading = pendingAction !== null;
   const fieldClassName = compact ? "h-11 text-base" : "h-12 text-base";
   const buttonClassName = compact ? "h-11 text-sm" : "h-12 text-base";
+  const googleEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED !== "false";
+  const magicLinkEnabled = process.env.NEXT_PUBLIC_MAGIC_LINK_ENABLED !== "false";
 
   useEffect(() => {
     setName(storage.getSignupName() ?? "");
     setNewsletterSubscribed(storage.getSignupSubscribe() ?? true);
   }, []);
+
+  useEffect(() => {
+    if (!initialError) {
+      return;
+    }
+
+    setError(initialError);
+  }, [initialError]);
+
+  function persistAuthContext() {
+    if (referralCode) {
+      storage.setSignupReferral(referralCode);
+    } else {
+      storage.clearSignupReferral();
+    }
+
+    if (isSignup) {
+      if (name.trim()) {
+        storage.setSignupName(name.trim());
+      } else {
+        storage.clearSignupName();
+      }
+
+      storage.setSignupSubscribe(newsletterSubscribed);
+      return;
+    }
+
+    storage.clearSignupName();
+    storage.clearSignupSubscribe();
+  }
 
   async function completeAuth() {
     const result = await signIn("credentials", {
@@ -67,7 +103,8 @@ export function AuthForm({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    setIsLoading(true);
+    setInfoMessage("");
+    setPendingAction("credentials");
 
     try {
       if (!email.trim()) {
@@ -83,15 +120,7 @@ export function AuthForm({
           throw new Error("Password must be at least 8 characters.");
         }
 
-        if (name.trim()) {
-          storage.setSignupName(name.trim());
-        }
-
-        if (referralCode) {
-          storage.setSignupReferral(referralCode);
-        }
-
-        storage.setSignupSubscribe(newsletterSubscribed);
+        persistAuthContext();
 
         const signupResponse = await fetch("/api/auth/signup", {
           method: "POST",
@@ -120,7 +149,57 @@ export function AuthForm({
         caughtError instanceof Error ? caughtError.message : "Authentication failed. Please try again.",
       );
     } finally {
-      setIsLoading(false);
+      setPendingAction(null);
+    }
+  }
+
+  async function handleMagicLink() {
+    setError("");
+    setInfoMessage("");
+    setPendingAction("magic");
+
+    try {
+      if (!email.trim()) {
+        throw new Error("Email is required for a magic link.");
+      }
+
+      persistAuthContext();
+
+      const result = await signIn("email", {
+        email: email.trim(),
+        callbackUrl,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error("Unable to send a magic link right now.");
+      }
+
+      setInfoMessage("Check your email for a magic link.");
+    } catch (caughtError) {
+      logger.error("Magic-link request failed", caughtError);
+      setError(
+        caughtError instanceof Error ? caughtError.message : "Unable to send a magic link right now.",
+      );
+    } finally {
+      setPendingAction(null);
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    setError("");
+    setInfoMessage("");
+    setPendingAction("google");
+
+    try {
+      persistAuthContext();
+      await signIn("google", { callbackUrl });
+    } catch (caughtError) {
+      logger.error("Google sign-in failed", caughtError);
+      setError(
+        caughtError instanceof Error ? caughtError.message : "Unable to continue with Google.",
+      );
+      setPendingAction(null);
     }
   }
 
@@ -145,6 +224,7 @@ export function AuthForm({
           onClick={() => {
             setMode("signup");
             setError("");
+            setInfoMessage("");
           }}
         >
           Sign Up
@@ -156,6 +236,7 @@ export function AuthForm({
           onClick={() => {
             setMode("signin");
             setError("");
+            setInfoMessage("");
           }}
         >
           Sign In
@@ -163,6 +244,7 @@ export function AuthForm({
       </div>
 
       {error ? <AlertCard type="error" message={error} className="mb-4" /> : null}
+      {infoMessage ? <AlertCard type="info" message={infoMessage} className="mb-4" /> : null}
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         {isSignup ? (
@@ -238,9 +320,51 @@ export function AuthForm({
           disabled={isLoading}
           className={`w-full font-black uppercase ${buttonClassName}`}
         >
-          {isLoading ? "Working..." : isSignup ? "Create Account" : "Sign In"}
+          {pendingAction === "credentials"
+            ? "Working..."
+            : isSignup
+              ? "Create Account"
+              : "Sign In"}
         </Button>
       </form>
+
+      {magicLinkEnabled || googleEnabled ? (
+        <div className="mt-5 space-y-3">
+          <div className="flex items-center gap-3 text-xs font-bold uppercase text-muted-foreground">
+            <span className="h-px flex-1 bg-border" />
+            <span>or</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+
+          {magicLinkEnabled ? (
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isLoading}
+              className={`w-full font-bold uppercase ${buttonClassName}`}
+              onClick={() => {
+                void handleMagicLink();
+              }}
+            >
+              {pendingAction === "magic" ? "Sending Link..." : "Email Me a Magic Link"}
+            </Button>
+          ) : null}
+
+          {googleEnabled ? (
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isLoading}
+              className={`w-full font-bold uppercase ${buttonClassName}`}
+              onClick={() => {
+                void handleGoogleSignIn();
+              }}
+            >
+              {pendingAction === "google" ? "Redirecting..." : "Continue with Google"}
+            </Button>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }
