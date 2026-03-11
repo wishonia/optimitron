@@ -113,14 +113,6 @@ export default function Navbar() {
               personhoodProvider={session?.user?.personhoodProvider ?? null}
               personhoodVerified={Boolean(session?.user?.personhoodVerified)}
             />
-            <a
-              href="https://github.com/mikepsinn/optomitron"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-bold px-4 py-2 border-2 border-black bg-white hover:bg-black hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
-            >
-              GitHub ↗
-            </a>
           </div>
 
           <button
@@ -191,14 +183,6 @@ export default function Navbar() {
                 Sign Out
               </button>
             ) : null}
-            <a
-              href="https://github.com/mikepsinn/optomitron"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-sm font-bold px-3 py-2 border-2 border-black transition-all hover:bg-black hover:text-white"
-            >
-              GitHub ↗
-            </a>
           </div>
         </div>
       ) : null}

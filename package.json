@@ -13,7 +13,9 @@
     "packages/*"
   ],
   "scripts": {
+    "dev": "pnpm --filter @optomitron/web dev",
     "build": "pnpm -r build",
+    "postinstall": "pnpm --filter @optomitron/db prisma:generate",
     "test": "pnpm -r test",
     "lint": "eslint 'packages/*/src/**/*.ts'",
     "typecheck": "pnpm -r exec tsc --noEmit",
