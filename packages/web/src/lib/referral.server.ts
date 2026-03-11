@@ -9,7 +9,12 @@ export async function findUserByUsernameOrReferralCode(identifier: string | null
   return prisma.user.findFirst({
     where: {
       OR: [
-        { referralCode: value },
+        {
+          referralCode: {
+            equals: value,
+            mode: "insensitive",
+          },
+        },
         {
           username: {
             equals: value,

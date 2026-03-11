@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { AlertCard } from "@/components/ui/alert-card";
@@ -31,18 +31,21 @@ export function AuthForm({
 }: AuthFormProps) {
   const router = useRouter();
   const [mode, setMode] = useState<AuthMode>("signup");
-  const [name, setName] = useState(storage.getSignupName() ?? "");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [newsletterSubscribed, setNewsletterSubscribed] = useState(
-    storage.getSignupSubscribe() ?? true,
-  );
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(true);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const isSignup = mode === "signup";
   const fieldClassName = compact ? "h-11 text-base" : "h-12 text-base";
   const buttonClassName = compact ? "h-11 text-sm" : "h-12 text-base";
+
+  useEffect(() => {
+    setName(storage.getSignupName() ?? "");
+    setNewsletterSubscribed(storage.getSignupSubscribe() ?? true);
+  }, []);
 
   async function completeAuth() {
     const result = await signIn("credentials", {

@@ -36,7 +36,6 @@ export function WishocracyAuthPromptCard({
         >
           <Card className="border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="mb-6 text-center">
-              <div className="mb-4 text-4xl">ALLOCATE</div>
               <h3 className="text-xl font-black uppercase">
                 {comparisonsCount} Comparisons Saved Locally
               </h3>

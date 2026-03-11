@@ -1,0 +1,14 @@
+{
+  "id": "wishocracy-auth-v1",
+  "title": "Add Wishocracy Account Persistence to Web",
+  "status": "active",
+  "owner": "codex",
+  "priority": "P1",
+  "effort": "M",
+  "agentTier": "Codex",
+  "dependencies": [
+    "web-integration-v2"
+  ],
+  "createdAt": "2026-03-11",
+  "updatedAt": "2026-03-11"
+}

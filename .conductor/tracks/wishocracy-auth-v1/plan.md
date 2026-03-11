@@ -1,0 +1,13 @@
+# Plan: Add Wishocracy Account Persistence to Web
+
+1. [x] Extend the Prisma schema for web auth and saved Wishocracy state.
+   - Added `User`, `Vote`, `WishocraticAllocation`, `WishocraticCategorySelection`, and `VoteAnswer`.
+   - Updated `@optomitron/db` Zod validators and tests for the new models.
+2. [x] Add server auth and signup plumbing in the web package.
+   - Added `next-auth` credentials config, Prisma helpers, signup route, session typing, and referral utilities.
+3. [x] Replace guest-only vote UI with auth-aware persistence.
+   - Reworked the vote state hook to load database state, sync guest progress, and keep referral prompts/session data in the UI.
+4. [x] Add completion/share/account UX for saved allocations.
+   - Replaced stub auth cards, added referral-link sharing, and exposed session controls in the navbar.
+5. [x] Document the runtime configuration needed for local auth.
+   - Updated `packages/web/.env.example` with database/auth base URL settings.

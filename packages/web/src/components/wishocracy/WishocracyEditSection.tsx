@@ -45,7 +45,6 @@ export function WishocracyEditSection({
     const newCategories = new Set(editedCategories)
 
     if (selected) {
-      console.log(`[WishocracyEdit] Enabling category: ${categoryId}`)
       newCategories.add(categoryId)
       // Remove from delete list if re-adding
       const newToDelete = new Set(categoriesToDelete)
@@ -54,8 +53,6 @@ export function WishocracyEditSection({
 
       // Generate missing pairs involving this newly enabled category
       const otherSelectedCategories = Array.from(newCategories).filter(cat => cat !== categoryId)
-      console.log(`[WishocracyEdit] Other selected categories:`, otherSelectedCategories)
-      console.log(`[WishocracyEdit] Current editedComparisons count:`, editedComparisons.length)
 
       const newPairs: Array<{
         categoryA: string
@@ -72,8 +69,6 @@ export function WishocracyEditSection({
           (comp.categoryA === otherCat && comp.categoryB === categoryId)
         )
 
-        console.log(`[WishocracyEdit] Checking pair ${categoryId}-${otherCat}: exists=${pairExists}`)
-
         if (!pairExists) {
           // Add new pair at 50/50
           newPairs.push({
@@ -85,17 +80,11 @@ export function WishocracyEditSection({
         }
       }
 
-      console.log(`[WishocracyEdit] Created ${newPairs.length} new pairs:`, newPairs)
-
       // Add new pairs to comparisons
       if (newPairs.length > 0) {
-        setEditedComparisons(prev => {
-          console.log(`[WishocracyEdit] Adding ${newPairs.length} pairs to ${prev.length} existing`)
-          return [...prev, ...newPairs]
-        })
+        setEditedComparisons(prev => [...prev, ...newPairs])
       }
     } else {
-      console.log(`[WishocracyEdit] Disabling category: ${categoryId}`)
       newCategories.delete(categoryId)
       // Mark for deletion
       const newToDelete = new Set(categoriesToDelete)
