@@ -56,7 +56,7 @@ export function WishocracyStatusBar({
     <div className="mx-auto mb-8 max-w-2xl" data-auth-prompt>
       {isAuthenticated ? (
         <p className="text-center text-sm text-muted-foreground">
-          Signed in. Your allocations are saving automatically.
+          Signed in. Your allocations are saving automatically and your referral link is ready below.
         </p>
       ) : (
         <div className="flex flex-col items-center justify-center gap-3 text-center sm:flex-row sm:text-left">

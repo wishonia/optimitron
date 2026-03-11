@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { WishocracyLandingSection } from "@/components/wishocracy/WishocracyLandingSection";
 
 const featuredFindings = [
   {
@@ -109,6 +110,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <WishocracyLandingSection />
 
       {/* The Cost of Inaction */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">

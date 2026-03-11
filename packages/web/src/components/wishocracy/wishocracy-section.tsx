@@ -12,6 +12,7 @@ import { WishocracyCompletionCard } from "./WishocracyCompletionCard";
 import { WishocracyEditSection } from "./WishocracyEditSection";
 import { WishocracyIntroCard } from "./WishocracyIntroCard";
 import { WishocracyLoadingCard } from "./WishocracyLoadingCard";
+import { WishocracyReferralCard } from "./WishocracyReferralCard";
 import { WishocracyResetButton } from "./WishocracyResetButton";
 import { WishocracyStatusBar } from "./WishocracyStatusBar";
 
@@ -64,6 +65,11 @@ export default function WishocracySection() {
           isAuthenticated={isAuthenticated}
           referralCode={referralCode}
           onShowAuthPrompt={() => handlers.setShowAuthPrompt(true)}
+        />
+
+        <WishocracyReferralCard
+          show={isAuthenticated && !state.isLoading}
+          shareUrl={shareUrl}
         />
 
         <AnimatePresence mode="wait">

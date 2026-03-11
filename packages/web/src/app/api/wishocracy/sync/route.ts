@@ -3,6 +3,11 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-utils";
 import { calculateAllocationsFromPairwise } from "@/lib/wishocracy-calculations";
 import { BUDGET_CATEGORIES, BudgetCategoryId } from "@/lib/wishocracy-data";
+import {
+  isBudgetCategoryId,
+  isValidWishocraticComparison,
+  normalizeWishocraticComparison,
+} from "@/lib/wishocracy-community";
 
 interface ComparisonData {
   categoryA: string;
@@ -10,31 +15,6 @@ interface ComparisonData {
   allocationA: number;
   allocationB: number;
   timestamp: string;
-}
-
-function isValidAllocationPair(allocationA: number, allocationB: number): boolean {
-  const sum = allocationA + allocationB;
-  const inRange =
-    allocationA >= 0 &&
-    allocationA <= 100 &&
-    allocationB >= 0 &&
-    allocationB <= 100;
-
-  return inRange && (sum === 100 || sum === 0);
-}
-
-function normalizeComparison(comparison: ComparisonData): ComparisonData {
-  if (comparison.categoryA <= comparison.categoryB) {
-    return comparison;
-  }
-
-  return {
-    ...comparison,
-    categoryA: comparison.categoryB,
-    categoryB: comparison.categoryA,
-    allocationA: comparison.allocationB,
-    allocationB: comparison.allocationA,
-  };
 }
 
 export async function POST(req: NextRequest) {
@@ -57,6 +37,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (selectedCategories?.length) {
+      if (!selectedCategories.every(isBudgetCategoryId)) {
+        return NextResponse.json({ error: "Invalid category selections." }, { status: 400 });
+      }
+
       const allCategories = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
       await prisma.wishocraticCategorySelection.deleteMany({ where: { userId } });
       await prisma.wishocraticCategorySelection.createMany({
@@ -72,19 +56,18 @@ export async function POST(req: NextRequest) {
     let finalAllocations: Record<string, number> = {};
 
     if (comparisons?.length) {
-      for (const comparison of comparisons) {
-        if (!isValidAllocationPair(comparison.allocationA, comparison.allocationB)) {
-          return NextResponse.json(
-            {
-              error: `Invalid allocation: ${comparison.allocationA} + ${comparison.allocationB}`,
-            },
-            { status: 400 },
-          );
-        }
+      const normalizedComparisons = comparisons.map(normalizeWishocraticComparison);
+
+      if (!normalizedComparisons.every(isValidWishocraticComparison)) {
+        return NextResponse.json(
+          { error: "Allocations must reference valid categories and sum to 100 or 0." },
+          { status: 400 },
+        );
       }
 
-      const normalizedComparisons = comparisons.map(normalizeComparison);
       finalAllocations = calculateAllocationsFromPairwise(normalizedComparisons);
+
+      await prisma.wishocraticAllocation.deleteMany({ where: { userId } });
 
       const createResult = await prisma.wishocraticAllocation.createMany({
         data: normalizedComparisons.map((comparison) => ({
@@ -94,7 +77,6 @@ export async function POST(req: NextRequest) {
           allocationA: comparison.allocationA,
           allocationB: comparison.allocationB,
         })),
-        skipDuplicates: true,
       });
 
       syncedComparisons = createResult.count;

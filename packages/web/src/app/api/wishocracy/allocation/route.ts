@@ -1,52 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-utils";
-
-function isValidAllocationPair(allocationA: number, allocationB: number): boolean {
-  const sum = allocationA + allocationB;
-  const inRange =
-    allocationA >= 0 &&
-    allocationA <= 100 &&
-    allocationB >= 0 &&
-    allocationB <= 100;
-
-  return inRange && (sum === 100 || sum === 0);
-}
+import {
+  isValidWishocraticComparison,
+  normalizeWishocraticComparison,
+} from "@/lib/wishocracy-community";
 
 export async function POST(req: NextRequest) {
   try {
     const { userId } = await requireAuth();
     const body = await req.json();
-    let { categoryA, categoryB, allocationA, allocationB } = body;
+    const normalized = normalizeWishocraticComparison(body);
 
-    if (!categoryA || !categoryB || allocationA === undefined || allocationB === undefined) {
-      return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
-    }
-
-    if (!isValidAllocationPair(allocationA, allocationB)) {
+    if (!isValidWishocraticComparison(normalized)) {
       return NextResponse.json(
-        { error: "Allocations must stay between 0 and 100 and sum to either 100 or 0." },
+        { error: "Allocations must reference valid categories and sum to 100 or 0." },
         { status: 400 },
       );
     }
 
-    if (categoryA > categoryB) {
-      [categoryA, categoryB] = [categoryB, categoryA];
-      [allocationA, allocationB] = [allocationB, allocationA];
-    }
-
     const existing = await prisma.wishocraticAllocation.findFirst({
-      where: { userId, categoryA, categoryB },
+      where: {
+        userId,
+        categoryA: normalized.categoryA,
+        categoryB: normalized.categoryB,
+      },
     });
 
     if (existing) {
       await prisma.wishocraticAllocation.update({
         where: { id: existing.id },
-        data: { allocationA, allocationB },
+        data: {
+          allocationA: normalized.allocationA,
+          allocationB: normalized.allocationB,
+        },
       });
     } else {
       await prisma.wishocraticAllocation.create({
-        data: { userId, categoryA, categoryB, allocationA, allocationB },
+        data: {
+          userId,
+          categoryA: normalized.categoryA,
+          categoryB: normalized.categoryB,
+          allocationA: normalized.allocationA,
+          allocationB: normalized.allocationB,
+        },
       });
     }
 

@@ -2,26 +2,12 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth-utils";
 import { createLogger } from "@/lib/logger";
+import {
+  isValidWishocraticComparison,
+  normalizeWishocraticComparison,
+} from "@/lib/wishocracy-community";
 
 const logger = createLogger("api/wishocracy/allocations");
-
-function normalizeComparison(comparison: {
-  categoryA: string;
-  categoryB: string;
-  allocationA: number;
-  allocationB: number;
-}) {
-  if (comparison.categoryA <= comparison.categoryB) {
-    return comparison;
-  }
-
-  return {
-    categoryA: comparison.categoryB,
-    categoryB: comparison.categoryA,
-    allocationA: comparison.allocationB,
-    allocationB: comparison.allocationA,
-  };
-}
 
 export async function GET() {
   try {
@@ -44,8 +30,12 @@ export async function GET() {
 
     const seen = new Map<string, (typeof dbAllocations)[number]>();
     for (const allocation of dbAllocations) {
-      const [categoryA, categoryB] = [allocation.categoryA, allocation.categoryB].sort();
-      const key = `${categoryA}_${categoryB}`;
+      const normalized = normalizeWishocraticComparison(allocation);
+      if (!isValidWishocraticComparison(normalized)) {
+        continue;
+      }
+
+      const key = `${normalized.categoryA}_${normalized.categoryB}`;
       const existing = seen.get(key);
       if (!existing || allocation.updatedAt > existing.updatedAt) {
         seen.set(key, allocation);
@@ -53,14 +43,12 @@ export async function GET() {
     }
 
     const allocations = Array.from(seen.values()).map((allocation) => {
-      const [categoryA, categoryB] = [allocation.categoryA, allocation.categoryB].sort();
-      const needsSwap = categoryA !== allocation.categoryA;
-
+      const normalized = normalizeWishocraticComparison(allocation);
       return {
-        categoryA,
-        categoryB,
-        allocationA: needsSwap ? allocation.allocationB : allocation.allocationA,
-        allocationB: needsSwap ? allocation.allocationA : allocation.allocationB,
+        categoryA: normalized.categoryA,
+        categoryB: normalized.categoryB,
+        allocationA: normalized.allocationA,
+        allocationB: normalized.allocationB,
         timestamp: allocation.updatedAt.toISOString(),
       };
     });
@@ -103,7 +91,14 @@ export async function PATCH(req: Request) {
     }
 
     if (updatedComparisons?.length) {
-      const normalizedComparisons = updatedComparisons.map(normalizeComparison);
+      const normalizedComparisons = updatedComparisons.map(normalizeWishocraticComparison);
+
+      if (!normalizedComparisons.every(isValidWishocraticComparison)) {
+        return NextResponse.json(
+          { error: "Allocations must reference valid categories and sum to 100 or 0." },
+          { status: 400 },
+        );
+      }
 
       for (const comparison of normalizedComparisons) {
         await prisma.wishocraticAllocation.deleteMany({

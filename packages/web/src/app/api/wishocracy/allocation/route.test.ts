@@ -61,6 +61,9 @@ describe("wishocracy allocation route", () => {
     );
 
     expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({
+      error: "Allocations must reference valid categories and sum to 100 or 0.",
+    });
     expect(mocks.create).not.toHaveBeenCalled();
     expect(mocks.update).not.toHaveBeenCalled();
   });

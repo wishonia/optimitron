@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({
   requireAuth: vi.fn(),
   categoryDeleteMany: vi.fn(),
   categoryCreateMany: vi.fn(),
+  allocationDeleteMany: vi.fn(),
   allocationCreateMany: vi.fn(),
 }));
 
@@ -19,6 +20,7 @@ vi.mock("@/lib/prisma", () => ({
       createMany: mocks.categoryCreateMany,
     },
     wishocraticAllocation: {
+      deleteMany: mocks.allocationDeleteMany,
       createMany: mocks.allocationCreateMany,
     },
   },
@@ -31,6 +33,7 @@ describe("wishocracy sync route", () => {
     mocks.requireAuth.mockReset();
     mocks.categoryDeleteMany.mockReset();
     mocks.categoryCreateMany.mockReset();
+    mocks.allocationDeleteMany.mockReset();
     mocks.allocationCreateMany.mockReset();
   });
 
@@ -84,6 +87,9 @@ describe("wishocracy sync route", () => {
     );
 
     expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({
+      error: "Allocations must reference valid categories and sum to 100 or 0.",
+    });
     expect(mocks.allocationCreateMany).not.toHaveBeenCalled();
   });
 
@@ -147,6 +153,9 @@ describe("wishocracy sync route", () => {
         },
       ]),
     });
+    expect(mocks.allocationDeleteMany).toHaveBeenCalledWith({
+      where: { userId: "user_1" },
+    });
     expect(mocks.allocationCreateMany).toHaveBeenCalledWith({
       data: [
         {
@@ -157,7 +166,6 @@ describe("wishocracy sync route", () => {
           allocationB: 75,
         },
       ],
-      skipDuplicates: true,
     });
   });
 
@@ -186,6 +194,7 @@ describe("wishocracy sync route", () => {
     expect(body.syncedSelections).toBe(1);
     expect(body.syncedComparisons).toBe(0);
     expect(body.finalAllocations).toEqual({});
+    expect(mocks.allocationDeleteMany).not.toHaveBeenCalled();
     expect(mocks.allocationCreateMany).not.toHaveBeenCalled();
   });
 });
