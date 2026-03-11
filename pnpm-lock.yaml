@@ -41,6 +41,9 @@ importers:
       '@optomitron/opg':
         specifier: workspace:*
         version: link:../opg
+      '@optomitron/optimizer':
+        specifier: workspace:*
+        version: link:../optimizer
       '@optomitron/storage':
         specifier: workspace:*
         version: link:../storage
