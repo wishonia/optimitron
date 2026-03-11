@@ -17,6 +17,9 @@
 - `@optomitron/opg` — Optimal Policy Generator (depends on optimizer)
 - `@optomitron/obg` — Optimal Budget Generator (depends on optimizer)
 - `@optomitron/data` — Data fetchers + importers + static datasets (depends on optimizer for TimeSeries type)
+- `@optomitron/storage` — Storacha/IPFS content-addressed snapshot storage with CID history chains
+- `@optomitron/hypercerts` — Hypercerts AT Protocol record mapping (activity claims, measurements, evaluations)
+- `@optomitron/agent` — Autonomous policy analyst agent (Google ADK + Gemini + ERC-8004)
 
 ## Data Layer
 - Prisma schema → single source of truth for types
@@ -53,6 +56,12 @@
 - **YoY percent change** for causal direction detection (strips monotonic trends)
 - **N-of-1 longitudinal** over cross-sectional analysis
 - **UCUM standardization target**: unit catalog and ingestion pipeline should converge on UCUM-coded units
+
+## Decentralized Infrastructure
+- `@storacha/client` — Content-addressed storage (requires Node 22+)
+- `@atproto/oauth-client-node`, `@atproto/jwk-jose`, `@atproto/api` — AT Protocol (Hypercerts)
+- `@google/adk` — Google Agent Development Kit (autonomous agent orchestration with Gemini)
+- `ethers` v6 — ERC-8004 on-chain agent identity (Sepolia testnet)
 
 ## Build
 - `tsc` for library builds

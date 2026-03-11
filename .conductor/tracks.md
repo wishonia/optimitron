@@ -13,6 +13,7 @@
 | data-infrastructure-v2 | OECD + Direct Outcomes + FRED Improvements | **active** | P1 | wishonia | 2026-02-13 |
 | testing-strategy-v1 | Hypothesis-Driven Tests for Findings | **active** | P1 | wishonia | 2026-02-13 |
 | optimizer-core-v2 | Diminishing Returns + Minimum Effective Dose | **done** | - | wishonia | 2026-02-13 |
+| pl-genesis-integrations-v1 | Hypercerts, Storacha, autonomous agent (ADK + ERC-8004) | **active** | **P0** | codex | 2026-03-11 |
 | funding-readiness-v1 | Funding readiness pack | archived | - | team | 2026-02-07 |
 | misconception-analyses-v1 | Policy misconception analyses | archived | - | wishonia | 2026-02-07 |
 | optimal-budget-v1 | Original optimal budget analysis | archived | - | wishonia | 2026-02-07 |
