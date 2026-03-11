@@ -5,7 +5,12 @@ import {
   type StoredSnapshotUpload,
   type WishocracyAggregationSnapshot,
 } from './types.js';
-import { uploadJson } from './client.js';
+import {
+  findLatestStoredSnapshot,
+  uploadJson,
+  type StorachaListClient,
+  type StorachaUploadClient,
+} from './client.js';
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -23,10 +28,28 @@ export function createAggregationSnapshot(
 }
 
 export async function storeAggregation(
-  client: { uploadFile(file: Blob): Promise<unknown> },
+  client: StorachaUploadClient,
   input: CreateWishocracyAggregationInput,
 ): Promise<StoredSnapshotUpload<WishocracyAggregationSnapshot>> {
   const snapshot = createAggregationSnapshot(input);
   const cid = await uploadJson(client, snapshot);
   return { cid, snapshot };
+}
+
+export async function storeLinkedAggregation(
+  client: StorachaUploadClient & StorachaListClient,
+  input: CreateWishocracyAggregationInput,
+  fetchImpl: typeof fetch = fetch,
+): Promise<StoredSnapshotUpload<WishocracyAggregationSnapshot>> {
+  const latestSnapshot = input.previousCid
+    ? null
+    : await findLatestStoredSnapshot(client, fetchImpl, {
+      jurisdictionId: input.jurisdictionId,
+      type: 'wishocracy-aggregation',
+    });
+
+  return storeAggregation(client, {
+    ...input,
+    previousCid: input.previousCid ?? latestSnapshot?.cid,
+  });
 }

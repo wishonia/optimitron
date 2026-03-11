@@ -5,7 +5,12 @@ import {
   type OptomitronPolicyAnalysisSnapshot,
   type StoredSnapshotUpload,
 } from './types.js';
-import { uploadJson } from './client.js';
+import {
+  findLatestStoredSnapshot,
+  uploadJson,
+  type StorachaListClient,
+  type StorachaUploadClient,
+} from './client.js';
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -23,10 +28,28 @@ export function createPolicyAnalysisSnapshot(
 }
 
 export async function storePolicyAnalysis(
-  client: { uploadFile(file: Blob): Promise<unknown> },
+  client: StorachaUploadClient,
   input: CreateOptomitronPolicyAnalysisInput,
 ): Promise<StoredSnapshotUpload<OptomitronPolicyAnalysisSnapshot>> {
   const snapshot = createPolicyAnalysisSnapshot(input);
   const cid = await uploadJson(client, snapshot);
   return { cid, snapshot };
+}
+
+export async function storeLinkedPolicyAnalysis(
+  client: StorachaUploadClient & StorachaListClient,
+  input: CreateOptomitronPolicyAnalysisInput,
+  fetchImpl: typeof fetch = fetch,
+): Promise<StoredSnapshotUpload<OptomitronPolicyAnalysisSnapshot>> {
+  const latestSnapshot = input.previousCid
+    ? null
+    : await findLatestStoredSnapshot(client, fetchImpl, {
+      jurisdictionId: input.jurisdictionId,
+      type: 'optomitron-policy-analysis',
+    });
+
+  return storePolicyAnalysis(client, {
+    ...input,
+    previousCid: input.previousCid ?? latestSnapshot?.cid,
+  });
 }

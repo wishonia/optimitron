@@ -1,6 +1,10 @@
 import * as Storacha from '@storacha/client';
 import type { Client } from '@storacha/client';
-import { StoredSnapshotSchema, type StoredSnapshot } from './types.js';
+import {
+  StoredSnapshotSchema,
+  type StoredSnapshot,
+  type StoredSnapshotUpload,
+} from './types.js';
 
 export type StorachaClient = Client;
 export type StorachaCreateOptions = Parameters<typeof Storacha.create>[0];
@@ -16,6 +20,7 @@ export interface StorachaUploadClient {
 }
 
 export interface UploadListResponseLike {
+  cursor?: string;
   results: UploadListItemLike[];
 }
 
@@ -27,12 +32,65 @@ export interface StorachaListClient {
   };
 }
 
+export interface UploadListOptions {
+  maxPages?: number;
+  pageSize?: number;
+  signal?: AbortSignal;
+}
+
+export interface StoredSnapshotFilter {
+  jurisdictionId?: string;
+  type?: StoredSnapshot['type'];
+}
+
 function cidToString(value: unknown): string {
   const text = typeof value === 'string' ? value : String(value);
   if (!text || text === '[object Object]') {
     throw new Error('Unable to convert CID to string');
   }
   return text;
+}
+
+function matchesSnapshotFilter(
+  snapshot: StoredSnapshot,
+  filter: StoredSnapshotFilter,
+): boolean {
+  if (filter.type && snapshot.type !== filter.type) {
+    return false;
+  }
+
+  if (filter.jurisdictionId && snapshot.jurisdictionId !== filter.jurisdictionId) {
+    return false;
+  }
+
+  return true;
+}
+
+function getSnapshotTimestamp(snapshot: StoredSnapshot): number {
+  return new Date(snapshot.timestamp).getTime();
+}
+
+function compareSnapshotUploads(
+  left: StoredSnapshotUpload<StoredSnapshot>,
+  right: StoredSnapshotUpload<StoredSnapshot>,
+): number {
+  return getSnapshotTimestamp(right.snapshot) - getSnapshotTimestamp(left.snapshot);
+}
+
+function selectLatestSnapshotUpload(
+  uploads: StoredSnapshotUpload<StoredSnapshot>[],
+): StoredSnapshotUpload<StoredSnapshot> | null {
+  if (!uploads.length) {
+    return null;
+  }
+
+  const previousCids = new Set(
+    uploads.flatMap((upload) => (upload.snapshot.previousCid ? [upload.snapshot.previousCid] : [])),
+  );
+  const heads = uploads.filter((upload) => !previousCids.has(upload.cid));
+  const candidates = heads.length ? heads : uploads;
+
+  return [...candidates].sort(compareSnapshotUploads)[0] ?? null;
 }
 
 export function buildStorachaGatewayUrl(cid: string): string {
@@ -51,6 +109,19 @@ export async function createStorachaClient(
   return Storacha.create(options);
 }
 
+export function buildJurisdictionSpaceName(
+  jurisdictionId: string,
+  prefix = 'optomitron',
+): string {
+  const normalizedJurisdictionId = jurisdictionId
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  return `${prefix}-${normalizedJurisdictionId}`;
+}
+
 export async function loginToStoracha(
   client: { login(email: StorachaEmail): Promise<void> },
   email: StorachaEmail,
@@ -66,6 +137,14 @@ export async function createSpace(
   const did = space.did();
   await client.setCurrentSpace(did);
   return did;
+}
+
+export async function createJurisdictionSpace(
+  client: { createSpace(name?: string): Promise<{ did(): StorachaDid }>; setCurrentSpace(did: StorachaDid): Promise<void> },
+  jurisdictionId: string,
+  prefix?: string,
+): Promise<string> {
+  return createSpace(client, buildJurisdictionSpaceName(jurisdictionId, prefix));
 }
 
 export async function selectSpace(
@@ -102,10 +181,70 @@ export async function retrieveStoredSnapshot(
   return retrieveJson(cid, StoredSnapshotSchema, fetchImpl);
 }
 
+export async function tryRetrieveStoredSnapshot(
+  cid: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<StoredSnapshot | null> {
+  const response = await fetchImpl(buildStorachaGatewayUrl(cid));
+  if (!response.ok) {
+    throw new Error(`Storacha retrieve failed with ${response.status}`);
+  }
+
+  const payload = await response.json();
+  const parsed = StoredSnapshotSchema.safeParse(payload);
+  return parsed.success ? parsed.data : null;
+}
+
+export async function listUploadCids(
+  client: StorachaListClient,
+  options: UploadListOptions = {},
+): Promise<string[]> {
+  const uploadCids: string[] = [];
+  let cursor: string | undefined;
+  let pagesRead = 0;
+
+  do {
+    const response = await client.capability.upload.list({
+      cursor,
+      signal: options.signal,
+      size: options.pageSize,
+    });
+
+    uploadCids.push(...response.results.map((result) => cidToString(result.root)));
+    cursor = response.cursor;
+    pagesRead += 1;
+  } while (cursor && (!options.maxPages || pagesRead < options.maxPages));
+
+  return uploadCids;
+}
+
+export async function findLatestStoredSnapshot(
+  client: StorachaListClient,
+  fetchImpl: typeof fetch = fetch,
+  filter: StoredSnapshotFilter = {},
+  options: UploadListOptions = {},
+): Promise<StoredSnapshotUpload<StoredSnapshot> | null> {
+  const uploadCids = await listUploadCids(client, options);
+  const snapshotUploads = (
+    await Promise.all(
+      uploadCids.map(async (cid) => {
+        const snapshot = await tryRetrieveStoredSnapshot(cid, fetchImpl);
+        return snapshot ? { cid, snapshot } : null;
+      }),
+    )
+  ).filter(
+    (upload): upload is StoredSnapshotUpload<StoredSnapshot> =>
+      upload !== null && matchesSnapshotFilter(upload.snapshot, filter),
+  );
+
+  return selectLatestSnapshotUpload(snapshotUploads);
+}
+
 export async function getLatestUploadCid(
   client: StorachaListClient,
+  fetchImpl: typeof fetch = fetch,
+  filter: StoredSnapshotFilter = {},
+  options: UploadListOptions = {},
 ): Promise<string | null> {
-  const response = await client.capability.upload.list({ size: 1 });
-  const latest = response.results[0];
-  return latest ? cidToString(latest.root) : null;
+  return (await findLatestStoredSnapshot(client, fetchImpl, filter, options))?.cid ?? null;
 }

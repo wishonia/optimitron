@@ -10,9 +10,9 @@
 - [ ] Add package tests for mapping and publish flows.
 
 ## Phase 3: Storacha
-- [ ] Add linked snapshot schemas for Wishocracy and Optomitron payloads.
-- [ ] Add Storacha client wrapper and chain/history helpers.
-- [ ] Add package tests for upload/retrieve/history behavior.
+- [x] Add linked snapshot schemas for Wishocracy and Optomitron payloads.
+- [x] Add Storacha client wrapper and chain/history helpers.
+- [x] Add package tests for upload/retrieve/history behavior.
 
 ## Phase 4: Agent
 - [ ] Add manifest, log, guardrail, discovery, planning, execution, verification, and publish modules.

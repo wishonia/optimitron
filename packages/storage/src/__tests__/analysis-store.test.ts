@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   createPolicyAnalysisSnapshot,
   storePolicyAnalysis,
+  storeLinkedPolicyAnalysis,
 } from '../analysis-store.js';
 
 describe('analysis-store', () => {
@@ -51,5 +52,61 @@ describe('analysis-store', () => {
     expect(result.cid).toBe('bafyanalysis');
     expect(result.snapshot.type).toBe('optomitron-policy-analysis');
     expect(client.uploadFile).toHaveBeenCalledTimes(1);
+  });
+
+  it('auto-links policy analysis snapshots to the latest matching snapshot', async () => {
+    const client = {
+      capability: {
+        upload: {
+          list: vi.fn().mockResolvedValue({
+            results: [
+              { root: { toString: () => 'bafy-analysis-1' } },
+              { root: { toString: () => 'bafy-analysis-2' } },
+            ],
+          }),
+        },
+      },
+      uploadFile: vi.fn().mockResolvedValue('bafy-analysis-3'),
+    };
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          type: 'optomitron-policy-analysis',
+          timestamp: '2026-03-10T00:00:00.000Z',
+          jurisdictionId: 'us-federal',
+          policies: [],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          type: 'optomitron-policy-analysis',
+          timestamp: '2026-03-11T00:00:00.000Z',
+          jurisdictionId: 'us-federal',
+          policies: [],
+          previousCid: 'bafy-analysis-1',
+        }),
+      });
+
+    const result = await storeLinkedPolicyAnalysis(
+      client,
+      {
+        jurisdictionId: 'us-federal',
+        policies: [
+          {
+            name: 'Clinical Trial Reform',
+            grade: 'A',
+            welfareScore: 91,
+            recommendation: 'enact',
+          },
+        ],
+      },
+      fetchImpl as typeof fetch,
+    );
+
+    expect(result.snapshot.previousCid).toBe('bafy-analysis-2');
+    expect(result.cid).toBe('bafy-analysis-3');
   });
 });
