@@ -21,6 +21,9 @@
     "db:generate": "pnpm --filter @optomitron/db prisma generate",
     "db:migrate": "pnpm --filter @optomitron/db prisma migrate dev",
     "db:push": "pnpm --filter @optomitron/db prisma db push",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
     "prepare": "husky"
   },
   "devDependencies": {
