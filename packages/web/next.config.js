@@ -1,3 +1,11 @@
+const path = require("node:path");
+const { loadEnvConfig } = require("@next/env");
+
+// Load repo-root env first so the monorepo can share one .env/.env.example.
+loadEnvConfig(path.resolve(__dirname, "../.."));
+// Allow package-local env files to override when needed.
+loadEnvConfig(__dirname);
+
 /** @type {import('next').NextConfig} */
 const isStaticExport = process.env.NEXT_OUTPUT_EXPORT === 'true';
 

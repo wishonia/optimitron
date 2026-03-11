@@ -10,7 +10,7 @@ The local Postgres container listens on `localhost:5432` with:
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/optomitron
 ```
 
-This matches the root `.env.example` and `packages/web/.env.example`.
+This matches the root `.env.example`.
 
 ## Bootstrap
 
