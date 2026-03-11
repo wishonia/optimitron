@@ -15,6 +15,7 @@
     "@optomitron/hypercerts": "workspace:*",
     "@optomitron/obg": "workspace:*",
     "@optomitron/opg": "workspace:*",
+    "@optomitron/optimizer": "workspace:*",
     "@optomitron/storage": "workspace:*",
     "@optomitron/wishocracy": "workspace:*",
     "ethers": "^6.16.0",
