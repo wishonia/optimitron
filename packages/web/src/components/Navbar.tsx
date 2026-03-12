@@ -6,21 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import { PersonhoodStatusBadge } from "@/components/personhood/PersonhoodStatusBadge";
 import type { PersonhoodProviderValue } from "@/lib/personhood";
-
-const exploreLinks = [
-  { href: "/outcomes", label: "Outcome Hubs" },
-  { href: "/budget", label: "Optimal Budget" },
-  { href: "/policies", label: "Optimal Policies" },
-  { href: "/misconceptions", label: "Myth vs Data" },
-  { href: "/compare", label: "Compare Countries" },
-];
-
-const topLinks = [
-  { href: "/vote", label: "Wishocracy" },
-  { href: "/about", label: "About" },
-];
-
-const allLinks = [...exploreLinks, ...topLinks];
+import { exploreLinks, topLinks } from "@/lib/routes";
 
 function AccountLinks({
   isAuthenticated,
@@ -116,19 +102,27 @@ function ExploreDropdown({ pathname }: { pathname: string }) {
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-1 w-56 border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-50">
+        <div className="absolute top-full left-0 mt-1 w-72 border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] z-50">
           {exploreLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className={`block text-sm font-bold px-4 py-3 transition-colors ${
+              className={`block px-4 py-3 transition-colors ${
                 pathname === link.href
                   ? "bg-yellow-300 text-black"
                   : "text-black hover:bg-cyan-200"
               }`}
             >
-              {link.label}
+              <span className="text-sm font-bold flex items-center gap-2">
+                {link.emoji && <span>{link.emoji}</span>}
+                {link.label}
+              </span>
+              {link.description && (
+                <span className="text-xs text-black/50 block mt-0.5">
+                  {link.description}
+                </span>
+              )}
             </Link>
           ))}
         </div>
@@ -162,17 +156,24 @@ export default function Navbar() {
             <div className="hidden items-center gap-1 md:flex">
               <ExploreDropdown pathname={pathname} />
               {topLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-sm font-bold uppercase px-3 py-2 border-2 transition-all ${
-                    pathname === link.href
-                      ? "border-black bg-yellow-300 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                      : "border-transparent text-black hover:border-black hover:bg-cyan-200 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                  }`}
-                >
-                  {link.label}
-                </Link>
+                <div key={link.href} className="relative group">
+                  <Link
+                    href={link.href}
+                    className={`text-sm font-bold uppercase px-3 py-2 border-2 transition-all block ${
+                      pathname === link.href
+                        ? "border-black bg-yellow-300 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        : "border-transparent text-black hover:border-black hover:bg-cyan-200 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                    }`}
+                  >
+                    {link.emoji && <span className="mr-1">{link.emoji}</span>}
+                    {link.label}
+                  </Link>
+                  {link.description && (
+                    <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-1 w-52 rounded border-2 border-black bg-white px-3 py-2 text-xs font-medium text-black opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100 z-50 normal-case">
+                      {link.description}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>
