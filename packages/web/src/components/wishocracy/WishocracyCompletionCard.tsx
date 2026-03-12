@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 import confetti from "canvas-confetti";
 import { CheckCircle2 } from "lucide-react";
@@ -164,17 +165,23 @@ export function WishocracyCompletionCard({
 
         <div className="pt-4">
           {isAuthenticated ? (
-            <Button
-              type="button"
-              className="w-full font-black uppercase"
-              onClick={() => {
-                document
-                  .querySelector("[data-edit-allocations]")
-                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-            >
-              Review Saved Allocations
-            </Button>
+            <div className="space-y-3">
+              <Button asChild className="w-full font-black uppercase">
+                <Link href="/alignment">See Alignment Report</Link>
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full font-black uppercase"
+                onClick={() => {
+                  document
+                    .querySelector("[data-edit-allocations]")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              >
+                Review Saved Allocations
+              </Button>
+            </div>
           ) : (
             <Button
               type="button"
