@@ -16,6 +16,60 @@ const DEFAULT_LIMIT = 250;
 /** Current Congress number (119th Congress: 2025-2027) */
 const CURRENT_CONGRESS = 119;
 
+const US_STATE_ABBREVIATIONS: Record<string, string> = {
+  alabama: 'AL',
+  alaska: 'AK',
+  arizona: 'AZ',
+  arkansas: 'AR',
+  california: 'CA',
+  colorado: 'CO',
+  connecticut: 'CT',
+  delaware: 'DE',
+  florida: 'FL',
+  georgia: 'GA',
+  hawaii: 'HI',
+  idaho: 'ID',
+  illinois: 'IL',
+  indiana: 'IN',
+  iowa: 'IA',
+  kansas: 'KS',
+  kentucky: 'KY',
+  louisiana: 'LA',
+  maine: 'ME',
+  maryland: 'MD',
+  massachusetts: 'MA',
+  michigan: 'MI',
+  minnesota: 'MN',
+  mississippi: 'MS',
+  missouri: 'MO',
+  montana: 'MT',
+  nebraska: 'NE',
+  nevada: 'NV',
+  'new hampshire': 'NH',
+  'new jersey': 'NJ',
+  'new mexico': 'NM',
+  'new york': 'NY',
+  'north carolina': 'NC',
+  'north dakota': 'ND',
+  ohio: 'OH',
+  oklahoma: 'OK',
+  oregon: 'OR',
+  pennsylvania: 'PA',
+  'rhode island': 'RI',
+  'south carolina': 'SC',
+  'south dakota': 'SD',
+  tennessee: 'TN',
+  texas: 'TX',
+  utah: 'UT',
+  vermont: 'VT',
+  virginia: 'VA',
+  washington: 'WA',
+  'west virginia': 'WV',
+  wisconsin: 'WI',
+  wyoming: 'WY',
+  'district of columbia': 'DC',
+};
+
 // ─── Types ──────────────────────────────────────────────────────────
 
 /** A term of service for a Congress member */
@@ -521,21 +575,37 @@ export async function fetchRollCallVote(
 
   // Fall back to trying the house-vote endpoint structure
   if (!json?.rollcallVote) {
-    const altUrl = buildCongressUrl(
-      `/house-vote/${congress}/${sessionNumber}/${rollCallNumber}`,
-    );
-    const altJson = await fetchCongressJson<{ 'house-vote': RawRollCallVote }>(altUrl);
-    if (altJson?.['house-vote']) {
-      return parseRollCallVote(altJson['house-vote'], congress, chamberPath, sessionNumber);
-    }
+    if (chamberPath === 'house') {
+      const altUrl = buildCongressUrl(
+        `/house-vote/${congress}/${sessionNumber}/${rollCallNumber}`,
+      );
+      const altJson = await fetchCongressJson<{ 'house-vote': RawRollCallVote }>(altUrl);
+      if (altJson?.['house-vote']) {
+        return parseRollCallVote(altJson['house-vote'], congress, chamberPath, sessionNumber);
+      }
 
-    if (chamberPath === 'house' && sourceUrl) {
+      if (!sourceUrl) {
+        return null;
+      }
+
       const xml = await fetchCongressText(sourceUrl);
       if (!xml) {
         return null;
       }
 
       return parseHouseClerkRollCallVote(xml);
+    }
+
+    if (chamberPath === 'senate' && sourceUrl) {
+      const [xml, senators] = await Promise.all([
+        fetchCongressText(sourceUrl),
+        fetchMembers(congress, 'senate'),
+      ]);
+      if (!xml) {
+        return null;
+      }
+
+      return parseSenateRollCallVote(xml, congress, senators);
     }
 
     return null;
@@ -587,6 +657,39 @@ function extractXmlTagValue(xml: string, tagName: string): string | null {
   return match?.[1] ? decodeXmlEntities(match[1].trim()) : null;
 }
 
+function normalizePersonNameKey(value: string): string {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z]/g, '');
+}
+
+function normalizeStateCode(state: string): string {
+  const trimmed = state.trim();
+  if (trimmed.length === 2) {
+    return trimmed.toUpperCase();
+  }
+
+  return US_STATE_ABBREVIATIONS[trimmed.toLowerCase()] ?? trimmed.toUpperCase();
+}
+
+function extractCongressNameParts(name: string): { firstName: string; lastName: string } {
+  if (name.includes(',')) {
+    const [lastName = '', firstName = ''] = name.split(',', 2);
+    return {
+      firstName: firstName.trim().split(/\s+/)[0] ?? '',
+      lastName: lastName.trim(),
+    };
+  }
+
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  return {
+    firstName: parts[0] ?? '',
+    lastName: parts.slice(1).join(' ') || parts[0] || '',
+  };
+}
+
 function parseHouseClerkSessionNumber(sessionLabel: string | null): number {
   const match = sessionLabel?.match(/(\d+)/);
   return match ? Number(match[1]) : 1;
@@ -621,6 +724,78 @@ function parseHouseClerkRollCallVote(xml: string): Vote | null {
     date: extractXmlTagValue(xml, 'action-date') ?? '',
     question: extractXmlTagValue(xml, 'vote-question') ?? '',
     result: extractXmlTagValue(xml, 'vote-result') ?? '',
+    memberVotes,
+  };
+}
+
+function parseSenateRollCallVote(
+  xml: string,
+  congress: number,
+  senators: CongressMember[],
+): Vote | null {
+  const rollCallNumber = Number(extractXmlTagValue(xml, 'vote_number'));
+  if (!Number.isFinite(rollCallNumber)) {
+    return null;
+  }
+
+  const memberIdByNameState = new Map<string, string>();
+  for (const senator of senators) {
+    if (!senator.bioguideId || !senator.state) {
+      continue;
+    }
+
+    const { firstName, lastName } = extractCongressNameParts(senator.name);
+    memberIdByNameState.set(
+      `${normalizePersonNameKey(lastName)}:${normalizeStateCode(senator.state)}`,
+      senator.bioguideId,
+    );
+    memberIdByNameState.set(
+      `${normalizePersonNameKey(`${firstName} ${lastName}`)}:${normalizeStateCode(senator.state)}`,
+      senator.bioguideId,
+    );
+  }
+
+  const memberVotes: MemberVotePosition[] = [];
+  const memberPattern =
+    /<member>\s*<member_full>([\s\S]*?)<\/member_full>[\s\S]*?<last_name>([\s\S]*?)<\/last_name>[\s\S]*?<first_name>([\s\S]*?)<\/first_name>[\s\S]*?<party>([\s\S]*?)<\/party>[\s\S]*?<state>([\s\S]*?)<\/state>[\s\S]*?<vote_cast>([\s\S]*?)<\/vote_cast>[\s\S]*?<\/member>/gi;
+
+  let match = memberPattern.exec(xml);
+  while (match) {
+    const fullName = decodeXmlEntities(match[1]?.trim() ?? '');
+    const lastName = decodeXmlEntities(match[2]?.trim() ?? '');
+    const firstName = decodeXmlEntities(match[3]?.trim() ?? '');
+    const state = decodeXmlEntities(match[5]?.trim() ?? '');
+    const position = decodeXmlEntities(match[6]?.trim() ?? '');
+    const bioguideId =
+      memberIdByNameState.get(`${normalizePersonNameKey(lastName)}:${state}`) ??
+      memberIdByNameState.get(
+        `${normalizePersonNameKey(`${firstName} ${lastName}`)}:${state}`,
+      ) ??
+      memberIdByNameState.get(`${normalizePersonNameKey(fullName)}:${state}`);
+
+    if (bioguideId && position) {
+      memberVotes.push({ bioguideId, position });
+    }
+    match = memberPattern.exec(xml);
+  }
+
+  return {
+    rollCallNumber,
+    congress,
+    chamber: 'Senate',
+    session: parseHouseClerkSessionNumber(extractXmlTagValue(xml, 'session')),
+    date:
+      extractXmlTagValue(xml, 'vote_date') ??
+      extractXmlTagValue(xml, 'modify_date') ??
+      '',
+    question:
+      extractXmlTagValue(xml, 'question') ??
+      extractXmlTagValue(xml, 'vote_question_text') ??
+      '',
+    result:
+      extractXmlTagValue(xml, 'vote_result') ??
+      extractXmlTagValue(xml, 'vote_result_text') ??
+      '',
     memberVotes,
   };
 }

@@ -818,6 +818,8 @@ interface WebsiteBudgetData {
     investmentStatus: string;
     priorityScore: number;
     elasticity?: number;
+    discretionary: boolean;
+    wesMethodology: string;
     diminishingReturns?: {
       modelType: string;
       r2: number;
@@ -829,6 +831,43 @@ interface WebsiteBudgetData {
     oslCiLow?: number;
     oslCiHigh?: number;
     outcomeMetrics: { name: string; value: number; trend: string }[];
+  }[];
+  constrainedReallocation: {
+    totalBudget: number;
+    nonDiscretionaryTotal: number;
+    actionableBudget: number;
+    categories: {
+      name: string;
+      currentSpending: number;
+      constrainedOptimal: number;
+      reallocation: number;
+      reallocationPercent: number;
+      action: string;
+      evidenceGrade: string;
+      isNonDiscretionary: boolean;
+    }[];
+  };
+  causalEvidenceDetail: {
+    name: string;
+    forwardPearson: number;
+    nCountries: number;
+    positiveCount: number;
+    negativeCount: number;
+    meanPercentChange: number;
+    bhStrength: number;
+    bhTemporality: number;
+    bhGradient: number;
+    wesScore: number;
+    evidenceGrade: string;
+  }[];
+  domesticEvidenceDetail: {
+    name: string;
+    bestOutcomeName: string;
+    correlation: number;
+    nYears: number;
+    bhStrength: number;
+    wesScore: number;
+    evidenceGrade: string;
   }[];
   topRecommendations: string[];
   generatedAt: string;
@@ -1451,6 +1490,8 @@ export function generateBudgetAnalysisArtifacts(
         investmentStatus: investStatus,
         priorityScore: ca.gap.priorityScore,
         elasticity: ca.elasticity,
+        discretionary: ca.category.discretionary !== false,
+        wesMethodology: ca.wesResult?.methodology ?? (ca.category.discretionary === false ? 'non-discretionary' : 'estimated'),
         diminishingReturns: drModel
           ? {
               modelType: drModel.type === 'log' ? 'Log-linear' : 'Saturation (Michaelis-Menten)',
@@ -1484,6 +1525,101 @@ export function generateBudgetAnalysisArtifacts(
           `${ca.gap.recommendedAction === 'scale_up' || ca.gap.recommendedAction === 'increase' ? 'Increase' : 'Decrease'} ${ca.category.name} by $${Math.abs(ca.gap.gapUsd / 1e9).toFixed(1)}B (${ca.gap.gapPct > 0 ? '+' : ''}${ca.gap.gapPct.toFixed(1)}%)`,
       ),
     generatedAt: new Date().toISOString(),
+    // Constrained reallocation: redistribute within the existing budget envelope
+    constrainedReallocation: (() => {
+      const discretionaryCats = categoryAnalyses.filter(c => c.category.discretionary !== false);
+      const nonDiscCats = categoryAnalyses.filter(c => c.category.discretionary === false);
+      const maintainCats = discretionaryCats.filter(c =>
+        c.gap.recommendedAction === 'maintain' || c.oslEstimate.evidenceGrade === 'F'
+      );
+      const actionableCats = discretionaryCats.filter(c =>
+        c.gap.recommendedAction !== 'maintain' && c.oslEstimate.evidenceGrade !== 'F'
+      );
+      const nonDiscSpending = nonDiscCats.reduce((s, c) => s + c.category.currentSpendingUsd, 0);
+      const maintainSpending = maintainCats.reduce((s, c) => s + c.category.currentSpendingUsd, 0);
+      const actionableBudget = TOTAL_BUDGET_USD - nonDiscSpending - maintainSpending;
+      const actionableOptimalTotal = actionableCats.reduce((s, c) => s + c.oslEstimate.oslUsd, 0);
+      const scalingFactor = actionableOptimalTotal > 0 ? actionableBudget / actionableOptimalTotal : 1;
+
+      const constrainedCategories = categoryAnalyses.map(ca => {
+        const isNonDisc = ca.category.discretionary === false;
+        const isFixed = isNonDisc || ca.gap.recommendedAction === 'maintain' || ca.oslEstimate.evidenceGrade === 'F';
+        const constrainedOptimal = isFixed
+          ? ca.category.currentSpendingUsd
+          : ca.oslEstimate.oslUsd * scalingFactor;
+        const reallocation = constrainedOptimal - ca.category.currentSpendingUsd;
+        const reallocationPct = ca.category.currentSpendingUsd > 0
+          ? (reallocation / ca.category.currentSpendingUsd) * 100
+          : 0;
+        // Derive action label from constrained reallocation direction
+        let action: string;
+        if (isNonDisc) {
+          action = 'Non-discretionary';
+        } else if (ca.oslEstimate.evidenceGrade === 'F') {
+          action = 'Insufficient evidence';
+        } else if (ca.gap.recommendedAction === 'maintain') {
+          action = 'Maintain';
+        } else if (reallocationPct > 50) {
+          action = 'Major increase';
+        } else if (reallocationPct > 20) {
+          action = 'Increase';
+        } else if (reallocationPct > 5) {
+          action = 'Modest increase';
+        } else if (reallocationPct >= -5) {
+          action = 'Maintain';
+        } else if (reallocationPct >= -20) {
+          action = 'Modest decrease';
+        } else if (reallocationPct >= -50) {
+          action = 'Decrease';
+        } else {
+          action = 'Major decrease';
+        }
+        return {
+          name: ca.category.name,
+          currentSpending: ca.category.currentSpendingUsd,
+          constrainedOptimal,
+          reallocation,
+          reallocationPercent: reallocationPct,
+          action,
+          evidenceGrade: ca.oslEstimate.evidenceGrade,
+          isNonDiscretionary: isNonDisc,
+        };
+      });
+      return {
+        totalBudget: TOTAL_BUDGET_USD,
+        nonDiscretionaryTotal: nonDiscSpending,
+        actionableBudget,
+        categories: constrainedCategories,
+      };
+    })(),
+    // Causal evidence detail from OECD N-of-1 country analysis
+    causalEvidenceDetail: [...causalEvidenceMap.entries()]
+      .sort((a, b) => b[1].wesScore - a[1].wesScore)
+      .map(([catId, ev]) => ({
+        name: CATEGORIES.find(c => c.id === catId)?.name ?? catId,
+        forwardPearson: ev.forwardPearson,
+        nCountries: ev.nCountries,
+        positiveCount: ev.positiveCount,
+        negativeCount: ev.negativeCount,
+        meanPercentChange: ev.meanPercentChange,
+        bhStrength: ev.bradfordHill.strength,
+        bhTemporality: ev.bradfordHill.temporality,
+        bhGradient: ev.bradfordHill.gradient,
+        wesScore: ev.wesScore,
+        evidenceGrade: ev.wesGrade,
+      })),
+    // Domestic evidence detail from US time series analysis
+    domesticEvidenceDetail: [...domesticEvidenceMap.entries()]
+      .sort((a, b) => b[1].wesScore - a[1].wesScore)
+      .map(([catId, ev]) => ({
+        name: CATEGORIES.find(c => c.id === catId)?.name ?? catId,
+        bestOutcomeName: ev.bestOutcomeName,
+        correlation: ev.bestCorrelation,
+        nYears: ev.nYears,
+        bhStrength: ev.bradfordHill.strength,
+        wesScore: ev.wesScore,
+        evidenceGrade: ev.wesGrade,
+      })),
   };
 
   const outputPaths = {

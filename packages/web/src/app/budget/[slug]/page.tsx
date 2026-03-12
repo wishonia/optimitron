@@ -20,6 +20,8 @@ interface Category {
   investmentStatus: string;
   priorityScore: number;
   elasticity?: number;
+  discretionary: boolean;
+  wesMethodology: string;
   diminishingReturns?: {
     modelType: string;
     r2: number;
@@ -33,10 +35,53 @@ interface Category {
   outcomeMetrics: { name: string; value: number; trend: string }[];
 }
 
+interface ConstrainedCategory {
+  name: string;
+  currentSpending: number;
+  constrainedOptimal: number;
+  reallocation: number;
+  reallocationPercent: number;
+  action: string;
+  evidenceGrade: string;
+  isNonDiscretionary: boolean;
+}
+
+interface CausalEvidenceEntry {
+  name: string;
+  forwardPearson: number;
+  nCountries: number;
+  positiveCount: number;
+  negativeCount: number;
+  meanPercentChange: number;
+  bhStrength: number;
+  bhTemporality: number;
+  bhGradient: number;
+  wesScore: number;
+  evidenceGrade: string;
+}
+
+interface DomesticEvidenceEntry {
+  name: string;
+  bestOutcomeName: string;
+  correlation: number;
+  nYears: number;
+  bhStrength: number;
+  wesScore: number;
+  evidenceGrade: string;
+}
+
 interface BudgetData {
   jurisdiction: string;
   totalBudget: number;
   categories: Category[];
+  constrainedReallocation: {
+    totalBudget: number;
+    nonDiscretionaryTotal: number;
+    actionableBudget: number;
+    categories: ConstrainedCategory[];
+  };
+  causalEvidenceDetail: CausalEvidenceEntry[];
+  domesticEvidenceDetail: DomesticEvidenceEntry[];
   topRecommendations: string[];
   generatedAt: string;
 }
@@ -84,14 +129,15 @@ function gradeBg(grade: string): string {
 }
 
 function actionBadgeStyle(action: string): string {
-  switch (action) {
-    case "scale_up": return "bg-emerald-400 text-black";
-    case "increase": return "bg-emerald-300 text-black";
-    case "maintain": return "bg-gray-200 text-black";
-    case "decrease": return "bg-orange-300 text-black";
-    case "major_decrease": return "bg-red-300 text-black";
-    default: return "bg-gray-200 text-black";
-  }
+  const a = action.toLowerCase();
+  if (a.includes("major increase") || a === "scale_up") return "bg-emerald-400 text-black";
+  if (a.includes("increase") || a === "increase") return "bg-emerald-300 text-black";
+  if (a.includes("maintain") || a === "maintain") return "bg-gray-200 text-black";
+  if (a.includes("major decrease") || a === "major_decrease") return "bg-red-300 text-black";
+  if (a.includes("decrease") || a === "decrease") return "bg-orange-300 text-black";
+  if (a.includes("non-discretionary")) return "bg-gray-300 text-black";
+  if (a.includes("insufficient")) return "bg-gray-200 text-black/50";
+  return "bg-gray-200 text-black";
 }
 
 function actionLabel(action: string): string {
@@ -102,6 +148,22 @@ function actionLabel(action: string): string {
     case "decrease": return "Decrease";
     case "major_decrease": return "Major Decrease";
     default: return action;
+  }
+}
+
+function barColor(val: number): string {
+  if (val >= 0.7) return "bg-emerald-400";
+  if (val >= 0.4) return "bg-yellow-400";
+  return "bg-red-400";
+}
+
+function wesMethodologyLabel(m: string): string {
+  switch (m) {
+    case "causal": return "Causal (N-of-1)";
+    case "domestic": return "Domestic (US)";
+    case "estimated": return "Estimated";
+    case "non-discretionary": return "Non-discretionary";
+    default: return m;
   }
 }
 
@@ -141,6 +203,19 @@ export default async function BudgetCategoryPage({
   const optimalPct = (cat.optimalSpending / maxBar) * 100;
   const totalOptimal = data.categories.reduce((s, c) => s + c.optimalSpending, 0);
   const dr = cat.diminishingReturns;
+
+  // Constrained reallocation data for this category
+  const constrainedCat = data.constrainedReallocation?.categories.find(
+    (c) => c.name === cat.name
+  );
+
+  // Causal / domestic evidence for this category
+  const causalEvidence = data.causalEvidenceDetail?.find(
+    (e) => e.name === cat.name
+  );
+  const domesticEvidence = data.domesticEvidenceDetail?.find(
+    (e) => e.name === cat.name
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
@@ -186,9 +261,49 @@ export default async function BudgetCategoryPage({
             <div className="text-xs font-bold uppercase text-black/60 mb-1">Evidence Grade</div>
             <div className="text-2xl sm:text-3xl font-black text-black">{cat.evidenceGrade}</div>
             <div className="text-xs font-bold text-black/50 mt-1">{cat.evidenceDescription}</div>
+            <div className="text-xs font-bold text-black/40 mt-0.5">
+              {wesMethodologyLabel(cat.wesMethodology)}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Fixed-Budget Reallocation */}
+      {constrainedCat && (
+        <section className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+          <h2 className="text-lg font-black uppercase text-black mb-4">Fixed-Budget Reallocation</h2>
+          {constrainedCat.isNonDiscretionary ? (
+            <div className="border-2 border-black p-4 bg-gray-100">
+              <p className="text-sm text-black/60 font-medium">
+                This is a non-discretionary entitlement, excluded from reallocation.
+                Spending is held at the current level of {fmt(constrainedCat.currentSpending)}.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="border-2 border-black p-4 bg-white">
+                <div className="text-xs font-bold uppercase text-black/50 mb-1">Constrained Optimal</div>
+                <div className="text-xl font-black text-black">{fmt(constrainedCat.constrainedOptimal)}</div>
+              </div>
+              <div className={`border-2 border-black p-4 ${constrainedCat.reallocation >= 0 ? "bg-emerald-100" : "bg-red-100"}`}>
+                <div className="text-xs font-bold uppercase text-black/50 mb-1">Reallocation</div>
+                <div className={`text-xl font-black ${constrainedCat.reallocation >= 0 ? "text-emerald-700" : "text-red-700"}`}>
+                  {constrainedCat.reallocation >= 0 ? "+" : ""}{fmt(constrainedCat.reallocation)}
+                </div>
+                <div className="text-xs font-bold text-black/40 mt-1">
+                  {pct(constrainedCat.reallocationPercent)} of current
+                </div>
+              </div>
+              <div className="border-2 border-black p-4 bg-white">
+                <div className="text-xs font-bold uppercase text-black/50 mb-1">Action</div>
+                <span className={`inline-block px-3 py-1 text-sm font-black border-2 border-black ${actionBadgeStyle(constrainedCat.action)}`}>
+                  {constrainedCat.action}
+                </span>
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Bar chart: Current vs Optimal */}
       <section className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
@@ -265,6 +380,93 @@ export default async function BudgetCategoryPage({
               </span>
             )}
           </div>
+        </section>
+      )}
+
+      {/* Causal Evidence Detail */}
+      {(causalEvidence || domesticEvidence) && (
+        <section className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+          <h2 className="text-lg font-black uppercase text-black mb-4">Causal Evidence Detail</h2>
+
+          {causalEvidence && (
+            <div className="mb-6">
+              <h3 className="text-sm font-black uppercase text-black/60 mb-3">
+                OECD Cross-Country Analysis (N-of-1)
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                <div className="border-2 border-black p-3 bg-white">
+                  <div className="text-xs font-bold uppercase text-black/50">Mean r</div>
+                  <div className="text-lg font-black text-black">{causalEvidence.forwardPearson.toFixed(3)}</div>
+                </div>
+                <div className="border-2 border-black p-3 bg-white">
+                  <div className="text-xs font-bold uppercase text-black/50">Countries</div>
+                  <div className="text-lg font-black text-black">{causalEvidence.nCountries}</div>
+                  <div className="text-xs text-black/40 font-bold">
+                    +{causalEvidence.positiveCount} / -{causalEvidence.negativeCount}
+                  </div>
+                </div>
+                <div className="border-2 border-black p-3 bg-white">
+                  <div className="text-xs font-bold uppercase text-black/50">Mean % Change</div>
+                  <div className={`text-lg font-black ${causalEvidence.meanPercentChange >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+                    {causalEvidence.meanPercentChange >= 0 ? "+" : ""}{causalEvidence.meanPercentChange.toFixed(1)}%
+                  </div>
+                </div>
+                <div className="border-2 border-black p-3 bg-white">
+                  <div className="text-xs font-bold uppercase text-black/50">WES Score</div>
+                  <div className="text-lg font-black text-black">{(causalEvidence.wesScore * 100).toFixed(0)}%</div>
+                </div>
+              </div>
+
+              {/* Bradford Hill bars */}
+              <h4 className="text-xs font-black uppercase text-black/50 mb-2">Bradford Hill Scores</h4>
+              <div className="space-y-2">
+                {([
+                  ["Strength", causalEvidence.bhStrength],
+                  ["Temporality", causalEvidence.bhTemporality],
+                  ["Gradient", causalEvidence.bhGradient],
+                ] as [string, number][]).map(([label, val]) => (
+                  <div key={label}>
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="text-xs font-bold text-black">{label}</span>
+                      <span className="text-xs font-black text-black">{(val * 100).toFixed(0)}%</span>
+                    </div>
+                    <div className="h-4 bg-gray-100 border-2 border-black overflow-hidden">
+                      <div className={`h-full ${barColor(val)}`} style={{ width: `${val * 100}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {domesticEvidence && (
+            <div>
+              <h3 className="text-sm font-black uppercase text-black/60 mb-3">
+                US Domestic Time Series (2000-2023)
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="border-2 border-black p-3 bg-white">
+                  <div className="text-xs font-bold uppercase text-black/50">Best Outcome</div>
+                  <div className="text-sm font-black text-black">{domesticEvidence.bestOutcomeName}</div>
+                </div>
+                <div className="border-2 border-black p-3 bg-white">
+                  <div className="text-xs font-bold uppercase text-black/50">Correlation (r)</div>
+                  <div className="text-lg font-black text-black">{domesticEvidence.correlation.toFixed(3)}</div>
+                </div>
+                <div className="border-2 border-black p-3 bg-white">
+                  <div className="text-xs font-bold uppercase text-black/50">Data Points</div>
+                  <div className="text-lg font-black text-black">{domesticEvidence.nYears} years</div>
+                </div>
+                <div className="border-2 border-black p-3 bg-white">
+                  <div className="text-xs font-bold uppercase text-black/50">BH Strength</div>
+                  <div className="text-lg font-black text-black">{(domesticEvidence.bhStrength * 100).toFixed(0)}%</div>
+                  <div className="mt-1 h-2 bg-gray-100 border border-black overflow-hidden">
+                    <div className={`h-full ${barColor(domesticEvidence.bhStrength)}`} style={{ width: `${domesticEvidence.bhStrength * 100}%` }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </section>
       )}
 

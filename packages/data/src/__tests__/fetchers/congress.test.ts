@@ -121,6 +121,30 @@ const mockMembersListResponse = {
   pagination: { count: 2 },
 };
 
+const mockSenatorsListResponse = {
+  members: [
+    {
+      bioguideId: 'S000033',
+      name: 'Sanders, Bernard',
+      partyName: 'Independent',
+      state: 'VT',
+      terms: {
+        item: [{ chamber: 'Senate', startYear: 2007 }],
+      },
+    },
+    {
+      bioguideId: 'W000817',
+      name: 'Warren, Elizabeth',
+      partyName: 'Democratic',
+      state: 'MA',
+      terms: {
+        item: [{ chamber: 'Senate', startYear: 2013 }],
+      },
+    },
+  ],
+  pagination: { count: 2 },
+};
+
 const mockBillsListResponse = {
   bills: [mockBillListItem],
   pagination: { count: 1 },
@@ -207,6 +231,36 @@ const mockHouseClerkXml = `<?xml version="1.0" encoding="UTF-8"?>
     </recorded-vote>
   </vote-data>
 </rollcall-vote>`;
+
+const mockSenateXml = `<?xml version="1.0" encoding="UTF-8"?>
+<roll_call_vote>
+  <congress>119</congress>
+  <session>1</session>
+  <vote_number>22</vote_number>
+  <vote_date>January 28, 2025,  02:23 PM</vote_date>
+  <question>On Cloture on the Motion to Proceed</question>
+  <vote_result>Cloture on the Motion to Proceed Rejected</vote_result>
+  <members>
+    <member>
+      <member_full>Sanders (I-VT)</member_full>
+      <last_name>Sanders</last_name>
+      <first_name>Bernie</first_name>
+      <party>I</party>
+      <state>VT</state>
+      <vote_cast>Nay</vote_cast>
+      <lis_member_id>S313</lis_member_id>
+    </member>
+    <member>
+      <member_full>Warren (D-MA)</member_full>
+      <last_name>Warren</last_name>
+      <first_name>Elizabeth</first_name>
+      <party>D</party>
+      <state>MA</state>
+      <vote_cast>Nay</vote_cast>
+      <lis_member_id>S366</lis_member_id>
+    </member>
+  </members>
+</roll_call_vote>`;
 
 // ─── Tests ──────────────────────────────────────────────────────────
 
@@ -839,6 +893,44 @@ describe('Congress Fetcher', () => {
         { bioguideId: 'P000197', position: 'Nay' },
       ]);
       expect(fetchMock.mock.calls[2]?.[0]).toBe('https://clerk.house.gov/evs/2025/roll102.xml');
+    });
+
+    it('falls back to the Senate XML URL and maps senators back to bioguide IDs', async () => {
+      const fetchMock = vi.fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({}),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          text: () => Promise.resolve(mockSenateXml),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockSenatorsListResponse),
+        });
+
+      globalThis.fetch = fetchMock;
+
+      const vote = await fetchRollCallVote(
+        119,
+        'senate',
+        1,
+        22,
+        'https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00022.xml',
+      );
+
+      expect(vote).not.toBeNull();
+      expect(vote?.rollCallNumber).toBe(22);
+      expect(vote?.chamber).toBe('Senate');
+      expect(vote?.memberVotes).toEqual([
+        { bioguideId: 'S000033', position: 'Nay' },
+        { bioguideId: 'W000817', position: 'Nay' },
+      ]);
+      expect(fetchMock.mock.calls[1]?.[0]).toBe(
+        'https://www.senate.gov/legislative/LIS/roll_call_votes/vote1191/vote_119_1_00022.xml',
+      );
+      expect((fetchMock.mock.calls[2]?.[0] as string) || '').toContain('/member/congress/119');
     });
 
     it('returns null on HTTP error', async () => {

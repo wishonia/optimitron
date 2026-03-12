@@ -124,6 +124,86 @@ describe('Budget Analysis JSON', () => {
     expect(ss).toBeDefined();
     expect(ss.currentSpending).toBeGreaterThan(1_000_000_000_000);
   });
+
+  it('each category should have discretionary and wesMethodology fields', () => {
+    for (const cat of budgetJson.categories) {
+      expect(typeof cat.discretionary).toBe('boolean');
+      expect(typeof cat.wesMethodology).toBe('string');
+      expect(['causal', 'domestic', 'estimated', 'non-discretionary']).toContain(cat.wesMethodology);
+    }
+  });
+
+  it('should have constrainedReallocation with expected shape', () => {
+    const cr = budgetJson.constrainedReallocation;
+    expect(cr).toBeDefined();
+    expect(typeof cr.totalBudget).toBe('number');
+    expect(cr.totalBudget).toBe(budgetJson.totalBudget);
+    expect(typeof cr.nonDiscretionaryTotal).toBe('number');
+    expect(cr.nonDiscretionaryTotal).toBeGreaterThan(0);
+    expect(typeof cr.actionableBudget).toBe('number');
+    expect(cr.actionableBudget).toBeGreaterThan(0);
+    expect(Array.isArray(cr.categories)).toBe(true);
+    expect(cr.categories.length).toBe(budgetJson.categories.length);
+  });
+
+  it('constrained categories should have valid reallocation fields', () => {
+    for (const cat of budgetJson.constrainedReallocation.categories) {
+      expect(typeof cat.name).toBe('string');
+      expect(typeof cat.currentSpending).toBe('number');
+      expect(typeof cat.constrainedOptimal).toBe('number');
+      expect(typeof cat.reallocation).toBe('number');
+      expect(typeof cat.reallocationPercent).toBe('number');
+      expect(typeof cat.action).toBe('string');
+      expect(typeof cat.evidenceGrade).toBe('string');
+      expect(typeof cat.isNonDiscretionary).toBe('boolean');
+    }
+  });
+
+  it('constrained + non-discretionary categories should account for full budget', () => {
+    const cr = budgetJson.constrainedReallocation;
+    const totalConstrained = cr.categories.reduce(
+      (s: number, c: any) => s + c.constrainedOptimal, 0,
+    );
+    // Should be within 1% of total budget (floating point tolerance)
+    expect(totalConstrained).toBeCloseTo(cr.totalBudget, -9);
+  });
+
+  it('non-discretionary categories should be held at current spending', () => {
+    const nonDisc = budgetJson.constrainedReallocation.categories.filter(
+      (c: any) => c.isNonDiscretionary,
+    );
+    expect(nonDisc.length).toBeGreaterThan(0);
+    for (const cat of nonDisc) {
+      expect(cat.constrainedOptimal).toBe(cat.currentSpending);
+      expect(cat.reallocation).toBe(0);
+    }
+  });
+
+  it('should have causalEvidenceDetail array', () => {
+    expect(Array.isArray(budgetJson.causalEvidenceDetail)).toBe(true);
+    expect(budgetJson.causalEvidenceDetail.length).toBeGreaterThanOrEqual(2);
+    for (const ev of budgetJson.causalEvidenceDetail) {
+      expect(typeof ev.name).toBe('string');
+      expect(typeof ev.forwardPearson).toBe('number');
+      expect(typeof ev.nCountries).toBe('number');
+      expect(typeof ev.bhStrength).toBe('number');
+      expect(typeof ev.wesScore).toBe('number');
+      expect(typeof ev.evidenceGrade).toBe('string');
+    }
+  });
+
+  it('should have domesticEvidenceDetail array', () => {
+    expect(Array.isArray(budgetJson.domesticEvidenceDetail)).toBe(true);
+    for (const ev of budgetJson.domesticEvidenceDetail) {
+      expect(typeof ev.name).toBe('string');
+      expect(typeof ev.bestOutcomeName).toBe('string');
+      expect(typeof ev.correlation).toBe('number');
+      expect(typeof ev.nYears).toBe('number');
+      expect(typeof ev.bhStrength).toBe('number');
+      expect(typeof ev.wesScore).toBe('number');
+      expect(typeof ev.evidenceGrade).toBe('string');
+    }
+  });
 });
 
 // =========================================================================

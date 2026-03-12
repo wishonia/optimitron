@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import budgetData from "@/data/us-budget-analysis.json";
 import { slugify } from "@/lib/slugify";
@@ -18,6 +19,8 @@ interface Category {
   investmentStatus: string;
   priorityScore: number;
   elasticity?: number;
+  discretionary: boolean;
+  wesMethodology: string;
   diminishingReturns?: {
     modelType: string;
     r2: number;
@@ -31,10 +34,29 @@ interface Category {
   outcomeMetrics: { name: string; value: number; trend: string }[];
 }
 
+interface ConstrainedCategory {
+  name: string;
+  currentSpending: number;
+  constrainedOptimal: number;
+  reallocation: number;
+  reallocationPercent: number;
+  action: string;
+  evidenceGrade: string;
+  isNonDiscretionary: boolean;
+}
+
+interface ConstrainedReallocation {
+  totalBudget: number;
+  nonDiscretionaryTotal: number;
+  actionableBudget: number;
+  categories: ConstrainedCategory[];
+}
+
 interface BudgetData {
   jurisdiction: string;
   totalBudget: number;
   categories: Category[];
+  constrainedReallocation: ConstrainedReallocation;
   topRecommendations: string[];
   generatedAt: string;
 }
@@ -53,20 +75,16 @@ function pct(n: number): string {
 }
 
 function actionBadgeStyle(action: string): string {
-  switch (action) {
-    case "scale_up":
-      return "bg-emerald-400 text-black";
-    case "increase":
-      return "bg-emerald-300 text-black";
-    case "maintain":
-      return "bg-gray-200 text-black";
-    case "decrease":
-      return "bg-orange-300 text-black";
-    case "major_decrease":
-      return "bg-red-300 text-black";
-    default:
-      return "bg-gray-200 text-black";
-  }
+  const a = action.toLowerCase();
+  if (a.includes("major increase") || a === "scale_up") return "bg-emerald-400 text-black";
+  if (a.includes("increase") || a === "increase") return "bg-emerald-300 text-black";
+  if (a.includes("maintain") || a === "maintain") return "bg-gray-200 text-black";
+  if (a.includes("modest decrease") || a === "decrease") return "bg-orange-300 text-black";
+  if (a.includes("major decrease") || a === "major_decrease") return "bg-red-300 text-black";
+  if (a.includes("decrease")) return "bg-orange-300 text-black";
+  if (a.includes("non-discretionary")) return "bg-gray-300 text-black";
+  if (a.includes("insufficient")) return "bg-gray-200 text-black/50";
+  return "bg-gray-200 text-black";
 }
 
 function actionLabel(action: string): string {
@@ -92,9 +110,10 @@ function gradeBadgeColor(grade: string): string {
 }
 
 export default function BudgetPage() {
-  const maxSpending = Math.max(
-    ...data.categories.flatMap((c) => [c.currentSpending, c.optimalSpending])
-  );
+  const [view, setView] = useState<"constrained" | "unconstrained">("constrained");
+
+  const isConstrained = view === "constrained";
+  const cr = data.constrainedReallocation;
 
   const sorted = [...data.categories].sort(
     (a, b) => Math.abs(b.gap) - Math.abs(a.gap)
@@ -102,6 +121,19 @@ export default function BudgetPage() {
 
   const totalCurrent = data.categories.reduce((s, c) => s + c.currentSpending, 0);
   const totalOptimal = data.categories.reduce((s, c) => s + c.optimalSpending, 0);
+
+  // For constrained view, sort by reallocation amount
+  const constrainedSorted = cr
+    ? [...cr.categories].sort((a, b) => Math.abs(b.reallocation) - Math.abs(a.reallocation))
+    : [];
+
+  // Separate non-discretionary from discretionary for constrained view
+  const constrainedActionable = constrainedSorted.filter(c => !c.isNonDiscretionary);
+  const constrainedNonDisc = constrainedSorted.filter(c => c.isNonDiscretionary);
+
+  const maxSpending = isConstrained
+    ? Math.max(...constrainedActionable.flatMap(c => [c.currentSpending, c.constrainedOptimal]))
+    : Math.max(...data.categories.flatMap(c => [c.currentSpending, c.optimalSpending]));
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
@@ -114,13 +146,42 @@ export default function BudgetPage() {
         </p>
       </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        <SummaryCard label="Total Current" value={fmt(totalCurrent)} />
-        <SummaryCard label="Total Optimal" value={fmt(totalOptimal)} />
-        <SummaryCard label="Net Reallocation" value={fmt(totalOptimal - totalCurrent)} color={totalOptimal > totalCurrent ? "text-emerald-600" : "text-red-600"} />
-        <SummaryCard label="Categories Analyzed" value={String(data.categories.length)} />
+      {/* View Toggle */}
+      <div className="flex gap-2 mb-6">
+        <button
+          onClick={() => setView("constrained")}
+          className={`px-4 py-2 text-sm font-black uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
+            isConstrained ? "bg-pink-500 text-white" : "bg-white text-black hover:bg-gray-50"
+          }`}
+        >
+          Fixed Budget
+        </button>
+        <button
+          onClick={() => setView("unconstrained")}
+          className={`px-4 py-2 text-sm font-black uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
+            !isConstrained ? "bg-pink-500 text-white" : "bg-white text-black hover:bg-gray-50"
+          }`}
+        >
+          Unconstrained
+        </button>
       </div>
+
+      {/* Summary cards */}
+      {isConstrained && cr ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          <SummaryCard label="Total Budget" value={fmt(cr.totalBudget)} />
+          <SummaryCard label="Non-Discretionary" value={fmt(cr.nonDiscretionaryTotal)} />
+          <SummaryCard label="Actionable Budget" value={fmt(cr.actionableBudget)} />
+          <SummaryCard label="Net Reallocation" value="$0" color="text-black/50" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          <SummaryCard label="Total Current" value={fmt(totalCurrent)} />
+          <SummaryCard label="Total Optimal" value={fmt(totalOptimal)} />
+          <SummaryCard label="Net Reallocation" value={fmt(totalOptimal - totalCurrent)} color={totalOptimal > totalCurrent ? "text-emerald-600" : "text-red-600"} />
+          <SummaryCard label="Categories Analyzed" value={String(data.categories.length)} />
+        </div>
+      )}
 
       {/* Top Recommendations */}
       <section className="mb-10">
@@ -141,48 +202,105 @@ export default function BudgetPage() {
 
       {/* Bar chart */}
       <section className="mb-10">
-        <h2 className="section-title">Current vs Optimal Spending</h2>
-        <div className="space-y-4">
-          {sorted.map((cat) => (
-            <Link key={cat.name} href={`/budget/${slugify(cat.name)}`} className="card block hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
-                <h3 className="text-sm font-black text-black">{cat.name}</h3>
-                <div className="flex items-center gap-2">
-                  <span className={`text-xs font-black px-2 py-0.5 border-2 border-black ${gradeBadgeColor(cat.evidenceGrade)}`}>
-                    {cat.evidenceGrade}
-                  </span>
-                  <span
-                    className={`text-xs font-black px-2 py-0.5 border-2 border-black ${actionBadgeStyle(cat.recommendedAction)}`}
-                  >
-                    {actionLabel(cat.recommendedAction)} {pct(cat.gapPercent)}
-                  </span>
+        <h2 className="section-title">
+          {isConstrained ? "Current vs Constrained Optimal" : "Current vs Optimal Spending"}
+        </h2>
+
+        {isConstrained && cr ? (
+          <div className="space-y-4">
+            {constrainedActionable.map((cat) => (
+              <Link key={cat.name} href={`/budget/${slugify(cat.name)}`} className="card block hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
+                  <h3 className="text-sm font-black text-black">{cat.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-black px-2 py-0.5 border-2 border-black ${gradeBadgeColor(cat.evidenceGrade)}`}>
+                      {cat.evidenceGrade}
+                    </span>
+                    <span className={`text-xs font-black px-2 py-0.5 border-2 border-black ${actionBadgeStyle(cat.action)}`}>
+                      {cat.action} {pct(cat.reallocationPercent)}
+                    </span>
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-black/50 w-16 font-bold">Current</span>
+                    <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
+                      <div className="h-full bar-current" style={{ width: `${(cat.currentSpending / maxSpending) * 100}%` }} />
+                    </div>
+                    <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.currentSpending)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-black/50 w-16 font-bold">Optimal</span>
+                    <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
+                      <div className="h-full bar-optimal" style={{ width: `${(cat.constrainedOptimal / maxSpending) * 100}%` }} />
+                    </div>
+                    <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.constrainedOptimal)}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+            {/* Non-discretionary section */}
+            {constrainedNonDisc.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-xs font-black uppercase text-black/40 mb-3 tracking-wider">
+                  Non-Discretionary (Excluded from Reallocation)
+                </h3>
+                <div className="space-y-2">
+                  {constrainedNonDisc.map((cat) => (
+                    <Link key={cat.name} href={`/budget/${slugify(cat.name)}`} className="card block opacity-60 hover:opacity-80 transition-opacity">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-bold text-black/60">{cat.name}</h3>
+                        <span className="text-sm font-bold text-black/40">{fmt(cat.currentSpending)}</span>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-black/50 w-16 font-bold">Current</span>
-                  <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
-                    <div
-                      className="h-full bar-current"
-                      style={{ width: `${(cat.currentSpending / maxSpending) * 100}%` }}
-                    />
+            )}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {sorted.map((cat) => (
+              <Link key={cat.name} href={`/budget/${slugify(cat.name)}`} className="card block hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
+                  <h3 className="text-sm font-black text-black">{cat.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs font-black px-2 py-0.5 border-2 border-black ${gradeBadgeColor(cat.evidenceGrade)}`}>
+                      {cat.evidenceGrade}
+                    </span>
+                    <span
+                      className={`text-xs font-black px-2 py-0.5 border-2 border-black ${actionBadgeStyle(cat.recommendedAction)}`}
+                    >
+                      {actionLabel(cat.recommendedAction)} {pct(cat.gapPercent)}
+                    </span>
                   </div>
-                  <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.currentSpending)}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-black/50 w-16 font-bold">Optimal</span>
-                  <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
-                    <div
-                      className="h-full bar-optimal"
-                      style={{ width: `${(cat.optimalSpending / maxSpending) * 100}%` }}
-                    />
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-black/50 w-16 font-bold">Current</span>
+                    <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
+                      <div
+                        className="h-full bar-current"
+                        style={{ width: `${(cat.currentSpending / maxSpending) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.currentSpending)}</span>
                   </div>
-                  <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.optimalSpending)}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-black/50 w-16 font-bold">Optimal</span>
+                    <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
+                      <div
+                        className="h-full bar-optimal"
+                        style={{ width: `${(cat.optimalSpending / maxSpending) * 100}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.optimalSpending)}</span>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Table */}
@@ -194,45 +312,73 @@ export default function BudgetPage() {
               <tr className="border-b-2 border-black bg-yellow-300">
                 <th className="text-left py-3 px-2 text-black font-black uppercase">Category</th>
                 <th className="text-right py-3 px-2 text-black font-black uppercase">Current</th>
-                <th className="text-right py-3 px-2 text-black font-black uppercase">Optimal</th>
-                <th className="text-right py-3 px-2 text-black font-black uppercase">Gap %</th>
+                <th className="text-right py-3 px-2 text-black font-black uppercase">
+                  {isConstrained ? "Constrained" : "Optimal"}
+                </th>
+                <th className="text-right py-3 px-2 text-black font-black uppercase">
+                  {isConstrained ? "Reallocation" : "Gap %"}
+                </th>
                 <th className="text-center py-3 px-2 text-black font-black uppercase">Grade</th>
-                <th className="text-center py-3 px-2 text-black font-black uppercase">Status</th>
                 <th className="text-center py-3 px-2 text-black font-black uppercase">Action</th>
               </tr>
             </thead>
             <tbody>
-              {sorted.map((cat) => (
-                <tr key={cat.name} className="border-b border-black hover:bg-cyan-50">
-                  <td className="py-3 px-2 text-black font-bold">
-                    <Link href={`/budget/${slugify(cat.name)}`} className="underline hover:text-pink-500 transition-colors">
-                      {cat.name}
-                    </Link>
-                  </td>
-                  <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.currentSpending)}</td>
-                  <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.optimalSpending)}</td>
-                  <td className={`py-3 px-2 text-right font-bold ${cat.gap >= 0 ? "text-emerald-600" : "text-red-600"}`}>
-                    {pct(cat.gapPercent)}
-                  </td>
-                  <td className="py-3 px-2 text-center">
-                    <span className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-black ${gradeBadgeColor(cat.evidenceGrade)}`}>
-                      {cat.evidenceGrade}
-                    </span>
-                  </td>
-                  <td className="py-3 px-2 text-center">
-                    <span className="text-xs font-bold text-black/60">
-                      {cat.investmentStatus}
-                    </span>
-                  </td>
-                  <td className="py-3 px-2 text-center">
-                    <span
-                      className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-black ${actionBadgeStyle(cat.recommendedAction)}`}
-                    >
-                      {actionLabel(cat.recommendedAction)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+              {isConstrained && cr ? (
+                constrainedSorted.map((cat) => (
+                  <tr key={cat.name} className={`border-b border-black hover:bg-cyan-50 ${cat.isNonDiscretionary ? "opacity-50" : ""}`}>
+                    <td className="py-3 px-2 text-black font-bold">
+                      <Link href={`/budget/${slugify(cat.name)}`} className="underline hover:text-pink-500 transition-colors">
+                        {cat.name}
+                      </Link>
+                      {cat.isNonDiscretionary && (
+                        <span className="text-xs text-black/40 ml-1">(non-disc.)</span>
+                      )}
+                    </td>
+                    <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.currentSpending)}</td>
+                    <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.constrainedOptimal)}</td>
+                    <td className={`py-3 px-2 text-right font-bold ${cat.reallocation >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+                      {cat.isNonDiscretionary ? "—" : `${cat.reallocation >= 0 ? "+" : ""}${fmt(cat.reallocation)}`}
+                    </td>
+                    <td className="py-3 px-2 text-center">
+                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-black ${gradeBadgeColor(cat.evidenceGrade)}`}>
+                        {cat.evidenceGrade}
+                      </span>
+                    </td>
+                    <td className="py-3 px-2 text-center">
+                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-black ${actionBadgeStyle(cat.action)}`}>
+                        {cat.action}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                sorted.map((cat) => (
+                  <tr key={cat.name} className="border-b border-black hover:bg-cyan-50">
+                    <td className="py-3 px-2 text-black font-bold">
+                      <Link href={`/budget/${slugify(cat.name)}`} className="underline hover:text-pink-500 transition-colors">
+                        {cat.name}
+                      </Link>
+                    </td>
+                    <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.currentSpending)}</td>
+                    <td className="py-3 px-2 text-right text-black/70 font-medium">{fmt(cat.optimalSpending)}</td>
+                    <td className={`py-3 px-2 text-right font-bold ${cat.gap >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+                      {pct(cat.gapPercent)}
+                    </td>
+                    <td className="py-3 px-2 text-center">
+                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-black ${gradeBadgeColor(cat.evidenceGrade)}`}>
+                        {cat.evidenceGrade}
+                      </span>
+                    </td>
+                    <td className="py-3 px-2 text-center">
+                      <span
+                        className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-black ${actionBadgeStyle(cat.recommendedAction)}`}
+                      >
+                        {actionLabel(cat.recommendedAction)}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

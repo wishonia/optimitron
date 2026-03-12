@@ -8,7 +8,7 @@ import {
 import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
 
 const ALIGNMENT_CATEGORY_IDS = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
-const RECENT_BILLS_PER_CONGRESS = 30;
+const RECENT_BILLS_PER_CONGRESS = 100;
 const MAX_ROLL_CALLS_PER_BILL = 3;
 const MIN_ROLL_CALLS_PER_PROFILE = 6;
 const MIN_CATEGORY_COVERAGE = 4;
