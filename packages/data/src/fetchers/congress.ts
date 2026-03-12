@@ -230,6 +230,20 @@ export async function fetchCongressJson<T>(url: string): Promise<T | null> {
   }
 }
 
+async function fetchCongressText(url: string): Promise<string | null> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.warn(`Congress API ${response.status}: ${response.statusText} — ${url}`);
+      return null;
+    }
+    return await response.text();
+  } catch (error) {
+    console.error('Congress API fetch error:', error);
+    return null;
+  }
+}
+
 // ─── Parsers ────────────────────────────────────────────────────────
 
 /**
@@ -496,6 +510,7 @@ export async function fetchRollCallVote(
   chamber: string,
   sessionNumber: number,
   rollCallNumber: number,
+  sourceUrl?: string | null,
 ): Promise<Vote | null> {
   const chamberPath = chamber.toLowerCase();
   const url = buildCongressUrl(
@@ -510,9 +525,20 @@ export async function fetchRollCallVote(
       `/house-vote/${congress}/${sessionNumber}/${rollCallNumber}`,
     );
     const altJson = await fetchCongressJson<{ 'house-vote': RawRollCallVote }>(altUrl);
-    if (!altJson?.['house-vote']) return null;
+    if (altJson?.['house-vote']) {
+      return parseRollCallVote(altJson['house-vote'], congress, chamberPath, sessionNumber);
+    }
 
-    return parseRollCallVote(altJson['house-vote'], congress, chamberPath, sessionNumber);
+    if (chamberPath === 'house' && sourceUrl) {
+      const xml = await fetchCongressText(sourceUrl);
+      if (!xml) {
+        return null;
+      }
+
+      return parseHouseClerkRollCallVote(xml);
+    }
+
+    return null;
   }
 
   return parseRollCallVote(json.rollcallVote, congress, chamberPath, sessionNumber);
@@ -542,6 +568,59 @@ function parseRollCallVote(
     date: raw.date ?? '',
     question: raw.question ?? '',
     result: raw.result ?? '',
+    memberVotes,
+  };
+}
+
+function decodeXmlEntities(value: string): string {
+  return value
+    .replaceAll('&amp;', '&')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&apos;', "'")
+    .replaceAll('&#39;', "'")
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>');
+}
+
+function extractXmlTagValue(xml: string, tagName: string): string | null {
+  const match = xml.match(new RegExp(`<${tagName}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tagName}>`, 'i'));
+  return match?.[1] ? decodeXmlEntities(match[1].trim()) : null;
+}
+
+function parseHouseClerkSessionNumber(sessionLabel: string | null): number {
+  const match = sessionLabel?.match(/(\d+)/);
+  return match ? Number(match[1]) : 1;
+}
+
+function parseHouseClerkRollCallVote(xml: string): Vote | null {
+  const rollCallNumber = Number(extractXmlTagValue(xml, 'rollcall-num'));
+  if (!Number.isFinite(rollCallNumber)) {
+    return null;
+  }
+
+  const congress = Number(extractXmlTagValue(xml, 'congress'));
+  const memberVotes: MemberVotePosition[] = [];
+  const memberPattern =
+    /<recorded-vote>\s*<legislator\b[^>]*name-id="([^"]+)"[\s\S]*?<\/legislator>\s*<vote>([\s\S]*?)<\/vote>\s*<\/recorded-vote>/gi;
+
+  let match = memberPattern.exec(xml);
+  while (match) {
+    const bioguideId = match[1]?.trim();
+    const position = match[2] ? decodeXmlEntities(match[2].trim()) : '';
+    if (bioguideId && position) {
+      memberVotes.push({ bioguideId, position });
+    }
+    match = memberPattern.exec(xml);
+  }
+
+  return {
+    rollCallNumber,
+    congress: Number.isFinite(congress) ? congress : CURRENT_CONGRESS,
+    chamber: 'House',
+    session: parseHouseClerkSessionNumber(extractXmlTagValue(xml, 'session')),
+    date: extractXmlTagValue(xml, 'action-date') ?? '',
+    question: extractXmlTagValue(xml, 'vote-question') ?? '',
+    result: extractXmlTagValue(xml, 'vote-result') ?? '',
     memberVotes,
   };
 }

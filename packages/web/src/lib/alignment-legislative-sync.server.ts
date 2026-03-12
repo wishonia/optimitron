@@ -237,6 +237,7 @@ export async function deriveRecentLegislativeVoteRows(
         rawVote.chamber ?? "house",
         rawVote.sessionNumber ?? 1,
         rawVote.rollNumber ?? 0,
+        rawVote.url,
       );
       if (!vote) {
         continue;

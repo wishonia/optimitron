@@ -185,6 +185,29 @@ const mockRollCallResponse = {
   },
 };
 
+const mockHouseClerkXml = `<?xml version="1.0" encoding="UTF-8"?>
+<rollcall-vote>
+  <vote-metadata>
+    <congress>119</congress>
+    <session>1st</session>
+    <chamber>U.S. House of Representatives</chamber>
+    <rollcall-num>102</rollcall-num>
+    <vote-question>On Passage</vote-question>
+    <vote-result>Passed</vote-result>
+    <action-date>10-Apr-2025</action-date>
+  </vote-metadata>
+  <vote-data>
+    <recorded-vote>
+      <legislator name-id="S000033">Sanders</legislator>
+      <vote>Yea</vote>
+    </recorded-vote>
+    <recorded-vote>
+      <legislator name-id="P000197">Pelosi</legislator>
+      <vote>Nay</vote>
+    </recorded-vote>
+  </vote-data>
+</rollcall-vote>`;
+
 // ─── Tests ──────────────────────────────────────────────────────────
 
 describe('Congress Fetcher', () => {
@@ -778,6 +801,44 @@ describe('Congress Fetcher', () => {
 
       const vote = await fetchRollCallVote(118, 'house', 1, 9999);
       expect(vote).toBeNull();
+    });
+
+    it('falls back to the House Clerk XML URL when Congress endpoints are empty', async () => {
+      const fetchMock = vi.fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({}),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({}),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          text: () => Promise.resolve(mockHouseClerkXml),
+        });
+
+      globalThis.fetch = fetchMock;
+
+      const vote = await fetchRollCallVote(
+        119,
+        'house',
+        1,
+        102,
+        'https://clerk.house.gov/evs/2025/roll102.xml',
+      );
+
+      expect(vote).not.toBeNull();
+      expect(vote?.rollCallNumber).toBe(102);
+      expect(vote?.congress).toBe(119);
+      expect(vote?.session).toBe(1);
+      expect(vote?.question).toBe('On Passage');
+      expect(vote?.result).toBe('Passed');
+      expect(vote?.memberVotes).toEqual([
+        { bioguideId: 'S000033', position: 'Yea' },
+        { bioguideId: 'P000197', position: 'Nay' },
+      ]);
+      expect(fetchMock.mock.calls[2]?.[0]).toBe('https://clerk.house.gov/evs/2025/roll102.xml');
     });
 
     it('returns null on HTTP error', async () => {
