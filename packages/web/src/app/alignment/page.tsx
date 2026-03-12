@@ -3,12 +3,12 @@ import { redirect } from "next/navigation";
 import { AlignmentReport } from "@/components/alignment/AlignmentReport";
 import { authOptions } from "@/lib/auth";
 import { getPersonalAlignmentState } from "@/lib/alignment-report.server";
-import { buildUserReferralUrl, getBaseUrl } from "@/lib/url";
+import { buildUserAlignmentUrl, getBaseUrl } from "@/lib/url";
 
 export const metadata = {
   title: "Alignment Report | Optomitron",
   description:
-    "Compare your saved budget priorities against Optomitron's benchmark politician profiles.",
+    "Compare your saved budget priorities against real federal benchmark politician profiles.",
 };
 
 export default async function AlignmentPage() {
@@ -21,11 +21,15 @@ export default async function AlignmentPage() {
   }
 
   const state = await getPersonalAlignmentState(userId);
-  const shareUrl = buildUserReferralUrl(user, getBaseUrl());
+  const shareUrl = buildUserAlignmentUrl(user, getBaseUrl());
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <AlignmentReport state={state} shareUrl={shareUrl} />
+      <AlignmentReport
+        state={state}
+        shareUrl={shareUrl}
+        ownerLabel={user.username ? `@${user.username}` : user.name ?? null}
+      />
     </div>
   );
 }

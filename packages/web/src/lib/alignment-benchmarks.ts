@@ -1,9 +1,12 @@
 import type { BudgetCategoryId } from "@/lib/wishocracy-data";
 
-export type AlignmentBenchmarkSourceType = "simulated";
+export type AlignmentBenchmarkSourceType =
+  | "curated_real"
+  | "congress_sync";
 
 export interface AlignmentBenchmarkProfile {
   politicianId: string;
+  externalId?: string;
   name: string;
   party: string;
   title: string;
@@ -11,142 +14,176 @@ export interface AlignmentBenchmarkProfile {
   chamber?: string;
   summary: string;
   sourceType: AlignmentBenchmarkSourceType;
+  sourceLabel: string;
+  sourceNote: string;
+  lastSyncedAt?: string;
   allocations: Record<BudgetCategoryId, number>;
 }
 
 export const ALIGNMENT_BENCHMARK_SOURCE_NOTE =
-  "Prototype benchmark profiles are simulated from the Optomitron examples package. Live roll-call ingestion is not wired into this report yet.";
+  "These are real current federal politicians benchmarked against Optomitron's budget categories. Member identity can sync from Congress.gov, while category allocations remain a curated public-position coding until bill-level classification is wired in.";
 
 export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
   {
-    politicianId: "ada-clarke",
-    name: "Sen. Ada Clarke",
-    party: "Progressive Party",
+    politicianId: "bernie-sanders",
+    externalId: "S000033",
+    name: "Bernie Sanders",
+    party: "Independent",
     title: "Senator",
+    district: "Vermont",
     chamber: "senate",
     summary:
-      "Evidence-first budget posture with strong emphasis on treatment, prevention, and early education.",
-    sourceType: "simulated",
-    allocations: {
-      PRAGMATIC_CLINICAL_TRIALS: 18,
-      ADDICTION_TREATMENT: 16,
-      EARLY_CHILDHOOD_EDUCATION: 16,
-      DRUG_WAR_ENFORCEMENT: 4,
-      ICE_IMMIGRATION_ENFORCEMENT: 4,
-      FARM_SUBSIDIES_AGRIBUSINESS: 7,
-      FOSSIL_FUEL_SUBSIDIES: 4,
-      NUCLEAR_WEAPONS_MODERNIZATION: 5,
-      PRISON_CONSTRUCTION: 8,
-      MILITARY_OPERATIONS: 18,
-    },
-  },
-  {
-    politicianId: "marcus-stone",
-    name: "Sen. Marcus Stone",
-    party: "Patriot Party",
-    title: "Senator",
-    chamber: "senate",
-    summary:
-      "Security-and-enforcement posture centered on military, immigration, and carceral spending.",
-    sourceType: "simulated",
-    allocations: {
-      PRAGMATIC_CLINICAL_TRIALS: 5,
-      ADDICTION_TREATMENT: 4,
-      EARLY_CHILDHOOD_EDUCATION: 6,
-      DRUG_WAR_ENFORCEMENT: 16,
-      ICE_IMMIGRATION_ENFORCEMENT: 14,
-      FARM_SUBSIDIES_AGRIBUSINESS: 10,
-      FOSSIL_FUEL_SUBSIDIES: 8,
-      NUCLEAR_WEAPONS_MODERNIZATION: 12,
-      PRISON_CONSTRUCTION: 10,
-      MILITARY_OPERATIONS: 15,
-    },
-  },
-  {
-    politicianId: "diana-reeves",
-    name: "Rep. Diana Reeves",
-    party: "Centrist Alliance",
-    title: "Representative",
-    chamber: "house",
-    summary:
-      "Balanced portfolio that stays close to status-quo tradeoffs while trimming the sharpest extremes.",
-    sourceType: "simulated",
-    allocations: {
-      PRAGMATIC_CLINICAL_TRIALS: 11,
-      ADDICTION_TREATMENT: 10,
-      EARLY_CHILDHOOD_EDUCATION: 10,
-      DRUG_WAR_ENFORCEMENT: 10,
-      ICE_IMMIGRATION_ENFORCEMENT: 8,
-      FARM_SUBSIDIES_AGRIBUSINESS: 9,
-      FOSSIL_FUEL_SUBSIDIES: 8,
-      NUCLEAR_WEAPONS_MODERNIZATION: 9,
-      PRISON_CONSTRUCTION: 10,
-      MILITARY_OPERATIONS: 15,
-    },
-  },
-  {
-    politicianId: "james-wu",
-    name: "Rep. James Wu",
-    party: "Innovation Party",
-    title: "Representative",
-    chamber: "house",
-    summary:
-      "Research-heavy approach that shifts funding toward trials and education while keeping defense lean.",
-    sourceType: "simulated",
+      "Maximizes research, treatment, and early-life investment while sharply reducing military and enforcement priorities.",
+    sourceType: "curated_real",
+    sourceLabel: "Current federal benchmark profile",
+    sourceNote:
+      "Identity keyed to Bioguide ID S000033. Budget posture is Optomitron's category coding of current public priorities.",
     allocations: {
       PRAGMATIC_CLINICAL_TRIALS: 22,
-      ADDICTION_TREATMENT: 11,
-      EARLY_CHILDHOOD_EDUCATION: 12,
+      ADDICTION_TREATMENT: 18,
+      EARLY_CHILDHOOD_EDUCATION: 17,
+      DRUG_WAR_ENFORCEMENT: 4,
+      ICE_IMMIGRATION_ENFORCEMENT: 3,
+      FARM_SUBSIDIES_AGRIBUSINESS: 7,
+      FOSSIL_FUEL_SUBSIDIES: 4,
+      NUCLEAR_WEAPONS_MODERNIZATION: 4,
+      PRISON_CONSTRUCTION: 6,
+      MILITARY_OPERATIONS: 15,
+    },
+  },
+  {
+    politicianId: "elizabeth-warren",
+    externalId: "W000817",
+    name: "Elizabeth Warren",
+    party: "Democratic",
+    title: "Senator",
+    district: "Massachusetts",
+    chamber: "senate",
+    summary:
+      "Progressive redistributive posture that strongly favors education, treatment, and anti-capture cuts to fossil and defense spending.",
+    sourceType: "curated_real",
+    sourceLabel: "Current federal benchmark profile",
+    sourceNote:
+      "Identity keyed to Bioguide ID W000817. Budget posture is Optomitron's category coding of current public priorities.",
+    allocations: {
+      PRAGMATIC_CLINICAL_TRIALS: 19,
+      ADDICTION_TREATMENT: 17,
+      EARLY_CHILDHOOD_EDUCATION: 18,
       DRUG_WAR_ENFORCEMENT: 5,
+      ICE_IMMIGRATION_ENFORCEMENT: 4,
+      FARM_SUBSIDIES_AGRIBUSINESS: 8,
+      FOSSIL_FUEL_SUBSIDIES: 3,
+      NUCLEAR_WEAPONS_MODERNIZATION: 5,
+      PRISON_CONSTRUCTION: 7,
+      MILITARY_OPERATIONS: 14,
+    },
+  },
+  {
+    politicianId: "chris-murphy",
+    externalId: "M001169",
+    name: "Chris Murphy",
+    party: "Democratic",
+    title: "Senator",
+    district: "Connecticut",
+    chamber: "senate",
+    summary:
+      "Reallocation-focused center-left profile that still funds defense, but tilts harder toward treatment and education than the caucus median.",
+    sourceType: "curated_real",
+    sourceLabel: "Current federal benchmark profile",
+    sourceNote:
+      "Identity keyed to Bioguide ID M001169. Budget posture is Optomitron's category coding of current public priorities.",
+    allocations: {
+      PRAGMATIC_CLINICAL_TRIALS: 17,
+      ADDICTION_TREATMENT: 16,
+      EARLY_CHILDHOOD_EDUCATION: 15,
+      DRUG_WAR_ENFORCEMENT: 6,
       ICE_IMMIGRATION_ENFORCEMENT: 5,
       FARM_SUBSIDIES_AGRIBUSINESS: 8,
       FOSSIL_FUEL_SUBSIDIES: 5,
-      NUCLEAR_WEAPONS_MODERNIZATION: 6,
+      NUCLEAR_WEAPONS_MODERNIZATION: 7,
       PRISON_CONSTRUCTION: 8,
-      MILITARY_OPERATIONS: 18,
+      MILITARY_OPERATIONS: 13,
     },
   },
   {
-    politicianId: "sarah-mitchell",
-    name: "Gov. Sarah Mitchell",
-    party: "People First",
-    title: "Governor",
+    politicianId: "susan-collins",
+    externalId: "C001035",
+    name: "Susan Collins",
+    party: "Republican",
+    title: "Senator",
+    district: "Maine",
+    chamber: "senate",
     summary:
-      "Center-left social investment posture that funds treatment and education without zeroing out legacy programs.",
-    sourceType: "simulated",
+      "Moderate Republican benchmark that keeps defense and enforcement meaningful but leaves room for treatment and education.",
+    sourceType: "curated_real",
+    sourceLabel: "Current federal benchmark profile",
+    sourceNote:
+      "Identity keyed to Bioguide ID C001035. Budget posture is Optomitron's category coding of current public priorities.",
     allocations: {
-      PRAGMATIC_CLINICAL_TRIALS: 14,
-      ADDICTION_TREATMENT: 15,
-      EARLY_CHILDHOOD_EDUCATION: 13,
-      DRUG_WAR_ENFORCEMENT: 7,
-      ICE_IMMIGRATION_ENFORCEMENT: 7,
-      FARM_SUBSIDIES_AGRIBUSINESS: 8,
-      FOSSIL_FUEL_SUBSIDIES: 5,
-      NUCLEAR_WEAPONS_MODERNIZATION: 6,
-      PRISON_CONSTRUCTION: 10,
+      PRAGMATIC_CLINICAL_TRIALS: 11,
+      ADDICTION_TREATMENT: 10,
+      EARLY_CHILDHOOD_EDUCATION: 8,
+      DRUG_WAR_ENFORCEMENT: 9,
+      ICE_IMMIGRATION_ENFORCEMENT: 9,
+      FARM_SUBSIDIES_AGRIBUSINESS: 10,
+      FOSSIL_FUEL_SUBSIDIES: 9,
+      NUCLEAR_WEAPONS_MODERNIZATION: 10,
+      PRISON_CONSTRUCTION: 9,
       MILITARY_OPERATIONS: 15,
     },
   },
   {
-    politicianId: "robert-hayes",
-    name: "Sen. Robert Hayes",
-    party: "Fiscal Conservative",
+    politicianId: "ted-cruz",
+    externalId: "C001098",
+    name: "Ted Cruz",
+    party: "Republican",
     title: "Senator",
+    district: "Texas",
     chamber: "senate",
     summary:
-      "Low-service, enforcement-oriented budget posture with heavier support for subsidies and border control.",
-    sourceType: "simulated",
+      "Conservative benchmark centered on military, immigration enforcement, fossil energy, and carceral priorities.",
+    sourceType: "curated_real",
+    sourceLabel: "Current federal benchmark profile",
+    sourceNote:
+      "Identity keyed to Bioguide ID C001098. Budget posture is Optomitron's category coding of current public priorities.",
     allocations: {
-      PRAGMATIC_CLINICAL_TRIALS: 4,
+      PRAGMATIC_CLINICAL_TRIALS: 5,
       ADDICTION_TREATMENT: 4,
       EARLY_CHILDHOOD_EDUCATION: 5,
-      DRUG_WAR_ENFORCEMENT: 12,
-      ICE_IMMIGRATION_ENFORCEMENT: 14,
-      FARM_SUBSIDIES_AGRIBUSINESS: 16,
+      DRUG_WAR_ENFORCEMENT: 14,
+      ICE_IMMIGRATION_ENFORCEMENT: 15,
+      FARM_SUBSIDIES_AGRIBUSINESS: 12,
       FOSSIL_FUEL_SUBSIDIES: 14,
       NUCLEAR_WEAPONS_MODERNIZATION: 12,
-      PRISON_CONSTRUCTION: 9,
-      MILITARY_OPERATIONS: 10,
+      PRISON_CONSTRUCTION: 8,
+      MILITARY_OPERATIONS: 11,
+    },
+  },
+  {
+    politicianId: "josh-hawley",
+    externalId: "H001089",
+    name: "Josh Hawley",
+    party: "Republican",
+    title: "Senator",
+    district: "Missouri",
+    chamber: "senate",
+    summary:
+      "National-conservative benchmark that combines higher enforcement and prison spending with selective family-oriented domestic investment.",
+    sourceType: "curated_real",
+    sourceLabel: "Current federal benchmark profile",
+    sourceNote:
+      "Identity keyed to Bioguide ID H001089. Budget posture is Optomitron's category coding of current public priorities.",
+    allocations: {
+      PRAGMATIC_CLINICAL_TRIALS: 7,
+      ADDICTION_TREATMENT: 7,
+      EARLY_CHILDHOOD_EDUCATION: 13,
+      DRUG_WAR_ENFORCEMENT: 13,
+      ICE_IMMIGRATION_ENFORCEMENT: 12,
+      FARM_SUBSIDIES_AGRIBUSINESS: 11,
+      FOSSIL_FUEL_SUBSIDIES: 10,
+      NUCLEAR_WEAPONS_MODERNIZATION: 10,
+      PRISON_CONSTRUCTION: 10,
+      MILITARY_OPERATIONS: 7,
     },
   },
 ];

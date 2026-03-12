@@ -1,5 +1,8 @@
 import type { PreferenceGap } from "@optomitron/wishocracy";
-import type { AlignmentBenchmarkProfile } from "@/lib/alignment-benchmarks";
+import type {
+  AlignmentBenchmarkProfile,
+  AlignmentBenchmarkSourceType,
+} from "@/lib/alignment-benchmarks";
 import {
   buildCitizenPreferenceSummary,
   buildPoliticianAlignmentResults,
@@ -70,6 +73,9 @@ export interface PersonalAlignmentReport {
   totalPossiblePairs: number;
   completionRatio: number;
   isPreliminary: boolean;
+  candidateSourceType: AlignmentBenchmarkSourceType | "mixed";
+  candidateSourceNote: string;
+  candidateLastSyncedAt: string | null;
   topPriorities: AlignmentPriorityHighlight[];
   ranking: PersonalAlignmentRankingEntry[];
   politicians: PersonalAlignmentCandidateReport[];
@@ -247,6 +253,9 @@ export function buildPersonalAlignmentReport(input: {
   selectedCategoryCount: number;
   benchmarkProfiles: AlignmentBenchmarkProfile[];
   generatedAt?: string;
+  candidateSourceType?: AlignmentBenchmarkSourceType | "mixed";
+  candidateSourceNote?: string;
+  candidateLastSyncedAt?: string | null;
 }): PersonalAlignmentReport {
   const comparisons = dedupeLatestWishocraticComparisons(input.comparisons);
   const selectedCategoryCount = resolveSelectedCategoryCount(
@@ -321,6 +330,12 @@ export function buildPersonalAlignmentReport(input: {
     isPreliminary:
       comparisons.length < PERSONAL_ALIGNMENT_PRELIMINARY_COMPARISON_THRESHOLD &&
       completionRatio < PERSONAL_ALIGNMENT_PRELIMINARY_COMPLETION_THRESHOLD,
+    candidateSourceType: input.candidateSourceType ?? "curated_real",
+    candidateSourceNote:
+      input.candidateSourceNote ??
+      input.benchmarkProfiles[0]?.sourceNote ??
+      "",
+    candidateLastSyncedAt: input.candidateLastSyncedAt ?? null,
     topPriorities: buildTopPriorityHighlights(summary.citizenAllocations),
     ranking,
     politicians,

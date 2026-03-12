@@ -31,6 +31,7 @@
     "db:reset": "docker compose down -v && pnpm db:setup",
     "db:down": "docker compose down",
     "db:logs": "docker compose logs -f postgres",
+    "alignment:sync": "pnpm --filter @optomitron/web run sync:alignment-politicians",
     "prepare": "husky"
   },
   "devDependencies": {

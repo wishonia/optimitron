@@ -10,7 +10,8 @@
  * Results are aggregated via weighted meta-analysis into a final evidence grade.
  */
 
-import type { FullAnalysisResult, TimeSeries } from '@optomitron/optimizer';
+import { runFullAnalysis } from '@optomitron/optimizer';
+import type { FullAnalysisResult, TimeSeries, AnalysisConfig } from '@optomitron/optimizer';
 
 // ---------------------------------------------------------------------------
 // Core Types
@@ -238,4 +239,278 @@ export function aggregateEffectSizes(
   const consistency = effects.length > 0 ? positiveCount / effects.length : 0;
 
   return { weightedEffect, consistency, totalWeight };
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function yearToMs(year: number): number {
+  return new Date(`${year}-07-01T00:00:00Z`).getTime();
+}
+
+const DEFAULT_EXPERIMENT_CONFIG: AnalysisConfig = {
+  onsetDelaySeconds: 0,
+  durationOfActionSeconds: 365 * 24 * 3600,
+  fillingType: 'none',
+  subjectCount: 1,
+  plausibilityScore: 0.7,
+  coherenceScore: 0.6,
+  analogyScore: 0.5,
+  specificityScore: 0.4,
+};
+
+function interpretEffect(
+  effectPercent: number,
+  direction: OutcomeDirection,
+): 'counterproductive' | 'effective' | 'neutral' {
+  const normalized = direction === 'lower' ? -effectPercent : effectPercent;
+  if (normalized > 5) return 'effective';
+  if (normalized < -5) return 'counterproductive';
+  return 'neutral';
+}
+
+// ---------------------------------------------------------------------------
+// Adapter: NaturalExperimentData (from @optomitron/data) → NaturalExperimentDef
+// ---------------------------------------------------------------------------
+
+/**
+ * Convert raw natural experiment data (string metric names) into a typed
+ * NaturalExperimentDef (with OutcomeMetric objects).
+ */
+export function convertNaturalExperimentData(data: {
+  policy: string;
+  jurisdiction: string;
+  jurisdictionCode: string;
+  interventionYear: number;
+  outcomes: Array<{
+    metric: string;
+    unit: string;
+    direction: 'higher' | 'lower';
+    data: Array<{ year: number; value: number }>;
+  }>;
+}): NaturalExperimentDef {
+  return {
+    policy: data.policy,
+    jurisdiction: data.jurisdiction,
+    jurisdictionCode: data.jurisdictionCode,
+    interventionYear: data.interventionYear,
+    outcomes: data.outcomes.map(o => ({
+      metric: {
+        name: o.metric,
+        id: o.metric.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        unit: o.unit,
+        direction: o.direction,
+      },
+      data: o.data,
+    })),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Layer 2: Run a Natural Experiment
+// ---------------------------------------------------------------------------
+
+/**
+ * Run causal analysis on a single natural experiment (one jurisdiction, one policy).
+ *
+ * For each outcome metric:
+ * 1. Split data into pre/post at interventionYear
+ * 2. Build TimeSeries for time index and outcome values
+ * 3. Run runFullAnalysis() (time → outcome)
+ * 4. Compute pre/post means and change
+ *
+ * Returns one NaturalExperimentResult per outcome metric.
+ * Outcomes with < 3 data points are skipped.
+ */
+export function runNaturalExperiment(
+  experiment: NaturalExperimentDef,
+  config?: Partial<AnalysisConfig>,
+): NaturalExperimentResult[] {
+  const mergedConfig: AnalysisConfig = { ...DEFAULT_EXPERIMENT_CONFIG, ...config };
+  const results: NaturalExperimentResult[] = [];
+
+  for (const outcome of experiment.outcomes) {
+    const sortedData = [...outcome.data].sort((a, b) => a.year - b.year);
+
+    if (sortedData.length < 3) continue;
+
+    const preData = sortedData.filter(d => d.year < experiment.interventionYear);
+    const postData = sortedData.filter(d => d.year >= experiment.interventionYear);
+
+    const preMean = preData.length > 0
+      ? preData.reduce((s, d) => s + d.value, 0) / preData.length
+      : sortedData[0]!.value;
+    const postMean = postData.length > 0
+      ? postData.reduce((s, d) => s + d.value, 0) / postData.length
+      : sortedData[sortedData.length - 1]!.value;
+
+    const absoluteChange = postMean - preMean;
+    const percentChange = preMean !== 0 ? (absoluteChange / preMean) * 100 : 0;
+
+    const timeSeries: TimeSeries = {
+      variableId: 'time-index',
+      name: 'Year',
+      measurements: sortedData.map(d => ({
+        timestamp: yearToMs(d.year),
+        value: d.year,
+      })),
+    };
+
+    const outcomeSeries: TimeSeries = {
+      variableId: `${experiment.jurisdictionCode}-${outcome.metric.id}`,
+      name: `${outcome.metric.name} (${experiment.jurisdiction})`,
+      measurements: sortedData.map(d => ({
+        timestamp: yearToMs(d.year),
+        value: d.value,
+      })),
+    };
+
+    try {
+      const analysis = runFullAnalysis(timeSeries, outcomeSeries, mergedConfig);
+
+      results.push({
+        jurisdiction: experiment.jurisdiction,
+        jurisdictionCode: experiment.jurisdictionCode,
+        policy: experiment.policy,
+        interventionDate: `${experiment.interventionYear}-01-01`,
+        outcomeMetric: outcome.metric,
+        preDataPoints: preData.length,
+        postDataPoints: postData.length,
+        yearRange: `${sortedData[0]!.year}-${sortedData[sortedData.length - 1]!.year}`,
+        preMean,
+        postMean,
+        absoluteChange,
+        percentChange,
+        analysisResult: analysis,
+      });
+    } catch {
+      // Skip outcomes where analysis fails (e.g., zero variance)
+    }
+  }
+
+  return results;
+}
+
+// ---------------------------------------------------------------------------
+// Full Policy Evaluation (assembles all 3 layers)
+// ---------------------------------------------------------------------------
+
+/**
+ * Build a complete PolicyEvaluation by assembling evidence from up to 3 layers:
+ *
+ * - Layer 1: Within-jurisdiction time series (pre-computed, passed in)
+ * - Layer 2: Natural experiments (run here via runNaturalExperiment)
+ * - Layer 3: Cross-jurisdiction panel (pre-computed, passed in)
+ *
+ * Aggregates effect sizes across all layers and assigns an evidence grade.
+ */
+export function evaluatePolicy(options: {
+  policy: string;
+  description: string;
+  category: string;
+  expectedOutcomes: OutcomeMetric[];
+  withinJurisdiction?: {
+    jurisdiction: string;
+    analyses: Array<{ outcomeMetric: OutcomeMetric; result: FullAnalysisResult }>;
+  } | null;
+  naturalExperiments?: NaturalExperimentDef[];
+  crossJurisdiction?: PanelAnalysisResult | null;
+  analysisConfig?: Partial<AnalysisConfig>;
+}): PolicyEvaluation {
+  // Layer 2: run natural experiments
+  const naturalExperimentResults: NaturalExperimentResult[] = [];
+  for (const exp of options.naturalExperiments ?? []) {
+    naturalExperimentResults.push(...runNaturalExperiment(exp, options.analysisConfig));
+  }
+
+  // Layer 1: map pre-computed analyses into the PolicyEvaluation shape
+  let withinJurisdiction: PolicyEvaluation['withinJurisdiction'] = null;
+  if (options.withinJurisdiction) {
+    const { jurisdiction, analyses } = options.withinJurisdiction;
+    withinJurisdiction = {
+      jurisdiction,
+      analyses: analyses.map(a => {
+        const bhValues = Object.values(a.result.bradfordHill) as number[];
+        const bhAvg = bhValues.reduce((sum, v) => sum + v, 0) / bhValues.length;
+        return {
+          outcomeMetric: a.outcomeMetric,
+          correlation: a.result.forwardPearson,
+          pValue: a.result.pValue,
+          dataPoints: a.result.numberOfPairs,
+          yearRange: `${a.result.dateRange.start}-${a.result.dateRange.end}`,
+          bradfordHillAverage: bhAvg,
+          predictorImpactScore: a.result.pis.score,
+          effectSizePercent: a.result.effectSize.percentChange,
+          interpretation: interpretEffect(a.result.effectSize.percentChange, a.outcomeMetric.direction),
+        };
+      }),
+    };
+  }
+
+  // Collect all effects for meta-analysis aggregation
+  const allEffects: Array<{
+    effectSize: number;
+    dataPoints: number;
+    direction: OutcomeDirection;
+    correlation: number;
+  }> = [];
+
+  // Layer 1 effects
+  if (withinJurisdiction) {
+    for (const a of withinJurisdiction.analyses) {
+      allEffects.push({
+        effectSize: a.effectSizePercent / 100,
+        dataPoints: a.dataPoints,
+        direction: a.outcomeMetric.direction,
+        correlation: a.correlation,
+      });
+    }
+  }
+
+  // Layer 2 effects
+  for (const nr of naturalExperimentResults) {
+    allEffects.push({
+      effectSize: nr.percentChange / 100,
+      dataPoints: nr.preDataPoints + nr.postDataPoints,
+      direction: nr.outcomeMetric.direction,
+      correlation: nr.analysisResult.forwardPearson,
+    });
+  }
+
+  // Aggregate across all layers
+  const { weightedEffect, consistency } = aggregateEffectSizes(allEffects);
+
+  // Count unique jurisdictions
+  const jurisdictions = new Set<string>();
+  if (withinJurisdiction) jurisdictions.add(withinJurisdiction.jurisdiction);
+  for (const nr of naturalExperimentResults) jurisdictions.add(nr.jurisdiction);
+  if (options.crossJurisdiction) {
+    for (const j of options.crossJurisdiction.jurisdictions) jurisdictions.add(j);
+  }
+
+  const { grade, confidence, verdict } = deriveEvidenceGrade(
+    weightedEffect,
+    allEffects.length,
+    jurisdictions.size,
+    consistency,
+  );
+
+  return {
+    policy: options.policy,
+    description: options.description,
+    category: options.category,
+    expectedOutcomes: options.expectedOutcomes,
+    withinJurisdiction,
+    naturalExperiments: naturalExperimentResults,
+    crossJurisdiction: options.crossJurisdiction ?? null,
+    aggregate: {
+      weightedEffectSize: weightedEffect,
+      evidenceSources: allEffects.length,
+      jurisdictionCount: jurisdictions.size,
+      evidenceGrade: grade,
+      confidence,
+      verdict,
+    },
+  };
 }

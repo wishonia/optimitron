@@ -13,7 +13,7 @@ export function getBaseUrl(): string {
     return process.env.NEXTAUTH_URL;
   }
 
-  return "http://localhost:3000";
+  return "http://localhost:3001";
 }
 
 export function buildReferralUrl(identifier?: string | null, baseUrl: string = getBaseUrl()): string {
@@ -25,4 +25,18 @@ export function buildUserReferralUrl(
   baseUrl: string = getBaseUrl(),
 ): string {
   return buildReferralUrl(getUsernameOrReferralCode(user), baseUrl);
+}
+
+export function buildAlignmentUrl(
+  identifier?: string | null,
+  baseUrl: string = getBaseUrl(),
+): string {
+  return identifier ? `${baseUrl}/alignment/${identifier}` : `${baseUrl}/alignment`;
+}
+
+export function buildUserAlignmentUrl(
+  user: { username?: string | null; referralCode?: string | null } | null | undefined,
+  baseUrl: string = getBaseUrl(),
+): string {
+  return buildAlignmentUrl(getUsernameOrReferralCode(user), baseUrl);
 }

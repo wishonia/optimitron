@@ -11,6 +11,8 @@ import type { PersonalAlignmentState } from "@/lib/alignment-report";
 interface AlignmentReportProps {
   state: PersonalAlignmentState;
   shareUrl: string;
+  ownerLabel?: string | null;
+  publicMode?: boolean;
 }
 
 function formatScore(score: number): string {
@@ -21,20 +23,31 @@ function formatPercent(value: number): string {
   return `${Math.round(value * 100)}%`;
 }
 
-export function AlignmentReport({ state, shareUrl }: AlignmentReportProps) {
+export function AlignmentReport({
+  state,
+  shareUrl,
+  ownerLabel,
+  publicMode = false,
+}: AlignmentReportProps) {
+  const reportTitle =
+    publicMode && ownerLabel
+      ? `Alignment Report for ${ownerLabel}`
+      : "Personal Politician Report";
+
   if (state.status === "empty") {
     return (
       <div className="space-y-8">
         <section className="space-y-3">
           <p className="text-sm font-black uppercase tracking-[0.2em] text-pink-600">
-            Your Alignment
+            {publicMode ? "Shared Alignment" : "Your Alignment"}
           </p>
           <h1 className="text-4xl font-black uppercase tracking-tight text-black">
-            Personal Politician Report
+            {reportTitle}
           </h1>
           <p className="max-w-3xl text-base font-medium text-black/70">
-            Compare your budget priorities against benchmark politician profiles once
-            you have enough pairwise trade-offs saved.
+            {publicMode
+              ? "This shared report link exists, but there is not enough saved Wishocracy data yet to render a public alignment snapshot."
+              : "Compare your budget priorities against real benchmark politician profiles once you have enough pairwise trade-offs saved."}
           </p>
         </section>
 
@@ -90,14 +103,16 @@ export function AlignmentReport({ state, shareUrl }: AlignmentReportProps) {
 
   const topMatch = state.report.politicians[0];
   const shareText =
-    "I compared my budget priorities against Optomitron's benchmark politicians. See how yours line up.";
+    publicMode && ownerLabel
+      ? `See how ${ownerLabel} lines up against Optomitron's federal benchmark politicians.`
+      : "I compared my budget priorities against Optomitron's federal benchmark politicians. See how yours line up.";
 
   return (
     <div className="space-y-10">
       <section className="space-y-3">
         <div className="flex flex-wrap items-center gap-3">
           <p className="text-sm font-black uppercase tracking-[0.2em] text-pink-600">
-            Your Alignment
+            {publicMode ? "Shared Alignment" : "Your Alignment"}
           </p>
           <span
             className={`border-2 border-black px-3 py-1 text-xs font-black uppercase tracking-[0.2em] ${
@@ -110,11 +125,12 @@ export function AlignmentReport({ state, shareUrl }: AlignmentReportProps) {
           </span>
         </div>
         <h1 className="text-4xl font-black uppercase tracking-tight text-black">
-          Personal Politician Report
+          {reportTitle}
         </h1>
         <p className="max-w-3xl text-base font-medium text-black/70">
-          This report uses your saved Wishocracy trade-offs to rank benchmark politicians
-          by how closely their budget posture matches your priorities.
+          {publicMode
+            ? "This public snapshot uses one user's saved Wishocracy trade-offs to rank benchmark politicians by how closely their budget posture matches."
+            : "This report uses your saved Wishocracy trade-offs to rank benchmark politicians by how closely their budget posture matches your priorities."}
         </p>
       </section>
 
@@ -206,12 +222,12 @@ export function AlignmentReport({ state, shareUrl }: AlignmentReportProps) {
             <div className="flex items-center gap-2">
               <BarChart3 className="h-5 w-5" />
               <h3 className="text-lg font-black uppercase text-black">
-                Invite Someone Else
+                Share This Report
               </h3>
             </div>
             <p className="mt-3 text-sm font-medium text-black/70">
-              Share your referral link so other people can compare their own priorities and
-              generate their own report.
+              Copy or share the public report URL so other people can open this exact
+              alignment snapshot.
             </p>
             <div className="mt-4">
               <CopyLinkButton url={shareUrl} className="w-full font-black uppercase" />
@@ -224,12 +240,31 @@ export function AlignmentReport({ state, shareUrl }: AlignmentReportProps) {
           <div className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-lg font-black uppercase text-black">Method Note</h3>
             <p className="mt-3 text-sm font-medium text-black/70">
-              {ALIGNMENT_BENCHMARK_SOURCE_NOTE}
+              {state.report.candidateSourceNote || ALIGNMENT_BENCHMARK_SOURCE_NOTE}
             </p>
             <p className="mt-3 text-xs font-bold uppercase tracking-[0.15em] text-black/50">
               Generated {new Date(state.report.generatedAt).toLocaleString()}
             </p>
+            {state.report.candidateLastSyncedAt ? (
+              <p className="mt-1 text-xs font-bold uppercase tracking-[0.15em] text-black/50">
+                Politician sync {new Date(state.report.candidateLastSyncedAt).toLocaleString()}
+              </p>
+            ) : null}
           </div>
+
+          {publicMode ? (
+            <div className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+              <h3 className="text-lg font-black uppercase text-black">Try Your Own</h3>
+              <p className="mt-3 text-sm font-medium text-black/70">
+                Create your own alignment report by completing the Wishocracy budget trade-offs.
+              </p>
+              <div className="mt-4">
+                <Button asChild className="font-black uppercase">
+                  <Link href="/vote">Start Wishocracy</Link>
+                </Button>
+              </div>
+            </div>
+          ) : null}
         </div>
       </section>
 
