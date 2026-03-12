@@ -44,7 +44,7 @@ export function createGeminiReasoner(
   options: GeminiReasonerOptions,
 ): StructuredReasoner {
   const client = options.client ?? createGeminiClient(options.apiKey);
-  const model = options.model ?? 'gemini-2.5-flash';
+  const model = options.model ?? 'gemini-3-flash-preview';
   const temperature = options.temperature ?? 0.1;
   const maxOutputTokens = options.maxOutputTokens ?? 4096;
 
@@ -67,4 +67,35 @@ export function createGeminiReasoner(
       return request.parse(parsed);
     },
   };
+}
+
+export interface AskGeminiOptions {
+  prompt: string;
+  apiKey?: string;
+  model?: string;
+}
+
+/**
+ * Simple convenience wrapper for unstructured text responses from Gemini.
+ * Uses GOOGLE_GENERATIVE_AI_API_KEY env var if apiKey not provided.
+ */
+export async function askGemini(options: AskGeminiOptions): Promise<string> {
+  const apiKey = options.apiKey ?? process.env['GOOGLE_GENERATIVE_AI_API_KEY'];
+  if (!apiKey) {
+    throw new Error('No Gemini API key: set GOOGLE_GENERATIVE_AI_API_KEY or pass apiKey');
+  }
+
+  const client = createGeminiClient(apiKey);
+  const model = options.model ?? 'gemini-3-flash-preview';
+
+  const response = await (client as unknown as {
+    models: {
+      generateContent(input: { model: string; contents: string }): Promise<{ text?: string | (() => string) }>;
+    };
+  }).models.generateContent({
+    model,
+    contents: options.prompt,
+  });
+
+  return responseText(response);
 }

@@ -189,21 +189,19 @@ export function computeDerivedGovSpendingPerCapitaPpp(
     gdpByCountryYear.set(keyFor(point.jurisdictionIso3, point.year), point);
   }
 
-  return spendingPctPoints
-    .map(spendingPoint => {
-      if (!Number.isFinite(spendingPoint.value)) return null;
+  return spendingPctPoints.flatMap((spendingPoint): DataPoint[] => {
+      if (!Number.isFinite(spendingPoint.value)) return [];
       const gdp = gdpByCountryYear.get(keyFor(spendingPoint.jurisdictionIso3, spendingPoint.year));
-      if (!gdp || !Number.isFinite(gdp.value)) return null;
+      if (!gdp || !Number.isFinite(gdp.value)) return [];
 
-      return {
+      return [{
         jurisdictionIso3: spendingPoint.jurisdictionIso3,
         year: spendingPoint.year,
         value: (spendingPoint.value / 100) * gdp.value,
         unit: 'international $/person',
         source: 'Derived (GC.XPN.TOTL.GD.ZS/100)*NY.GDP.PCAP.PP.CD',
-      } satisfies DataPoint;
-    })
-    .filter((point): point is DataPoint => point !== null);
+      } satisfies DataPoint];
+    });
 }
 
 export function parseFredGraphCsv(csv: string): FredObservation[] {
@@ -510,4 +508,3 @@ main().catch(error => {
   console.error('Failed to generate government spending metric comparison:', error);
   process.exitCode = 1;
 });
-

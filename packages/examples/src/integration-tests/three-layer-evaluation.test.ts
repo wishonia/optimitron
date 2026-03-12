@@ -24,6 +24,17 @@ import {
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 
+/** Simple seeded PRNG for reproducible noise */
+function seededRng(seed: number): () => number {
+  let s = seed | 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) | 0;
+    return (s >>> 0) / 0x100000000;
+  };
+}
+
+const rng = seededRng(42);
+
 /** Generate synthetic annual time series for a jurisdiction */
 function syntheticSeries(
   jurisdictionId: string,
@@ -59,12 +70,13 @@ const COUNTRIES = [
   { id: 'CAN', name: 'Canada', spendBase: 250, deathBase: 15 },
 ];
 
+// Add realistic noise to prevent near-perfect correlations
 const predictors: AnnualTimeSeries[] = COUNTRIES.map(c =>
   syntheticSeries(
     c.id, c.name,
     'drug-enforcement-spending', 'Drug Enforcement Spending', 'USD per capita PPP',
     2000, 2019,
-    year => c.spendBase + (year - 2000) * 5,
+    year => c.spendBase + (year - 2000) * 5 + (rng() - 0.5) * 40,
   ),
 );
 
@@ -73,7 +85,7 @@ const outcomes: AnnualTimeSeries[] = COUNTRIES.map(c =>
     c.id, c.name,
     'drug-deaths', 'Drug-Induced Deaths', 'per million',
     2000, 2019,
-    year => c.deathBase + (year - 2000) * 0.3,
+    year => c.deathBase + (year - 2000) * 0.3 + (rng() - 0.5) * 3,
   ),
 );
 

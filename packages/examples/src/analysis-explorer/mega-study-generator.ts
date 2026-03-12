@@ -489,7 +489,7 @@ export interface MegaStudyApiPayload {
 interface VariableCacheEnvelope {
   variableId: string;
   fetchedAt: string;
-  period: { startYear: number; endYear: number };
+  period?: { startYear: number; endYear: number };
   jurisdictions: string[];
   points: DataPoint[];
 }
@@ -565,8 +565,10 @@ function readVariableCache(
     const raw = fs.readFileSync(cachePath, "utf-8");
     const envelope = JSON.parse(raw) as VariableCacheEnvelope;
     if (envelope.variableId !== variableId) return null;
-    if (envelope.period.startYear !== fetchOptions.period.startYear) return null;
-    if (envelope.period.endYear !== fetchOptions.period.endYear) return null;
+    const cachedPeriod = envelope.period ?? null;
+    const requestedPeriod = fetchOptions.period ?? null;
+    if ((cachedPeriod?.startYear ?? null) !== (requestedPeriod?.startYear ?? null)) return null;
+    if ((cachedPeriod?.endYear ?? null) !== (requestedPeriod?.endYear ?? null)) return null;
     const expectedJurisdictions = sortedUnique(fetchOptions.jurisdictions);
     const cachedJurisdictions = sortedUnique(envelope.jurisdictions);
     if (expectedJurisdictions.join(",") !== cachedJurisdictions.join(",")) return null;
@@ -1514,6 +1516,24 @@ function isOutsideObservedRange(
   return value < min || value > max;
 }
 
+function formatObservedAnchorDelta(
+  modelOptimalValue: number | null,
+  bestObservedValue: number | null,
+): string {
+  if (modelOptimalValue == null || bestObservedValue == null) return "N/A";
+
+  const pct = percentDelta(bestObservedValue, modelOptimalValue);
+  const delta = modelOptimalValue - bestObservedValue;
+  if (pct == null) return `${formatCompactNumber(delta)}`;
+  return `${formatCompactNumber(delta)} (${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%)`;
+}
+
+function formatObservedRange(min: number | null, max: number | null): string {
+  const minText = min != null ? formatCompactNumber(min) : "N/A";
+  const maxText = max != null ? formatCompactNumber(max) : "N/A";
+  return `[${minText}, ${maxText}]`;
+}
+
 export function resolveActionableOptimalValue(pair: PairStudyArtifact): number | null {
   return resolveActionableOptimalValueFromAggregate(
     pair.aggregateOptimalDailyValue,
@@ -1838,16 +1858,9 @@ function buildPairActionableTakeaway(pair: PairStudyArtifact): string[] {
   }
   if (isOutsideObservedRange(modelOptimalValue, pair.predictorObservedMin, pair.predictorObservedMax)) {
     const bestObservedValue = bestBin?.predictorMedian ?? bestBin?.predictorMean ?? null;
-    const deltaText =
-      modelOptimalValue != null && bestObservedValue != null
-        ? (() => {
-            const pct = percentDelta(bestObservedValue, modelOptimalValue);
-            if (pct == null) return `${formatCompactNumber(modelOptimalValue - bestObservedValue)}`;
-            return `${formatCompactNumber(modelOptimalValue - bestObservedValue)} (${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%)`;
-          })()
-        : "N/A";
+    const deltaText = formatObservedAnchorDelta(modelOptimalValue, bestObservedValue);
     lines.push(
-      `Math-only guess ${formatValueWithUnit(modelOptimalValue, pair.predictorUnit)} is outside the seen data range [${formatCompactNumber(pair.predictorObservedMin)}, ${formatCompactNumber(pair.predictorObservedMax)}], so it is not used as the recommendation.`,
+      `Math-only guess ${formatValueWithUnit(modelOptimalValue, pair.predictorUnit)} is outside the seen data range ${formatObservedRange(pair.predictorObservedMin, pair.predictorObservedMax)}, so it is not used as the recommendation.`,
     );
     if (bestObservedValue != null) {
       lines.push(
@@ -1856,14 +1869,7 @@ function buildPairActionableTakeaway(pair: PairStudyArtifact): string[] {
     }
   } else if (isOutsideBestObservedBin(pair, modelOptimalValue)) {
     const bestObservedValue = bestBin?.predictorMedian ?? bestBin?.predictorMean ?? null;
-    const deltaText =
-      modelOptimalValue != null && bestObservedValue != null
-        ? (() => {
-            const pct = percentDelta(bestObservedValue, modelOptimalValue);
-            if (pct == null) return `${formatCompactNumber(modelOptimalValue - bestObservedValue)}`;
-            return `${formatCompactNumber(modelOptimalValue - bestObservedValue)} (${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%)`;
-          })()
-        : "N/A";
+    const deltaText = formatObservedAnchorDelta(modelOptimalValue, bestObservedValue);
     lines.push(
       "Math-only guess is inside seen data but outside the best-performing bucket, so we still use the data-backed level.",
     );
@@ -2153,9 +2159,12 @@ async function fetchRegistryVariable(
 ): Promise<DataPoint[]> {
   const fetcherName = variable.source.fetcher;
   if (!fetcherName) return [];
-  const fetcher = fetchers[fetcherName as keyof typeof fetchers];
-  if (typeof fetcher !== "function") return [];
-  return (await fetcher(fetchOptions)) as DataPoint[];
+  const fetcherCandidate = fetchers[fetcherName as keyof typeof fetchers];
+  if (typeof fetcherCandidate !== "function" || fetcherName === "FREDApiKeyMissingError") {
+    return [];
+  }
+  const fetcher = fetcherCandidate as (options: FetchOptions) => Promise<DataPoint[]>;
+  return fetcher(fetchOptions);
 }
 
 function toPairFileName(pair: PairStudyArtifact): string {

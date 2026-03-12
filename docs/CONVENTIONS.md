@@ -46,6 +46,7 @@ A business analyst should be able to use it for revenue optimization without see
 - Integration tests spanning packages go in `packages/examples/`
 - Use `describe.skip` for tests that need pending work, not deletion
 - Edge cases: NaN, Infinity, empty arrays, single-element arrays, zero values
+- `pnpm review:test-output -- --file <path>` is available for non-blocking AI triage of test/build/typecheck logs
 
 ## File Size Limits
 
