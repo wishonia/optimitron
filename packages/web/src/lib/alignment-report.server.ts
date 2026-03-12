@@ -38,11 +38,20 @@ function summarizeCandidateSource(profiles: AlignmentBenchmarkProfile[]) {
     };
   }
 
+  if (sourceTypes.size === 1 && sourceTypes.has("congress_partial")) {
+    return {
+      candidateLastSyncedAt: lastSyncedAt,
+      candidateSourceNote:
+        "All benchmark politicians on this report blend curated benchmark priors with limited recent classified Congress roll calls. Categories without enough recent legislative coverage remain anchored to the curated baseline.",
+      candidateSourceType: "congress_partial" as const,
+    };
+  }
+
   if (sourceTypes.size > 1) {
     return {
       candidateLastSyncedAt: lastSyncedAt,
       candidateSourceNote:
-        "Some politicians on this report are derived from recent classified Congress roll calls, while the remainder use the curated fallback benchmark set because recent legislative coverage is still thin.",
+        "Some politicians on this report are fully derived from recent classified Congress roll calls, some use partial live vote overlays, and the remainder still use the curated fallback benchmark set because recent legislative coverage is thin.",
       candidateSourceType: "mixed" as const,
     };
   }

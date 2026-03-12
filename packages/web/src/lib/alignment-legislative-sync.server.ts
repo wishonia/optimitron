@@ -10,8 +10,11 @@ import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data"
 const ALIGNMENT_CATEGORY_IDS = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
 const RECENT_BILLS_PER_CONGRESS = 100;
 const MAX_ROLL_CALLS_PER_BILL = 3;
+const MIN_ROLL_CALLS_FOR_PARTIAL_PROFILE = 2;
 const MIN_ROLL_CALLS_PER_PROFILE = 6;
 const MIN_CATEGORY_COVERAGE = 4;
+const PARTIAL_BASELINE_WEIGHT_SCALE = 4;
+const PARTIAL_MAX_LIVE_BLEND = 0.45;
 const SIGNAL_PRIOR = 0.2;
 
 export interface StoredAlignmentVoteRow {
@@ -25,6 +28,7 @@ export interface StoredAlignmentVoteRow {
 export interface DerivedAlignmentAllocationRecord {
   allocations: Record<BudgetCategoryId, number>;
   categoriesCovered: number;
+  coverageLevel: "full" | "partial";
   latestVoteDate: Date | null;
   rollCallCount: number;
 }
@@ -110,19 +114,13 @@ function buildLegacyAllocationRecord(
       return record;
     }, {} as Record<BudgetCategoryId, number>),
     categoriesCovered: latestByCategory.size,
+    coverageLevel: "full",
     latestVoteDate,
     rollCallCount: latestByCategory.size,
   };
 }
 
-export function buildAllocationRecordFromStoredVotes(
-  votes: StoredAlignmentVoteRow[],
-): DerivedAlignmentAllocationRecord | null {
-  if (votes.length === 0) return null;
-  if (votes.every(isLegacyBenchmarkVote)) {
-    return buildLegacyAllocationRecord(votes);
-  }
-
+function collectLegislativeVoteStats(votes: StoredAlignmentVoteRow[]) {
   const byCategory = new Map<BudgetCategoryId, { count: number; sum: number }>();
   const uniqueRollCalls = new Set<string>();
   let latestVoteDate: Date | null = null;
@@ -141,6 +139,23 @@ export function buildAllocationRecordFromStoredVotes(
       latestVoteDate = vote.voteDate;
     }
   }
+
+  return {
+    byCategory,
+    latestVoteDate,
+    uniqueRollCalls,
+  };
+}
+
+export function buildAllocationRecordFromStoredVotes(
+  votes: StoredAlignmentVoteRow[],
+): DerivedAlignmentAllocationRecord | null {
+  if (votes.length === 0) return null;
+  if (votes.every(isLegacyBenchmarkVote)) {
+    return buildLegacyAllocationRecord(votes);
+  }
+
+  const { byCategory, latestVoteDate, uniqueRollCalls } = collectLegislativeVoteStats(votes);
 
   if (
     uniqueRollCalls.size < MIN_ROLL_CALLS_PER_PROFILE ||
@@ -164,6 +179,59 @@ export function buildAllocationRecordFromStoredVotes(
   return {
     allocations: normalizeAllocationRecord(weights),
     categoriesCovered: byCategory.size,
+    coverageLevel: "full",
+    latestVoteDate,
+    rollCallCount: uniqueRollCalls.size,
+  };
+}
+
+export function buildPartialAllocationRecordFromStoredVotes(
+  votes: StoredAlignmentVoteRow[],
+  baselineAllocations: Record<BudgetCategoryId, number>,
+): DerivedAlignmentAllocationRecord | null {
+  if (votes.length === 0 || votes.every(isLegacyBenchmarkVote)) {
+    return null;
+  }
+
+  const { byCategory, latestVoteDate, uniqueRollCalls } = collectLegislativeVoteStats(votes);
+  if (
+    uniqueRollCalls.size < MIN_ROLL_CALLS_FOR_PARTIAL_PROFILE ||
+    byCategory.size === 0
+  ) {
+    return null;
+  }
+
+  const blendFactor = Math.min(
+    PARTIAL_MAX_LIVE_BLEND,
+    0.08 * uniqueRollCalls.size + 0.04 * byCategory.size,
+  );
+  const weights = ALIGNMENT_CATEGORY_IDS.reduce((record, categoryId) => {
+    const baselineWeight =
+      (Math.max(0, baselineAllocations[categoryId] ?? 0) / 100) *
+        PARTIAL_BASELINE_WEIGHT_SCALE +
+      SIGNAL_PRIOR;
+    const stats = byCategory.get(categoryId);
+
+    if (!stats) {
+      record[categoryId] = baselineWeight;
+      return record;
+    }
+
+    const averageSignal = normalizeSignal(stats.sum / stats.count);
+    const liveWeight = ((averageSignal + 1) / 2) * stats.count + SIGNAL_PRIOR;
+    record[categoryId] = Number(
+      (
+        baselineWeight * (1 - blendFactor) +
+        liveWeight * blendFactor
+      ).toFixed(4),
+    );
+    return record;
+  }, {} as Record<BudgetCategoryId, number>);
+
+  return {
+    allocations: normalizeAllocationRecord(weights),
+    categoriesCovered: byCategory.size,
+    coverageLevel: "partial",
     latestVoteDate,
     rollCallCount: uniqueRollCalls.size,
   };

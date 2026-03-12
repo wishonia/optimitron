@@ -18,8 +18,10 @@ vi.mock("@optomitron/data", () => ({
 
 import {
   buildAllocationRecordFromStoredVotes,
+  buildPartialAllocationRecordFromStoredVotes,
   deriveRecentLegislativeVoteRows,
 } from "@/lib/alignment-legislative-sync.server";
+import { ALIGNMENT_BENCHMARKS } from "@/lib/alignment-benchmarks";
 
 describe("alignment legislative sync helpers", () => {
   beforeEach(() => {
@@ -54,6 +56,61 @@ describe("alignment legislative sync helpers", () => {
     ]);
 
     expect(record).toBeNull();
+  });
+
+  it("builds a partial blended allocation record when live coverage exists but stays thin", () => {
+    const bernie = ALIGNMENT_BENCHMARKS[0];
+    if (!bernie) {
+      throw new Error("Missing Bernie benchmark.");
+    }
+
+    const negativeRecord = buildPartialAllocationRecordFromStoredVotes(
+      [
+        {
+          allocationPct: -0.8,
+          billId: "bill-1",
+          itemCategory: "ICE_IMMIGRATION_ENFORCEMENT",
+          updatedAt: new Date(),
+          voteDate: new Date("2026-01-01"),
+        },
+        {
+          allocationPct: -0.9,
+          billId: "bill-2",
+          itemCategory: "ICE_IMMIGRATION_ENFORCEMENT",
+          updatedAt: new Date(),
+          voteDate: new Date("2026-01-02"),
+        },
+      ],
+      bernie.allocations,
+    );
+    const positiveRecord = buildPartialAllocationRecordFromStoredVotes(
+      [
+        {
+          allocationPct: 0.8,
+          billId: "bill-1",
+          itemCategory: "ICE_IMMIGRATION_ENFORCEMENT",
+          updatedAt: new Date(),
+          voteDate: new Date("2026-01-01"),
+        },
+        {
+          allocationPct: 0.9,
+          billId: "bill-2",
+          itemCategory: "ICE_IMMIGRATION_ENFORCEMENT",
+          updatedAt: new Date(),
+          voteDate: new Date("2026-01-02"),
+        },
+      ],
+      bernie.allocations,
+    );
+
+    expect(negativeRecord).not.toBeNull();
+    expect(negativeRecord?.coverageLevel).toBe("partial");
+    expect(negativeRecord?.rollCallCount).toBe(2);
+    expect(negativeRecord?.categoriesCovered).toBe(1);
+    expect(positiveRecord).not.toBeNull();
+    expect(negativeRecord?.allocations.ICE_IMMIGRATION_ENFORCEMENT).toBeLessThan(
+      positiveRecord?.allocations.ICE_IMMIGRATION_ENFORCEMENT ?? 0,
+    );
   });
 
   it("derives raw vote rows from recent classified roll calls", async () => {

@@ -98,6 +98,57 @@ describe("alignment report server loader", () => {
     expect(state.report.ranking.length).toBeGreaterThan(0);
   });
 
+  it("surfaces a partial congress source note when all benchmark profiles use the live overlay", async () => {
+    mocks.allocationsFindMany.mockResolvedValue([
+      {
+        userId: "user-1",
+        categoryA: "PRAGMATIC_CLINICAL_TRIALS",
+        categoryB: "MILITARY_OPERATIONS",
+        allocationA: 90,
+        allocationB: 10,
+        updatedAt: new Date("2026-03-11T00:00:00.000Z"),
+      },
+      {
+        userId: "user-1",
+        categoryA: "ADDICTION_TREATMENT",
+        categoryB: "MILITARY_OPERATIONS",
+        allocationA: 85,
+        allocationB: 15,
+        updatedAt: new Date("2026-03-11T00:05:00.000Z"),
+      },
+      {
+        userId: "user-1",
+        categoryA: "PRAGMATIC_CLINICAL_TRIALS",
+        categoryB: "ADDICTION_TREATMENT",
+        allocationA: 55,
+        allocationB: 45,
+        updatedAt: new Date("2026-03-11T00:10:00.000Z"),
+      },
+    ]);
+    mocks.selectionsFindMany.mockResolvedValue([
+      { categoryId: "PRAGMATIC_CLINICAL_TRIALS" },
+      { categoryId: "ADDICTION_TREATMENT" },
+      { categoryId: "MILITARY_OPERATIONS" },
+    ]);
+    mocks.loadAlignmentBenchmarkProfiles.mockResolvedValue(
+      ALIGNMENT_BENCHMARKS.map((profile) => ({
+        ...profile,
+        sourceType: "congress_partial" as const,
+        sourceNote: "Partial overlay",
+        lastSyncedAt: "2026-03-12T00:00:00.000Z",
+      })),
+    );
+
+    const state = await getPersonalAlignmentState("user-1");
+
+    expect(state.status).toBe("ready");
+    if (state.status !== "ready") {
+      throw new Error("Expected ready state.");
+    }
+    expect(state.report.candidateSourceType).toBe("congress_partial");
+    expect(state.report.candidateSourceNote).toContain("curated benchmark priors");
+  });
+
   it("resolves a public alignment owner from username or referral code", async () => {
     mocks.findUserByUsernameOrReferralCode.mockResolvedValue({
       id: "user-1",

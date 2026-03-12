@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { createLogger } from "@/lib/logger";
 import {
   buildAllocationRecordFromStoredVotes,
+  buildPartialAllocationRecordFromStoredVotes,
   deriveRecentLegislativeVoteRows,
 } from "@/lib/alignment-legislative-sync.server";
 import {
@@ -61,6 +62,7 @@ function defaultTitleForChamber(chamber: string | undefined): string {
 
 function buildLegislativeSummary(
   allocations: Record<BudgetCategoryId, number>,
+  coverageLevel: "full" | "partial",
 ): string {
   const topCategories = Object.entries(allocations)
     .sort((left, right) => right[1] - left[1])
@@ -71,6 +73,10 @@ function buildLegislativeSummary(
     return "Recent classified congressional votes do not yet cover enough categories to summarize this profile.";
   }
 
+  if (coverageLevel === "partial") {
+    return `Recent classified congressional votes partially tilt this profile toward ${topCategories.join(", ")}.`;
+  }
+
   return `Recent classified congressional votes lean most toward ${topCategories.join(", ")}.`;
 }
 
@@ -78,10 +84,23 @@ function mergeSyncedPoliticianProfile(
   benchmark: AlignmentBenchmarkProfile,
   row: SyncablePoliticianRow,
 ): AlignmentBenchmarkProfile {
-  const derived = buildAllocationRecordFromStoredVotes(row.votes);
+  const derived =
+    buildAllocationRecordFromStoredVotes(row.votes) ??
+    buildPartialAllocationRecordFromStoredVotes(row.votes, benchmark.allocations);
   if (!derived) {
     return benchmark;
   }
+
+  const sourceType =
+    derived.coverageLevel === "full" ? "congress_sync" : "congress_partial";
+  const sourceLabel =
+    derived.coverageLevel === "full"
+      ? "Recent Congress vote profile"
+      : "Partial Congress vote overlay";
+  const sourceNote =
+    derived.coverageLevel === "full"
+      ? `Derived from ${derived.rollCallCount} recent classified Congress roll calls across ${derived.categoriesCovered} budget categories. This is a recent legislative support index built from bill subjects and recorded member positions, not a lifetime ideology score.`
+      : `Blends Optomitron's curated benchmark with ${derived.rollCallCount} recent classified Congress roll calls across ${derived.categoriesCovered} budget categories. Covered categories tilt toward recent legislative behavior; uncovered categories stay anchored to the curated baseline.`;
 
   return {
     ...benchmark,
@@ -90,11 +109,10 @@ function mergeSyncedPoliticianProfile(
     title: row.title ?? benchmark.title,
     district: row.district ?? benchmark.district,
     chamber: row.chamber ?? benchmark.chamber,
-    summary: buildLegislativeSummary(derived.allocations),
-    sourceType: "congress_sync",
-    sourceLabel: "Recent Congress vote profile",
-    sourceNote:
-      `Derived from ${derived.rollCallCount} recent classified Congress roll calls across ${derived.categoriesCovered} budget categories. This is a recent legislative support index built from bill subjects and recorded member positions, not a lifetime ideology score.`,
+    summary: buildLegislativeSummary(derived.allocations, derived.coverageLevel),
+    sourceType,
+    sourceLabel,
+    sourceNote,
     lastSyncedAt: (derived.latestVoteDate ?? row.updatedAt).toISOString(),
     allocations: derived.allocations,
   };

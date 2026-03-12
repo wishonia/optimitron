@@ -99,6 +99,50 @@ describe("alignment politician source", () => {
     expect(profiles[0]?.lastSyncedAt).toBe("2026-03-12T00:00:00.000Z");
   });
 
+  it("uses a partial congress overlay when recent live votes are informative but incomplete", async () => {
+    const bernie = ALIGNMENT_BENCHMARKS[0];
+    if (!bernie) {
+      throw new Error("Missing Bernie benchmark.");
+    }
+
+    mocks.findMany.mockResolvedValue([
+      {
+        externalId: bernie.externalId ?? null,
+        name: "Bernard Sanders",
+        party: "Independent",
+        title: "Senator",
+        chamber: "senate",
+        district: "VT",
+        updatedAt: new Date("2026-03-12T00:00:00.000Z"),
+        votes: [
+          {
+            billId: "119-hr-23:Senate:1:22",
+            itemCategory: "ICE_IMMIGRATION_ENFORCEMENT",
+            allocationPct: -0.8,
+            updatedAt: new Date("2026-03-12T00:00:00.000Z"),
+            voteDate: new Date("2026-03-12T00:00:00.000Z"),
+          },
+          {
+            billId: "118-hjres-7:Senate:1:80",
+            itemCategory: "ICE_IMMIGRATION_ENFORCEMENT",
+            allocationPct: -0.7,
+            updatedAt: new Date("2026-03-11T00:00:00.000Z"),
+            voteDate: new Date("2026-03-11T00:00:00.000Z"),
+          },
+        ],
+      },
+    ]);
+
+    const profiles = await loadAlignmentBenchmarkProfiles();
+
+    expect(profiles[0]?.sourceType).toBe("congress_partial");
+    expect(profiles[0]?.sourceNote).toContain("curated benchmark");
+    expect(profiles[0]?.allocations.ICE_IMMIGRATION_ENFORCEMENT).not.toBe(
+      bernie.allocations.ICE_IMMIGRATION_ENFORCEMENT,
+    );
+    expect(profiles[0]?.summary).toContain("partially tilt");
+  });
+
   it("skips sync cleanly when CONGRESS_API_KEY is missing", async () => {
     mocks.getCongressApiKey.mockReturnValue(null);
 

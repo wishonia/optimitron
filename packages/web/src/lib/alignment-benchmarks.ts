@@ -2,6 +2,7 @@ import type { BudgetCategoryId } from "@/lib/wishocracy-data";
 
 export type AlignmentBenchmarkSourceType =
   | "curated_real"
+  | "congress_partial"
   | "congress_sync";
 
 export interface AlignmentBenchmarkProfile {
