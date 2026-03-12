@@ -16,6 +16,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 767859067764.8467,
       "elasticity": 0.7036324297622262,
+      "discretionary": true,
+      "wesMethodology": "causal",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.526218371017746,
@@ -59,6 +61,8 @@
       "investmentStatus": "Over-invested",
       "priorityScore": 375005720418.0123,
       "elasticity": -0.003384926258965176,
+      "discretionary": true,
+      "wesMethodology": "causal",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0.006189722836379308,
@@ -97,6 +101,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 299356097248.6339,
       "elasticity": 0.31807157194706004,
+      "discretionary": true,
+      "wesMethodology": "causal",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0.31800482279935205,
@@ -135,6 +141,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 90200525389.99547,
       "elasticity": 0.651540837111797,
+      "discretionary": true,
+      "wesMethodology": "domestic",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.9674378988714181,
@@ -178,6 +186,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 88231169169.84708,
       "elasticity": 0.020667369318781104,
+      "discretionary": true,
+      "wesMethodology": "causal",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.0813812141645276,
@@ -221,6 +231,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 25370148218.588898,
       "elasticity": 1.2078478148291332,
+      "discretionary": true,
+      "wesMethodology": "domestic",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.8573276203074891,
@@ -259,6 +271,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 14588117497.627533,
       "elasticity": 0.39882797565788053,
+      "discretionary": true,
+      "wesMethodology": "domestic",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.9937155910524301,
@@ -297,6 +311,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 14149027764.680208,
       "elasticity": 0.3661285061869093,
+      "discretionary": true,
+      "wesMethodology": "estimated",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.9974010610529958,
@@ -335,6 +351,8 @@
       "investmentStatus": "Over-invested",
       "priorityScore": 13708547475.066118,
       "elasticity": -0.05130928883100197,
+      "discretionary": true,
+      "wesMethodology": "domestic",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0.22333771639765698,
@@ -378,6 +396,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 12662546487.48399,
       "elasticity": 0.36639956438098653,
+      "discretionary": true,
+      "wesMethodology": "estimated",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.9956807520359329,
@@ -416,6 +436,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 8359602775.5191765,
       "elasticity": 0.23710875622398156,
+      "discretionary": true,
+      "wesMethodology": "domestic",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0.9947071121354132,
@@ -459,6 +481,8 @@
       "investmentStatus": "Over-invested",
       "priorityScore": 7279423390.02019,
       "elasticity": -0.04612748230875006,
+      "discretionary": true,
+      "wesMethodology": "estimated",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.9885495551726966,
@@ -497,6 +521,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 5342627730.032323,
       "elasticity": 0.32426666675205296,
+      "discretionary": true,
+      "wesMethodology": "domestic",
       "diminishingReturns": {
         "modelType": "Saturation (Michaelis-Menten)",
         "r2": 0.9925329151859725,
@@ -540,6 +566,8 @@
       "investmentStatus": "Under-invested",
       "priorityScore": 2588044879.353822,
       "elasticity": 0.3722802590227495,
+      "discretionary": true,
+      "wesMethodology": "estimated",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0.9803715216533956,
@@ -577,6 +605,8 @@
       "evidenceDescription": "Weak evidence",
       "investmentStatus": "Near optimal",
       "priorityScore": 0,
+      "discretionary": false,
+      "wesMethodology": "non-discretionary",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0,
@@ -614,6 +644,8 @@
       "evidenceDescription": "Probable causal link",
       "investmentStatus": "Near optimal",
       "priorityScore": 0,
+      "discretionary": false,
+      "wesMethodology": "non-discretionary",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0,
@@ -656,6 +688,8 @@
       "evidenceDescription": "Moderate evidence",
       "investmentStatus": "Near optimal",
       "priorityScore": 0,
+      "discretionary": false,
+      "wesMethodology": "non-discretionary",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0,
@@ -698,6 +732,8 @@
       "evidenceDescription": "Moderate evidence",
       "investmentStatus": "Near optimal",
       "priorityScore": 0,
+      "discretionary": false,
+      "wesMethodology": "non-discretionary",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0,
@@ -735,6 +771,8 @@
       "evidenceDescription": "Insufficient evidence",
       "investmentStatus": "Near optimal",
       "priorityScore": 0,
+      "discretionary": false,
+      "wesMethodology": "non-discretionary",
       "diminishingReturns": {
         "modelType": "Log-linear",
         "r2": 0,
@@ -768,5 +806,312 @@
     "Increase Community & Regional Development by $61.8B (+150.8%)",
     "Increase Energy Programs by $50.4B (+93.4%)"
   ],
-  "generatedAt": "2026-03-12T21:02:35.982Z"
+  "generatedAt": "2026-03-12T21:33:37.869Z",
+  "constrainedReallocation": {
+    "totalBudget": 6750000000000,
+    "nonDiscretionaryTotal": 4018000000000,
+    "actionableBudget": 2181000000000,
+    "categories": [
+      {
+        "name": "Education",
+        "currentSpending": 238000000000,
+        "constrainedOptimal": 883532444339.926,
+        "reallocation": 645532444339.926,
+        "reallocationPercent": 271.23211947055717,
+        "action": "Major increase",
+        "evidenceGrade": "A",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Military",
+        "currentSpending": 886000000000,
+        "constrainedOptimal": 334312540435.92926,
+        "reallocation": -551687459564.0708,
+        "reallocationPercent": -62.26720762574163,
+        "action": "Major decrease",
+        "evidenceGrade": "D",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Science & Space (NASA, NSF)",
+        "currentSpending": 81000000000,
+        "constrainedOptimal": 347916486715.8012,
+        "reallocation": 266916486715.8012,
+        "reallocationPercent": 329.5265268096311,
+        "action": "Major increase",
+        "evidenceGrade": "B",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Transportation & Infrastructure",
+        "currentSpending": 168000000000,
+        "constrainedOptimal": 168000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Insufficient evidence",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Income Security (SNAP, Housing)",
+        "currentSpending": 304000000000,
+        "constrainedOptimal": 458830755270.9819,
+        "reallocation": 154830755270.98187,
+        "reallocationPercent": 50.931169497033515,
+        "action": "Major increase",
+        "evidenceGrade": "D",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Justice & Law Enforcement",
+        "currentSpending": 68000000000,
+        "constrainedOptimal": 68000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Insufficient evidence",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "International Affairs & Aid",
+        "currentSpending": 68000000000,
+        "constrainedOptimal": 68000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Insufficient evidence",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Community & Regional Development",
+        "currentSpending": 41000000000,
+        "constrainedOptimal": 77585565558.41672,
+        "reallocation": 36585565558.41672,
+        "reallocationPercent": 89.23308672784566,
+        "action": "Major increase",
+        "evidenceGrade": "D",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Farm Subsidies",
+        "currentSpending": 30000000000,
+        "constrainedOptimal": 30000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Insufficient evidence",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Energy Programs",
+        "currentSpending": 54000000000,
+        "constrainedOptimal": 78822207678.94492,
+        "reallocation": 24822207678.944916,
+        "reallocationPercent": 45.9670512573054,
+        "action": "Increase",
+        "evidenceGrade": "D",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Health Research (NIH, CDC)",
+        "currentSpending": 102000000000,
+        "constrainedOptimal": 102000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Insufficient evidence",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Immigration & Customs Enforcement",
+        "currentSpending": 9000000000,
+        "constrainedOptimal": 9000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Insufficient evidence",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Environment & EPA",
+        "currentSpending": 68000000000,
+        "constrainedOptimal": 68000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Insufficient evidence",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Agriculture & Food Safety",
+        "currentSpending": 38000000000,
+        "constrainedOptimal": 38000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Insufficient evidence",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": false
+      },
+      {
+        "name": "Social Security",
+        "currentSpending": 1418000000000,
+        "constrainedOptimal": 1418000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Non-discretionary",
+        "evidenceGrade": "D",
+        "isNonDiscretionary": true
+      },
+      {
+        "name": "Medicare",
+        "currentSpending": 874000000000,
+        "constrainedOptimal": 874000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Non-discretionary",
+        "evidenceGrade": "B",
+        "isNonDiscretionary": true
+      },
+      {
+        "name": "Medicaid & CHIP",
+        "currentSpending": 575000000000,
+        "constrainedOptimal": 575000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Non-discretionary",
+        "evidenceGrade": "C",
+        "isNonDiscretionary": true
+      },
+      {
+        "name": "Net Interest on Debt",
+        "currentSpending": 881000000000,
+        "constrainedOptimal": 881000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Non-discretionary",
+        "evidenceGrade": "C",
+        "isNonDiscretionary": true
+      },
+      {
+        "name": "Veterans Benefits",
+        "currentSpending": 270000000000,
+        "constrainedOptimal": 270000000000,
+        "reallocation": 0,
+        "reallocationPercent": 0,
+        "action": "Non-discretionary",
+        "evidenceGrade": "F",
+        "isNonDiscretionary": true
+      }
+    ]
+  },
+  "causalEvidenceDetail": [
+    {
+      "name": "Education",
+      "forwardPearson": 0.8159253130296651,
+      "nCountries": 23,
+      "positiveCount": 23,
+      "negativeCount": 0,
+      "meanPercentChange": 13.013043478260867,
+      "bhStrength": 0.914927922903069,
+      "bhTemporality": 1,
+      "bhGradient": 0.6629845093411811,
+      "wesScore": 0.8231983072631007,
+      "evidenceGrade": "A"
+    },
+    {
+      "name": "Science & Space (NASA, NSF)",
+      "forwardPearson": 0.77216926667008,
+      "nCountries": 23,
+      "positiveCount": 23,
+      "negativeCount": 0,
+      "meanPercentChange": 12.791304347826086,
+      "bhStrength": 0.8755005510014493,
+      "bhTemporality": 1,
+      "bhGradient": 0.6094253076163135,
+      "wesScore": 0.7877238780793664,
+      "evidenceGrade": "B"
+    },
+    {
+      "name": "Military",
+      "forwardPearson": -0.09794552501539068,
+      "nCountries": 23,
+      "positiveCount": 10,
+      "negativeCount": 13,
+      "meanPercentChange": -0.38260869565217404,
+      "bhStrength": 0.7847094731926414,
+      "bhTemporality": 1,
+      "bhGradient": 0.597221124699816,
+      "wesScore": 0.30697191684870284,
+      "evidenceGrade": "D"
+    },
+    {
+      "name": "Income Security (SNAP, Housing)",
+      "forwardPearson": -0.04146142804373228,
+      "nCountries": 22,
+      "positiveCount": 10,
+      "negativeCount": 12,
+      "meanPercentChange": -0.3636363636363637,
+      "bhStrength": 0.71808064327913,
+      "bhTemporality": 1,
+      "bhGradient": 0.508817652859426,
+      "wesScore": 0.29023410911133907,
+      "evidenceGrade": "D"
+    }
+  ],
+  "domesticEvidenceDetail": [
+    {
+      "name": "Justice & Law Enforcement",
+      "bestOutcomeName": "Infant Mortality",
+      "correlation": 0.9699135848264199,
+      "nYears": 24,
+      "bhStrength": 0.960562781743413,
+      "wesScore": 0.18281926889852854,
+      "evidenceGrade": "F"
+    },
+    {
+      "name": "Environment & EPA",
+      "bestOutcomeName": "Infant Mortality",
+      "correlation": 0.9488728363989899,
+      "nYears": 24,
+      "bhStrength": 0.9576975152983498,
+      "wesScore": 0.18227393659267424,
+      "evidenceGrade": "F"
+    },
+    {
+      "name": "Transportation & Infrastructure",
+      "bestOutcomeName": "Infant Mortality",
+      "correlation": 0.9459975476681004,
+      "nYears": 24,
+      "bhStrength": 0.9572901266249214,
+      "wesScore": 0.18219640027662154,
+      "evidenceGrade": "F"
+    },
+    {
+      "name": "International Affairs & Aid",
+      "bestOutcomeName": "Infant Mortality",
+      "correlation": 0.9211279801637068,
+      "nYears": 24,
+      "bhStrength": 0.9535986442091159,
+      "wesScore": 0.18149381828069575,
+      "evidenceGrade": "F"
+    },
+    {
+      "name": "Health Research (NIH, CDC)",
+      "bestOutcomeName": "Infant Mortality",
+      "correlation": 0.8942957365783719,
+      "nYears": 24,
+      "bhStrength": 0.9492572124598107,
+      "wesScore": 0.18066753457132664,
+      "evidenceGrade": "F"
+    },
+    {
+      "name": "Farm Subsidies",
+      "bestOutcomeName": "Poverty Rate",
+      "correlation": 0.7053250727258397,
+      "nYears": 24,
+      "bhStrength": 0.9047341215282059,
+      "wesScore": 0.1721936699911841,
+      "evidenceGrade": "F"
+    }
+  ]
 }
