@@ -27,6 +27,7 @@
     "test:integration": "pnpm run build:deps && vitest run src/integration-tests/"
   },
   "dependencies": {
+    "@google/genai": "^1.30.0",
     "@optomitron/agent": "workspace:*",
     "@optomitron/data": "workspace:*",
     "@optomitron/hypercerts": "workspace:*",

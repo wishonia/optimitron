@@ -308,6 +308,35 @@ export function convertNaturalExperimentData(data: {
 }
 
 // ---------------------------------------------------------------------------
+// Layer 3: Build Panel Analysis from external data (e.g., OBG results)
+// ---------------------------------------------------------------------------
+
+/**
+ * Build a PanelAnalysisResult from plain data.
+ *
+ * This is a plain-data adapter: callers extract fields from OBG's
+ * `runCountryAnalysis()` / `efficientFrontier()` results and pass them here.
+ * OPG cannot import OBG directly (would create a circular dep).
+ */
+export function buildPanelAnalysis(input: {
+  jurisdictionCount: number;
+  jurisdictions: string[];
+  spendingCategory: string;
+  averageCorrelation: number;
+  referenceOverspendRatio?: number;
+  efficientFrontierRank?: number;
+}): PanelAnalysisResult {
+  return {
+    jurisdictionCount: input.jurisdictionCount,
+    jurisdictions: input.jurisdictions,
+    spendingCategory: input.spendingCategory,
+    averageCorrelation: input.averageCorrelation,
+    referenceOverspendRatio: input.referenceOverspendRatio,
+    efficientFrontierRank: input.efficientFrontierRank,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Layer 2: Run a Natural Experiment
 // ---------------------------------------------------------------------------
 
@@ -475,6 +504,16 @@ export function evaluatePolicy(options: {
       dataPoints: nr.preDataPoints + nr.postDataPoints,
       direction: nr.outcomeMetric.direction,
       correlation: nr.analysisResult.forwardPearson,
+    });
+  }
+
+  // Layer 3 effects
+  if (options.crossJurisdiction) {
+    allEffects.push({
+      effectSize: options.crossJurisdiction.averageCorrelation,
+      dataPoints: options.crossJurisdiction.jurisdictionCount,
+      direction: options.expectedOutcomes[0]?.direction ?? 'lower',
+      correlation: options.crossJurisdiction.averageCorrelation,
     });
   }
 

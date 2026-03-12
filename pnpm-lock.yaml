@@ -149,6 +149,9 @@ importers:
 
   packages/examples:
     dependencies:
+      '@google/genai':
+        specifier: ^1.30.0
+        version: 1.44.0
       '@optomitron/agent':
         specifier: workspace:*
         version: link:../agent
@@ -9030,7 +9033,7 @@ packages:
       debug: 4.4.3
       pathe: 1.1.2
       picocolors: 1.1.1
-      vite: 5.4.21(@types/node@25.2.1)
+      vite: 5.4.21(@types/node@20.19.32)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -9322,7 +9325,7 @@ packages:
       strip-literal: 2.1.1
       tinybench: 2.9.0
       tinypool: 0.8.4
-      vite: 5.4.21(@types/node@25.2.1)
+      vite: 5.4.21(@types/node@20.19.32)
       vite-node: 1.6.1
       why-is-node-running: 2.3.0
     transitivePeerDependencies:

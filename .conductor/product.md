@@ -37,9 +37,10 @@ Optomitron is a domain-agnostic causal inference and optimization engine. It ana
 | `@optomitron/extension` | Chrome extension (Digital Twin Safe) | — |
 | `@optomitron/examples` | Runnable demos | 78 |
 
-## Current State (Feb 2026)
+## Current State (Mar 2026)
 - **~1,900+ tests** passing across all packages
-- **Website LIVE**: https://mikepsinn.github.io/optomitron/
+- **Web app**: auth, referrals, World ID verification, profile/census tracking, daily check-ins, and shareable alignment reports are implemented in `packages/web`
+- **Website LIVE**: https://mikepsinn.github.io/optomitron/ (legacy/static demo surface)
 - **Real analyses running**: US budget optimization (231 countries), Drug War, Laffer Curve, Healthcare, Minimum Wage
 - **Key finding**: US R&D should be $603B (currently $75B); Education $307B (currently $102B)
 - **Key analyses**: Drug control spending has zero effect on overdose deaths (r=0.026); US healthcare spending negatively correlates with life expectancy in YoY changes

@@ -32,11 +32,13 @@ Humanity generates more data than ever but makes worse decisions than it should.
 ## What Exists Today
 
 - **~1,700 tests** across 8 packages in a TypeScript monorepo
+- **Web app** with Google login, magic-link auth, referral capture, World ID verification, profile/census tracking, and shareable alignment reports
 - **Live demo** at mikepsinn.github.io/optomitron with US budget optimization, policy rankings, and international comparisons across 20+ countries
 - **Real data**: FY2025 US federal budget, 11 years historical spending, 60+ outcome metrics, 27 evidence-based policies with academic citations
 - **9 health data importers** (Apple Health, Fitbit, Oura, MyFitnessPal, Withings, Google Fit, Cronometer, Strava, generic CSV)
 - **Causal inference pipeline**: temporal alignment → Bradford Hill scoring → effect size → optimal daily values → markdown reports
 - **Preference engine**: pairwise comparisons, eigenvector ranking, confidence-weighted and time-weighted aggregation
+- **Citizen loop**: pairwise budget voting, personal alignment reports, public shared report URLs, and daily health/happiness/income check-ins
 - **6 peer-reviewed-format papers** defining the methodology
 
 ## The Vision
@@ -47,9 +49,10 @@ Every person has a Digital Twin Safe — a local-first app that tracks their hea
 
 $350K–$600K for a 12-month pilot:
 - Run the full pipeline on US federal data with multi-source verification
+- Replace curated politician allocations with reproducible legislative behavior ingestion
 - Launch the personal health optimization app (Chrome extension + PWA)
-- Collect citizen preferences via Wishocracy for 3-5 jurisdictions
-- Publish the first politician alignment scorecard
+- Expand sybil-resistant citizen preference collection for 3-5 jurisdictions
+- Publish the first public politician alignment scorecard with provenance
 
 ## Who We Are
 

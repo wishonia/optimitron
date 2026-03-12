@@ -492,7 +492,7 @@ export function renderAggregatedDrugWarProxyMarkdown(study: AggregatedDrugWarPro
     `Think of each country like one big real-world experiment. In this dataset, **${directionPlain.toLowerCase()}**.`,
   );
   lines.push(
-    `The best data-backed spending level here is **${formatPerCapita(study.suggestedSpendingPerCapitaPpp)}**.`,
+    `The best data-backed spending level here is **${formatPerCapitaPpp(study.suggestedSpendingPerCapitaPpp)}**.`,
   );
   lines.push(`Overall certainty for this signal: **${confidencePlain}**.`);
   lines.push("");

@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   allocationsFindMany: vi.fn(),
+  findUserByUsernameOrReferralCode: vi.fn(),
+  loadAlignmentBenchmarkProfiles: vi.fn(),
   selectionsFindMany: vi.fn(),
 }));
 
@@ -16,12 +18,27 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { getPersonalAlignmentState } from "@/lib/alignment-report.server";
+vi.mock("@/lib/alignment-politicians.server", () => ({
+  loadAlignmentBenchmarkProfiles: mocks.loadAlignmentBenchmarkProfiles,
+}));
+
+vi.mock("@/lib/referral.server", () => ({
+  findUserByUsernameOrReferralCode: mocks.findUserByUsernameOrReferralCode,
+}));
+
+import {
+  findAlignmentReportOwnerByIdentifier,
+  getPersonalAlignmentState,
+} from "@/lib/alignment-report.server";
+import { ALIGNMENT_BENCHMARKS } from "@/lib/alignment-benchmarks";
 
 describe("alignment report server loader", () => {
   beforeEach(() => {
     mocks.allocationsFindMany.mockReset();
+    mocks.findUserByUsernameOrReferralCode.mockReset();
+    mocks.loadAlignmentBenchmarkProfiles.mockReset();
     mocks.selectionsFindMany.mockReset();
+    mocks.loadAlignmentBenchmarkProfiles.mockResolvedValue(ALIGNMENT_BENCHMARKS);
   });
 
   it("returns an empty state when the user has no saved allocations", async () => {
@@ -79,5 +96,22 @@ describe("alignment report server loader", () => {
     expect(state.report.comparisonCount).toBe(3);
     expect(state.report.totalPossiblePairs).toBe(3);
     expect(state.report.ranking.length).toBeGreaterThan(0);
+  });
+
+  it("resolves a public alignment owner from username or referral code", async () => {
+    mocks.findUserByUsernameOrReferralCode.mockResolvedValue({
+      id: "user-1",
+      name: "Jane Example",
+      referralCode: "REF123",
+      username: "jane",
+    });
+
+    const owner = await findAlignmentReportOwnerByIdentifier("jane");
+
+    expect(owner).toMatchObject({
+      id: "user-1",
+      publicIdentifier: "jane",
+      displayName: "@jane",
+    });
   });
 });

@@ -612,30 +612,33 @@ Two estimation methods, take the one with better fit:
 
 ### Phase 3 — Aggregation Server (Layer 4)
 
-**Status:** ⚪ Planned
+**Status:** 🟡 In progress
 
-- [ ] Next.js multi-tenant web dashboard
+- [x] Next.js web dashboard
 - [ ] Prisma schema with `jurisdictionId` on all relevant models
-- [ ] RAPPA survey collection and real-time aggregation
-- [ ] Voting record data pipeline (Congress API, OpenStates)
-- [ ] Politician alignment scores published on dashboard
+- [x] RAPPA survey collection and authenticated persistence
+- [~] Voting record data pipeline (Congress API fetch + benchmark sync path; full legislative classification still pending)
+- [x] Personal politician alignment scores published on dashboard
+- [x] Public shareable alignment report URLs
+- [x] Profile/census collection with daily health and happiness tracking
 - [ ] OPG policy recommendation pages per jurisdiction
 - [ ] OBG budget gap analysis per jurisdiction
 - [ ] Cross-jurisdiction comparison ("City A vs City B")
 - [ ] Public API for treatment rankings, alignment scores, recommendations
 
-**Exit criteria:** A jurisdiction can see its preference gaps, policy recommendations, and politician scorecards on a public dashboard.
+**Exit criteria:** A jurisdiction can see its preference gaps, policy recommendations, and politician scorecards on a public dashboard using reproducible real-source data.
 
 ### Phase 4 — Identity & On-Chain (Layers 2 + 3)
 
-**Status:** ⚪ Planned — requires Phase 2 + 3 working first
+**Status:** 🟡 In progress — proof-of-personhood starts in the web app before on-chain submission
 
-- [ ] Proof-of-personhood integration (Holonym SDK or Gitcoin Passport)
+- [x] Proof-of-personhood integration (World ID verification flow)
+- [ ] Multi-provider proof-of-personhood integration (Holonym / Gitcoin Passport / human.tech)
 - [ ] Anonymized submission protocol (device → chain)
 - [ ] On-chain data schema for effect sizes, preference weights, evidence grades
 - [ ] Chain reader in aggregation server (replace direct DB ingestion)
 - [ ] Data contribution token smart contract
-- [ ] Submission deduplication via proof-of-personhood
+- [ ] Submission deduplication / aggregation weighting via proof-of-personhood
 
 **Exit criteria:** Anonymized causal results from local devices appear on-chain and are consumed by the aggregation server, with sybil-resistant deduplication.
 
@@ -738,4 +741,3 @@ The aggregate correlation pipeline (`aggregateCorrelationPipeline()`) combines i
 | `Jurisdiction` | Hierarchy metadata (type, parent, population) |
 
 "Global" consistently means "the universal/aggregated version" (not "worldwide"). It mirrors the `GlobalVariable`/`NOf1Variable` pattern.
-

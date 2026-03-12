@@ -11,9 +11,9 @@
 - "As a donor, I want proof that my money goes to candidates who will actually vote for what people want"
 
 **Features needed:**
-- [ ] Citizen preference aggregation (Wishocracy — ✅ DONE)
-- [ ] Politician voting record analysis (Congress.gov fetcher — ✅ DONE)
-- [ ] Alignment scoring (politician vs citizen preferences — ✅ DONE)
+- [x] Citizen preference aggregation (Wishocracy — live pairwise vote flow)
+- [x] Politician voting record analysis (Congress.gov fetcher + benchmark sync path)
+- [x] Alignment scoring (politician vs citizen preferences)
 - [ ] Campaign recommendation engine ("run on these 5 policies")
 - [ ] Donor dashboard ("your aligned candidates")
 - [ ] IAB smart contracts (Phase 4)
@@ -32,7 +32,7 @@
 - "As a government advisor, I want to know the optimal budget allocation backed by data"
 
 **Features needed:**
-- [ ] International comparison dashboards (✅ DONE — 71 countries, 4 domains)
+- [x] International comparison dashboards (71 countries, 4 domains)
 - [ ] Custom jurisdiction analysis (run OBG/OPG for any city/state/country)
 - [ ] API access for programmatic queries
 - [ ] PDF report generation
@@ -53,15 +53,17 @@
 - "As a concerned citizen, I want to see what policies other countries use that work better"
 
 **Features needed:**
-- [ ] Budget visualization (✅ DONE)
-- [ ] Policy rankings (✅ DONE)
-- [ ] International comparisons (✅ DONE)
-- [ ] **Pairwise comparison UI** — "Which matters more: Education or Defense?" (Wishocracy)
-- [ ] **Personal alignment report** — "Here are the politicians most aligned with YOUR preferences"
-- [ ] **Share/embed** — viral social media sharing of results
+- [x] Budget visualization
+- [x] Policy rankings
+- [x] International comparisons
+- [x] **Pairwise comparison UI** — "Which matters more: Education or Defense?" (Wishocracy)
+- [x] **Personal alignment report** — "Here are the politicians most aligned with YOUR preferences"
+- [x] **Share/embed** — public alignment report URLs and in-app sharing
+- [ ] Geo-aware representative matching — "Show me my officials first"
+- [ ] Sybil-resistant public aggregation for community rankings
 
 **Revenue:** Free tier + donations, Gitcoin quadratic funding, "premium" detailed reports
-**Timeline:** Short — most features done, need pairwise UI and sharing
+**Timeline:** Short — core citizen loop is live; next gaps are real legislative allocation ingestion and trusted public aggregation
 
 ---
 
@@ -94,7 +96,9 @@
 - [ ] Health data import (Apple Health, Fitbit, etc. — ✅ DONE)
 - [ ] Personal analysis pipeline (✅ DONE)
 - [ ] Report generation (✅ DONE)
-- [ ] User accounts + data storage
+- [x] User accounts + basic profile/census storage
+- [x] Daily health/happiness/income tracking
+- [ ] Health data upload into user accounts
 - [ ] Chrome extension (✅ DONE — basic)
 
 **Revenue:** Freemium ($0/mo basic, $9.99/mo pro, $29.99/mo power)
@@ -106,22 +110,24 @@
 
 | Feature | Revenue Impact | Build Effort | Data Available | Priority |
 |---------|---------------|--------------|----------------|----------|
-| Pairwise comparison UI | 🔴 Critical (enables #1 and #3) | Medium | N/A | **P0** |
-| Politician alignment page | 🔴 Critical (#1 and #3) | Medium | Congress.gov ✅ | **P0** |
-| Share/embed results | 🟡 High (viral growth) | Low | N/A | **P0** |
+| Real politician allocation ingestion | 🔴 Critical (#1 and #3) | High | Congress.gov partial | **P0** |
+| Sybil-resistant public aggregation | 🔴 Critical (defensibility + moat) | Medium | World ID partial | **P0** |
+| Geo-aware representative matching | 🟡 High (#3 engagement) | Medium | Profile location ✅ | **P1** |
 | API with auth + rate limiting | 🟡 High (#2 revenue) | Medium | All data ✅ | **P1** |
 | Campaign recommendation engine | 🔴 Critical (#1 money) | High | Partial | **P1** |
 | PDF report generation | 🟡 High (#2 revenue) | Low | Reports ✅ | **P1** |
-| User accounts + health upload | 🟢 Medium (#5) | High | Importers ✅ | **P2** |
+| Health data upload into accounts | 🟢 Medium (#5) | High | Importers ✅ | **P2** |
 | IAB smart contracts | 🔴 Critical (#1 endgame) | Very High | Needs prefs | **P3** |
 
 ## Fastest Path to Revenue
 
 ### Month 1: Free + Viral
 1. Ship website with budget/policy/comparison dashboards (✅ nearly done)
-2. Add pairwise comparison UI → collect citizen preferences
-3. Add politician alignment page → "Is YOUR representative aligned with YOU?"
-4. Social sharing → viral distribution → preference data flywheel
+2. Pairwise comparison UI live → collect citizen preferences
+3. Personal politician alignment page live → "Who best matches me?"
+4. Public alignment sharing live → preference data flywheel
+5. Next: replace curated allocations with reproducible legislative behavior data
+6. Next: turn proof-of-personhood into sybil-resistant aggregation
 
 ### Month 2: Research Revenue
 5. API access for researchers/think tanks ($99-999/mo)

@@ -6,6 +6,7 @@ import {
   evaluatePolicy,
   aggregateEffectSizes,
   deriveEvidenceGrade,
+  buildPanelAnalysis,
 } from '../policy-evaluation.js';
 import type { NaturalExperimentDef, OutcomeMetric } from '../policy-evaluation.js';
 
@@ -253,5 +254,75 @@ describe('evaluatePolicy', () => {
     expect(evaluation.naturalExperiments).toEqual([]);
     expect(evaluation.aggregate.evidenceSources).toBe(0);
     expect(evaluation.aggregate.weightedEffectSize).toBe(0);
+  });
+
+  it('includes Layer 3 panel as an evidence source', () => {
+    const portugalDef = convertNaturalExperimentData(PORTUGAL);
+    const expectedOutcomes: OutcomeMetric[] = [
+      { name: 'Drug-Induced Deaths', id: 'drug-induced-deaths', unit: 'per million', direction: 'lower' },
+    ];
+
+    const panel = buildPanelAnalysis({
+      jurisdictionCount: 15,
+      jurisdictions: ['USA', 'GBR', 'DEU', 'FRA', 'CAN'],
+      spendingCategory: 'Drug Enforcement',
+      averageCorrelation: -0.45,
+    });
+
+    const evaluation = evaluatePolicy({
+      policy: 'Drug Enforcement Spending',
+      description: 'Cross-jurisdiction drug enforcement analysis',
+      category: 'justice',
+      expectedOutcomes,
+      naturalExperiments: [portugalDef],
+      crossJurisdiction: panel,
+    });
+
+    // Panel adds 1 evidence source beyond natural experiment results
+    const naturalCount = evaluation.naturalExperiments.length;
+    expect(evaluation.aggregate.evidenceSources).toBe(naturalCount + 1);
+
+    // Panel jurisdictions should be counted
+    expect(evaluation.aggregate.jurisdictionCount).toBeGreaterThanOrEqual(5);
+
+    // Should still produce a valid grade
+    expect(['A', 'B', 'C', 'D', 'F']).toContain(evaluation.aggregate.evidenceGrade);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// buildPanelAnalysis
+// ---------------------------------------------------------------------------
+
+describe('buildPanelAnalysis', () => {
+  it('maps all fields correctly', () => {
+    const panel = buildPanelAnalysis({
+      jurisdictionCount: 20,
+      jurisdictions: ['USA', 'GBR', 'DEU'],
+      spendingCategory: 'Healthcare',
+      averageCorrelation: 0.65,
+      referenceOverspendRatio: 1.8,
+      efficientFrontierRank: 3,
+    });
+
+    expect(panel.jurisdictionCount).toBe(20);
+    expect(panel.jurisdictions).toEqual(['USA', 'GBR', 'DEU']);
+    expect(panel.spendingCategory).toBe('Healthcare');
+    expect(panel.averageCorrelation).toBe(0.65);
+    expect(panel.referenceOverspendRatio).toBe(1.8);
+    expect(panel.efficientFrontierRank).toBe(3);
+  });
+
+  it('works without optional fields', () => {
+    const panel = buildPanelAnalysis({
+      jurisdictionCount: 5,
+      jurisdictions: ['FRA'],
+      spendingCategory: 'Education',
+      averageCorrelation: 0.3,
+    });
+
+    expect(panel.referenceOverspendRatio).toBeUndefined();
+    expect(panel.efficientFrontierRank).toBeUndefined();
+    expect(panel.jurisdictionCount).toBe(5);
   });
 });

@@ -7,6 +7,7 @@
 Detailed docs live in `docs/`. Read the relevant ones before working:
 - `docs/TYPE_SYSTEM.md` — How types flow from Prisma → all packages
 - `docs/CONVENTIONS.md` — Naming, commits, domain agnosticism, testing
+- `docs/WEB_APP.md` — Current Next.js app behavior, auth, envs, deployment, smoke checks
 - `.conductor/product.md` — Product context and user personas
 - `.conductor/tech-stack.md` — Language, frameworks, tooling
 - `.conductor/workflow.md` — Development workflow
@@ -96,8 +97,8 @@ The web package is the integration layer where everything comes together.
 
 - GitHub Actions: typecheck + lint + test on push/PR
 - `packages/web` is excluded from CI typecheck/lint/test (build-only via deploy workflow)
-- Deploy: GitHub Pages auto-deploy on push to main
-- Live site: https://mikepsinn.github.io/optomitron/
+- Full server-side web app deploy target: Vercel with project root `packages/web`
+- GitHub Pages is legacy/static-only and does not support auth, cron, or server routes
 
 ### 8. Git Workflow
 
