@@ -1,250 +1,258 @@
+import Link from "next/link";
+
 const papers = [
   {
     title: "dFDA Specification",
-    desc: "PIS, temporal alignment, Bradford Hill, effect sizes",
-    pkg: "@optomitron/optimizer",
+    desc: "Causal scoring, temporal alignment, Bradford Hill, and effect sizes.",
     href: "https://dfda-spec.warondisease.org",
   },
   {
     title: "Wishocracy",
-    desc: "RAPPA pairwise preference aggregation, eigenvector weights",
-    pkg: "@optomitron/wishocracy",
+    desc: "Pairwise preference aggregation for turning tradeoffs into ranked priorities.",
     href: "https://wishocracy.warondisease.org",
   },
   {
     title: "Optimal Policy Generator",
-    desc: "Policy Impact Score, Causal Confidence Score, method weights",
-    pkg: "@optomitron/opg",
+    desc: "Policy ranking by expected effect on healthy life years and income.",
     href: "https://opg.warondisease.org",
   },
   {
     title: "Optimal Budget Generator",
-    desc: "Diminishing returns, Optimal Spending Level, Budget Impact Score",
-    pkg: "@optomitron/obg",
+    desc: "Budget allocation under diminishing returns and constrained tradeoffs.",
     href: "https://obg.warondisease.org",
   },
-  // IAB paper hidden for now — Phase 4 (politician funding) not ready yet
-  // {
-  //   title: "Incentive Alignment Bonds",
-  //   desc: "IAB mechanism, smart contract campaign funding",
-  //   pkg: "@optomitron/treasury",
-  //   href: "https://iab.warondisease.org",
-  // },
   {
     title: "Optimocracy",
-    desc: "Two-metric welfare function (shared by OPG + OBG)",
-    pkg: "Shared",
+    desc: "The welfare function behind the public-policy side of the project.",
     href: "https://optimocracy.warondisease.org",
   },
 ];
 
-const packages = [
-  { name: "@optomitron/optimizer", desc: "Domain-agnostic causal inference engine", status: "🟡 Alpha" },
-  { name: "@optomitron/wishocracy", desc: "RAPPA preference aggregation", status: "🟡 Alpha" },
-  { name: "@optomitron/opg", desc: "Optimal Policy Generator", status: "🟡 Alpha" },
-  { name: "@optomitron/obg", desc: "Optimal Budget Generator", status: "🟡 Alpha" },
-  { name: "@optomitron/data", desc: "Data fetchers & loaders (OECD, World Bank, etc.)", status: "🟡 Alpha" },
-  { name: "@optomitron/web", desc: "This website", status: "🟢 Active" },
-  { name: "@optomitron/extension", desc: "Chrome extension for personal health", status: "⚪ Planned" },
-  { name: "@optomitron/chat-ui", desc: "Conversational chat UI", status: "⚪ Planned" },
+const productSurfaces = [
+  {
+    title: "Build an ideal budget",
+    desc: "Use pairwise comparisons to turn values into a ranked public budget.",
+    href: "/vote",
+    cta: "Open Wishocracy",
+    tone: "bg-pink-100",
+  },
+  {
+    title: "Match with politicians",
+    desc: "Compare your priorities with benchmark politicians and inspect the score.",
+    href: "/alignment",
+    cta: "Open Alignment",
+    tone: "bg-yellow-100",
+  },
+  {
+    title: "Inspect the evidence",
+    desc: "Browse outcome hubs, pair studies, policy rankings, and budget analysis.",
+    href: "/outcomes",
+    cta: "Browse Studies",
+    tone: "bg-emerald-100",
+  },
+  {
+    title: "Track yourself",
+    desc: "Log habits, symptoms, meals, and daily wellbeing in one place.",
+    href: "/chat",
+    cta: "Open Tracking",
+    tone: "bg-cyan-100",
+  },
+];
+
+const reasons = [
+  {
+    icon: "💀",
+    title: "Bad decisions kill",
+    desc: "Budgets, policies, and delays shape whether people get treatment, safety, housing, and time.",
+  },
+  {
+    icon: "🏛️",
+    title: "Politics hides tradeoffs",
+    desc: "Most public debates are slogans plus coalition bargaining, not measured outcome comparisons.",
+  },
+  {
+    icon: "🔁",
+    title: "Good ideas spread too slowly",
+    desc: "When something works in one place, most systems still lack a clean way to copy it elsewhere.",
+  },
+];
+
+const steps = [
+  {
+    label: "Collect",
+    desc: "Pull outcome, spending, and policy data across jurisdictions and time.",
+  },
+  {
+    label: "Align",
+    desc: "Match changes in predictors with delayed changes in outcomes.",
+  },
+  {
+    label: "Score",
+    desc: "Combine effect sizes, temporal direction, and Bradford Hill evidence.",
+  },
+  {
+    label: "Optimize",
+    desc: "Estimate better policy choices, budget mixes, and target levels.",
+  },
+  {
+    label: "Apply",
+    desc: "Turn the results into budget votes, politician matching, and decision support.",
+  },
 ];
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
-      {/* Mission */}
+    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       <section className="mb-16">
-        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black mb-6">
-          What is Optomitron?
-        </h1>
-        <div className="max-w-none space-y-4">
+        <div className="max-w-3xl space-y-5">
+          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
+            About Optomitron
+          </h1>
           <p className="text-lg text-black/80 leading-relaxed font-medium">
-            <strong className="text-black font-black">Optomitron identifies which policies, budgets, and interventions actually minimize
-            suffering, eradicate preventable disease, and extend healthy lives</strong> — using time series data
-            and causal inference across 20+ countries.
+            Optomitron helps people and institutions decide what to fund, what to
+            change, and what to stop by tying decisions back to outcomes that
+            matter.
           </p>
-          <p className="text-black/60 font-medium">
-            Governments allocate trillions every year, but rarely know what works. We apply causal analysis
-            to real-world policy outcomes — comparing jurisdictions, tracking natural experiments, and
-            scoring interventions by their actual impact on human welfare.
+          <p className="text-black/60 font-medium leading-relaxed">
+            The public side of the project focuses on healthy life years,
+            income, and the policies and budgets that shape them. The personal
+            side lets you track your own inputs and outcomes in one place.
           </p>
-          <p className="text-black/60 font-medium">
-            At its core, Optomitron provides a universal causal inference engine that takes any two time series and answers:
-            <em> Does changing X cause Y to change? By how much? What&apos;s the optimal value of X?</em>
+          <p className="text-black/60 font-medium leading-relaxed">
+            The goal is simple: make tradeoffs visible, make evidence easier to
+            inspect, and make better decisions easier to act on.
           </p>
+        </div>
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+          <Link
+            href="/vote"
+            className="inline-flex items-center justify-center border-4 border-black bg-pink-500 px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            Start With Wishocracy
+          </Link>
+          <Link
+            href="/alignment"
+            className="inline-flex items-center justify-center border-4 border-black bg-yellow-300 px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            See Alignment Reports
+          </Link>
+          <Link
+            href="/outcomes"
+            className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            Browse Studies
+          </Link>
         </div>
       </section>
 
-      {/* The Problem */}
       <section className="mb-16">
-        <h2 className="section-title">The Problem</h2>
+        <h2 className="section-title">What You Can Do Here</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {productSurfaces.map((surface) => (
+            <div
+              key={surface.title}
+              className={`p-6 border-4 border-black ${surface.tone} shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] flex flex-col`}
+            >
+              <h3 className="text-xl font-black text-black mb-3">{surface.title}</h3>
+              <p className="text-sm text-black/70 leading-relaxed font-medium flex-grow">
+                {surface.desc}
+              </p>
+              <Link
+                href={surface.href}
+                className="mt-5 inline-flex items-center text-sm font-black uppercase text-black hover:text-pink-600 transition-colors"
+              >
+                {surface.cta} &rarr;
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-16">
+        <h2 className="section-title">Why It Exists</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="card">
-            <div className="text-3xl mb-3">💀</div>
-            <h3 className="text-black font-black mb-2">Preventable deaths</h3>
-            <p className="text-sm text-black/60 font-medium">
-              Millions die every year from diseases and conditions we know how to prevent or treat.
-              Resources aren&apos;t allocated to what works — they&apos;re allocated to what&apos;s politically convenient.
-            </p>
-          </div>
-          <div className="card">
-            <div className="text-3xl mb-3">🏛️</div>
-            <h3 className="text-black font-black mb-2">Policy by anecdote</h3>
-            <p className="text-sm text-black/60 font-medium">
-              Governments allocate trillions based on ideology and negotiation, not evidence of what
-              actually improves outcomes. Nobody systematically measures what works.
-            </p>
-          </div>
-          <div className="card">
-            <div className="text-3xl mb-3">🔇</div>
-            <h3 className="text-black font-black mb-2">No feedback loop</h3>
-            <p className="text-sm text-black/60 font-medium">
-              When a policy works in one jurisdiction, there&apos;s no systematic way to identify it and
-              replicate it elsewhere. Successes go unnoticed; failures get repeated.
-            </p>
-          </div>
+          {reasons.map((reason) => (
+            <div key={reason.title} className="card">
+              <div className="text-3xl mb-3">{reason.icon}</div>
+              <h3 className="text-black font-black mb-2">{reason.title}</h3>
+              <p className="text-sm text-black/60 font-medium leading-relaxed">
+                {reason.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* How it works */}
       <section className="mb-16">
-        <h2 className="section-title">Architecture</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 items-stretch">
-          {[
-            {
-              label: "COLLECT",
-              color: "bg-cyan-100",
-              items: ["Health data", "Preferences", "Outcomes", "Spending", "Policies"],
-            },
-            {
-              label: "INFER",
-              color: "bg-yellow-100",
-              items: ["Temporal alignment", "Bradford Hill", "Effect sizes", "PIS scoring"],
-            },
-            {
-              label: "RECOMMEND",
-              color: "bg-pink-100",
-              items: ["Policy rankings", "Budget levels", "Preference weights", "Optimal values"],
-            },
-          ].map((stage: { label: string; color: string; items: string[] }, i: number) => (
-            <div key={stage.label} className="flex items-stretch">
-              <div className={`card ${stage.color} flex-1`}>
-                <h3 className="text-black font-black text-sm uppercase mb-3">{stage.label}</h3>
-                <ul className="space-y-1">
-                  {stage.items.map((item: string) => (
-                    <li key={item} className="text-sm text-black/60 font-medium">{item}</li>
-                  ))}
-                </ul>
+        <h2 className="section-title">How It Works</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+          {steps.map((step, index) => (
+            <div key={step.label} className="card text-center py-5">
+              <div className="text-pink-500 font-black text-lg">{index + 1}</div>
+              <div className="text-black font-black text-sm uppercase">{step.label}</div>
+              <div className="text-xs text-black/50 mt-2 font-medium leading-relaxed">
+                {step.desc}
               </div>
-              {i < 2 && (
-                <div className="hidden md:flex items-center px-2 text-black/40 text-2xl font-black">&rarr;</div>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-5 gap-3">
-          {[
-            { n: "1", t: "Collect", d: "Import time series data from any source" },
-            { n: "2", t: "Align", d: "Pair predictors and outcomes with onset delays" },
-            { n: "3", t: "Score", d: "Apply 9 Bradford Hill causation criteria" },
-            { n: "4", t: "Optimize", d: "Find optimal predictor values with CIs" },
-            { n: "5", t: "Recommend", d: "Generate actionable, graded recommendations" },
-          ].map((s) => (
-            <div key={s.n} className="card text-center py-4">
-              <div className="text-pink-500 font-black text-lg">{s.n}</div>
-              <div className="text-black font-black text-sm uppercase">{s.t}</div>
-              <div className="text-xs text-black/50 mt-1 font-medium">{s.d}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Papers */}
       <section className="mb-16">
-        <h2 className="section-title">📄 Papers</h2>
+        <h2 className="section-title">Research</h2>
         <p className="text-sm text-black/60 mb-6 font-medium">
-          Every algorithm in this codebase is defined in a published paper with exact formulas,
-          worked examples, and parameter justifications.
+          The scoring and optimization logic is documented in public papers.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {papers.map((p) => (
+          {papers.map((paper) => (
             <a
-              key={p.href}
-              href={p.href}
+              key={paper.href}
+              href={paper.href}
               target="_blank"
               rel="noopener noreferrer"
               className="card group hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
             >
               <h3 className="text-black font-black group-hover:text-pink-500 transition-colors">
-                {p.title}
+                {paper.title}
               </h3>
-              <p className="text-xs text-black/40 mt-1 font-bold">{p.pkg}</p>
-              <p className="text-sm text-black/60 mt-2 font-medium">{p.desc}</p>
-              <span className="text-xs text-pink-500 mt-2 inline-block font-black uppercase">Read paper →</span>
+              <p className="text-sm text-black/60 mt-2 font-medium leading-relaxed">
+                {paper.desc}
+              </p>
+              <span className="text-xs text-pink-500 mt-3 inline-block font-black uppercase">
+                Read paper &rarr;
+              </span>
             </a>
           ))}
         </div>
       </section>
 
-      {/* Packages */}
-      <section className="mb-16">
-        <h2 className="section-title">📦 Packages</h2>
-        <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b-2 border-black bg-yellow-300">
-                <th className="text-left py-3 px-2 text-black font-black uppercase">Package</th>
-                <th className="text-left py-3 px-2 text-black font-black uppercase">Description</th>
-                <th className="text-center py-3 px-2 text-black font-black uppercase">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {packages.map((p) => (
-                <tr key={p.name} className="border-b border-black">
-                  <td className="py-2 px-2 font-mono text-xs text-pink-600 font-bold">{p.name}</td>
-                  <td className="py-2 px-2 text-black/70 font-medium">{p.desc}</td>
-                  <td className="py-2 px-2 text-center text-xs font-bold">{p.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* Coming soon */}
-      <section className="mb-16">
-        <div className="card border-pink-500 text-center bg-pink-50">
-          <div className="text-4xl mb-4">🔮</div>
-          <h3 className="text-xl font-black text-black mb-2 uppercase">Coming Soon</h3>
-          <p className="text-black/60 mb-4 font-medium">
-            Decentralized health data collection. Individuals contribute anonymized health outcomes
-            to build the dataset from the ground up — accelerating disease eradication and suffering
-            reduction. Your data stays on your device; the causal engine runs locally in your browser.
-          </p>
+      <section className="card bg-cyan-100 border-cyan-500 text-center">
+        <h2 className="text-2xl font-black text-black mb-3 uppercase">
+          Open By Design
+        </h2>
+        <p className="text-black/60 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
+          The code is public, the papers are public, and the product is meant to
+          be inspectable by anyone who wants to audit the logic or reuse the
+          ideas.
+        </p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <a
             href="https://github.com/mikepsinn/optomitron"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-black px-6 py-2 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
           >
-            Star on GitHub
+            View GitHub
+          </a>
+          <a
+            href="https://github.com/mikepsinn/optomitron#readme"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          >
+            Read The README
           </a>
         </div>
-      </section>
-
-      {/* GitHub */}
-      <section className="text-center">
-        <a
-          href="https://github.com/mikepsinn/optomitron"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-black/60 hover:text-pink-500 transition-colors font-bold"
-        >
-          github.com/mikepsinn/optomitron
-        </a>
-        <p className="text-xs text-black/40 mt-2 font-bold">
-          MIT License © Mike P. Sinn
-        </p>
       </section>
     </div>
   );

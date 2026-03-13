@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const steps = [
   { number: 1, label: "Allocate your ideal budget" },
-  { number: 2, label: "We analyze voting records" },
+  { number: 2, label: "Compare it with politician profiles" },
   { number: 3, label: "See your ranked politician matches" },
 ];
 
@@ -15,7 +15,7 @@ export function AlignmentTeaser() {
         </h2>
         <p className="mt-4 text-lg text-black/60 max-w-3xl mx-auto font-medium">
           Complete the budget survey, then see how your preferences align with
-          real federal politicians&apos; voting records.
+          federal politician profiles.
         </p>
       </div>
       <div className="max-w-xl mx-auto p-8 bg-pink-100 border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
@@ -30,7 +30,7 @@ export function AlignmentTeaser() {
           ))}
         </div>
         <p className="text-sm text-black/50 font-medium mt-6">
-          Your report gets a shareable URL.
+          Save it, revisit it, and share it.
         </p>
         <div className="mt-6">
           <Link

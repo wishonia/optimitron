@@ -14,12 +14,12 @@ export function OutcomeExplorerTeaser({ outcomes }: { outcomes: OutcomeCard[] })
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
       <div className="text-center mb-16">
         <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
-          Mega-Study Analysis Engine
+          Outcome Explorer
         </h2>
         <p className="mt-4 text-lg text-black/60 max-w-3xl mx-auto font-medium">
-          Ranked predictors for every major health and wealth outcome. Drill
-          into any pair for response curves, optimal values, and
-          jurisdiction-level diagnostics.
+          Browse the strongest predictors for major health and wealth outcomes,
+          then drill into response curves, optimal values, and jurisdiction
+          detail.
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -56,8 +56,8 @@ export function OutcomeExplorerTeaser({ outcomes }: { outcomes: OutcomeCard[] })
       </div>
       <div className="text-center mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded max-w-2xl mx-auto">
         <p className="text-sm text-black/60 font-medium">
-          Every recommendation is gated by direct mission KPI evidence — not
-          just broad correlations.
+          Start from the outcome you care about, then work backward to the
+          strongest measurable levers.
         </p>
       </div>
       <div className="text-center mt-8">

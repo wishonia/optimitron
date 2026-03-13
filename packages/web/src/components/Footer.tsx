@@ -57,8 +57,8 @@ export default function Footer() {
               ⚡ Optomitron
             </Link>
             <p className="text-sm text-black/70 mt-3 leading-relaxed font-medium">
-              Evidence-backed budget priorities, politician alignment, personal
-              tracking, and causal studies from real-world outcome data.
+              Budget priorities, politician alignment, personal tracking, and
+              cross-jurisdiction evidence in one place.
             </p>
           </div>
 
