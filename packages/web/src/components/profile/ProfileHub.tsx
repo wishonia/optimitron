@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CheckInHistoryCard } from "@/components/profile/CheckInHistoryCard";
 import { DailyCheckInCard } from "@/components/profile/DailyCheckInCard";
+import { PushNotificationPrompt } from "@/components/notifications/PushNotificationPrompt";
 import { ProfileSnapshotForm } from "@/components/profile/ProfileSnapshotForm";
 import type { ProfilePageData } from "@/lib/profile";
 
@@ -34,6 +35,8 @@ export function ProfileHub({ initialData }: ProfileHubProps) {
       </div>
 
       <CheckInHistoryCard history={data.history} />
+
+      <PushNotificationPrompt />
     </div>
   );
 }

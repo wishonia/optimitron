@@ -10,6 +10,7 @@ export const ROUTES = {
   policies: "/policies",
   budget: "/budget",
   misconceptions: "/misconceptions",
+  discoveries: "/discoveries",
   civic: "/civic",
   signIn: "/auth/signin",
 } as const;
@@ -84,6 +85,13 @@ export const misconceptionsLink: NavItem = {
   description: "Popular beliefs tested against empirical data",
 };
 
+export const discoveriesLink: NavItem = {
+  href: ROUTES.discoveries,
+  label: "Discoveries",
+  emoji: "🔬",
+  description: "Population-level health discoveries from contributor data",
+};
+
 /** Pages under the "Explore" dropdown in the main nav */
 export const exploreLinks: NavItem[] = [
   studiesLink,
@@ -91,6 +99,7 @@ export const exploreLinks: NavItem[] = [
   policiesLink,
   budgetLink,
   misconceptionsLink,
+  discoveriesLink,
 ];
 
 export const wishocracyLink: NavItem = {

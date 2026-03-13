@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { NOf1VariableRelationshipSchema } from "@optomitron/optimizer";
 import { prisma } from "@/lib/prisma";
+import { runAggregationForPairs } from "@/lib/aggregate-relationships.server";
 import {
   SubjectType,
   CombinationOperation,
@@ -153,8 +154,16 @@ export async function POST(req: NextRequest) {
         created++;
       }
 
-      return { subjectId: subject.id, created };
+      return { subjectId: subject.id, created, variableMap };
     });
+
+    // Fire-and-forget: re-aggregate affected predictor-outcome pairs
+    void runAggregationForPairs(
+      input.relationships.map((r) => ({
+        predictorGlobalVariableId: result.variableMap.get(r.predictorVariableId)!,
+        outcomeGlobalVariableId: result.variableMap.get(r.outcomeVariableId)!,
+      })),
+    );
 
     return NextResponse.json({
       success: true,

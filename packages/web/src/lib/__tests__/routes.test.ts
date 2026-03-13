@@ -9,7 +9,7 @@ import {
   topLinks,
 } from "../routes";
 
-function requireLink(href: string, links: Array<{ href: string }>) {
+function requireLink<T extends { href: string }>(href: string, links: T[]): T {
   const link = links.find((item) => item.href === href);
 
   expect(link).toBeDefined();
