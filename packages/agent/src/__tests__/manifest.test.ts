@@ -21,6 +21,7 @@ describe('manifest', () => {
 
     expect(manifest.version).toBe('1.2.3');
     expect(manifest.computeConstraints.maxAnalysesPerRun).toBe(3);
+    expect(manifest.supportedTools).toContain('google-gemini-image-generation');
     expect(manifest.computeConstraints.maxAPICallsPerRun).toBe(
       DEFAULT_AGENT_MANIFEST.computeConstraints.maxAPICallsPerRun,
     );

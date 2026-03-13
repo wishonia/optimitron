@@ -14,6 +14,7 @@ const DEFAULT_MANIFEST = {
     'optomitron-data-worldbank',
     'optomitron-data-who',
     'google-gemini-reasoning',
+    'google-gemini-image-generation',
     'hypercerts-atproto',
     'storacha-storage',
     'erc8004-identity-registry',
@@ -30,6 +31,7 @@ const DEFAULT_MANIFEST = {
     'budget-optimization',
     'preference-aggregation',
     'impact-attestation',
+    'image-asset-generation',
   ],
 } satisfies AgentManifest;
 

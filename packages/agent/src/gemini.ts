@@ -75,16 +75,26 @@ export interface AskGeminiOptions {
   model?: string;
 }
 
-/**
- * Simple convenience wrapper for unstructured text responses from Gemini.
- * Uses GOOGLE_GENERATIVE_AI_API_KEY env var if apiKey not provided.
- */
-export async function askGemini(options: AskGeminiOptions): Promise<string> {
-  const apiKey = options.apiKey ?? process.env['GOOGLE_GENERATIVE_AI_API_KEY'];
-  if (!apiKey) {
-    throw new Error('No Gemini API key: set GOOGLE_GENERATIVE_AI_API_KEY or pass apiKey');
+export function resolveGeminiApiKey(apiKey?: string): string {
+  const resolvedApiKey = apiKey
+    ?? process.env['GOOGLE_GENERATIVE_AI_API_KEY']
+    ?? process.env['GOOGLE_API_KEY'];
+
+  if (!resolvedApiKey) {
+    throw new Error(
+      'No Gemini API key: set GOOGLE_GENERATIVE_AI_API_KEY, GOOGLE_API_KEY, or pass apiKey',
+    );
   }
 
+  return resolvedApiKey;
+}
+
+/**
+ * Simple convenience wrapper for unstructured text responses from Gemini.
+ * Uses GOOGLE_GENERATIVE_AI_API_KEY or GOOGLE_API_KEY env vars if apiKey not provided.
+ */
+export async function askGemini(options: AskGeminiOptions): Promise<string> {
+  const apiKey = resolveGeminiApiKey(options.apiKey);
   const client = createGeminiClient(apiKey);
   const model = options.model ?? 'gemini-3-flash-preview';
 

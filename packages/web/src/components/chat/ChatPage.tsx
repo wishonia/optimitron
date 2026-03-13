@@ -66,13 +66,13 @@ type AppChatMessage =
 
 // --- Budget voting pairs ---
 const BUDGET_PAIRS: Array<[string, string]> = [
-  ["Pragmatic Clinical Trials", "Drug War Enforcement"],
-  ["Addiction Treatment Programs", "Prison Construction & Operations"],
-  ["Early Childhood Education", "Nuclear Weapons Development"],
-  ["Pragmatic Clinical Trials", "Weapons and Military Systems"],
-  ["Addiction Treatment Programs", "Fossil Fuel Subsidies"],
-  ["Early Childhood Education", "ICE Immigration Enforcement"],
-  ["Pragmatic Clinical Trials", "Agribusiness Subsidies"],
+  ["Pragmatic Clinical Trials", "Bombing Iran"],
+  ["Addiction Treatment Programs", "Mass Immigrant Detention Camps"],
+  ["Early Childhood Education", "Military Aid for Israel's War in Gaza"],
+  ["Pragmatic Clinical Trials", "Corporate Welfare & Bailouts"],
+  ["Addiction Treatment Programs", "AI Mass Surveillance Programs"],
+  ["Early Childhood Education", "Drug War Enforcement"],
+  ["Pragmatic Clinical Trials", "Nuclear Weapons Development"],
 ];
 
 const BUDGET_COMMENTARY = [

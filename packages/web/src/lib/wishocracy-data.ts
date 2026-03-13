@@ -121,14 +121,14 @@ export const BUDGET_CATEGORIES = {
   },
   ICE_IMMIGRATION_ENFORCEMENT: {
     id: 'ice',
-    name: 'ICE Immigration Enforcement',
-    description: 'Detention centers, deportation operations, border enforcement',
+    name: 'Mass Immigrant Detention Camps',
+    description: 'Warehouse mega-detention centers, mass deportation operations, 73K+ detained',
     icon: '🚨',
-    annualBudget: 9, // $9B
+    annualBudget: 14, // $14B (up from $9B; $45B committed through 2029)
     roiData: {
       source: 'Economic Analysis',
       ratio: 'Negative ROI',
-      description: 'Mass deportation reduces GDP and tax revenue while separating families',
+      description: '$45B committed through 2029 for eight mega-centers holding 10K each; 75% increase in detainees; reduces GDP and tax revenue while separating families',
       sourceUrl: 'https://www.americanprogress.org/article/the-costs-of-mass-deportation/',
     },
   },
@@ -188,11 +188,80 @@ export const BUDGET_CATEGORIES = {
   // TRADITIONAL/NECESSARY (for comparison)
   MILITARY_OPERATIONS: {
     id: 'military',
-    name: 'Weapons and Military Systems',
-    description: 'Military spending, weapons systems, armed forces, global operations',
+    name: 'Weapons Systems & Pentagon R&D',
+    description: 'Weapons procurement, defense R&D, military base operations (excludes active wars)',
     icon: '🛡️',
-    annualBudget: 800, // $800B
+    annualBudget: 425, // $425B (active wars split into separate categories)
     roiData: null,
+  },
+
+  // ACTIVE WARS & CONFLICTS
+  BOMBING_IRAN: {
+    id: 'bombing_iran',
+    name: 'Bombing Iran',
+    description: 'Operation Epic Fury: airstrikes, cruise missiles, naval operations against Iran ($1-2B/day)',
+    icon: '💣',
+    annualBudget: 365, // ~$1B/day
+    roiData: {
+      source: 'Watson Institute / Pentagon Estimates',
+      ratio: 'Negative ROI',
+      description: 'Iraq/Afghanistan cost $8T+ and destabilized the region; Iran war burned $5.6B in munitions in first 2 days',
+      sourceUrl: 'https://watson.brown.edu/costsofwar/',
+    },
+  },
+  ISRAEL_GAZA_MILITARY_AID: {
+    id: 'israel_gaza_aid',
+    name: "Military Aid for Israel's War in Gaza",
+    description: 'Weapons, munitions, and military aid funding Israel\'s operations in Gaza; $21.7B since Oct 2023',
+    icon: '🇮🇱',
+    annualBudget: 4, // $3.3B base + supplementals
+    roiData: {
+      source: 'Quincy Institute / Congressional Research Service',
+      ratio: 'Negative ROI',
+      description: '65,000+ Palestinian civilians killed; characterized as genocide by UN experts; damages US standing globally',
+      sourceUrl: 'https://quincyinst.org/research/u-s-military-aid-and-arms-transfers-to-israel-october-2023-september-2025/',
+    },
+  },
+  YEMEN_HOUTHI_STRIKES: {
+    id: 'yemen_houthi',
+    name: 'Yemen & Houthi Military Strikes',
+    description: 'Operation Rough Rider: naval and air strikes against Houthi forces in Yemen and the Red Sea',
+    icon: '🚢',
+    annualBudget: 5, // Estimated naval/air ops cost
+    roiData: {
+      source: 'Congressional Research Service',
+      ratio: 'Low ROI',
+      description: 'Houthi attacks on shipping persist despite strikes; each Tomahawk costs $2M+ vs $2K drones',
+      sourceUrl: 'https://www.congress.gov/crs-product/RL33222',
+    },
+  },
+
+  // CORPORATE & SURVEILLANCE
+  CORPORATE_WELFARE: {
+    id: 'corporate_welfare',
+    name: 'Corporate Welfare & Bailouts',
+    description: 'Direct subsidies, tax breaks, and bailouts for profitable corporations (Boeing $15.6B, auto $39B)',
+    icon: '🏦',
+    annualBudget: 100,
+    roiData: {
+      source: 'Cato Institute',
+      ratio: 'Low ROI',
+      description: 'Subsidies flow to politically connected firms, not most productive uses; distorts markets',
+      sourceUrl: 'https://www.cato.org/policy-analysis/corporate-welfare-federal-budget-0',
+    },
+  },
+  AI_MASS_SURVEILLANCE: {
+    id: 'ai_surveillance',
+    name: 'AI Mass Surveillance Programs',
+    description: 'Government AI for domestic surveillance, social media monitoring, and tracking federal workers',
+    icon: '👁️',
+    annualBudget: 5,
+    roiData: {
+      source: 'Brennan Center for Justice',
+      ratio: 'Negative ROI',
+      description: 'Chills free speech; Pentagon labeled Anthropic a national security risk for refusing to allow mass surveillance',
+      sourceUrl: 'https://www.brennancenter.org/',
+    },
   },
   // K12_EDUCATION: {
   //   id: 'k12_education',

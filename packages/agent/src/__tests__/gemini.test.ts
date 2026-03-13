@@ -1,6 +1,11 @@
 import { z } from 'zod';
 import { describe, expect, it, vi } from 'vitest';
-import { createGeminiClient, createGeminiReasoner, askGemini } from '../gemini.js';
+import {
+  askGemini,
+  createGeminiClient,
+  createGeminiReasoner,
+  resolveGeminiApiKey,
+} from '../gemini.js';
 
 describe('gemini helpers', () => {
   it('creates a Gemini client facade', () => {
@@ -69,13 +74,38 @@ describe('gemini helpers', () => {
 
   it('throws when no API key is available for askGemini', async () => {
     const original = process.env['GOOGLE_GENERATIVE_AI_API_KEY'];
+    const fallback = process.env['GOOGLE_API_KEY'];
     delete process.env['GOOGLE_GENERATIVE_AI_API_KEY'];
+    delete process.env['GOOGLE_API_KEY'];
 
     try {
       await expect(askGemini({ prompt: 'hello' })).rejects.toThrow('No Gemini API key');
     } finally {
       if (original !== undefined) {
         process.env['GOOGLE_GENERATIVE_AI_API_KEY'] = original;
+      }
+      if (fallback !== undefined) {
+        process.env['GOOGLE_API_KEY'] = fallback;
+      }
+    }
+  });
+
+  it('resolves GOOGLE_API_KEY as a fallback', () => {
+    const original = process.env['GOOGLE_GENERATIVE_AI_API_KEY'];
+    const fallback = process.env['GOOGLE_API_KEY'];
+    delete process.env['GOOGLE_GENERATIVE_AI_API_KEY'];
+    process.env['GOOGLE_API_KEY'] = 'fallback-key';
+
+    try {
+      expect(resolveGeminiApiKey()).toBe('fallback-key');
+    } finally {
+      if (original !== undefined) {
+        process.env['GOOGLE_GENERATIVE_AI_API_KEY'] = original;
+      }
+      if (fallback !== undefined) {
+        process.env['GOOGLE_API_KEY'] = fallback;
+      } else {
+        delete process.env['GOOGLE_API_KEY'];
       }
     }
   });
