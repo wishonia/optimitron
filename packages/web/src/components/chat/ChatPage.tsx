@@ -645,9 +645,10 @@ export default function ChatPage() {
           // Map actual allocations to names
           const actualRaw = getActualGovernmentAllocations();
           const actualByName: Record<string, number> = {};
-          for (const cat of Object.values(BUDGET_CATEGORIES)) {
-            if (actualRaw[cat.id as keyof typeof actualRaw] != null) {
-              actualByName[cat.name] = actualRaw[cat.id as keyof typeof actualRaw];
+          for (const [key, cat] of Object.entries(BUDGET_CATEGORIES)) {
+            const pct = actualRaw[key as keyof typeof actualRaw];
+            if (pct != null) {
+              actualByName[cat.name] = pct;
             }
           }
 
