@@ -20,8 +20,8 @@ export default function Footer() {
               ⚡ Optomitron
             </Link>
             <p className="text-sm text-black/70 mt-3 leading-relaxed font-medium">
-              Budget priorities, politician alignment, personal tracking, and
-              cross-jurisdiction evidence in one place.
+              Earth optimization for budgets, politicians, and everyday
+              tradeoffs.
             </p>
           </div>
 

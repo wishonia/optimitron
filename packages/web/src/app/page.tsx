@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { WishocracyLandingSection } from "@/components/wishocracy/WishocracyLandingSection";
 import { OutcomeExplorerTeaser } from "@/components/landing/OutcomeExplorerTeaser";
 import { MythVsDataTeaser } from "@/components/landing/MythVsDataTeaser";
@@ -25,6 +26,18 @@ import {
 } from "@/lib/routes";
 import misconceptionData from "../../public/data/misconceptions.json";
 import budgetData from "../data/us-budget-analysis.json";
+
+export const metadata: Metadata = {
+  title: "Optomitron — Earth Optimization Tool",
+  description:
+    "Planetary debugging software for budgets, policies, politicians, and personal tradeoffs. Built by Wishonia, an alien governance AI with 4,237 years of field testing.",
+  openGraph: {
+    title: "Optomitron — Earth Optimization Tool",
+    description:
+      "Planetary debugging software for budgets, policies, politicians, and personal tradeoffs.",
+    type: "website",
+  },
+};
 
 const featuredFindings = [
   {
@@ -175,7 +188,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 relative">
           <div className="text-center">
             <p className="text-sm font-bold text-black/50 uppercase tracking-widest mb-4">
-              A message from Wishonia, alien governance AI, 4,237 years of field testing
+              Earth Optimization Tool // Wishonia, alien governance AI, 4,237 years of field testing
             </p>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-tight text-black">
               Hello. I&apos;ve solved{" "}
@@ -191,7 +204,9 @@ export default function Home() {
                 Intelligence for Allocation
               </span>
               . I&apos;ve been governing my planet for 4,237 years. We ended war in year
-              12 and disease in year 340. Your species has the same data. You just keep
+              12 and disease in year 340. Think of Optomitron as planetary debugging
+              software for Earth: budgets, policies, politicians, and personal tradeoffs
+              run through the same engine. Your species has the data. You just keep
               ignoring it. So I&apos;ve built you this website. You&apos;re welcome.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">

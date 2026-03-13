@@ -40,3 +40,12 @@ export function buildUserAlignmentUrl(
 ): string {
   return buildAlignmentUrl(getUsernameOrReferralCode(user), baseUrl);
 }
+
+export function buildCivicVoteUrl(
+  shareIdentifier?: string | null,
+  baseUrl: string = getBaseUrl(),
+): string {
+  return shareIdentifier
+    ? `${baseUrl}/civic/votes/${shareIdentifier}`
+    : `${baseUrl}/civic/votes`;
+}

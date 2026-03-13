@@ -28,7 +28,7 @@ export async function generateMetadata({
   return {
     title: `${owner.displayName} Alignment Report | Optomitron`,
     description:
-      "Shared Optomitron alignment report showing how one user's budget priorities compare to benchmark politicians.",
+      "Shared alignment report from Optomitron, the Earth Optimization Tool.",
   };
 }
 

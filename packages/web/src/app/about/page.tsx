@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
   alignmentLink,
@@ -84,6 +85,12 @@ const steps = [
   },
 ];
 
+export const metadata: Metadata = {
+  title: "About the Earth Optimization Tool | Optomitron",
+  description:
+    "What Optomitron is, how the Earth optimization tool works, and why planetary debugging software might be useful on this planet.",
+};
+
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -93,9 +100,9 @@ export default function AboutPage() {
             About Optomitron
           </h1>
           <p className="text-lg text-black/80 leading-relaxed font-medium">
-            Optomitron helps people and institutions decide what to fund, what to
-            change, and what to stop by tying decisions back to outcomes that
-            matter.
+            Optomitron is an Earth optimization tool. It helps people and
+            institutions decide what to fund, what to change, and what to stop by
+            tying decisions back to outcomes that matter.
           </p>
           <p className="text-black/60 font-medium leading-relaxed">
             The public side of the project focuses on healthy life years,
@@ -103,8 +110,9 @@ export default function AboutPage() {
             side lets you track your own inputs and outcomes in one place.
           </p>
           <p className="text-black/60 font-medium leading-relaxed">
-            The goal is simple: make tradeoffs visible, make evidence easier to
-            inspect, and make better decisions easier to act on.
+            You can also think of it as planetary debugging software: inspect the
+            system, find the broken incentives, and stop pretending the errors are
+            mysterious.
           </p>
         </div>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">

@@ -10,6 +10,7 @@ export const ROUTES = {
   policies: "/policies",
   budget: "/budget",
   misconceptions: "/misconceptions",
+  civic: "/civic",
   signIn: "/auth/signin",
 } as const;
 

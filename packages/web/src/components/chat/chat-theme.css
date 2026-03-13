@@ -1003,3 +1003,644 @@
   transform: translate(-1px, -1px);
   box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
 }
+
+/* --- Representative card --- */
+.opto-rep-card__header {
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.opto-rep-card__empty {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.opto-rep-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.opto-rep-card__item {
+  border: 2px solid black;
+  padding: 0.75rem;
+  background: white;
+}
+
+.opto-rep-card__info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.opto-rep-card__name {
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.opto-rep-card__party {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid black;
+}
+
+.opto-rep-card__party--dem {
+  background: rgb(var(--brutal-cyan));
+}
+
+.opto-rep-card__party--rep {
+  background: rgb(var(--brutal-pink));
+}
+
+.opto-rep-card__party--ind {
+  background: rgb(var(--brutal-yellow));
+}
+
+.opto-rep-card__detail {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.opto-rep-card__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.opto-rep-card__btn {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  border: 2px solid black;
+  background: rgb(var(--brutal-yellow));
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  transition: transform 0.1s;
+}
+
+.opto-rep-card__btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
+}
+
+.opto-rep-card__btn--alignment {
+  background: rgb(var(--brutal-cyan));
+}
+
+/* --- Bill card --- */
+.opto-bill-card {
+  border: 2px solid black;
+  padding: 0.75rem;
+  background: white;
+  margin-bottom: 0.5rem;
+}
+
+.opto-bill-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.opto-bill-card__type {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.opto-bill-card__direction {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid black;
+}
+
+.opto-bill-card__direction--increase {
+  background: rgb(var(--brutal-cyan));
+}
+
+.opto-bill-card__direction--decrease {
+  background: rgb(var(--brutal-pink));
+}
+
+.opto-bill-card__title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.opto-bill-card__policy {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 0.25rem;
+}
+
+.opto-bill-card__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.opto-bill-card__category-chip {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.1rem 0.3rem;
+  border: 1px solid black;
+  background: rgb(var(--brutal-yellow));
+  text-transform: uppercase;
+}
+
+.opto-bill-card__action {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.opto-bill-card__action-date {
+  font-weight: 700;
+}
+
+.opto-bill-card__buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.opto-bill-card__btn {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  border: 2px solid black;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  transition: transform 0.1s;
+}
+
+.opto-bill-card__btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
+}
+
+.opto-bill-card__btn--vote {
+  background: rgb(var(--brutal-pink));
+}
+
+.opto-bill-card__btn--analysis {
+  background: rgb(var(--brutal-cyan));
+}
+
+/* --- Bill list card --- */
+.opto-bill-list__header {
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.opto-bill-list__filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.opto-bill-list__select,
+.opto-bill-list__search {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.5rem;
+  border: 2px solid black;
+  background: white;
+  flex: 1;
+  min-width: 8rem;
+}
+
+.opto-bill-list__filter-btn {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  border: 2px solid black;
+  background: rgb(var(--brutal-yellow));
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  transition: transform 0.1s;
+}
+
+.opto-bill-list__filter-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
+}
+
+.opto-bill-list__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 28rem;
+  overflow-y: auto;
+}
+
+.opto-bill-list__empty {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* --- Bill search card --- */
+.opto-bill-search__header {
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.opto-bill-search__form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.opto-bill-search__select,
+.opto-bill-search__input {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.5rem;
+  border: 2px solid black;
+  background: white;
+  flex: 1;
+  min-width: 8rem;
+}
+
+.opto-bill-search__btn {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border: 2px solid black;
+  background: rgb(var(--brutal-pink));
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  transition: transform 0.1s;
+}
+
+.opto-bill-search__btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
+}
+
+/* --- Bill vote card --- */
+.opto-bill-vote__header {
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.opto-bill-vote__title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.opto-bill-vote__buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.opto-bill-vote__btn {
+  flex: 1;
+  padding: 0.6rem;
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  border: 3px solid black;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
+  transition: transform 0.1s, background 0.1s;
+  background: white;
+}
+
+.opto-bill-vote__btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 1);
+}
+
+.opto-bill-vote__btn--yes.opto-bill-vote__btn--selected {
+  background: rgb(var(--brutal-cyan));
+}
+
+.opto-bill-vote__btn--no.opto-bill-vote__btn--selected {
+  background: rgb(var(--brutal-pink));
+}
+
+.opto-bill-vote__reasoning {
+  width: 100%;
+  font-size: 0.8rem;
+  padding: 0.5rem;
+  border: 2px solid black;
+  background: white;
+  resize: vertical;
+  font-family: inherit;
+  margin-bottom: 0.75rem;
+}
+
+.opto-bill-vote__save {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: 2px solid black;
+  background: rgb(var(--brutal-yellow));
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  transition: transform 0.1s;
+}
+
+.opto-bill-vote__save:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
+}
+
+.opto-bill-vote__save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.opto-bill-vote--confirmed {
+  background: rgb(var(--brutal-cyan));
+}
+
+.opto-bill-vote__confirmed-position {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.opto-bill-vote__confirmed-reasoning {
+  font-style: italic;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* --- CBA card --- */
+.opto-cba {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.opto-cba__summary {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.opto-cba__section {
+  margin-bottom: 0.5rem;
+}
+
+.opto-cba__section-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.opto-cba__list {
+  font-size: 0.8rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.opto-cba__list--pros li::marker {
+  content: "\2713 ";
+  color: green;
+}
+
+.opto-cba__list--cons li::marker {
+  content: "\2717 ";
+  color: red;
+}
+
+.opto-cba__no-llm {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.opto-cba__structural-header {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.opto-cba__signal {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.3rem;
+  border: 1px solid black;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.opto-cba__signal--positive {
+  background: rgb(var(--brutal-cyan));
+}
+
+.opto-cba__signal--negative {
+  background: rgb(var(--brutal-pink));
+}
+
+.opto-cba__signal--mixed {
+  background: rgb(var(--brutal-yellow));
+}
+
+.opto-cba__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.opto-cba__bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.opto-cba__bar-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  min-width: 7rem;
+  flex-shrink: 0;
+}
+
+.opto-cba__bar-track {
+  flex: 1;
+  height: 0.8rem;
+  border: 1px solid black;
+  background: white;
+  position: relative;
+}
+
+.opto-cba__bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgb(var(--brutal-pink));
+}
+
+.opto-cba__bar-roi {
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.opto-cba__bar-direction {
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.opto-cba__bar-direction--increase {
+  color: green;
+}
+
+.opto-cba__bar-direction--decrease {
+  color: red;
+}
+
+/* --- Vote share card --- */
+.opto-vote-share__header {
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.opto-vote-share__summary {
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.opto-vote-share__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.opto-vote-share__rep-btn {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: 2px solid black;
+  background: rgb(var(--brutal-pink));
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  transition: transform 0.1s;
+}
+
+.opto-vote-share__rep-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
+}
+
+/* --- Send to rep card --- */
+.opto-send-rep__header {
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.opto-send-rep__empty {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.opto-send-rep__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.opto-send-rep__item {
+  border: 2px solid black;
+  padding: 0.5rem;
+  background: white;
+}
+
+.opto-send-rep__rep-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.opto-send-rep__rep-name {
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.opto-send-rep__rep-detail {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.opto-send-rep__actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.opto-send-rep__btn {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid black;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  transition: transform 0.1s;
+  text-decoration: none;
+  color: black;
+  display: inline-block;
+}
+
+.opto-send-rep__btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 1);
+}
+
+.opto-send-rep__btn--email {
+  background: rgb(var(--brutal-cyan));
+}
+
+.opto-send-rep__btn--copy {
+  background: rgb(var(--brutal-yellow));
+}
+
+.opto-send-rep__btn--contact {
+  background: white;
+}

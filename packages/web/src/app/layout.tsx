@@ -8,14 +8,21 @@ import { Providers } from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Optomitron — Evidence-Based Policy to Minimize Suffering and Save Lives",
+  applicationName: "Optomitron",
+  title: "Optomitron — Earth Optimization Tool",
   description:
-    "Causal inference on policy, budget, and outcome data across 20+ countries to identify what actually minimizes suffering and extends healthy lives.",
+    "Earth Optimization Tool for budgets, policies, politicians, and personal tradeoffs. Planetary debugging software for a species that keeps ignoring its own data.",
   openGraph: {
-    title: "Optomitron — Evidence-Based Policy to Minimize Suffering and Save Lives",
+    title: "Optomitron — Earth Optimization Tool",
     description:
-      "Which interventions minimize suffering and save the most lives? Causal analysis of natural experiments and policy outcomes across jurisdictions.",
+      "Planetary debugging software for budgets, policies, politicians, and public outcomes. See what works, what fails, and what to change next.",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Optomitron — Earth Optimization Tool",
+    description:
+      "Planetary debugging software for budgets, policies, politicians, and public outcomes.",
   },
 };
 

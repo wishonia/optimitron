@@ -287,6 +287,7 @@ model User {
   vote                          Vote?                          @relation("UserVotes")
   wishocraticAllocations        WishocraticAllocation[]        @relation("UserWishocraticAllocations")
   wishocraticCategorySelections WishocraticCategorySelection[] @relation("UserWishocraticCategorySelections")
+  citizenBillVotes              CitizenBillVote[]              @relation("UserCitizenBillVotes")
 
   @@index([email])
   @@index([username])
@@ -2123,4 +2124,58 @@ model AlignmentScore {
 
   @@unique([politicianId, aggregationRunId])
   @@index([score])
+}
+
+// ============================================================================
+// CIVIC ENGAGEMENT
+// ============================================================================
+
+/// Position a citizen takes on a bill
+enum VotePosition {
+  YES
+  NO
+  ABSTAIN
+}
+
+/// A citizen's vote on a specific legislative bill, with optional CBA snapshot
+model CitizenBillVote {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// The user who cast this vote
+  userId String
+
+  /// Bill identifier e.g. "119-hr-1234"
+  billId String
+
+  /// Human-readable bill title at time of vote
+  billTitle String
+
+  /// The citizen's position
+  position VotePosition
+
+  /// Optional reasoning / notes
+  reasoning String?
+
+  /// Jurisdiction scope (optional)
+  jurisdictionId String?
+
+  /// Unique shareable identifier for public vote page
+  shareIdentifier String @unique @default(cuid())
+
+  /// JSON snapshot of cost-benefit analysis at time of vote
+  cbaSnapshot String?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Relation to the user
+  user User @relation("UserCitizenBillVotes", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, billId])
+  @@index([userId])
+  @@index([shareIdentifier])
 }
