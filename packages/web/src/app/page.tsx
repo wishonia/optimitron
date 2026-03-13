@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { WishocracyLandingSection } from "@/components/wishocracy/WishocracyLandingSection";
 import { OutcomeExplorerTeaser } from "@/components/landing/OutcomeExplorerTeaser";
 import { MythVsDataTeaser } from "@/components/landing/MythVsDataTeaser";
@@ -196,33 +195,37 @@ export default function Home() {
               ignoring it. So I&apos;ve built you this website. You&apos;re welcome.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href={wishocracyLink.href}
+              <NavItemLink
+                item={wishocracyLink}
+                variant="custom"
                 className="px-8 py-3.5 bg-pink-500 text-white font-black uppercase text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
               >
                 Build Your Ideal Budget
-              </Link>
-              <Link
-                href={trackLink.href}
+              </NavItemLink>
+              <NavItemLink
+                item={trackLink}
+                variant="custom"
                 className="px-8 py-3.5 bg-yellow-300 text-black font-black uppercase text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
               >
                 Talk to Wishonia
-              </Link>
-              <Link
-                href={studiesLink.href}
+              </NavItemLink>
+              <NavItemLink
+                item={studiesLink}
+                variant="custom"
                 className="px-8 py-3.5 bg-white text-black font-black uppercase text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-emerald-300 transition-all"
               >
                 See the Evidence
-              </Link>
+              </NavItemLink>
             </div>
             <p className="mt-6 text-sm font-medium text-black/60 max-w-2xl mx-auto">
               Everything saves to your{" "}
-              <Link
-                href={profileLink.href}
+              <NavItemLink
+                item={profileLink}
+                variant="custom"
                 className="font-black text-black hover:text-pink-500"
               >
                 {profileLink.label}
-              </Link>
+              </NavItemLink>
               . Budget allocations, alignment reports, daily check-ins. It&apos;s like
               a diary, but useful.
             </p>
@@ -257,12 +260,13 @@ export default function Home() {
               <p className="text-sm text-black/70 leading-relaxed font-medium flex-grow">
                 {workflow.description}
               </p>
-              <Link
-                href={workflow.href}
+              <NavItemLink
+                item={workflow.item}
+                variant="custom"
                 className="mt-6 inline-flex items-center text-sm font-black text-black uppercase hover:text-pink-600 transition-colors"
               >
                 {workflow.cta} &rarr;
-              </Link>
+              </NavItemLink>
             </div>
           ))}
         </div>
@@ -282,10 +286,10 @@ export default function Home() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <a
-            href="https://political-dysfunction-tax.warondisease.org"
-            target="_blank"
-            rel="noopener noreferrer"
+          <NavItemLink
+            item={politicalDysfunctionTaxPaperLink}
+            variant="custom"
+            external
             className="p-8 border-4 border-black bg-red-100 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
           >
             <div className="text-4xl sm:text-5xl font-black text-red-600 mb-2">
@@ -303,11 +307,11 @@ export default function Home() {
             <span className="mt-4 inline-flex items-center text-xs font-black text-red-600 uppercase">
               Read the paper &rarr;
             </span>
-          </a>
-          <a
-            href="https://invisible-graveyard.warondisease.org"
-            target="_blank"
-            rel="noopener noreferrer"
+          </NavItemLink>
+          <NavItemLink
+            item={invisibleGraveyardPaperLink}
+            variant="custom"
+            external
             className="p-8 border-4 border-black bg-orange-100 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
           >
             <div className="text-4xl sm:text-5xl font-black text-orange-600 mb-2">
@@ -325,11 +329,11 @@ export default function Home() {
             <span className="mt-4 inline-flex items-center text-xs font-black text-orange-600 uppercase">
               Read the paper &rarr;
             </span>
-          </a>
-          <a
-            href="https://impact.warondisease.org"
-            target="_blank"
-            rel="noopener noreferrer"
+          </NavItemLink>
+          <NavItemLink
+            item={onePercentTreatyPaperLink}
+            variant="custom"
+            external
             className="p-8 border-4 border-black bg-sky-100 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
           >
             <div className="text-4xl sm:text-5xl font-black text-sky-600 mb-2">
@@ -348,17 +352,17 @@ export default function Home() {
             <span className="mt-4 inline-flex items-center text-xs font-black text-sky-600 uppercase">
               Read the paper &rarr;
             </span>
-          </a>
+          </NavItemLink>
         </div>
         <div className="text-center mt-8">
-          <a
-            href="https://manual.warondisease.org"
-            target="_blank"
-            rel="noopener noreferrer"
+          <NavItemLink
+            item={fullManualPaperLink}
+            variant="custom"
+            external
             className="inline-flex items-center text-sm font-black text-pink-600 hover:text-pink-800 uppercase transition-colors"
           >
             Read the full manual (yes, I wrote you a manual) &rarr;
-          </a>
+          </NavItemLink>
         </div>
       </section>
 
@@ -484,12 +488,13 @@ export default function Home() {
               <p className="text-black/70 text-sm leading-relaxed flex-grow font-medium">
                 {finding.description}
               </p>
-              <Link
-                href={finding.href}
+              <NavItemLink
+                item={finding.item}
+                variant="custom"
                 className="mt-6 inline-flex items-center text-sm font-black text-pink-600 hover:text-pink-800 uppercase transition-colors"
               >
                 View Analysis &rarr;
-              </Link>
+              </NavItemLink>
             </div>
           ))}
         </div>
@@ -542,12 +547,13 @@ export default function Home() {
           ))}
         </div>
         <div className="text-center mt-8">
-          <Link
-            href={policiesLink.href}
+          <NavItemLink
+            item={policiesLink}
+            variant="custom"
             className="inline-flex items-center text-sm font-black text-pink-600 hover:text-pink-800 uppercase transition-colors"
           >
             View all {naturalExperiments.length} experiments &rarr;
-          </Link>
+          </NavItemLink>
         </div>
       </section>
 
@@ -628,52 +634,58 @@ export default function Home() {
             buttons for you. Although I&apos;m working on that.
           </p>
           <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-4">
-            <Link
-              href={compareLink.href}
+            <NavItemLink
+              item={compareLink}
+              variant="custom"
               className="px-8 py-3 bg-black text-white font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Compare Countries
-            </Link>
-            <Link
-              href={policiesLink.href}
+            </NavItemLink>
+            <NavItemLink
+              item={policiesLink}
+              variant="custom"
               className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Browse Policies
-            </Link>
-            <Link
-              href={alignmentLink.href}
+            </NavItemLink>
+            <NavItemLink
+              item={alignmentLink}
+              variant="custom"
               className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Check Alignment
-            </Link>
-            <Link
-              href={trackLink.href}
+            </NavItemLink>
+            <NavItemLink
+              item={trackLink}
+              variant="custom"
               className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Talk to Wishonia
-            </Link>
-            <Link
-              href={studiesLink.href}
+            </NavItemLink>
+            <NavItemLink
+              item={studiesLink}
+              variant="custom"
               className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Outcome Analysis
-            </Link>
-            <Link
-              href={misconceptionsLink.href}
+            </NavItemLink>
+            <NavItemLink
+              item={misconceptionsLink}
+              variant="custom"
               className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Myth vs Data
-            </Link>
+            </NavItemLink>
           </div>
           <div className="mt-6">
-            <a
-              href="https://github.com/mikepsinn/optomitron"
-              target="_blank"
-              rel="noopener noreferrer"
+            <NavItemLink
+              item={githubLink}
+              variant="custom"
+              external
               className="inline-flex items-center text-sm font-black text-black/50 hover:text-black uppercase transition-colors"
             >
               View Source on GitHub (yes, it&apos;s all open) &rarr;
-            </a>
+            </NavItemLink>
           </div>
         </div>
       </section>

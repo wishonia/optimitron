@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight, BarChart3, Scale, Sparkles, Target } from "lucide-react";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { CopyLinkButton } from "@/components/sharing/copy-link-button";
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
 import { Button } from "@/components/ui/button";
@@ -281,7 +281,9 @@ export function AlignmentReport({
               </p>
               <div className="mt-4">
                 <Button asChild className="font-black uppercase">
-                  <Link href={wishocracyLink.href}>Start Wishocracy</Link>
+                  <NavItemLink item={wishocracyLink} variant="custom">
+                    Start Wishocracy
+                  </NavItemLink>
                 </Button>
               </div>
             </div>

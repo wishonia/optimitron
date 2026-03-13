@@ -1,6 +1,6 @@
-import Link from "next/link";
 import budgetData from "@/data/us-budget-analysis.json";
-import { budgetLink } from "@/lib/routes";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
+import { budgetLink, optimalBudgetGeneratorPaperLink } from "@/lib/routes";
 import { slugify } from "@/lib/slugify";
 
 /* ------------------------------------------------------------------ */
@@ -192,9 +192,9 @@ export default async function BudgetCategoryPage({
     return (
       <div className="mx-auto max-w-4xl px-4 py-20 text-center">
         <h1 className="text-3xl font-black uppercase text-black mb-4">Category Not Found</h1>
-        <Link href={budgetLink.href} className="text-pink-500 font-bold underline">
+        <NavItemLink item={budgetLink} variant="custom" className="text-pink-500 font-bold underline">
           ← Back to Budget Dashboard
-        </Link>
+        </NavItemLink>
       </div>
     );
   }
@@ -221,12 +221,13 @@ export default async function BudgetCategoryPage({
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
       {/* Back link */}
-      <Link
-        href={budgetLink.href}
+      <NavItemLink
+        item={budgetLink}
+        variant="custom"
         className="inline-block mb-6 text-sm font-bold text-black/50 hover:text-black transition-colors uppercase"
       >
         ← All Budget Categories
-      </Link>
+      </NavItemLink>
 
       {/* Hero */}
       <div className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 sm:p-8 mb-8">
@@ -638,9 +639,14 @@ export default async function BudgetCategoryPage({
           </p>
           <p className="text-xs text-black/50">
             See the{" "}
-            <a href="https://obg.warondisease.org" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:underline">
+            <NavItemLink
+              item={optimalBudgetGeneratorPaperLink}
+              variant="custom"
+              external
+              className="text-pink-500 hover:underline"
+            >
               Optimal Budget Generator paper
-            </a>{" "}
+            </NavItemLink>{" "}
             for full methodology.
           </p>
         </div>
@@ -648,12 +654,13 @@ export default async function BudgetCategoryPage({
 
       {/* Footer */}
       <div className="flex items-center justify-between">
-        <Link
-          href={budgetLink.href}
+        <NavItemLink
+          item={budgetLink}
+          variant="custom"
           className="inline-block border-2 border-black bg-black text-white px-4 py-2 font-bold text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-none transition-shadow"
         >
           ← All Categories
-        </Link>
+        </NavItemLink>
         <p className="text-xs text-black/40 font-bold">
           Generated {new Date(data.generatedAt).toLocaleDateString()} · Optomitron OBG
         </p>

@@ -7,6 +7,8 @@ export { PairwiseCard } from './components/PairwiseCard.js';
 export { FoodCard } from './components/FoodCard.js';
 export { InsightCard } from './components/InsightCard.js';
 export { ApiKeyCard } from './components/ApiKeyCard.js';
+export { HintBar } from './components/HintBar.js';
+export { CheckInCard } from './components/CheckInCard.js';
 
 // Types
 export type {
@@ -19,6 +21,8 @@ export type {
   FoodCardProps,
   InsightCardProps,
   ApiKeyCardProps,
+  HintBarProps,
+  CheckInCardProps,
   ChatContainerProps,
 } from './types.js';
 

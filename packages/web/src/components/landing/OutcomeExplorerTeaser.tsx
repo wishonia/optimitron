@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { OutcomeMegaStudyRanking } from "@optomitron/optimizer";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import type { ExplorerOutcome } from "@/lib/analysis-explorer-types";
 import { getOutcomeHubPath } from "@/lib/analysis-explorer-routes";
 import { studiesLink } from "@/lib/routes";
@@ -63,12 +64,13 @@ export function OutcomeExplorerTeaser({ outcomes }: { outcomes: OutcomeCard[] })
         </p>
       </div>
       <div className="text-center mt-8">
-        <Link
-          href={studiesLink.href}
+        <NavItemLink
+          item={studiesLink}
+          variant="custom"
           className="inline-flex items-center text-sm font-black text-emerald-700 hover:text-emerald-900 uppercase transition-colors"
         >
           Explore All Outcomes &rarr;
-        </Link>
+        </NavItemLink>
       </div>
     </section>
   );

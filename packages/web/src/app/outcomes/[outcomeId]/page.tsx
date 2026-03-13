@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ProvenanceBlock } from "@/components/analysis/provenance-block";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
   getExplorerFreshness,
   getExplorerPrecomputeIndex,
@@ -44,12 +45,13 @@ export default async function OutcomeHubPage({
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       <header className="mb-8">
-        <Link
-          href={studiesLink.href}
+        <NavItemLink
+          item={studiesLink}
+          variant="custom"
           className="inline-block text-xs font-bold uppercase text-black/50 hover:text-black mb-3"
         >
           ← All Outcomes
-        </Link>
+        </NavItemLink>
         <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black">
           {outcome.label}
         </h1>

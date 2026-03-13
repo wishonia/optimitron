@@ -5,6 +5,7 @@ import {
   communityLinks,
   exploreLinks,
   footerAppLinks,
+  githubLink,
   paperLinks,
 } from "@/lib/routes";
 
@@ -84,14 +85,14 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t-2 border-black/20 text-center text-sm text-black/70 font-medium">
           <p>
             © {new Date().getFullYear()} Optomitron —{" "}
-            <a
-              href="https://github.com/mikepsinn/optomitron"
+            <NavItemLink
+              item={githubLink}
+              variant="custom"
+              external
               className="text-black font-bold hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Open source
-            </a>{" "}
+            </NavItemLink>{" "}
             evidence-based policy analysis by{" "}
             <a
               href="https://mikesinn.com"

@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect } from "react";
 import confetti from "canvas-confetti";
 import { CheckCircle2 } from "lucide-react";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { CopyLinkButton } from "@/components/sharing/copy-link-button";
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
 import { Button } from "@/components/ui/button";
@@ -168,7 +168,9 @@ export function WishocracyCompletionCard({
           {isAuthenticated ? (
             <div className="space-y-3">
               <Button asChild className="w-full font-black uppercase">
-                <Link href={alignmentLink.href}>See Alignment Report</Link>
+                <NavItemLink item={alignmentLink} variant="custom">
+                  See Alignment Report
+                </NavItemLink>
               </Button>
               <Button
                 type="button"

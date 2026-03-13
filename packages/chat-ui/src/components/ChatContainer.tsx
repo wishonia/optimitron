@@ -7,6 +7,8 @@ import { PairwiseCard } from './PairwiseCard.js';
 import { FoodCard } from './FoodCard.js';
 import { InsightCard } from './InsightCard.js';
 import { ApiKeyCard } from './ApiKeyCard.js';
+import { HintBar } from './HintBar.js';
+import { CheckInCard } from './CheckInCard.js';
 
 const MessageRenderer: FC<{
   message: ChatMessage;
@@ -67,8 +69,8 @@ const MessageRenderer: FC<{
         <InsightCard
           title={message.title}
           body={message.body}
-          actionLabel="See full analysis"
-          onAction={() => props.onInsightAction?.(message.title)}
+          actionLabel={message.actionLabel ?? 'See full analysis'}
+          onAction={message.onAction ?? (() => props.onInsightAction?.(message.title))}
         />
       );
     case 'apiKey':
@@ -77,6 +79,23 @@ const MessageRenderer: FC<{
           onSave={(provider, key) => props.onApiKeySave?.(provider, key)}
         />
       );
+    case 'hints':
+      return (
+        <HintBar
+          buttons={message.buttons}
+          onHintClick={(action) => props.onHintClick?.(action)}
+        />
+      );
+    case 'checkIn':
+      return (
+        <CheckInCard
+          onCheckIn={(health, happiness, note) =>
+            props.onCheckIn?.(message.id, health, happiness, note)
+          }
+        />
+      );
+    default:
+      return props.renderCustomMessage?.(message) ?? null;
   }
 };
 

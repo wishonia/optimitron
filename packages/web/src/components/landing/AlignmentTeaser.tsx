@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { wishocracyLink } from "@/lib/routes";
 
 const steps = [
@@ -36,12 +36,13 @@ export function AlignmentTeaser() {
           thinks their favourite politician agrees with them.
         </p>
         <div className="mt-6">
-          <Link
-            href={wishocracyLink.href}
+          <NavItemLink
+            item={wishocracyLink}
+            variant="custom"
             className="inline-block px-8 py-3 bg-black text-white font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
           >
             Start Your Alignment Report &rarr;
-          </Link>
+          </NavItemLink>
         </div>
       </div>
     </section>

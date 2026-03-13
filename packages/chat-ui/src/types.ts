@@ -1,3 +1,5 @@
+import type React from 'react';
+
 /** Message types for the chat UI */
 
 export type ChatMessage =

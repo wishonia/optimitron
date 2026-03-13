@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
   BUDGET_CATEGORIES,
   getActualGovernmentAllocations,
@@ -125,24 +126,26 @@ export function WishocracyLandingSection() {
             </div>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <Link
-                href={wishocracyLink.href}
+              <NavItemLink
+                item={wishocracyLink}
+                variant="custom"
                 className="inline-flex items-center justify-center border-4 border-black bg-pink-500 px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 Make Your Allocation
-              </Link>
+              </NavItemLink>
               <Link
                 href={getSignInPath(wishocracyLink.href)}
                 className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 Sign In to Save and Share
               </Link>
-              <Link
-                href={alignmentLink.href}
+              <NavItemLink
+                item={alignmentLink}
+                variant="custom"
                 className="inline-flex items-center justify-center border-4 border-black bg-yellow-300 px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 See Alignment Reports
-              </Link>
+              </NavItemLink>
             </div>
           </div>
 

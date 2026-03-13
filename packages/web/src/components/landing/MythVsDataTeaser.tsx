@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { misconceptionsLink } from "@/lib/routes";
 
 interface MythCard {
@@ -52,12 +52,13 @@ export function MythVsDataTeaser({
           ))}
         </div>
         <div className="text-center mt-8">
-          <Link
-            href={misconceptionsLink.href}
+          <NavItemLink
+            item={misconceptionsLink}
+            variant="custom"
             className="inline-flex items-center text-sm font-black text-red-600 hover:text-red-800 uppercase transition-colors"
           >
             See All {totalCount} Findings (brace yourself) &rarr;
-          </Link>
+          </NavItemLink>
         </div>
       </div>
     </section>

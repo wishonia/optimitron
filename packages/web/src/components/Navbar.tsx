@@ -30,12 +30,13 @@ function AccountLinks({
   if (isAuthenticated) {
     return (
       <>
-        <Link
-          href={profileLink.href}
+        <NavItemLink
+          item={profileLink}
+          variant="custom"
           className="text-sm font-bold px-4 py-2 border-2 border-black bg-brutal-cyan hover:bg-brutal-cyan/80 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         >
           {profileLink.label}
-        </Link>
+        </NavItemLink>
         <span className="hidden lg:block text-xs font-bold uppercase text-muted-foreground">
           {accountLabel}
         </span>
@@ -230,13 +231,14 @@ export default function Navbar() {
             ))}
             <div className="border-t-2 border-gray-200 my-2" />
             {isAuthenticated ? (
-              <Link
-                href={profileLink.href}
+              <NavItemLink
+                item={profileLink}
+                variant="custom"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block text-sm font-bold px-3 py-2 border-2 border-black bg-brutal-cyan"
               >
                 {profileLink.label}
-              </Link>
+              </NavItemLink>
             ) : null}
             {!isAuthenticated ? (
               <Link
