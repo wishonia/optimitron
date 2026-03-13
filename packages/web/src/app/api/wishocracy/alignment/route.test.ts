@@ -14,6 +14,7 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import { GET, POST } from "./route";
+import { BUDGET_CATEGORIES } from "@/lib/wishocracy-data";
 
 const sampleComparisons = [
   {
@@ -138,9 +139,9 @@ describe("wishocracy alignment route", () => {
               politicianId: "misaligned",
               name: "Misaligned Candidate",
               votes: [
-                { category: "Weapons and Military Systems", allocationPct: 80 },
-                { category: "Addiction Treatment Programs", allocationPct: 10 },
-                { category: "Pragmatic Clinical Trials", allocationPct: 10 },
+                { category: BUDGET_CATEGORIES.MILITARY_OPERATIONS.name, allocationPct: 80 },
+                { category: BUDGET_CATEGORIES.ADDICTION_TREATMENT.name, allocationPct: 10 },
+                { category: BUDGET_CATEGORIES.PRAGMATIC_CLINICAL_TRIALS.name, allocationPct: 10 },
                 { category: "mystery_bucket", allocationPct: 5 },
               ],
             },

@@ -5,6 +5,7 @@ import {
   mapVoteAllocationsToBudgetCategories,
   resolveBudgetCategoryId,
 } from "@/lib/wishocracy-alignment";
+import { BUDGET_CATEGORIES } from "@/lib/wishocracy-data";
 
 const comparisons = [
   {
@@ -41,7 +42,7 @@ describe("wishocracy alignment utilities", () => {
   it("resolves category keys, ids, and names", () => {
     expect(resolveBudgetCategoryId("MILITARY_OPERATIONS")).toBe("MILITARY_OPERATIONS");
     expect(resolveBudgetCategoryId("military")).toBe("MILITARY_OPERATIONS");
-    expect(resolveBudgetCategoryId("Weapons and Military Systems")).toBe(
+    expect(resolveBudgetCategoryId(BUDGET_CATEGORIES.MILITARY_OPERATIONS.name)).toBe(
       "MILITARY_OPERATIONS",
     );
   });
@@ -50,7 +51,7 @@ describe("wishocracy alignment utilities", () => {
     const result = mapVoteAllocationsToBudgetCategories({
       military: 20,
       ADDICTION_TREATMENT: 30,
-      "Pragmatic Clinical Trials": 50,
+      [BUDGET_CATEGORIES.PRAGMATIC_CLINICAL_TRIALS.name]: 50,
       unknown_bucket: 10,
     });
 
