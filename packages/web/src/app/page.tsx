@@ -1,5 +1,15 @@
 import Link from "next/link";
 import { WishocracyLandingSection } from "@/components/wishocracy/WishocracyLandingSection";
+import { OutcomeExplorerTeaser } from "@/components/landing/OutcomeExplorerTeaser";
+import { MythVsDataTeaser } from "@/components/landing/MythVsDataTeaser";
+import { AlignmentTeaser } from "@/components/landing/AlignmentTeaser";
+import {
+  listExplorerOutcomes,
+  listExplorerPairSummaries,
+  getOutcomeMegaStudy,
+} from "@/lib/analysis-explorer-data";
+import misconceptionData from "../../public/data/misconceptions.json";
+import budgetData from "../data/us-budget-analysis.json";
 
 const featuredFindings = [
   {
@@ -115,6 +125,34 @@ const productWorkflows = [
 ];
 
 export default function Home() {
+  const outcomes = listExplorerOutcomes();
+  const pairSummaries = listExplorerPairSummaries();
+  const outcomeCount = outcomes.length;
+  const pairCount = pairSummaries.length;
+  const budgetCategoryCount = (budgetData as { categories: unknown[] }).categories.length;
+  const misconceptions = misconceptionData as {
+    findings: Array<{ id: string; myth: string; reality: string; grade: string }>;
+    summary: { totalFindings: number; gradeFCount: number };
+  };
+  const mythsBusted = misconceptions.summary.gradeFCount;
+
+  const outcomeCards = outcomes.slice(0, 3).map((outcome) => {
+    const ranking = getOutcomeMegaStudy(outcome.id);
+    const pairsForOutcome = pairSummaries.filter(
+      (p) => p.outcomeId === outcome.id,
+    ).length;
+    return { outcome, ranking, pairCount: pairsForOutcome };
+  });
+
+  const featuredMyths = (
+    ["drug-war-deaths", "healthcare-spending", "abstinence-education"] as const
+  )
+    .map((id) => misconceptions.findings.find((f) => f.id === id))
+    .filter(
+      (f): f is { id: string; myth: string; reality: string; grade: string } =>
+        f !== undefined,
+    );
+
   return (
     <div>
       {/* Hero */}
@@ -349,11 +387,13 @@ export default function Home() {
             The Data
           </h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-5xl mx-auto">
           {[
+            { value: String(outcomeCount), label: "Outcomes Tracked" },
+            { value: String(pairCount), label: "Pair Studies" },
+            { value: String(budgetCategoryCount), label: "Budget Categories" },
             { value: "20+", label: "Countries Compared" },
-            { value: "11", label: "Natural Experiments" },
-            { value: "14", label: "Policy Analyses" },
+            { value: String(mythsBusted), label: "Myths Busted" },
             { value: "50+", label: "Years of Data" },
           ].map((stat) => (
             <div
@@ -466,10 +506,20 @@ export default function Home() {
             href="/policies"
             className="inline-flex items-center text-sm font-black text-pink-600 hover:text-pink-800 uppercase transition-colors"
           >
-            View all 11 natural experiments &rarr;
+            View all {naturalExperiments.length} natural experiments &rarr;
           </Link>
         </div>
       </section>
+
+      <OutcomeExplorerTeaser outcomes={outcomeCards} />
+
+      <MythVsDataTeaser
+        findings={featuredMyths}
+        totalCount={misconceptions.summary.totalFindings}
+        failCount={misconceptions.summary.gradeFCount}
+      />
+
+      <AlignmentTeaser />
 
       {/* How It Works */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -555,6 +605,18 @@ export default function Home() {
               className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Track Yourself
+            </Link>
+            <Link
+              href="/outcomes"
+              className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              Outcome Analysis
+            </Link>
+            <Link
+              href="/misconceptions"
+              className="px-8 py-3 bg-white text-black font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              Myth vs Data
             </Link>
           </div>
           <div className="mt-6">
