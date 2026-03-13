@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { MouseEventHandler, ReactNode } from "react";
 import type { NavItem } from "@/lib/routes";
 
-export type NavItemLinkVariant = "topNav" | "dropdown" | "mobile" | "footer";
+export type NavItemLinkVariant = "topNav" | "dropdown" | "mobile" | "footer" | "custom";
 
 export function getNavItemLinkClasses(
   variant: NavItemLinkVariant,
@@ -29,6 +29,8 @@ export function getNavItemLinkClasses(
       }`;
     case "footer":
       return "text-sm font-medium text-black/70 hover:text-black transition-colors";
+    case "custom":
+      return "";
   }
 }
 
@@ -42,6 +44,8 @@ export function getNavItemDescriptionMode(
     case "dropdown":
     case "mobile":
       return "inline";
+    case "custom":
+      return "none";
   }
 }
 
@@ -92,6 +96,10 @@ export interface NavItemLinkProps {
   isActive?: boolean;
   external?: boolean;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
+  className?: string;
+  children?: ReactNode;
+  descriptionMode?: "tooltip" | "inline" | "none";
+  title?: string;
 }
 
 export function NavItemLink({
@@ -100,11 +108,16 @@ export function NavItemLink({
   isActive = false,
   external = item.external ?? false,
   onClick,
+  className,
+  children,
+  descriptionMode,
+  title,
 }: NavItemLinkProps) {
-  const descriptionMode = getNavItemDescriptionMode(variant);
-  const label = renderLabel(item, variant, external);
+  const resolvedDescriptionMode = descriptionMode ?? getNavItemDescriptionMode(variant);
+  const label = children ?? renderLabel(item, variant, external);
+  const tooltipText = title ?? (resolvedDescriptionMode === "tooltip" ? item.description : undefined);
   const content =
-    descriptionMode === "tooltip" && item.description ? (
+    resolvedDescriptionMode === "tooltip" && item.description ? (
       <span className="group relative inline-block">
         {label}
         <span className={getTooltipClasses(variant)}>{item.description}</span>
@@ -112,7 +125,9 @@ export function NavItemLink({
     ) : (
       label
     );
-  const className = getNavItemLinkClasses(variant, isActive);
+  const combinedClassName = [getNavItemLinkClasses(variant, isActive), className]
+    .filter(Boolean)
+    .join(" ");
 
   if (external) {
     return (
@@ -120,8 +135,9 @@ export function NavItemLink({
         href={item.href}
         target="_blank"
         rel="noopener noreferrer"
-        className={className}
+        className={combinedClassName}
         onClick={onClick}
+        title={tooltipText}
       >
         {content}
       </a>
@@ -129,7 +145,7 @@ export function NavItemLink({
   }
 
   return (
-    <Link href={item.href} className={className} onClick={onClick}>
+    <Link href={item.href} className={combinedClassName} onClick={onClick} title={tooltipText}>
       {content}
     </Link>
   );

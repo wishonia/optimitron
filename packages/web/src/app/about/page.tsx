@@ -1,69 +1,47 @@
-import Link from "next/link";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
   alignmentLink,
+  communityLinks,
+  paperLinks,
   studiesLink,
   trackLink,
   wishocracyLink,
 } from "@/lib/routes";
 
-const papers = [
-  {
-    title: "dFDA Specification",
-    desc: "Causal scoring, temporal alignment, Bradford Hill, and effect sizes.",
-    href: "https://dfda-spec.warondisease.org",
-  },
-  {
-    title: "Wishocracy",
-    desc: "Pairwise preference aggregation for turning tradeoffs into ranked priorities.",
-    href: "https://wishocracy.warondisease.org",
-  },
-  {
-    title: "Optimal Policy Generator",
-    desc: "Policy ranking by expected effect on healthy life years and income.",
-    href: "https://opg.warondisease.org",
-  },
-  {
-    title: "Optimal Budget Generator",
-    desc: "Budget allocation under diminishing returns and constrained tradeoffs.",
-    href: "https://obg.warondisease.org",
-  },
-  {
-    title: "Optimocracy",
-    desc: "The welfare function behind the public-policy side of the project.",
-    href: "https://optimocracy.warondisease.org",
-  },
-];
-
 const productSurfaces = [
   {
+    item: wishocracyLink,
     title: "Build an ideal budget",
     desc: "Use pairwise comparisons to turn values into a ranked public budget.",
-    href: wishocracyLink.href,
     cta: "Open Wishocracy",
     tone: "bg-pink-100",
   },
   {
+    item: alignmentLink,
     title: "Match with politicians",
     desc: "Compare your priorities with benchmark politicians and inspect the score.",
-    href: alignmentLink.href,
     cta: "Open Alignment",
     tone: "bg-yellow-100",
   },
   {
+    item: studiesLink,
     title: "Inspect the evidence",
     desc: "Browse outcome hubs, pair studies, policy rankings, and budget analysis.",
-    href: studiesLink.href,
     cta: "Browse Studies",
     tone: "bg-emerald-100",
   },
   {
+    item: trackLink,
     title: "Track yourself",
     desc: "Log habits, symptoms, meals, and daily wellbeing in one place.",
-    href: trackLink.href,
     cta: "Open Tracking",
     tone: "bg-cyan-100",
   },
 ];
+
+const openSourceButtons = communityLinks.filter(
+  ({ label }) => label === "GitHub" || label === "README",
+);
 
 const reasons = [
   {
@@ -130,24 +108,27 @@ export default function AboutPage() {
           </p>
         </div>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-          <Link
-            href={wishocracyLink.href}
+          <NavItemLink
+            item={wishocracyLink}
+            variant="custom"
             className="inline-flex items-center justify-center border-4 border-black bg-pink-500 px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Start With Wishocracy
-          </Link>
-          <Link
-            href={alignmentLink.href}
+          </NavItemLink>
+          <NavItemLink
+            item={alignmentLink}
+            variant="custom"
             className="inline-flex items-center justify-center border-4 border-black bg-yellow-300 px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             See Alignment Reports
-          </Link>
-          <Link
-            href={studiesLink.href}
+          </NavItemLink>
+          <NavItemLink
+            item={studiesLink}
+            variant="custom"
             className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Browse Studies
-          </Link>
+          </NavItemLink>
         </div>
       </section>
 
@@ -163,12 +144,13 @@ export default function AboutPage() {
               <p className="text-sm text-black/70 leading-relaxed font-medium flex-grow">
                 {surface.desc}
               </p>
-              <Link
-                href={surface.href}
+              <NavItemLink
+                item={surface.item}
+                variant="custom"
                 className="mt-5 inline-flex items-center text-sm font-black uppercase text-black hover:text-pink-600 transition-colors"
               >
                 {surface.cta} &rarr;
-              </Link>
+              </NavItemLink>
             </div>
           ))}
         </div>
@@ -210,24 +192,24 @@ export default function AboutPage() {
           The scoring and optimization logic is documented in public papers.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {papers.map((paper) => (
-            <a
+          {paperLinks.map((paper) => (
+            <NavItemLink
               key={paper.href}
-              href={paper.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              item={paper}
+              variant="custom"
+              external
               className="card group hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
             >
               <h3 className="text-black font-black group-hover:text-pink-500 transition-colors">
-                {paper.title}
+                {paper.label}
               </h3>
               <p className="text-sm text-black/60 mt-2 font-medium leading-relaxed">
-                {paper.desc}
+                {paper.description}
               </p>
               <span className="text-xs text-pink-500 mt-3 inline-block font-black uppercase">
                 Read paper &rarr;
               </span>
-            </a>
+            </NavItemLink>
           ))}
         </div>
       </section>
@@ -242,22 +224,21 @@ export default function AboutPage() {
           ideas.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <a
-            href="https://github.com/mikepsinn/optomitron"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-          >
-            View GitHub
-          </a>
-          <a
-            href="https://github.com/mikepsinn/optomitron#readme"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-          >
-            Read The README
-          </a>
+          {openSourceButtons.map((link) => (
+            <NavItemLink
+              key={link.href}
+              item={link}
+              variant="custom"
+              external
+              className={
+                link.label === "GitHub"
+                  ? "inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                  : "inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              }
+            >
+              {link.label === "GitHub" ? "View GitHub" : "Read The README"}
+            </NavItemLink>
+          ))}
         </div>
       </section>
     </div>

@@ -11,6 +11,7 @@ describe("NavItemLink helpers", () => {
     expect(getNavItemDescriptionMode("footer")).toBe("tooltip");
     expect(getNavItemDescriptionMode("dropdown")).toBe("inline");
     expect(getNavItemDescriptionMode("mobile")).toBe("inline");
+    expect(getNavItemDescriptionMode("custom")).toBe("none");
   });
 
   it("returns active and inactive class variants for top nav links", () => {
@@ -24,5 +25,9 @@ describe("NavItemLink helpers", () => {
     expect(classes).toContain("text-sm");
     expect(classes).toContain("hover:text-black");
     expect(classes).not.toContain("bg-yellow-300");
+  });
+
+  it("returns no built-in chrome for custom variants", () => {
+    expect(getNavItemLinkClasses("custom", false)).toBe("");
   });
 });

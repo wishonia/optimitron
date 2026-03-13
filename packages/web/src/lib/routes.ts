@@ -159,101 +159,127 @@ export const allNavLinks: NavItem[] = [
   ),
 ];
 
+export const dfdaSpecPaperLink: NavItem = {
+  label: "dFDA Spec",
+  href: "https://dfda-spec.warondisease.org",
+  emoji: "🧬",
+  description: "Decentralized FDA — causal inference on health interventions",
+  external: true,
+};
+
+export const wishocracyPaperLink: NavItem = {
+  label: "Wishocracy",
+  href: "https://wishocracy.warondisease.org",
+  emoji: "🗳️",
+  description: "Preference aggregation via pairwise comparisons (RAPPA)",
+  external: true,
+};
+
+export const optimalPolicyGeneratorPaperLink: NavItem = {
+  label: "Optimal Policy Generator",
+  href: "https://opg.warondisease.org",
+  emoji: "📋",
+  description: "Score and rank policies by causal impact on welfare",
+  external: true,
+};
+
+export const optimalBudgetGeneratorPaperLink: NavItem = {
+  label: "Optimal Budget Generator",
+  href: "https://obg.warondisease.org",
+  emoji: "💰",
+  description: "Allocate budgets using diminishing-returns modeling",
+  external: true,
+};
+
+export const optimocracyPaperLink: NavItem = {
+  label: "Optimocracy",
+  href: "https://optimocracy.warondisease.org",
+  emoji: "⚖️",
+  description: "Two-metric welfare function for governance evaluation",
+  external: true,
+};
+
+export const invisibleGraveyardPaperLink: NavItem = {
+  label: "Invisible Graveyard",
+  href: "https://invisible-graveyard.warondisease.org",
+  emoji: "⚰️",
+  description: "102M deaths from FDA post-safety efficacy delays since 1962",
+  external: true,
+};
+
+export const onePercentTreatyPaperLink: NavItem = {
+  label: "The 1% Treaty",
+  href: "https://impact.warondisease.org",
+  emoji: "🕊️",
+  description: "Redirect 1% of military spending to clinical trials",
+  external: true,
+};
+
+export const politicalDysfunctionTaxPaperLink: NavItem = {
+  label: "Political Dysfunction Tax",
+  href: "https://political-dysfunction-tax.warondisease.org",
+  emoji: "🏛️",
+  description: "$101T/yr cost of governance inefficiency worldwide",
+  external: true,
+};
+
+export const incentiveAlignmentBondsPaperLink: NavItem = {
+  label: "Incentive Alignment Bonds",
+  href: "https://iab.warondisease.org",
+  emoji: "🤝",
+  description: "Smart contracts funding politicians by alignment score",
+  external: true,
+};
+
+export const fullManualPaperLink: NavItem = {
+  label: "Full Manual",
+  href: "https://manual.warondisease.org",
+  emoji: "📖",
+  description: "Complete guide to ending war and disease",
+  external: true,
+};
+
 /** External paper links for the footer */
 export const paperLinks: NavItem[] = [
-  {
-    label: "dFDA Spec",
-    href: "https://dfda-spec.warondisease.org",
-    emoji: "🧬",
-    description: "Decentralized FDA — causal inference on health interventions",
-    external: true,
-  },
-  {
-    label: "Wishocracy",
-    href: "https://wishocracy.warondisease.org",
-    emoji: "🗳️",
-    description: "Preference aggregation via pairwise comparisons (RAPPA)",
-    external: true,
-  },
-  {
-    label: "Optimal Policy Generator",
-    href: "https://opg.warondisease.org",
-    emoji: "📋",
-    description: "Score and rank policies by causal impact on welfare",
-    external: true,
-  },
-  {
-    label: "Optimal Budget Generator",
-    href: "https://obg.warondisease.org",
-    emoji: "💰",
-    description: "Allocate budgets using diminishing-returns modeling",
-    external: true,
-  },
-  {
-    label: "Optimocracy",
-    href: "https://optimocracy.warondisease.org",
-    emoji: "⚖️",
-    description: "Two-metric welfare function for governance evaluation",
-    external: true,
-  },
-  {
-    label: "Invisible Graveyard",
-    href: "https://invisible-graveyard.warondisease.org",
-    emoji: "⚰️",
-    description: "102M deaths from FDA post-safety efficacy delays since 1962",
-    external: true,
-  },
-  {
-    label: "The 1% Treaty",
-    href: "https://impact.warondisease.org",
-    emoji: "🕊️",
-    description: "Redirect 1% of military spending to clinical trials",
-    external: true,
-  },
-  {
-    label: "Political Dysfunction Tax",
-    href: "https://political-dysfunction-tax.warondisease.org",
-    emoji: "🏛️",
-    description: "$101T/yr cost of governance inefficiency worldwide",
-    external: true,
-  },
-  {
-    label: "Incentive Alignment Bonds",
-    href: "https://iab.warondisease.org",
-    emoji: "🤝",
-    description: "Smart contracts funding politicians by alignment score",
-    external: true,
-  },
-  {
-    label: "Full Manual",
-    href: "https://manual.warondisease.org",
-    emoji: "📖",
-    description: "Complete guide to ending war and disease",
-    external: true,
-  },
+  dfdaSpecPaperLink,
+  wishocracyPaperLink,
+  optimalPolicyGeneratorPaperLink,
+  optimalBudgetGeneratorPaperLink,
+  optimocracyPaperLink,
+  invisibleGraveyardPaperLink,
+  onePercentTreatyPaperLink,
+  politicalDysfunctionTaxPaperLink,
+  incentiveAlignmentBondsPaperLink,
+  fullManualPaperLink,
 ];
+
+export const githubLink: NavItem = {
+  label: "GitHub",
+  href: "https://github.com/mikepsinn/optomitron",
+  emoji: "💻",
+  description: "Source code, issues, and contributions",
+  external: true,
+};
+
+export const readmeLink: NavItem = {
+  label: "README",
+  href: "https://github.com/mikepsinn/optomitron#readme",
+  emoji: "📝",
+  description: "Feature overview, setup, and architecture at a glance",
+  external: true,
+};
+
+export const mitLicenseLink: NavItem = {
+  label: "MIT License",
+  href: "https://opensource.org/licenses/MIT",
+  emoji: "📄",
+  description: "Free to use, modify, and distribute",
+  external: true,
+};
 
 /** Community links for the footer */
 export const communityLinks: NavItem[] = [
-  {
-    label: "GitHub",
-    href: "https://github.com/mikepsinn/optomitron",
-    emoji: "💻",
-    description: "Source code, issues, and contributions",
-    external: true,
-  },
-  {
-    label: "README",
-    href: "https://github.com/mikepsinn/optomitron#readme",
-    emoji: "📝",
-    description: "Feature overview, setup, and architecture at a glance",
-    external: true,
-  },
-  {
-    label: "MIT License",
-    href: "https://opensource.org/licenses/MIT",
-    emoji: "📄",
-    description: "Free to use, modify, and distribute",
-    external: true,
-  },
+  githubLink,
+  readmeLink,
+  mitLicenseLink,
 ];

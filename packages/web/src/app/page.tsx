@@ -3,6 +3,7 @@ import { WishocracyLandingSection } from "@/components/wishocracy/WishocracyLand
 import { OutcomeExplorerTeaser } from "@/components/landing/OutcomeExplorerTeaser";
 import { MythVsDataTeaser } from "@/components/landing/MythVsDataTeaser";
 import { AlignmentTeaser } from "@/components/landing/AlignmentTeaser";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
   listExplorerOutcomes,
   listExplorerPairSummaries,
@@ -11,7 +12,12 @@ import {
 import {
   alignmentLink,
   compareLink,
+  fullManualPaperLink,
+  githubLink,
+  invisibleGraveyardPaperLink,
   misconceptionsLink,
+  onePercentTreatyPaperLink,
+  politicalDysfunctionTaxPaperLink,
   policiesLink,
   profileLink,
   studiesLink,
@@ -29,7 +35,7 @@ const featuredFindings = [
     vs: "vs US: 77.5 yrs at 17.3% GDP",
     description:
       "Singapore spends a quarter of what America spends on healthcare and their people live six years longer. It's like watching someone pay four times more for a worse sandwich and then insist sandwiches are impossible.",
-    href: compareLink.href,
+    item: compareLink,
   },
   {
     domain: "Drug Policy",
@@ -38,7 +44,7 @@ const featuredFindings = [
     vs: "HIV among users fell 74%",
     description:
       "Portugal stopped arresting people for having drugs in 2001 and drug deaths dropped 94%. Meanwhile the US quadrupled drug war spending and overdose deaths went up 5.6x. So that worked out.",
-    href: policiesLink.href,
+    item: policiesLink,
   },
   {
     domain: "Criminal Justice",
@@ -47,7 +53,7 @@ const featuredFindings = [
     vs: "vs US: 76%",
     description:
       "Norway gives prisoners education and job training. America gives them concrete and trauma. Norway's reoffending rate is 20%. America's is 76%. It's almost like treating people like humans works better. Weird.",
-    href: compareLink.href,
+    item: compareLink,
   },
   {
     domain: "Public Health",
@@ -56,7 +62,7 @@ const featuredFindings = [
     vs: "Under-5 mortality fell 82%",
     description:
       "Rwanda hired 45,000 community health workers in 2005 and child mortality dropped 82%. No new drug. No billion-dollar programme. Just people knocking on doors and asking 'is the baby alright?' Turns out that works.",
-    href: policiesLink.href,
+    item: policiesLink,
   },
 ];
 
@@ -97,38 +103,38 @@ const naturalExperiments = [
 
 const productWorkflows = [
   {
+    item: wishocracyLink,
     label: "Wishocracy",
     title: "Build your ideal budget",
     description:
       "Pick between two things. Then two more things. Then two more. Before you know it, you've accidentally designed a coherent budget allocation. Sneaky, isn't it?",
-    href: wishocracyLink.href,
     cta: "Start Voting",
     color: "bg-pink-100",
   },
   {
+    item: alignmentLink,
     label: "Alignment Reports",
     title: "Find out who actually agrees with you",
     description:
       "Compare your priorities against real politician profiles. Spoiler: it's probably not who you think.",
-    href: alignmentLink.href,
     cta: "Check Alignment",
     color: "bg-yellow-100",
   },
   {
+    item: trackLink,
     label: "Talk to Wishonia",
     title: "Chat with an alien governance AI",
     description:
       "Track your health, meals, mood, and habits with Wishonia, an AI that's been running a planet for 4,237 years. She's seen some things.",
-    href: trackLink.href,
     cta: "Open Chat",
     color: "bg-cyan-100",
   },
   {
+    item: studiesLink,
     label: "Studies",
     title: "Look at the actual numbers",
     description:
       "Outcome hubs, pair studies, policy rankings, and country comparisons. All the evidence, none of the vibes.",
-    href: studiesLink.href,
     cta: "Browse Studies",
     color: "bg-emerald-100",
   },
