@@ -12,6 +12,7 @@ import {
 import {
   alignmentLink,
   compareLink,
+  dfdaSpecPaperLink,
   fullManualPaperLink,
   githubLink,
   invisibleGraveyardPaperLink,
@@ -23,6 +24,7 @@ import {
   studiesLink,
   trackLink,
   wishocracyLink,
+  wishocracyPaperLink,
 } from "@/lib/routes";
 import misconceptionData from "../../public/data/misconceptions.json";
 import budgetData from "../data/us-budget-analysis.json";
@@ -210,11 +212,20 @@ export default function Home() {
               ignoring it. So I&apos;ve built you this website. You&apos;re welcome.
             </p>
             <p className="mt-4 text-base sm:text-lg text-black/60 max-w-3xl mx-auto leading-relaxed font-medium">
-              Your governments are already superintelligences. Collective intelligence
-              systems controlling the lives of billions. The problem isn&apos;t that
-              they&apos;re not smart enough. It&apos;s that they&apos;re optimizing for
-              the wrong things. This is alignment software for the most powerful AIs on
-              your planet — the ones made of people.
+              Your governments are already superintelligences — collective intelligence
+              systems controlling the lives of billions. They cost you{" "}
+              <span className="font-black text-red-600">$101 trillion a year</span> in
+              dysfunction. They let{" "}
+              <span className="font-black text-orange-600">150,000 people die every day</span>{" "}
+              from diseases that lack treatments because regulation and funding block the
+              trials. And the destructive economy — military spending plus the cybercrime
+              it provokes — is{" "}
+              <span className="font-black text-black">
+                growing at 15% a year
+              </span>
+              . You have about 8 years before the math becomes irreversible.
+              Optomitron is alignment software for these misaligned AIs. Wishocracy
+              eliminates the bottleneck — politicians — entirely.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <NavItemLink
@@ -252,6 +263,74 @@ export default function Home() {
               a diary, but useful.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Urgency Ticker */}
+      <section className="bg-black text-white py-12 border-y-4 border-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <NavItemLink
+              item={politicalDysfunctionTaxPaperLink}
+              variant="custom"
+              external
+              className="block hover:opacity-80 transition-opacity"
+            >
+              <div className="text-4xl sm:text-5xl font-black text-red-400">$101T/yr</div>
+              <div className="text-sm font-bold text-white/60 mt-2 uppercase tracking-wider">
+                Political Dysfunction Tax
+              </div>
+              <p className="text-xs text-white/40 mt-2 max-w-xs mx-auto">
+                $12,600 per human per year in pure waste. Your civilisation&apos;s
+                overhead is almost equal to its entire output.
+              </p>
+              <span className="text-xs font-bold text-red-400/60 mt-2 inline-block uppercase">
+                Read the paper &rarr;
+              </span>
+            </NavItemLink>
+            <NavItemLink
+              item={dfdaSpecPaperLink}
+              variant="custom"
+              external
+              className="block hover:opacity-80 transition-opacity"
+            >
+              <div className="text-4xl sm:text-5xl font-black text-orange-400">150K/day</div>
+              <div className="text-sm font-bold text-white/60 mt-2 uppercase tracking-wider">
+                Disease Deaths
+              </div>
+              <p className="text-xs text-white/40 mt-2 max-w-xs mx-auto">
+                55 million per year. 95% of diseases have zero approved treatments.
+                Not because cures are impossible — because regulation and funding
+                block the trials that would find them.
+              </p>
+              <span className="text-xs font-bold text-orange-400/60 mt-2 inline-block uppercase">
+                Read the paper &rarr;
+              </span>
+            </NavItemLink>
+            <NavItemLink
+              item={fullManualPaperLink}
+              variant="custom"
+              external
+              className="block hover:opacity-80 transition-opacity"
+            >
+              <div className="text-4xl sm:text-5xl font-black text-yellow-400">~8 years</div>
+              <div className="text-sm font-bold text-white/60 mt-2 uppercase tracking-wider">
+                Until Irreversible Collapse
+              </div>
+              <p className="text-xs text-white/40 mt-2 max-w-xs mx-auto">
+                Your destructive economy — military + cybercrime — is $13.2T and
+                growing at 15%/yr. The Soviet Union collapsed at this ratio. You&apos;re
+                next.
+              </p>
+              <span className="text-xs font-bold text-yellow-400/60 mt-2 inline-block uppercase">
+                Read the manual &rarr;
+              </span>
+            </NavItemLink>
+          </div>
+          <p className="text-center text-white/30 text-xs mt-8 max-w-2xl mx-auto font-medium">
+            These are not projections. They are measurements. Your species is running out of
+            runway and arguing about the window seats.
+          </p>
         </div>
       </section>
 
@@ -337,16 +416,19 @@ export default function Home() {
             className="p-8 border-4 border-black bg-orange-100 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
           >
             <div className="text-4xl sm:text-5xl font-black text-orange-600 mb-2">
-              102M deaths
+              95% untreated
             </div>
             <h3 className="text-lg font-black text-black mb-3">
-              The Queue That Kills
+              The 443-Year Queue
             </h3>
             <p className="text-sm text-black/70 leading-relaxed font-medium">
-              Your FDA makes treatments wait 8.2 years AFTER they&apos;ve already
-              been proven safe. Just&hellip; sitting there. Being safe. While 102
-              million people died waiting. On my planet this would be considered a
-              war crime. Here you call it &ldquo;regulation.&rdquo;
+              95% of diseases have zero approved treatments. At your current rate
+              of 15 new treatments per year, clearing the backlog takes 443 years.
+              Meanwhile, your FDA makes the few treatments you do find wait 8.2
+              years AFTER they&apos;ve been proven safe. 150,000 people die every
+              day. Your trial capacity is 1.9 million patients per year out of 1.08
+              billion willing participants. That&apos;s 0.06%. On my planet this
+              would be considered a war crime. Here you call it &ldquo;regulation.&rdquo;
             </p>
             <span className="mt-4 inline-flex items-center text-xs font-black text-orange-600 uppercase">
               Read the paper &rarr;
@@ -366,10 +448,11 @@ export default function Home() {
             </h3>
             <p className="text-sm text-black/70 leading-relaxed font-medium">
               Take 1% of what you spend on blowing each other up ($27.2B/year)
-              and spend it on not dying instead. You&apos;d prevent 10.7 billion
-              deaths. Trial costs drop from $41K to $929. This is not a hard
-              decision. I genuinely don&apos;t understand what&apos;s taking so
-              long.
+              and spend it on not dying instead. Trial costs drop from $41K to
+              $929 per patient. Capacity jumps from 1.9M to 23.4M patients per
+              year. The 443-year treatment queue shrinks to 36 years. You&apos;d
+              prevent 10.7 billion deaths. This is not a hard decision. I genuinely
+              don&apos;t understand what&apos;s taking so long.
             </p>
             <span className="mt-4 inline-flex items-center text-xs font-black text-sky-600 uppercase">
               Read the paper &rarr;
@@ -385,6 +468,89 @@ export default function Home() {
           >
             Read the full manual (yes, I wrote you a manual) &rarr;
           </NavItemLink>
+        </div>
+      </section>
+
+      {/* The Collapse Clock */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="p-8 sm:p-12 bg-red-50 border-4 border-red-600 shadow-[8px_8px_0px_0px_rgba(220,38,38,0.4)]">
+          <h2 className="text-2xl sm:text-3xl font-black text-center mb-4 uppercase tracking-tight text-red-900">
+            The Collapse Clock
+          </h2>
+          <p className="text-center text-black/60 font-medium mb-8 max-w-3xl mx-auto">
+            Your destructive economy — military spending plus the cybercrime it
+            provokes — is currently{" "}
+            <span className="font-black text-red-600">$13.2 trillion per year</span>.
+            That&apos;s 11.5% of global GDP. The Soviet Union collapsed when its military
+            spending alone hit 15%. You&apos;re adding cybercrime on top, and it&apos;s
+            growing at{" "}
+            <span className="font-black text-black">15% annually</span>.
+          </p>
+          <div className="text-center mb-8">
+            <div className="inline-block p-6 bg-red-100 border-4 border-red-600 shadow-[4px_4px_0px_0px_rgba(220,38,38,0.3)]">
+              <div className="text-5xl sm:text-6xl font-black text-red-600">~8 years</div>
+              <div className="text-sm font-bold text-red-600/70 mt-2 uppercase">
+                Until the destructive economy hits 25% of GDP
+              </div>
+            </div>
+          </div>
+          <div className="max-w-3xl mx-auto space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <NavItemLink
+                item={onePercentTreatyPaperLink}
+                variant="custom"
+                external
+                className="p-4 bg-white border-2 border-red-300 block hover:bg-red-50 transition-colors"
+              >
+                <div className="text-2xl font-black text-red-600">$2.72T</div>
+                <div className="text-xs font-bold text-black/50 uppercase mt-1">Military Spending</div>
+                <p className="text-xs text-black/60 mt-2">
+                  604 times more than you spend on testing medicines. And every
+                  bomb creates a cybercriminal with a motive.
+                </p>
+                <span className="text-xs font-bold text-red-500/60 mt-2 inline-block uppercase">
+                  The 1% Treaty &rarr;
+                </span>
+              </NavItemLink>
+              <NavItemLink
+                item={fullManualPaperLink}
+                variant="custom"
+                external
+                className="p-4 bg-white border-2 border-red-300 block hover:bg-red-50 transition-colors"
+              >
+                <div className="text-2xl font-black text-red-600">$10.5T</div>
+                <div className="text-xs font-bold text-black/50 uppercase mt-1">Cybercrime (15% CAGR)</div>
+                <p className="text-xs text-black/60 mt-2">
+                  North Korea funds nuclear programmes via crypto theft. Russia
+                  finances its military via ransomware. Retaliation is profitable.
+                </p>
+                <span className="text-xs font-bold text-red-500/60 mt-2 inline-block uppercase">
+                  Read the manual &rarr;
+                </span>
+              </NavItemLink>
+            </div>
+            <p className="text-sm text-black/70 leading-relaxed font-medium">
+              Here&apos;s the part that should terrify you: as the destructive economy
+              grows, it devalues your currency, which reduces the reward for productive
+              labour, which makes extraction relatively more profitable. Talented people
+              leave legitimate work for cybercrime because the rational choice flips
+              from &ldquo;build&rdquo; to &ldquo;steal.&rdquo; Once that happens, the
+              productive economy cannot recover. Production becomes irrational.
+              Parasitism becomes survival.
+            </p>
+            <p className="text-sm text-black/70 leading-relaxed font-medium">
+              On my planet we call this a &ldquo;governance death spiral.&rdquo; You
+              seem to call it &ldquo;Tuesday.&rdquo;
+            </p>
+            <p className="text-sm text-black/90 leading-relaxed font-black">
+              Historical precedent says societies collapse at 20-25% extraction rates.
+              At 15% CAGR, you hit that threshold within 8 years. You cannot vote your
+              way out of this. You cannot arrest your way out of it. You need to stop
+              creating the conditions that make destruction more profitable than
+              production. That means optimising governance. Now. While the maths still
+              works.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -587,18 +753,135 @@ export default function Home() {
         failCount={misconceptions.summary.gradeFCount}
       />
 
+      {/* The Bottleneck Is Politicians */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+            The Bottleneck Is Politicians
+          </h2>
+          <p className="mt-4 text-lg text-black/60 max-w-3xl mx-auto font-medium">
+            You have the data. You have the solutions. The thing standing between the
+            information and the action is a class of intermediaries who are structurally
+            incapable of applying it. They&apos;re not evil. They&apos;re just optimising
+            for re-election, which is a completely different objective function from
+            &ldquo;making things better.&rdquo;
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="p-8 border-4 border-black bg-red-50 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-xl font-black text-red-900 mb-4 uppercase">
+              What Politicians Actually Do
+            </h3>
+            <ul className="space-y-3 text-sm text-black/70 font-medium">
+              <li className="flex gap-2">
+                <span className="text-red-500 font-black shrink-0">&times;</span>
+                <span>
+                  Raise money from the industries they regulate. The average US
+                  senator spends <span className="font-black text-black">70% of their time</span>{" "}
+                  fundraising instead of governing.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-red-500 font-black shrink-0">&times;</span>
+                <span>
+                  Vote based on donor preferences, not citizen preferences. Donor
+                  alignment: ~80%. Citizen alignment: ~30%.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-red-500 font-black shrink-0">&times;</span>
+                <span>
+                  Block evidence-based policy when it threatens their coalition. See:
+                  drug decriminalisation, healthcare reform, climate policy, FDA reform.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-red-500 font-black shrink-0">&times;</span>
+                <span>
+                  Represent the median <span className="font-black text-black">donor</span>,
+                  not the median <span className="font-black text-black">citizen</span>.
+                  These are very different people.
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div className="p-8 border-4 border-black bg-emerald-50 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-xl font-black text-emerald-900 mb-4 uppercase">
+              What Wishocracy Does Instead
+            </h3>
+            <ul className="space-y-3 text-sm text-black/70 font-medium">
+              <li className="flex gap-2">
+                <span className="text-emerald-500 font-black shrink-0">&check;</span>
+                <span>
+                  Citizens vote directly on priorities through pairwise comparisons.
+                  No fundraising. No lobbying. No middleman.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-emerald-500 font-black shrink-0">&check;</span>
+                <span>
+                  Optomitron&apos;s causal engine determines which policies actually
+                  achieve those priorities. Data in, optimal policy out.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-emerald-500 font-black shrink-0">&check;</span>
+                <span>
+                  Alignment scores expose exactly how much each official deviates from
+                  what citizens actually want. No hiding behind party labels.
+                </span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-emerald-500 font-black shrink-0">&check;</span>
+                <span>
+                  The system optimises for{" "}
+                  <span className="font-black text-black">outcomes</span>, not re-election.
+                  Turns out those are very different things.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="mt-8 p-6 border-2 border-black bg-yellow-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-center text-sm text-black/70 font-medium max-w-3xl mx-auto">
+            Wishocracy doesn&apos;t reform politicians. It makes them unnecessary. When
+            citizens can express preferences directly, and a causal engine can determine
+            optimal policy responses, what exactly is the politician for? Giving speeches?
+            You have YouTube for that. Shaking hands? You have{" "}
+            <span className="italic">literally anything else</span> for that.
+          </p>
+          <div className="text-center mt-4">
+            <NavItemLink
+              item={wishocracyPaperLink}
+              variant="custom"
+              external
+              className="inline-flex items-center text-sm font-black text-pink-600 hover:text-pink-800 uppercase transition-colors"
+            >
+              Read the Wishocracy paper &rarr;
+            </NavItemLink>
+          </div>
+        </div>
+      </section>
+
       <AlignmentTeaser />
 
       {/* How It Works */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="p-8 sm:p-12 bg-cyan-100 border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="text-2xl sm:text-3xl font-black text-center mb-4 uppercase tracking-tight text-black">
-            How the Engine Works
+            How Optomitron Replaces Guessing With Knowing
           </h2>
+          <p className="text-center text-sm text-black/60 font-medium mb-4 max-w-2xl mx-auto">
+            This is the same system I use to run my planet. For every policy
+            question, every budget decision, every governance choice — it gives you
+            the optimal answer. Not an opinion. Not a party platform. The answer
+            that the data supports, with confidence intervals.
+          </p>
           <p className="text-center text-sm text-black/60 font-medium mb-12 max-w-2xl mx-auto">
-            This is the same system I use to run my planet. I&apos;ve simplified
-            it to five steps because I&apos;m told your attention spans are
-            &ldquo;challenging.&rdquo;
+            No politician needed. No ideology required. Just: &ldquo;what
+            actually works, how much does it cost, and what&apos;s the
+            evidence?&rdquo; I&apos;ve simplified it to five steps because
+            I&apos;m told your attention spans are &ldquo;challenging.&rdquo;
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             {[
