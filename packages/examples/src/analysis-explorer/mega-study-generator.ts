@@ -6,10 +6,12 @@ import { fileURLToPath } from "node:url";
 import {
   fetchers,
   getVariableRegistry,
+  getVariableById,
   type DataPoint,
   type FetchOptions,
   type VariableTemporalFillingType,
   type VariableRegistryEntry,
+  type SparseOutcomeProfile,
 } from "@optomitron/data";
 import {
   alignTimeSeries,
@@ -20,6 +22,7 @@ import {
   rankPredictorsForOutcome,
   estimateSaturationRange,
   runVariableRelationshipAnalysis,
+  assessSparseOutcomeSupport,
   type AlignedPair,
   type DiminishingReturnsEstimate,
   type MinimumEffectiveDoseEstimate,
@@ -27,6 +30,7 @@ import {
   type OutcomeRankingCandidate,
   type SaturationRangeEstimate,
   type SupportConstrainedTargetsEstimate,
+  type SparseOutcomeDiagnostics,
   type TimeSeries,
 } from "@optomitron/optimizer";
 
@@ -41,6 +45,10 @@ export const DEFAULT_REPORT_OUTCOME_IDS = [
   "outcome.derived.healthy_life_expectancy_growth_yoy_pct",
   "outcome.wb.primary_completion_rate_pct",
   "outcome.wb.battle_related_deaths",
+  "outcome.who.ncd_mortality_rate",
+  "outcome.wb.maternal_mortality_per_100k",
+  "outcome.derived.battle_related_deaths_per_100k",
+  "outcome.wb.under_five_mortality_per_1000",
 ] as const;
 
 type TemporalProfileSource = "pair_override" | "predictor_default" | "global_fallback";
@@ -57,10 +65,36 @@ type TaxpayerReturnBenchmark =
   | "possible_harm"
   | "insufficient";
 
+export type GateVerdict =
+  | "pass"
+  | "insufficient_data"
+  | "weak_signal"
+  | "adverse_signal"
+  | "sparse_outcome"
+  | "no_profile";
+
+export interface StageGateResult {
+  stage: "direct_mission" | "welfare_guardrail";
+  verdict: GateVerdict;
+  reasons: string[];
+  outcomeId: string | null;
+  reliabilityScore: number | null;
+  direction: "positive" | "negative" | "neutral" | null;
+}
+
+export interface TwoStageGateResult {
+  directMission: StageGateResult;
+  welfareGuardrail: StageGateResult;
+  overallEligible: boolean;
+  suppressLargeScaleUp: boolean;
+  plainLanguageGuidance: string;
+}
+
 interface PredictorObjectiveProfile {
   directOutcomeIds: readonly string[];
   guardrailOutcomeIds: readonly string[];
   notes?: readonly string[];
+  coverageGaps?: readonly string[];
 }
 
 interface PairMarginalTradeoffDiagnostics {
@@ -76,6 +110,9 @@ const PREDICTOR_OBJECTIVE_PROFILES: Readonly<Record<string, PredictorObjectivePr
   "predictor.derived.gov_health_expenditure_per_capita_ppp": {
     directOutcomeIds: [
       "outcome.who.healthy_life_expectancy_years",
+      "outcome.who.ncd_mortality_rate",
+      "outcome.wb.under_five_mortality_per_1000",
+      "outcome.wb.maternal_mortality_per_100k",
     ],
     guardrailOutcomeIds: [
       "outcome.derived.after_tax_median_income_ppp",
@@ -109,6 +146,7 @@ const PREDICTOR_OBJECTIVE_PROFILES: Readonly<Record<string, PredictorObjectivePr
   "predictor.derived.military_expenditure_per_capita_ppp": {
     directOutcomeIds: [
       "outcome.wb.battle_related_deaths",
+      "outcome.derived.battle_related_deaths_per_100k",
     ],
     guardrailOutcomeIds: [
       "outcome.derived.after_tax_median_income_ppp",
@@ -118,6 +156,9 @@ const PREDICTOR_OBJECTIVE_PROFILES: Readonly<Record<string, PredictorObjectivePr
     ],
     notes: [
       "Direct KPI currently uses battle-related deaths; add foreign-attack/security KPIs when available.",
+    ],
+    coverageGaps: [
+      "No global foreign-attack or territorial-security KPI available.",
     ],
   },
   "predictor.derived.gov_expenditure_per_capita_ppp": {
@@ -143,6 +184,9 @@ const PREDICTOR_OBJECTIVE_PROFILES: Readonly<Record<string, PredictorObjectivePr
   "predictor.derived.gov_health_share_of_gov_expenditure_pct": {
     directOutcomeIds: [
       "outcome.who.healthy_life_expectancy_years",
+      "outcome.who.ncd_mortality_rate",
+      "outcome.wb.under_five_mortality_per_1000",
+      "outcome.wb.maternal_mortality_per_100k",
     ],
     guardrailOutcomeIds: [
       "outcome.derived.after_tax_median_income_ppp",
@@ -176,6 +220,7 @@ const PREDICTOR_OBJECTIVE_PROFILES: Readonly<Record<string, PredictorObjectivePr
   "predictor.derived.military_share_of_gov_expenditure_pct": {
     directOutcomeIds: [
       "outcome.wb.battle_related_deaths",
+      "outcome.derived.battle_related_deaths_per_100k",
     ],
     guardrailOutcomeIds: [
       "outcome.derived.after_tax_median_income_ppp",
@@ -185,6 +230,9 @@ const PREDICTOR_OBJECTIVE_PROFILES: Readonly<Record<string, PredictorObjectivePr
     ],
     notes: [
       "Direct KPI currently uses battle-related deaths; add foreign-attack/security KPIs when available.",
+    ],
+    coverageGaps: [
+      "No global foreign-attack or territorial-security KPI available.",
     ],
   },
 };
@@ -396,6 +444,7 @@ export interface PairStudyArtifact {
   predictorDistribution: DistributionBucket[];
   outcomeDistribution: DistributionBucket[];
   pppPerCapitaSummary: PppPerCapitaSummary | null;
+  sparseOutcomeDiagnostics: SparseOutcomeDiagnostics | null;
   pValue: number;
   evidenceGrade: "A" | "B" | "C" | "D" | "F";
   direction: "positive" | "negative" | "neutral";
@@ -454,6 +503,13 @@ export interface MegaStudyApiPair {
     reliabilityScore: number;
     reliabilityBand: ReliabilityBand;
     publicationEligible: boolean;
+    twoStageGate: {
+      directMissionVerdict: GateVerdict;
+      welfareGuardrailVerdict: GateVerdict;
+      overallEligible: boolean;
+      suppressLargeScaleUp: boolean;
+      plainLanguageGuidance: string;
+    } | null;
   };
   links: {
     markdownFile: string;
@@ -1549,7 +1605,11 @@ function isRecommendationEligible(pair: PairStudyArtifact): boolean {
   return pair.dataSufficiency?.status !== "insufficient_data";
 }
 
-export function isPublicationEligibleRecommendation(pair: PairStudyArtifact): boolean {
+export function isPublicationEligibleRecommendation(
+  pair: PairStudyArtifact,
+  gateResult?: TwoStageGateResult | null,
+): boolean {
+  if (gateResult && !gateResult.overallEligible) return false;
   if (!isRecommendationEligible(pair)) return false;
   if (pair.qualityTier === "insufficient") return false;
   if (pair.reliability.band === "low") return false;
@@ -1581,6 +1641,244 @@ function toSimpleOutcomeRoleLabel(role: OutcomeRole): string {
   if (role === "direct_kpi") return "mission KPI";
   if (role === "guardrail_kpi") return "welfare fallback";
   return "context KPI";
+}
+
+// ─── Two-Stage Recommendation Gating ─────────────────────────────
+
+export function evaluateDirectMissionGate(
+  predictorId: string,
+  pairsByOutcome: ReadonlyMap<string, PairStudyArtifact>,
+  sparseProfiles: ReadonlyMap<string, SparseOutcomeProfile>,
+): StageGateResult {
+  const profile = resolvePredictorObjectiveProfile(predictorId);
+  if (profile.directOutcomeIds.length === 0) {
+    return {
+      stage: "direct_mission",
+      verdict: "no_profile",
+      reasons: ["No direct mission outcome IDs configured for this predictor."],
+      outcomeId: null,
+      reliabilityScore: null,
+      direction: null,
+    };
+  }
+
+  let bestVerdict: GateVerdict = "insufficient_data";
+  let bestReasons: string[] = ["No direct mission pair found in study results."];
+  let bestOutcomeId: string | null = null;
+  let bestReliability: number | null = null;
+  let bestDirection: "positive" | "negative" | "neutral" | null = null;
+
+  for (const outcomeId of profile.directOutcomeIds) {
+    const pair = pairsByOutcome.get(outcomeId);
+    if (!pair) continue;
+
+    const sparseProfile = sparseProfiles.get(outcomeId);
+    if (sparseProfile) {
+      const bins = pair.predictorBinRows.map((row) => ({
+        binIndex: row.binIndex ?? 0,
+        lowerBound: row.lowerBound ?? 0,
+        upperBound: row.upperBound ?? 0,
+        isUpperInclusive: row.isUpperInclusive ?? false,
+        count: row.pairs ?? 0,
+        predictorMean: row.predictorMean ?? 0,
+        predictorMedian: row.predictorMedian ?? 0,
+        outcomeMean: row.outcomeMean ?? 0,
+        outcomeStd: 0,
+        outcomeSem: 0,
+      }));
+      const sparseDiag = assessSparseOutcomeSupport(bins, {
+        minimumEventCountPerBin: sparseProfile.minimumEventCountPerBin,
+      });
+      if (!sparseDiag.meetsMinimumEventThreshold) {
+        if (bestVerdict === "insufficient_data") {
+          bestVerdict = "sparse_outcome";
+          bestReasons = [`Sparse outcome ${outcomeId}: ${sparseDiag.warnings.join("; ")}`];
+          bestOutcomeId = outcomeId;
+          bestReliability = pair.reliability.overallScore;
+          bestDirection = pair.direction;
+        }
+        continue;
+      }
+    }
+
+    if (pair.dataSufficiency.status === "insufficient_data" || pair.reliability.band === "low") {
+      if (bestVerdict === "insufficient_data" || bestVerdict === "sparse_outcome") {
+        bestVerdict = "insufficient_data";
+        bestReasons = [`Direct mission pair ${outcomeId} has insufficient data or low reliability.`];
+        bestOutcomeId = outcomeId;
+        bestReliability = pair.reliability.overallScore;
+        bestDirection = pair.direction;
+      }
+      continue;
+    }
+
+    const outcomeEntry = getVariableById(outcomeId);
+    const welfareDir = outcomeEntry?.welfareDirection;
+    const isPositiveMission =
+      (welfareDir === "higher_better" && pair.direction === "positive") ||
+      (welfareDir === "lower_better" && pair.direction === "negative");
+    const isAdverse =
+      (welfareDir === "higher_better" && pair.direction === "negative") ||
+      (welfareDir === "lower_better" && pair.direction === "positive");
+
+    if (isAdverse) {
+      return {
+        stage: "direct_mission",
+        verdict: "adverse_signal",
+        reasons: [`Direct mission ${outcomeId} shows adverse direction (${pair.direction}) relative to welfare goal (${welfareDir}).`],
+        outcomeId,
+        reliabilityScore: pair.reliability.overallScore,
+        direction: pair.direction,
+      };
+    }
+
+    if (isPositiveMission) {
+      return {
+        stage: "direct_mission",
+        verdict: "pass",
+        reasons: [],
+        outcomeId,
+        reliabilityScore: pair.reliability.overallScore,
+        direction: pair.direction,
+      };
+    }
+
+    // Neutral / weak signal — "pass" returns early above, so we always enter here
+    {
+      bestVerdict = "weak_signal";
+      bestReasons = [`Direct mission ${outcomeId} direction is neutral despite sufficient data.`];
+      bestOutcomeId = outcomeId;
+      bestReliability = pair.reliability.overallScore;
+      bestDirection = pair.direction;
+    }
+  }
+
+  return {
+    stage: "direct_mission",
+    verdict: bestVerdict,
+    reasons: bestReasons,
+    outcomeId: bestOutcomeId,
+    reliabilityScore: bestReliability,
+    direction: bestDirection,
+  };
+}
+
+export function evaluateWelfareGuardrailGate(
+  predictorId: string,
+  pairsByOutcome: ReadonlyMap<string, PairStudyArtifact>,
+): StageGateResult {
+  const profile = resolvePredictorObjectiveProfile(predictorId);
+  if (profile.guardrailOutcomeIds.length === 0) {
+    return {
+      stage: "welfare_guardrail",
+      verdict: "pass",
+      reasons: ["No guardrail outcomes configured."],
+      outcomeId: null,
+      reliabilityScore: null,
+      direction: null,
+    };
+  }
+
+  for (const outcomeId of profile.guardrailOutcomeIds) {
+    const pair = pairsByOutcome.get(outcomeId);
+    if (!pair) continue;
+
+    if (pair.dataSufficiency.status === "insufficient_data") continue;
+    if (pair.reliability.band === "low") continue;
+
+    const outcomeEntry = getVariableById(outcomeId);
+    const welfareDir = outcomeEntry?.welfareDirection;
+    const isAdverse =
+      (welfareDir === "higher_better" && pair.direction === "negative") ||
+      (welfareDir === "lower_better" && pair.direction === "positive");
+    const isSignificant = pair.aggregateStatisticalSignificance >= 0.75;
+
+    if (isAdverse && isSignificant) {
+      return {
+        stage: "welfare_guardrail",
+        verdict: "adverse_signal",
+        reasons: [
+          `Guardrail outcome ${outcomeId} shows material regression: direction=${pair.direction}, significance=${pair.aggregateStatisticalSignificance.toFixed(3)}, welfare=${welfareDir}.`,
+        ],
+        outcomeId,
+        reliabilityScore: pair.reliability.overallScore,
+        direction: pair.direction,
+      };
+    }
+  }
+
+  return {
+    stage: "welfare_guardrail",
+    verdict: "pass",
+    reasons: [],
+    outcomeId: null,
+    reliabilityScore: null,
+    direction: null,
+  };
+}
+
+export function evaluateTwoStageGate(
+  predictorId: string,
+  pairsByOutcome: ReadonlyMap<string, PairStudyArtifact>,
+  sparseProfiles: ReadonlyMap<string, SparseOutcomeProfile>,
+): TwoStageGateResult {
+  const direct = evaluateDirectMissionGate(predictorId, pairsByOutcome, sparseProfiles);
+  const guardrail = evaluateWelfareGuardrailGate(predictorId, pairsByOutcome);
+
+  let overallEligible = false;
+  let suppressLargeScaleUp = false;
+  let plainLanguageGuidance: string;
+
+  // Decision matrix
+  if (direct.verdict === "adverse_signal") {
+    overallEligible = false;
+    suppressLargeScaleUp = true;
+    plainLanguageGuidance = `Blocked: direct mission KPI (${direct.outcomeId ?? "unknown"}) shows adverse signal. ${direct.reasons.join(" ")}`;
+  } else if (direct.verdict === "no_profile") {
+    overallEligible = false;
+    suppressLargeScaleUp = true;
+    plainLanguageGuidance = "Blocked: no direct mission outcome profile configured for this predictor.";
+  } else if (direct.verdict === "pass" && guardrail.verdict === "pass") {
+    overallEligible = true;
+    suppressLargeScaleUp = false;
+    plainLanguageGuidance = "Eligible: direct mission KPI positive, no guardrail regressions.";
+  } else if (direct.verdict === "pass" && guardrail.verdict === "adverse_signal") {
+    overallEligible = true;
+    suppressLargeScaleUp = true;
+    plainLanguageGuidance = `Caution: direct mission KPI positive, but guardrail outcome (${guardrail.outcomeId ?? "unknown"}) shows regression. Large scale-up suppressed.`;
+  } else if (direct.verdict === "pass" && guardrail.verdict === "insufficient_data") {
+    overallEligible = true;
+    suppressLargeScaleUp = false;
+    plainLanguageGuidance = "Eligible with caveat: direct mission KPI positive, guardrail data insufficient.";
+  } else if (direct.verdict === "weak_signal" && guardrail.verdict === "pass") {
+    overallEligible = true;
+    suppressLargeScaleUp = true;
+    plainLanguageGuidance = "Exploratory: direct mission signal is weak/neutral. Large scale-up suppressed.";
+  } else if (direct.verdict === "weak_signal" && guardrail.verdict === "adverse_signal") {
+    overallEligible = false;
+    suppressLargeScaleUp = true;
+    plainLanguageGuidance = `Blocked: weak direct mission signal combined with guardrail regression on ${guardrail.outcomeId ?? "unknown"}.`;
+  } else if (direct.verdict === "insufficient_data") {
+    overallEligible = false;
+    suppressLargeScaleUp = true;
+    plainLanguageGuidance = "Suppressed: insufficient data on direct mission KPIs.";
+  } else if (direct.verdict === "sparse_outcome") {
+    overallEligible = false;
+    suppressLargeScaleUp = true;
+    plainLanguageGuidance = `Suppressed: direct mission KPI is a rare event with sparse data. ${direct.reasons.join(" ")}`;
+  } else {
+    overallEligible = false;
+    suppressLargeScaleUp = true;
+    plainLanguageGuidance = `Suppressed: ${direct.verdict} (direct) + ${guardrail.verdict} (guardrail).`;
+  }
+
+  return {
+    directMission: direct,
+    welfareGuardrail: guardrail,
+    overallEligible,
+    suppressLargeScaleUp,
+    plainLanguageGuidance,
+  };
 }
 
 function meanOrNull(values: number[]): number | null {
@@ -2169,6 +2467,35 @@ export function buildDerivedYoYPercent(points: DataPoint[], sourceLabel: string)
   return output;
 }
 
+export function buildDerivedRatePer100k(
+  countPoints: DataPoint[],
+  populationPoints: DataPoint[],
+  sourceLabel: string,
+): DataPoint[] {
+  const popIndex = new Map<string, number>();
+  for (const point of populationPoints) {
+    if (Number.isFinite(point.value) && point.value > 0) {
+      popIndex.set(`${point.jurisdictionIso3}::${point.year}`, point.value);
+    }
+  }
+
+  const output: DataPoint[] = [];
+  for (const point of countPoints) {
+    if (!Number.isFinite(point.value)) continue;
+    const pop = popIndex.get(`${point.jurisdictionIso3}::${point.year}`);
+    if (!pop) continue;
+    output.push({
+      jurisdictionIso3: point.jurisdictionIso3,
+      year: point.year,
+      value: (point.value / pop) * 100_000,
+      unit: "deaths per 100,000 people",
+      source: sourceLabel,
+    });
+  }
+
+  return output;
+}
+
 async function fetchRegistryVariable(
   variable: VariableRegistryEntry,
   fetchOptions: FetchOptions,
@@ -2195,11 +2522,13 @@ export function buildMegaStudyApiPayload(
   generatedAt: string,
   pairStudies: PairStudyArtifact[],
   rankings: OutcomeMegaStudyRanking[],
+  gateResults?: ReadonlyMap<string, TwoStageGateResult>,
 ): MegaStudyApiPayload {
   const pairByKey = new Map(pairStudies.map((pair) => [`${pair.predictorId}::${pair.outcomeId}`, pair]));
   const pairs: MegaStudyApiPair[] = pairStudies.map((pair) => {
     const modelBest = resolveActionableOptimalValue(pair);
     const decisionBest = resolveDecisionOptimalValue(pair);
+    const gateResult = gateResults?.get(pair.predictorId) ?? null;
     return {
       pairId: pair.pairId,
       predictor: {
@@ -2246,7 +2575,16 @@ export function buildMegaStudyApiPayload(
         dataSufficiencyStatus: pair.dataSufficiency.status,
         reliabilityScore: pair.reliability.overallScore,
         reliabilityBand: pair.reliability.band,
-        publicationEligible: isPublicationEligibleRecommendation(pair),
+        publicationEligible: isPublicationEligibleRecommendation(pair, gateResult),
+        twoStageGate: gateResult
+          ? {
+              directMissionVerdict: gateResult.directMission.verdict,
+              welfareGuardrailVerdict: gateResult.welfareGuardrail.verdict,
+              overallEligible: gateResult.overallEligible,
+              suppressLargeScaleUp: gateResult.suppressLargeScaleUp,
+              plainLanguageGuidance: gateResult.plainLanguageGuidance,
+            }
+          : null,
       },
       links: {
         markdownFile: toPairFileName(pair),
@@ -2374,6 +2712,21 @@ function buildPairMarkdown(pair: PairStudyArtifact): string {
     lines.push("## Quality Warnings");
     lines.push("");
     for (const warning of pair.qualityWarnings) {
+      lines.push(`- ${warning}`);
+    }
+  }
+  if (pair.sparseOutcomeDiagnostics) {
+    lines.push("");
+    lines.push("## Rare-Event Warning");
+    lines.push("");
+    lines.push(`- This outcome is flagged as a rare/sparse event.`);
+    lines.push(`- Bins with events: ${pair.sparseOutcomeDiagnostics.binsWithEvents}/${pair.sparseOutcomeDiagnostics.binsWithEvents + pair.sparseOutcomeDiagnostics.binsWithoutEvents}`);
+    lines.push(`- Median events per bin: ${pair.sparseOutcomeDiagnostics.medianEventsPerBin}`);
+    lines.push(`- Total events: ${pair.sparseOutcomeDiagnostics.totalEvents}`);
+    if (!pair.sparseOutcomeDiagnostics.meetsMinimumEventThreshold) {
+      lines.push("- **No numeric target is safe to recommend** based on this sparse data.");
+    }
+    for (const warning of pair.sparseOutcomeDiagnostics.warnings) {
       lines.push(`- ${warning}`);
     }
   }
@@ -2957,7 +3310,10 @@ function buildOutcomeMarkdown(
   return lines.join("\n");
 }
 
-function buildSpendingKpiTradeoffReport(pairStudies: PairStudyArtifact[]): string {
+function buildSpendingKpiTradeoffReport(
+  pairStudies: PairStudyArtifact[],
+  gateResults?: ReadonlyMap<string, TwoStageGateResult>,
+): string {
   interface SpendingPredictorReportGroup {
     predictorId: string;
     predictorLabel: string;
@@ -3030,8 +3386,8 @@ function buildSpendingKpiTradeoffReport(pairStudies: PairStudyArtifact[]): strin
 
   lines.push("## Quick Optimal Levels");
   lines.push("");
-  lines.push("| Spending Type | Lead KPI | KPI Role | Suggested Level | MED | Slowdown Knee | Confidence | Data Status | Pair Report |");
-  lines.push("|---------------|----------|----------|----------------:|----:|--------------:|-----------:|-------------|------------|");
+  lines.push("| Spending Type | Lead KPI | KPI Role | Mission Gate | Suggested Level | MED | Slowdown Knee | Confidence | Data Status | Pair Report |");
+  lines.push("|---------------|----------|----------|-------------|----------------:|----:|--------------:|-----------:|-------------|------------|");
   for (const group of reportGroups) {
     const pair = group.leadPair;
     const reportFile = `[${toPairFileName(pair)}](${toPairFileName(pair)})`;
@@ -3043,8 +3399,14 @@ function buildSpendingKpiTradeoffReport(pairStudies: PairStudyArtifact[]): strin
       pair.responseCurve.diminishingReturns.kneePredictorValue,
       pair.predictorUnit,
     );
+    const gate = gateResults?.get(group.predictorId);
+    const gateLabel = gate
+      ? gate.overallEligible
+        ? gate.suppressLargeScaleUp ? "caution" : "pass"
+        : "blocked"
+      : "N/A";
     lines.push(
-      `| ${group.predictorLabel} | ${pair.outcomeLabel} | ${toSimpleOutcomeRoleLabel(group.leadRole)} | ${formatDecisionLevelWithSource(pair)} | ${med} | ${knee} | ${pair.reliability.overallScore.toFixed(3)} (${toSimpleReliabilityBandLabel(pair.reliability.band)}) | ${toSimpleDataStatusLabel(pair.dataSufficiency.status)} | ${reportFile} |`,
+      `| ${group.predictorLabel} | ${pair.outcomeLabel} | ${toSimpleOutcomeRoleLabel(group.leadRole)} | ${gateLabel} | ${formatDecisionLevelWithSource(pair)} | ${med} | ${knee} | ${pair.reliability.overallScore.toFixed(3)} (${toSimpleReliabilityBandLabel(pair.reliability.band)}) | ${toSimpleDataStatusLabel(pair.dataSufficiency.status)} | ${reportFile} |`,
     );
   }
   lines.push("");
@@ -3076,6 +3438,19 @@ function buildSpendingKpiTradeoffReport(pairStudies: PairStudyArtifact[]): strin
     );
     if (group.secondaryPairCount > 0) {
       lines.push(`- Additional non-primary outcome studies available: ${group.secondaryPairCount} (see linked pair pages).`);
+    }
+    const gate = gateResults?.get(group.predictorId);
+    if (gate) {
+      lines.push("");
+      lines.push("### Gate Summary");
+      lines.push("");
+      lines.push(`- Direct mission gate: ${gate.directMission.verdict}${gate.directMission.outcomeId ? ` (${gate.directMission.outcomeId})` : ""}`);
+      lines.push(`- Welfare guardrail gate: ${gate.welfareGuardrail.verdict}${gate.welfareGuardrail.outcomeId ? ` (${gate.welfareGuardrail.outcomeId})` : ""}`);
+      lines.push(`- Overall eligible: ${gate.overallEligible ? "yes" : "no"}`);
+      if (gate.suppressLargeScaleUp) {
+        lines.push("- Large scale-up suppressed: yes (recommendations marked as exploratory)");
+      }
+      lines.push(`- Guidance: ${gate.plainLanguageGuidance}`);
     }
     lines.push("");
     lines.push("### Primary KPI Rows");
@@ -3272,6 +3647,29 @@ export async function generateMegaStudyArtifacts(
       buildDerivedYoYPercent(
         rawByVariable.get("outcome.who.healthy_life_expectancy_years") ?? [],
         "Derived YoY growth (WHO HALE)",
+      ),
+    );
+  }
+  if (registry.some((entry) => entry.id === "outcome.derived.battle_related_deaths_per_100k")) {
+    // Population data is needed for per-100k normalization but not tracked in the registry itself.
+    // Fetch it if not already available.
+    let populationData = rawByVariable.get("__population__");
+    if (!populationData) {
+      const popFetcher = fetchers.fetchPopulation;
+      if (typeof popFetcher === "function") {
+        if (logProgress) console.log("Fetching population data for rate normalization...");
+        populationData = await (popFetcher as (options: FetchOptions) => Promise<DataPoint[]>)(fetchOptions);
+      } else {
+        populationData = [];
+      }
+      rawByVariable.set("__population__", populationData);
+    }
+    rawByVariable.set(
+      "outcome.derived.battle_related_deaths_per_100k",
+      buildDerivedRatePer100k(
+        rawByVariable.get("outcome.wb.battle_related_deaths") ?? [],
+        populationData,
+        "Derived (battle deaths / population * 100k)",
       ),
     );
   }
@@ -3610,6 +4008,25 @@ export async function generateMegaStudyArtifacts(
         predictorDistribution: predictorHistogram.length > 0 ? predictorHistogram : predictorDistribution,
         outcomeDistribution: outcomeHistogram.length > 0 ? outcomeHistogram : outcomeDistribution,
         pppPerCapitaSummary,
+        sparseOutcomeDiagnostics: (() => {
+          const outcomeEntry = getVariableById(outcome.id);
+          if (!outcomeEntry?.sparseOutcomeProfile) return null;
+          const bins = predictorBinRows.map((row) => ({
+            binIndex: row.binIndex ?? 0,
+            lowerBound: row.lowerBound ?? 0,
+            upperBound: row.upperBound ?? 0,
+            isUpperInclusive: row.isUpperInclusive ?? false,
+            count: row.pairs ?? 0,
+            predictorMean: row.predictorMean ?? 0,
+            predictorMedian: row.predictorMedian ?? 0,
+            outcomeMean: row.outcomeMean ?? 0,
+            outcomeStd: 0,
+            outcomeSem: 0,
+          }));
+          return assessSparseOutcomeSupport(bins, {
+            minimumEventCountPerBin: outcomeEntry.sparseOutcomeProfile.minimumEventCountPerBin,
+          });
+        })(),
         pValue,
         evidenceGrade,
         direction,
@@ -3672,6 +4089,29 @@ export async function generateMegaStudyArtifacts(
     .sort((left, right) => left.outcomeId.localeCompare(right.outcomeId));
   const pairByKey = new Map(pairStudies.map((pair) => [`${pair.predictorId}::${pair.outcomeId}`, pair]));
 
+  // ─── Two-Stage Recommendation Gating ─────────────────────────────
+  const sparseProfiles = new Map<string, SparseOutcomeProfile>();
+  for (const entry of registry) {
+    if (entry.sparseOutcomeProfile) {
+      sparseProfiles.set(entry.id, entry.sparseOutcomeProfile);
+    }
+  }
+
+  const gateResults = new Map<string, TwoStageGateResult>();
+  for (const predictor of predictors) {
+    const pairsByOutcome = new Map<string, PairStudyArtifact>();
+    for (const pair of pairStudies) {
+      if (pair.predictorId === predictor.id) {
+        pairsByOutcome.set(pair.outcomeId, pair);
+      }
+    }
+    const gateResult = evaluateTwoStageGate(predictor.id, pairsByOutcome, sparseProfiles);
+    gateResults.set(predictor.id, gateResult);
+    if (logProgress && !gateResult.overallEligible) {
+      console.log(`Gate: ${predictor.id} → ${gateResult.directMission.verdict}/${gateResult.welfareGuardrail.verdict} (${gateResult.plainLanguageGuidance})`);
+    }
+  }
+
   if (writeFiles) {
     fs.rmSync(outputDir, { recursive: true, force: true });
     fs.mkdirSync(outputDir, { recursive: true });
@@ -3680,7 +4120,7 @@ export async function generateMegaStudyArtifacts(
     const spendingTradeoffReportFile = "spending-kpi-tradeoff-report.md";
     fs.writeFileSync(
       path.join(outputDir, spendingTradeoffReportFile),
-      buildSpendingKpiTradeoffReport(pairStudies),
+      buildSpendingKpiTradeoffReport(pairStudies, gateResults),
       "utf-8",
     );
 
@@ -3723,7 +4163,7 @@ export async function generateMegaStudyArtifacts(
     fs.writeFileSync(path.join(outputDir, "mega-study-results.json"), JSON.stringify({ pairStudies, rankings, skippedPairs }, null, 2), "utf-8");
     fs.writeFileSync(
       path.join(outputDir, "mega-study-api.json"),
-      JSON.stringify(buildMegaStudyApiPayload(generatedAt, pairStudies, rankings), null, 2),
+      JSON.stringify(buildMegaStudyApiPayload(generatedAt, pairStudies, rankings, gateResults), null, 2),
       "utf-8",
     );
   }

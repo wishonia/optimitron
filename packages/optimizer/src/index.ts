@@ -94,6 +94,7 @@ export {
   estimateMinimumEffectiveDose,
   estimateSaturationRange,
   deriveSupportConstrainedTargets,
+  assessSparseOutcomeSupport,
 } from './response-curve.js';
 export type {
   ResponseCurveBin,
@@ -108,6 +109,7 @@ export type {
   ResponseCurveObjective,
   SupportConstrainedTargetOptions,
   SupportConstrainedTargetsEstimate,
+  SparseOutcomeDiagnostics,
 } from './response-curve.js';
 
 // Predictor Impact Score

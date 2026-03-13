@@ -5,6 +5,7 @@ import {
   buildAsciiDistributionChart,
   buildDerivedDifferencePerCapitaPpp,
   buildDerivedPercentGdpPerCapitaPpp,
+  buildDerivedRatePer100k,
   buildDerivedShareOfVariablePercent,
   buildDistributionBuckets,
   buildFetchCacheKey,
@@ -19,6 +20,9 @@ import {
   directionFromSignal,
   derivePairQualityTier,
   derivePairQualityWarnings,
+  evaluateDirectMissionGate,
+  evaluateWelfareGuardrailGate,
+  evaluateTwoStageGate,
   isPercentGdpUnit,
   isPublicationEligibleRecommendation,
   isReportEligibleOutcome,
@@ -30,8 +34,11 @@ import {
   scoreTemporalProfileCandidate,
   selectLagYears,
   slugifyId,
+  type PairStudyArtifact,
+  type TwoStageGateResult,
 } from "../mega-study-generator.js";
-import type { VariableRegistryEntry } from "@optomitron/data";
+import type { VariableRegistryEntry, SparseOutcomeProfile } from "@optomitron/data";
+import { getVariableById } from "@optomitron/data";
 
 describe("mega-study-generator helpers", () => {
   it("selectLagYears prefers the smallest shared lag", () => {
@@ -1075,5 +1082,305 @@ describe("mega-study-generator helpers", () => {
     expect(isReportEligibleOutcome(educationKpiOutcome)).toBe(true);
     expect(isReportEligibleOutcome(securityKpiOutcome)).toBe(true);
     expect(isReportEligibleOutcome(giniOutcome)).toBe(false);
+  });
+
+  it("DEFAULT_REPORT_OUTCOME_IDS includes new direct mission KPI outcomes", () => {
+    expect(DEFAULT_REPORT_OUTCOME_IDS).toContain("outcome.who.ncd_mortality_rate");
+    expect(DEFAULT_REPORT_OUTCOME_IDS).toContain("outcome.wb.maternal_mortality_per_100k");
+    expect(DEFAULT_REPORT_OUTCOME_IDS).toContain("outcome.derived.battle_related_deaths_per_100k");
+    expect(DEFAULT_REPORT_OUTCOME_IDS).toContain("outcome.wb.under_five_mortality_per_1000");
+  });
+
+  it("every predictor profile has at least one directOutcomeId in the variable registry", () => {
+    // Retrieve all predictor profile entries with directOutcomeIds
+    const profileEntries = [
+      "predictor.derived.gov_health_expenditure_per_capita_ppp",
+      "predictor.derived.education_expenditure_per_capita_ppp",
+      "predictor.derived.rd_expenditure_per_capita_ppp",
+      "predictor.derived.military_expenditure_per_capita_ppp",
+      "predictor.derived.gov_expenditure_per_capita_ppp",
+      "predictor.derived.gov_non_military_expenditure_per_capita_ppp",
+      "predictor.derived.gov_health_share_of_gov_expenditure_pct",
+      "predictor.derived.education_share_of_gov_expenditure_pct",
+      "predictor.derived.rd_share_of_gov_expenditure_pct",
+      "predictor.derived.military_share_of_gov_expenditure_pct",
+    ];
+    for (const predictorId of profileEntries) {
+      const entry = getVariableById(predictorId);
+      expect(entry).toBeDefined();
+    }
+  });
+
+  it("buildDerivedRatePer100k normalizes count by population", () => {
+    const counts = [
+      { jurisdictionIso3: "AAA", year: 2020, value: 500, source: "x" },
+      { jurisdictionIso3: "BBB", year: 2020, value: 0, source: "x" },
+    ];
+    const population = [
+      { jurisdictionIso3: "AAA", year: 2020, value: 10_000_000, source: "y" },
+      { jurisdictionIso3: "BBB", year: 2020, value: 5_000_000, source: "y" },
+    ];
+    const result = buildDerivedRatePer100k(counts, population, "test");
+    expect(result).toHaveLength(2);
+    expect(result[0]?.value).toBeCloseTo(5, 4);
+    expect(result[1]?.value).toBe(0);
+  });
+});
+
+// ─── Two-Stage Recommendation Gating Tests ──────────────────────────
+
+function makeMockPair(overrides: Partial<PairStudyArtifact>): PairStudyArtifact {
+  return {
+    pairId: "test-pair",
+    predictorId: "predictor.test",
+    predictorLabel: "Test Predictor",
+    predictorUnit: "unit",
+    outcomeId: "outcome.test",
+    outcomeLabel: "Test Outcome",
+    outcomeUnit: "unit",
+    lagYears: 2,
+    durationYears: 3,
+    temporalProfileSource: "global_fallback",
+    fillingType: "interpolation",
+    fillingValue: null,
+    temporalCandidatesEvaluated: 4,
+    temporalCandidatesWithResults: 3,
+    temporalScore: 0.5,
+    temporalRunnerUps: [],
+    temporalStabilityWarning: null,
+    robustness: {
+      rawPairCount: 1000,
+      trimmedPairCount: 800,
+      retainedFraction: 0.8,
+      rawOptimalValue: 10,
+      robustOptimalValue: 9,
+      optimalDeltaAbsolute: 1,
+      optimalDeltaPercent: 10,
+      rawBestObservedRange: "[5, 15)",
+      robustBestObservedRange: "[6, 14)",
+      rawBestOutcomeMean: 50,
+      robustBestOutcomeMean: 48,
+    },
+    qualityTier: "moderate",
+    actionabilityStatus: "actionable",
+    actionabilityReasons: [],
+    includedSubjects: 80,
+    skippedSubjects: 5,
+    totalPairs: 4000,
+    aggregateForwardPearson: 0.15,
+    aggregateReversePearson: 0.05,
+    aggregatePredictivePearson: 0.10,
+    aggregateEffectSize: 5,
+    aggregateStatisticalSignificance: 0.85,
+    weightedAveragePIS: 0.5,
+    aggregateValuePredictingHighOutcome: 12,
+    aggregateValuePredictingLowOutcome: 3,
+    aggregateOptimalDailyValue: 10,
+    responseCurve: {
+      diminishingReturns: { detected: false, reason: "n/a", kneePredictorValue: null, firstSegmentSlope: null, secondSegmentSlope: null, slopeRatio: null, segmentSlopes: [], bins: [], support: { sampleCount: 0, binCount: 0, minBinCount: 0, minSlopePointsPerSegment: 0 } },
+      minimumEffectiveDose: { detected: false, reason: "n/a", minimumEffectiveDose: null, minimumEffectiveDoseRange: null, baselineOutcomeMean: null, expectedGainAtDose: null, expectedRelativeGainPercentAtDose: null, zScoreAtDose: null, bins: [], support: { sampleCount: 0, binCount: 0, minBinCount: 0, minConsecutiveBins: 0 } },
+      saturationRange: { detected: false, reason: "n/a", plateauStartPredictorValue: null, plateauEndPredictorValue: null, plateauRange: null, referenceSlope: null, flatSlopeThreshold: null, slopes: [], bins: [], support: { sampleCount: 0, binCount: 0, minBinCount: 0, minConsecutiveSlopes: 0 } },
+      supportConstrainedTargets: { detected: true, reason: null, objective: "maximize_outcome", rawModelOptimalValue: 10, supportConstrainedOptimalValue: 10, supportConstrainedRange: { lowerBound: 5, upperBound: 15, isUpperInclusive: false }, robustOptimalValue: 9, robustRange: null, rawWithinObservedRange: true, rawWithinSupportRange: true, deltas: { rawToSupportAbsolute: 0, rawToSupportPercent: 0, rawToRobustAbsolute: 1, rawToRobustPercent: 10 }, bins: [], robustBins: [], support: { sampleCount: 1000, binCount: 10, robustSampleCount: 800, robustBinCount: 8, minBinCount: 2 } },
+    },
+    dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+    reliability: { overallScore: 0.7, band: "moderate", components: { support: 0.7, significance: 0.8, directional: 0.6, temporalStability: 0.7, robustness: 0.7 } },
+    predictorObservedMin: 0,
+    predictorObservedMax: 20,
+    narrativeSummary: [],
+    predictorBinRows: [],
+    predictorDistribution: [],
+    outcomeDistribution: [],
+    pppPerCapitaSummary: null,
+    sparseOutcomeDiagnostics: null,
+    pValue: 0.05,
+    evidenceGrade: "B",
+    direction: "positive",
+    qualityWarnings: [],
+    topSubjects: [],
+    skippedReasons: [],
+    ...overrides,
+  } as PairStudyArtifact;
+}
+
+describe("two-stage recommendation gating", () => {
+  it("direct mission gate passes when health HALE shows positive direction", () => {
+    const pair = makeMockPair({
+      outcomeId: "outcome.who.healthy_life_expectancy_years",
+      direction: "positive",
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.7, band: "moderate", components: { support: 0.7, significance: 0.8, directional: 0.6, temporalStability: 0.7, robustness: 0.7 } },
+    });
+    const pairsByOutcome = new Map([["outcome.who.healthy_life_expectancy_years", pair]]);
+    const result = evaluateDirectMissionGate(
+      "predictor.derived.gov_health_expenditure_per_capita_ppp",
+      pairsByOutcome,
+      new Map(),
+    );
+    expect(result.verdict).toBe("pass");
+    expect(result.direction).toBe("positive");
+  });
+
+  it("direct mission gate returns insufficient_data when battle deaths has low reliability", () => {
+    const pair = makeMockPair({
+      outcomeId: "outcome.wb.battle_related_deaths",
+      direction: "neutral",
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.3, band: "low", components: { support: 0.3, significance: 0.3, directional: 0.3, temporalStability: 0.3, robustness: 0.3 } },
+    });
+    const pairsByOutcome = new Map([["outcome.wb.battle_related_deaths", pair]]);
+    const result = evaluateDirectMissionGate(
+      "predictor.derived.military_expenditure_per_capita_ppp",
+      pairsByOutcome,
+      new Map(),
+    );
+    expect(result.verdict).toBe("insufficient_data");
+  });
+
+  it("direct mission gate returns adverse_signal when direct KPI worsens", () => {
+    const pair = makeMockPair({
+      outcomeId: "outcome.who.healthy_life_expectancy_years",
+      direction: "negative",
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.7, band: "moderate", components: { support: 0.7, significance: 0.8, directional: 0.6, temporalStability: 0.7, robustness: 0.7 } },
+    });
+    const pairsByOutcome = new Map([["outcome.who.healthy_life_expectancy_years", pair]]);
+    const result = evaluateDirectMissionGate(
+      "predictor.derived.gov_health_expenditure_per_capita_ppp",
+      pairsByOutcome,
+      new Map(),
+    );
+    expect(result.verdict).toBe("adverse_signal");
+  });
+
+  it("welfare guardrail gate detects regression on income", () => {
+    const pair = makeMockPair({
+      outcomeId: "outcome.derived.after_tax_median_income_ppp",
+      direction: "negative",
+      aggregateStatisticalSignificance: 0.88,
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.7, band: "moderate", components: { support: 0.7, significance: 0.8, directional: 0.6, temporalStability: 0.7, robustness: 0.7 } },
+    });
+    const pairsByOutcome = new Map([["outcome.derived.after_tax_median_income_ppp", pair]]);
+    const result = evaluateWelfareGuardrailGate(
+      "predictor.derived.gov_health_expenditure_per_capita_ppp",
+      pairsByOutcome,
+    );
+    expect(result.verdict).toBe("adverse_signal");
+    expect(result.outcomeId).toBe("outcome.derived.after_tax_median_income_ppp");
+  });
+
+  it("sparse outcome handling flags battle deaths with mostly zero bins", () => {
+    const pair = makeMockPair({
+      outcomeId: "outcome.wb.battle_related_deaths",
+      direction: "neutral",
+      predictorBinRows: Array.from({ length: 10 }, (_, i) => ({
+        binIndex: i,
+        label: `[${i * 100}, ${(i + 1) * 100})`,
+        lowerBound: i * 100,
+        upperBound: (i + 1) * 100,
+        isUpperInclusive: i === 9,
+        pairs: 30,
+        subjects: 10,
+        predictorMean: i * 100 + 50,
+        predictorMedian: i * 100 + 50,
+        outcomeMean: i === 8 ? 2 : 0,
+        outcomeMedian: 0,
+      })),
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.6, band: "moderate", components: { support: 0.6, significance: 0.5, directional: 0.5, temporalStability: 0.6, robustness: 0.6 } },
+    });
+    const sparseProfiles = new Map<string, SparseOutcomeProfile>([
+      [
+        "outcome.wb.battle_related_deaths",
+        {
+          isRareEvent: true,
+          minimumEventCountPerBin: 5,
+          preferredAggregationWindowYears: 5,
+          preferNormalizedRate: true,
+          normalizationDenominator: "per_100k_population",
+        },
+      ],
+    ]);
+    const pairsByOutcome = new Map([["outcome.wb.battle_related_deaths", pair]]);
+    const result = evaluateDirectMissionGate(
+      "predictor.derived.military_expenditure_per_capita_ppp",
+      pairsByOutcome,
+      sparseProfiles,
+    );
+    expect(result.verdict).toBe("sparse_outcome");
+  });
+
+  it("contract test: no scale-up when direct evidence is weak", () => {
+    const directPair = makeMockPair({
+      outcomeId: "outcome.wb.primary_completion_rate_pct",
+      direction: "neutral",
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.6, band: "moderate", components: { support: 0.6, significance: 0.6, directional: 0.5, temporalStability: 0.6, robustness: 0.6 } },
+    });
+    const guardrailPair = makeMockPair({
+      outcomeId: "outcome.derived.after_tax_median_income_ppp",
+      direction: "positive",
+      aggregateStatisticalSignificance: 0.9,
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.7, band: "moderate", components: { support: 0.7, significance: 0.8, directional: 0.6, temporalStability: 0.7, robustness: 0.7 } },
+    });
+    const pairsByOutcome = new Map([
+      ["outcome.wb.primary_completion_rate_pct", directPair],
+      ["outcome.derived.after_tax_median_income_ppp", guardrailPair],
+    ]);
+    const gate = evaluateTwoStageGate(
+      "predictor.derived.education_expenditure_per_capita_ppp",
+      pairsByOutcome,
+      new Map(),
+    );
+    expect(gate.suppressLargeScaleUp).toBe(true);
+    expect(gate.directMission.verdict).toBe("weak_signal");
+  });
+
+  it("full gate pipeline: health spending passes when HALE positive and no guardrail regression", () => {
+    const halePair = makeMockPair({
+      outcomeId: "outcome.who.healthy_life_expectancy_years",
+      direction: "positive",
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.75, band: "moderate", components: { support: 0.7, significance: 0.8, directional: 0.7, temporalStability: 0.7, robustness: 0.7 } },
+    });
+    const incomePair = makeMockPair({
+      outcomeId: "outcome.derived.after_tax_median_income_ppp",
+      direction: "positive",
+      aggregateStatisticalSignificance: 0.82,
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      reliability: { overallScore: 0.65, band: "moderate", components: { support: 0.6, significance: 0.7, directional: 0.6, temporalStability: 0.6, robustness: 0.6 } },
+    });
+    const pairsByOutcome = new Map([
+      ["outcome.who.healthy_life_expectancy_years", halePair],
+      ["outcome.derived.after_tax_median_income_ppp", incomePair],
+    ]);
+    const gate = evaluateTwoStageGate(
+      "predictor.derived.gov_health_expenditure_per_capita_ppp",
+      pairsByOutcome,
+      new Map(),
+    );
+    expect(gate.overallEligible).toBe(true);
+    expect(gate.suppressLargeScaleUp).toBe(false);
+    expect(gate.directMission.verdict).toBe("pass");
+    expect(gate.welfareGuardrail.verdict).toBe("pass");
+  });
+
+  it("isPublicationEligibleRecommendation blocks when gate result is not eligible", () => {
+    const pair = makeMockPair({
+      dataSufficiency: { status: "sufficient", reasons: [], thresholds: { minSubjects: 40, minPairs: 2000, minTemporalCandidatesWithResults: 2, minBins: 6 } },
+      qualityTier: "moderate",
+      reliability: { overallScore: 0.7, band: "moderate", components: { support: 0.7, significance: 0.8, directional: 0.6, temporalStability: 0.7, robustness: 0.7 } },
+      predictorObservedMin: 0,
+      predictorObservedMax: 20,
+    });
+    const gateResult: TwoStageGateResult = {
+      directMission: { stage: "direct_mission", verdict: "adverse_signal", reasons: ["test"], outcomeId: null, reliabilityScore: null, direction: null },
+      welfareGuardrail: { stage: "welfare_guardrail", verdict: "pass", reasons: [], outcomeId: null, reliabilityScore: null, direction: null },
+      overallEligible: false,
+      suppressLargeScaleUp: true,
+      plainLanguageGuidance: "Blocked.",
+    };
+    expect(isPublicationEligibleRecommendation(pair, gateResult)).toBe(false);
   });
 });

@@ -56,6 +56,7 @@ const basePayload: MegaStudyApiPayload = {
       reliabilityScore: 0.88,
       reliabilityBand: 'high',
       publicationEligible: true,
+      twoStageGate: null,
     },
     links: { markdownFile: 'pair_1.md' },
   }],

@@ -5,6 +5,7 @@ import {
   buildAllocationRecordFromStoredVotes,
   buildPartialAllocationRecordFromStoredVotes,
   deriveRecentLegislativeVoteRows,
+  type DerivedAlignmentVoteRow,
 } from "@/lib/alignment-legislative-sync.server";
 import {
   ALIGNMENT_BENCHMARKS,
@@ -30,6 +31,14 @@ interface SyncablePoliticianRow {
     updatedAt: Date;
     voteDate: Date | null;
   }>;
+}
+
+interface PreparedPoliticianVoteRow {
+  politicianId: string;
+  itemCategory: BudgetCategoryId;
+  allocationPct: number;
+  billId: string;
+  voteDate: Date | null;
 }
 
 export interface AlignmentPoliticianSyncResult {
@@ -146,6 +155,32 @@ function mergeSyncedPoliticianProfile(
     rollCallCount: derived.rollCallCount,
     allocations: derived.allocations,
   };
+}
+
+function prepareVoteSyncRows(
+  rows: DerivedAlignmentVoteRow[],
+  politicianIdByExternalId: Map<string, string>,
+): PreparedPoliticianVoteRow[] {
+  return rows
+    .map((row) => {
+      const politicianId = politicianIdByExternalId.get(row.externalId);
+      if (!politicianId) {
+        return null;
+      }
+
+      return {
+        politicianId,
+        itemCategory: row.itemCategory,
+        allocationPct: row.allocationPct,
+        billId: row.billId,
+        voteDate: row.voteDate,
+      };
+    })
+    .filter((row): row is PreparedPoliticianVoteRow => row != null);
+}
+
+function extractPoliticianIds(rows: PreparedPoliticianVoteRow[]): string[] {
+  return [...new Set(rows.map((row) => row.politicianId))];
 }
 
 export async function loadAlignmentBenchmarkProfiles(): Promise<AlignmentBenchmarkProfile[]> {
@@ -280,36 +315,23 @@ export async function syncAlignmentBenchmarkPoliticians(): Promise<AlignmentPoli
   }
 
   const rawVoteRows = await deriveRecentLegislativeVoteRows(updatedExternalIds);
+  const preparedVoteRows = prepareVoteSyncRows(rawVoteRows, politicianIdByExternalId);
+  const politicianIdsWithFreshVotes = extractPoliticianIds(preparedVoteRows);
 
-  await prisma.politicianVote.deleteMany({
-    where: {
-      politicianId: {
-        in: [...politicianIdByExternalId.values()],
+  // Keep the last good sync for politicians whose fresh fetch/classification produced no rows.
+  if (politicianIdsWithFreshVotes.length > 0) {
+    await prisma.politicianVote.deleteMany({
+      where: {
+        politicianId: {
+          in: politicianIdsWithFreshVotes,
+        },
+        itemCategory: {
+          in: ALIGNMENT_CATEGORY_IDS,
+        },
       },
-      itemCategory: {
-        in: ALIGNMENT_CATEGORY_IDS,
-      },
-    },
-  });
-
-  if (rawVoteRows.length > 0) {
+    });
     const createdVotes = await prisma.politicianVote.createMany({
-      data: rawVoteRows
-        .map((row) => {
-          const politicianId = politicianIdByExternalId.get(row.externalId);
-          if (!politicianId) {
-            return null;
-          }
-
-          return {
-            politicianId,
-            itemCategory: row.itemCategory,
-            allocationPct: row.allocationPct,
-            billId: row.billId,
-            voteDate: row.voteDate,
-          };
-        })
-        .filter((row): row is NonNullable<typeof row> => row != null),
+      data: preparedVoteRows,
     });
     syncedVotes = createdVotes.count;
   }

@@ -166,7 +166,7 @@ describe("alignment legislative sync helpers", () => {
     expect(rows[0]?.allocationPct).toBeGreaterThan(0);
   });
 
-  it("includes senate-specific bill feeds when the mixed recent bill list misses them", async () => {
+  it("includes targeted resolution feeds when the mixed recent bill list misses them", async () => {
     mocks.fetchBills.mockResolvedValue([]);
     mocks.fetchBillsByType.mockImplementation(
       async (congress?: number, billType?: string) => {
@@ -215,6 +215,9 @@ describe("alignment legislative sync helpers", () => {
     const rows = await deriveRecentLegislativeVoteRows(["S000033"]);
 
     expect(mocks.fetchBillsByType).toHaveBeenCalledWith(119, "s", 60);
+    expect(mocks.fetchBillsByType).toHaveBeenCalledWith(119, "hres", 40);
+    expect(mocks.fetchBillsByType).toHaveBeenCalledWith(119, "hjres", 25);
+    expect(mocks.fetchBillsByType).toHaveBeenCalledWith(119, "sres", 30);
     expect(mocks.fetchBillsByType).toHaveBeenCalledWith(119, "sjres", 25);
     expect(rows).toHaveLength(1);
     expect(rows[0]).toMatchObject({

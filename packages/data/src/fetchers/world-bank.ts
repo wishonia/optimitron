@@ -373,3 +373,17 @@ export async function fetchLaborForceParticipation(options: FetchOptions = {}): 
 export async function fetchCO2Emissions(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchWorldBankIndicator(WB_INDICATOR_CODES.CO2_EMISSIONS_PER_CAPITA, options);
 }
+
+/**
+ * Fetch maternal mortality ratio (per 100,000 live births).
+ */
+export async function fetchMaternalMortality(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.MATERNAL_MORTALITY, options);
+}
+
+/**
+ * Fetch total population.
+ */
+export async function fetchPopulation(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.POPULATION, options);
+}

@@ -203,4 +203,101 @@ describe("alignment politician source", () => {
     expect(mocks.fetchMemberDetails).toHaveBeenCalledTimes(ALIGNMENT_BENCHMARKS.length);
     expect(mocks.deriveRecentLegislativeVoteRows).toHaveBeenCalledTimes(1);
   });
+
+  it("does not wipe stored live votes when the refresh yields no classified rows", async () => {
+    mocks.getCongressApiKey.mockReturnValue("test-key");
+    mocks.findUnique.mockResolvedValue({ id: "jur-us" });
+    mocks.fetchMemberDetails.mockImplementation(async (externalId: string) => ({
+      bioguideId: externalId,
+      chamber: "Senate",
+      name: `Member ${externalId}`,
+      party: "Independent",
+      state: "VT",
+      terms: [],
+    }));
+    mocks.upsert.mockImplementation(async ({ where }: { where: { externalId: string } }) => ({
+      id: `pol-${where.externalId}`,
+    }));
+    mocks.deriveRecentLegislativeVoteRows.mockResolvedValue([]);
+
+    const result = await syncAlignmentBenchmarkPoliticians();
+
+    expect(result.skipped).toBe(false);
+    expect(result.syncedVotes).toBe(0);
+    expect(mocks.deleteMany).not.toHaveBeenCalled();
+    expect(mocks.createMany).not.toHaveBeenCalled();
+  });
+
+  it("replaces stored live votes only for politicians with fresh classified rows", async () => {
+    const bernie = ALIGNMENT_BENCHMARKS[0];
+    const warren = ALIGNMENT_BENCHMARKS[1];
+    if (!bernie?.externalId || !warren?.externalId) {
+      throw new Error("Missing benchmark external IDs.");
+    }
+
+    mocks.getCongressApiKey.mockReturnValue("test-key");
+    mocks.findUnique.mockResolvedValue({ id: "jur-us" });
+    mocks.fetchMemberDetails.mockImplementation(async (externalId: string) => ({
+      bioguideId: externalId,
+      chamber: "Senate",
+      name: `Member ${externalId}`,
+      party: "Independent",
+      state: "VT",
+      terms: [],
+    }));
+    mocks.upsert.mockImplementation(async ({ where }: { where: { externalId: string } }) => ({
+      id: `pol-${where.externalId}`,
+    }));
+    mocks.deriveRecentLegislativeVoteRows.mockResolvedValue([
+      {
+        externalId: bernie.externalId,
+        allocationPct: 0.8,
+        billId: "bill-bernie",
+        itemCategory: "ADDICTION_TREATMENT",
+        voteDate: new Date("2026-03-12T00:00:00.000Z"),
+      },
+      {
+        externalId: warren.externalId,
+        allocationPct: -0.6,
+        billId: "bill-warren",
+        itemCategory: "MILITARY_OPERATIONS",
+        voteDate: new Date("2026-03-13T00:00:00.000Z"),
+      },
+    ]);
+    mocks.deleteMany.mockResolvedValue({ count: 7 });
+    mocks.createMany.mockResolvedValue({ count: 2 });
+
+    const result = await syncAlignmentBenchmarkPoliticians();
+
+    expect(result.skipped).toBe(false);
+    expect(result.syncedVotes).toBe(2);
+    expect(mocks.deleteMany).toHaveBeenCalledWith({
+      where: {
+        politicianId: {
+          in: [`pol-${bernie.externalId}`, `pol-${warren.externalId}`],
+        },
+        itemCategory: {
+          in: expect.any(Array),
+        },
+      },
+    });
+    expect(mocks.createMany).toHaveBeenCalledWith({
+      data: [
+        {
+          politicianId: `pol-${bernie.externalId}`,
+          itemCategory: "ADDICTION_TREATMENT",
+          allocationPct: 0.8,
+          billId: "bill-bernie",
+          voteDate: new Date("2026-03-12T00:00:00.000Z"),
+        },
+        {
+          politicianId: `pol-${warren.externalId}`,
+          itemCategory: "MILITARY_OPERATIONS",
+          allocationPct: -0.6,
+          billId: "bill-warren",
+          voteDate: new Date("2026-03-13T00:00:00.000Z"),
+        },
+      ],
+    });
+  });
 });

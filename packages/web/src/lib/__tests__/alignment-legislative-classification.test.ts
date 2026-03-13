@@ -63,6 +63,52 @@ describe("alignment legislative classification", () => {
     expect(matches[0]?.categoryId).toBe("ICE_IMMIGRATION_ENFORCEMENT");
   });
 
+  it("classifies comparative-effectiveness research appropriations into pragmatic clinical trials", () => {
+    const matches = classifyLegislativeBill({
+      billId: "119-hr-44",
+      title: "A bill to fund the Agency for Healthcare Research and Quality and PCORI comparative effectiveness studies",
+      subjects: ["Health services research", "Medical research"],
+      policyArea: "Health",
+    });
+
+    expect(matches[0]?.categoryId).toBe("PRAGMATIC_CLINICAL_TRIALS");
+    expect(matches[0]?.confidence).toBe("high");
+  });
+
+  it("classifies crop-insurance support into agribusiness subsidies", () => {
+    const matches = classifyLegislativeBill({
+      billId: "119-s-88",
+      title: "A bill to expand federal crop insurance and commodity credit corporation support",
+      subjects: ["Crop insurance", "Commodity programs"],
+      policyArea: "Agriculture and Food",
+    });
+
+    expect(matches[0]?.categoryId).toBe("FARM_SUBSIDIES_AGRIBUSINESS");
+  });
+
+  it("classifies plutonium-pit and sentinel funding into nuclear weapons modernization", () => {
+    const matches = classifyLegislativeBill({
+      billId: "119-hjres-18",
+      title: "A joint resolution to accelerate Sentinel ICBM and plutonium pit production",
+      subjects: ["Strategic forces", "National nuclear security administration"],
+      policyArea: "Armed Forces and National Security",
+    });
+
+    expect(matches[0]?.categoryId).toBe("NUCLEAR_WEAPONS_MODERNIZATION");
+    expect(matches[0]?.confidence).toBe("high");
+  });
+
+  it("classifies bureau of prisons expansion into prison construction and operations", () => {
+    const matches = classifyLegislativeBill({
+      billId: "119-s-203",
+      title: "A bill to expand Bureau of Prisons staffing and federal prison construction",
+      subjects: ["Correctional facilities", "Detention facilities"],
+      policyArea: "Crime and Law Enforcement",
+    });
+
+    expect(matches[0]?.categoryId).toBe("PRISON_CONSTRUCTION");
+  });
+
   it("infers restrictive bills as category decreases", () => {
     expect(
       inferLegislativeBudgetDirection({

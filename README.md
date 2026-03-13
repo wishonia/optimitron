@@ -6,7 +6,7 @@ We're building the operating system for evidence-based decision-making. Whether 
 
 [![CI](https://github.com/mikepsinn/optomitron/actions/workflows/ci.yml/badge.svg)](https://github.com/mikepsinn/optomitron/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Packages](https://img.shields.io/badge/packages-10-blue.svg)](#packages)
+[![Packages](https://img.shields.io/badge/packages-13-blue.svg)](#packages)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)](https://www.typescriptlang.org/)
 [![pnpm](https://img.shields.io/badge/pnpm-workspace-F69220.svg)](https://pnpm.io/)
 
@@ -51,6 +51,20 @@ Optomitron is a five-layer system that turns raw data into optimal decisions:
 
 ---
 
+## What You Can Do Today
+
+- **Run domain-agnostic causal inference on any time series**: temporal alignment, Bradford Hill scoring, effect sizes, confidence intervals, and optimal values in `@optomitron/optimizer`. The same core engine works for health, budgets, policy, and business.
+- **Generate reproducible public-good analyses from real data**: the examples package produces federal budget, policy, government-size, drug-war, health, education, and cross-country reports from OECD, World Bank, FRED, WHO, Congress.gov, and the `economic-data` CSV catalog.
+- **Collect citizen priorities and rank politicians against them**: Wishocracy turns pairwise budget trade-offs into stable preference weights, preference gaps, and personal alignment scores.
+- **Use a live civic web app**: Google sign-in, magic-link auth, referrals, `/vote`, saved allocations, personal alignment reports, public share URLs, profile/census tracking, daily health-happiness-income check-ins, and World ID verification all exist in `packages/web`.
+- **Sync current federal politician data with legislative provenance**: benchmark politicians use real Congress identities, recent roll-call ingestion, and explicit source notes so reports can move from curated priors toward reproducible legislative behavior.
+- **Parse personal health exports locally**: `@optomitron/data` includes 9 file-based importers for Apple Health, Fitbit, Oura, MyFitnessPal, Withings, Google Fit, Cronometer, Strava, and generic CSV. They normalize records into one common format without requiring OAuth.
+- **Publish auditable outputs**: `@optomitron/storage` stores content-addressed Storacha/IPFS snapshots, and `@optomitron/hypercerts` turns Optomitron results into Hypercert-compatible AT Protocol records.
+- **Use an autonomous analysis layer where it helps**: `@optomitron/agent` provides Gemini-guided review/orchestration plus ERC-8004 helpers for structured manifests, publication review, and test-output triage.
+- **Build on a rigor-first monorepo**: Prisma + Zod types, strict TypeScript, pure-function libraries, and roughly 1,900+ tests across the workspace.
+
+---
+
 ## Quick Start
 
 ```bash
@@ -61,34 +75,48 @@ cd optomitron
 # Install dependencies
 pnpm install
 
+# Start local Postgres, run migrations, generate Prisma client, and seed data
+pnpm db:setup
+
 # Build all packages
 pnpm build
 
 # Run all tests
 pnpm test
 
-# Run the demos
-npx tsx packages/examples/src/causal-analysis-demo.ts
-npx tsx packages/examples/src/federal-budget-demo.ts
-npx tsx packages/examples/src/alignment-demo.ts
+# Start the web app on http://localhost:3001
+pnpm dev
+
+# Sync benchmark politicians from Congress.gov into the web app database
+pnpm alignment:sync
+
+# Run example demos / generators
+pnpm --filter @optomitron/examples demo:causal
+pnpm --filter @optomitron/examples demo:budget
+pnpm --filter @optomitron/examples demo:alignment
+pnpm --filter @optomitron/examples generate:policy
+pnpm --filter @optomitron/examples generate:government-size
 ```
 
 ---
 
 ## Packages
 
-| Package | Description | Tests | Status |
-|---------|-------------|:-----:|--------|
-| [`@optomitron/optimizer`](packages/optimizer/) | 🧠 Domain-agnostic causal inference — temporal alignment, Bradford Hill criteria, Predictor Impact Score, effect sizes, optimal values | 4 suites · 176 cases | 🟡 Alpha |
-| [`@optomitron/wishocracy`](packages/wishocracy/) | 🗳️ RAPPA preference aggregation — pairwise comparisons, eigenvector weights, Citizen Alignment Scores, matrix completion, convergence analysis | 9 suites · 162 cases | 🟡 Alpha |
-| [`@optomitron/opg`](packages/opg/) | 📋 Optimal Policy Generator — policy scoring, Causal Confidence Score, jurisdiction analysis, Bradford Hill for policy evaluation | 7 suites · 213 cases | 🟡 Alpha |
-| [`@optomitron/obg`](packages/obg/) | 💰 Optimal Budget Generator — diminishing returns modeling, cost-effectiveness analysis, Budget Impact Score, Optimal Spending Levels | 6 suites · 143 cases | 🟡 Alpha |
-| [`@optomitron/data`](packages/data/) | 📊 Data fetchers & loaders — OECD, World Bank, FRED, WHO APIs + 60 Gapminder CSV datasets | 7 suites · 87 cases | 🟡 Alpha |
-| [`@optomitron/db`](packages/db/) | 🗄️ Prisma database schema for survey responses and aggregated data | — | 🔴 Stub |
-| [`@optomitron/examples`](packages/examples/) | 🎓 Worked demos — federal budget analysis, causal inference, alignment scoring | — | ✅ |
-| [`@optomitron/web`](packages/web/) | 🌐 Next.js multi-tenant dashboard (Phase 3) | — | ⚪ Planned |
-| [`@optomitron/extension`](packages/extension/) | 🔌 Chrome extension — personal health tracking (Digital Twin Safe, Layer 1) | — | ⚪ Planned |
-| [`@optomitron/chat-ui`](packages/chat-ui/) | 💬 Conversational chat UI for health tracking | — | ⚪ Planned |
+| Package | Why it matters | Current state |
+|---------|----------------|---------------|
+| [`@optomitron/optimizer`](packages/optimizer/) | Domain-agnostic causal inference engine: temporal alignment, Bradford Hill, effect sizes, Predictor Impact Score, optimal values | Core foundation, heavily tested |
+| [`@optomitron/wishocracy`](packages/wishocracy/) | Pairwise preference aggregation, convergence analysis, preference gaps, and politician alignment scoring | Live in the web app |
+| [`@optomitron/opg`](packages/opg/) | Turns policy evidence into enact/replace/repeal/maintain recommendations with explicit confidence scoring | Used by report generators |
+| [`@optomitron/obg`](packages/obg/) | Finds minimum-effective and optimal spending levels, overspend ratios, and budget reallocation targets | Used by budget analyses |
+| [`@optomitron/data`](packages/data/) | Public-data fetchers plus 9 local-first health importers and the international dataset catalog | Real-source ingestion layer |
+| [`@optomitron/db`](packages/db/) | Prisma schema, governance models, auth/session/referral data, and Zod validators | Production schema layer, not a stub |
+| [`@optomitron/web`](packages/web/) | Live Next.js app for auth, voting, alignment reports, referrals, World ID, and daily tracking | Active product surface |
+| [`@optomitron/chat-ui`](packages/chat-ui/) | Reusable conversational UI components plus text-to-measurement parsing for personal tracking flows | Reusable UI package |
+| [`@optomitron/storage`](packages/storage/) | Content-addressed Storacha/IPFS snapshots for analysis and aggregation history chains | Verifiable audit trail layer |
+| [`@optomitron/hypercerts`](packages/hypercerts/) | Hypercert-compatible record builders and AT Protocol publishing helpers for Optomitron outputs | Verifiable publication layer |
+| [`@optomitron/agent`](packages/agent/) | Autonomous policy analyst helpers: Gemini reasoning, manifests, review flows, and ERC-8004 identity/reputation helpers | AI orchestration layer |
+| [`@optomitron/examples`](packages/examples/) | Runnable demos and reproducible report generators for budget, policy, causal, and alignment analyses | Best place to see outputs fast |
+| [`@optomitron/extension`](packages/extension/) | Chrome extension scaffold for the Digital Twin Safe / local-first health workflow | Early Layer 1 scaffold |
 
 ---
 
@@ -118,13 +146,13 @@ npx tsx packages/examples/src/alignment-demo.ts
 
 ### 🔒 Digital Twin Safe
 
-Your health data never leaves your device. Optomitron's causal engine is **pure TypeScript with zero server dependency** — it runs entirely in your browser or Electron app.
+The local-first health stack already has real foundations in the repo even though the full personal app is still being productized.
 
-- **Import** from Apple Health, Google Fit, Fitbit, Garmin, Oura Ring, or manual entry
-- **Discover** which treatments, supplements, foods, and habits actually improve *your* outcomes
-- **Get optimal values** — not just "magnesium helps sleep" but "450mg of magnesium is *your* personal optimum"
-- **Evidence grades** (A–F) so you know how confident the engine is
-- **Optionally share** anonymized effect sizes to help build population-level knowledge
+- **9 local-first health importers** in `@optomitron/data` parse Apple Health, Fitbit, Oura, MyFitnessPal, Withings, Google Fit, Cronometer, Strava, and CSV exports into one normalized record shape.
+- **Conversational tracking UI** in `@optomitron/chat-ui` includes cards and text-to-measurement parsing for symptom, treatment, mood, food, and insight flows.
+- **Daily wellbeing capture** already exists in the web app: profile, census context, and daily health-happiness-income check-ins.
+- **Pure TypeScript inference engine** means the core math can run locally in a browser, extension, Electron shell, or server job without being rewritten.
+- **Digital Twin Safe extension scaffold** exists in `packages/extension` as the start of the fully local Layer 1 product.
 
 ```typescript
 import { calculatePredictorImpactScore } from '@optomitron/optimizer';
@@ -145,15 +173,25 @@ console.log(result.evidenceGrade);  // "B"
 
 ### 🏛️ Government OS
 
-Deploy Optomitron for any jurisdiction — city, county, state, or country — as a data-driven governance operating system.
+Deploy Optomitron for any jurisdiction as a reproducible analysis and accountability stack.
 
-- **Preference collection** — Citizens do pairwise comparisons ("Given $100, split between education and healthcare") via RAPPA surveys
-- **Budget optimization** — Diminishing returns modeling finds the Optimal Spending Level for each category
-- **Policy scoring** — Cross-jurisdiction quasi-experiments + Bradford Hill criteria → Causal Confidence Scores for every policy
-- **Accountability** — Citizen Alignment Scores measure how well each politician's votes match constituent preferences
-- **Cross-jurisdiction comparison** — "City A spends $X on transit and gets Y commute times vs. City B"
+- **Preference collection**: citizens allocate trade-offs through RAPPA pairwise surveys at `/vote`, and the system turns those into stable priority weights.
+- **Budget optimization**: `@optomitron/obg` and the examples package generate reallocation targets, minimum-effective spending floors, overspend diagnostics, and constrained budget reports.
+- **Policy scoring**: `@optomitron/opg` evaluates policies with Bradford Hill-style causal confidence scoring instead of ideology-first labeling.
+- **Political accountability**: personal alignment reports show which benchmark politicians best match a citizen's stated priorities, with public share URLs for distribution.
+- **Legislative provenance**: the web app syncs current federal identities from Congress.gov and increasingly derives profiles from recent classified roll calls instead of only curated priors.
+- **Cross-jurisdiction analysis**: the examples package already runs international comparisons for health, education, drug policy, criminal justice, and federal spending questions.
 
 The database is multi-tenant: every jurisdiction is a tenant with its own priorities, officials, and data. Think Shopify, but for governments.
+
+---
+
+## Verifiability And AI
+
+- **Storacha/IPFS snapshots** preserve analysis and aggregation outputs as content-addressed history chains.
+- **Hypercert-compatible publication helpers** turn Optomitron outputs into activity, measurement, evaluation, and attachment records that can be published with receipts.
+- **Autonomous agent workflows** can review publication readiness, interpret test output, and produce structured manifests instead of opaque free-text summaries.
+- **World ID integration** is already in the web app as the first step toward sybil-resistant civic aggregation.
 
 ---
 
@@ -180,31 +218,34 @@ All use the same pipeline: **Temporal alignment → Bradford Hill → Predictor 
 > Full details in **[ARCHITECTURE.md](./ARCHITECTURE.md)**
 
 ```
-                    ┌───────────┐
-                    │  causal   │  ← Foundation (ZERO dependencies)
-                    └─────┬─────┘
-                          │
-              ┌───────────┼───────────┐
-              │           │           │
-              ▼           ▼           │
-        ┌─────────┐ ┌─────────┐      │
-        │   opg   │ │wishocracy│     │  (wishocracy is standalone)
-        └────┬────┘ └─────────┘      │
-             │                        │
-             ▼                        │
-        ┌─────────┐                   │
-        │   obg   │ ← depends on causal + opg
-        └─────────┘                   │
-                                      │
-        ┌─────────┐                   │
-        │  data   │  ← standalone (fetch + parse)
-        └─────────┘
+                    ┌──────────────┐
+                    │  optimizer   │  ← Domain-agnostic math core
+                    └──────┬───────┘
+                           │
+              ┌────────────┼────────────┐
+              │            │            │
+              ▼            ▼            ▼
+        ┌─────────┐  ┌────────────┐  ┌─────────┐
+        │   opg   │  │ wishocracy │  │   obg   │
+        └─────────┘  └────────────┘  └─────────┘
+
+        ┌─────────┐  ┌─────────┐  ┌──────────┐
+        │  data   │  │   db    │  │ chat-ui  │
+        └─────────┘  └─────────┘  └──────────┘
+
+        ┌─────────┐  ┌────────────┐  ┌────────┐
+        │   web   │  │  examples  │  │extension│
+        └─────────┘  └────────────┘  └────────┘
+
+        ┌──────────┐ ┌────────────┐ ┌─────────┐
+        │ storage  │ │ hypercerts │ │ agent   │
+        └──────────┘ └────────────┘ └─────────┘
 ```
 
 **Hard rules:**
-- `causal` depends on **nothing** — it's the foundation
+- `@optomitron/optimizer` depends on **nothing** — it's the foundation
 - Library packages are **pure TypeScript** — no server, no database
-- `causal` is **domain-agnostic** — no references to "drugs", "policies", or "budgets"
+- `@optomitron/optimizer` is **domain-agnostic** — no references to "drugs", "policies", or "budgets"
 - No circular dependencies
 
 ---

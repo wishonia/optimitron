@@ -930,3 +930,90 @@ export function deriveSupportConstrainedTargets(
     },
   };
 }
+
+// ─── Sparse outcome assessment ─────────────────────────────────────
+
+export interface SparseOutcomeDiagnostics {
+  totalEvents: number;
+  binsWithEvents: number;
+  binsWithoutEvents: number;
+  medianEventsPerBin: number;
+  minimumEventsPerBin: number;
+  meetsMinimumEventThreshold: boolean;
+  recommendedAggregationWindowMultiplier: number;
+  warnings: string[];
+}
+
+const DEFAULT_MIN_EVENT_COUNT_PER_BIN = 5;
+const DEFAULT_MIN_BINS_WITH_EVENTS = 3;
+
+export function assessSparseOutcomeSupport(
+  bins: ResponseCurveBin[],
+  options: {
+    minimumEventCountPerBin?: number;
+    minimumBinsWithEvents?: number;
+  } = {},
+): SparseOutcomeDiagnostics {
+  const minEventsPerBin = options.minimumEventCountPerBin ?? DEFAULT_MIN_EVENT_COUNT_PER_BIN;
+  const minBinsWithEvts = options.minimumBinsWithEvents ?? DEFAULT_MIN_BINS_WITH_EVENTS;
+
+  const warnings: string[] = [];
+  let totalEvents = 0;
+  let binsWithEvents = 0;
+  let binsWithoutEvents = 0;
+  const eventCounts: number[] = [];
+
+  for (const bin of bins) {
+    // For sparse outcomes, non-zero outcomeMean × count approximates event presence
+    // A bin with outcomeMean > 0 is treated as having events
+    const binEventProxy = bin.outcomeMean !== 0 ? bin.count : 0;
+    eventCounts.push(binEventProxy);
+    totalEvents += binEventProxy;
+    if (binEventProxy > 0) {
+      binsWithEvents += 1;
+    } else {
+      binsWithoutEvents += 1;
+    }
+  }
+
+  const sortedCounts = [...eventCounts].sort((a, b) => a - b);
+  const medianEventsPerBin = sortedCounts.length > 0
+    ? sortedCounts.length % 2 === 0
+      ? ((sortedCounts[Math.floor(sortedCounts.length / 2) - 1] ?? 0) + (sortedCounts[Math.floor(sortedCounts.length / 2)] ?? 0)) / 2
+      : sortedCounts[Math.floor(sortedCounts.length / 2)] ?? 0
+    : 0;
+
+  const minimumEventsPerBin = sortedCounts.length > 0 ? (sortedCounts[0] ?? 0) : 0;
+
+  const meetsMinimumEventThreshold =
+    binsWithEvents >= minBinsWithEvts &&
+    medianEventsPerBin >= minEventsPerBin;
+
+  // Recommend wider aggregation windows when data is sparse
+  let recommendedAggregationWindowMultiplier = 1;
+  if (binsWithEvents === 0) {
+    recommendedAggregationWindowMultiplier = 5;
+    warnings.push('No bins contain events; outcome appears entirely absent in this data range.');
+  } else if (binsWithEvents < minBinsWithEvts) {
+    recommendedAggregationWindowMultiplier = 3;
+    warnings.push(
+      `Only ${binsWithEvents}/${bins.length} bins contain events (minimum ${minBinsWithEvts} required); consider wider aggregation windows.`,
+    );
+  } else if (medianEventsPerBin < minEventsPerBin) {
+    recommendedAggregationWindowMultiplier = 2;
+    warnings.push(
+      `Median events per bin (${medianEventsPerBin}) is below minimum threshold (${minEventsPerBin}); estimates may be unstable.`,
+    );
+  }
+
+  return {
+    totalEvents,
+    binsWithEvents,
+    binsWithoutEvents,
+    medianEventsPerBin,
+    minimumEventsPerBin,
+    meetsMinimumEventThreshold,
+    recommendedAggregationWindowMultiplier,
+    warnings,
+  };
+}

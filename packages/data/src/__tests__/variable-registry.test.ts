@@ -81,6 +81,35 @@ describe('variable registry', () => {
     }
   });
 
+  it('parses entries with sparseOutcomeProfile', () => {
+    const battleDeaths = getVariableById('outcome.wb.battle_related_deaths');
+    expect(battleDeaths?.sparseOutcomeProfile).toBeDefined();
+    expect(battleDeaths?.sparseOutcomeProfile?.isRareEvent).toBe(true);
+    expect(battleDeaths?.sparseOutcomeProfile?.minimumEventCountPerBin).toBe(5);
+  });
+
+  it('parses entries without sparseOutcomeProfile', () => {
+    const lifeExpectancy = getVariableById('outcome.wb.life_expectancy_years');
+    expect(lifeExpectancy).toBeDefined();
+    expect(lifeExpectancy?.sparseOutcomeProfile).toBeUndefined();
+  });
+
+  it('validates new outcome entries have correct kind and welfareDirection', () => {
+    const newOutcomeIds = [
+      'outcome.who.ncd_mortality_rate',
+      'outcome.wb.maternal_mortality_per_100k',
+      'outcome.derived.battle_related_deaths_per_100k',
+      'outcome.wb.under_five_mortality_per_1000',
+    ];
+    for (const id of newOutcomeIds) {
+      const entry = getVariableById(id);
+      expect(entry).toBeDefined();
+      expect(entry?.kind).toBe('outcome');
+      expect(entry?.welfareDirection).toBeDefined();
+      expect(['higher_better', 'lower_better', 'neutral', 'unknown']).toContain(entry?.welfareDirection);
+    }
+  });
+
   it('can list discretionary and non-discretionary predictors', () => {
     const discretionary = listPredictorsByDiscretionary(true);
     const nonDiscretionary = listPredictorsByDiscretionary(false);

@@ -250,3 +250,17 @@ export async function fetchWHOHealthyLifeExpectancy(
 export async function fetchWHOUHCIndex(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchGHOIndicator(GHO_INDICATOR_CODES.UHC_INDEX, options);
 }
+
+/**
+ * Fetch NCD mortality rate (probability of dying 30-70 from NCDs) by country.
+ */
+export async function fetchWHONcdMortalityRate(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchGHOIndicator(GHO_INDICATOR_CODES.NCD_DEATHS, options);
+}
+
+/**
+ * Fetch under-five mortality rate by country.
+ */
+export async function fetchWHOUnderFiveMortality(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchGHOIndicator(GHO_INDICATOR_CODES.UNDER_FIVE_MORTALITY, options);
+}

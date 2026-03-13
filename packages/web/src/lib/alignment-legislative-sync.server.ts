@@ -1,5 +1,9 @@
 import { fetchers } from "@optomitron/data";
 import {
+  ALIGNMENT_BILL_FEEDS,
+  type AlignmentBillFeedConfig,
+} from "@/lib/alignment-legislative-config";
+import {
   classifyLegislativeBill,
   confidenceToSignalWeight,
   deriveCategorySupportSignal,
@@ -8,9 +12,6 @@ import {
 import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
 
 const ALIGNMENT_CATEGORY_IDS = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
-const RECENT_BILLS_PER_CONGRESS = 100;
-const RECENT_SENATE_BILLS_PER_CONGRESS = 60;
-const RECENT_SENATE_RESOLUTIONS_PER_CONGRESS = 25;
 const MAX_ROLL_CALLS_PER_BILL = 3;
 const MIN_ROLL_CALLS_FOR_PARTIAL_PROFILE = 2;
 const MIN_ROLL_CALLS_PER_PROFILE = 6;
@@ -45,17 +46,6 @@ export interface DerivedAlignmentVoteRow {
 
 type FetchedBill = Awaited<ReturnType<typeof fetchers.fetchBills>>[number];
 type FetchedBillVote = Awaited<ReturnType<typeof fetchers.fetchBillVotes>>[number];
-
-interface BillFeedConfig {
-  billType?: string;
-  limit: number;
-}
-
-const BILL_FEEDS: readonly BillFeedConfig[] = [
-  { limit: RECENT_BILLS_PER_CONGRESS },
-  { billType: "s", limit: RECENT_SENATE_BILLS_PER_CONGRESS },
-  { billType: "sjres", limit: RECENT_SENATE_RESOLUTIONS_PER_CONGRESS },
-] as const;
 
 function currentCongressNumber(now: Date = new Date()): number {
   return Math.floor((now.getUTCFullYear() - 1789) / 2) + 1;
@@ -278,7 +268,7 @@ function sortBillsByLatestAction(bills: FetchedBill[]): FetchedBill[] {
 
 async function fetchRecentBillsForCongress(congress: number): Promise<FetchedBill[]> {
   const feeds = await Promise.all(
-    BILL_FEEDS.map((feed) =>
+    ALIGNMENT_BILL_FEEDS.map((feed: AlignmentBillFeedConfig) =>
       feed.billType
         ? fetchers.fetchBillsByType(congress, feed.billType, feed.limit)
         : fetchers.fetchBills(congress, undefined, feed.limit),
