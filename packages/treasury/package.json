@@ -1,0 +1,19 @@
+{
+  "name": "@optomitron/treasury",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Incentive Alignment Bonds: $WISH token with transaction tax UBI and alignment-based fund distribution",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "build": "hardhat compile",
+    "clean": "hardhat clean"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0"
+  }
+}

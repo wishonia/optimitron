@@ -7,6 +7,7 @@ export const ROUTES = {
   profile: "/profile",
   wishonia: "/wishonia",
   about: "/about",
+  transparency: "/transparency",
   outcomes: "/outcomes",
   compare: "/compare",
   policies: "/policies",
@@ -148,6 +149,13 @@ export const appLinks: NavItem[] = [
   profileLink,
 ];
 
+export const transparencyLink: NavItem = {
+  href: ROUTES.transparency,
+  label: "Transparency",
+  emoji: "🔍",
+  description: "Verifiable attestations, IPFS storage, and the full governance pipeline",
+};
+
 export const aboutLink: NavItem = {
   href: ROUTES.about,
   label: "About",
@@ -160,6 +168,7 @@ export const topLinks: NavItem[] = [
   wishocracyLink,
   alignmentLink,
   trackLink,
+  transparencyLink,
   aboutLink,
 ];
 

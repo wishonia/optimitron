@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, BarChart3, Scale, Sparkles, Target } from "lucide-react";
+import { ArrowRight, BarChart3, ExternalLink, Scale, Shield, Sparkles, Target } from "lucide-react";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { CopyLinkButton } from "@/components/sharing/copy-link-button";
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
@@ -9,6 +9,39 @@ import { Button } from "@/components/ui/button";
 import { ALIGNMENT_BENCHMARK_SOURCE_NOTE } from "@/lib/alignment-benchmarks";
 import type { PersonalAlignmentState } from "@/lib/alignment-report";
 import { wishocracyLink } from "@/lib/routes";
+import hypercertData from "@/data/alignment-hypercerts.json";
+
+interface HypercertPolitician {
+  politicianId: string;
+  name: string;
+  storageCid: string;
+  activityUri: string;
+  evaluationUri: string;
+  alignmentScore: number;
+}
+
+const hypercertsByPolitician = new Map(
+  (hypercertData.politicians as HypercertPolitician[]).map((p) => [p.politicianId, p]),
+);
+
+function HypercertBadge({ politicianId }: { politicianId: string }) {
+  const cert = hypercertsByPolitician.get(politicianId);
+  if (!cert) return null;
+
+  return (
+    <a
+      href={`https://${cert.storageCid}.ipfs.storacha.link/`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-2 inline-flex items-center gap-1.5 border-2 border-black bg-emerald-200 px-2 py-1 text-xs font-black uppercase tracking-[0.1em] text-black transition-all hover:bg-emerald-300 hover:translate-x-[1px] hover:translate-y-[1px]"
+      title="This alignment score is published as a verifiable Hypercert on IPFS via Storacha"
+    >
+      <Shield className="h-3 w-3" />
+      Verified on IPFS
+      <ExternalLink className="h-3 w-3" />
+    </a>
+  );
+}
 
 interface AlignmentReportProps {
   state: PersonalAlignmentState;
@@ -177,6 +210,7 @@ export function AlignmentReport({
               <p className="max-w-2xl text-sm font-medium text-black/70">
                 {topMatch.summary}
               </p>
+              <HypercertBadge politicianId={topMatch.politicianId} />
             </div>
             <div className="min-w-40 border-4 border-black bg-brutal-cyan p-5 text-center">
               <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
@@ -328,6 +362,7 @@ export function AlignmentReport({
               </div>
 
               <p className="mt-4 text-sm font-medium text-black/70">{politician.summary}</p>
+              <HypercertBadge politicianId={politician.politicianId} />
 
               <div className="mt-5 grid gap-4">
                 <div>
@@ -393,6 +428,89 @@ export function AlignmentReport({
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="border-4 border-black bg-emerald-50 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="flex items-center gap-2 mb-4">
+          <Shield className="h-5 w-5" />
+          <h2 className="text-2xl font-black uppercase text-black">
+            Verifiable Attestations
+          </h2>
+        </div>
+        <p className="text-sm font-medium text-black/70 max-w-3xl mb-6">
+          Every alignment score above is published as a{" "}
+          <a
+            href="https://hypercerts.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-black text-black underline hover:text-pink-600"
+          >
+            Hypercert
+          </a>{" "}
+          on the AT Protocol and stored on{" "}
+          <a
+            href="https://storacha.network"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-black text-black underline hover:text-pink-600"
+          >
+            Storacha
+          </a>{" "}
+          (IPFS). These verifiable records enable{" "}
+          <a
+            href="https://iab.warondisease.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-black text-black underline hover:text-pink-600"
+          >
+            Incentive Alignment Bonds
+          </a>{" "}
+          — smart contracts that distribute campaign funds based on how well
+          politicians align with citizen preferences.
+        </p>
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {hypercertData.politicians.map((pol) => (
+            <div
+              key={pol.politicianId}
+              className="border-2 border-black bg-white p-3"
+            >
+              <div className="text-xs font-black uppercase text-black">
+                {pol.name}
+              </div>
+              <div className="text-xs font-bold text-black/50 mt-1">
+                Score: {pol.alignmentScore}%
+              </div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                <a
+                  href={`https://${pol.storageCid}.ipfs.storacha.link/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 border border-black bg-emerald-100 px-1.5 py-0.5 text-[10px] font-black uppercase hover:bg-emerald-200"
+                >
+                  IPFS <ExternalLink className="h-2.5 w-2.5" />
+                </a>
+                <span
+                  className="inline-flex items-center gap-1 border border-black bg-blue-100 px-1.5 py-0.5 text-[10px] font-black uppercase"
+                  title={pol.activityUri}
+                >
+                  AT Proto
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-5 text-xs font-bold uppercase tracking-[0.15em] text-black/50">
+          Methodology:{" "}
+          <a
+            href="https://wishocracy.warondisease.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-pink-600"
+          >
+            wishocracy.warondisease.org
+          </a>{" "}
+          · Generated {new Date(hypercertData.generatedAt).toLocaleString()}
+        </p>
       </section>
     </div>
   );
