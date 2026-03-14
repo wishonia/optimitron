@@ -105,12 +105,12 @@ Flow: Citizens donate → Treasury holds funds → Alignment scores update on-ch
 
 **Paper**: `https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/incentive-alignment-bonds-paper.qmd` ([iab.warondisease.org](https://iab.warondisease.org))
 
-**DO NOT build this yet.** Prerequisites:
+Prerequisites:
 1. ✅ Causal engine working
-2. ⬜ RAPPA collecting real preferences  
+2. ⬜ RAPPA collecting real preferences
 3. ⬜ Voting record data flowing in
-4. ⬜ Alignment scores published
-5. ⬜ THEN treasury makes sense
+4. ⬜ Alignment scores published as Hypercerts
+5. ⬜ Treasury smart contracts reference published alignment scores
 
 Existing Solidity contracts in the old wishocracy repo (`https://github.com/mikepsinn/wishocracy/tree/main/contracts/`) can be a starting point.
 
