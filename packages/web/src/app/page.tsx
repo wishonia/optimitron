@@ -69,7 +69,7 @@ const featuredFindings = [
     stat: "Drug deaths fell 70% in Portugal",
     vs: "HIV among users fell 74%",
     description:
-      "Portugal stopped arresting people for having drugs in 2001 and drug deaths dropped 94%. Meanwhile the US quadrupled drug war spending and overdose deaths went up 5.6x. So that worked out.",
+      "Portugal decriminalised in 2001, drug deaths dropped 94%. The US quadrupled drug war spending — overdose deaths went up 5.6x.",
     item: policiesLink,
   },
   {
@@ -78,7 +78,7 @@ const featuredFindings = [
     stat: "Norway recidivism: 20%",
     vs: "vs US: 76%",
     description:
-      "Norway gives prisoners education and job training. America gives them concrete and trauma. Norway's reoffending rate is 20%. America's is 76%. It's almost like treating people like humans works better. Weird.",
+      "Norway gives prisoners education and job training. Reoffending: 20%. America gives them concrete and trauma. Reoffending: 76%.",
     item: compareLink,
   },
   {
@@ -87,7 +87,7 @@ const featuredFindings = [
     stat: "Rwanda: life expectancy 48 to 69 yrs",
     vs: "Under-5 mortality fell 82%",
     description:
-      "Rwanda hired 45,000 community health workers in 2005 and child mortality dropped 82%. No new drug. No billion-dollar programme. Just people knocking on doors and asking 'is the baby alright?' Turns out that works.",
+      "Rwanda hired 45,000 community health workers in 2005. Child mortality dropped 82%. No new drug. Just people knocking on doors.",
     item: policiesLink,
   },
 ];
@@ -348,9 +348,7 @@ export default function Home() {
             Things You Can Do Right Now Instead of Arguing Online
           </h2>
           <p className="mt-4 text-lg text-black/60 max-w-3xl mx-auto font-medium">
-            On my planet, governance takes about four minutes a week. You lot seem to
-            spend most of your time shouting about it on your little phones and then
-            doing absolutely nothing. Try one of these.
+            On my planet, governance takes four minutes a week. Try one of these.
           </p>
         </ScrollReveal>
         <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -610,14 +608,9 @@ export default function Home() {
             </div>
           ))}
         </StaggerGrid>
-        <ScrollReveal delay={0.4}>
-          <p className="text-center text-black/50 text-sm mt-6 font-medium max-w-2xl mx-auto">
-            Healthcare, drug policy, criminal justice, climate, education,
-            infrastructure. From OECD, World Bank, WHO, and your own
-            peer-reviewed studies. You already have the answers. They&apos;re
-            just filed under &ldquo;things that make politicians uncomfortable.&rdquo;
-          </p>
-        </ScrollReveal>
+        <p className="text-center text-black/50 text-sm mt-6 font-medium max-w-2xl mx-auto">
+          From OECD, World Bank, WHO, and peer-reviewed studies.
+        </p>
       </section>
 
       {/* Featured Findings */}
@@ -739,11 +732,8 @@ export default function Home() {
             The Bottleneck Is Politicians
           </h2>
           <p className="mt-4 text-lg text-black/60 max-w-3xl mx-auto font-medium">
-            You have the data. You have the solutions. The thing standing between the
-            information and the action is a class of intermediaries who are structurally
-            incapable of applying it. They&apos;re not evil. They&apos;re just optimising
-            for re-election, which is a completely different objective function from
-            &ldquo;making things better.&rdquo;
+            You have the data. You have the solutions. The bottleneck is intermediaries
+            optimising for re-election, not outcomes.
           </p>
         </ScrollReveal>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -755,33 +745,19 @@ export default function Home() {
             <ul className="space-y-3 text-sm text-black/70 font-medium">
               <li className="flex gap-2">
                 <span className="text-brutal-red font-black shrink-0">&times;</span>
-                <span>
-                  Raise money from the industries they regulate. The average US
-                  senator spends <span className="font-black text-black">70% of their time</span>{" "}
-                  fundraising instead of governing.
-                </span>
+                <span>Spend <span className="font-black text-black">70% of their time</span> fundraising, not governing</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-red font-black shrink-0">&times;</span>
-                <span>
-                  Vote based on donor preferences, not citizen preferences. Donor
-                  alignment: ~80%. Citizen alignment: ~30%.
-                </span>
+                <span>Donor alignment: ~80%. Citizen alignment: ~30%</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-red font-black shrink-0">&times;</span>
-                <span>
-                  Block evidence-based policy when it threatens their coalition. See:
-                  drug decriminalisation, healthcare reform, climate policy, FDA reform.
-                </span>
+                <span>Block evidence-based policy that threatens their coalition</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-red font-black shrink-0">&times;</span>
-                <span>
-                  Represent the median <span className="font-black text-black">donor</span>,
-                  not the median <span className="font-black text-black">citizen</span>.
-                  These are very different people.
-                </span>
+                <span>Represent the median <span className="font-black text-black">donor</span>, not the median <span className="font-black text-black">citizen</span></span>
               </li>
             </ul>
           </div>
@@ -794,58 +770,34 @@ export default function Home() {
             <ul className="space-y-3 text-sm text-black/70 font-medium">
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">&check;</span>
-                <span>
-                  Citizens vote directly on priorities through pairwise comparisons.
-                  No fundraising. No lobbying. No middleman.
-                </span>
+                <span>Citizens vote directly on priorities. No fundraising. No middleman</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">&check;</span>
-                <span>
-                  Optomitron&apos;s causal engine determines which policies actually
-                  achieve those priorities. Data in, optimal policy out.
-                </span>
+                <span>Causal engine determines which policies actually work. Data in, optimal policy out</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">&check;</span>
-                <span>
-                  Alignment scores expose exactly how much each official deviates from
-                  what citizens actually want. No hiding behind party labels.
-                </span>
+                <span>Alignment scores expose how much each official deviates from citizen preferences</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">&check;</span>
-                <span>
-                  The system optimises for{" "}
-                  <span className="font-black text-black">outcomes</span>, not re-election.
-                  Turns out those are very different things.
-                </span>
+                <span>Optimises for <span className="font-black text-black">outcomes</span>, not re-election</span>
               </li>
             </ul>
           </div>
           </ScrollReveal>
         </div>
-        <ScrollReveal delay={0.2}>
-        <div className="mt-8 p-6 border-2 border-black bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-center text-sm text-black/70 font-medium max-w-3xl mx-auto">
-            Wishocracy doesn&apos;t reform politicians. It makes them unnecessary. When
-            citizens can express preferences directly, and a causal engine can determine
-            optimal policy responses, what exactly is the politician for? Giving speeches?
-            You have YouTube for that. Shaking hands? You have{" "}
-            <span className="italic">literally anything else</span> for that.
-          </p>
-          <div className="text-center mt-4">
-            <NavItemLink
-              item={wishocracyPaperLink}
-              variant="custom"
-              external
-              className="inline-flex items-center text-sm font-black text-brutal-pink hover:text-brutal-pink uppercase transition-colors"
-            >
-              Read the Wishocracy paper &rarr;
-            </NavItemLink>
-          </div>
+        <div className="text-center mt-8">
+          <NavItemLink
+            item={wishocracyPaperLink}
+            variant="custom"
+            external
+            className="inline-flex items-center text-sm font-black text-brutal-pink hover:text-brutal-pink uppercase transition-colors"
+          >
+            Read the Wishocracy paper &rarr;
+          </NavItemLink>
         </div>
-        </ScrollReveal>
       </section>
 
       <AlignmentTeaser />
@@ -857,44 +809,36 @@ export default function Home() {
           <h2 className="text-2xl sm:text-3xl font-black text-center mb-4 uppercase tracking-tight text-black">
             How Optomitron Replaces Guessing With Knowing
           </h2>
-          <p className="text-center text-sm text-black/60 font-medium mb-4 max-w-2xl mx-auto">
-            This is the same system I use to run my planet. For every policy
-            question, every budget decision, every governance choice — it gives you
-            the optimal answer. Not an opinion. Not a party platform. The answer
-            that the data supports, with confidence intervals.
-          </p>
           <p className="text-center text-sm text-black/60 font-medium mb-12 max-w-2xl mx-auto">
-            No politician needed. No ideology required. Just: &ldquo;what
-            actually works, how much does it cost, and what&apos;s the
-            evidence?&rdquo; I&apos;ve simplified it to five steps because
-            I&apos;m told your attention spans are &ldquo;challenging.&rdquo;
+            No politician needed. No ideology required. Just: what works, how
+            much, and what&apos;s the evidence.
           </p>
           <StepReveal className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             {[
               {
                 step: 1,
                 title: "Collect",
-                desc: "Hoover up outcome data from OECD, World Bank, and WHO. Decades of it. Just sitting there. Being ignored.",
+                desc: "Outcome data from OECD, World Bank, and WHO. Decades of it.",
               },
               {
                 step: 2,
                 title: "Align",
-                desc: "Match policy changes to what actually happened afterwards. Time-series analysis. Onset delays. Proper science, not vibes.",
+                desc: "Match policy changes to what actually happened afterwards.",
               },
               {
                 step: 3,
                 title: "Score",
-                desc: "Grade the causal evidence using Bradford Hill criteria. Strength, consistency, temporality, gradient. No feelings involved.",
+                desc: "Grade causal evidence using Bradford Hill criteria.",
               },
               {
                 step: 4,
                 title: "Identify",
-                desc: "Find the optimal funding levels and policy configurations. With confidence intervals, because we're not animals.",
+                desc: "Find optimal funding levels with confidence intervals.",
               },
               {
                 step: 5,
                 title: "Recommend",
-                desc: "Rank everything by Predictor Impact Score. Here's what works, here's how much, here's the evidence. You're welcome.",
+                desc: "Rank everything by Predictor Impact Score.",
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
@@ -922,9 +866,7 @@ export default function Home() {
             Right Then. Shall We Get On With It?
           </h2>
           <p className="text-black/70 max-w-2xl mx-auto mb-8 leading-relaxed font-medium">
-            I&apos;ve given you the data, the tools, and the recommendations. I
-            even made it look nice. The only thing I can&apos;t do is click the
-            buttons for you. Although I&apos;m working on that.
+            Data, tools, and recommendations. All here. Click something.
           </p>
           <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-4">
             <NavItemLink
