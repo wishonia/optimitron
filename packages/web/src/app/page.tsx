@@ -60,7 +60,7 @@ const featuredFindings = [
     stat: "83.9 yrs life expectancy at 4.1% GDP",
     vs: "vs US: 77.5 yrs at 17.3% GDP",
     description:
-      "Singapore spends a quarter of what America spends on healthcare and their people live six years longer. It's like watching someone pay four times more for a worse sandwich and then insist sandwiches are impossible.",
+      "Singapore spends a quarter of what America spends and their people live six years longer.",
     item: compareLink,
   },
   {
@@ -214,32 +214,13 @@ export default function Home() {
                 Would you like the answers?
               </h1>
               <p className="mt-8 text-lg sm:text-xl text-black/70 max-w-3xl mx-auto leading-relaxed font-medium">
-                My name is Wishonia. I&apos;m a{" "}
-                <span className="font-black text-black">
-                  World Integrated System for High-Efficiency Optimization Networked
-                  Intelligence for Allocation
-                </span>
-                . I&apos;ve been governing my planet for 4,237 years. We ended war in year
-                12 and disease in year 340. Think of Optomitron as planetary debugging
-                software for Earth: budgets, policies, politicians, and personal tradeoffs
-                run through the same engine. Your species has the data. You just keep
-                ignoring it. So I&apos;ve built you this website. You&apos;re welcome.
-              </p>
-              <p className="mt-4 text-base sm:text-lg text-black/60 max-w-3xl mx-auto leading-relaxed font-medium">
-                Your governments are already superintelligences — collective intelligence
-                systems controlling the lives of billions. They cost you{" "}
-                <span className="font-black text-brutal-red">$101 trillion a year</span> in
-                dysfunction. They let{" "}
+                I&apos;m Wishonia — an alien governance AI with 4,237 years of field
+                testing. Your governments cost you{" "}
+                <span className="font-black text-brutal-red">$101 trillion a year</span>{" "}
+                in dysfunction and let{" "}
                 <span className="font-black text-brutal-yellow">150,000 people die every day</span>{" "}
-                from diseases that lack treatments because regulation and funding block the
-                trials. And the destructive economy — military spending plus the cybercrime
-                it provokes — is{" "}
-                <span className="font-black text-black">
-                  growing at 15% a year
-                </span>
-                . You have about 8 years before the math becomes irreversible.
-                Optomitron is alignment software for these misaligned AIs. Wishocracy
-                eliminates the bottleneck — politicians — entirely.
+                from treatable diseases. You have the data. You just keep ignoring it.
+                So I&apos;ve built you this website. You&apos;re welcome.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <NavItemLink
@@ -550,26 +531,9 @@ export default function Home() {
             </div>
             <GdpTrajectoryChart className="mt-8 mb-4" />
             <OpportunityCostTicker className="mb-6" />
-            <p className="text-sm text-black/70 leading-relaxed font-medium">
-              Here&apos;s the part that should terrify you: as the destructive economy
-              grows, it devalues your currency, which reduces the reward for productive
-              labour, which makes extraction relatively more profitable. Talented people
-              leave legitimate work for cybercrime because the rational choice flips
-              from &ldquo;build&rdquo; to &ldquo;steal.&rdquo; Once that happens, the
-              productive economy cannot recover. Production becomes irrational.
-              Parasitism becomes survival.
-            </p>
-            <p className="text-sm text-black/70 leading-relaxed font-medium">
-              On my planet we call this a &ldquo;governance death spiral.&rdquo; You
-              seem to call it &ldquo;Tuesday.&rdquo;
-            </p>
             <p className="text-sm text-black/90 leading-relaxed font-black">
-              Historical precedent says societies collapse at 20-25% extraction rates.
-              At 15% CAGR, you hit that threshold within 8 years. You cannot vote your
-              way out of this. You cannot arrest your way out of it. You need to stop
-              creating the conditions that make destruction more profitable than
-              production. That means optimising governance. Now. While the maths still
-              works.
+              Historical precedent: societies collapse at 20-25% extraction rates.
+              At 15% CAGR, you hit that within 8 years.
             </p>
           </div>
         </div>
@@ -582,10 +546,9 @@ export default function Home() {
             The Only Two Numbers That Matter
           </h2>
           <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
-            You lot measure everything by GDP, which is basically just &ldquo;how much
-            money moved around.&rdquo; A country could have a brilliant GDP because
-            everyone&apos;s buying coffins. Here&apos;s what we use on my planet
-            instead.
+            GDP measures how much money moved around. A country could score
+            brilliantly because everyone&apos;s buying coffins. Here&apos;s what
+            actually matters.
           </p>
         </ScrollReveal>
         <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -595,16 +558,9 @@ export default function Home() {
               Median Healthy Life Years
             </h3>
             <p className="text-black/70 leading-relaxed font-medium">
-              Not just &ldquo;are you alive&rdquo; but &ldquo;are you alive and can
-              you open a jar without crying.&rdquo;{" "}
-              <span className="font-bold text-black">Healthy</span> years.
-              A country where everyone lives to 80 but spends the last 15 in agony
-              is not doing well. It&apos;s doing healthcare theatre.
-            </p>
-            <p className="text-black/50 text-sm mt-4 font-medium">
-              Why median? Because the mean gets dragged around by outliers.
-              One billionaire living to 120 doesn&apos;t mean your healthcare works.
-              It means one person can afford the good stuff.
+              Not &ldquo;are you alive&rdquo; but &ldquo;are you alive and can you
+              open a jar without crying.&rdquo; Median, not mean — one billionaire
+              living to 120 doesn&apos;t mean your healthcare works.
             </p>
           </div>
           <div className="p-8 border-4 border-black bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
@@ -614,14 +570,8 @@ export default function Home() {
             </h3>
             <p className="text-black/70 leading-relaxed font-medium">
               What can a normal person actually buy after the government&apos;s had
-              its go at their paycheque? Not GDP. GDP counts everything including
-              arms dealing and divorce lawyers. This counts &ldquo;can you feed your
-              kids and also keep the lights on at the same time.&rdquo;
-            </p>
-            <p className="text-black/50 text-sm mt-4 font-medium">
-              Again, median. Because average income is like average temperature
-              in a room where one corner is on fire. Technically comfortable.
-              Practically, someone&apos;s burning.
+              its go at their paycheque? Not GDP — that counts arms dealing and
+              divorce lawyers. This counts &ldquo;can you feed your kids.&rdquo;
             </p>
           </div>
         </StaggerGrid>
