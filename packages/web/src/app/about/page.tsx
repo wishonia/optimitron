@@ -4,8 +4,10 @@ import {
   alignmentLink,
   communityLinks,
   paperLinks,
+  prizeLink,
   studiesLink,
   trackLink,
+  transparencyLink,
   wishocracyLink,
 } from "@/lib/routes";
 
@@ -202,6 +204,63 @@ export default function AboutPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="mb-16">
+        <h2 className="section-title">The Economic System</h2>
+        <p className="text-sm text-black/60 mb-6 font-medium max-w-3xl">
+          Diagnosing the problem is step one. Funding the solution is step two.
+          Your species has historically struggled with step two because you keep
+          inventing middlemen. Here&apos;s how it works without them.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="card bg-cyan-100 border-cyan-500">
+            <div className="text-2xl mb-2">🏦</div>
+            <h3 className="font-black text-black mb-2">FairTax</h3>
+            <p className="text-sm text-black/60 font-medium leading-relaxed">
+              $WISH is an ERC-20 token with a 0.5% transaction tax built into
+              every transfer. This replaces your income tax system entirely — no
+              filing, no audits, no IRS. Revenue collection as a one-line
+              protocol feature instead of a 74,000-page tax code.
+            </p>
+          </div>
+          <div className="card bg-emerald-100 border-emerald-500">
+            <div className="text-2xl mb-2">🍞</div>
+            <h3 className="font-black text-black mb-2">Universal Basic Income</h3>
+            <p className="text-sm text-black/60 font-medium leading-relaxed">
+              The transaction tax funds a treasury that distributes UBI to every
+              verified citizen via World ID. No means testing. No case workers.
+              No $1.1 trillion spent administering who deserves help. Everyone
+              eats. The bureaucracy doesn&apos;t.
+            </p>
+          </div>
+          <div className="card bg-pink-100 border-pink-500">
+            <div className="text-2xl mb-2">🎯</div>
+            <h3 className="font-black text-black mb-2">Prize Pool</h3>
+            <p className="text-sm text-black/60 font-medium leading-relaxed">
+              Want to fund specific governance reforms? Deposit into the
+              outcome-based escrow. Money stays locked until health and income
+              measurably improve. Then you vote on which implementers deserve
+              payment. Results, not promises.
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <NavItemLink
+            item={prizeLink}
+            variant="custom"
+            className="inline-flex items-center text-sm font-black uppercase text-black hover:text-pink-600 transition-colors"
+          >
+            Donate to the Prize Pool &rarr;
+          </NavItemLink>
+          <NavItemLink
+            item={transparencyLink}
+            variant="custom"
+            className="inline-flex items-center text-sm font-black uppercase text-black hover:text-pink-600 transition-colors"
+          >
+            See The Full Pipeline &rarr;
+          </NavItemLink>
         </div>
       </section>
 

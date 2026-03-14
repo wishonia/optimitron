@@ -92,8 +92,8 @@ function ExploreDropdown({ pathname }: { pathname: string }) {
         onClick={() => setOpen(!open)}
         className={`text-sm font-bold uppercase px-3 py-2 border-2 transition-all flex items-center gap-1 ${
           isActive
-            ? "border-black bg-yellow-300 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-            : "border-transparent text-black hover:border-black hover:bg-cyan-200 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            ? "border-black bg-brutal-yellow text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            : "border-transparent text-black hover:border-black hover:bg-brutal-cyan hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         }`}
       >
         Explore
@@ -146,7 +146,7 @@ export default function Navbar() {
           <div className="flex items-center gap-8">
             <Link
               href={ROUTES.home}
-              className="text-xl font-black uppercase tracking-tight text-black transition-colors hover:text-pink-500"
+              className="text-xl font-black uppercase tracking-tight text-black transition-colors hover:text-brutal-pink"
             >
               ⚡ Optomitron
             </Link>
@@ -175,7 +175,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="border-2 border-black p-2 transition-colors hover:bg-yellow-300 md:hidden"
+            className="border-2 border-black p-2 transition-colors hover:bg-brutal-yellow md:hidden"
             aria-label="Toggle menu"
           >
             <svg
@@ -207,7 +207,7 @@ export default function Navbar() {
       {mobileMenuOpen ? (
         <div className="border-t-4 border-black bg-white md:hidden">
           <div className="space-y-1 px-4 py-3">
-            <div className="text-xs font-bold uppercase text-gray-400 px-3 py-1">
+            <div className="text-xs font-bold uppercase text-muted-foreground px-3 py-1">
               Explore
             </div>
             {exploreLinks.map((link) => (
@@ -219,7 +219,7 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
               />
             ))}
-            <div className="border-t-2 border-gray-200 my-2" />
+            <div className="border-t-2 border-black/20 my-2" />
             {topLinks.map((link) => (
               <NavItemLink
                 key={link.href}
@@ -229,7 +229,7 @@ export default function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
               />
             ))}
-            <div className="border-t-2 border-gray-200 my-2" />
+            <div className="border-t-2 border-black/20 my-2" />
             {isAuthenticated ? (
               <NavItemLink
                 item={profileLink}

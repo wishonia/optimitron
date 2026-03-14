@@ -34,6 +34,8 @@ import {
   profileLink,
   studiesLink,
   trackLink,
+  prizeLink,
+  transparencyLink,
   wishocracyLink,
   wishocracyPaperLink,
 } from "@/lib/routes";
@@ -1033,6 +1035,66 @@ export default function Home() {
           </div>
         </div>
         </ScrollReveal>
+      </section>
+
+      {/* The Economic System */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <ScrollReveal className="text-center mb-10">
+          <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-black">
+            Diagnosis Is Free. Funding Isn&apos;t.
+          </h2>
+          <p className="mt-4 text-base text-black/60 max-w-2xl mx-auto font-medium">
+            Knowing what works is step one. Paying for it without inventing
+            another bureaucracy is step two. Here&apos;s how you fund governance
+            reform, replace the IRS, and keep people from starving — all without
+            a single middleman.
+          </p>
+        </ScrollReveal>
+        <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
+          <div className="p-6 border-4 border-black bg-cyan-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-2xl mb-2">🏦</div>
+            <h3 className="font-black text-black mb-2">FairTax</h3>
+            <p className="text-sm text-black/60 font-medium">
+              $WISH has a 0.5% transaction tax. Every transfer funds the
+              treasury automatically. No filing. No audits. No 74,000-page tax
+              code. Revenue collection as a protocol feature.
+            </p>
+          </div>
+          <div className="p-6 border-4 border-black bg-emerald-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-2xl mb-2">🍞</div>
+            <h3 className="font-black text-black mb-2">Universal Basic Income</h3>
+            <p className="text-sm text-black/60 font-medium">
+              The tax funds UBI distributed to every verified citizen via World
+              ID. No means testing. No welfare bureaucracy spending half the
+              budget on itself. Everyone eats.
+            </p>
+          </div>
+          <div className="p-6 border-4 border-black bg-pink-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-2xl mb-2">🎯</div>
+            <h3 className="font-black text-black mb-2">Prize Pool</h3>
+            <p className="text-sm text-black/60 font-medium">
+              Donate to an outcome-based escrow. Money stays locked until health
+              and income actually improve. Then donors vote on who gets paid.
+              Results, not promises.
+            </p>
+          </div>
+        </StaggerGrid>
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+          <NavItemLink
+            item={prizeLink}
+            variant="custom"
+            className="inline-flex items-center justify-center border-4 border-black bg-pink-500 px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            Donate to the Prize
+          </NavItemLink>
+          <NavItemLink
+            item={transparencyLink}
+            variant="custom"
+            className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            See The Full Pipeline
+          </NavItemLink>
+        </div>
       </section>
 
       {/* Same Engine, Every Scale */}

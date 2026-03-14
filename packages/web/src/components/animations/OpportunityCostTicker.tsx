@@ -53,7 +53,7 @@ export function OpportunityCostTicker({
 
   return (
     <div
-      className={`p-4 bg-white/80 border-2 border-red-300 text-center ${className}`}
+      className={`p-4 bg-white/80 border-2 border-brutal-red text-center ${className}`}
     >
       <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6">
         <div>
@@ -62,7 +62,7 @@ export function OpportunityCostTicker({
           </span>
           <span
             ref={dollarsRef}
-            className="text-lg sm:text-xl font-black text-red-600"
+            className="text-lg sm:text-xl font-black text-brutal-red"
             style={{ fontVariantNumeric: "tabular-nums" }}
           >
             $0.0M
@@ -72,7 +72,7 @@ export function OpportunityCostTicker({
           </span>
           <span
             ref={trialsRef}
-            className="text-lg sm:text-xl font-black text-emerald-600"
+            className="text-lg sm:text-xl font-black text-brutal-cyan"
             style={{ fontVariantNumeric: "tabular-nums" }}
           >
             0.0

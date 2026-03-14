@@ -12,20 +12,20 @@ export function getNavItemLinkClasses(
     case "topNav":
       return `text-sm font-bold uppercase px-3 py-2 border-2 transition-all block ${
         isActive
-          ? "border-black bg-yellow-300 text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-          : "border-transparent text-black hover:border-black hover:bg-cyan-200 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          ? "border-black bg-brutal-yellow text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          : "border-transparent text-black hover:border-black hover:bg-brutal-cyan hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
       }`;
     case "dropdown":
       return `block px-4 py-3 transition-colors ${
         isActive
-          ? "bg-yellow-300 text-black"
-          : "text-black hover:bg-cyan-200"
+          ? "bg-brutal-yellow text-black"
+          : "text-black hover:bg-brutal-cyan"
       }`;
     case "mobile":
       return `block px-3 py-2 border-2 transition-all ${
         isActive
-          ? "border-black bg-yellow-300 text-black"
-          : "border-transparent text-black hover:border-black hover:bg-cyan-200"
+          ? "border-black bg-brutal-yellow text-black"
+          : "border-transparent text-black hover:border-black hover:bg-brutal-cyan"
       }`;
     case "footer":
       return "text-sm font-medium text-black/70 hover:text-black transition-colors";

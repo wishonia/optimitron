@@ -33,7 +33,7 @@ function HypercertBadge({ politicianId }: { politicianId: string }) {
       href={`https://${cert.storageCid}.ipfs.storacha.link/`}
       target="_blank"
       rel="noopener noreferrer"
-      className="mt-2 inline-flex items-center gap-1.5 border-2 border-black bg-emerald-200 px-2 py-1 text-xs font-black uppercase tracking-[0.1em] text-black transition-all hover:bg-emerald-300 hover:translate-x-[1px] hover:translate-y-[1px]"
+      className="mt-2 inline-flex items-center gap-1.5 border-2 border-black bg-brutal-cyan px-2 py-1 text-xs font-black uppercase tracking-[0.1em] text-black transition-all hover:bg-brutal-cyan/80 hover:translate-x-[1px] hover:translate-y-[1px]"
       title="This alignment score is published as a verifiable Hypercert on IPFS via Storacha"
     >
       <Shield className="h-3 w-3" />
@@ -92,7 +92,7 @@ export function AlignmentReport({
     return (
       <div className="space-y-8">
         <section className="space-y-3">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-pink-600">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
             {publicMode ? "Shared Alignment" : "Your Alignment"}
           </p>
           <h1 className="text-4xl font-black uppercase tracking-tight text-black">
@@ -117,13 +117,13 @@ export function AlignmentReport({
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
-              <div className="border-2 border-black bg-cyan-100 p-4">
+              <div className="border-2 border-black bg-brutal-cyan p-4">
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
                   Comparisons Saved
                 </div>
                 <div className="mt-2 text-3xl font-black text-black">{state.comparisonCount}</div>
               </div>
-              <div className="border-2 border-black bg-yellow-100 p-4">
+              <div className="border-2 border-black bg-brutal-yellow p-4">
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
                   Categories In Scope
                 </div>
@@ -131,7 +131,7 @@ export function AlignmentReport({
                   {state.selectedCategoryCount}
                 </div>
               </div>
-              <div className="border-2 border-black bg-pink-100 p-4">
+              <div className="border-2 border-black bg-brutal-pink p-4">
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
                   Completion
                 </div>
@@ -165,13 +165,13 @@ export function AlignmentReport({
     <div className="space-y-10">
       <section className="space-y-3">
         <div className="flex flex-wrap items-center gap-3">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-pink-600">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
             {publicMode ? "Shared Alignment" : "Your Alignment"}
           </p>
           <span
             className={`border-2 border-black px-3 py-1 text-xs font-black uppercase tracking-[0.2em] ${
               state.report.isPreliminary
-                ? "bg-yellow-300 text-black"
+                ? "bg-brutal-yellow text-black"
                 : "bg-brutal-cyan text-black"
             }`}
           >
@@ -223,7 +223,7 @@ export function AlignmentReport({
           </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            <div className="border-2 border-black bg-pink-100 p-4">
+            <div className="border-2 border-black bg-brutal-pink p-4">
               <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
                 Comparisons
               </div>
@@ -231,7 +231,7 @@ export function AlignmentReport({
                 {state.report.comparisonCount}
               </div>
             </div>
-            <div className="border-2 border-black bg-yellow-100 p-4">
+            <div className="border-2 border-black bg-brutal-yellow p-4">
               <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
                 Categories
               </div>
@@ -239,7 +239,7 @@ export function AlignmentReport({
                 {state.report.selectedCategoryCount}
               </div>
             </div>
-            <div className="border-2 border-black bg-cyan-100 p-4">
+            <div className="border-2 border-black bg-brutal-cyan p-4">
               <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
                 Completion
               </div>
@@ -390,7 +390,7 @@ export function AlignmentReport({
                       politician.wantsMore.map((gap) => (
                         <span
                           key={`${politician.politicianId}-${gap.itemId}-more`}
-                          className="border-2 border-black bg-pink-100 px-2 py-1 text-xs font-bold uppercase"
+                          className="border-2 border-black bg-brutal-pink px-2 py-1 text-xs font-bold uppercase"
                         >
                           {gap.itemName}
                         </span>
@@ -412,7 +412,7 @@ export function AlignmentReport({
                       politician.wantsLess.map((gap) => (
                         <span
                           key={`${politician.politicianId}-${gap.itemId}-less`}
-                          className="border-2 border-black bg-yellow-100 px-2 py-1 text-xs font-bold uppercase"
+                          className="border-2 border-black bg-brutal-yellow px-2 py-1 text-xs font-bold uppercase"
                         >
                           {gap.itemName}
                         </span>
@@ -430,7 +430,7 @@ export function AlignmentReport({
         </div>
       </section>
 
-      <section className="border-4 border-black bg-emerald-50 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <section className="border-4 border-black bg-brutal-cyan/20 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="flex items-center gap-2 mb-4">
           <Shield className="h-5 w-5" />
           <h2 className="text-2xl font-black uppercase text-black">
@@ -443,7 +443,7 @@ export function AlignmentReport({
             href="https://hypercerts.org"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-black text-black underline hover:text-pink-600"
+            className="font-black text-black underline hover:text-brutal-pink"
           >
             Hypercert
           </a>{" "}
@@ -452,7 +452,7 @@ export function AlignmentReport({
             href="https://storacha.network"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-black text-black underline hover:text-pink-600"
+            className="font-black text-black underline hover:text-brutal-pink"
           >
             Storacha
           </a>{" "}
@@ -461,7 +461,7 @@ export function AlignmentReport({
             href="https://iab.warondisease.org"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-black text-black underline hover:text-pink-600"
+            className="font-black text-black underline hover:text-brutal-pink"
           >
             Incentive Alignment Bonds
           </a>{" "}
@@ -485,12 +485,12 @@ export function AlignmentReport({
                   href={`https://${pol.storageCid}.ipfs.storacha.link/`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 border border-black bg-emerald-100 px-1.5 py-0.5 text-[10px] font-black uppercase hover:bg-emerald-200"
+                  className="inline-flex items-center gap-1 border border-black bg-brutal-cyan px-1.5 py-0.5 text-[10px] font-black uppercase hover:bg-brutal-cyan"
                 >
                   IPFS <ExternalLink className="h-2.5 w-2.5" />
                 </a>
                 <span
-                  className="inline-flex items-center gap-1 border border-black bg-blue-100 px-1.5 py-0.5 text-[10px] font-black uppercase"
+                  className="inline-flex items-center gap-1 border border-black bg-brutal-cyan px-1.5 py-0.5 text-[10px] font-black uppercase"
                   title={pol.activityUri}
                 >
                   AT Proto
@@ -505,7 +505,7 @@ export function AlignmentReport({
             href="https://wishocracy.warondisease.org"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-pink-600"
+            className="underline hover:text-brutal-pink"
           >
             wishocracy.warondisease.org
           </a>{" "}
