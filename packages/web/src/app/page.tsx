@@ -9,7 +9,6 @@ import { CountUp } from "@/components/animations/CountUp";
 import { StaggerGrid } from "@/components/animations/StaggerGrid";
 import { HeroEntrance } from "@/components/animations/HeroEntrance";
 import { StepReveal } from "@/components/animations/StepReveal";
-import { PulseGlow } from "@/components/animations/PulseGlow";
 import { LiveDeathTicker } from "@/components/animations/LiveDeathTicker";
 import { CollapseCountdown } from "@/components/animations/CollapseCountdown";
 import { GdpTrajectoryChart } from "@/components/animations/GdpTrajectoryChart";
@@ -411,26 +410,26 @@ export default function Home() {
             ignore.
           </p>
         </ScrollReveal>
-        <StaggerGrid className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <NavItemLink
             item={politicalDysfunctionTaxPaperLink}
             variant="custom"
             external
-            className="p-8 border-4 border-black bg-brutal-red shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
+            className="block p-8 border-4 border-black bg-brutal-red shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
           >
-            <div className="text-4xl sm:text-5xl font-black text-brutal-red mb-2">
+            <div className="text-4xl sm:text-5xl font-black text-white mb-2">
               $101T/yr
             </div>
-            <h3 className="text-lg font-black text-black mb-3">
+            <h3 className="text-lg font-black text-white mb-3">
               The Stupidity Tax
             </h3>
-            <p className="text-sm text-black/70 leading-relaxed font-medium">
+            <p className="text-sm text-white/80 leading-relaxed font-medium">
               $12,600 per person per year in pure waste. Administrative bloat,
               regulatory capture, people not being allowed to move to where the
               jobs are. Your civilisation runs at 52% efficiency. My toaster does
               better than that.
             </p>
-            <span className="mt-4 inline-flex items-center text-xs font-black text-brutal-red uppercase">
+            <span className="mt-4 inline-flex items-center text-xs font-black text-white/60 uppercase">
               Read the paper &rarr;
             </span>
           </NavItemLink>
@@ -438,9 +437,9 @@ export default function Home() {
             item={invisibleGraveyardPaperLink}
             variant="custom"
             external
-            className="p-8 border-4 border-black bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
+            className="block p-8 border-4 border-black bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
           >
-            <div className="text-4xl sm:text-5xl font-black text-brutal-yellow mb-2">
+            <div className="text-4xl sm:text-5xl font-black text-black mb-2">
               95% untreated
             </div>
             <h3 className="text-lg font-black text-black mb-3">
@@ -455,7 +454,7 @@ export default function Home() {
               billion willing participants. That&apos;s 0.06%. On my planet this
               would be considered a war crime. Here you call it &ldquo;regulation.&rdquo;
             </p>
-            <span className="mt-4 inline-flex items-center text-xs font-black text-brutal-yellow uppercase">
+            <span className="mt-4 inline-flex items-center text-xs font-black text-black/60 uppercase">
               Read the paper &rarr;
             </span>
           </NavItemLink>
@@ -463,9 +462,9 @@ export default function Home() {
             item={onePercentTreatyPaperLink}
             variant="custom"
             external
-            className="p-8 border-4 border-black bg-brutal-cyan shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
+            className="block p-8 border-4 border-black bg-brutal-cyan shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
           >
-            <div className="text-4xl sm:text-5xl font-black text-brutal-cyan mb-2">
+            <div className="text-4xl sm:text-5xl font-black text-black mb-2">
               10.7B saved
             </div>
             <h3 className="text-lg font-black text-black mb-3">
@@ -479,28 +478,26 @@ export default function Home() {
               prevent 10.7 billion deaths. This is not a hard decision. I genuinely
               don&apos;t understand what&apos;s taking so long.
             </p>
-            <span className="mt-4 inline-flex items-center text-xs font-black text-brutal-cyan uppercase">
+            <span className="mt-4 inline-flex items-center text-xs font-black text-black/60 uppercase">
               Read the paper &rarr;
             </span>
           </NavItemLink>
-        </StaggerGrid>
-        <ScrollReveal delay={0.3}>
-          <div className="text-center mt-8">
-            <NavItemLink
-              item={fullManualPaperLink}
-              variant="custom"
-              external
-              className="inline-flex items-center text-sm font-black text-brutal-pink hover:text-brutal-pink uppercase transition-colors"
-            >
-              Read the full manual (yes, I wrote you a manual) &rarr;
-            </NavItemLink>
-          </div>
-        </ScrollReveal>
+        </div>
+        <div className="text-center mt-8">
+          <NavItemLink
+            item={fullManualPaperLink}
+            variant="custom"
+            external
+            className="inline-flex items-center text-sm font-black text-brutal-pink hover:text-brutal-pink uppercase transition-colors"
+          >
+            Read the full manual (yes, I wrote you a manual) &rarr;
+          </NavItemLink>
+        </div>
       </section>
 
       {/* The Collapse Clock */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <PulseGlow className="p-8 sm:p-12 bg-brutal-red/20 border-4 border-brutal-red shadow-[8px_8px_0px_0px_rgba(220,38,38,0.4)]">
+        <div className="p-8 sm:p-12 bg-brutal-red/20 border-4 border-brutal-red shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <ScrollReveal>
             <h2 className="text-2xl sm:text-3xl font-black text-center mb-4 uppercase tracking-tight text-foreground">
               The Collapse Clock
@@ -575,7 +572,7 @@ export default function Home() {
               works.
             </p>
           </div>
-        </PulseGlow>
+        </div>
       </section>
 
       {/* The Two Metrics That Matter */}
