@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { CheckInHistoryCard } from "@/components/profile/CheckInHistoryCard";
 import { DailyCheckInCard } from "@/components/profile/DailyCheckInCard";
 import { PushNotificationPrompt } from "@/components/notifications/PushNotificationPrompt";
 import { ProfileSnapshotForm } from "@/components/profile/ProfileSnapshotForm";
 import type { ProfilePageData } from "@/lib/profile";
+import { ROUTES } from "@/lib/routes";
 
 interface ProfileHubProps {
   initialData: ProfilePageData;
@@ -29,6 +31,34 @@ export function ProfileHub({ initialData }: ProfileHubProps) {
         </p>
       </section>
 
+      {/* Get Started CTAs */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ProfileCTA
+          href={ROUTES.wishocracy}
+          label="Wishocracy"
+          description="Set your ideal budget priorities via pairwise comparisons"
+          color="bg-brutal-cyan"
+        />
+        <ProfileCTA
+          href={ROUTES.alignment}
+          label="Alignment"
+          description="See which politicians match your priorities"
+          color="bg-brutal-pink"
+        />
+        <ProfileCTA
+          href={ROUTES.referendum}
+          label="Referendums"
+          description="Vote on active proposals and earn referral rewards"
+          color="bg-brutal-yellow"
+        />
+        <ProfileCTA
+          href={ROUTES.prize}
+          label="Prize"
+          description="Deposit to the Earth Optimization Prize escrow"
+          color="bg-green-200"
+        />
+      </div>
+
       <div className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
         <ProfileSnapshotForm profile={data.profile} onSaved={setData} />
         <DailyCheckInCard currentCheckIn={data.currentCheckIn} onSaved={setData} />
@@ -38,5 +68,27 @@ export function ProfileHub({ initialData }: ProfileHubProps) {
 
       <PushNotificationPrompt />
     </div>
+  );
+}
+
+function ProfileCTA({
+  href,
+  label,
+  description,
+  color,
+}: {
+  href: string;
+  label: string;
+  description: string;
+  color: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`block border-4 border-black ${color} p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+    >
+      <h3 className="text-sm font-black uppercase text-black">{label}</h3>
+      <p className="mt-1 text-xs font-medium text-black/70">{description}</p>
+    </Link>
   );
 }

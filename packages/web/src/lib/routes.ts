@@ -21,6 +21,7 @@ export const ROUTES = {
   federalReserve: "/federal-reserve",
   departmentOfWar: "/department-of-war",
   treasury: "/treasury",
+  referendum: "/referendum",
   scoreboard: "/scoreboard",
   signIn: "/auth/signin",
 } as const;
@@ -131,8 +132,17 @@ export const departmentOfWarLink: NavItem = {
   description: "We don't have one. War is a negative-sum game and the spreadsheet agrees.",
 };
 
+export const referendumLink: NavItem = {
+  href: ROUTES.referendum,
+  label: "Referendums",
+  emoji: "🗳️",
+  description: "Vote on proposals, verify with World ID, earn referral rewards",
+  matchPrefixes: [ROUTES.referendum],
+};
+
 /** Pages under the "Explore" dropdown in the main nav */
 export const exploreLinks: NavItem[] = [
+  referendumLink,
   studiesLink,
   compareLink,
   policiesLink,

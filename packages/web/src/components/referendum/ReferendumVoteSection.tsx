@@ -4,6 +4,8 @@ import { useState } from "react";
 import { CopyLinkButton } from "@/components/sharing/copy-link-button";
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
 import { WorldIdVerificationCard } from "@/components/personhood/WorldIdVerificationCard";
+import { getSignInPath } from "@/lib/routes";
+import { storage } from "@/lib/storage";
 import { buildReferendumReferralUrl } from "@/lib/url";
 
 interface ReferendumVoteSectionProps {
@@ -28,9 +30,9 @@ export function ReferendumVoteSection({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Store referral code in localStorage for attribution at signup
+  // Store referral code for attribution at signup and vote time
   if (typeof window !== "undefined" && referralCode) {
-    localStorage.setItem("ref", referralCode);
+    storage.setSignupReferral(referralCode);
   }
 
   const castVote = async (position: "YES" | "NO") => {
@@ -39,10 +41,7 @@ export function ReferendumVoteSection({
 
     try {
       const storedRef =
-        referralCode ??
-        (typeof window !== "undefined"
-          ? localStorage.getItem("ref")
-          : null);
+        referralCode ?? storage.getSignupReferral();
 
       const res = await fetch(`/api/referendums/${referendumSlug}/vote`, {
         method: "POST",
@@ -74,6 +73,10 @@ export function ReferendumVoteSection({
   }
 
   if (!isAuthenticated) {
+    const signInHref = getSignInPath(`/referendum/${referendumSlug}`, {
+      referralCode,
+    });
+
     return (
       <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="text-lg font-black uppercase text-black mb-2">
@@ -84,7 +87,7 @@ export function ReferendumVoteSection({
           afterwards to make it count as a verified vote.
         </p>
         <a
-          href="/api/auth/signin"
+          href={signInHref}
           className="mt-4 inline-flex items-center justify-center border-4 border-black bg-black px-6 py-2 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
         >
           Sign In

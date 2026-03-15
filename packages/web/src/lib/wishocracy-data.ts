@@ -1,4 +1,23 @@
 export const BUDGET_CATEGORIES = {
+  // CITIZEN-DIRECTED UBI
+  UNIVERSAL_BASIC_INCOME: {
+    id: 'universal_basic_income',
+    name: 'Universal Basic Income',
+    description: 'Direct cash to every verified citizen. No conditions, no bureaucracy, no means-testing committees staffed by people who have never missed a meal deciding whether you deserve to eat. GiveDirectly RCTs show unconditional transfers increase earnings by 38%, reduce food insecurity by 42%, and cost 90 cents per dollar delivered. Your current welfare system costs $2.30 per dollar delivered. You are paying $1.30 extra per dollar just for the privilege of humiliating people.',
+    icon: '💰',
+    annualBudget: 0, // Funded by $WISH tax, not legacy government budget
+    roiData: {
+      source: 'GiveDirectly RCTs',
+      ratio: '1:1',
+      description: 'Unconditional cash transfers increase earnings 38%, reduce food insecurity 42%; 90¢ per $1 delivered vs $2.30 for traditional welfare',
+      sourceUrl: 'https://www.givedirectly.org/research-on-cash-transfers/',
+    },
+    sources: [
+      { name: 'GiveDirectly — Research on cash transfers', url: 'https://www.givedirectly.org/research-on-cash-transfers/' },
+      { name: 'NBER — General equilibrium effects of cash transfers', url: 'https://www.nber.org/papers/w26600' },
+    ],
+  },
+
   // HIGH-ROI INVESTMENTS
   PRAGMATIC_CLINICAL_TRIALS: {
     id: 'pragmatic_clinical_trials',

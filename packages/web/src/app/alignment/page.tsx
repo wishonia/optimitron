@@ -1,5 +1,5 @@
+import Link from "next/link";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import { AlignmentReport } from "@/components/alignment/AlignmentReport";
 import { authOptions } from "@/lib/auth";
 import { getPersonalAlignmentState } from "@/lib/alignment-report.server";
@@ -17,7 +17,27 @@ export default async function AlignmentPage() {
   const user = session?.user;
 
   if (!user?.id) {
-    redirect(getSignInPath(ROUTES.alignment));
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8 text-center">
+        <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink mb-3">
+          Alignment Report
+        </p>
+        <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black mb-4">
+          Which Politicians Match Your Priorities?
+        </h1>
+        <p className="text-lg text-black/80 font-medium mb-8 max-w-xl mx-auto">
+          Complete the Wishocracy budget exercise first, then see how your
+          elected officials&apos; voting records align with what you actually
+          want.
+        </p>
+        <Link
+          href={getSignInPath(ROUTES.alignment)}
+          className="inline-flex items-center justify-center border-4 border-black bg-brutal-cyan px-8 py-3 text-lg font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+        >
+          Sign In to Check Alignment
+        </Link>
+      </div>
+    );
   }
 
   const state = await getPersonalAlignmentState(user.id);
