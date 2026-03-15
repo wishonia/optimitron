@@ -1,29 +1,34 @@
 /**
  * Collapse Clock constants and projection math.
  *
- * Sources:
- * - Military spending: SIPRI 2024 ($2.72T)
- * - Cybercrime: Cybersecurity Ventures 2024 ($10.5T, 15% CAGR)
- * - Global GDP: World Bank 2024 (~$115T)
- * - Collapse threshold: Soviet precedent (20-25% extraction → collapse)
- * - GDP trajectories: https://manual.warondisease.org/knowledge/economics/gdp-trajectories.html
- * - Dysfunction tax: Political Dysfunction Tax paper ($101T/yr)
- * - Clinical trial cost: NIH estimate (~$50M per Phase I-III trial)
+ * Values sourced from parameters-calculations-citations.ts where available.
+ * See that file for full citations and confidence intervals.
  */
+
+import {
+  GLOBAL_DISEASE_DEATHS_DAILY,
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  GLOBAL_CYBERCRIME_COST_ANNUAL_2025,
+  GLOBAL_CYBERCRIME_CAGR,
+  GLOBAL_GDP_2025,
+} from "@/lib/parameters-calculations-citations";
 
 // ── Base constants ──────────────────────────────────────────────────
 
 /** Preventable deaths per day (WHO, treatable diseases) */
-export const DEATHS_PER_DAY = 150_000;
+export const DEATHS_PER_DAY = GLOBAL_DISEASE_DEATHS_DAILY.value;
 
-/** Destructive economy baseline in trillions (military $2.72T + cybercrime $10.5T, 2024) */
-export const DESTRUCTIVE_BASE_T = 13.2;
+/** Destructive economy baseline in trillions (military + cybercrime, 2024) */
+export const DESTRUCTIVE_BASE_T =
+  (GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value +
+    GLOBAL_CYBERCRIME_COST_ANNUAL_2025.value) /
+  1e12;
 
 /** Destructive economy compound annual growth rate */
-export const DESTRUCTIVE_CAGR = 0.15;
+export const DESTRUCTIVE_CAGR = GLOBAL_CYBERCRIME_CAGR.value;
 
 /** Global GDP baseline in trillions (2024) */
-export const GLOBAL_GDP_T = 115;
+export const GLOBAL_GDP_T = GLOBAL_GDP_2025.value / 1e12;
 
 /** Productive economy compound annual growth rate (~3% real growth) */
 export const PRODUCTIVE_CAGR = 0.03;

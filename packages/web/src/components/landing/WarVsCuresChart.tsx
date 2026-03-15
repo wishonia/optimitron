@@ -2,11 +2,19 @@
 
 import { motion } from "framer-motion";
 import { SectionContainer } from "@/components/ui/section-container";
+import { Stat } from "@/components/ui/stat";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  GLOBAL_MED_RESEARCH_SPENDING,
+} from "@/lib/parameters-calculations-citations";
 
-const MILITARY_SPENDING = 2720; // $2.72T
-const MEDICAL_RESEARCH = 120; // $120B
+const MILITARY_SPENDING = GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value / 1e9; // in billions
+const MEDICAL_RESEARCH = GLOBAL_MED_RESEARCH_SPENDING.value / 1e9; // in billions
 const RATIO = Math.round(MILITARY_SPENDING / MEDICAL_RESEARCH);
 const MEDICAL_BAR_PCT = ((MEDICAL_RESEARCH / MILITARY_SPENDING) * 100).toFixed(1);
+const milFmt = fmtParam({ ...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD" });
+const medFmt = fmtParam({ ...GLOBAL_MED_RESEARCH_SPENDING, unit: "USD" });
 
 export function WarVsCuresChart() {
   return (
@@ -51,7 +59,9 @@ export function WarVsCuresChart() {
               className="flex items-center justify-between mb-2"
             >
               <div className="text-lg sm:text-xl md:text-2xl font-black uppercase">Military</div>
-              <div className="text-xl sm:text-2xl md:text-3xl font-black text-brutal-pink">$2.72T</div>
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-brutal-pink">
+                <Stat param={GLOBAL_MILITARY_SPENDING_ANNUAL_2024} format={(p) => fmtParam({ ...p, unit: "USD" })} />
+              </div>
             </motion.div>
             <motion.div
               initial={{ scaleX: 0 }}
@@ -63,7 +73,7 @@ export function WarVsCuresChart() {
             >
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-sm sm:text-lg md:text-xl font-black text-white uppercase text-center">
-                  $2.72 Trillion for blowing things up
+                  {milFmt} for blowing things up
                 </span>
               </div>
             </motion.div>
@@ -79,7 +89,9 @@ export function WarVsCuresChart() {
               className="flex items-center justify-between mb-2"
             >
               <div className="text-lg sm:text-xl md:text-2xl font-black uppercase">Medical Research</div>
-              <div className="text-xl sm:text-2xl md:text-3xl font-black text-brutal-cyan">$120B</div>
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-brutal-cyan">
+                <Stat param={GLOBAL_MED_RESEARCH_SPENDING} format={(p) => fmtParam({ ...p, unit: "USD" })} />
+              </div>
             </motion.div>
             <div className="flex items-center gap-4">
               <motion.div
@@ -97,7 +109,7 @@ export function WarVsCuresChart() {
                 transition={{ duration: 0.4, delay: 1.2 }}
                 className="text-sm sm:text-lg font-black uppercase whitespace-nowrap"
               >
-                $120B for <br />
+                {medFmt} for <br />
                 not dying
               </motion.span>
             </div>

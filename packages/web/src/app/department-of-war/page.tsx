@@ -1,64 +1,43 @@
-import type { Metadata } from "next";
+"use client";
+
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { budgetLink, federalReserveLink, wishocracyLink } from "@/lib/routes";
+import { Stat } from "@/components/ui/stat";
+import { fmtParam, fmtRaw } from "@/lib/format-parameter";
+import {
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  CUMULATIVE_MILITARY_SPENDING_FED_ERA,
+  MONEY_PRINTER_WAR_DEATHS,
+  ECONOMIC_MULTIPLIER_MILITARY_SPENDING,
+  ECONOMIC_MULTIPLIER_HEALTHCARE_INVESTMENT,
+  GLOBAL_CLINICAL_TRIALS_SPENDING_ANNUAL,
+} from "@/lib/parameters-calculations-citations";
 
-export const metadata: Metadata = {
-  title: "Department of War | Optomitron",
-  description:
-    "We don't have a Department of War. War is a $2.4 trillion annual subsidy for not solving problems. Here's what we do instead.",
-};
-
-const warCosts = [
-  {
-    label: "Global military spending (2023)",
-    value: "$2.44 trillion",
-    detail: "Per year. Every year. Exposed to weather.",
-  },
-  {
-    label: "Deaths from all wars since 1900",
-    value: "~108 million",
-    detail:
-      "For context, that's more than the current population of Germany. Gone.",
-  },
-  {
-    label: "US military spending since WWII",
-    value: "$34+ trillion",
-    detail:
-      "Adjusted for inflation. Enough to have cured every major disease several times over.",
-  },
-  {
-    label: "Share of wars that achieved their stated objective",
-    value: "~30%",
-    detail:
-      "A 70% failure rate. If a hospital killed 70% of its patients, you would not call it a hospital.",
-  },
-];
+const milSpend = GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value;
+const milMultiplier = ECONOMIC_MULTIPLIER_MILITARY_SPENDING.value;
+const healthMultiplier = ECONOMIC_MULTIPLIER_HEALTHCARE_INVESTMENT.value;
+const totalAlt = 150e9 + 20e9 + GLOBAL_CLINICAL_TRIALS_SPENDING_ANNUAL.value + 45e9;
 
 const couldHaveBought = [
   {
-    cost: "$2.44T/yr",
     instead: "Clean water for every human on Earth",
-    price: "$150B (one-time)",
-    ratio: "16x the annual military budget. You could do it in a weekend.",
+    price: "$150 billion (one-time)",
+    ratio: `${((150e9 / milSpend) * 100).toFixed(1)}% of one year's military budget. You could do it in a weekend.`,
   },
   {
-    cost: "$2.44T/yr",
     instead: "End global homelessness",
-    price: "$20B/yr",
-    ratio: "0.8% of what you spend on war. A rounding error.",
+    price: "$20 billion/yr",
+    ratio: `${((20e9 / milSpend) * 100).toFixed(1)}% of what you spend on war. A rounding error.`,
   },
   {
-    cost: "$2.44T/yr",
-    instead: "Fund all global medical research",
-    price: "$250B/yr",
-    ratio: "10% of military spending. You spend more on military bands.",
+    instead: "Fund all global clinical trials",
+    price: `${fmtParam(GLOBAL_CLINICAL_TRIALS_SPENDING_ANNUAL, 3).replace("$", "$")}/yr`,
+    ratio: `${((GLOBAL_CLINICAL_TRIALS_SPENDING_ANNUAL.value / milSpend) * 100).toFixed(1)}% of military spending. You spend more on military bands.`,
   },
   {
-    cost: "$2.44T/yr",
     instead: "Universal basic nutrition",
-    price: "$45B/yr",
-    ratio:
-      "1.8%. Less than the Pentagon loses track of in accounting errors annually.",
+    price: "$45 billion/yr",
+    ratio: `${((45e9 / milSpend) * 100).toFixed(1)}%. Less than the Pentagon loses track of in accounting errors annually.`,
   },
 ];
 
@@ -81,9 +60,10 @@ export default function DepartmentOfWarPage() {
             I realise that&apos;s not the kind of language you expect from a
             governance platform. But I&apos;ve been running a civilisation for
             4,237 years, and after modelling every possible resource-allocation
-            strategy, the one where you spend $2.4 trillion per year on
-            exploding each other consistently ranks last. Dead last. Below
-            &ldquo;doing literally nothing.&rdquo;
+            strategy, the one where you spend{" "}
+            <Stat param={GLOBAL_MILITARY_SPENDING_ANNUAL_2024} format={(p) => fmtParam({ ...p, unit: "USD" })} />{" "}
+            per year on exploding each other consistently ranks last. Dead last.
+            Below &ldquo;doing literally nothing.&rdquo;
           </p>
         </div>
       </section>
@@ -98,24 +78,71 @@ export default function DepartmentOfWarPage() {
           spreadsheet is very clear.
         </p>
         <div className="space-y-4">
-          {warCosts.map((item) => (
-            <div
-              key={item.label}
-              className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-            >
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
-                <div className="text-sm font-black uppercase text-black/60">
-                  {item.label}
-                </div>
-                <div className="text-2xl font-black text-brutal-pink">
-                  {item.value}
-                </div>
+          {/* Military spending */}
+          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+              <div className="text-sm font-black uppercase text-black/60">
+                Global military spending (2024)
               </div>
-              <p className="mt-2 text-sm font-medium text-black/50">
-                {item.detail}
-              </p>
+              <div className="text-2xl font-black text-brutal-pink">
+                <Stat param={GLOBAL_MILITARY_SPENDING_ANNUAL_2024} format={(p) => fmtParam({ ...p, unit: "USD" })} />
+              </div>
             </div>
-          ))}
+            <p className="mt-2 text-sm font-medium text-black/50">
+              Per year. Every year. Exposed to weather.
+            </p>
+          </div>
+
+          {/* War deaths */}
+          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+              <div className="text-sm font-black uppercase text-black/60">
+                Deaths from money-printer wars
+              </div>
+              <div className="text-2xl font-black text-brutal-pink">
+                <Stat param={MONEY_PRINTER_WAR_DEATHS} />
+              </div>
+            </div>
+            <p className="mt-2 text-sm font-medium text-black/50">
+              {MONEY_PRINTER_WAR_DEATHS.description}
+            </p>
+          </div>
+
+          {/* Cumulative military spending */}
+          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+              <div className="text-sm font-black uppercase text-black/60">
+                Cumulative military spending (since 1913)
+              </div>
+              <div className="text-2xl font-black text-brutal-pink">
+                <Stat param={CUMULATIVE_MILITARY_SPENDING_FED_ERA} format={(p) => fmtParam({ ...p, unit: "USD" })} />
+              </div>
+            </div>
+            <p className="mt-2 text-sm font-medium text-black/50">
+              Adjusted for inflation. Enough to have cured every major disease
+              several times over.
+            </p>
+          </div>
+
+          {/* Economic multiplier */}
+          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+              <div className="text-sm font-black uppercase text-black/60">
+                Military spending ROI
+              </div>
+              <div className="text-2xl font-black text-brutal-pink">
+                <Stat param={ECONOMIC_MULTIPLIER_MILITARY_SPENDING} />
+              </div>
+            </div>
+            <p className="mt-2 text-sm font-medium text-black/50">
+              Every dollar on military generates{" "}
+              <Stat param={ECONOMIC_MULTIPLIER_MILITARY_SPENDING} /> in economic
+              output. Healthcare generates{" "}
+              <Stat param={ECONOMIC_MULTIPLIER_HEALTHCARE_INVESTMENT} />. You are
+              choosing the worse investment by a factor of{" "}
+              {Math.round(healthMultiplier / milMultiplier)}.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -125,10 +152,12 @@ export default function DepartmentOfWarPage() {
           What That Money Could Buy Instead
         </h2>
         <p className="mb-6 max-w-3xl text-sm font-medium text-black/60">
-          Every year, your species takes $2.44 trillion — the accumulated
-          productive output of hundreds of millions of workers — and converts it
-          into things designed to destroy other things. Here is a partial list of
-          what you could do with it if you simply... stopped.
+          Every year, your species takes{" "}
+          <Stat param={GLOBAL_MILITARY_SPENDING_ANNUAL_2024} format={(p) => fmtParam({ ...p, unit: "USD" })} />{" "}
+          — the accumulated productive output of hundreds of millions of
+          workers — and converts it into things designed to destroy other things.
+          Here is a partial list of what you could do with it if you simply...
+          stopped.
         </p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {couldHaveBought.map((item) => (
@@ -151,10 +180,11 @@ export default function DepartmentOfWarPage() {
         <div className="mt-4 border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm font-medium leading-relaxed text-black/70">
             Clean water, no homelessness, fully funded medical research, and no
-            one starving. Total cost: roughly $465 billion per year. That&apos;s
-            19% of current military spending. You could solve all four and still
-            have $1.97 trillion left over for — I don&apos;t know — literally
-            anything else.
+            one starving. Total cost: roughly ${fmtRaw(totalAlt)} per year.
+            That&apos;s {((totalAlt / milSpend) * 100).toFixed(0)}% of current
+            military spending. You could solve all four and still have $
+            {fmtRaw(milSpend - totalAlt)} left over for — I don&apos;t know —
+            literally anything else.
           </p>
         </div>
       </section>
@@ -178,9 +208,9 @@ export default function DepartmentOfWarPage() {
           </p>
           <p className="mt-4 font-medium leading-relaxed text-white/60">
             Disputes still happen. We resolve them with data, binding
-            arbitration, and an optimisation function that finds the
-            allocation where both parties are measurably better off. It takes
-            about six minutes. Nobody dies. There is no marching.
+            arbitration, and an optimisation function that finds the allocation
+            where both parties are measurably better off. It takes about six
+            minutes. Nobody dies. There is no marching.
           </p>
         </div>
       </section>

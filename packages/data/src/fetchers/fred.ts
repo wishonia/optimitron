@@ -51,6 +51,10 @@ export const FRED_SERIES = {
   US_POPULATION: 'POPTHM',
   /** Real GDP (billions, 2017 dollars) — for inflation-adjusted comparisons */
   REAL_GDP: 'GDPC1',
+  /** M2 Money Stock (billions, monthly, seasonally adjusted) */
+  M2_MONEY_STOCK: 'M2SL',
+  /** M2 Money Stock year-over-year % change (monthly) — supply expansion rate */
+  M2_YOY_CHANGE: 'M2SL',
 } as const;
 
 export type FREDSeriesKey = keyof typeof FRED_SERIES;
@@ -238,4 +242,12 @@ export async function fetchUSRealGDP(options: FetchOptions = {}): Promise<DataPo
  */
 export async function fetchFedFundsRate(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchFREDSeries(FRED_SERIES.FED_FUNDS_RATE, options);
+}
+
+/**
+ * Fetch M2 Money Stock (billions, monthly, seasonally adjusted).
+ * The broadest commonly-tracked US money supply measure.
+ */
+export async function fetchM2MoneyStock(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchFREDSeries(FRED_SERIES.M2_MONEY_STOCK, options);
 }

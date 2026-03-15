@@ -100,9 +100,14 @@ describe("MonetaryPolicyOracle", function () {
       const supplyBefore = await wish.totalSupply();
       const expectedMint = (supplyBefore * EXPANSION_RATE_BPS) / 10000n;
 
-      await expect(oracle.executeMint())
+      const tx = await oracle.executeMint();
+      const receipt = await tx.wait();
+      const block = await ethers.provider.getBlock(receipt!.blockNumber);
+
+      // Verify event was emitted with correct amount and treasury
+      await expect(tx)
         .to.emit(oracle, "MintExecuted")
-        .withArgs(expectedMint, await treasury.getAddress(), await time.latest());
+        .withArgs(expectedMint, await treasury.getAddress(), block!.timestamp);
 
       // Treasury received the minted tokens
       expect(await wish.balanceOf(await treasury.getAddress())).to.equal(expectedMint);

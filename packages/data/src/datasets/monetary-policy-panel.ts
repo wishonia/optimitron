@@ -1,13 +1,23 @@
 /**
  * Monetary Policy Cross-Country Panel Dataset
  *
- * Assembles interest rate + outcome data across OECD countries for the
- * optimal interest rate calculator. Pattern matches oecd-budget-panel.ts.
+ * Assembles money supply growth + real welfare outcome data across countries
+ * for the optimal supply expansion rate calculator.
+ *
+ * KEY INSIGHT: The predictor is SUPPLY EXPANSION RATE (broad money growth %),
+ * not the interest rate. In an anti-Cantillon system (equal UBI distribution),
+ * the question is: "what rate of money creation maximizes median real
+ * purchasing power?" — not "what interest rate should the Fed set?"
+ *
+ * Historical interest-rate data is contaminated by the Cantillon transmission
+ * mechanism (banks get money first → asset inflation → trickle-down). The
+ * Wishonian system bypasses this entirely, so we need to model the direct
+ * relationship between supply expansion and real welfare outcomes.
  *
  * Sources:
- *   - World Bank WDI: Real interest rate (FR.INR.RINR), life expectancy,
- *     GNI per capita PPP, GDP per capita PPP, Gini index, inflation
- *   - FRED: Federal funds rate (FEDFUNDS), median household income (US only)
+ *   - World Bank WDI: Broad money growth (FM.LBL.BMNY.ZG), life expectancy,
+ *     GNI per capita PPP (constant intl $), GDP per capita PPP, Gini, inflation
+ *   - FRED: M2 year-over-year change (US-specific higher resolution)
  *
  * @see packages/obg/src/monetary-policy.ts — consumer of this dataset
  */
@@ -32,10 +42,8 @@ export interface MonetaryPolicyTimeSeries {
 export interface MonetaryPolicyPanelRow {
   jurisdictionIso3: string;
   year: number;
-  /** Real interest rate (%), lending rate adjusted for inflation */
-  realInterestRate: number | null;
-  /** Lending interest rate (%), proxy for policy transmission */
-  lendingRate: number | null;
+  /** Broad money growth (annual %) — the supply expansion rate */
+  broadMoneyGrowth: number | null;
   /** Life expectancy at birth (years) */
   lifeExpectancy: number | null;
   /** GNI per capita, PPP (current international $) */
@@ -44,11 +52,11 @@ export interface MonetaryPolicyPanelRow {
   gdpPerCapitaPpp: number | null;
   /** Gini index (0–100) */
   giniIndex: number | null;
-  /** Inflation rate (%) */
+  /** Inflation rate (%) — needed to distinguish real from nominal effects */
   inflationRate: number | null;
 }
 
-// ─── OECD Countries with good monetary/outcome data coverage ──────────
+// ─── Countries with good broad money + outcome data coverage ──────────
 
 export const MONETARY_POLICY_COUNTRIES = [
   'AUS', 'AUT', 'BEL', 'CAN', 'CHE', 'CZE', 'DEU', 'DNK',
@@ -100,8 +108,8 @@ function groupByJurisdictionYear(points: DataPoint[]): Map<string, Map<number, n
 }
 
 /**
- * Convert grouped DataPoint data into MonetaryPolicyTimeSeries[] for a specific variable.
- * One AnnualTimeSeries per jurisdiction.
+ * Convert grouped DataPoint data into MonetaryPolicyTimeSeries[].
+ * One time series per jurisdiction.
  */
 export function dataPointsToTimeSeries(
   points: DataPoint[],
@@ -128,28 +136,33 @@ export function dataPointsToTimeSeries(
 }
 
 /**
- * Build AnnualTimeSeries for interest rates and outcomes from raw DataPoint arrays.
+ * Build time series for supply expansion analysis from raw DataPoint arrays.
  *
- * This is the main entry point. Callers pass pre-fetched data (from World Bank
- * or FRED fetchers) and get back structured time series ready for
- * `runCountryAnalysis()`.
+ * Predictor: broad money growth (annual %) — the rate at which the money supply
+ * is expanding. This is what the MonetaryPolicyOracle.sol's `expansionRateBps`
+ * controls in the Wishonian system.
+ *
+ * Outcomes: real welfare metrics. GNI/GDP per capita PPP are already
+ * real-ish (PPP-adjusted), and life expectancy is inherently real.
+ * Inflation is included as a secondary outcome to find the expansion
+ * rate that maximizes welfare without runaway price increases.
  */
-export function buildMonetaryPolicyTimeSeries(data: {
-  realInterestRates: DataPoint[];
+export function buildSupplyExpansionTimeSeries(data: {
+  broadMoneyGrowth: DataPoint[];
   lifeExpectancy: DataPoint[];
   gniPerCapitaPpp: DataPoint[];
   gdpPerCapitaPpp?: DataPoint[];
   giniIndex?: DataPoint[];
   inflationRate?: DataPoint[];
 }): {
-  interestRateSeries: MonetaryPolicyTimeSeries[];
+  expansionRateSeries: MonetaryPolicyTimeSeries[];
   outcomeSeries: Record<string, MonetaryPolicyTimeSeries[]>;
 } {
-  const interestRateSeries = dataPointsToTimeSeries(
-    data.realInterestRates,
-    'real_interest_rate',
-    'Real Interest Rate',
-    '%',
+  const expansionRateSeries = dataPointsToTimeSeries(
+    data.broadMoneyGrowth,
+    'broad_money_growth',
+    'Broad Money Growth',
+    '% annual',
   );
 
   const outcomeSeries: Record<string, MonetaryPolicyTimeSeries[]> = {
@@ -194,5 +207,10 @@ export function buildMonetaryPolicyTimeSeries(data: {
     );
   }
 
-  return { interestRateSeries, outcomeSeries };
+  return { expansionRateSeries, outcomeSeries };
 }
+
+// ─── Backwards compat (deprecated) ───────────────────────────────────
+
+/** @deprecated Use buildSupplyExpansionTimeSeries instead */
+export const buildMonetaryPolicyTimeSeries = buildSupplyExpansionTimeSeries;

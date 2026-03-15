@@ -78,6 +78,10 @@ export const WB_INDICATOR_CODES = {
   LENDING_INTEREST_RATE: 'FR.INR.LEND',
   /** Deposit interest rate (%) */
   DEPOSIT_INTEREST_RATE: 'FR.INR.DPST',
+  /** Broad money growth (annual %) — M2/M3 equivalent, ~190 countries */
+  BROAD_MONEY_GROWTH: 'FM.LBL.BMNY.ZG',
+  /** Broad money (% of GDP) — money supply relative to economy size */
+  BROAD_MONEY_PCT_GDP: 'FM.LBL.BMNY.GD.ZS',
 } as const;
 
 /** Shape of a single record in the World Bank JSON response */
@@ -408,4 +412,13 @@ export async function fetchRealInterestRate(options: FetchOptions = {}): Promise
  */
 export async function fetchLendingRate(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchWorldBankIndicator(WB_INDICATOR_CODES.LENDING_INTEREST_RATE, options);
+}
+
+/**
+ * Fetch broad money growth (annual %).
+ * M2/M3 equivalent — the actual rate of supply expansion.
+ * Available for ~190 countries.
+ */
+export async function fetchBroadMoneyGrowth(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.BROAD_MONEY_GROWTH, options);
 }

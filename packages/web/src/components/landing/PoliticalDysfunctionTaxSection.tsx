@@ -4,6 +4,17 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { CountUp } from "@/components/animations/CountUp";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { politicalDysfunctionTaxPaperLink } from "@/lib/routes";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+} from "@/lib/parameters-calculations-citations";
+
+const milSpendFmt = fmtParam({ ...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD" });
+const milToTrialsRatio = Math.round(
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value /
+    GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value,
+);
 
 const wasteBreakdown = [
   {
@@ -26,8 +37,8 @@ const wasteBreakdown = [
   },
   {
     label: "Military Overspend",
-    stat: "$2.72T/yr",
-    detail: "Global military spending. That is 604 times more than you spend on disease research. You have prioritised blowing things up over not dying. Bold strategy.",
+    stat: `${milSpendFmt}/yr`,
+    detail: `Global military spending. That is ${milToTrialsRatio} times more than you spend on disease research. You have prioritised blowing things up over not dying. Bold strategy.`,
     color: "bg-brutal-cyan",
   },
 ];
