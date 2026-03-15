@@ -98,8 +98,8 @@ export function parseGapminderCsv(
   // Data rows
   const results: CsvTimeSeries[] = [];
 
-  for (let r = 1; r < lines.length; r++) {
-    const fields = parseCsvLine(lines[r]!);
+  for (let rowIndex = 1; rowIndex < lines.length; rowIndex++) {
+    const fields = parseCsvLine(lines[rowIndex]!);
     const entityName = (fields[0] ?? '').trim();
 
     if (entityName.length === 0) continue;

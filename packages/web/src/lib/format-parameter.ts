@@ -8,22 +8,22 @@ const SUFFIXES: [number, string][] = [
 ];
 
 /** Round to N significant figures. */
-function sig(value: number, n: number): number {
+function roundToSigFigs(value: number, figures: number): number {
   if (value === 0) return 0;
-  const d = Math.ceil(Math.log10(Math.abs(value)));
-  const mag = 10 ** (n - d);
-  return Math.round(value * mag) / mag;
+  const digitCount = Math.ceil(Math.log10(Math.abs(value)));
+  const magnitudeMultiplier = 10 ** (figures - digitCount);
+  return Math.round(value * magnitudeMultiplier) / magnitudeMultiplier;
 }
 
 /** Stringify a number with exactly N significant figures (trailing zeros). */
-function toSigStr(value: number, n: number): string {
+function formatWithSigFigs(value: number, figures: number): string {
   if (value === 0) return "0";
-  const r = sig(Math.abs(value), n);
-  if (r >= 1) {
-    const intDig = Math.max(1, Math.floor(Math.log10(r)) + 1);
-    return r.toFixed(Math.max(0, n - intDig));
+  const rounded = roundToSigFigs(Math.abs(value), figures);
+  if (rounded >= 1) {
+    const intDig = Math.max(1, Math.floor(Math.log10(rounded)) + 1);
+    return rounded.toFixed(Math.max(0, figures - intDig));
   }
-  return r.toPrecision(n);
+  return rounded.toPrecision(figures);
 }
 
 /**
@@ -41,26 +41,26 @@ function toSigStr(value: number, n: number): string {
  */
 export function fmtParam(param: Parameter, figures = 3): string {
   const { value, unit } = param;
-  const u = (unit ?? "").toLowerCase();
+  const normalizedUnit = (unit ?? "").toLowerCase();
 
   // Percentages & rates → value is 0-1, display as 0-100%
-  if (u === "percentage" || u === "rate" || u === "percent") {
-    return `${toSigStr(sig(value * 100, figures), figures)}%`;
+  if (normalizedUnit === "percentage" || normalizedUnit === "rate" || normalizedUnit === "percent") {
+    return `${formatWithSigFigs(roundToSigFigs(value * 100, figures), figures)}%`;
   }
 
   // Ratios / multipliers → "604x"
-  if (u === "ratio" || u === "x" || u === "multiplier") {
+  if (normalizedUnit === "ratio" || normalizedUnit === "x" || normalizedUnit === "multiplier") {
     return `${fmtRaw(value, figures)}x`;
   }
 
   // Currency — "USD", "USD/year", "USD/patient"
-  if (u === "usd" || u.startsWith("usd/")) {
-    const perUnit = u.includes("/") ? `/${u.split("/").slice(1).join("/")}` : "";
+  if (normalizedUnit === "usd" || normalizedUnit.startsWith("usd/")) {
+    const perUnit = normalizedUnit.includes("/") ? `/${normalizedUnit.split("/").slice(1).join("/")}` : "";
     return `$${fmtRaw(value, figures)}${perUnit}`;
   }
 
   // Dimensionless
-  if (!unit || u === "weight") return fmtRaw(value, figures);
+  if (!unit || normalizedUnit === "weight") return fmtRaw(value, figures);
 
   // Everything else — number + unit
   return `${fmtRaw(value, figures)} ${unit}`;
@@ -80,15 +80,15 @@ export function fmtRaw(value: number, figures = 3): string {
 
   for (const [threshold, label] of SUFFIXES) {
     if (abs >= threshold) {
-      return `${sign}${toSigStr(sig(abs / threshold, figures), figures)} ${label}`;
+      return `${sign}${formatWithSigFigs(roundToSigFigs(abs / threshold, figures), figures)} ${label}`;
     }
   }
 
   // Below 1 million — use commas for thousands
-  const rounded = sig(abs, figures);
+  const rounded = roundToSigFigs(abs, figures);
   if (rounded >= 1000) {
     return `${sign}${rounded.toLocaleString("en-US")}`;
   }
 
-  return `${sign}${toSigStr(abs, figures)}`;
+  return `${sign}${formatWithSigFigs(abs, figures)}`;
 }

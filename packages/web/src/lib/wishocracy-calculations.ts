@@ -20,33 +20,33 @@ export function calculateAllocationsFromPairwise(
   const scores: Record<string, number> = {}
 
   // Initialize all categories to 0
-  Object.keys(BUDGET_CATEGORIES).forEach(cat => {
-    scores[cat] = 0
+  Object.keys(BUDGET_CATEGORIES).forEach(categoryId => {
+    scores[categoryId] = 0
   })
 
   // Sum up allocations across all pairs
   // Note: 0/0 allocations (NEITHER button) naturally get skipped
   // as they contribute 0 to both categories
-  comparisons.forEach(comp => {
-    scores[comp.categoryA] = (scores[comp.categoryA] || 0) + comp.allocationA
-    scores[comp.categoryB] = (scores[comp.categoryB] || 0) + comp.allocationB
+  comparisons.forEach(comparison => {
+    scores[comparison.categoryA] = (scores[comparison.categoryA] || 0) + comparison.allocationA
+    scores[comparison.categoryB] = (scores[comparison.categoryB] || 0) + comparison.allocationB
   })
 
   // Normalize to percentages (sum to 100)
-  const total = Object.values(scores).reduce((sum, val) => sum + val, 0)
+  const total = Object.values(scores).reduce((sum, score) => sum + score, 0)
 
   // Avoid division by zero
   if (total === 0) {
-    return Object.keys(BUDGET_CATEGORIES).reduce((acc, cat) => {
-      acc[cat] = 0
-      return acc
+    return Object.keys(BUDGET_CATEGORIES).reduce((result, categoryId) => {
+      result[categoryId] = 0
+      return result
     }, {} as Record<string, number>)
   }
 
   const normalized: Record<string, number> = {}
 
-  Object.entries(scores).forEach(([cat, score]) => {
-    normalized[cat] = Number(((score / total) * 100).toFixed(1))
+  Object.entries(scores).forEach(([categoryId, score]) => {
+    normalized[categoryId] = Number(((score / total) * 100).toFixed(1))
   })
 
   return normalized

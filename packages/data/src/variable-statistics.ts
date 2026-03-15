@@ -161,10 +161,10 @@ export function calculateNOf1VariableStatistics(
   let min = values[0]!;
   let max = values[0]!;
   for (let i = 0; i < n; i++) {
-    const v = values[i]!;
-    sum += v;
-    if (v < min) min = v;
-    if (v > max) max = v;
+    const value = values[i]!;
+    sum += value;
+    if (value < min) min = value;
+    if (value > max) max = value;
   }
   const mean = sum / n;
 
@@ -201,9 +201,9 @@ export function calculateNOf1VariableStatistics(
       sumFourth += z * z * z * z;
     }
     // Excess kurtosis with bias correction
-    const a = (n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3));
-    const b = (3 * (n - 1) * (n - 1)) / ((n - 2) * (n - 3));
-    kurtosis = a * sumFourth - b;
+    const biasNumerator = (n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3));
+    const biasCorrection = (3 * (n - 1) * (n - 1)) / ((n - 2) * (n - 3));
+    kurtosis = biasNumerator * sumFourth - biasCorrection;
   }
 
   // ── Unique values & mode ───────────────────────────────────────────────
@@ -285,12 +285,12 @@ export function aggregateGlobalStatistics(
   let globalMin = Infinity;
   let globalMax = -Infinity;
 
-  for (const us of unitStats) {
-    if (us.numberOfMeasurements === 0) continue;
-    totalMeasurements += us.numberOfMeasurements;
-    weightedMeanSum += us.numberOfMeasurements * us.mean;
-    if (us.minimumRecordedValue < globalMin) globalMin = us.minimumRecordedValue;
-    if (us.maximumRecordedValue > globalMax) globalMax = us.maximumRecordedValue;
+  for (const unitStat of unitStats) {
+    if (unitStat.numberOfMeasurements === 0) continue;
+    totalMeasurements += unitStat.numberOfMeasurements;
+    weightedMeanSum += unitStat.numberOfMeasurements * unitStat.mean;
+    if (unitStat.minimumRecordedValue < globalMin) globalMin = unitStat.minimumRecordedValue;
+    if (unitStat.maximumRecordedValue > globalMax) globalMax = unitStat.maximumRecordedValue;
   }
 
   // If all units had 0 measurements
@@ -309,11 +309,11 @@ export function aggregateGlobalStatistics(
 
   // Combined variance: Σ wᵢ × (σᵢ² + (μᵢ − μ_global)²) / Σ wᵢ
   let weightedVarSum = 0;
-  for (const us of unitStats) {
-    if (us.numberOfMeasurements === 0) continue;
-    const diff = us.mean - globalMean;
+  for (const unitStat of unitStats) {
+    if (unitStat.numberOfMeasurements === 0) continue;
+    const meanDiff = unitStat.mean - globalMean;
     weightedVarSum +=
-      us.numberOfMeasurements * (us.variance + diff * diff);
+      unitStat.numberOfMeasurements * (unitStat.variance + meanDiff * meanDiff);
   }
   const globalVariance = weightedVarSum / totalMeasurements;
   const globalStandardDeviation = Math.sqrt(globalVariance);

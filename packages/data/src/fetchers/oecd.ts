@@ -207,9 +207,9 @@ export async function fetchOECDHealthExpenditure(
 ): Promise<DataPoint[]> {
   const { jurisdictions } = options;
   const countries = jurisdictions?.join('+') ?? '';
-  const ds = OECD_DATASETS.HEALTH_EXPENDITURE;
-  const filter = `${countries}.${ds.measure}.${ds.unitMeasure}`;
-  return fetchOECDData(ds.dataflow, filter, options, 'OECD Health Expenditure (SHA)');
+  const dataset = OECD_DATASETS.HEALTH_EXPENDITURE;
+  const filter = `${countries}.${dataset.measure}.${dataset.unitMeasure}`;
+  return fetchOECDData(dataset.dataflow, filter, options, 'OECD Health Expenditure (SHA)');
 }
 
 /**
@@ -220,9 +220,9 @@ export async function fetchOECDEducationSpending(
 ): Promise<DataPoint[]> {
   const { jurisdictions } = options;
   const countries = jurisdictions?.join('+') ?? '';
-  const ds = OECD_DATASETS.EDUCATION_SPENDING;
-  const filter = `${countries}.${ds.measure}.${ds.unitMeasure}`;
-  return fetchOECDData(ds.dataflow, filter, options, 'OECD Education Spending');
+  const dataset = OECD_DATASETS.EDUCATION_SPENDING;
+  const filter = `${countries}.${dataset.measure}.${dataset.unitMeasure}`;
+  return fetchOECDData(dataset.dataflow, filter, options, 'OECD Education Spending');
 }
 
 /**
@@ -233,9 +233,9 @@ export async function fetchOECDGdpPerCapita(
 ): Promise<DataPoint[]> {
   const { jurisdictions } = options;
   const countries = jurisdictions?.join('+') ?? '';
-  const ds = OECD_DATASETS.GDP_PER_CAPITA;
-  const filter = `${countries}.${ds.measure}.${ds.unitMeasure}`;
-  return fetchOECDData(ds.dataflow, filter, options, 'OECD GDP Per Capita');
+  const dataset = OECD_DATASETS.GDP_PER_CAPITA;
+  const filter = `${countries}.${dataset.measure}.${dataset.unitMeasure}`;
+  return fetchOECDData(dataset.dataflow, filter, options, 'OECD GDP Per Capita');
 }
 
 /**
@@ -247,9 +247,9 @@ export async function fetchPisaScores(
 ): Promise<DataPoint[]> {
   const { jurisdictions } = options;
   const countries = jurisdictions?.join('+') ?? '';
-  const ds = OECD_DATASETS.PISA;
+  const dataset = OECD_DATASETS.PISA;
   // Filter for Total (Both Sexes) and Average Score. 
   // SUBJECT needs to be expanded or specific. Using _T for now to match generic fetch.
-  const filter = `${countries}.${ds.measure}.${ds.unitMeasure}`;
-  return fetchOECDData(ds.dataflow, filter, options, 'OECD PISA Scores');
+  const filter = `${countries}.${dataset.measure}.${dataset.unitMeasure}`;
+  return fetchOECDData(dataset.dataflow, filter, options, 'OECD PISA Scores');
 }

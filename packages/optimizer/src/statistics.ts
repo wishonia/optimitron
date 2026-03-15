@@ -31,9 +31,9 @@ export function mean(values: number[]): number {
  */
 export function std(values: number[], ddof: number = 0): number {
   if (values.length <= ddof) return NaN;
-  const m = mean(values);
-  const squaredDiffs = values.map(v => (v - m) ** 2);
-  return Math.sqrt(squaredDiffs.reduce((a, b) => a + b, 0) / (values.length - ddof));
+  const meanValue = mean(values);
+  const squaredDiffs = values.map(value => (value - meanValue) ** 2);
+  return Math.sqrt(squaredDiffs.reduce((sum, diff) => sum + diff, 0) / (values.length - ddof));
 }
 
 /**
@@ -224,29 +224,29 @@ export function calculateCorrelation(pairs: AlignedPair[]): CorrelationResult {
   const x = pairs.map(p => p.predictorValue);
   const y = pairs.map(p => p.outcomeValue);
   
-  const r = pearsonCorrelation(x, y);
-  const n = pairs.length;
-  const t = correlationTStatistic(r, n);
-  const pValue = tToPValue(t, n - 2);
-  
+  const pearsonR = pearsonCorrelation(x, y);
+  const sampleSize = pairs.length;
+  const tStat = correlationTStatistic(pearsonR, sampleSize);
+  const pValue = tToPValue(tStat, sampleSize - 2);
+
   // Standard error of correlation
-  const se = Math.sqrt((1 - r * r) / (n - 2));
-  
+  const standardError = Math.sqrt((1 - pearsonR * pearsonR) / (sampleSize - 2));
+
   // 95% CI using Fisher z-transformation
-  const zr = 0.5 * Math.log((1 + r) / (1 - r));
-  const seZ = 1 / Math.sqrt(n - 3);
-  const zLow = zr - 1.96 * seZ;
-  const zHigh = zr + 1.96 * seZ;
-  const ciLow = (Math.exp(2 * zLow) - 1) / (Math.exp(2 * zLow) + 1);
-  const ciHigh = (Math.exp(2 * zHigh) - 1) / (Math.exp(2 * zHigh) + 1);
-  
+  const fisherZ = 0.5 * Math.log((1 + pearsonR) / (1 - pearsonR));
+  const fisherZStdError = 1 / Math.sqrt(sampleSize - 3);
+  const fisherZLower = fisherZ - 1.96 * fisherZStdError;
+  const fisherZUpper = fisherZ + 1.96 * fisherZStdError;
+  const ciLower = (Math.exp(2 * fisherZLower) - 1) / (Math.exp(2 * fisherZLower) + 1);
+  const ciUpper = (Math.exp(2 * fisherZUpper) - 1) / (Math.exp(2 * fisherZUpper) + 1);
+
   return {
-    pearson: r,
+    pearson: pearsonR,
     spearman: spearmanCorrelation(x, y),
     pValue,
-    n,
-    standardError: se,
-    confidenceInterval: [ciLow, ciHigh],
+    n: sampleSize,
+    standardError,
+    confidenceInterval: [ciLower, ciUpper],
   };
 }
 
@@ -586,41 +586,41 @@ export function diminishingReturnsDetection(x: number[], y: number[]): Diminishi
   const firstHalf = pairs.slice(0, mid);
   const secondHalf = pairs.slice(mid);
 
-  // Helper to calculate slope: m = r * (sy / sx)
-  const getSlope = (p: { x: number, y: number }[]): number => {
-    const px = p.map(v => v.x);
-    const py = p.map(v => v.y);
-    const sx = std(px, 1);
-    if (sx === 0) return 0; // No variance in x -> undefined slope (vertical), treat as 0 for this purpose
-    const sy = std(py, 1);
-    const r = pearsonCorrelation(px, py);
-    return r * (sy / sx);
+  // Helper to calculate slope: slope = correlation * (stdDevY / stdDevX)
+  const getSlope = (points: { x: number, y: number }[]): number => {
+    const xValues = points.map(point => point.x);
+    const yValues = points.map(point => point.y);
+    const stdDevX = std(xValues, 1);
+    if (stdDevX === 0) return 0; // No variance in x -> undefined slope (vertical), treat as 0 for this purpose
+    const stdDevY = std(yValues, 1);
+    const correlation = pearsonCorrelation(xValues, yValues);
+    return correlation * (stdDevY / stdDevX);
   };
 
-  const m1 = getSlope(firstHalf);
-  const m2 = getSlope(secondHalf);
+  const firstHalfSlope = getSlope(firstHalf);
+  const secondHalfSlope = getSlope(secondHalf);
 
-  if (isNaN(m1) || isNaN(m2)) {
-    return { detected: false, firstHalfSlope: m1, secondHalfSlope: m2, slopeRatio: NaN };
+  if (isNaN(firstHalfSlope) || isNaN(secondHalfSlope)) {
+    return { detected: false, firstHalfSlope, secondHalfSlope, slopeRatio: NaN };
   }
 
-  // Avoid division by zero if m1 is 0
-  if (Math.abs(m1) < 1e-9) {
-    return { detected: false, firstHalfSlope: m1, secondHalfSlope: m2, slopeRatio: m2 > m1 ? Infinity : -Infinity };
+  // Avoid division by zero if firstHalfSlope is 0
+  if (Math.abs(firstHalfSlope) < 1e-9) {
+    return { detected: false, firstHalfSlope, secondHalfSlope, slopeRatio: secondHalfSlope > firstHalfSlope ? Infinity : -Infinity };
   }
 
-  const ratio = m2 / m1;
+  const slopeRatio = secondHalfSlope / firstHalfSlope;
 
   // Detect if:
   // 1. First half has positive slope (we are looking for diminishing *returns*, i.e. improvement)
   // 2. Second half slope is significantly less (less than 50% of first half)
-  const detected = m1 > 0 && ratio < 0.5;
+  const detected = firstHalfSlope > 0 && slopeRatio < 0.5;
 
   return {
     detected,
-    firstHalfSlope: m1,
-    secondHalfSlope: m2,
-    slopeRatio: ratio,
+    firstHalfSlope,
+    secondHalfSlope,
+    slopeRatio,
   };
 }
 
