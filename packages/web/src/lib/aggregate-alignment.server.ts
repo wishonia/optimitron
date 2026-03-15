@@ -84,7 +84,7 @@ function getCategoryName(categoryId: string): string {
  * 2. Aggregates into citizen preference weights via eigenvector
  * 3. Loads politician vote records (benchmark profiles merged with Congress sync)
  * 4. Scores each politician against aggregate preferences
- * 5. Persists results to AggregationRun + AlignmentScore tables
+ * 5. Persists results to AggregationRun + PreferenceWeight + AlignmentScore tables
  */
 export async function computeAggregateAlignmentScores(
   jurisdictionCode: string,
@@ -154,27 +154,29 @@ export async function computeAggregateAlignmentScores(
 
   const ranked = rankPoliticians(scores);
 
-  // 6. Build citizen priorities JSON (stored on AggregationRun instead of as FK-linked PreferenceWeights,
-  //    because budget category IDs don't have matching Item records in the DB)
-  const citizenPriorities: CitizenPriorityEntry[] = summary.preferenceWeights.map((w) => ({
-    itemId: w.itemId,
-    itemName: getCategoryName(w.itemId),
-    weight: w.weight,
-    rank: w.rank,
-    ciLow: w.ciLow,
-    ciHigh: w.ciHigh,
-  }));
-
-  // 7. Persist: create AggregationRun with embedded citizen priorities
+  // 6. Persist: create AggregationRun
   const aggregationRun = await prisma.aggregationRun.create({
     data: {
       jurisdictionId: jurisdiction.id,
       comparisonCount: summary.totalComparisons,
       participantCount: summary.totalParticipants,
       consistencyRatio: summary.consistencyRatio,
-      citizenPriorities: citizenPriorities,
     },
   });
+
+  // 7. Persist: PreferenceWeight rows (structured, FK-linked to Item)
+  if (summary.preferenceWeights.length > 0) {
+    await prisma.preferenceWeight.createMany({
+      data: summary.preferenceWeights.map((w) => ({
+        aggregationRunId: aggregationRun.id,
+        itemId: w.itemId,
+        weight: w.weight,
+        rank: w.rank,
+        ciLow: w.ciLow ?? null,
+        ciHigh: w.ciHigh ?? null,
+      })),
+    });
+  }
 
   // 8. Persist: AlignmentScore records
   const dbPoliticians = await prisma.politician.findMany({
@@ -266,8 +268,18 @@ export async function getLatestAggregateScores(
       comparisonCount: true,
       participantCount: true,
       consistencyRatio: true,
-      citizenPriorities: true,
       createdAt: true,
+      weights: {
+        select: {
+          itemId: true,
+          weight: true,
+          rank: true,
+          ciLow: true,
+          ciHigh: true,
+          item: { select: { name: true } },
+        },
+        orderBy: { rank: "asc" },
+      },
     },
   });
 
@@ -294,8 +306,14 @@ export async function getLatestAggregateScores(
     orderBy: { score: "desc" },
   });
 
-  // Citizen priorities are stored as JSON on the AggregationRun
-  const citizenPriorities = (latestRun.citizenPriorities as CitizenPriorityEntry[] | null) ?? [];
+  const citizenPriorities: CitizenPriorityEntry[] = latestRun.weights.map((w) => ({
+    itemId: w.itemId,
+    itemName: w.item.name,
+    weight: w.weight,
+    rank: w.rank,
+    ciLow: w.ciLow,
+    ciHigh: w.ciHigh,
+  }));
 
   return {
     jurisdiction: {

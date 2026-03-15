@@ -25,6 +25,7 @@
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
     "@optomitron/chat-ui": "workspace:^",
+    "@optomitron/hypercerts": "workspace:^",
     "@optomitron/data": "workspace:^",
     "@optomitron/db": "workspace:^",
     "@optomitron/obg": "workspace:^",

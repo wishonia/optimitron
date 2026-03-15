@@ -2000,10 +2000,6 @@ model AggregationRun {
   /// Filter: which region was included (null = all)
   regionFilter String?
 
-  /// Aggregated citizen preference weights as JSON (avoids FK dependency on Item table).
-  /// Shape: Array<{ itemId: string; itemName: string; weight: number; rank: number; ciLow?: number; ciHigh?: number }>
-  citizenPriorities Json?
-
   /// When this record was created
   createdAt DateTime @default(now())
 

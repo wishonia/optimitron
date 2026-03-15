@@ -59,6 +59,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 2,
       AI_MASS_SURVEILLANCE: 2,
       POLICING_VIOLENT_CRIME: 4,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -93,6 +94,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 3,
       AI_MASS_SURVEILLANCE: 2,
       POLICING_VIOLENT_CRIME: 4,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -127,6 +129,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 3,
       AI_MASS_SURVEILLANCE: 2,
       POLICING_VIOLENT_CRIME: 4,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -161,6 +164,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 5,
       AI_MASS_SURVEILLANCE: 2,
       POLICING_VIOLENT_CRIME: 5,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -195,6 +199,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 8,
       AI_MASS_SURVEILLANCE: 3,
       POLICING_VIOLENT_CRIME: 6,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -229,6 +234,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 4,
       AI_MASS_SURVEILLANCE: 5,
       POLICING_VIOLENT_CRIME: 8,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -263,6 +269,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 1,
       AI_MASS_SURVEILLANCE: 1,
       POLICING_VIOLENT_CRIME: 4,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -297,6 +304,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 2,
       AI_MASS_SURVEILLANCE: 2,
       POLICING_VIOLENT_CRIME: 5,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -331,6 +339,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 1,
       AI_MASS_SURVEILLANCE: 1,
       POLICING_VIOLENT_CRIME: 5,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -365,6 +374,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 3,
       AI_MASS_SURVEILLANCE: 2,
       POLICING_VIOLENT_CRIME: 4,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -399,6 +409,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 8,
       AI_MASS_SURVEILLANCE: 4,
       POLICING_VIOLENT_CRIME: 6,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
   {
@@ -433,6 +444,7 @@ export const ALIGNMENT_BENCHMARKS: AlignmentBenchmarkProfile[] = [
       CORPORATE_WELFARE: 7,
       AI_MASS_SURVEILLANCE: 4,
       POLICING_VIOLENT_CRIME: 8,
+      UNIVERSAL_BASIC_INCOME: 0,
     },
   },
 ];

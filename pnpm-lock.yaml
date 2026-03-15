@@ -349,6 +349,9 @@ importers:
       '@optomitron/db':
         specifier: workspace:^
         version: link:../db
+      '@optomitron/hypercerts':
+        specifier: workspace:^
+        version: link:../hypercerts
       '@optomitron/obg':
         specifier: workspace:^
         version: link:../obg

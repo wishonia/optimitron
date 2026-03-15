@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { fmtParam } from "@/lib/format-parameter";
 import {
@@ -655,7 +656,9 @@ export default function PrizePage() {
 
       {/* Citizen Dashboard */}
       <section id="dashboard" className="mb-16">
-        <CitizenDashboardWrapper />
+        <Suspense>
+          <CitizenDashboardWrapper />
+        </Suspense>
       </section>
 
       {/* Anti-Capture */}

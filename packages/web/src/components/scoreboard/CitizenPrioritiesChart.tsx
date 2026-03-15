@@ -5,8 +5,8 @@ interface PriorityItem {
   itemName: string;
   weight: number;
   rank: number;
-  ciLow: number | null;
-  ciHigh: number | null;
+  ciLow?: number | null;
+  ciHigh?: number | null;
 }
 
 interface CitizenPrioritiesChartProps {

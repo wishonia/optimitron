@@ -607,70 +607,65 @@ async function seedJurisdictions() {
 // ============================================================================
 
 async function seedBudgetItems(usJurisdictionId: string) {
-  console.log("💰 Seeding federal budget items...");
+  console.log("💰 Seeding Optomitron budget categories...");
 
-  // FY2025 estimated total spending: ~$6.75 trillion
-  const totalBudgetUsd = 6_750_000_000_000;
-
-  // Source: CBO FY2025 projections, OMB Historical Tables, USASpending.gov
-  // Percentages are approximate shares of total federal spending
-  const budgetItems: {
+  // Optomitron budget categories — these are the items citizens compare in
+  // pairwise RAPPA surveys. IDs match BudgetCategoryId in wishocracy-data.ts
+  // so WishocraticAllocation.categoryA/categoryB map directly to Item.id.
+  const categories: {
+    id: string;
     name: string;
     description: string;
     category: string;
-    pct: number;
+    annualBudgetB: number; // billions USD
   }[] = [
-    { name: "Social Security",                description: "Old-Age, Survivors, and Disability Insurance (OASDI)",                                  category: "Mandatory",    pct: 21.0 },
-    { name: "Medicare",                       description: "Health insurance for seniors and disabled (Parts A, B, D)",                              category: "Mandatory",    pct: 13.0 },
-    { name: "National Defense",               description: "Department of Defense and nuclear weapons activities",                                   category: "Discretionary",pct: 13.0 },
-    { name: "Net Interest",                   description: "Interest payments on the national debt",                                                category: "Mandatory",    pct: 13.0 },
-    { name: "Medicaid",                       description: "Health coverage for low-income individuals and families",                                category: "Mandatory",    pct: 9.0  },
-    { name: "Income Security",                description: "SNAP, SSI, EITC, unemployment, housing assistance, child nutrition",                    category: "Mandatory",    pct: 6.0  },
-    { name: "Health (Other)",                 description: "NIH, CDC, FDA, SAMHSA, Indian Health Service, other health programs",                   category: "Discretionary",pct: 3.0  },
-    { name: "Veterans Benefits & Services",   description: "VA healthcare, disability compensation, pensions, education benefits",                   category: "Discretionary",pct: 3.5  },
-    { name: "Education",                      description: "K-12 grants, Pell grants, student loans, special education",                            category: "Discretionary",pct: 2.5  },
-    { name: "Transportation",                 description: "Federal highways, FAA, Amtrak, transit grants",                                         category: "Discretionary",pct: 1.5  },
-    { name: "International Affairs",          description: "State Department, USAID, foreign aid, embassies",                                       category: "Discretionary",pct: 1.0  },
-    { name: "Science, Space & Technology",    description: "NASA, NSF, DOE Office of Science, NOAA",                                               category: "Discretionary",pct: 1.0  },
-    { name: "Administration of Justice",      description: "FBI, DEA, federal courts, Bureau of Prisons, ATF",                                     category: "Discretionary",pct: 1.0  },
-    { name: "Natural Resources & Environment",description: "EPA, national parks, Forest Service, water infrastructure, clean energy",               category: "Discretionary",pct: 0.8  },
-    { name: "Agriculture",                    description: "Farm subsidies, crop insurance, conservation, rural development",                       category: "Mandatory",    pct: 0.7  },
-    { name: "Community & Regional Development",description: "FEMA disaster relief, HUD community grants, EDA",                                     category: "Discretionary",pct: 0.7  },
-    { name: "General Government",             description: "White House, Congress, IRS, GSA, OPM, government-wide operations",                     category: "Discretionary",pct: 0.5  },
-    { name: "Energy",                         description: "DOE energy programs, Strategic Petroleum Reserve, power marketing",                     category: "Discretionary",pct: 0.3  },
-    { name: "Commerce & Housing Credit",      description: "SBA, Census Bureau, FHA/mortgage programs, FDIC",                                      category: "Mandatory",    pct: 0.3  },
-    { name: "Other Federal Programs",         description: "Undistributed offsetting receipts, other mandatory and discretionary programs",          category: "Other",        pct: 8.2  },
+    { id: "UNIVERSAL_BASIC_INCOME",       name: "Universal Basic Income",                category: "Citizen-Directed",  annualBudgetB: 0 },
+    { id: "PRAGMATIC_CLINICAL_TRIALS",    name: "Pragmatic Clinical Trials",             category: "High-ROI",          annualBudgetB: 1 },
+    { id: "ADDICTION_TREATMENT",          name: "Addiction Treatment Programs",           category: "High-ROI",          annualBudgetB: 10 },
+    { id: "EARLY_CHILDHOOD_EDUCATION",    name: "Early Childhood Education",             category: "High-ROI",          annualBudgetB: 10 },
+    { id: "CYBERSECURITY",                name: "Cybersecurity & Infrastructure Protection", category: "High-ROI",      annualBudgetB: 3 },
+    { id: "DRUG_WAR_ENFORCEMENT",         name: "Drug War Enforcement",                  category: "Low-ROI",           annualBudgetB: 50 },
+    { id: "ICE_IMMIGRATION_ENFORCEMENT",  name: "Mass Immigrant Detention Camps",        category: "Low-ROI",           annualBudgetB: 14 },
+    { id: "FARM_SUBSIDIES_AGRIBUSINESS",  name: "Agribusiness Subsidies",                category: "Low-ROI",           annualBudgetB: 20 },
+    { id: "FOSSIL_FUEL_SUBSIDIES",        name: "Fossil Fuel Subsidies",                 category: "Low-ROI",           annualBudgetB: 20 },
+    { id: "NUCLEAR_WEAPONS_MODERNIZATION",name: "Nuclear Weapons Development",           category: "Low-ROI",           annualBudgetB: 60 },
+    { id: "PRISON_CONSTRUCTION",          name: "Prison Construction & Operations",      category: "Low-ROI",           annualBudgetB: 80 },
+    { id: "MILITARY_OPERATIONS",          name: "Weapons Systems & Pentagon R&D",        category: "Traditional",       annualBudgetB: 425 },
+    { id: "BOMBING_IRAN",                 name: "Bombing Iran",                          category: "Active Wars",       annualBudgetB: 365 },
+    { id: "ISRAEL_GAZA_MILITARY_AID",     name: "Military Aid for Israel's War in Gaza", category: "Active Wars",       annualBudgetB: 4 },
+    { id: "YEMEN_HOUTHI_STRIKES",         name: "Yemen & Houthi Military Strikes",       category: "Active Wars",       annualBudgetB: 5 },
+    { id: "CORPORATE_WELFARE",            name: "Corporate Welfare & Bailouts",          category: "Corporate",         annualBudgetB: 100 },
+    { id: "AI_MASS_SURVEILLANCE",         name: "AI Mass Surveillance Programs",         category: "Surveillance",      annualBudgetB: 5 },
+    { id: "POLICING_VIOLENT_CRIME",       name: "Solving Actual Violent Crime",           category: "Traditional",       annualBudgetB: 15 },
   ];
 
-  for (const item of budgetItems) {
-    const usdAmount = Math.round((item.pct / 100) * totalBudgetUsd);
+  const totalBudgetB = categories.reduce((s, c) => s + c.annualBudgetB, 0);
+
+  for (const cat of categories) {
+    const pct = totalBudgetB > 0 ? (cat.annualBudgetB / totalBudgetB) * 100 : 0;
     await prisma.item.upsert({
-      where: {
-        id: `budget-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-      },
+      where: { id: cat.id },
       update: {
-        name: item.name,
-        description: item.description,
-        category: item.category,
-        currentAllocationPct: item.pct,
-        currentAllocationUsd: usdAmount,
+        name: cat.name,
+        category: cat.category,
+        currentAllocationUsd: cat.annualBudgetB * 1_000_000_000,
+        currentAllocationPct: Number(pct.toFixed(1)),
         active: true,
         jurisdictionId: usJurisdictionId,
       },
       create: {
-        id: `budget-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-        name: item.name,
-        description: item.description,
-        category: item.category,
-        currentAllocationPct: item.pct,
-        currentAllocationUsd: usdAmount,
+        id: cat.id,
+        name: cat.name,
+        category: cat.category,
+        currentAllocationUsd: cat.annualBudgetB * 1_000_000_000,
+        currentAllocationPct: Number(pct.toFixed(1)),
         active: true,
         jurisdictionId: usJurisdictionId,
       },
     });
   }
 
-  console.log(`  ✅ ${budgetItems.length} federal budget items`);
+  console.log(`  ✅ ${categories.length} Optomitron budget categories`);
 }
 
 // ============================================================================

@@ -90,25 +90,25 @@ export async function publishAggregateScoresToHypercerts(
           score: scoreValue,
         })),
         contributorDid,
+        evaluatorDid: "did:plc:wishocracy-aggregate",
       };
 
       const draft = createAlignmentHypercertDraft(input);
 
-      // NOTE: Actual publishing requires an authenticated AT Protocol session.
-      // The publisher and repo would be initialized from env vars in production.
-      // For now, we create the draft and log it. Full publishing is enabled
-      // when ATPROTO_PASSWORD is configured.
-      if (process.env.ATPROTO_PASSWORD) {
-        // Full AT Protocol publishing would go here
-        // const bundle = await publishAlignmentHypercertDraft(publisher, repo, draft);
-        // const cid = bundle.refs.activity.cid;
-        logger.info(
-          `Draft created for ${score.politician.name} (publishing requires AT Protocol session)`,
-        );
-      }
+      let draftRef = `draft:${aggregationRunId}:${score.politicianId}`;
 
-      // Store a reference to the draft (CID will be set when full publishing is enabled)
-      const draftRef = `draft:${aggregationRunId}:${score.politicianId}`;
+      if (process.env.ATPROTO_PASSWORD) {
+        const { createAppPasswordAgent, createAtprotoPublisher } = await import("@optomitron/hypercerts");
+        const agent = await createAppPasswordAgent({
+          service: process.env.ATPROTO_PDS_URL ?? "https://bsky.social",
+          identifier: contributorDid,
+          password: process.env.ATPROTO_PASSWORD,
+        });
+        const publisher = createAtprotoPublisher(agent);
+        const bundle = await publishAlignmentHypercertDraft(publisher, contributorDid, draft);
+        draftRef = bundle.refs.activity.cid;
+        logger.info(`Published Hypercert for ${score.politician.name}: ${draftRef}`);
+      }
       await prisma.alignmentScore.update({
         where: { id: score.id },
         data: {
