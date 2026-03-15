@@ -4,8 +4,11 @@ import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 import {
   DEATHS_PER_SECOND,
+  DEATHS_PER_DAY,
   DYSFUNCTION_TAX_PER_SECOND,
+  DYSFUNCTION_TAX_PER_YEAR,
   DESTRUCTIVE_PER_SECOND,
+  DESTRUCTIVE_BASE_T,
 } from "@/data/collapse-constants";
 
 function formatDollars(n: number): string {
@@ -31,7 +34,7 @@ const counters: CounterConfig[] = [
     color: "text-brutal-yellow",
     label: "Died from treatable diseases since you opened this page",
     quip: "Each one had a name. But sure, take your time.",
-    staticFallback: "~150,000 deaths per day (~1.7/sec)",
+    staticFallback: `~${DEATHS_PER_DAY.toLocaleString()} deaths per day (~${DEATHS_PER_SECOND.toFixed(1)}/sec)`,
   },
   {
     rate: DYSFUNCTION_TAX_PER_SECOND,
@@ -39,7 +42,7 @@ const counters: CounterConfig[] = [
     color: "text-brutal-red",
     label: "Burned by misaligned governments since you opened this page",
     quip: "That's your money, by the way. You earned it. They wasted it.",
-    staticFallback: "$101T/yr in governance dysfunction (~$3.2M/sec)",
+    staticFallback: `$${Math.round(DYSFUNCTION_TAX_PER_YEAR / 1e12)}T/yr in governance dysfunction (~$${(DYSFUNCTION_TAX_PER_SECOND / 1e6).toFixed(1)}M/sec)`,
   },
   {
     rate: DESTRUCTIVE_PER_SECOND,
@@ -47,7 +50,7 @@ const counters: CounterConfig[] = [
     color: "text-brutal-yellow",
     label: "Spent on destruction instead of cures since you opened this page",
     quip: "Every dollar here creates the next cybercriminal. It's a lovely system you've built.",
-    staticFallback: "$13.2T/yr on military + cybercrime (~$418K/sec)",
+    staticFallback: `$${DESTRUCTIVE_BASE_T.toFixed(1)}T/yr on military + cybercrime (~$${Math.round(DESTRUCTIVE_PER_SECOND / 1e3)}K/sec)`,
   },
 ];
 

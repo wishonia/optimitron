@@ -5,9 +5,12 @@ import { CountUp } from "@/components/animations/CountUp";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { politicalDysfunctionTaxPaperLink } from "@/lib/routes";
 import { fmtParam } from "@/lib/format-parameter";
+import { Stat } from "@/components/ui/stat";
 import {
   GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
   GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
+  POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
 } from "@/lib/parameters-calculations-citations";
 
 const milSpendFmt = fmtParam({ ...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD" });
@@ -52,8 +55,8 @@ export function PoliticalDysfunctionTaxSection() {
             The $<CountUp value={101} className="text-brutal-red" /> Trillion Stupidity Tax
           </h2>
           <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
-            Your civilisation loses $101 trillion per year to governance dysfunction.
-            That is $12,600 per human per year in pure waste. Your overhead is almost
+            Your civilisation loses <Stat param={{...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"}} /> per year to governance dysfunction.
+            That is <Stat param={POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL} /> per human per year in pure waste. Your overhead is almost
             equal to your entire economic output. My toaster runs more efficiently.
           </p>
         </ScrollReveal>
@@ -82,7 +85,7 @@ export function PoliticalDysfunctionTaxSection() {
               $<CountUp value={12600} className="text-white" />/person/year
             </div>
             <p className="text-white/80 font-medium max-w-xl mx-auto">
-              Every human on Earth pays $12,600 per year in governance dysfunction.
+              Every human on Earth pays <Stat param={POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL} /> per year in governance dysfunction.
               Not in taxes — in waste. The taxes are on top of that.
             </p>
             <NavItemLink

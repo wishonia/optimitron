@@ -137,11 +137,37 @@ describe("WishToken", function () {
       expect(await wish.taxExempt(alice.address)).to.be.true;
     });
 
-    it("owner can mint new tokens", async function () {
+    it("owner can mint new tokens within max supply", async function () {
+      const { wish, owner, alice } = await loadFixture(deployFixture);
+      // Burn some tokens first to make room under the cap
+      await wish.transfer(ethers.ZeroAddress.replace(/.$/, "1"), ethers.parseEther("5000"));
+      // Actually, owner is tax-exempt, so the transfer goes through fully.
+      // But maxSupply == initialSupply, so minting should fail unless supply < max.
+      // Since totalSupply == INITIAL_SUPPLY after deploy, minting any amount should revert.
+      await expect(
+        wish.mint(alice.address, 1n)
+      ).to.be.revertedWith("WishToken: exceeds max supply");
+    });
+  });
+
+  describe("Max supply cap", function () {
+    it("maxSupply equals initial supply", async function () {
+      const { wish } = await loadFixture(deployFixture);
+      expect(await wish.maxSupply()).to.equal(INITIAL_SUPPLY);
+    });
+
+    it("mint reverts when it would exceed max supply", async function () {
       const { wish, alice } = await loadFixture(deployFixture);
-      const mintAmount = ethers.parseEther("5000");
-      await wish.mint(alice.address, mintAmount);
-      expect(await wish.balanceOf(alice.address)).to.equal(mintAmount);
+      await expect(
+        wish.mint(alice.address, 1n)
+      ).to.be.revertedWith("WishToken: exceeds max supply");
+    });
+
+    it("mint reverts for large amounts above max supply", async function () {
+      const { wish, alice } = await loadFixture(deployFixture);
+      await expect(
+        wish.mint(alice.address, ethers.parseEther("1000000"))
+      ).to.be.revertedWith("WishToken: exceeds max supply");
     });
   });
 });

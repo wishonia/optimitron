@@ -4,6 +4,15 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { CountUp } from "@/components/animations/CountUp";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { invisibleGraveyardPaperLink, dfdaSpecPaperLink } from "@/lib/routes";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  EFFICACY_LAG_YEARS,
+  EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
+  CURRENT_CLINICAL_TRIAL_PARTICIPATION_RATE,
+  CURRENT_TRIAL_SLOTS_AVAILABLE,
+  GLOBAL_DISEASE_DEATHS_DAILY,
+  EXISTING_DRUGS_EFFICACY_LAG_ECONOMIC_LOSS,
+} from "@/lib/parameters-calculations-citations";
 
 const graveyardStats = [
   {
@@ -13,22 +22,22 @@ const graveyardStats = [
     detail: "95% of known diseases have zero approved treatments. Not because cures are impossible. Because nobody ran the trial.",
   },
   {
-    value: 8.2,
+    value: EFFICACY_LAG_YEARS.value,
     suffix: " years",
     label: "Post-Safety Delay",
-    detail: "The FDA makes treatments wait 8.2 years AFTER they have been proven safe. Just sitting there. Being safe. While people die.",
+    detail: `The FDA makes treatments wait ${EFFICACY_LAG_YEARS.value} years AFTER they have been proven safe. Just sitting there. Being safe. While people die.`,
   },
   {
-    value: 102,
+    value: Math.round(EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL.value / 1e6),
     suffix: "M deaths",
     label: "Historical Efficacy Lag",
-    detail: "102 million people have died waiting for treatments that were already proven safe but had not yet cleared the efficacy queue.",
+    detail: `${Math.round(EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL.value / 1e6)} million people have died waiting for treatments that were already proven safe but had not yet cleared the efficacy queue.`,
   },
   {
-    value: 0.06,
+    value: +(CURRENT_CLINICAL_TRIAL_PARTICIPATION_RATE.value * 100).toFixed(2),
     suffix: "%",
     label: "Trial Capacity Used",
-    detail: "1.9 million trial slots per year. 1.08 billion willing participants. You are using 0.06% of available capacity. On my planet this would be a crime.",
+    detail: `${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)} million trial slots per year. 1.08 billion willing participants. You are using ${(CURRENT_CLINICAL_TRIAL_PARTICIPATION_RATE.value * 100).toFixed(2)}% of available capacity. On my planet this would be a crime.`,
   },
 ];
 
@@ -41,7 +50,7 @@ export function InvisibleGraveyardSection() {
             The Invisible Graveyard
           </h2>
           <p className="mt-4 text-lg text-white/50 max-w-2xl mx-auto font-medium">
-            150,000 people die every day from treatable diseases. Not untreatable.
+            {GLOBAL_DISEASE_DEATHS_DAILY.value.toLocaleString()} people die every day from treatable diseases. Not untreatable.
             Treatable. You just have not gotten around to testing the treatments yet.
             At your current pace, clearing the backlog takes 443 years.
           </p>

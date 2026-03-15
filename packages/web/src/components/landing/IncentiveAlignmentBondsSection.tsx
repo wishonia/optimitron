@@ -10,6 +10,11 @@ import {
   incentiveAlignmentBondsPaperLink,
   prizeLink,
 } from "@/lib/routes";
+import { Stat } from "@/components/ui/stat";
+import {
+  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+} from "@/lib/parameters-calculations-citations";
 
 export function IncentiveAlignmentBondsSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -60,7 +65,7 @@ export function IncentiveAlignmentBondsSection() {
                 272%/yr Revenue Share
               </h3>
               <p className="text-sm text-black/70 leading-relaxed font-medium mb-3">
-                $14.9M–$52.1M per-capita income gains across adopting jurisdictions.
+                <Stat param={{...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"}} />–<Stat param={{...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"}} /> per-capita income gains across adopting jurisdictions.
                 Bondholders get a share of the value they helped create.
               </p>
               <div className="p-3 bg-black/10 border border-black/20">

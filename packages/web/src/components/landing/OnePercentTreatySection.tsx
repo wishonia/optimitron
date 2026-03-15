@@ -4,31 +4,48 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { CountUp } from "@/components/animations/CountUp";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { onePercentTreatyPaperLink } from "@/lib/routes";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  TRADITIONAL_PHASE3_COST_PER_PATIENT,
+  DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT,
+  CURRENT_TRIAL_SLOTS_AVAILABLE,
+  DFDA_QUEUE_CLEARANCE_YEARS,
+} from "@/lib/parameters-calculations-citations";
+
+const dfdaCapacity = Math.round(
+  (GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value * 0.01 * 0.8) /
+    DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT.value,
+);
+const dfdaCapacityFmt = `${(dfdaCapacity / 1e6).toFixed(1)}M`;
+const currentQueueYears = Math.round(
+  6650 / (15 * 1), // approximation: 6650 diseases / 15 treatments per year
+);
 
 const treatySteps = [
   {
-    before: "$2.72T/yr",
+    before: `${fmtParam({...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"})}/yr`,
     label: "Global Military Budget",
     after: "Take 1%",
-    description: "Your species spends $2.72 trillion per year on the ability to destroy itself. We are asking for one percent of that. One. Percent.",
+    description: `Your species spends ${fmtParam({...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"})} per year on the ability to destroy itself. We are asking for one percent of that. One. Percent.`,
   },
   {
-    before: "$41K/patient",
+    before: `${fmtParam(TRADITIONAL_PHASE3_COST_PER_PATIENT)}`,
     label: "Trial Cost",
-    after: "$929/patient",
-    description: "Current clinical trials cost $41,000 per patient because you insist on running them in the most expensive way possible. Scale fixes that.",
+    after: `${fmtParam(DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT)}`,
+    description: `Current clinical trials cost ${fmtParam(TRADITIONAL_PHASE3_COST_PER_PATIENT)} because you insist on running them in the most expensive way possible. Scale fixes that.`,
   },
   {
-    before: "1.9M/yr",
+    before: `${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)}M/yr`,
     label: "Trial Capacity",
-    after: "23.4M/yr",
-    description: "From 1.9 million patients per year to 23.4 million. Same willing participants. Just actually letting them participate.",
+    after: `${dfdaCapacityFmt}/yr`,
+    description: `From ${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)} million patients per year to ${(dfdaCapacity / 1e6).toFixed(1)} million. Same willing participants. Just actually letting them participate.`,
   },
   {
-    before: "443 years",
+    before: `${currentQueueYears} years`,
     label: "Treatment Queue",
-    after: "36 years",
-    description: "The 443-year queue to test treatments for every known disease shrinks to 36 years. Still embarrassing, but survivable.",
+    after: `${Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value)} years`,
+    description: `The ${currentQueueYears}-year queue to test treatments for every known disease shrinks to ${Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value)} years. Still embarrassing, but survivable.`,
   },
 ];
 

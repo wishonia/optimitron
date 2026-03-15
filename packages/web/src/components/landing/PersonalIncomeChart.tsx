@@ -2,6 +2,11 @@
 
 import { useState, useRef, useMemo } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
+import {
+  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+} from "@/lib/parameters-calculations-citations";
+import { fmtParam } from "@/lib/format-parameter";
 
 const YEARS = 20;
 const DEFAULT_INCOME = 37000; // US median personal income
@@ -13,7 +18,7 @@ const scenarios = [
     rate: 0.179, // 17.9% CAGR — reallocate 1% military spending
     color: "#00c8c8",
     description: "Redirect 1% of military spending to health R&D",
-    lifetimeGainLabel: "$14.9M per capita",
+    lifetimeGainLabel: `${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})} per capita`,
   },
   {
     id: "wishonia",
@@ -21,9 +26,9 @@ const scenarios = [
     rate: 0.254, // 25.4% CAGR — full governance optimization
     color: "#f472b6",
     description: "Full Optomitron governance optimization",
-    lifetimeGainLabel: "$52.1M per capita",
+    lifetimeGainLabel: `${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})} per capita`,
   },
-] as const;
+];
 
 const CURRENT_RATE = 0.025; // 2.5% current trajectory
 

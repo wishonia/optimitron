@@ -11,21 +11,69 @@ import {
   useChainId,
   useSwitchChain,
 } from "wagmi";
-import { parseEther, formatEther, type Address } from "viem";
+import { parseUnits, formatUnits, type Address } from "viem";
 import { sepolia } from "wagmi/chains";
-import { prizePoolAbi } from "@/lib/contracts/prize-pool-abi";
-import { wishTokenAbi } from "@/lib/contracts/wish-token-abi";
+import { iabVaultAbi } from "@/lib/contracts/iab-vault-abi";
 import { getContracts } from "@/lib/contracts/addresses";
 
+const USDC_DECIMALS = 6;
 const PRESET_AMOUNTS = ["100", "500", "1,000", "5,000"];
+
+/** Minimal ERC20 ABI for balanceOf + approve + allowance */
+const erc20Abi = [
+  {
+    type: "function",
+    name: "balanceOf",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ name: "", type: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "allowance",
+    inputs: [
+      { name: "owner", type: "address" },
+      { name: "spender", type: "address" },
+    ],
+    outputs: [{ name: "", type: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "approve",
+    inputs: [
+      { name: "spender", type: "address" },
+      { name: "value", type: "uint256" },
+    ],
+    outputs: [{ name: "", type: "bool" }],
+    stateMutability: "nonpayable",
+  },
+] as const;
 
 function formatAmount(value: string): string {
   return value.replace(/,/g, "");
 }
 
+function formatUSDC(value: bigint): string {
+  return Number(formatUnits(value, USDC_DECIMALS)).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function formatDate(timestamp: bigint): string {
+  return new Date(Number(timestamp) * 1000).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 export function PrizeDeposit() {
   const [amount, setAmount] = useState("");
-  const [step, setStep] = useState<"idle" | "approving" | "depositing">("idle");
+  const [step, setStep] = useState<
+    "idle" | "approving" | "depositing" | "claiming"
+  >("idle");
 
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
@@ -34,63 +82,98 @@ export function PrizeDeposit() {
   const { switchChain } = useSwitchChain();
 
   const contracts = getContracts(chainId);
-  const prizePoolAddress = contracts?.prizePool;
-  const wishTokenAddress = contracts?.wishToken;
+  const vaultAddress = contracts?.iabVault;
+  const usdcAddress = contracts?.usdc;
   const isDeployed =
-    prizePoolAddress && prizePoolAddress !== "0x0000000000000000000000000000000000000000";
+    vaultAddress &&
+    vaultAddress !== "0x0000000000000000000000000000000000000000";
 
-  // Read pool status
-  const { data: poolStatus } = useReadContract({
-    address: prizePoolAddress as Address,
-    abi: prizePoolAbi,
-    functionName: "status",
+  // --- Read vault state ---
+
+  const { data: totalPoolValue } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
+    functionName: "totalPoolValue",
     query: { enabled: !!isDeployed && isConnected },
   });
 
-  // Read total deposits
-  const { data: totalDeposits } = useReadContract({
-    address: prizePoolAddress as Address,
-    abi: prizePoolAbi,
-    functionName: "totalDeposits",
+  const { data: totalPrincipal } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
+    functionName: "totalPrincipal",
     query: { enabled: !!isDeployed && isConnected },
   });
 
-  // Read donor count
-  const { data: donorCount } = useReadContract({
-    address: prizePoolAddress as Address,
-    abi: prizePoolAbi,
-    functionName: "donorCount",
+  const { data: depositorCount } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
+    functionName: "depositorCount",
     query: { enabled: !!isDeployed && isConnected },
   });
 
-  // Read user's deposit
-  const { data: userDeposit } = useReadContract({
-    address: prizePoolAddress as Address,
-    abi: prizePoolAbi,
-    functionName: "donorDeposit",
+  const { data: maturityTs } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
+    functionName: "maturityTimestamp",
+    query: { enabled: !!isDeployed && isConnected },
+  });
+
+  const { data: thresholdMet } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
+    functionName: "thresholdMet",
+    query: { enabled: !!isDeployed && isConnected },
+  });
+
+  const { data: fundsAllocated } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
+    functionName: "fundsAllocated",
+    query: { enabled: !!isDeployed && isConnected },
+  });
+
+  // --- Read user state ---
+
+  const { data: userBalance } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
+    functionName: "getBalance",
     args: address ? [address] : undefined,
     query: { enabled: !!isDeployed && isConnected && !!address },
   });
 
-  // Read user's $WISH balance
-  const { data: wishBalance } = useReadContract({
-    address: wishTokenAddress as Address,
-    abi: wishTokenAbi,
+  const { data: iabShares } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
     functionName: "balanceOf",
     args: address ? [address] : undefined,
     query: { enabled: !!isDeployed && isConnected && !!address },
   });
 
-  // Read user's allowance for PrizePool
-  const { data: allowance } = useReadContract({
-    address: wishTokenAddress as Address,
-    abi: wishTokenAbi,
-    functionName: "allowance",
-    args: address && prizePoolAddress ? [address, prizePoolAddress] : undefined,
+  const { data: sharePrice } = useReadContract({
+    address: vaultAddress as Address,
+    abi: iabVaultAbi,
+    functionName: "sharePrice",
+    query: { enabled: !!isDeployed && isConnected },
+  });
+
+  const { data: usdcBalance } = useReadContract({
+    address: usdcAddress as Address,
+    abi: erc20Abi,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
     query: { enabled: !!isDeployed && isConnected && !!address },
   });
 
-  // Approve transaction
+  const { data: allowance } = useReadContract({
+    address: usdcAddress as Address,
+    abi: erc20Abi,
+    functionName: "allowance",
+    args: address && vaultAddress ? [address, vaultAddress] : undefined,
+    query: { enabled: !!isDeployed && isConnected && !!address },
+  });
+
+  // --- Write: Approve USDC ---
   const {
     writeContract: writeApprove,
     data: approveHash,
@@ -100,7 +183,7 @@ export function PrizeDeposit() {
   const { isLoading: isApproveConfirming, isSuccess: isApproveConfirmed } =
     useWaitForTransactionReceipt({ hash: approveHash });
 
-  // Deposit transaction
+  // --- Write: Deposit ---
   const {
     writeContract: writeDeposit,
     data: depositHash,
@@ -110,21 +193,31 @@ export function PrizeDeposit() {
   const { isLoading: isDepositConfirming, isSuccess: isDepositConfirmed } =
     useWaitForTransactionReceipt({ hash: depositHash });
 
-  // After approval confirmed, proceed to deposit
+  // --- Write: Claim Refund ---
+  const {
+    writeContract: writeClaim,
+    data: claimHash,
+    isPending: isClaiming,
+  } = useWriteContract();
+
+  const { isLoading: isClaimConfirming, isSuccess: isClaimConfirmed } =
+    useWaitForTransactionReceipt({ hash: claimHash });
+
+  // After approval, auto-deposit
   useEffect(() => {
-    if (isApproveConfirmed && step === "approving" && prizePoolAddress) {
+    if (isApproveConfirmed && step === "approving" && vaultAddress) {
       setStep("depositing");
-      const parsedAmount = parseEther(formatAmount(amount));
+      const parsedAmount = parseUnits(formatAmount(amount), USDC_DECIMALS);
       writeDeposit({
-        address: prizePoolAddress,
-        abi: prizePoolAbi,
+        address: vaultAddress,
+        abi: iabVaultAbi,
         functionName: "deposit",
         args: [parsedAmount],
       });
     }
-  }, [isApproveConfirmed, step, amount, prizePoolAddress, writeDeposit]);
+  }, [isApproveConfirmed, step, amount, vaultAddress, writeDeposit]);
 
-  // Reset after deposit confirmed
+  // Reset after deposit
   useEffect(() => {
     if (isDepositConfirmed) {
       setStep("idle");
@@ -132,33 +225,70 @@ export function PrizeDeposit() {
     }
   }, [isDepositConfirmed]);
 
-  const parsedAmount = amount ? parseEther(formatAmount(amount)) : 0n;
-  const needsApproval = allowance !== undefined && parsedAmount > 0n && allowance < parsedAmount;
+  // Reset after claim
+  useEffect(() => {
+    if (isClaimConfirmed) {
+      setStep("idle");
+    }
+  }, [isClaimConfirmed]);
+
+  const parsedAmount = amount
+    ? parseUnits(formatAmount(amount), USDC_DECIMALS)
+    : 0n;
+  const needsApproval =
+    allowance !== undefined && parsedAmount > 0n && allowance < parsedAmount;
 
   function handleDeposit() {
-    if (!prizePoolAddress || !wishTokenAddress || parsedAmount === 0n) return;
+    if (!vaultAddress || !usdcAddress || parsedAmount === 0n) return;
 
     if (needsApproval) {
       setStep("approving");
       writeApprove({
-        address: wishTokenAddress,
-        abi: wishTokenAbi,
+        address: usdcAddress,
+        abi: erc20Abi,
         functionName: "approve",
-        args: [prizePoolAddress, parsedAmount],
+        args: [vaultAddress, parsedAmount],
       });
     } else {
       setStep("depositing");
       writeDeposit({
-        address: prizePoolAddress,
-        abi: prizePoolAbi,
+        address: vaultAddress,
+        abi: iabVaultAbi,
         functionName: "deposit",
         args: [parsedAmount],
       });
     }
   }
 
-  const isBusy = isApproving || isApproveConfirming || isDepositing || isDepositConfirming;
-  const statusLabels = ["Open", "Locked", "Allocating", "Distributed"];
+  function handleClaimRefund() {
+    if (!vaultAddress) return;
+    setStep("claiming");
+    writeClaim({
+      address: vaultAddress,
+      abi: iabVaultAbi,
+      functionName: "claimRefund",
+    });
+  }
+
+  const isBusy =
+    isApproving ||
+    isApproveConfirming ||
+    isDepositing ||
+    isDepositConfirming ||
+    isClaiming ||
+    isClaimConfirming;
+
+  const userSharesBigint = (iabShares as bigint) ?? 0n;
+  const hasDeposit = userSharesBigint > 0n;
+  const now = BigInt(Math.floor(Date.now() / 1000));
+  const isMatured = maturityTs ? now >= (maturityTs as bigint) : false;
+  const canClaimRefund = isMatured && !thresholdMet && hasDeposit;
+
+  // Yield calculation
+  const yieldAccrued =
+    totalPoolValue !== undefined && totalPrincipal !== undefined
+      ? (totalPoolValue as bigint) - (totalPrincipal as bigint)
+      : 0n;
 
   return (
     <div className="space-y-6">
@@ -171,8 +301,8 @@ export function PrizeDeposit() {
         {!isConnected ? (
           <div className="space-y-3">
             <p className="text-xs font-medium text-black/60 mb-4">
-              Connect your wallet to deposit $WISH into the PrizePool contract.
-              You can withdraw any time before the pool locks.
+              Connect your wallet to purchase Incentive Alignment Bonds with
+              USDC. Your deposit earns yield in Aave while it waits.
             </p>
             <div className="flex flex-wrap gap-2">
               {connectors.map((connector) => (
@@ -181,7 +311,9 @@ export function PrizeDeposit() {
                   onClick={() => connect({ connector })}
                   className="border-2 border-black bg-brutal-pink px-4 py-2.5 text-sm font-black uppercase text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
                 >
-                  {connector.name === "Injected" ? "Browser Wallet" : connector.name}
+                  {connector.name === "Injected"
+                    ? "Browser Wallet"
+                    : connector.name}
                 </button>
               ))}
             </div>
@@ -219,25 +351,47 @@ export function PrizeDeposit() {
             <div className="grid gap-2 grid-cols-2">
               <div className="border-2 border-black bg-brutal-cyan/20 p-2">
                 <div className="text-[10px] font-black uppercase text-black/50">
-                  $WISH Balance
+                  USDC Balance
                 </div>
                 <div className="text-sm font-black">
-                  {wishBalance !== undefined
-                    ? formatEther(wishBalance as bigint)
-                    : "—"}
+                  {usdcBalance !== undefined
+                    ? `$${formatUSDC(usdcBalance as bigint)}`
+                    : "\u2014"}
                 </div>
               </div>
               <div className="border-2 border-black bg-brutal-cyan/10 p-2">
                 <div className="text-[10px] font-black uppercase text-black/50">
-                  Your Deposit
+                  Your Bond Value
                 </div>
                 <div className="text-sm font-black">
-                  {userDeposit !== undefined
-                    ? formatEther(userDeposit as bigint)
-                    : "—"}
+                  {userBalance !== undefined
+                    ? `$${formatUSDC(userBalance as bigint)}`
+                    : "\u2014"}
                 </div>
               </div>
             </div>
+
+            {/* IAB token info for existing depositor */}
+            {hasDeposit && (
+              <div className="border-2 border-black bg-green-50 p-2">
+                <div className="text-[10px] font-black uppercase text-black/50">
+                  Your IAB Tokens / USDC Value
+                </div>
+                <div className="text-sm font-black">
+                  {formatUSDC(userSharesBigint)} IAB {"\u2192"}{" "}
+                  ${userBalance !== undefined
+                    ? formatUSDC(userBalance as bigint)
+                    : "\u2014"}{" "}
+                  <span className="text-[10px] text-black/40">
+                    (share price: $
+                    {sharePrice !== undefined
+                      ? formatUSDC(sharePrice as bigint)
+                      : "1.00"}
+                    )
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -245,7 +399,7 @@ export function PrizeDeposit() {
       {/* Deposit Form */}
       <div className="border-4 border-black bg-white p-6">
         <h3 className="font-black uppercase text-black mb-3">
-          Deposit $WISH Tokens
+          Buy Incentive Alignment Bond
         </h3>
 
         {!isDeployed && (
@@ -254,7 +408,7 @@ export function PrizeDeposit() {
               Not Yet Deployed
             </div>
             <p className="text-xs font-medium text-black/50 mt-1">
-              The PrizePool contract has not been deployed to this network yet.
+              The IABVault contract has not been deployed to this network yet.
               Connect your wallet to Sepolia once contracts are live.
             </p>
           </div>
@@ -263,14 +417,16 @@ export function PrizeDeposit() {
         <div className="space-y-3">
           <div className="border-2 border-black bg-brutal-yellow/20 p-3">
             <label className="text-xs font-black uppercase text-black/60 block mb-1">
-              Amount ($WISH)
+              Amount (USDC)
             </label>
             <div className="flex gap-2">
               <input
                 type="text"
                 placeholder="1000"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value.replace(/[^0-9.,]/g, ""))}
+                onChange={(e) =>
+                  setAmount(e.target.value.replace(/[^0-9.,]/g, ""))
+                }
                 className="flex-1 border-2 border-black bg-white px-3 py-2 text-lg font-black focus:outline-none focus:border-brutal-pink"
                 disabled={!isConnected || !isDeployed || isBusy}
               />
@@ -291,12 +447,12 @@ export function PrizeDeposit() {
                     : "Depositing..."
                   : needsApproval
                     ? "Approve & Deposit"
-                    : "Deposit"}
+                    : "Buy Bond"}
               </button>
             </div>
             {isDepositConfirmed && (
               <p className="text-xs font-black text-brutal-cyan mt-2">
-                Deposit confirmed! Transaction: {depositHash?.slice(0, 10)}...
+                Bond purchased! Tx: {depositHash?.slice(0, 10)}...
               </p>
             )}
           </div>
@@ -308,96 +464,150 @@ export function PrizeDeposit() {
                 className="flex-1 border-2 border-black bg-white px-2 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/20 transition-colors disabled:opacity-50"
                 disabled={!isConnected || !isDeployed || isBusy}
               >
-                {preset}
+                ${preset}
               </button>
             ))}
           </div>
         </div>
       </div>
 
+      {/* Claim Refund (visible after maturity if thresholds not met) */}
+      {isDeployed && isConnected && canClaimRefund && (
+        <div className="border-4 border-black bg-green-100 p-6">
+          <h3 className="font-black uppercase text-black mb-3">
+            Claim Your Refund
+          </h3>
+          <p className="text-xs font-medium text-black/60 mb-4">
+            The bond has matured and thresholds were not met. You can reclaim
+            your principal plus all accrued yield.
+          </p>
+          <div className="flex items-center gap-4">
+            <div>
+              <div className="text-[10px] font-black uppercase text-black/50">
+                Refund Amount
+              </div>
+              <div className="text-lg font-black text-green-700">
+                ${userBalance !== undefined
+                  ? formatUSDC(userBalance as bigint)
+                  : "\u2014"}
+              </div>
+            </div>
+            <button
+              onClick={handleClaimRefund}
+              disabled={isBusy}
+              className="border-2 border-black bg-green-600 px-6 py-2.5 text-sm font-black uppercase text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isClaiming || isClaimConfirming ? "Claiming..." : "Claim Refund"}
+            </button>
+          </div>
+          {isClaimConfirmed && (
+            <p className="text-xs font-black text-green-700 mt-2">
+              Refund claimed! Tx: {claimHash?.slice(0, 10)}...
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Live Pool Status */}
       {isDeployed && isConnected && (
         <div className="border-4 border-black bg-brutal-cyan/10 p-6">
           <h3 className="font-black uppercase text-black mb-3">
-            Live Pool Status
+            Live Vault Status
           </h3>
-          <div className="grid gap-3 grid-cols-3">
+          <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
             <div className="border-2 border-black bg-white p-2">
               <div className="text-[10px] font-black uppercase text-black/50">
-                Status
+                Pool Value
               </div>
               <div className="text-sm font-black text-brutal-cyan">
-                {poolStatus !== undefined
-                  ? statusLabels[Number(poolStatus)] ?? "Unknown"
-                  : "—"}
+                {totalPoolValue !== undefined
+                  ? `$${formatUSDC(totalPoolValue as bigint)}`
+                  : "\u2014"}
               </div>
             </div>
             <div className="border-2 border-black bg-white p-2">
               <div className="text-[10px] font-black uppercase text-black/50">
-                Total Deposits
+                Total Principal
               </div>
               <div className="text-sm font-black">
-                {totalDeposits !== undefined
-                  ? `${formatEther(totalDeposits as bigint)} WISH`
-                  : "—"}
+                {totalPrincipal !== undefined
+                  ? `$${formatUSDC(totalPrincipal as bigint)}`
+                  : "\u2014"}
               </div>
             </div>
             <div className="border-2 border-black bg-white p-2">
               <div className="text-[10px] font-black uppercase text-black/50">
-                Donors
+                Yield Earned
+              </div>
+              <div className="text-sm font-black text-green-600">
+                {totalPoolValue !== undefined && totalPrincipal !== undefined
+                  ? `+$${formatUSDC(yieldAccrued)}`
+                  : "\u2014"}
+              </div>
+            </div>
+            <div className="border-2 border-black bg-white p-2">
+              <div className="text-[10px] font-black uppercase text-black/50">
+                Bond Holders
               </div>
               <div className="text-sm font-black">
-                {donorCount !== undefined ? String(donorCount) : "—"}
+                {depositorCount !== undefined ? String(depositorCount) : "\u2014"}
+              </div>
+            </div>
+          </div>
+
+          {/* Maturity & threshold status */}
+          <div className="grid gap-3 grid-cols-2 mt-3">
+            <div className="border-2 border-black bg-white p-2">
+              <div className="text-[10px] font-black uppercase text-black/50">
+                Maturity Date
+              </div>
+              <div className="text-sm font-black">
+                {maturityTs !== undefined
+                  ? formatDate(maturityTs as bigint)
+                  : "\u2014"}
+              </div>
+            </div>
+            <div className="border-2 border-black bg-white p-2">
+              <div className="text-[10px] font-black uppercase text-black/50">
+                Threshold Status
+              </div>
+              <div className="text-sm font-black">
+                {thresholdMet !== undefined
+                  ? thresholdMet
+                    ? fundsAllocated
+                      ? "Met & Allocated"
+                      : "Met (pending allocation)"
+                    : "Not yet met"
+                  : "\u2014"}
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* ETH/USDC Direct */}
-      <div className="border-4 border-black bg-white p-6">
-        <h3 className="font-black uppercase text-black mb-3">
-          Donate ETH / USDC
-        </h3>
-        <p className="text-xs font-medium text-black/60 mb-4">
-          Donate directly via cryptocurrency. Funds are converted to $WISH and
-          deposited into the Prize Pool on your behalf.
-        </p>
-        <div className="border-2 border-black bg-brutal-cyan/10 p-3">
-          <div className="text-xs font-black uppercase text-black/60 mb-1">
-            Send directly to:
-          </div>
-          <code className="text-xs font-bold text-black/80 break-all">
-            prize.warondisease.eth
-          </code>
-          <p className="text-[10px] font-bold text-black/40 mt-1">
-            ENS resolves after mainnet deployment
-          </p>
-        </div>
-      </div>
-
-      {/* Fiat */}
+      {/* Alternative Methods */}
       <div className="border-4 border-black bg-brutal-yellow/20 p-6">
         <h3 className="font-black uppercase text-black mb-3">
           Traditional Donation
         </h3>
         <p className="text-xs font-medium text-black/60 mb-3">
-          Prefer fiat? Your contribution will be converted and deposited into the
-          Prize Pool. Email{" "}
+          Prefer fiat? Your contribution will be converted to USDC and deposited
+          into the IAB Vault. Email{" "}
           <a
             href="mailto:mike@warondisease.org"
             className="font-black text-black underline hover:text-brutal-pink"
           >
             mike@warondisease.org
           </a>{" "}
-          for wire transfer details, DAF contributions, or institutional commitments.
+          for wire transfer details, DAF contributions, or institutional
+          commitments.
         </p>
         <div className="flex flex-wrap gap-3">
           {["$100", "$500", "$1,000", "$5,000", "$25,000", "Custom"].map(
             (tier) => (
               <a
                 key={tier}
-                href="mailto:mike@warondisease.org?subject=Earth%20Optimization%20Prize%20Donation"
+                href="mailto:mike@warondisease.org?subject=Incentive%20Alignment%20Bond%20Purchase"
                 className="border-2 border-black bg-white px-4 py-2 text-sm font-black uppercase hover:bg-brutal-pink/20 transition-colors"
               >
                 {tier}

@@ -4,18 +4,27 @@ import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { dfdaSpecPaperLink } from "@/lib/routes";
+import { fmtParam } from "@/lib/format-parameter";
+import { Stat } from "@/components/ui/stat";
+import {
+  TRADITIONAL_PHASE3_COST_PER_PATIENT,
+  DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT,
+  CURRENT_TRIAL_SLOTS_AVAILABLE,
+  DFDA_QUEUE_CLEARANCE_YEARS,
+  EFFICACY_LAG_YEARS,
+} from "@/lib/parameters-calculations-citations";
 
 const comparisons = [
   {
     label: "Cost per Patient",
-    current: { value: 41000, display: "$41,000", color: "bg-brutal-red" },
-    optimized: { value: 929, display: "$929", color: "bg-brutal-cyan" },
+    current: { value: TRADITIONAL_PHASE3_COST_PER_PATIENT.value, display: fmtParam(TRADITIONAL_PHASE3_COST_PER_PATIENT), color: "bg-brutal-red" },
+    optimized: { value: DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT.value, display: fmtParam(DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT), color: "bg-brutal-cyan" },
     ratio: "44x cheaper",
     ratioColor: "text-brutal-cyan",
   },
   {
     label: "Annual Capacity",
-    current: { value: 1.9, display: "1.9M/yr", color: "bg-brutal-red/60" },
+    current: { value: CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6, display: `${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)}M/yr`, color: "bg-brutal-red/60" },
     optimized: { value: 23.4, display: "23.4M/yr", color: "bg-brutal-cyan" },
     ratio: "12x more",
     ratioColor: "text-brutal-cyan",
@@ -23,7 +32,7 @@ const comparisons = [
   {
     label: "Queue to Test All Treatments",
     current: { value: 443, display: "443 years", color: "bg-brutal-red" },
-    optimized: { value: 36, display: "36 years", color: "bg-brutal-cyan" },
+    optimized: { value: Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value), display: `${Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value)} years`, color: "bg-brutal-cyan" },
     ratio: "12x faster",
     ratioColor: "text-brutal-cyan",
   },
@@ -48,7 +57,7 @@ export function DecentralizedFDASection() {
             Your Decentralized FDA
           </h2>
           <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
-            Your FDA makes treatments wait 8.2 years AFTER they&apos;ve been proven safe. This replaces the theatre with infrastructure.
+            Your FDA makes treatments wait <Stat param={EFFICACY_LAG_YEARS} /> AFTER they&apos;ve been proven safe. This replaces the theatre with infrastructure.
           </p>
         </motion.div>
 
@@ -161,7 +170,7 @@ export function DecentralizedFDASection() {
               <span className="text-xs font-black px-2 py-0.5 bg-black text-white">
                 Stage 2
               </span>
-              <span className="text-xs font-black">~$929/patient</span>
+              <span className="text-xs font-black">~<Stat param={DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT} /></span>
             </div>
             <p className="text-sm text-black/70 font-medium">
               Pragmatic trials in routine care. Same doctors, same clinics, real patients. Rigorous evidence at human scale.

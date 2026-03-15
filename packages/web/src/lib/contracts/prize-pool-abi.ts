@@ -3,7 +3,7 @@ export const prizePoolAbi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "_wishToken",
+        "name": "_token",
         "type": "address"
       },
       {
@@ -770,7 +770,7 @@ export const prizePoolAbi = [
   },
   {
     "inputs": [],
-    "name": "wishToken",
+    "name": "token",
     "outputs": [
       {
         "internalType": "contract IERC20",

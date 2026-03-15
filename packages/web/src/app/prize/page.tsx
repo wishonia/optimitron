@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  TRADITIONAL_PHASE3_COST_PER_PATIENT,
+  DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT,
+  EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
+  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
+} from "@/lib/parameters-calculations-citations";
 import {
   earthOptimizationPrizePaperLink,
   incentiveAlignmentBondsPaperLink,
@@ -78,8 +87,8 @@ const whatYouFund = [
     icon: "🧬",
     title: "Pragmatic Clinical Trials",
     description:
-      "Current FDA trials cost $41,000 per patient. Pragmatic trials cost $929. The Earth Optimization Plan would generate evidence 44x faster at 2% of the cost.",
-    impact: "102M lives saved from regulatory delay since 1962",
+      `Current FDA trials cost ${fmtParam(TRADITIONAL_PHASE3_COST_PER_PATIENT)} per patient. Pragmatic trials cost ${fmtParam(DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT)}. The Earth Optimization Plan would generate evidence 44x faster at 2% of the cost.`,
+    impact: `${Math.round(EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL.value / 1e6)}M lives saved from regulatory delay since 1962`,
   },
   {
     icon: "🗳️",
@@ -239,7 +248,7 @@ export default function PrizePage() {
               Per-Capita Income Gain
             </div>
             <div className="text-2xl font-black text-black">
-              $14.9M–$52.1M
+              {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}
             </div>
             <p className="text-xs font-medium text-black/60 mt-2">
               Across adopting jurisdictions, based on health-GDP multiplier
@@ -554,7 +563,7 @@ export default function PrizePage() {
           The Bar Is Low
         </h2>
         <p className="text-white/80 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
-          The current cost of governance dysfunction is $101 trillion per year.
+          The current cost of governance dysfunction is {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} per year.
           The Earth Optimization Plan costs roughly $0.177 per DALY averted.
           Your species is leaving a 282,000x improvement on the table. The
           break-even probability shift is 0.0067%. You don&apos;t need to be

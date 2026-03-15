@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
+  US_FEDERAL_SPENDING_2024,
+} from "@/lib/parameters-calculations-citations";
 import {
   alignmentLink,
   communityLinks,
@@ -15,7 +20,7 @@ const productSurfaces = [
   {
     item: wishocracyLink,
     title: "Build an ideal budget",
-    desc: "Nobody asked you how to spend $6.75 trillion. This lets you answer anyway.",
+    desc: `Nobody asked you how to spend ${fmtParam({...US_FEDERAL_SPENDING_2024, unit: "USD"})}. This lets you answer anyway.`,
     cta: "Open Wishocracy",
     tone: "bg-brutal-pink",
     titleColor: "text-white",
@@ -62,7 +67,7 @@ const reasons = [
   {
     icon: "💀",
     title: "Bad decisions kill",
-    desc: "102 million people died waiting for your FDA to approve treatments that were already proven safe. Budgets are body counts with decimal places.",
+    desc: `${Math.round(EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL.value / 1e6)} million people died waiting for your FDA to approve treatments that were already proven safe. Budgets are body counts with decimal places.`,
   },
   {
     icon: "🏛️",

@@ -3,6 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Stat } from "@/components/ui/stat"
+import { US_FEDERAL_SPENDING_2024 } from "@/lib/parameters-calculations-citations"
 
 interface WishocracyIntroCardProps {
   show: boolean
@@ -24,7 +26,7 @@ export function WishocracyIntroCard({ show, isLoading, onStart }: WishocracyIntr
               Wishocracy
             </h1>
             <p className="font-bold text-lg sm:text-xl md:text-2xl leading-snug text-center mb-6">
-              Your government spends $6.75 trillion a year and nobody asked you how. Let&apos;s fix that.
+              Your government spends <Stat param={{...US_FEDERAL_SPENDING_2024, unit: "USD"}} /> a year and nobody asked you how. Let&apos;s fix that.
             </p>
             <p className="text-center mb-4 text-muted-foreground">
               I&apos;m going to show you pairs of budget categories. Pick which one matters more. It takes about four minutes. On my planet this is called &ldquo;governance.&rdquo; Here it seems to be called &ldquo;radical.&rdquo;

@@ -17,6 +17,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * World ID (external) provides sybil resistance for citizen registration.
  */
 contract WishToken is ERC20, Ownable {
+    /// @notice Fixed max supply — set once at deployment, never increases.
+    /// Productivity gains manifest as gentle deflation (same money, more goods).
+    uint256 public immutable maxSupply;
+
     /// @notice Treasury contract that receives tax revenue
     address public treasury;
 
@@ -43,6 +47,7 @@ contract WishToken is ERC20, Ownable {
 
         treasury = _treasury;
         taxRateBps = _taxRateBps;
+        maxSupply = _initialSupply;
 
         // Owner and treasury are tax-exempt by default
         taxExempt[msg.sender] = true;
@@ -105,8 +110,9 @@ contract WishToken is ERC20, Ownable {
         emit TaxExemptionSet(account, exempt);
     }
 
-    /// @notice Mint new tokens. Only owner (governance-controlled in production).
+    /// @notice Mint new tokens. Only owner (governance emergency). Enforces max supply cap.
     function mint(address to, uint256 amount) external onlyOwner {
+        require(totalSupply() + amount <= maxSupply, "WishToken: exceeds max supply");
         _mint(to, amount);
     }
 }

@@ -41,6 +41,11 @@ import {
 } from "@/lib/routes";
 import misconceptionData from "../../public/data/misconceptions.json";
 import budgetData from "../data/us-budget-analysis.json";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
+  GLOBAL_DISEASE_DEATHS_DAILY,
+} from "@/lib/parameters-calculations-citations";
 
 export const metadata: Metadata = {
   title: "Optomitron — The Earth Optimization Machine",
@@ -146,9 +151,9 @@ export default function Home() {
               </p>
               <p className="mt-4 text-base sm:text-lg text-black/60 max-w-2xl mx-auto leading-relaxed font-medium">
                 Your governments cost you{" "}
-                <span className="font-black text-brutal-red">$101 trillion a year</span>{" "}
+                <span className="font-black text-brutal-red">{fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} a year</span>{" "}
                 in dysfunction and let{" "}
-                <span className="font-black text-brutal-pink">150,000 people die daily</span>{" "}
+                <span className="font-black text-brutal-pink">{GLOBAL_DISEASE_DEATHS_DAILY.value.toLocaleString()} people die daily</span>{" "}
                 from treatable diseases. This is alignment software to fix that.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -2,6 +2,10 @@
 
 import { useState, useCallback } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import {
+  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+} from "@/lib/parameters-calculations-citations";
 
 /**
  * Interactive Incentive Alignment Bond return calculator.
@@ -17,8 +21,8 @@ const FAIL_MULTIPLIER = Math.pow(1 + STAKING_RATE, ESCROW_YEARS); // ≈ 4.177
 
 const ANNUAL_RETURN_RATE = 2.72; // 272% annual revenue share
 
-const TREATY_INCOME_GAIN = 14_900_000; // $14.9M per-capita lifetime
-const WISHONIA_INCOME_GAIN = 52_100_000; // $52.1M per-capita lifetime
+const TREATY_INCOME_GAIN = TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value; // $14.9M per-capita lifetime
+const WISHONIA_INCOME_GAIN = WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value; // $52.1M per-capita lifetime
 
 // Break-even: 0.0067% probability shift per $1K unreimbursed (treaty floor)
 const BREAKEVEN_PER_1K = 0.0067; // percent

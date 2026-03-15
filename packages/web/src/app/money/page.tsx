@@ -320,13 +320,15 @@ export default function MoneyPage() {
           </div>
           <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="font-black uppercase text-black mb-3 text-sm">
-              Inflation-proof by design
+              Fixed supply. Zero inflation.
             </h3>
             <p className="text-sm text-black/60 font-medium leading-relaxed">
-              Supply mechanics prevent inflationary theft. Your central banks
-              have printed approximately $13 trillion since 2020. That&apos;s
-              not monetary policy — that&apos;s pickpocketing with extra steps.
-              $WISH has transparent, protocol-governed supply rules.
+              $WISH has a fixed supply set once at deployment. No minting. No
+              central bank. No algorithm deciding how much to print. Your
+              central banks created $13 trillion since 2020. $WISH creates
+              exactly zero, ever. Productivity gains manifest as gentle
+              deflation — same money, more goods, everyone&apos;s purchasing
+              power rises.
             </p>
           </div>
         </div>

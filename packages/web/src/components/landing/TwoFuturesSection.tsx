@@ -4,11 +4,18 @@ import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { prizeLink } from "@/lib/routes";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
+  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  DFDA_QUEUE_CLEARANCE_YEARS,
+} from "@/lib/parameters-calculations-citations";
 
 const rows = [
   {
     metric: "Governance Cost",
-    pathA: "$101T/yr dysfunction",
+    pathA: `${fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})}/yr dysfunction`,
     pathB: "1% redirect saves trillions",
     aWeight: 90,
     bWeight: 30,
@@ -23,14 +30,14 @@ const rows = [
   {
     metric: "Approval Queue",
     pathA: "443 years for all treatments",
-    pathB: "36 years via dFDA",
+    pathB: `${Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value)} years via dFDA`,
     aWeight: 95,
     bWeight: 15,
   },
   {
     metric: "Income Impact",
     pathA: "Status quo decline",
-    pathB: "$14.9M–$52.1M gains",
+    pathB: `${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})} gains`,
     aWeight: 40,
     bWeight: 90,
   },

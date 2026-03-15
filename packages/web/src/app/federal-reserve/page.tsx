@@ -1,15 +1,27 @@
 import type { Metadata } from "next";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+  CUMULATIVE_MILITARY_SPENDING_FED_ERA,
+  MONEY_PRINTER_WAR_DEATHS,
+} from "@/lib/parameters-calculations-citations";
 import {
   moneyLink,
   prizeLink,
   wishocracyLink,
 } from "@/lib/routes";
 
+const milToTrialsRatio = Math.round(
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value /
+    GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value,
+);
+
 export const metadata: Metadata = {
   title: "Your Central Bank Is a Bug | Optomitron",
   description:
-    "Twelve unelected humans control money creation with no mandate to optimize for median health or income. An algorithmic central bank would fix this. Here's how.",
+    "Twelve unelected humans control money creation with no mandate to optimize for median health or income. The fix: fixed supply, transaction tax, equal distribution. No central bank needed.",
 };
 
 const historicalCycles = [
@@ -40,7 +52,7 @@ const historicalCycles = [
   {
     era: "United States, 1913–Present",
     event: "Federal Reserve created. Dollar immediately used to fund WWI without popular consent.",
-    result: "Dollar loses 96% of value. 97 million deaths across six wars funded by money printing. $170 trillion in cumulative military spending.",
+    result: `Dollar loses 96% of value. ${fmtParam(MONEY_PRINTER_WAR_DEATHS)} across six wars funded by money printing. ${fmtParam({...CUMULATIVE_MILITARY_SPENDING_FED_ERA, unit: "USD"})} in cumulative military spending.`,
     color: "bg-brutal-pink",
     textColor: "text-white",
     detailColor: "text-white/60",
@@ -261,28 +273,29 @@ export default function FederalReservePage() {
         </div>
       </section>
 
-      {/* How New Money Actually Reaches You */}
+      {/* How Money Should Flow */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">
-          How New Money Actually Reaches You
+          How Money Should Flow
         </h2>
         <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
-          There are exactly two ways to distribute new money. One of them has
-          been tried for 111 years and produced a 96% loss in purchasing power
-          while making the top 1% fabulously wealthy. The other one is
-          embarrassingly obvious. Let me show you both.
+          Your current system prints new money and gives it to banks first.
+          The Wishonian system doesn&apos;t print money at all. The supply is
+          fixed. The treasury is funded by a 0.5% transaction tax on existing
+          money. The comparison is not &ldquo;who gets new money first?&rdquo;
+          but &ldquo;why are you creating new money at all?&rdquo;
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
           <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="font-black uppercase text-white mb-4 text-sm tracking-[0.1em]">
-              Current System (Cantillon)
+              Current System (Print &amp; Trickle)
             </h3>
             <div className="space-y-2">
               {[
-                'Fed creates $4T in new money',
+                'Fed prints $4T in new money',
                 'Banks and financial institutions get it first',
                 'They buy assets — stocks, bonds, real estate',
-                'Asset prices rise before new money circulates',
+                'Asset prices inflate before wages adjust',
                 'Rich get richer (they own the assets)',
                 'Eventually some trickles to the real economy',
                 'You get higher grocery prices',
@@ -300,17 +313,17 @@ export default function FederalReservePage() {
           </div>
           <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="font-black uppercase text-black mb-4 text-sm tracking-[0.1em]">
-              Wishonian System (Anti-Cantillon)
+              Wishonian System (Fixed Supply)
             </h3>
             <div className="space-y-2">
               {[
-                'Algorithm determines optimal supply expansion',
-                'New $WISH minted to public treasury',
+                'Fixed supply. No new money is ever created.',
+                '0.5% transaction tax funds the treasury automatically',
                 'Treasury distributes equally to every verified citizen',
-                'Everyone receives new money at the same time',
-                'No first-mover advantage. No insider access.',
-                'Purchasing power dilution is shared equally',
-                'You get your fair share. Not a grocery bill.',
+                'Productivity gains make goods cheaper over time',
+                'Your money buys more without anyone printing anything',
+                'Price signals stay clean — 0% inflation',
+                'You get richer by the economy getting better. Not by a printer.',
               ].map((step, i) => (
                 <div key={step} className="flex items-start gap-2">
                   <span className="text-xs font-black text-black/40 mt-0.5 shrink-0">
@@ -326,27 +339,28 @@ export default function FederalReservePage() {
         </div>
         <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm text-black/70 font-medium leading-relaxed">
-            The key insight is almost comically simple: when new money is
-            created, give it to everyone equally instead of giving it to banks
-            first. The Cantillon effect disappears entirely. No one gets to
-            spend new money before prices adjust. The algorithm mints to a
-            public treasury. Anyone can trigger distribution. Smart contracts
-            enforce equal per-citizen splits. No middleman. No conference room.
-            No banker who happens to be standing closest to the printer.
+            The Cantillon effect doesn&apos;t just disappear — it becomes
+            impossible. There is no new money to distribute unfairly. The
+            treasury is funded by a tax on existing transactions, split equally
+            among citizens. Wealth grows from productivity, not from proximity
+            to a printer. This is not a radical idea. It is, in fact, the
+            obvious idea that your species has been avoiding for 111 years
+            because the people closest to the printer would prefer you didn&apos;t
+            think about it.
           </p>
         </div>
       </section>
 
-      {/* 604:1 */}
+      {/* Military-to-Trials Ratio */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">
-          604 : 1
+          {milToTrialsRatio} : 1
         </h2>
         <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
           This is the ratio of global military spending to government-funded
-          clinical trials. Your species spends $2.72 trillion per year on
-          weapons and $4.5 billion on testing whether medicines work. I will
-          let you sit with that.
+          clinical trials. Your species spends {fmtParam({...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"})}{" "}
+          per year on weapons and {fmtParam({...GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL, unit: "USD"})}{" "}
+          on testing whether medicines work. I will let you sit with that.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="border-4 border-black bg-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -375,7 +389,7 @@ export default function FederalReservePage() {
           <p className="text-sm text-black/70 font-medium leading-relaxed">
             &ldquo;Just print more money for medicine&rdquo; doesn&apos;t work.
             When the central bank inflates the overall money supply by 50%,
-            military budgets also rise 50%. The ratio stays at 604:1. Real
+            military budgets also rise 50%. The ratio stays at {milToTrialsRatio}:1. Real
             resources — brains, factories, hours — are unchanged. Only nominal
             numbers inflate. You cannot print your way out of misallocation.
             You have to actually change what the system optimises for.
@@ -434,16 +448,17 @@ export default function FederalReservePage() {
         </div>
       </section>
 
-      {/* The Algorithmic Replacement */}
+      {/* The Fix Is Simpler Than You Think */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">
-          The Algorithmic Replacement
+          The Fix Is Simpler Than You Think
         </h2>
         <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
-          Since 2009, the technology to replace a central bank with a
-          decentralised ledger has existed. An eleven-year-old on my planet
-          implemented one for a science fair. It got third place. The judges
-          thought it was &ldquo;a bit obvious.&rdquo;
+          You don&apos;t need a better central bank. You don&apos;t need a
+          smarter algorithm controlling the money supply. You need no one
+          controlling the money supply. The answer isn&apos;t &ldquo;replace
+          the committee with a formula.&rdquo; It&apos;s &ldquo;remove the
+          need for both.&rdquo;
         </p>
         <div className="space-y-4">
           <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -453,14 +468,14 @@ export default function FederalReservePage() {
               </span>
               <div>
                 <h3 className="font-black uppercase text-black text-sm">
-                  Replace the committee with a formula
+                  Fixed supply — no one can print money. Ever.
                 </h3>
                 <p className="text-sm text-black/60 font-medium mt-1">
-                  Monetary policy decisions currently depend on twelve humans
-                  interpreting ambiguous economic signals in a conference room.
-                  An algorithm targeting median real after-tax income and median
-                  healthy life years produces deterministic, auditable,
-                  non-lobbied output. No conference room required.
+                  Not a committee. Not an algorithm. Not a government. The total
+                  supply of $WISH is set once at deployment and never changes.
+                  It is written into the contract and enforced by mathematics.
+                  There is no meeting where someone decides to create more.
+                  There is no meeting at all.
                 </p>
               </div>
             </div>
@@ -472,14 +487,14 @@ export default function FederalReservePage() {
               </span>
               <div>
                 <h3 className="font-black uppercase text-black text-sm">
-                  Make the ledger public and self-checking
+                  Transaction tax replaces income tax
                 </h3>
                 <p className="text-sm text-black/60 font-medium mt-1">
-                  No single institution can unilaterally create money. A
-                  decentralised network verifies every transaction. Your species
-                  spent 17,000 hours in formal education and zero of them
-                  explaining where money comes from. The algorithm doesn&apos;t
-                  rely on ignorance to function.
+                  0.5% on every transfer, collected automatically by the
+                  protocol. No IRS. No filing. No 74,000-page tax code. No
+                  83,000 employees interpreting it. No evasion. No offshore
+                  accounts. Just a line of code that executes every time money
+                  moves.
                 </p>
               </div>
             </div>
@@ -491,15 +506,14 @@ export default function FederalReservePage() {
               </span>
               <div>
                 <h3 className="font-black uppercase text-black text-sm">
-                  Measure what matters, continuously
+                  Treasury distributes equally
                 </h3>
                 <p className="text-sm text-black/60 font-medium mt-1">
-                  Feed real-time data on median income and health outcomes into
-                  the monetary policy algorithm. If median real income falls,
-                  the system adjusts. If healthy life years stall, the system
-                  adjusts. No waiting for quarterly reports. No political
-                  pressure. Just optimisation against the two numbers that
-                  actually tell you if things are getting better.
+                  Tax revenue goes to every verified citizen in equal shares.
+                  No Cantillon effect. No first-mover advantage. No bankers
+                  standing closer to the printer. Smart contracts enforce equal
+                  per-citizen splits. Anyone can trigger distribution. The code
+                  is the only middleman, and you can read it.
                 </p>
               </div>
             </div>
@@ -511,14 +525,15 @@ export default function FederalReservePage() {
               </span>
               <div>
                 <h3 className="font-black uppercase text-black text-sm">
-                  Let citizens set allocation priorities
+                  Productivity is the only wealth creation
                 </h3>
                 <p className="text-sm text-black/70 font-medium mt-1">
-                  Wishocratic pairwise comparison determines how public goods
-                  funding is distributed. Five minutes per citizen. Eigenvector
-                  decomposition. Stable weights from as few as ten comparisons.
-                  Politicians become unnecessary for resource allocation. They
-                  can do something else. Perhaps learn a trade.
+                  When the economy produces more goods with the same fixed money
+                  supply, prices fall. Your money buys more. That&apos;s how
+                  wealth should grow — from making things, not printing things.
+                  Gentle deflation rewards savers, punishes nobody, and makes
+                  the causal inference engine&apos;s job dramatically easier
+                  because 0% inflation means price signals are clean.
                 </p>
               </div>
             </div>
@@ -572,16 +587,16 @@ export default function FederalReservePage() {
       {/* CTA */}
       <section className="card bg-brutal-pink border-black text-center">
         <h2 className="text-2xl font-black text-white mb-3 uppercase">
-          Replace the Building With an Algorithm
+          Replace the Building With Nothing
         </h2>
         <p className="text-white/80 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
-          The current system: twelve unelected humans in a building, optimising
-          for &ldquo;employment&rdquo; and &ldquo;price stability&rdquo; while
-          purchasing power falls 93% and wars consume $170 trillion. The
-          alternative: an algorithm that optimises for median income and
-          healthy life years, with transparent rules that no one can override in
-          a closed-door meeting. Your species has the technology. Since 2009.
-          The building is the only thing in the way.
+          The current system: twelve unelected humans in a building, printing
+          money and hoping it trickles down, while purchasing power falls 93%
+          and wars consume {fmtParam({...CUMULATIVE_MILITARY_SPENDING_FED_ERA, unit: "USD"})}. The
+          alternative: fixed supply, automatic transaction tax, equal
+          distribution. The algorithm is the market. The money supply is fixed.
+          The tax is automatic. The distribution is equal. There is nothing
+          left to manage.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <NavItemLink

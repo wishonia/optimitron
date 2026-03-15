@@ -7,7 +7,10 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "build": "hardhat compile",
-    "clean": "hardhat clean"
+    "clean": "hardhat clean",
+    "deploy:iab": "hardhat run scripts/deploy-iab.ts",
+    "deploy:iab:sepolia": "hardhat run scripts/deploy-iab.ts --network sepolia",
+    "deploy:iab:local": "hardhat run scripts/deploy-iab.ts --network hardhat"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",

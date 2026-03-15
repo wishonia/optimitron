@@ -3,6 +3,11 @@
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { StepReveal } from "@/components/animations/StepReveal";
+import { Stat } from "@/components/ui/stat";
+import {
+  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+} from "@/lib/parameters-calculations-citations";
 
 /**
  * Vertical flywheel visualization:
@@ -185,7 +190,7 @@ export function IncentiveFeedbackLoop() {
           </span>
         </div>
         <p className="text-sm font-medium text-black/60 mt-1">
-          $14.9M–$52.1M per-capita income gains across adopting jurisdictions.
+          <Stat param={{...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"}} />–<Stat param={{...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"}} /> per-capita income gains across adopting jurisdictions.
           Bondholders&apos; assets appreciate. Politicians win elections. Citizens live longer.
         </p>
       </motion.div>
