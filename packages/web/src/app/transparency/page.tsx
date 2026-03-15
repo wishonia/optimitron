@@ -23,8 +23,10 @@ const pipelineSteps = [
       "Citizens compare budget priorities in pairwise trade-offs via Wishocracy. Results are aggregated using eigenvector decomposition.",
     tech: "Storacha (IPFS)",
     techDetail: "Aggregated preference snapshots are content-addressed on IPFS — every version is immutable and linked to its predecessor.",
-    color: "bg-pink-100",
-    borderColor: "border-pink-500",
+    color: "bg-brutal-pink",
+    borderColor: "border-black",
+    textColor: "text-white",
+    subTextColor: "text-white/70",
   },
   {
     number: 2,
@@ -33,8 +35,10 @@ const pipelineSteps = [
       "Politician voting records are compared against citizen preferences to compute a Citizen Alignment Score (0-100%).",
     tech: "Hypercerts (AT Protocol)",
     techDetail: "Each alignment score is published as a Hypercert — an Activity claim with Measurements, Evaluations, and Attachments.",
-    color: "bg-yellow-100",
-    borderColor: "border-yellow-500",
+    color: "bg-brutal-yellow",
+    borderColor: "border-black",
+    textColor: "text-black",
+    subTextColor: "text-black/70",
   },
   {
     number: 3,
@@ -43,8 +47,10 @@ const pipelineSteps = [
       "All Hypercert records and preference snapshots are stored on Storacha, making them content-addressed and tamper-proof.",
     tech: "Storacha Gateway",
     techDetail: "Every CID resolves to its exact data at {cid}.ipfs.storacha.link — no server can alter it after the fact.",
-    color: "bg-emerald-100",
-    borderColor: "border-emerald-500",
+    color: "bg-brutal-cyan",
+    borderColor: "border-black",
+    textColor: "text-black",
+    subTextColor: "text-black/70",
   },
   {
     number: 4,
@@ -53,8 +59,10 @@ const pipelineSteps = [
       "Smart contracts read alignment scores and distribute $WISH tokens to politicians proportional to their citizen alignment.",
     tech: "$WISH ERC-20",
     techDetail: "A 0.5% transaction tax funds UBI distribution. Politicians earn $WISH by aligning with citizens, not donors.",
-    color: "bg-cyan-100",
-    borderColor: "border-cyan-500",
+    color: "bg-brutal-cyan",
+    borderColor: "border-black",
+    textColor: "text-black",
+    subTextColor: "text-black/70",
   },
   {
     number: 5,
@@ -63,8 +71,10 @@ const pipelineSteps = [
       "The transaction tax accumulates in a treasury that distributes UBI to verified citizens. World ID prevents sybil attacks.",
     tech: "World ID + Smart Contracts",
     techDetail: "No welfare bureaucracy. No IRS. Automated redistribution funded by economic activity, not income tax.",
-    color: "bg-purple-100",
-    borderColor: "border-purple-500",
+    color: "bg-brutal-pink",
+    borderColor: "border-black",
+    textColor: "text-white",
+    subTextColor: "text-white/70",
   },
 ];
 
@@ -109,13 +119,13 @@ export default function TransparencyPage() {
                 )}
               </div>
               <div className={`flex-1 border-4 border-black ${step.color} p-6 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
-                <h3 className="text-xl font-black uppercase text-black">
+                <h3 className={`text-xl font-black uppercase ${step.textColor}`}>
                   {step.label}
                 </h3>
-                <p className="mt-2 text-sm font-medium text-black/70">
+                <p className={`mt-2 text-sm font-medium ${step.subTextColor}`}>
                   {step.description}
                 </p>
-                <div className={`mt-4 border-2 ${step.borderColor} border-black bg-white p-3`}>
+                <div className={`mt-4 border-2 ${step.borderColor} bg-white p-3`}>
                   <div className="text-xs font-black uppercase tracking-[0.2em] text-black/60">
                     {step.tech}
                   </div>
@@ -147,7 +157,7 @@ export default function TransparencyPage() {
             {hypercertData.politicians.map((pol) => (
               <div
                 key={pol.politicianId}
-                className="border-2 border-black bg-neutral-50 p-4"
+                className="border-2 border-black bg-muted p-4"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -158,7 +168,7 @@ export default function TransparencyPage() {
                       {pol.party} · {pol.chamber}
                     </div>
                   </div>
-                  <div className="border-2 border-black bg-emerald-200 px-2 py-1 text-center">
+                  <div className="border-2 border-black bg-brutal-cyan px-2 py-1 text-center">
                     <div className="text-lg font-black">{pol.alignmentScore}%</div>
                   </div>
                 </div>
@@ -167,18 +177,18 @@ export default function TransparencyPage() {
                     href={`https://${pol.storageCid}.ipfs.storacha.link/`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block border border-black bg-emerald-100 px-2 py-1 text-[10px] font-black uppercase hover:bg-emerald-200 transition-colors truncate"
+                    className="block border border-black bg-brutal-cyan px-2 py-1 text-[10px] font-black uppercase hover:bg-brutal-cyan transition-colors truncate"
                   >
                     IPFS: {pol.storageCid.slice(0, 20)}...
                   </a>
                   <div
-                    className="border border-black bg-blue-100 px-2 py-1 text-[10px] font-black uppercase truncate"
+                    className="border border-black bg-brutal-cyan px-2 py-1 text-[10px] font-black uppercase truncate"
                     title={pol.activityUri}
                   >
                     Activity: {pol.activityUri.split("/").pop()}
                   </div>
                   <div
-                    className="border border-black bg-purple-100 px-2 py-1 text-[10px] font-black uppercase truncate"
+                    className="border border-black bg-brutal-pink px-2 py-1 text-[10px] font-black uppercase text-white truncate"
                     title={pol.evaluationUri}
                   >
                     Evaluation: {pol.evaluationUri.split("/").pop()}
@@ -197,15 +207,15 @@ export default function TransparencyPage() {
             Preference Aggregation Snapshot
           </h3>
           <div className="grid gap-4 md:grid-cols-3 mb-4">
-            <div className="border-2 border-black bg-pink-100 p-3">
-              <div className="text-xs font-black uppercase text-black/60">Participants</div>
-              <div className="text-2xl font-black">{snapshotData.participantCount}</div>
+            <div className="border-2 border-black bg-brutal-pink p-3">
+              <div className="text-xs font-black uppercase text-white/80">Participants</div>
+              <div className="text-2xl font-black text-white">{snapshotData.participantCount}</div>
             </div>
-            <div className="border-2 border-black bg-yellow-100 p-3">
+            <div className="border-2 border-black bg-brutal-yellow p-3">
               <div className="text-xs font-black uppercase text-black/60">Consistency Ratio</div>
               <div className="text-2xl font-black">{(snapshotData.consistencyRatio * 100).toFixed(0)}%</div>
             </div>
-            <div className="border-2 border-black bg-emerald-100 p-3">
+            <div className="border-2 border-black bg-brutal-cyan p-3">
               <div className="text-xs font-black uppercase text-black/60">Categories</div>
               <div className="text-2xl font-black">{snapshotData.preferenceWeights.length}</div>
             </div>
@@ -214,7 +224,7 @@ export default function TransparencyPage() {
             href={`https://${snapshotData.storageCid}.ipfs.storacha.link/`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border-2 border-black bg-emerald-200 px-3 py-2 text-xs font-black uppercase hover:bg-emerald-300 transition-colors"
+            className="inline-flex items-center gap-2 border-2 border-black bg-brutal-cyan px-3 py-2 text-xs font-black uppercase hover:bg-brutal-cyan transition-colors"
           >
             View on IPFS: {snapshotData.storageCid.slice(0, 24)}...
           </a>
@@ -226,7 +236,7 @@ export default function TransparencyPage() {
           $WISH Token & UBI
         </h2>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-black bg-cyan-100 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-xl font-black uppercase text-black mb-3">
               Transaction Tax Replaces the IRS
             </h3>
@@ -237,18 +247,18 @@ export default function TransparencyPage() {
               employing 83,000 people to process forms.
             </p>
           </div>
-          <div className="border-4 border-black bg-pink-100 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-xl font-black uppercase text-black mb-3">
+          <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-xl font-black uppercase text-white mb-3">
               UBI Replaces Welfare Bureaucracy
             </h3>
-            <p className="text-sm font-medium text-black/70 leading-relaxed">
+            <p className="text-sm font-medium text-white/70 leading-relaxed">
               Treasury distributes to verified citizens automatically. World ID
               prevents sybil attacks. No means testing. No case workers. No
               applications. Just money going to people who need it, without
               spending half of it on the process of giving it to them.
             </p>
           </div>
-          <div className="border-4 border-black bg-yellow-100 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-xl font-black uppercase text-black mb-3">
               Alignment-Based Campaign Finance
             </h3>
@@ -259,7 +269,7 @@ export default function TransparencyPage() {
               distribute automatically.
             </p>
           </div>
-          <div className="border-4 border-black bg-emerald-100 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-xl font-black uppercase text-black mb-3">
               The Full Loop
             </h3>
@@ -279,7 +289,7 @@ export default function TransparencyPage() {
         <h2 className="text-2xl font-black uppercase text-black mb-6">
           Earth Optimization Prize
         </h2>
-        <div className="border-4 border-black bg-yellow-100 p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm font-medium text-black/70 leading-relaxed mb-4">
             The Prize Pool is an outcome-based escrow contract. Donors deposit
             $WISH. When health and income metrics cross verifiable thresholds,
@@ -350,7 +360,7 @@ export default function TransparencyPage() {
         </div>
       </section>
 
-      <section className="card bg-emerald-100 border-emerald-500 text-center">
+      <section className="card bg-brutal-cyan border-black text-center">
         <h2 className="text-2xl font-black text-black mb-3 uppercase">
           Audit Everything
         </h2>

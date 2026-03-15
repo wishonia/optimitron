@@ -26,7 +26,7 @@ export function PersonhoodStatusBadge({
   }
 
   return (
-    <Badge className="border border-amber-800 bg-amber-100 px-2 py-1 font-bold text-amber-950">
+    <Badge className="border border-black bg-brutal-yellow px-2 py-1 font-bold text-black">
       <ShieldAlert className="h-3.5 w-3.5" />
       Unverified
     </Badge>

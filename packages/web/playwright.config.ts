@@ -10,23 +10,31 @@ export default defineConfig({
   use: {
     baseURL: process.env.BASE_URL ?? "http://localhost:3001",
     trace: "on-first-retry",
-    video: "on",
+    video: {
+      mode: "on",
+      size: { width: 1920, height: 1080 },
+    },
     viewport: { width: 1920, height: 1080 },
     launchOptions: {
-      slowMo: 100,
+      slowMo: 80,
     },
   },
   projects: [
     {
       name: "demo-recording",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1920, height: 1080 },
+        // Use headed (full) Chromium for proper CSS rendering in recordings
+        headless: false,
+        channel: "chromium",
+        deviceScaleFactor: 1,
+      },
     },
   ],
   webServer: process.env.SKIP_SERVER
     ? undefined
     : {
-        // Use `next start` with pre-built output (run `pnpm build` first)
-        // This avoids database dependency issues with dev mode
         command: "npx next start --port 3001",
         port: 3001,
         reuseExistingServer: true,

@@ -90,7 +90,7 @@ function gradeColor(grade: string): string {
     case "A":
       return "bg-emerald-400 text-black";
     case "B":
-      return "bg-yellow-300 text-black";
+      return "bg-brutal-yellow text-black";
     case "C":
       return "bg-orange-400 text-black";
     default:
@@ -112,9 +112,9 @@ function gradeLabel(grade: string): string {
 }
 
 function barColor(val: number): string {
-  if (val >= 0.8) return "bg-emerald-400";
-  if (val >= 0.5) return "bg-yellow-300";
-  return "bg-red-300";
+  if (val >= 0.8) return "bg-brutal-cyan";
+  if (val >= 0.5) return "bg-brutal-yellow";
+  return "bg-brutal-red";
 }
 
 /* ------------------------------------------------------------------ */
@@ -193,19 +193,19 @@ export default async function PolicyDetailPage({
             <div className="text-xs font-bold uppercase opacity-80 mb-1">Welfare Score</div>
             <div className="text-2xl sm:text-3xl font-black">+{policy.welfareScore}</div>
           </div>
-          <div className="border-2 border-black p-4 bg-cyan-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-2 border-black p-4 bg-brutal-cyan shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-bold uppercase text-black/60 mb-1">Causal Confidence</div>
             <div className="text-2xl sm:text-3xl font-black text-black">
               {(policy.causalConfidenceScore * 100).toFixed(0)}%
             </div>
           </div>
-          <div className="border-2 border-black p-4 bg-yellow-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-2 border-black p-4 bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-bold uppercase text-black/60 mb-1">Policy Impact</div>
             <div className="text-2xl sm:text-3xl font-black text-black">
               {(policy.policyImpactScore * 100).toFixed(0)}%
             </div>
           </div>
-          <div className="border-2 border-black p-4 bg-emerald-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-2 border-black p-4 bg-brutal-cyan shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-bold uppercase text-black/60 mb-1">BH Average</div>
             <div className="text-2xl sm:text-3xl font-black text-black">
               {(avgBH * 100).toFixed(0)}%
@@ -228,7 +228,7 @@ export default async function PolicyDetailPage({
                   {(val * 100).toFixed(0)}%
                 </span>
               </div>
-              <div className="h-6 bg-gray-100 border-2 border-black overflow-hidden">
+              <div className="h-6 bg-muted border-2 border-black overflow-hidden">
                 <div
                   className={`h-full ${barColor(val)}`}
                   style={{ width: `${val * 100}%` }}
@@ -243,36 +243,36 @@ export default async function PolicyDetailPage({
       <section className="border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
         <h2 className="text-lg font-black uppercase text-black mb-4">💥 Impact Breakdown</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="border-2 border-black p-4 bg-emerald-100">
+          <div className="border-2 border-black p-4 bg-brutal-cyan">
             <div className="text-xs font-bold uppercase text-black/50 mb-1">Income Effect</div>
-            <div className="text-3xl font-black text-emerald-700">
+            <div className="text-3xl font-black text-black">
               +{(policy.incomeEffect * 100).toFixed(0)}%
             </div>
-            <div className="mt-2 h-3 bg-gray-100 border border-black overflow-hidden">
+            <div className="mt-2 h-3 bg-muted border border-black overflow-hidden">
               <div
                 className="h-full bg-emerald-500"
                 style={{ width: `${policy.incomeEffect * 100}%` }}
               />
             </div>
           </div>
-          <div className="border-2 border-black p-4 bg-pink-100">
+          <div className="border-2 border-black p-4 bg-brutal-pink">
             <div className="text-xs font-bold uppercase text-black/50 mb-1">Health Effect</div>
-            <div className="text-3xl font-black text-pink-700">
+            <div className="text-3xl font-black text-white">
               +{(policy.healthEffect * 100).toFixed(0)}%
             </div>
-            <div className="mt-2 h-3 bg-gray-100 border border-black overflow-hidden">
+            <div className="mt-2 h-3 bg-muted border border-black overflow-hidden">
               <div
                 className="h-full bg-pink-500"
                 style={{ width: `${policy.healthEffect * 100}%` }}
               />
             </div>
           </div>
-          <div className="border-2 border-black p-4 bg-cyan-100">
+          <div className="border-2 border-black p-4 bg-brutal-cyan">
             <div className="text-xs font-bold uppercase text-black/50 mb-1">
               Combined Welfare
             </div>
-            <div className="text-3xl font-black text-cyan-700">+{policy.welfareScore}</div>
-            <div className="mt-2 h-3 bg-gray-100 border border-black overflow-hidden">
+            <div className="text-3xl font-black text-black">+{policy.welfareScore}</div>
+            <div className="mt-2 h-3 bg-muted border border-black overflow-hidden">
               <div
                 className="h-full bg-cyan-500"
                 style={{ width: `${Math.min(policy.welfareScore, 100)}%` }}
@@ -312,7 +312,7 @@ export default async function PolicyDetailPage({
                   {policy.blockingFactors.map((f) => (
                     <span
                       key={f}
-                      className="text-xs bg-red-200 text-red-800 px-2 py-1 border-2 border-red-800 font-bold"
+                      className="text-xs bg-brutal-red text-white px-2 py-1 border-2 border-black font-bold"
                     >
                       {f.replace(/_/g, " ")}
                     </span>
@@ -361,7 +361,7 @@ export default async function PolicyDetailPage({
           ))}
         </div>
 
-        <div className="mt-4 border-2 border-black bg-yellow-50 p-4">
+        <div className="mt-4 border-2 border-black bg-brutal-yellow p-4">
           <h3 className="text-sm font-black text-black uppercase mb-2">
             How is the Causal Confidence Score calculated?
           </h3>

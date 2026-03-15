@@ -684,8 +684,56 @@ export async function seedDatabase() {
   await seedGlobalVariables(unitMap, catMap);
   const usId = await seedJurisdictions();
   await seedBudgetItems(usId);
+  await seedDemoUser();
 
   console.log("\n🎉 Seed complete!");
+}
+
+// ---------------------------------------------------------------------------
+// Demo User — for hackathon judges and demo recordings
+// ---------------------------------------------------------------------------
+// Email: demo@optomitron.org  Password: demo1234
+
+async function seedDemoUser() {
+  console.log("👤 Seeding demo user...");
+
+  // Pre-hashed bcrypt(12) of "demo1234"
+  const DEMO_PASSWORD_HASH =
+    "$2b$12$Hy27qJOTykSezth61xRCJ..sMPVvzWxs9wZEEsEsYn9o3GaUYkGCa";
+
+  try {
+    await prisma.user.upsert({
+      where: { email: "demo@optomitron.org" },
+      update: {
+        name: "Demo User",
+        password: DEMO_PASSWORD_HASH,
+        username: "demo",
+        emailVerified: new Date(),
+      },
+      create: {
+        email: "demo@optomitron.org",
+        name: "Demo User",
+        password: DEMO_PASSWORD_HASH,
+        username: "demo",
+        emailVerified: new Date(),
+        referralCode: "DEMO",
+      },
+    });
+    console.log("  ✓ demo@optomitron.org / demo1234");
+  } catch (err) {
+    // If schema is out of sync, try raw SQL fallback
+    console.log("  ⚠ upsert failed, trying raw SQL...");
+    await prisma.$executeRawUnsafe(`
+      INSERT INTO "User" (id, email, name, password, "referralCode", "emailVerified", "createdAt", "updatedAt")
+      VALUES ('demo-user-id', 'demo@optomitron.org', 'Demo User', $1, 'DEMO', NOW(), NOW(), NOW())
+      ON CONFLICT (email) DO UPDATE SET
+        name = 'Demo User',
+        password = $1,
+        "emailVerified" = NOW(),
+        "updatedAt" = NOW()
+    `, DEMO_PASSWORD_HASH);
+    console.log("  ✓ demo@optomitron.org / demo1234 (via raw SQL)");
+  }
 }
 
 export async function disconnectSeedClient() {

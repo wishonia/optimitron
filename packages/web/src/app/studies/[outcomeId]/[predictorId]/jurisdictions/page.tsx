@@ -53,7 +53,7 @@ export default async function JurisdictionListPage({
       <section className="border-2 border-black bg-white overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-2 border-black bg-yellow-300">
+            <tr className="border-b-2 border-black bg-brutal-yellow">
               <th className="text-left px-3 py-2 font-black uppercase">Jurisdiction</th>
               <th className="text-right px-3 py-2 font-black uppercase">Forward r</th>
               <th className="text-right px-3 py-2 font-black uppercase">Predictive r</th>
@@ -66,7 +66,7 @@ export default async function JurisdictionListPage({
           </thead>
           <tbody>
             {subjects.map(subject => (
-              <tr key={subject.summary.subjectId} className="border-b border-black hover:bg-cyan-50">
+              <tr key={subject.summary.subjectId} className="border-b border-black hover:bg-brutal-cyan">
                 <td className="px-3 py-2 font-bold text-black">{subject.summary.subjectName}</td>
                 <td className="px-3 py-2 text-right text-black/70">{fmt(subject.summary.forwardPearson, 3)}</td>
                 <td className="px-3 py-2 text-right text-black/70">{fmt(subject.summary.predictivePearson, 3)}</td>
@@ -77,8 +77,8 @@ export default async function JurisdictionListPage({
                   <span
                     className={`inline-block border px-2 py-0.5 text-[10px] font-black uppercase ${
                       subject.qualityGate.passed
-                        ? "bg-cyan-100 border-cyan-400 text-black"
-                        : "bg-amber-100 border-amber-500 text-black"
+                        ? "bg-brutal-cyan border-black text-black"
+                        : "bg-brutal-yellow border-black text-black"
                     }`}
                   >
                     {subject.qualityGate.passed ? "Pass" : "Flagged"}
@@ -87,7 +87,7 @@ export default async function JurisdictionListPage({
                 <td className="px-3 py-2 text-center">
                   <Link
                     href={getJurisdictionStudyPath(outcomeId, predictorId, subject.summary.subjectId)}
-                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-black bg-white hover:bg-pink-200"
+                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-black bg-white hover:bg-brutal-pink"
                   >
                     Open
                   </Link>

@@ -50,13 +50,13 @@ export default function OutcomesIndexPage() {
                   <h2 className="text-xl font-black text-black">{outcome.label}</h2>
                   <p className="text-xs font-bold uppercase text-black/50">{outcome.unit}</p>
                 </div>
-                <span className="text-xs font-black border-2 border-black bg-cyan-200 px-2 py-1 uppercase">
+                <span className="text-xs font-black border-2 border-black bg-brutal-cyan px-2 py-1 uppercase">
                   {pairCount} predictor{pairCount === 1 ? "" : "s"}
                 </span>
               </div>
 
               {top ? (
-                <div className="border border-black bg-yellow-100 px-3 py-2 mb-4">
+                <div className="border border-black bg-brutal-yellow px-3 py-2 mb-4">
                   <p className="text-xs font-black uppercase text-black/60">Top Predictor</p>
                   <p className="text-sm font-bold text-black">{top.predictorLabel ?? top.predictorId}</p>
                   <p className="text-xs text-black/60">
@@ -75,7 +75,7 @@ export default function OutcomesIndexPage() {
 
               <Link
                 href={getOutcomeHubPath(outcome.id)}
-                className="inline-block text-sm font-black uppercase px-3 py-2 border-2 border-black bg-white hover:bg-pink-200 transition-colors"
+                className="inline-block text-sm font-black uppercase px-3 py-2 border-2 border-black bg-white hover:bg-brutal-pink transition-colors"
               >
                 Open Outcome Hub
               </Link>

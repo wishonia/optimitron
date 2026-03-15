@@ -17,28 +17,40 @@ const productSurfaces = [
     title: "Build an ideal budget",
     desc: "Nobody asked you how to spend $6.75 trillion. This lets you answer anyway.",
     cta: "Open Wishocracy",
-    tone: "bg-pink-100",
+    tone: "bg-brutal-pink",
+    titleColor: "text-white",
+    descColor: "text-white/80",
+    ctaColor: "text-white hover:text-yellow-300",
   },
   {
     item: alignmentLink,
     title: "Match with politicians",
     desc: "Find out which of your elected officials actually agrees with you. Brace yourself.",
     cta: "Open Alignment",
-    tone: "bg-yellow-100",
+    tone: "bg-brutal-yellow",
+    titleColor: "text-black",
+    descColor: "text-black/70",
+    ctaColor: "text-black hover:text-pink-600",
   },
   {
     item: studiesLink,
     title: "Inspect the evidence",
     desc: "Every claim, tested against data. No opinions. No vibes. Just receipts.",
     cta: "Browse Studies",
-    tone: "bg-emerald-100",
+    tone: "bg-brutal-cyan",
+    titleColor: "text-black",
+    descColor: "text-black/70",
+    ctaColor: "text-black hover:text-pink-600",
   },
   {
     item: trackLink,
     title: "Track yourself",
     desc: "Log what you do, eat, and feel. I'll tell you what's actually working. Your intuition won't like it.",
     cta: "Open Tracking",
-    tone: "bg-cyan-100",
+    tone: "bg-brutal-cyan",
+    titleColor: "text-black",
+    descColor: "text-black/70",
+    ctaColor: "text-black hover:text-pink-600",
   },
 ];
 
@@ -139,7 +151,7 @@ export default function AboutPage() {
           <NavItemLink
             item={alignmentLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-black bg-yellow-300 px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-black bg-brutal-yellow px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             See Alignment Reports
           </NavItemLink>
@@ -161,14 +173,14 @@ export default function AboutPage() {
               key={surface.title}
               className={`p-6 border-4 border-black ${surface.tone} shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] flex flex-col`}
             >
-              <h3 className="text-xl font-black text-black mb-3">{surface.title}</h3>
-              <p className="text-sm text-black/70 leading-relaxed font-medium flex-grow">
+              <h3 className={`text-xl font-black ${surface.titleColor} mb-3`}>{surface.title}</h3>
+              <p className={`text-sm ${surface.descColor} leading-relaxed font-medium flex-grow`}>
                 {surface.desc}
               </p>
               <NavItemLink
                 item={surface.item}
                 variant="custom"
-                className="mt-5 inline-flex items-center text-sm font-black uppercase text-black hover:text-pink-600 transition-colors"
+                className={`mt-5 inline-flex items-center text-sm font-black uppercase ${surface.ctaColor} transition-colors`}
               >
                 {surface.cta} &rarr;
               </NavItemLink>
@@ -215,7 +227,7 @@ export default function AboutPage() {
           inventing middlemen. Here&apos;s how it works without them.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="card bg-cyan-100 border-cyan-500">
+          <div className="card bg-brutal-cyan border-black">
             <div className="text-2xl mb-2">🏦</div>
             <h3 className="font-black text-black mb-2">FairTax</h3>
             <p className="text-sm text-black/60 font-medium leading-relaxed">
@@ -225,7 +237,7 @@ export default function AboutPage() {
               protocol feature instead of a 74,000-page tax code.
             </p>
           </div>
-          <div className="card bg-emerald-100 border-emerald-500">
+          <div className="card bg-brutal-cyan border-black">
             <div className="text-2xl mb-2">🍞</div>
             <h3 className="font-black text-black mb-2">Universal Basic Income</h3>
             <p className="text-sm text-black/60 font-medium leading-relaxed">
@@ -235,10 +247,10 @@ export default function AboutPage() {
               eats. The bureaucracy doesn&apos;t.
             </p>
           </div>
-          <div className="card bg-pink-100 border-pink-500">
+          <div className="card bg-brutal-pink border-black">
             <div className="text-2xl mb-2">🎯</div>
-            <h3 className="font-black text-black mb-2">Prize Pool</h3>
-            <p className="text-sm text-black/60 font-medium leading-relaxed">
+            <h3 className="font-black text-white mb-2">Prize Pool</h3>
+            <p className="text-sm text-white/80 font-medium leading-relaxed">
               Want to fund specific governance reforms? Deposit into the
               outcome-based escrow. Money stays locked until health and income
               measurably improve. Then you vote on which implementers deserve
@@ -292,7 +304,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="card bg-cyan-100 border-cyan-500 text-center">
+      <section className="card bg-brutal-cyan border-black text-center">
         <h2 className="text-2xl font-black text-black mb-3 uppercase">
           Open By Design
         </h2>

@@ -7,17 +7,20 @@
  * 3. Outputs ffmpeg commands to combine them
  *
  * Usage:
- *   # Make sure the dev server is running or let Playwright start it
- *   pnpm --filter @optomitron/web exec tsx scripts/record-demo.ts
+ *   pnpm --filter @optomitron/web demo:record
  *
  * Prerequisites:
- *   - GOOGLE_API_KEY set for Gemini TTS
+ *   - GOOGLE_GENERATIVE_AI_API_KEY in root .env
  *   - ffmpeg installed for final assembly
- *   - Dev server running on localhost:3001 (or Playwright will start it)
+ *   - Site pre-built (`pnpm build`)
  */
+import { config } from "dotenv";
 import { execSync } from "node:child_process";
 import { existsSync, readdirSync, mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+
+// Load .env from project root
+config({ path: resolve(__dirname, "..", "..", "..", ".env") });
 
 const ROOT = join(__dirname, "..");
 const DEMO_ASSETS = join(ROOT, "demo-assets");

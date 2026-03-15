@@ -66,7 +66,7 @@ export function PushNotificationPrompt() {
   if (!supported || loading) return null;
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
+    <div className="border-2 border-border bg-card p-4">
       <h3 className="text-sm font-semibold text-card-foreground mb-1">
         Daily Check-in Reminders
       </h3>

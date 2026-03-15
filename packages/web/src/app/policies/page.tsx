@@ -131,7 +131,7 @@ export default function PoliciesPage() {
                     <Link href={getPolicyPath(policy.name)} className="text-black font-black truncate hover:text-pink-500 transition-colors underline" onClick={(e) => e.stopPropagation()}>{policy.name}</Link>
                     <GradeBadge grade={policy.evidenceGrade} />
                     <RecommendationBadge type={policy.recommendationType} />
-                    <span className="text-xs text-black/50 px-2 py-0.5 bg-gray-100 border border-black font-bold">
+                    <span className="text-xs text-black/50 px-2 py-0.5 bg-muted border border-black font-bold">
                       {policy.category.replace(/_/g, " ")}
                     </span>
                   </div>
@@ -191,7 +191,7 @@ export default function PoliciesPage() {
                       )}
                       <div className="flex flex-wrap gap-1 mt-2">
                         {policy.blockingFactors.map((f) => (
-                          <span key={f} className="text-xs bg-red-200 text-red-800 px-2 py-0.5 border border-red-800 font-bold">
+                          <span key={f} className="text-xs bg-brutal-red text-white px-2 py-0.5 border border-black font-bold">
                             {f.replace(/_/g, " ")}
                           </span>
                         ))}
@@ -207,7 +207,7 @@ export default function PoliciesPage() {
                       {Object.entries(policy.bradfordHillScores).map(([key, val]) => (
                         <div key={key} className="flex items-center gap-2">
                           <span className="text-xs text-black/50 w-24 capitalize font-bold">{key}</span>
-                          <div className="flex-1 h-2 bg-gray-100 border border-black overflow-hidden">
+                          <div className="flex-1 h-2 bg-muted border border-black overflow-hidden">
                             <div
                               className="h-full bg-pink-500"
                               style={{ width: `${(val as number) * 100}%` }}
@@ -252,13 +252,13 @@ function GradeBadge({ grade }: { grade: string }) {
 
 function RecommendationBadge({ type }: { type: string }) {
   const styles: Record<string, string> = {
-    enact: "bg-emerald-300",
-    modify: "bg-yellow-300",
-    repeal: "bg-red-300",
-    maintain: "bg-gray-200",
+    enact: "bg-brutal-cyan",
+    modify: "bg-brutal-yellow",
+    repeal: "bg-brutal-red",
+    maintain: "bg-muted",
   };
   return (
-    <span className={`text-xs font-black px-2 py-0.5 border border-black ${styles[type] ?? "bg-gray-200"}`}>
+    <span className={`text-xs font-black px-2 py-0.5 border border-black ${styles[type] ?? "bg-muted"}`}>
       {type}
     </span>
   );

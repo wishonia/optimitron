@@ -110,7 +110,7 @@ export default function ComparePage() {
             className={`px-4 py-2 text-sm font-black uppercase transition-all ${
               activeTab === tab
                 ? "bg-pink-500 text-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                : "text-black hover:bg-cyan-300 border-2 border-transparent hover:border-black"
+                : "text-black hover:bg-brutal-cyan border-2 border-transparent hover:border-black"
             }`}
           >
             {tab}
@@ -139,8 +139,8 @@ function HealthTab() {
   return (
     <div className="space-y-8">
       {/* Exemplar callout */}
-      <div className="card bg-emerald-100 border-emerald-800">
-        <p className="text-emerald-800 font-black mb-1">🏆 Top Performer</p>
+      <div className="card bg-brutal-cyan border-black">
+        <p className="text-black font-black mb-1">🏆 Top Performer</p>
         <p className="text-sm text-black/70 font-medium">
           <strong className="text-black">Singapore</strong> spends $3,013 per person on health. Life expectancy: 84.1 years.
           The <strong className="text-black">US</strong> spends $12,555 per person. Life expectancy: 77.5 years.
@@ -203,7 +203,7 @@ function HealthTab() {
         <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b-2 border-black bg-yellow-300">
+              <tr className="border-b-2 border-black bg-brutal-yellow">
                 <th className="text-left py-3 px-2 text-black font-black uppercase">Country</th>
                 <th className="text-right py-3 px-2 text-black font-black uppercase">$/Capita</th>
                 <th className="text-right py-3 px-2 text-black font-black uppercase">% GDP</th>
@@ -217,8 +217,8 @@ function HealthTab() {
               {sortedByEfficiency.map((d) => (
                 <tr
                   key={d.country}
-                  className={`border-b border-black hover:bg-cyan-50 ${
-                    d.country === "United States" ? "bg-red-50" : ""
+                  className={`border-b border-black hover:bg-brutal-cyan ${
+                    d.country === "United States" ? "bg-brutal-red/20" : ""
                   }`}
                 >
                   <td className="py-2 px-2 text-black font-bold">{d.country}</td>
@@ -227,7 +227,7 @@ function HealthTab() {
                   <td className="py-2 px-2 text-right text-black/70 font-medium">{d.lifeExp}</td>
                   <td className="py-2 px-2 text-right text-black/70 font-medium">{d.infantMort}</td>
                   <td className="py-2 px-2 text-center">
-                    <span className="text-xs px-2 py-0.5 bg-gray-100 border border-black text-black font-bold">{d.system}</span>
+                    <span className="text-xs px-2 py-0.5 bg-muted border border-black text-black font-bold">{d.system}</span>
                   </td>
                   <td className="py-2 px-2 text-center">{d.universal ? "✅" : "❌"}</td>
                 </tr>
@@ -246,16 +246,16 @@ function DrugTab() {
   const sorted = [...drugData].sort((a, b) => a.deaths - b.deaths);
 
   const approachColor: Record<string, string> = {
-    Decriminalization: "bg-emerald-200 text-emerald-800 border-emerald-800",
-    "Harm Reduction": "bg-cyan-200 text-cyan-800 border-cyan-800",
-    Mixed: "bg-yellow-200 text-yellow-800 border-yellow-800",
-    Prohibitionist: "bg-red-200 text-red-800 border-red-800",
+    Decriminalization: "bg-brutal-cyan text-black border-black",
+    "Harm Reduction": "bg-brutal-cyan text-black border-black",
+    Mixed: "bg-brutal-yellow text-black border-black",
+    Prohibitionist: "bg-brutal-red text-white border-black",
   };
 
   return (
     <div className="space-y-8">
-      <div className="card bg-emerald-100 border-emerald-800">
-        <p className="text-emerald-800 font-black mb-1">🏆 Key Finding</p>
+      <div className="card bg-brutal-cyan border-black">
+        <p className="text-black font-black mb-1">🏆 Key Finding</p>
         <p className="text-sm text-black/70 font-medium">
           <strong className="text-black">Portugal</strong> decriminalized all drugs in 2001. Drug-induced deaths dropped
           80%, HIV among people who inject drugs fell 95%, and drug use remained below the EU average.
@@ -266,7 +266,7 @@ function DrugTab() {
       <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-2 border-black bg-yellow-300">
+            <tr className="border-b-2 border-black bg-brutal-yellow">
               <th className="text-left py-3 px-2 text-black font-black uppercase">Country</th>
               <th className="text-center py-3 px-2 text-black font-black uppercase">Approach</th>
               <th className="text-right py-3 px-2 text-black font-black uppercase">Deaths/100K</th>
@@ -280,13 +280,13 @@ function DrugTab() {
             {sorted.map((d) => (
               <tr
                 key={d.country}
-                className={`border-b border-black hover:bg-cyan-50 ${
-                  d.country === "United States" ? "bg-red-50" : ""
+                className={`border-b border-black hover:bg-brutal-cyan ${
+                  d.country === "United States" ? "bg-brutal-red/20" : ""
                 }`}
               >
                 <td className="py-2 px-2 text-black font-bold">{d.country}</td>
                 <td className="py-2 px-2 text-center">
-                  <span className={`text-xs px-2 py-0.5 border font-bold ${approachColor[d.approach] ?? "bg-gray-100 text-black border-black"}`}>
+                  <span className={`text-xs px-2 py-0.5 border font-bold ${approachColor[d.approach] ?? "bg-muted text-black border-black"}`}>
                     {d.approach}
                   </span>
                 </td>
@@ -314,8 +314,8 @@ function EducationTab() {
 
   return (
     <div className="space-y-8">
-      <div className="card bg-emerald-100 border-emerald-800">
-        <p className="text-emerald-800 font-black mb-1">🏆 Key Finding</p>
+      <div className="card bg-brutal-cyan border-black">
+        <p className="text-black font-black mb-1">🏆 Key Finding</p>
         <p className="text-sm text-black/70 font-medium">
           <strong className="text-black">Singapore</strong> spends 2.9% of GDP on education. Math score: 575 (top globally).
           The <strong className="text-black">US</strong> spends 4.9% of GDP. Math score: 465. That&apos;s 69% more money for 19% worse results.
@@ -332,7 +332,7 @@ function EducationTab() {
               <span className={`text-xs w-28 truncate font-bold ${d.country === "United States" ? "text-red-600" : "text-black/60"}`}>
                 {d.country}
               </span>
-              <div className="flex-1 h-6 bg-gray-100 border border-black overflow-hidden relative">
+              <div className="flex-1 h-6 bg-muted border border-black overflow-hidden relative">
                 <div
                   className={`h-full ${d.country === "United States" ? "bg-red-400" : "bg-pink-400"}`}
                   style={{ width: `${(d.math / maxMath) * 100}%` }}
@@ -351,7 +351,7 @@ function EducationTab() {
       <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-2 border-black bg-yellow-300">
+            <tr className="border-b-2 border-black bg-brutal-yellow">
               <th className="text-left py-3 px-2 text-black font-black uppercase">Country</th>
               <th className="text-right py-3 px-2 text-black font-black uppercase">Spending %GDP</th>
               <th className="text-right py-3 px-2 text-black font-black uppercase">Math</th>
@@ -366,8 +366,8 @@ function EducationTab() {
               return (
                 <tr
                   key={d.country}
-                  className={`border-b border-black hover:bg-cyan-50 ${
-                    d.country === "United States" ? "bg-red-50" : ""
+                  className={`border-b border-black hover:bg-brutal-cyan ${
+                    d.country === "United States" ? "bg-brutal-red/20" : ""
                   }`}
                 >
                   <td className="py-2 px-2 text-black font-bold">{d.country}</td>
@@ -393,8 +393,8 @@ function JusticeTab() {
 
   return (
     <div className="space-y-8">
-      <div className="card bg-emerald-100 border-emerald-800">
-        <p className="text-emerald-800 font-black mb-1">🏆 Key Finding</p>
+      <div className="card bg-brutal-cyan border-black">
+        <p className="text-black font-black mb-1">🏆 Key Finding</p>
         <p className="text-sm text-black/70 font-medium">
           <strong className="text-black">Norway</strong> rehabilitates prisoners. Recidivism: 20%.
           The <strong className="text-black">US</strong> punishes them. Recidivism: 76%. Incarceration rate: 531 per 100K — highest in the developed world.
@@ -412,12 +412,12 @@ function JusticeTab() {
                 <span className={`text-xs w-28 truncate font-bold ${d.country === "United States" ? "text-red-600" : "text-black"}`}>
                   {d.country}
                 </span>
-                <span className="text-xs px-2 py-0.5 bg-gray-100 border border-black text-black font-bold">{d.approach}</span>
+                <span className="text-xs px-2 py-0.5 bg-muted border border-black text-black font-bold">{d.approach}</span>
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex-1">
                   <div className="text-[10px] text-black/50 mb-0.5 font-bold">Incarceration /100K</div>
-                  <div className="h-3 bg-gray-100 border border-black overflow-hidden">
+                  <div className="h-3 bg-muted border border-black overflow-hidden">
                     <div
                       className={`h-full ${d.incarceration > 200 ? "bg-red-400" : "bg-cyan-400"}`}
                       style={{ width: `${(d.incarceration / 531) * 100}%` }}
@@ -427,7 +427,7 @@ function JusticeTab() {
                 </div>
                 <div className="flex-1">
                   <div className="text-[10px] text-black/50 mb-0.5 font-bold">Recidivism %</div>
-                  <div className="h-3 bg-gray-100 border border-black overflow-hidden">
+                  <div className="h-3 bg-muted border border-black overflow-hidden">
                     <div
                       className={`h-full ${d.recidivism > 50 ? "bg-red-400" : "bg-emerald-400"}`}
                       style={{ width: `${d.recidivism}%` }}

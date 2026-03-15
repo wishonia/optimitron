@@ -21,7 +21,10 @@ const mechanismSteps = [
     description:
       "Deposit $WISH tokens into the Prize Pool smart contract. Your deposit amount IS your identity and your voting power. No accounts, no registration — just money in escrow.",
     detail: "Deposit-as-identity eliminates sybil attacks. Fake accounts have zero funds to allocate. Your deposit moves your money, not anyone else's.",
-    color: "bg-pink-100",
+    color: "bg-brutal-pink",
+    textColor: "text-white",
+    subTextColor: "text-white/70",
+    detailColor: "text-white/50",
   },
   {
     number: 2,
@@ -29,7 +32,10 @@ const mechanismSteps = [
     description:
       "Oracles report two terminal metrics: median healthy life years and median real after-tax income. When both cross pre-published thresholds in adopting jurisdictions — verified by peer-reviewed study — the pool unlocks.",
     detail: "Health gets 50%. Income gets 50%. No opinion metrics. No vibes. Just the two numbers that actually measure whether human lives are getting better.",
-    color: "bg-yellow-100",
+    color: "bg-brutal-yellow",
+    textColor: "text-black",
+    subTextColor: "text-black/70",
+    detailColor: "text-black/50",
   },
   {
     number: 3,
@@ -37,7 +43,10 @@ const mechanismSteps = [
     description:
       "Teams that produced outcomes register with evidence: Hypercert attestations on the AT Protocol, Storacha CIDs linking to verifiable data, legislative records, trial results.",
     detail: "Every claim is content-addressed and auditable. If you can't prove it, you don't get paid. Evidence is linked via the same Hypercert infrastructure used for alignment scoring.",
-    color: "bg-emerald-100",
+    color: "bg-brutal-cyan",
+    textColor: "text-black",
+    subTextColor: "text-black/70",
+    detailColor: "text-black/50",
   },
   {
     number: 4,
@@ -45,7 +54,10 @@ const mechanismSteps = [
     description:
       "You're shown random pairs of implementers with their evidence. For each pair, you split your share based on who you think contributed more. Enough random pairs across enough donors and the allocations converge on a stable distribution.",
     detail: "The pairwise comparison IS the ranking rule. No judges, no committees, no pre-specified scoring formula. Each contributor is a buyer choosing where their dollars go based on evidence.",
-    color: "bg-cyan-100",
+    color: "bg-brutal-cyan",
+    textColor: "text-black",
+    subTextColor: "text-black/70",
+    detailColor: "text-black/50",
   },
   {
     number: 5,
@@ -53,7 +65,10 @@ const mechanismSteps = [
     description:
       "Smart contracts distribute $WISH to implementers proportional to the aggregated Wishocratic allocation weights. Retroactive rewards for verified outcomes — implementers get paid for results, not promises.",
     detail: "Bonded disputes protect the process. Challengers post a bond to dispute allocations. Losing side pays escalation costs, so frivolous disputes are expensive but genuine ones get resolved.",
-    color: "bg-purple-100",
+    color: "bg-brutal-pink",
+    textColor: "text-white",
+    subTextColor: "text-white/70",
+    detailColor: "text-white/50",
   },
 ];
 
@@ -186,13 +201,13 @@ export default function PrizePage() {
               <div
                 className={`flex-1 border-4 border-black ${step.color} p-6 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
               >
-                <h3 className="text-xl font-black uppercase text-black">
+                <h3 className={`text-xl font-black uppercase ${step.textColor}`}>
                   {step.label}
                 </h3>
-                <p className="mt-2 text-sm font-medium text-black/70">
+                <p className={`mt-2 text-sm font-medium ${step.subTextColor}`}>
                   {step.description}
                 </p>
-                <p className="mt-3 text-xs font-bold text-black/50 leading-relaxed">
+                <p className={`mt-3 text-xs font-bold ${step.detailColor} leading-relaxed`}>
                   {step.detail}
                 </p>
               </div>
@@ -225,7 +240,7 @@ export default function PrizePage() {
               <p className="text-sm text-black/60 font-medium leading-relaxed mb-3">
                 {item.description}
               </p>
-              <div className="border-2 border-black bg-emerald-100 px-3 py-1.5 inline-block">
+              <div className="border-2 border-black bg-brutal-cyan px-3 py-1.5 inline-block">
                 <span className="text-xs font-black uppercase text-black">
                   {item.impact}
                 </span>
@@ -237,11 +252,11 @@ export default function PrizePage() {
 
       {/* Donate Section */}
       <section id="donate" className="mb-16">
-        <div className="border-4 border-black bg-pink-100 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-2xl font-black uppercase text-black mb-4">
+        <div className="border-4 border-black bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-2xl font-black uppercase text-white mb-4">
             Deposit to the Prize Pool
           </h2>
-          <p className="text-sm font-medium text-black/70 mb-6 max-w-2xl">
+          <p className="text-sm font-medium text-white/70 mb-6 max-w-2xl">
             Deposits are held in the PrizePool smart contract until outcome
             thresholds are met. Your deposit amount determines your Wishocratic
             allocation power — you decide which implementers get paid, weighted
@@ -263,15 +278,15 @@ export default function PrizePage() {
           planet, it took about four.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="border-4 border-black bg-pink-100 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl mb-3">🎯</div>
-            <h3 className="font-black uppercase text-black mb-2">
+            <h3 className="font-black uppercase text-white mb-2">
               Prize Pool
             </h3>
-            <p className="text-xs font-black uppercase text-pink-600 mb-2">
+            <p className="text-xs font-black uppercase text-white/80 mb-2">
               You&apos;re here
             </p>
-            <p className="text-sm text-black/70 font-medium leading-relaxed">
+            <p className="text-sm text-white/80 font-medium leading-relaxed">
               Donors deposit funds into an escrow smart contract. Money stays
               locked until health and income outcomes measurably improve.
               Donors then allocate funds to implementers who produced results.
@@ -286,7 +301,7 @@ export default function PrizePage() {
             </div>
           </div>
 
-          <div className="border-4 border-black bg-cyan-100 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl mb-3">🏦</div>
             <h3 className="font-black uppercase text-black mb-2">
               FairTax (Replaces the IRS)
@@ -307,7 +322,7 @@ export default function PrizePage() {
             </div>
           </div>
 
-          <div className="border-4 border-black bg-emerald-100 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl mb-3">🍞</div>
             <h3 className="font-black uppercase text-black mb-2">
               UBI (Replaces Welfare)
@@ -329,7 +344,7 @@ export default function PrizePage() {
           </div>
         </div>
 
-        <div className="border-4 border-black bg-yellow-100 p-6 mt-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-black bg-brutal-yellow p-6 mt-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <h3 className="font-black uppercase text-black mb-2">
             How They Connect
           </h3>
@@ -416,11 +431,11 @@ export default function PrizePage() {
       </section>
 
       {/* CTA */}
-      <section className="card bg-pink-100 border-pink-500 text-center">
-        <h2 className="text-2xl font-black text-black mb-3 uppercase">
+      <section className="card bg-brutal-pink border-black text-center">
+        <h2 className="text-2xl font-black text-white mb-3 uppercase">
           The Bar Is Low
         </h2>
-        <p className="text-black/60 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
+        <p className="text-white/80 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
           The current cost of governance dysfunction is $101 trillion per year.
           The Earth Optimization Plan costs roughly $0.177 per DALY averted.
           Your species is leaving a 282,000x improvement on the table. On my

@@ -25,7 +25,7 @@ export function SocialShareButtons({ url, text }: SocialShareButtonsProps) {
       </a>
       <a
         href={`mailto:?subject=${encodeURIComponent("Try Optomitron")}&body=${emailBody}`}
-        className="inline-flex items-center justify-center gap-2 border-2 border-black bg-white px-4 py-2 font-bold transition-colors hover:bg-neutral-100"
+        className="inline-flex items-center justify-center gap-2 border-2 border-black bg-white px-4 py-2 font-bold transition-colors hover:bg-muted"
       >
         <Mail className="h-4 w-4" />
         Email

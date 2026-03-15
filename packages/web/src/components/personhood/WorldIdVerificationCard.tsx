@@ -149,7 +149,7 @@ export function WorldIdVerificationCard({ show }: WorldIdVerificationCardProps) 
           {requestError ? <AlertCard type="error" message={requestError} /> : null}
 
           {isVerified ? (
-            <div className="rounded-lg border-2 border-black bg-brutal-cyan/10 p-4">
+            <div className="border-2 border-black bg-brutal-cyan/10 p-4">
               <div className="flex items-start gap-3">
                 <ShieldCheck className="mt-0.5 h-5 w-5 text-foreground" />
                 <div className="space-y-1 text-sm">
@@ -168,11 +168,11 @@ export function WorldIdVerificationCard({ show }: WorldIdVerificationCardProps) 
               </div>
             </div>
           ) : !worldIdEnabled ? (
-            <div className="rounded-lg border-2 border-dashed border-black bg-muted/30 p-4 text-sm text-muted-foreground">
+            <div className="border-2 border-dashed border-black bg-muted/30 p-4 text-sm text-muted-foreground">
               World ID verification is disabled for this environment.
             </div>
           ) : (
-            <div className="rounded-lg border-2 border-black bg-brutal-cyan/10 p-4">
+            <div className="border-2 border-black bg-brutal-cyan/10 p-4">
               <div className="flex items-start gap-3">
                 <ShieldQuestion className="mt-0.5 h-5 w-5 text-black" />
                 <div className="space-y-3 text-sm">

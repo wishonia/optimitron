@@ -1,6 +1,6 @@
 export default function VerifyRequestPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-yellow-300 px-4 py-12">
+    <main className="flex min-h-screen items-center justify-center bg-brutal-yellow px-4 py-12">
       <div className="w-full max-w-md border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
           Check Your Inbox

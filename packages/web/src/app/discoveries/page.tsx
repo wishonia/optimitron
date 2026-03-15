@@ -49,10 +49,10 @@ function confidenceLabel(units: number): {
   color: string;
 } {
   if (units >= 50)
-    return { label: "High", color: "bg-green-500/20 text-green-400" };
+    return { label: "High", color: "bg-brutal-cyan/20 text-brutal-cyan" };
   if (units >= 10)
-    return { label: "Medium", color: "bg-yellow-500/20 text-yellow-400" };
-  return { label: "Low", color: "bg-red-500/20 text-red-400" };
+    return { label: "Medium", color: "bg-brutal-yellow/20 text-brutal-yellow" };
+  return { label: "Low", color: "bg-brutal-red/20 text-brutal-red" };
 }
 
 function formatNumber(n: number | null, decimals = 2): string {
@@ -86,11 +86,11 @@ export default async function DiscoveriesPage() {
       </section>
 
       {discoveries.length === 0 ? (
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
-          <p className="text-lg font-bold text-gray-500">
+        <div className="border-2 border-dashed border-black p-12 text-center">
+          <p className="text-lg font-bold text-black/50">
             No discoveries yet.
           </p>
-          <p className="text-sm text-gray-400 mt-2">
+          <p className="text-sm text-black/40 mt-2">
             Discoveries appear here once contributors submit health analyses via
             the browser extension.
           </p>
@@ -99,7 +99,7 @@ export default async function DiscoveriesPage() {
         <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b-2 border-black bg-yellow-300">
+              <tr className="border-b-2 border-black bg-brutal-yellow">
                 <th className="px-4 py-3 text-left font-black uppercase text-black">
                   Predictor
                 </th>
@@ -129,7 +129,7 @@ export default async function DiscoveriesPage() {
                 return (
                   <tr
                     key={`${d.predictorName}-${d.outcomeName}`}
-                    className={`border-b border-gray-200 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
+                    className={`border-b border-black ${i % 2 === 0 ? "bg-white" : "bg-muted"}`}
                   >
                     <td className="px-4 py-3 font-semibold text-black">
                       {d.predictorName}

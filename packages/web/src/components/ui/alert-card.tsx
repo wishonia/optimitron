@@ -13,27 +13,27 @@ export interface AlertCardProps {
 
 const typeConfig: Record<AlertType, { bg: string; border: string; text: string; DefaultIcon: LucideIcon }> = {
   error: {
-    bg: "bg-red-100",
-    border: "border-red-500",
-    text: "text-red-700",
+    bg: "bg-brutal-red",
+    border: "border-black",
+    text: "text-black",
     DefaultIcon: AlertCircle,
   },
   success: {
-    bg: "bg-green-100",
-    border: "border-green-500",
-    text: "text-green-700",
+    bg: "bg-brutal-cyan",
+    border: "border-black",
+    text: "text-black",
     DefaultIcon: CheckCircle,
   },
   warning: {
-    bg: "bg-yellow-100",
-    border: "border-yellow-500",
-    text: "text-yellow-700",
+    bg: "bg-brutal-yellow",
+    border: "border-black",
+    text: "text-black",
     DefaultIcon: AlertTriangle,
   },
   info: {
-    bg: "bg-blue-100",
-    border: "border-blue-500",
-    text: "text-blue-700",
+    bg: "bg-brutal-cyan",
+    border: "border-black",
+    text: "text-black",
     DefaultIcon: Info,
   },
 }

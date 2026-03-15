@@ -27,10 +27,10 @@ export function generateStaticParams() {
 }
 
 function badgeClass(tone: "neutral" | "info" | "warning" | "danger"): string {
-  if (tone === "info") return "bg-cyan-100 border-cyan-400";
-  if (tone === "warning") return "bg-amber-100 border-amber-400";
-  if (tone === "danger") return "bg-red-100 border-red-500";
-  return "bg-gray-100 border-gray-300";
+  if (tone === "info") return "bg-brutal-cyan border-black";
+  if (tone === "warning") return "bg-brutal-yellow border-black";
+  if (tone === "danger") return "bg-brutal-red border-black";
+  return "bg-muted border-black";
 }
 
 export default async function PairStudyPage({
@@ -80,19 +80,19 @@ export default async function PairStudyPage({
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="border-2 border-black bg-cyan-200 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-2 border-black bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-black/60">Evidence Grade</div>
           <div className="text-3xl font-black text-black">{study.evidence.evidenceGrade}</div>
         </div>
-        <div className="border-2 border-black bg-yellow-200 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-2 border-black bg-brutal-yellow p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-black/60">Subjects</div>
           <div className="text-3xl font-black text-black">{study.coverage.includedSubjects}</div>
         </div>
-        <div className="border-2 border-black bg-pink-200 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-2 border-black bg-brutal-pink p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-black/60">Aligned Pairs</div>
           <div className="text-3xl font-black text-black">{study.coverage.alignedPairs}</div>
         </div>
-        <div className="border-2 border-black bg-emerald-200 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-2 border-black bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-black/60">Predictive Pearson</div>
           <div className="text-3xl font-black text-black">{fmt(study.evidence.predictivePearson, 3)}</div>
         </div>
@@ -129,7 +129,7 @@ export default async function PairStudyPage({
           key={table.tableId}
           className="border-2 border-black bg-white overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8"
         >
-          <div className="px-4 py-3 border-b-2 border-black bg-gray-100">
+          <div className="px-4 py-3 border-b-2 border-black bg-muted">
             <h2 className="text-sm font-black uppercase text-black">{table.tableLabel}</h2>
             <p className="text-xs text-black/60">
               {table.binning.method} • target bins {table.binning.targetBinCount} • min size {table.binning.minBinSize}
@@ -137,7 +137,7 @@ export default async function PairStudyPage({
           </div>
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-black bg-yellow-100">
+              <tr className="border-b border-black bg-brutal-yellow">
                 <th className="text-left px-3 py-2 font-black uppercase">Bin</th>
                 <th className="text-right px-3 py-2 font-black uppercase">Obs</th>
                 <th className="text-right px-3 py-2 font-black uppercase">Subjects</th>
@@ -150,7 +150,7 @@ export default async function PairStudyPage({
             </thead>
             <tbody>
               {table.rows.map(row => (
-                <tr key={row.binIndex} className="border-b border-black hover:bg-cyan-50">
+                <tr key={row.binIndex} className="border-b border-black hover:bg-brutal-cyan">
                   <td className="px-3 py-2 font-bold text-black">{row.label}</td>
                   <td className="px-3 py-2 text-right text-black/70">{row.observations}</td>
                   <td className="px-3 py-2 text-right text-black/70">{row.subjects}</td>
@@ -171,7 +171,7 @@ export default async function PairStudyPage({
           <h2 className="text-lg font-black uppercase text-black">Subject Drilldowns</h2>
           <Link
             href={getJurisdictionsPath(outcomeId, predictorId)}
-            className="text-xs font-black uppercase px-2 py-1 border-2 border-black bg-white hover:bg-pink-200"
+            className="text-xs font-black uppercase px-2 py-1 border-2 border-black bg-white hover:bg-brutal-pink"
           >
             View All
           </Link>
@@ -181,7 +181,7 @@ export default async function PairStudyPage({
             <Link
               key={subject.summary.subjectId}
               href={getJurisdictionStudyPath(outcomeId, predictorId, subject.summary.subjectId)}
-              className="border-2 border-black bg-gray-50 p-3 hover:bg-cyan-100"
+              className="border-2 border-black bg-muted p-3 hover:bg-brutal-cyan"
             >
               <div className="text-sm font-black text-black">{subject.summary.subjectName}</div>
               <div className="text-xs text-black/60">r={fmt(subject.summary.forwardPearson, 3)}</div>
@@ -198,7 +198,7 @@ export default async function PairStudyPage({
         <h2 className="text-lg font-black uppercase text-black mb-3">Data Flow</h2>
         <div className="space-y-2">
           {study.dataFlow.map(step => (
-            <div key={step.stepId} className="border border-black p-3 bg-gray-50">
+            <div key={step.stepId} className="border border-black p-3 bg-muted">
               <div className="text-sm font-black text-black">{step.label}</div>
               <div className="text-xs text-black/70">
                 {step.inputCount} input • {step.outputCount} output • {step.droppedCount} dropped

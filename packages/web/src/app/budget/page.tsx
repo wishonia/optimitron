@@ -76,15 +76,15 @@ function pct(n: number): string {
 
 function actionBadgeStyle(action: string): string {
   const a = action.toLowerCase();
-  if (a.includes("major increase") || a === "scale_up") return "bg-emerald-400 text-black";
-  if (a.includes("increase") || a === "increase") return "bg-emerald-300 text-black";
-  if (a.includes("maintain") || a === "maintain") return "bg-gray-200 text-black";
-  if (a.includes("modest decrease") || a === "decrease") return "bg-orange-300 text-black";
-  if (a.includes("major decrease") || a === "major_decrease") return "bg-red-300 text-black";
-  if (a.includes("decrease")) return "bg-orange-300 text-black";
-  if (a.includes("non-discretionary")) return "bg-gray-300 text-black";
-  if (a.includes("insufficient")) return "bg-gray-200 text-black/50";
-  return "bg-gray-200 text-black";
+  if (a.includes("major increase") || a === "scale_up") return "bg-brutal-cyan text-black";
+  if (a.includes("increase") || a === "increase") return "bg-brutal-cyan text-black";
+  if (a.includes("maintain") || a === "maintain") return "bg-muted text-black";
+  if (a.includes("modest decrease") || a === "decrease") return "bg-brutal-yellow text-black";
+  if (a.includes("major decrease") || a === "major_decrease") return "bg-brutal-red text-black";
+  if (a.includes("decrease")) return "bg-brutal-yellow text-black";
+  if (a.includes("non-discretionary")) return "bg-muted text-black";
+  if (a.includes("insufficient")) return "bg-muted text-black/50";
+  return "bg-muted text-black";
 }
 
 function actionLabel(action: string): string {
@@ -100,12 +100,12 @@ function actionLabel(action: string): string {
 
 function gradeBadgeColor(grade: string): string {
   switch (grade) {
-    case "A": return "bg-emerald-300";
-    case "B": return "bg-yellow-300";
-    case "C": return "bg-amber-300";
-    case "D": return "bg-orange-300";
-    case "F": return "bg-red-300";
-    default: return "bg-gray-200";
+    case "A": return "bg-brutal-cyan";
+    case "B": return "bg-brutal-yellow";
+    case "C": return "bg-brutal-yellow";
+    case "D": return "bg-brutal-red/60";
+    case "F": return "bg-brutal-red";
+    default: return "bg-muted";
   }
 }
 
@@ -151,7 +151,7 @@ export default function BudgetPage() {
         <button
           onClick={() => setView("constrained")}
           className={`px-4 py-2 text-sm font-black uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
-            isConstrained ? "bg-pink-500 text-white" : "bg-white text-black hover:bg-gray-50"
+            isConstrained ? "bg-pink-500 text-white" : "bg-white text-black hover:bg-brutal-cyan"
           }`}
         >
           Fixed Budget
@@ -159,7 +159,7 @@ export default function BudgetPage() {
         <button
           onClick={() => setView("unconstrained")}
           className={`px-4 py-2 text-sm font-black uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
-            !isConstrained ? "bg-pink-500 text-white" : "bg-white text-black hover:bg-gray-50"
+            !isConstrained ? "bg-pink-500 text-white" : "bg-white text-black hover:bg-brutal-cyan"
           }`}
         >
           Unconstrained
@@ -188,7 +188,7 @@ export default function BudgetPage() {
         <h2 className="section-title">Top 5 Recommendations</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {data.topRecommendations.slice(0, 5).map((rec, i) => (
-            <div key={i} className="card border-pink-500">
+            <div key={i} className="card border-black">
               <div className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-8 h-8 bg-pink-500 text-white flex items-center justify-center text-sm font-black border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   {i + 1}
@@ -224,14 +224,14 @@ export default function BudgetPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-black/50 w-16 font-bold">Current</span>
-                    <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
+                    <div className="flex-1 h-5 bg-muted border border-black overflow-hidden">
                       <div className="h-full bar-current" style={{ width: `${(cat.currentSpending / maxSpending) * 100}%` }} />
                     </div>
                     <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.currentSpending)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-black/50 w-16 font-bold">Optimal</span>
-                    <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
+                    <div className="flex-1 h-5 bg-muted border border-black overflow-hidden">
                       <div className="h-full bar-optimal" style={{ width: `${(cat.constrainedOptimal / maxSpending) * 100}%` }} />
                     </div>
                     <span className="text-xs text-black/60 w-20 text-right font-bold">{fmt(cat.constrainedOptimal)}</span>
@@ -278,7 +278,7 @@ export default function BudgetPage() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-black/50 w-16 font-bold">Current</span>
-                    <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
+                    <div className="flex-1 h-5 bg-muted border border-black overflow-hidden">
                       <div
                         className="h-full bar-current"
                         style={{ width: `${(cat.currentSpending / maxSpending) * 100}%` }}
@@ -288,7 +288,7 @@ export default function BudgetPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-black/50 w-16 font-bold">Optimal</span>
-                    <div className="flex-1 h-5 bg-gray-100 border border-black overflow-hidden">
+                    <div className="flex-1 h-5 bg-muted border border-black overflow-hidden">
                       <div
                         className="h-full bar-optimal"
                         style={{ width: `${(cat.optimalSpending / maxSpending) * 100}%` }}
@@ -309,7 +309,7 @@ export default function BudgetPage() {
         <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b-2 border-black bg-yellow-300">
+              <tr className="border-b-2 border-black bg-brutal-yellow">
                 <th className="text-left py-3 px-2 text-black font-black uppercase">Category</th>
                 <th className="text-right py-3 px-2 text-black font-black uppercase">Current</th>
                 <th className="text-right py-3 px-2 text-black font-black uppercase">
@@ -325,7 +325,7 @@ export default function BudgetPage() {
             <tbody>
               {isConstrained && cr ? (
                 constrainedSorted.map((cat) => (
-                  <tr key={cat.name} className={`border-b border-black hover:bg-cyan-50 ${cat.isNonDiscretionary ? "opacity-50" : ""}`}>
+                  <tr key={cat.name} className={`border-b border-black hover:bg-brutal-cyan ${cat.isNonDiscretionary ? "opacity-50" : ""}`}>
                     <td className="py-3 px-2 text-black font-bold">
                       <Link href={getBudgetCategoryPath(cat.name)} className="underline hover:text-pink-500 transition-colors">
                         {cat.name}
@@ -353,7 +353,7 @@ export default function BudgetPage() {
                 ))
               ) : (
                 sorted.map((cat) => (
-                  <tr key={cat.name} className="border-b border-black hover:bg-cyan-50">
+                  <tr key={cat.name} className="border-b border-black hover:bg-brutal-cyan">
                     <td className="py-3 px-2 text-black font-bold">
                       <Link href={getBudgetCategoryPath(cat.name)} className="underline hover:text-pink-500 transition-colors">
                         {cat.name}

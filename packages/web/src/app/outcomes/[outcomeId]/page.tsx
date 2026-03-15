@@ -17,10 +17,10 @@ import {
 import { studiesLink } from "@/lib/routes";
 
 function badgeClass(tone: "neutral" | "info" | "warning" | "danger"): string {
-  if (tone === "info") return "bg-cyan-100 border-cyan-400";
-  if (tone === "warning") return "bg-amber-100 border-amber-400";
-  if (tone === "danger") return "bg-red-100 border-red-500";
-  return "bg-gray-100 border-gray-300";
+  if (tone === "info") return "bg-brutal-cyan border-black";
+  if (tone === "warning") return "bg-brutal-yellow border-black";
+  if (tone === "danger") return "bg-brutal-red border-black";
+  return "bg-muted border-black";
 }
 
 export function generateStaticParams() {
@@ -63,7 +63,7 @@ export default async function OutcomeHubPage({
       <section className="border-2 border-black bg-white overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-2 border-black bg-yellow-300">
+            <tr className="border-b-2 border-black bg-brutal-yellow">
               <th className="text-left px-3 py-2 font-black uppercase">Rank</th>
               <th className="text-left px-3 py-2 font-black uppercase">Predictor</th>
               <th className="text-right px-3 py-2 font-black uppercase">Score</th>
@@ -76,7 +76,7 @@ export default async function OutcomeHubPage({
           </thead>
           <tbody>
             {ranking.rows.map(row => (
-              <tr key={row.predictorId} className="border-b border-black hover:bg-cyan-50">
+              <tr key={row.predictorId} className="border-b border-black hover:bg-brutal-cyan">
                 <td className="px-3 py-2 font-black text-black">#{row.rank}</td>
                 <td className="px-3 py-2 font-bold text-black">
                   <div>{row.predictorLabel ?? row.predictorId}</div>
@@ -99,7 +99,7 @@ export default async function OutcomeHubPage({
                 <td className="px-3 py-2 text-center">
                   <Link
                     href={getPairStudyPath(outcomeId, row.predictorId)}
-                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-black bg-white hover:bg-pink-200"
+                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-black bg-white hover:bg-brutal-pink"
                   >
                     Open
                   </Link>

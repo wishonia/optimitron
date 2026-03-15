@@ -32,19 +32,19 @@ interface MisconceptionData {
 const data = misconceptionData as MisconceptionData;
 
 const categoryColors: Record<string, string> = {
-  "criminal-justice": "bg-red-100 text-red-800",
-  economics: "bg-blue-100 text-blue-800",
-  healthcare: "bg-green-100 text-green-800",
-  education: "bg-purple-100 text-purple-800",
-  international: "bg-yellow-100 text-yellow-800",
-  environment: "bg-emerald-100 text-emerald-800",
+  "criminal-justice": "bg-brutal-red text-white",
+  economics: "bg-brutal-cyan text-black",
+  healthcare: "bg-brutal-cyan text-black",
+  education: "bg-brutal-pink text-black",
+  international: "bg-brutal-yellow text-black",
+  environment: "bg-brutal-cyan text-black",
 };
 
 const gradeColors: Record<string, string> = {
-  A: "bg-green-500 text-white",
-  B: "bg-green-300 text-green-900",
-  C: "bg-yellow-300 text-yellow-900",
-  D: "bg-orange-300 text-orange-900",
+  A: "bg-brutal-cyan text-black",
+  B: "bg-brutal-cyan text-black",
+  C: "bg-brutal-yellow text-black",
+  D: "bg-brutal-red/60 text-black",
   F: "bg-red-500 text-white",
 };
 
@@ -125,7 +125,7 @@ function CorrelationBar({ value }: { value: number }) {
   const pct = Math.min(abs * 100, 100);
   const color =
     abs < 0.1
-      ? "bg-gray-300"
+      ? "bg-muted"
       : abs < 0.3
         ? "bg-yellow-400"
         : abs < 0.5
@@ -136,13 +136,13 @@ function CorrelationBar({ value }: { value: number }) {
 
   return (
     <div className="flex items-center gap-2 mt-1">
-      <div className="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
+      <div className="w-24 h-2 bg-muted overflow-hidden">
         <div
-          className={`h-full rounded-full ${color}`}
+          className={`h-full ${color}`}
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs text-gray-400">
+      <span className="text-xs text-black/40">
         {abs < 0.1 ? "No link" : abs < 0.3 ? "Weak" : abs < 0.7 ? "Moderate" : "Strong"}
       </span>
     </div>
@@ -166,16 +166,16 @@ export default function MisconceptionsPage() {
   }, [filter]);
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-black text-black mb-2">
           {data.title}
         </h1>
-        <p className="text-gray-600 mb-2">
+        <p className="text-black/60 mb-2">
           I tested your species&apos; most popular policy beliefs against actual
           data. The results are&hellip; well. See for yourself.
         </p>
-        <p className="text-gray-500 text-sm mb-8">
+        <p className="text-black/50 text-sm mb-8">
           {data.summary.gradeFCount} of {data.summary.totalFindings} beliefs
           are flatly contradicted by the evidence. Only{" "}
           {data.summary.gradeACount} survived.
@@ -183,27 +183,27 @@ export default function MisconceptionsPage() {
 
         {/* Summary cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-            <div className="text-3xl font-bold text-red-600">
+          <div className="bg-brutal-red border-2 border-black p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-3xl font-black text-white">
               {data.summary.gradeFCount}
             </div>
-            <div className="text-sm text-red-800">
+            <div className="text-sm text-black">
               Grade F (data contradicts)
             </div>
           </div>
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-            <div className="text-3xl font-bold text-green-600">
+          <div className="bg-brutal-cyan border-2 border-black p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-3xl font-black text-black">
               {data.summary.gradeACount}
             </div>
-            <div className="text-sm text-green-800">
+            <div className="text-sm text-black">
               Grade A (data supports)
             </div>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-            <div className="text-3xl font-bold text-blue-600">
+          <div className="bg-brutal-cyan border-2 border-black p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-3xl font-black text-black">
               {data.summary.totalFindings}
             </div>
-            <div className="text-sm text-blue-800">Total analyzed</div>
+            <div className="text-sm text-black">Total analyzed</div>
           </div>
         </div>
 
@@ -213,10 +213,10 @@ export default function MisconceptionsPage() {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+              className={`px-3 py-1 text-sm font-black transition-colors ${
                 filter === cat
-                  ? "bg-gray-800 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  ? "bg-black text-white"
+                  : "bg-muted text-black hover:bg-brutal-yellow"
               }`}
             >
               {cat === "all" ? "All" : cat.replace("-", " ")}
@@ -229,7 +229,7 @@ export default function MisconceptionsPage() {
           {filtered.map((finding) => (
             <div
               key={finding.id}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+              className="bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden"
             >
               <button
                 onClick={() =>
@@ -237,14 +237,14 @@ export default function MisconceptionsPage() {
                     expandedId === finding.id ? null : finding.id
                   )
                 }
-                className="w-full text-left p-4 hover:bg-gray-50 transition-colors"
+                className="w-full text-left p-4 hover:bg-brutal-cyan transition-colors"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span
-                        className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${
-                          gradeColors[finding.grade] || "bg-gray-200"
+                        className={`inline-flex items-center justify-center w-8 h-8 text-sm font-black ${
+                          gradeColors[finding.grade] || "bg-muted"
                         }`}
                         title={
                           gradeDescriptions[finding.grade] ||
@@ -254,38 +254,38 @@ export default function MisconceptionsPage() {
                         {finding.grade}
                       </span>
                       <span
-                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                          categoryColors[finding.category] || "bg-gray-100"
+                        className={`px-2 py-0.5 text-xs font-black ${
+                          categoryColors[finding.category] || "bg-muted"
                         }`}
                       >
                         {finding.category.replace("-", " ")}
                       </span>
                     </div>
-                    <h3 className="font-semibold text-gray-900 mt-1">
-                      <span className="text-xs font-normal uppercase tracking-wide text-gray-400 block mb-0.5">
+                    <h3 className="font-black text-black mt-1">
+                      <span className="text-xs font-normal uppercase tracking-wide text-black/40 block mb-0.5">
                         The belief
                       </span>
                       &ldquo;{finding.myth}&rdquo;
                     </h3>
                     <div className="mt-2">
-                      <span className="text-xs font-normal uppercase tracking-wide text-gray-400 block mb-0.5">
+                      <span className="text-xs font-normal uppercase tracking-wide text-black/40 block mb-0.5">
                         What the data shows
                       </span>
-                      <p className="text-sm text-gray-700">
+                      <p className="text-sm text-black">
                         {finding.reality}
                       </p>
                     </div>
                   </div>
-                  <span className="text-gray-400 ml-2 mt-1">
+                  <span className="text-black/40 ml-2 mt-1">
                     {expandedId === finding.id ? "▼" : "▶"}
                   </span>
                 </div>
               </button>
 
               {expandedId === finding.id && (
-                <div className="px-4 pb-4 border-t border-gray-100">
+                <div className="px-4 pb-4 border-t border-black">
                   <div className="mt-3">
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">
+                    <h4 className="text-sm font-black text-black mb-2">
                       Key Statistics
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -298,15 +298,15 @@ export default function MisconceptionsPage() {
                         return (
                           <div
                             key={key}
-                            className="bg-gray-50 rounded p-3 text-sm"
+                            className="bg-background p-3 text-sm"
                           >
-                            <div className="text-gray-500 text-xs mb-0.5">
+                            <div className="text-black/50 text-xs mb-0.5">
                               {statLabels[key] ||
                                 key
                                   .replace(/([A-Z])/g, " $1")
                                   .toLowerCase()}
                             </div>
-                            <div className="font-medium text-gray-900">
+                            <div className="font-black text-black">
                               {formatStatValue(key, value)}
                             </div>
                             {isCorrelation && typeof value === "number" && (
@@ -316,7 +316,7 @@ export default function MisconceptionsPage() {
                         );
                       })}
                     </div>
-                    <p className="mt-3 text-xs text-gray-400 leading-relaxed">
+                    <p className="mt-3 text-xs text-black/40 leading-relaxed">
                       <strong>What is correlation?</strong> A number from -1 to
                       +1. Values near 0 mean no relationship. Values near +1 or
                       -1 mean a strong relationship. &ldquo;Year-over-year&rdquo;
@@ -324,7 +324,7 @@ export default function MisconceptionsPage() {
                       avoids misleading long-term trends.
                     </p>
                   </div>
-                  <div className="mt-3 text-xs text-gray-400">
+                  <div className="mt-3 text-xs text-black/40">
                     Dataset: {finding.dataset}
                   </div>
                 </div>
@@ -334,22 +334,22 @@ export default function MisconceptionsPage() {
         </div>
 
         {/* Methodology note */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="font-semibold text-blue-900 mb-2">Methodology</h3>
-          <p className="text-sm text-blue-800">
+        <div className="mt-8 border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h3 className="text-black font-black mb-2">Methodology</h3>
+          <p className="text-sm text-black">
             We compare year-over-year percentage changes — not raw totals —
             because your species has a habit of confusing &ldquo;two things
             both went up over 50 years&rdquo; with &ldquo;one caused the
             other.&rdquo; We call this &ldquo;a statistical error.&rdquo; You
             call it &ldquo;a talking point.&rdquo;
           </p>
-          <p className="text-sm text-blue-800 mt-2">
+          <p className="text-sm text-black mt-2">
             We also test which direction causation flows — does the policy
             cause the outcome, or does the outcome drive the spending? Data
             from FRED, BLS, IRS, OMB, FBI UCR, CDC, WHO, OECD, and World Bank
             (1950&ndash;2023).
           </p>
-          <p className="text-sm text-blue-800 mt-2">
+          <p className="text-sm text-black mt-2">
             <strong>Most common mistake:</strong>{" "}
             {data.summary.topPattern}.{" "}
             <strong>Second most common:</strong>{" "}

@@ -75,7 +75,7 @@ export function DailyCheckInCard({ currentCheckIn, onSaved }: DailyCheckInCardPr
   }
 
   return (
-    <Card className="border-4 border-black bg-yellow-100 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+    <Card className="border-4 border-black bg-brutal-yellow shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
       <CardHeader className="gap-3">
         <CardTitle className="text-2xl font-black uppercase text-black">
           Daily Check-In

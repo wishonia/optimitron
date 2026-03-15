@@ -258,7 +258,7 @@ export function AlignmentReport({
               {state.report.topPriorities.map((priority) => (
                 <div
                   key={priority.categoryId}
-                  className="flex items-center gap-3 border-2 border-black bg-neutral-50 p-3"
+                  className="flex items-center gap-3 border-2 border-black bg-muted p-3"
                 >
                   <span className="text-3xl">{priority.icon}</span>
                   <div>
@@ -334,7 +334,7 @@ export function AlignmentReport({
           {state.report.politicians.map((politician) => (
             <article
               key={politician.politicianId}
-              className="border-2 border-black bg-neutral-50 p-5"
+              className="border-2 border-black bg-muted p-5"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>

@@ -29,7 +29,7 @@ export function AuthForm({
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
-  const [pendingAction, setPendingAction] = useState<"google" | "magic" | null>(null);
+  const [pendingAction, setPendingAction] = useState<"google" | "magic" | "demo" | null>(null);
   const [availableProviders, setAvailableProviders] = useState({
     email: true,
     google: false,
@@ -132,6 +132,33 @@ export function AuthForm({
     }
   }
 
+  async function handleDemoSignIn() {
+    setError("");
+    setInfoMessage("");
+    setPendingAction("demo");
+
+    try {
+      const result = await signIn("credentials", {
+        email: "demo@optomitron.org",
+        password: "demo1234",
+        callbackUrl,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        throw new Error("Demo account not available. Run: npx prisma db seed");
+      }
+
+      window.location.href = callbackUrl;
+    } catch (caughtError) {
+      logger.error("Demo sign-in failed", caughtError);
+      setError(
+        caughtError instanceof Error ? caughtError.message : "Demo sign-in failed.",
+      );
+      setPendingAction(null);
+    }
+  }
+
   return (
     <div className="w-full rounded-xl border-4 border-black bg-white p-5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
       <div className="mb-5 text-center">
@@ -148,6 +175,23 @@ export function AuthForm({
       ) : null}
 
       <div className="space-y-4">
+        <Button
+          type="button"
+          disabled={isLoading}
+          className={`w-full font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${buttonClassName}`}
+          onClick={() => {
+            void handleDemoSignIn();
+          }}
+        >
+          {pendingAction === "demo" ? "Signing in..." : "Try Demo — No Account Needed"}
+        </Button>
+
+        <div className="flex items-center gap-3 text-xs font-bold uppercase text-muted-foreground">
+          <span className="h-px flex-1 bg-border" />
+          <span>or create an account</span>
+          <span className="h-px flex-1 bg-border" />
+        </div>
+
         {googleEnabled ? (
           <Button
             type="button"

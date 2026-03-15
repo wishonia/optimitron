@@ -9,9 +9,13 @@
  *
  * Output: packages/web/demo-assets/narration/ (WAV files per section)
  */
+import { config } from "dotenv";
 import { GoogleGenAI } from "@google/genai";
 import { writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+
+// Load .env from project root
+config({ path: resolve(__dirname, "..", "..", "..", ".env") });
 
 const OUTPUT_DIR = join(__dirname, "..", "demo-assets", "narration");
 
@@ -57,14 +61,18 @@ const narrationSegments = [
 
 async function generateNarration() {
   const apiKey =
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY ?? process.env.GOOGLE_API_KEY;
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY ??
+    process.env.GOOGLE_API_KEY;
 
   if (!apiKey) {
     console.error(
-      "Error: Set GOOGLE_GENERATIVE_AI_API_KEY or GOOGLE_API_KEY environment variable",
+      "Error: No Gemini API key found.\n" +
+      "  Set GOOGLE_GENERATIVE_AI_API_KEY in .env (project root) or as an environment variable.",
     );
     process.exit(1);
   }
+
+  console.log("Using GOOGLE_GENERATIVE_AI_API_KEY from .env\n");
 
   if (!existsSync(OUTPUT_DIR)) {
     mkdirSync(OUTPUT_DIR, { recursive: true });
@@ -122,10 +130,53 @@ async function generateNarration() {
         continue;
       }
 
+      const mimeType: string = audioPart.inlineData.mimeType ?? "audio/wav";
+      // Determine file extension from mime type
+      const extMap: Record<string, string> = {
+        "audio/wav": ".wav",
+        "audio/mp3": ".mp3",
+        "audio/mpeg": ".mp3",
+        "audio/ogg": ".ogg",
+        "audio/L16": ".pcm",
+        "audio/pcm": ".pcm",
+      };
+      const ext = extMap[mimeType] ?? ".wav";
+
+      // If Gemini returns raw PCM (audio/L16), wrap in WAV header
       const audioBuffer = Buffer.from(audioPart.inlineData.data, "base64");
-      writeFileSync(outputPath, audioBuffer);
+      let finalBuffer = audioBuffer;
+      const actualPath = outputPath.replace(/\.wav$/, ext === ".pcm" ? ".wav" : ext);
+
+      if (mimeType.includes("L16") || mimeType.includes("pcm")) {
+        // Raw PCM: wrap in WAV container (24kHz, 16-bit, mono — Gemini default)
+        const sampleRate = 24000;
+        const bitsPerSample = 16;
+        const channels = 1;
+        const byteRate = sampleRate * channels * (bitsPerSample / 8);
+        const blockAlign = channels * (bitsPerSample / 8);
+        const dataSize = audioBuffer.length;
+        const header = Buffer.alloc(44);
+        header.write("RIFF", 0);
+        header.writeUInt32LE(36 + dataSize, 4);
+        header.write("WAVE", 8);
+        header.write("fmt ", 12);
+        header.writeUInt32LE(16, 16); // subchunk1 size
+        header.writeUInt16LE(1, 20); // PCM format
+        header.writeUInt16LE(channels, 22);
+        header.writeUInt32LE(sampleRate, 24);
+        header.writeUInt32LE(byteRate, 28);
+        header.writeUInt16LE(blockAlign, 32);
+        header.writeUInt16LE(bitsPerSample, 34);
+        header.write("data", 36);
+        header.writeUInt32LE(dataSize, 40);
+        finalBuffer = Buffer.concat([header, audioBuffer]);
+        writeFileSync(outputPath, finalBuffer); // keep .wav extension
+      } else {
+        writeFileSync(actualPath, audioBuffer);
+      }
+
       console.log(
-        `  [ok]   ${segment.id} — ${(audioBuffer.length / 1024).toFixed(0)} KB`,
+        `  [ok]   ${segment.id} — ${(finalBuffer.length / 1024).toFixed(0)} KB (${mimeType})`,
       );
     } catch (error: any) {
       console.error(`  [err]  ${segment.id} — ${error.message}`);

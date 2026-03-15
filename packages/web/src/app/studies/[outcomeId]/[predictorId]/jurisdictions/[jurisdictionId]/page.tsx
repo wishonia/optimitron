@@ -54,19 +54,19 @@ export default async function JurisdictionStudyPage({
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-        <div className="border-2 border-black bg-cyan-200 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-2 border-black bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-black/60">Forward Pearson</div>
           <div className="text-3xl font-black text-black">{fmt(subject.summary.forwardPearson, 3)}</div>
         </div>
-        <div className="border-2 border-black bg-yellow-200 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-2 border-black bg-brutal-yellow p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-black/60">Predictive Pearson</div>
           <div className="text-3xl font-black text-black">{fmt(subject.summary.predictivePearson, 3)}</div>
         </div>
-        <div className="border-2 border-black bg-pink-200 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-2 border-black bg-brutal-pink p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-black/60">Outcome % Change</div>
           <div className="text-3xl font-black text-black">{fmt(subject.summary.percentChangeFromBaseline, 2)}%</div>
         </div>
-        <div className="border-2 border-black bg-emerald-200 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-2 border-black bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-black/60">Aligned Pairs</div>
           <div className="text-3xl font-black text-black">{subject.summary.numberOfPairs}</div>
         </div>
@@ -101,7 +101,7 @@ export default async function JurisdictionStudyPage({
       </section>
 
       {!subject.qualityGate.passed && (
-        <section className="border-2 border-black bg-amber-100 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <section className="border-2 border-black bg-brutal-yellow p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="text-lg font-black uppercase text-black mb-3">Quality Gate Notes</h2>
           <ul className="text-sm text-black/80 font-medium space-y-1">
             {subject.qualityGate.reasons.map(reason => (

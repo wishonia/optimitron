@@ -15,8 +15,8 @@ describe("NavItemLink helpers", () => {
   });
 
   it("returns active and inactive class variants for top nav links", () => {
-    expect(getNavItemLinkClasses("topNav", true)).toContain("bg-yellow-300");
-    expect(getNavItemLinkClasses("topNav", false)).toContain("hover:bg-cyan-200");
+    expect(getNavItemLinkClasses("topNav", true)).toContain("bg-white");
+    expect(getNavItemLinkClasses("topNav", false)).toContain("hover:bg-white");
   });
 
   it("returns footer styling without button chrome", () => {
