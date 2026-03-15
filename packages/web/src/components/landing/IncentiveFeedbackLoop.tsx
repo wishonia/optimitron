@@ -7,6 +7,8 @@ import { Stat } from "@/components/ui/stat";
 import {
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  TREATY_ANNUAL_FUNDING,
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
 } from "@/lib/parameters-calculations-citations";
 
 /**
@@ -48,23 +50,28 @@ const stakeholders = [
   },
 ];
 
+const fmtB = (v: number) => `$${(v / 1e9).toFixed(0)}B`;
+const yr1 = TREATY_ANNUAL_FUNDING.value;
+const yr5 = GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value * 0.02;
+const yr10 = GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value * 0.05;
+
 const escalationYears = [
   {
     year: "Year 1",
     pct: "1%",
-    amount: "$27B",
-    detail: "$2.7B returns, $2.7B rewards, $21.6B trials",
+    amount: fmtB(yr1),
+    detail: `${fmtB(yr1 * 0.1)} returns, ${fmtB(yr1 * 0.1)} rewards, ${fmtB(yr1 * 0.8)} trials`,
   },
   {
     year: "Year 5",
     pct: "2%",
-    amount: "$54B",
+    amount: fmtB(yr5),
     detail: "Returns double. Politicians campaign for 3%.",
   },
   {
     year: "Year 10",
     pct: "5%",
-    amount: "$136B",
+    amount: fmtB(yr10),
     detail: "Cures flowing. GDP accelerating. Everyone demands more.",
   },
 ];

@@ -8,11 +8,13 @@ import {
   TREATY_TRAJECTORY_CAGR_YEAR_20,
   WISHONIA_TRAJECTORY_CAGR_YEAR_20,
   GDP_BASELINE_GROWTH_RATE,
+  US_MEDIAN_HOUSEHOLD_INCOME_2023,
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
 } from "@/lib/parameters-calculations-citations";
 import { fmtParam } from "@/lib/format-parameter";
 
 const YEARS = 20;
-const DEFAULT_INCOME = 37000; // US median personal income
+const DEFAULT_INCOME = US_MEDIAN_HOUSEHOLD_INCOME_2023.value;
 
 const scenarios = [
   {
@@ -130,7 +132,7 @@ export function PersonalIncomeChart() {
         </h2>
         <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
           Enter your income. See what {YEARS} years of compounding looks like with
-          and without the $101 trillion governance dysfunction tax.
+          and without the {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} governance dysfunction tax.
         </p>
       </motion.div>
 

@@ -8,13 +8,18 @@ import { IncentiveFeedbackLoop } from "./IncentiveFeedbackLoop";
 import { IABCalculator } from "./IABCalculator";
 import {
   incentiveAlignmentBondsPaperLink,
+  contractsSourceLink,
   prizeLink,
 } from "@/lib/routes";
 import { Stat } from "@/components/ui/stat";
 import {
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  VICTORY_BOND_ANNUAL_RETURN_PCT,
+  POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
 } from "@/lib/parameters-calculations-citations";
+
+const bondReturnPct = `${(VICTORY_BOND_ANNUAL_RETURN_PCT.value * 100).toFixed(0)}%`;
 
 export function IncentiveAlignmentBondsSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -29,8 +34,9 @@ export function IncentiveAlignmentBondsSection() {
             The Bond That Replaces Your Entire Political System
           </h2>
           <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
-            Not a donation. A financial instrument with better returns than your index fund — and
-            if it works, you accidentally fix civilisation.
+            Not a donation. A financial instrument. Your principal earns yield. Your
+            referral link earns votes. Your share of the upside scales with the
+            demand you proved. Accidentally fix civilisation in the process.
           </p>
         </ScrollReveal>
 
@@ -42,15 +48,15 @@ export function IncentiveAlignmentBondsSection() {
                 Your Downside (Plan Fails)
               </div>
               <h3 className="text-2xl font-black text-black mb-2">
-                ~4x Your Money Back
+                ~4.2x Your Money Back
               </h3>
               <p className="text-sm text-black/70 leading-relaxed font-medium mb-3">
                 Dominant assurance contract. If outcome thresholds aren&apos;t met,
-                you get principal back plus a multiplier.
+                you get principal + 15 years of stablecoin yield.
               </p>
               <div className="p-3 bg-black/10 border border-black/20">
                 <p className="text-xs font-bold text-black/60">
-                  Invest $1,000 → Get back ~$4,000 if the plan fails.
+                  Invest $1,000 → Get back ~$4,200 if the plan fails.
                   Your &ldquo;worst case&rdquo; is quadrupling your money.
                 </p>
               </div>
@@ -62,16 +68,16 @@ export function IncentiveAlignmentBondsSection() {
                 Your Upside (Plan Succeeds)
               </div>
               <h3 className="text-2xl font-black text-black mb-2">
-                272%/yr Revenue Share
+                Vote-Proportional Revenue Share
               </h3>
               <p className="text-sm text-black/70 leading-relaxed font-medium mb-3">
                 <Stat param={{...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"}} />–<Stat param={{...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"}} /> per-capita income gains across adopting jurisdictions.
-                Bondholders get a share of the value they helped create.
+                Your share scales with verified votes you brought in via referral link.
               </p>
               <div className="p-3 bg-black/10 border border-black/20">
                 <p className="text-xs font-bold text-black/60">
-                  Invest $1,000 → Revenue share of civilisational upgrade.
-                  Break-even requires only a 0.0067% probability shift.
+                  Buy bonds → share referral link → prove demand exists.
+                  More votes you verify, bigger your share of the upside.
                 </p>
               </div>
             </div>
@@ -103,7 +109,7 @@ export function IncentiveAlignmentBondsSection() {
                 className="h-full bg-brutal-yellow border-2 border-black flex items-center justify-center px-3 w-1/4"
               >
                 <span className="text-xs font-black text-black whitespace-nowrap">
-                  Fails → ~4x
+                  Fails → ~4.2x
                 </span>
               </motion.div>
 
@@ -125,7 +131,7 @@ export function IncentiveAlignmentBondsSection() {
                 className="h-full bg-brutal-cyan border-2 border-black flex items-center justify-center px-3 flex-grow"
               >
                 <span className="text-xs font-black text-black whitespace-nowrap">
-                  Succeeds → 272%/yr
+                  Succeeds → vote-proportional share
                 </span>
               </motion.div>
             </div>
@@ -159,7 +165,7 @@ export function IncentiveAlignmentBondsSection() {
               80% of treaty inflows fund pragmatic trials. Diseases get cured.
               Everyone&apos;s income rises. Bondholders earn 10% in returns.
               Politicians earn 10% for alignment. But the real payout is
-              population-wide: the $12,600/year dysfunction tax starts
+              population-wide: the ${Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value).toLocaleString("en-US")}/year dysfunction tax starts
               disappearing for every human on Earth. As GDP rises, everyone
               lobbies for more treaty funding. 1% → 2% → 5%. The loop is
               self-reinforcing.
@@ -195,6 +201,14 @@ export function IncentiveAlignmentBondsSection() {
                 className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-black transition-colors"
               >
                 Read the paper &rarr;
+              </NavItemLink>
+              <NavItemLink
+                item={contractsSourceLink}
+                variant="custom"
+                external
+                className="inline-flex items-center text-sm font-black text-black/40 uppercase hover:text-black transition-colors"
+              >
+                View contracts &rarr;
               </NavItemLink>
               <NavItemLink
                 item={prizeLink}

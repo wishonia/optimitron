@@ -13,6 +13,8 @@ import {
   CURRENT_TRIAL_SLOTS_AVAILABLE,
   GLOBAL_DISEASE_DEATHS_DAILY,
   DFDA_EFFICACY_LAG_ELIMINATION_ECONOMIC_VALUE,
+  DISEASES_WITHOUT_EFFECTIVE_TREATMENT,
+  NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR,
 } from "@/lib/parameters-calculations-citations";
 
 const graveyardStats = [
@@ -53,7 +55,7 @@ export function InvisibleGraveyardSection() {
           <p className="mt-4 text-lg text-white/50 max-w-2xl mx-auto font-medium">
             <Stat param={GLOBAL_DISEASE_DEATHS_DAILY} /> people die every day from treatable diseases. Not untreatable.
             Treatable. You just have not gotten around to testing the treatments yet.
-            At your current pace, clearing the backlog takes 443 years.
+            At your current pace, clearing the backlog takes {Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value)} years.
           </p>
         </ScrollReveal>
 
@@ -82,7 +84,7 @@ export function InvisibleGraveyardSection() {
             </div>
             <p className="text-black/70 font-medium max-w-xl mx-auto mb-1">
               Economic value of lives lost to regulatory delay. At 15 new treatments
-              per year, your 443-year queue means most of these diseases will outlive
+              per year, your {Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value)}-year queue means most of these diseases will outlive
               your civilisation. Which, given your other numbers, might not be very long.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">

@@ -11,6 +11,7 @@ import {
   GLOBAL_CYBERCRIME_COST_ANNUAL_2025,
   GLOBAL_CYBERCRIME_CAGR,
   GLOBAL_GDP_2025,
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
 } from "@/lib/parameters-calculations-citations";
 
 // ── Base constants ──────────────────────────────────────────────────
@@ -49,7 +50,7 @@ export const TREATY_CAGR = 0.179;
 export const WISHONIA_CAGR = 0.254;
 
 /** Political Dysfunction Tax per year in USD (page hero stat) */
-export const DYSFUNCTION_TAX_PER_YEAR = 101e12; // $101T
+export const DYSFUNCTION_TAX_PER_YEAR = POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value;
 
 /** Average cost of a clinical trial (NIH estimate, Phase I-III) */
 export const CLINICAL_TRIAL_COST = 50e6; // $50M

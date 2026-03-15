@@ -6,50 +6,37 @@ export function TreasuryStatusCard() {
   const {
     treasuryBalance,
     citizenCount,
-    politicianCount,
-    ubiAllocationBps,
-    totalAlignmentScore,
     taxRateBps,
     totalSupply,
     maxSupply,
     isDemo,
   } = useTreasuryData();
 
-  const ubiBps = Number(ubiAllocationBps);
-  const alignmentBps = 10_000 - ubiBps;
+  const citizenCountNum = Number(citizenCount);
+  const perCitizen = citizenCountNum > 0 ? treasuryBalance / citizenCount : 0n;
 
   const stats = [
     {
       label: "Treasury Balance",
       value: `${formatWish(treasuryBalance)} $WISH`,
+      detail: "100% distributed as UBI",
       color: "bg-brutal-cyan/20",
     },
     {
-      label: "UBI Pool",
-      value: `${(ubiBps / 100).toFixed(0)}%`,
-      detail: `${formatWish((treasuryBalance * BigInt(ubiBps)) / 10_000n)} $WISH`,
+      label: "Per Citizen",
+      value: citizenCountNum > 0 ? `${formatWish(perCitizen)} $WISH` : "—",
+      detail: citizenCountNum > 0 ? "Next distribution" : "No citizens yet",
       color: "bg-brutal-cyan/10",
     },
     {
-      label: "Alignment Pool",
-      value: `${(alignmentBps / 100).toFixed(0)}%`,
-      detail: `${formatWish((treasuryBalance * BigInt(alignmentBps)) / 10_000n)} $WISH`,
-      color: "bg-brutal-pink/10",
-    },
-    {
       label: "Registered Citizens",
-      value: citizenCount.toString(),
-      color: "bg-white",
-    },
-    {
-      label: "Scored Politicians",
-      value: politicianCount.toString(),
-      detail: `Total score: ${totalAlignmentScore.toString()}`,
+      value: citizenCountNum.toLocaleString(),
       color: "bg-white",
     },
     {
       label: "Transaction Tax",
       value: `${(Number(taxRateBps) / 100).toFixed(1)}%`,
+      detail: "On every $WISH transfer",
       color: "bg-white",
     },
     {
@@ -60,6 +47,7 @@ export function TreasuryStatusCard() {
     {
       label: "Max Supply (Fixed)",
       value: `${formatWish(maxSupply)} $WISH`,
+      detail: "No inflation. Ever.",
       color: "bg-white",
     },
   ];
@@ -76,7 +64,7 @@ export function TreasuryStatusCard() {
           </span>
         )}
       </div>
-      <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
         {stats.map((stat) => (
           <div
             key={stat.label}

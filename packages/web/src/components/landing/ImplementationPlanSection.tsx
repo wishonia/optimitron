@@ -8,7 +8,7 @@ const steps = [
     step: 1,
     title: "Sell IABs",
     description:
-      "Investors buy Incentive Alignment Bonds because the return profile is attractive. Fail? ~4x return. Succeed? Revenue share on trillions in welfare gains. The money flowing in IS the prize pool. No fundraising galas required.",
+      "Investors buy Incentive Alignment Bonds because the return profile is attractive. Fail? ~4.2x return from stablecoin yield. Succeed? Vote-proportional revenue share — the more demand you prove via referrals, the bigger your cut. The money flowing in IS the prize pool. No fundraising galas required.",
     why: "Self-interest. People like money.",
   },
   {

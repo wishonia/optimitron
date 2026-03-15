@@ -13,9 +13,6 @@ const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const DEMO_DATA = {
   treasuryBalance: 42_000_000n * 10n ** 18n,
   citizenCount: 1_247n,
-  politicianCount: 6n,
-  ubiAllocationBps: 5000n,
-  totalAlignmentScore: 38_420n,
   totalSupply: 750_000_000n * 10n ** 18n,
   maxSupply: 1_000_000_000n * 10n ** 18n,
   taxRateBps: 100n,
@@ -58,27 +55,6 @@ export function useTreasuryData() {
     address: treasuryAddress as Address,
     abi: alignmentTreasuryAbi,
     functionName: "citizenCount",
-    query: { enabled },
-  });
-
-  const { data: politicianCount } = useReadContract({
-    address: treasuryAddress as Address,
-    abi: alignmentTreasuryAbi,
-    functionName: "politicianCount",
-    query: { enabled },
-  });
-
-  const { data: ubiAllocationBps } = useReadContract({
-    address: treasuryAddress as Address,
-    abi: alignmentTreasuryAbi,
-    functionName: "ubiAllocationBps",
-    query: { enabled },
-  });
-
-  const { data: totalAlignmentScore } = useReadContract({
-    address: treasuryAddress as Address,
-    abi: alignmentTreasuryAbi,
-    functionName: "totalAlignmentScore",
     query: { enabled },
   });
 
@@ -125,12 +101,9 @@ export function useTreasuryData() {
   const isDemo = !isDeployed;
 
   return {
-    // Global treasury
+    // Treasury
     treasuryBalance: (isDemo ? DEMO_DATA.treasuryBalance : treasuryBalance as bigint | undefined) ?? 0n,
     citizenCount: (isDemo ? DEMO_DATA.citizenCount : citizenCount as bigint | undefined) ?? 0n,
-    politicianCount: (isDemo ? DEMO_DATA.politicianCount : politicianCount as bigint | undefined) ?? 0n,
-    ubiAllocationBps: (isDemo ? DEMO_DATA.ubiAllocationBps : ubiAllocationBps as bigint | undefined) ?? 0n,
-    totalAlignmentScore: (isDemo ? DEMO_DATA.totalAlignmentScore : totalAlignmentScore as bigint | undefined) ?? 0n,
 
     // Token
     totalSupply: (isDemo ? DEMO_DATA.totalSupply : totalSupply as bigint | undefined) ?? 0n,

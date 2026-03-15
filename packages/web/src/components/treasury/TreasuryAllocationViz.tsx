@@ -3,100 +3,94 @@
 import { formatWish, useTreasuryData } from "@/hooks/useTreasuryData";
 
 export function TreasuryAllocationViz() {
-  const { treasuryBalance, ubiAllocationBps, citizenCount, isDemo } =
+  const { treasuryBalance, citizenCount, taxRateBps, isDemo } =
     useTreasuryData();
 
-  const ubiBps = Number(ubiAllocationBps);
-  const alignmentBps = 10_000 - ubiBps;
-  const ubiPct = ubiBps / 100;
-  const alignmentPct = alignmentBps / 100;
-
-  const ubiPool = (treasuryBalance * BigInt(ubiBps)) / 10_000n;
-  const alignmentPool = treasuryBalance - ubiPool;
-
   const citizenCountNum = Number(citizenCount);
-  const perCitizen = citizenCountNum > 0 ? ubiPool / citizenCount : 0n;
+  const perCitizen = citizenCountNum > 0 ? treasuryBalance / citizenCount : 0n;
+  const taxPct = (Number(taxRateBps) / 100).toFixed(1);
 
   return (
     <section className="mb-16">
       <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-        Where the Money Goes
+        How It Works
       </h2>
 
-      {/* Stacked bar */}
       <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <div className="flex h-16 border-2 border-black overflow-hidden mb-6">
-          <div
-            className="bg-brutal-cyan flex items-center justify-center transition-all"
-            style={{ width: `${ubiPct}%` }}
-          >
-            <span className="text-xs font-black text-black uppercase">
-              UBI {ubiPct}%
+        {/* Flow diagram */}
+        <div className="flex flex-col md:flex-row items-stretch gap-0 mb-6">
+          <div className="flex-1 border-4 border-black bg-brutal-yellow p-4 text-center">
+            <div className="text-xs font-black uppercase text-black/50 mb-1">
+              Step 1
+            </div>
+            <div className="text-sm font-black text-black">
+              Every $WISH Transfer
+            </div>
+            <div className="text-xs text-black/60 mt-1">
+              {taxPct}% transaction tax
+            </div>
+          </div>
+          <div className="flex items-center justify-center px-2 py-1 md:py-0">
+            <span className="text-2xl font-black rotate-90 md:rotate-0">
+              →
             </span>
           </div>
-          <div
-            className="bg-brutal-pink flex items-center justify-center transition-all"
-            style={{ width: `${alignmentPct}%` }}
-          >
-            <span className="text-xs font-black text-white uppercase">
-              Alignment {alignmentPct}%
+          <div className="flex-1 border-4 border-black bg-brutal-cyan p-4 text-center">
+            <div className="text-xs font-black uppercase text-black/50 mb-1">
+              Step 2
+            </div>
+            <div className="text-sm font-black text-black">
+              UBI Treasury
+            </div>
+            <div className="text-xs text-black/60 mt-1">
+              {formatWish(treasuryBalance)} $WISH
+            </div>
+          </div>
+          <div className="flex items-center justify-center px-2 py-1 md:py-0">
+            <span className="text-2xl font-black rotate-90 md:rotate-0">
+              →
             </span>
+          </div>
+          <div className="flex-1 border-4 border-black bg-brutal-pink p-4 text-center">
+            <div className="text-xs font-black uppercase text-black/50 mb-1 text-white/70">
+              Step 3
+            </div>
+            <div className="text-sm font-black text-white">
+              Equal Split to Citizens
+            </div>
+            <div className="text-xs text-white/60 mt-1">
+              {citizenCountNum > 0
+                ? `${formatWish(perCitizen)} each`
+                : "Register to receive"}
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* UBI column */}
-          <div className="border-4 border-black bg-brutal-cyan/10 p-5">
+          {/* UBI explanation */}
+          <div className="border-2 border-black bg-brutal-cyan/10 p-5">
             <h3 className="font-black uppercase text-black text-sm mb-3">
-              Universal Basic Income
+              100% Universal Basic Income
             </h3>
-            <div className="space-y-2">
-              <div>
-                <div className="text-[10px] font-black uppercase text-black/50">
-                  Pool Size
-                </div>
-                <div className="text-lg font-black text-black">
-                  {formatWish(ubiPool)} $WISH
-                </div>
-              </div>
-              <div>
-                <div className="text-[10px] font-black uppercase text-black/50">
-                  Per Citizen
-                </div>
-                <div className="text-lg font-black text-brutal-cyan">
-                  {citizenCountNum > 0
-                    ? `${formatWish(perCitizen)} $WISH`
-                    : "No citizens registered"}
-                </div>
-              </div>
-              <p className="text-xs text-black/60 font-medium">
-                Split equally among all World ID-verified citizens. Anyone can
-                trigger distribution. No applications. No means testing. Just
-                proof you exist.
-              </p>
-            </div>
+            <p className="text-xs text-black/60 font-medium leading-relaxed">
+              Every $WISH in the treasury goes to citizens. Equal shares.
+              No means testing. No applications. No bureaucracy. Just proof
+              you&apos;re a real person via World ID, and your share is
+              calculated automatically.
+            </p>
           </div>
 
-          {/* Alignment column */}
-          <div className="border-4 border-black bg-brutal-pink/10 p-5">
+          {/* Politician funding note */}
+          <div className="border-2 border-black bg-brutal-pink/10 p-5">
             <h3 className="font-black uppercase text-black text-sm mb-3">
-              Alignment Funding
+              Politician Funding? That&apos;s IABs.
             </h3>
-            <div className="space-y-2">
-              <div>
-                <div className="text-[10px] font-black uppercase text-black/50">
-                  Pool Size
-                </div>
-                <div className="text-lg font-black text-black">
-                  {formatWish(alignmentPool)} $WISH
-                </div>
-              </div>
-              <p className="text-xs text-black/60 font-medium">
-                Distributed to politicians proportional to their Citizen
-                Alignment Score. Vote with citizens? Get funded. Vote against
-                them? Fund yourself.
-              </p>
-            </div>
+            <p className="text-xs text-black/60 font-medium leading-relaxed">
+              Aligned politicians are funded through the Incentive Alignment
+              Bond mechanism — 10% of treaty revenue flows to the political
+              incentive layer. Funding is gated on outcomes, not transactions.
+              No outcomes? No funding. Simple.
+            </p>
           </div>
         </div>
 

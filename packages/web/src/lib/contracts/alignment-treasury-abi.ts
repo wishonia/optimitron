@@ -1,19 +1,16 @@
 /**
- * AlignmentTreasury ABI — $WISH transaction tax treasury.
- * Receives $WISH from transaction tax, distributes to:
- *   - Politicians proportional to alignment scores
- *   - Citizens as equal UBI shares
+ * AlignmentTreasury ABI — $WISH UBI Treasury.
+ * Receives $WISH from transaction tax, distributes 100% as UBI
+ * equally to all World ID-verified citizens.
  *
- * This is the $WISH monetary reform system — completely separate from IABs.
+ * Politician funding is handled separately by the IAB mechanism (80/10/10).
+ * This contract is purely UBI — no alignment scores, no politician tracking.
  */
 export const alignmentTreasuryAbi = [
   // Constructor
   {
     type: "constructor",
-    inputs: [
-      { name: "_wishToken", type: "address" },
-      { name: "_ubiAllocationBps", type: "uint256" },
-    ],
+    inputs: [{ name: "_wishToken", type: "address" }],
     stateMutability: "nonpayable",
   },
 
@@ -24,27 +21,6 @@ export const alignmentTreasuryAbi = [
     name: "wishToken",
     inputs: [],
     outputs: [{ name: "", type: "address" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "ubiAllocationBps",
-    inputs: [],
-    outputs: [{ name: "", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "MAX_UBI_ALLOCATION_BPS",
-    inputs: [],
-    outputs: [{ name: "", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "totalAlignmentScore",
-    inputs: [],
-    outputs: [{ name: "", type: "uint256" }],
     stateMutability: "view",
   },
   {
@@ -68,37 +44,12 @@ export const alignmentTreasuryAbi = [
     outputs: [{ name: "", type: "uint256" }],
     stateMutability: "view",
   },
-  {
-    type: "function",
-    name: "politicianCount",
-    inputs: [],
-    outputs: [{ name: "", type: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "politicians",
-    inputs: [{ name: "", type: "bytes32" }],
-    outputs: [
-      { name: "wallet", type: "address" },
-      { name: "score", type: "uint256" },
-      { name: "active", type: "bool" },
-    ],
-    stateMutability: "view",
-  },
 
   // --- Write functions (permissionless) ---
 
   {
     type: "function",
     name: "distributeUBI",
-    inputs: [],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "distributeToAligned",
     inputs: [],
     outputs: [],
     stateMutability: "nonpayable",
@@ -113,31 +64,6 @@ export const alignmentTreasuryAbi = [
       { name: "citizen", type: "address" },
       { name: "nullifierHash", type: "bytes32" },
     ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "updateAlignmentScores",
-    inputs: [
-      { name: "ids", type: "bytes32[]" },
-      { name: "wallets", type: "address[]" },
-      { name: "scores", type: "uint256[]" },
-    ],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "deactivatePolitician",
-    inputs: [{ name: "politicianId", type: "bytes32" }],
-    outputs: [],
-    stateMutability: "nonpayable",
-  },
-  {
-    type: "function",
-    name: "setUBIAllocation",
-    inputs: [{ name: "_ubiAllocationBps", type: "uint256" }],
     outputs: [],
     stateMutability: "nonpayable",
   },
@@ -158,31 +84,6 @@ export const alignmentTreasuryAbi = [
     inputs: [
       { name: "totalAmount", type: "uint256", indexed: false },
       { name: "recipientCount", type: "uint256", indexed: false },
-    ],
-  },
-  {
-    type: "event",
-    name: "AlignmentDistributed",
-    inputs: [
-      { name: "totalAmount", type: "uint256", indexed: false },
-      { name: "recipientCount", type: "uint256", indexed: false },
-    ],
-  },
-  {
-    type: "event",
-    name: "AlignmentScoreUpdated",
-    inputs: [
-      { name: "politicianId", type: "bytes32", indexed: true },
-      { name: "wallet", type: "address", indexed: false },
-      { name: "score", type: "uint256", indexed: false },
-    ],
-  },
-  {
-    type: "event",
-    name: "UBIAllocationUpdated",
-    inputs: [
-      { name: "oldBps", type: "uint256", indexed: false },
-      { name: "newBps", type: "uint256", indexed: false },
     ],
   },
 ] as const;

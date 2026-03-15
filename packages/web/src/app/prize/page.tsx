@@ -15,10 +15,13 @@ import {
   DFDA_PATIENTS_FUNDABLE_ANNUALLY,
   EFFICACY_LAG_YEARS,
   TREATY_EXPECTED_COST_PER_DALY,
+  VICTORY_BOND_ANNUAL_RETURN_PCT,
+  PRIZE_ESCROW_100_RETURN_MULTIPLE,
 } from "@/lib/parameters-calculations-citations";
 import {
   earthOptimizationPrizePaperLink,
   incentiveAlignmentBondsPaperLink,
+  contractsSourceLink,
   transparencyLink,
   wishocracyLink,
   alignmentLink,
@@ -33,13 +36,14 @@ export const metadata: Metadata = {
 
 const dysfunctionTaxFormatted = `$${Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value).toLocaleString()}`;
 const deathsPerDayFormatted = `${Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value).toLocaleString()}`;
+const escrowMultiplier = PRIZE_ESCROW_100_RETURN_MULTIPLE.value.toFixed(1);
 
 const trustBadges = [
   { label: "Zero Team Allocation", detail: "100% to escrow" },
   { label: "No Pre-Sale", detail: "Same price for everyone" },
   { label: "Fully On-Chain", detail: "Every tx auditable" },
   { label: "No Admin Keys", detail: "Contract controls distribution" },
-  { label: "You Win Either Way", detail: "Fail: ~4x · Succeed: revenue share" },
+  { label: "You Win Either Way", detail: `Fail: ~${escrowMultiplier}x · Succeed: vote-proportional share` },
 ];
 
 const mechanismSteps = [
@@ -47,8 +51,8 @@ const mechanismSteps = [
     number: 1,
     label: "You Buy Bonds",
     description:
-      "Purchase Incentive Alignment Bonds via the smart contract. Your bond amount IS your identity and your allocation power. No accounts, no registration — just capital in escrow with an attractive return profile either way.",
-    detail: "Bond-as-identity eliminates sybil attacks. Fake accounts have zero funds to allocate. Your purchase moves your money, not anyone else's. Fail scenario: ~4x return. Succeed scenario: 272%/yr revenue share.",
+      "Purchase Incentive Alignment Bonds via the smart contract. Your principal goes into Aave yield. You get a unique referral link. Your bond is your identity and your skin in the game.",
+    detail: `No accounts, no registration — just capital in escrow. Fail scenario: principal + ~${escrowMultiplier}x yield. Succeed scenario: revenue share proportional to verified votes you brought in.`,
     color: "bg-brutal-pink",
     textColor: "text-white",
     subTextColor: "text-white/70",
@@ -56,10 +60,10 @@ const mechanismSteps = [
   },
   {
     number: 2,
-    label: "Outcomes Are Measured",
+    label: "You Spread the Proof",
     description:
-      "Oracles report two terminal metrics: median healthy life years and median real after-tax income. When both cross pre-published thresholds in adopting jurisdictions — verified by peer-reviewed study — the pool unlocks.",
-    detail: "Health gets 50%. Income gets 50%. No opinion metrics. No vibes. Just the two numbers that actually measure whether human lives are getting better.",
+      "Share your referral link. Every person who verifies their preference for the 1% Treaty through your link is a verified vote attributed to you. The bottleneck is pluralistic ignorance — everyone wants this, nobody knows everyone else wants it. You fix that.",
+    detail: "World ID prevents duplicate votes. Each verified preference is on-chain. You're not selling anything — you're proving demand that already exists. The referral link just attributes the proof to you.",
     color: "bg-brutal-yellow",
     textColor: "text-black",
     subTextColor: "text-black/70",
@@ -67,10 +71,10 @@ const mechanismSteps = [
   },
   {
     number: 3,
-    label: "Implementers Claim",
+    label: "Demand Becomes Undeniable",
     description:
-      "Teams that produced outcomes register with evidence: Hypercert attestations on the AT Protocol, Storacha CIDs linking to verifiable data, legislative records, trial results.",
-    detail: "Every claim is content-addressed and auditable. If you can't prove it, you don't get paid. Evidence is linked via the same Hypercert infrastructure used for alignment scoring.",
+      "As verified votes accumulate, pluralistic ignorance collapses. Politicians can't pretend nobody wants this when 10 million, 100 million, 1 billion people have verifiably said they do. The treaty adopts itself.",
+    detail: "Every jurisdiction has a vote count. When verified demand crosses critical mass, the political cost of inaction exceeds the cost of action. That's the threshold. Not a committee decision — arithmetic.",
     color: "bg-brutal-cyan",
     textColor: "text-black",
     subTextColor: "text-black/70",
@@ -78,10 +82,10 @@ const mechanismSteps = [
   },
   {
     number: 4,
-    label: "You Allocate (Wishocratic)",
+    label: "Outcomes Are Measured",
     description:
-      "You're shown random pairs of implementers with their evidence. For each pair, you split your share based on who you think contributed more. Enough random pairs across enough bondholders and the allocations converge on a stable distribution.",
-    detail: "The pairwise comparison IS the ranking rule. No judges, no committees, no pre-specified scoring formula. Each bondholder is choosing where their dollars go based on evidence.",
+      "Oracles report two terminal metrics: median healthy life years and median real after-tax income. When both cross pre-published thresholds in adopting jurisdictions — verified by peer-reviewed study — the pool unlocks.",
+    detail: "Health gets 50%. Income gets 50%. No opinion metrics. No vibes. Just the two numbers that actually measure whether human lives are getting better.",
     color: "bg-brutal-cyan",
     textColor: "text-black",
     subTextColor: "text-black/70",
@@ -89,10 +93,10 @@ const mechanismSteps = [
   },
   {
     number: 5,
-    label: "Funds Distribute",
+    label: "You Get Paid",
     description:
-      "Smart contracts distribute funds to implementers proportional to the aggregated Wishocratic allocation weights. Retroactive rewards for verified outcomes — implementers get paid for results, not promises.",
-    detail: "Bonded disputes protect the process. Challengers post a bond to dispute allocations. Losing side pays escalation costs, so frivolous disputes are expensive but genuine ones get resolved.",
+      "Smart contracts distribute the success pool to bondholders proportional to the verified votes they brought in. You didn't just invest — you proved demand. Your reward scales with your contribution to solving the coordination problem.",
+    detail: "Fully programmatic. No judges, no committees, no pairwise comparisons. Verified votes per referral link → share of pool. The contract can count.",
     color: "bg-brutal-pink",
     textColor: "text-white",
     subTextColor: "text-white/70",
@@ -216,17 +220,17 @@ export default function PrizePage() {
             Buy Bonds. Fund What Works. Get Paid When It Does.
           </h1>
           <p className="text-lg text-black/80 leading-relaxed font-medium">
-            Not a donation. A financial instrument. Incentive Alignment Bonds ARE
-            the prize pool — one mechanism where your investment funds governance
-            reforms and your return depends on whether they work. Fail? ~4x return
-            from the dominant assurance contract. Succeed? Revenue share on
-            trillions in per-capita income gains.
+            Not a donation. A financial instrument. Your principal earns yield in
+            escrow. You get a referral link. Every verified vote you bring in
+            increases your share of the success pool. Fail? ~{escrowMultiplier}x
+            return from stablecoin yield. Succeed? Revenue share proportional to
+            the verified demand you helped prove.
           </p>
           <p className="text-black/60 font-medium leading-relaxed">
-            No judges. No committees. No grant applications. Just evidence,
-            pairwise comparisons, and smart contracts. Implementers fund work up
-            front, produce auditable outcomes, and get paid for results they can
-            prove — only after the outcomes exist.
+            The only thing stopping the 1% Treaty is pluralistic ignorance —
+            everyone wants it, nobody knows everyone else wants it. Your job is
+            to fix that. Buy bonds, share your link, prove demand exists. The
+            smart contract counts the votes and pays you accordingly.
           </p>
         </div>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -279,6 +283,14 @@ export default function PrizePage() {
             You lot still have those people. So here&apos;s the fine print: there
             isn&apos;t any. It&apos;s all on-chain.
           </p>
+          <NavItemLink
+            item={contractsSourceLink}
+            variant="custom"
+            external
+            className="inline-flex items-center mt-3 text-xs font-black text-brutal-pink uppercase hover:text-black transition-colors"
+          >
+            View the smart contracts on GitHub &rarr;
+          </NavItemLink>
         </div>
       </section>
 
@@ -320,9 +332,9 @@ export default function PrizePage() {
               Win Either Way
             </div>
             <p className="text-xs font-medium text-white/60 mt-2">
-              Plan fails? ~4x return on your bond. Plan succeeds? Revenue share
-              on civilisational-scale welfare gains. No scenario where you
-              &ldquo;just lose your money.&rdquo;
+              Plan fails? ~{escrowMultiplier}x return from stablecoin yield. Plan succeeds?
+              Revenue share proportional to verified votes you brought in.
+              No scenario where you &ldquo;just lose your money.&rdquo;
             </p>
           </div>
         </div>
@@ -376,7 +388,7 @@ export default function PrizePage() {
                 — probability shift needed for positive expected value
               </li>
               <li className="text-sm font-medium text-black/80">
-                <span className="font-black text-green-700">Worst case: ~4x back</span>{" "}
+                <span className="font-black text-green-700">Worst case: ~{escrowMultiplier}x back</span>{" "}
                 — dominant assurance contract if the plan fails
               </li>
               <li className="text-sm font-medium text-black/80">
@@ -458,7 +470,7 @@ export default function PrizePage() {
               <h3 className="font-black uppercase text-black">If Plan Fails</h3>
             </div>
             <p className="text-sm text-black/70 font-medium leading-relaxed">
-              Principal + yield returns to you (~4x over 15 years). Zero to any
+              Principal + yield returns to you (~{escrowMultiplier}x over 15 years). Zero to any
               team or founder. The dominant assurance contract means your worst
               case is getting richer.
             </p>
@@ -468,47 +480,58 @@ export default function PrizePage() {
               <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-xs font-black shrink-0">
                 3
               </span>
-              <h3 className="font-black uppercase text-black">If Plan Succeeds</h3>
+              <h3 className="font-black uppercase text-black">If Plan Succeeds — The 80/10/10 Split</h3>
             </div>
+            <p className="text-sm text-black/70 font-medium mb-4">
+              Treaty revenue is allocated by smart contract. No committees. No discretion. Just arithmetic.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
               <div className="border-2 border-black/20 p-3 bg-white/30">
                 <div className="text-xs font-black uppercase text-black/60 mb-1">
-                  Implementers
+                  80% — Public Good
                 </div>
                 <p className="text-xs text-black/70 font-medium">
-                  Paid proportional to Wishocratic allocation for producing
-                  measurable outcomes.
+                  Pragmatic clinical trials, health infrastructure, and
+                  cross-jurisdiction outcome measurement. The thing that
+                  actually saves the lives.
                 </p>
               </div>
               <div className="border-2 border-black/20 p-3 bg-white/30">
                 <div className="text-xs font-black uppercase text-black/60 mb-1">
-                  Bondholders
+                  10% — Investor Returns
                 </div>
                 <p className="text-xs text-black/70 font-medium">
-                  Revenue share on per-capita income gains across adopting
-                  jurisdictions.
+                  Perpetual payments to IAB bondholders, proportional to
+                  verified votes brought in. Your referral link is your
+                  revenue share.
                 </p>
               </div>
               <div className="border-2 border-black/20 p-3 bg-white/30">
                 <div className="text-xs font-black uppercase text-black/60 mb-1">
-                  Everyone (8 Billion People)
+                  10% — Political Incentives
                 </div>
                 <p className="text-xs text-black/70 font-medium">
-                  Median healthy life years increase. Median income rises.
-                  {dysfunctionTaxFormatted}/yr dysfunction tax starts
-                  disappearing.
+                  Alignment scoring, electoral campaign funding, and
+                  post-office accountability. Politicians who vote with
+                  citizens get funded. Those who don&apos;t, don&apos;t.
                 </p>
               </div>
+            </div>
+            <div className="border-t-2 border-black/20 mt-4 pt-3">
+              <p className="text-xs text-black/60 font-medium">
+                Everyone benefits: median healthy life years increase, median income rises,
+                and the {dysfunctionTaxFormatted}/yr dysfunction tax starts disappearing.
+              </p>
             </div>
           </div>
         </div>
         <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm text-white/90 font-medium leading-relaxed">
-            The bondholders get a return. The implementers get paid. But the real
-            beneficiaries are the 8 billion people who stop paying{" "}
-            {dysfunctionTaxFormatted} a year in dysfunction tax. You&apos;re not
-            buying a token. You&apos;re buying a probability shift on
-            civilisational-scale welfare gains. The token is just the receipt.
+            The bondholders get a return proportional to the demand they proved.
+            But the real beneficiaries are the 8 billion people who stop
+            paying {dysfunctionTaxFormatted} a year in dysfunction tax.
+            You&apos;re not buying a token. You&apos;re funding the collapse of
+            pluralistic ignorance. The token is just the receipt.
           </p>
         </div>
       </section>
@@ -755,6 +778,16 @@ export default function PrizePage() {
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-4 text-center">
+          <NavItemLink
+            item={contractsSourceLink}
+            variant="custom"
+            external
+            className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-black transition-colors"
+          >
+            IABVault.sol, PrizePool.sol, AlignmentTreasury.sol — full source on GitHub &rarr;
+          </NavItemLink>
         </div>
       </section>
 

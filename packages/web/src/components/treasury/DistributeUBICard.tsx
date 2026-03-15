@@ -14,7 +14,6 @@ export function DistributeUBICard() {
   const { isConnected } = useAccount();
   const {
     treasuryBalance,
-    ubiAllocationBps,
     citizenCount,
     isDeployed,
     isDemo,
@@ -23,10 +22,8 @@ export function DistributeUBICard() {
 
   const [distributed, setDistributed] = useState(false);
 
-  const ubiPool =
-    (treasuryBalance * ubiAllocationBps) / 10_000n;
   const citizenCountNum = Number(citizenCount);
-  const perCitizen = citizenCountNum > 0 ? ubiPool / citizenCount : 0n;
+  const perCitizen = citizenCountNum > 0 ? treasuryBalance / citizenCount : 0n;
 
   const {
     writeContract: writeDistribute,
@@ -62,18 +59,18 @@ export function DistributeUBICard() {
         </h3>
         <p className="text-xs font-medium text-black/70 mb-4">
           Anyone can call this. No permission needed. The smart contract splits
-          the UBI pool equally among all registered citizens. Gas cost is the
-          only barrier. On my planet we automated even that, but one step at a
-          time.
+          the entire treasury balance equally among all registered citizens. Gas
+          cost is the only barrier. On my planet we automated even that, but one
+          step at a time.
         </p>
 
         <div className="grid gap-3 grid-cols-3 mb-4">
           <div className="border-2 border-black bg-white p-2">
             <div className="text-[10px] font-black uppercase text-black/50">
-              UBI Pool
+              Treasury Balance
             </div>
             <div className="text-sm font-black">
-              {formatWish(ubiPool)} $WISH
+              {formatWish(treasuryBalance)} $WISH
             </div>
           </div>
           <div className="border-2 border-black bg-white p-2">

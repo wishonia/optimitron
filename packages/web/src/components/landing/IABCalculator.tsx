@@ -11,8 +11,8 @@ import {
 /**
  * Interactive Incentive Alignment Bond return calculator.
  *
- * Fail scenario:  principal × (1.10)^15  (10% staking yield, 15-year escrow)
- * Succeed scenario: 272% annual revenue share + per-capita lifetime income gain
+ * Fail scenario:  principal × (1 + STAKING_RATE)^15  (stablecoin yield, 15-year escrow)
+ * Succeed scenario: vote-proportional revenue share + per-capita lifetime income gain
  * Break-even: 0.0067% probability shift per $1K (treaty floor)
  */
 
@@ -20,7 +20,7 @@ const STAKING_RATE = 0.10;
 const ESCROW_YEARS = 15;
 const FAIL_MULTIPLIER = Math.pow(1 + STAKING_RATE, ESCROW_YEARS); // ≈ 4.177
 
-const ANNUAL_RETURN_RATE = VICTORY_BOND_ANNUAL_RETURN_PCT.value; // annual revenue share
+const ANNUAL_RETURN_RATE = VICTORY_BOND_ANNUAL_RETURN_PCT.value; // base annual revenue share
 
 const TREATY_INCOME_GAIN = TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value; // $14.9M per-capita lifetime
 const WISHONIA_INCOME_GAIN = WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value; // $52.1M per-capita lifetime
@@ -149,13 +149,15 @@ export function IABCalculator() {
             If the Plan Succeeds
           </div>
           <div className="text-3xl font-black text-black mb-1">
-            {formatUSD(annualRevShare)}/yr
+            {formatUSD(annualRevShare)}/yr base
           </div>
           <div className="text-sm font-bold text-black/60 mb-3">
-            {(VICTORY_BOND_ANNUAL_RETURN_PCT.value * 100).toFixed(0)}% annual revenue share of treaty funding flows
+            + vote-proportional bonus from verified referrals
           </div>
           <div className="text-xs text-black/40 font-medium space-y-1">
             <p>
+              Base {(VICTORY_BOND_ANNUAL_RETURN_PCT.value * 100).toFixed(0)}% revenue share
+              of treaty flows — multiplied by your verified referral votes.
               Plus your personal lifetime income increases by{" "}
               <span className="font-bold text-black/60">
                 {formatUSD(TREATY_INCOME_GAIN)}–{formatUSD(WISHONIA_INCOME_GAIN)}

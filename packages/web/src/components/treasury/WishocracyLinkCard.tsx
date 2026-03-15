@@ -1,20 +1,21 @@
 "use client";
 
 import { NavItemLink } from "@/components/navigation/NavItemLink";
-import { wishocracyLink, alignmentLink } from "@/lib/routes";
+import { wishocracyLink, prizeLink } from "@/lib/routes";
 
 export function WishocracyLinkCard() {
   return (
     <section className="mb-16">
       <div className="border-4 border-black bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
         <h2 className="text-2xl font-black uppercase text-white mb-3">
-          Your Preferences Shape the Allocation
+          Two Systems. One Goal.
         </h2>
         <p className="text-white/80 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
-          The alignment pool funds politicians proportional to how well their
-          votes match citizen preferences. Your pairwise comparisons in the
-          Wishocracy determine what &ldquo;aligned&rdquo; means. More
-          comparisons = more stable weights = better allocation.
+          This treasury handles UBI — every citizen gets an equal share of the
+          transaction tax. Politicians are funded separately through Incentive
+          Alignment Bonds, where 10% of treaty revenue flows to the political
+          incentive layer. Your Wishocracy preferences determine what
+          &ldquo;aligned&rdquo; means for both systems.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <NavItemLink
@@ -25,11 +26,11 @@ export function WishocracyLinkCard() {
             Express Your Preferences
           </NavItemLink>
           <NavItemLink
-            item={alignmentLink}
+            item={prizeLink}
             variant="custom"
             className="inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
           >
-            Score Your Politicians
+            Buy Incentive Alignment Bonds
           </NavItemLink>
         </div>
       </div>

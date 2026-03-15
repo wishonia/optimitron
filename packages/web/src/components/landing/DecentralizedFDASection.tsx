@@ -10,7 +10,10 @@ import {
   TRADITIONAL_PHASE3_COST_PER_PATIENT,
   DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT,
   CURRENT_TRIAL_SLOTS_AVAILABLE,
+  DFDA_PATIENTS_FUNDABLE_ANNUALLY,
   DFDA_QUEUE_CLEARANCE_YEARS,
+  DISEASES_WITHOUT_EFFECTIVE_TREATMENT,
+  NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR,
   EFFICACY_LAG_YEARS,
 } from "@/lib/parameters-calculations-citations";
 
@@ -25,13 +28,13 @@ const comparisons = [
   {
     label: "Annual Capacity",
     current: { value: CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6, display: `${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)}M/yr`, color: "bg-brutal-red/60" },
-    optimized: { value: 23.4, display: "23.4M/yr", color: "bg-brutal-cyan" },
+    optimized: { value: DFDA_PATIENTS_FUNDABLE_ANNUALLY.value / 1e6, display: `${(DFDA_PATIENTS_FUNDABLE_ANNUALLY.value / 1e6).toFixed(1)}M/yr`, color: "bg-brutal-cyan" },
     ratio: "12x more",
     ratioColor: "text-brutal-cyan",
   },
   {
     label: "Queue to Test All Treatments",
-    current: { value: 443, display: "443 years", color: "bg-brutal-red" },
+    current: { value: Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value), display: `${Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value)} years`, color: "bg-brutal-red" },
     optimized: { value: Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value), display: `${Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value)} years`, color: "bg-brutal-cyan" },
     ratio: "12x faster",
     ratioColor: "text-brutal-cyan",

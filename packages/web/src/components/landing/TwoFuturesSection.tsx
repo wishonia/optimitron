@@ -11,6 +11,7 @@ import {
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   DFDA_QUEUE_CLEARANCE_YEARS,
   DISEASES_WITHOUT_EFFECTIVE_TREATMENT,
+  NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR,
 } from "@/lib/parameters-calculations-citations";
 
 const rows = [
@@ -30,7 +31,7 @@ const rows = [
   },
   {
     metric: "Approval Queue",
-    pathA: `${Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / 15)} years for all treatments`,
+    pathA: `${Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value)} years for all treatments`,
     pathB: `${Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value)} years via dFDA`,
     aWeight: 95,
     bWeight: 15,

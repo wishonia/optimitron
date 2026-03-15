@@ -97,13 +97,6 @@ export function PrizeDeposit() {
     query: { enabled: !!isDeployed && isConnected },
   });
 
-  const { data: totalPrincipal } = useReadContract({
-    address: vaultAddress as Address,
-    abi: iabVaultAbi,
-    functionName: "totalPrincipal",
-    query: { enabled: !!isDeployed && isConnected },
-  });
-
   const { data: depositorCount } = useReadContract({
     address: vaultAddress as Address,
     abi: iabVaultAbi,
@@ -283,12 +276,6 @@ export function PrizeDeposit() {
   const now = BigInt(Math.floor(Date.now() / 1000));
   const isMatured = maturityTs ? now >= (maturityTs as bigint) : false;
   const canClaimRefund = isMatured && !thresholdMet && hasDeposit;
-
-  // Yield calculation
-  const yieldAccrued =
-    totalPoolValue !== undefined && totalPrincipal !== undefined
-      ? (totalPoolValue as bigint) - (totalPrincipal as bigint)
-      : 0n;
 
   return (
     <div className="space-y-6">
@@ -531,7 +518,7 @@ export function PrizeDeposit() {
           <h3 className="font-black uppercase text-black mb-3">
             Live Vault Status
           </h3>
-          <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
+          <div className="grid gap-3 grid-cols-2">
             <div className="border-2 border-black bg-white p-2">
               <div className="text-[10px] font-black uppercase text-black/50">
                 Pool Value
@@ -539,26 +526,6 @@ export function PrizeDeposit() {
               <div className="text-sm font-black text-brutal-cyan">
                 {totalPoolValue !== undefined
                   ? `$${formatUSDC(totalPoolValue as bigint)}`
-                  : "\u2014"}
-              </div>
-            </div>
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
-                Total Principal
-              </div>
-              <div className="text-sm font-black">
-                {totalPrincipal !== undefined
-                  ? `$${formatUSDC(totalPrincipal as bigint)}`
-                  : "\u2014"}
-              </div>
-            </div>
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
-                Yield Earned
-              </div>
-              <div className="text-sm font-black text-green-600">
-                {totalPoolValue !== undefined && totalPrincipal !== undefined
-                  ? `+$${formatUSDC(yieldAccrued)}`
                   : "\u2014"}
               </div>
             </div>

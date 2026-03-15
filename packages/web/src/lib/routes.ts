@@ -343,6 +343,14 @@ export const githubLink: NavItem = {
   external: true,
 };
 
+export const contractsSourceLink: NavItem = {
+  label: "Smart Contracts",
+  href: "https://github.com/mikepsinn/optomitron/tree/main/packages/treasury/contracts",
+  emoji: "📜",
+  description: "IABVault, PrizePool, AlignmentTreasury — all Solidity source",
+  external: true,
+};
+
 export const readmeLink: NavItem = {
   label: "README",
   href: "https://github.com/mikepsinn/optomitron#readme",

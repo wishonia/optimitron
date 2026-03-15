@@ -52,7 +52,7 @@ export function PoliticalDysfunctionTaxSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
-            The $<CountUp value={101} className="text-brutal-red" /> Trillion Stupidity Tax
+            The $<CountUp value={Math.round(POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value / 1e12)} className="text-brutal-red" /> Trillion Stupidity Tax
           </h2>
           <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
             Your civilisation loses <Stat param={{...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"}} /> per year to governance dysfunction.
@@ -82,7 +82,7 @@ export function PoliticalDysfunctionTaxSection() {
         <ScrollReveal delay={0.3}>
           <div className="p-8 border-4 border-black bg-brutal-red shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-4xl sm:text-5xl font-black text-white mb-2">
-              $<CountUp value={12600} className="text-white" />/person/year
+              $<CountUp value={Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value)} className="text-white" />/person/year
             </div>
             <p className="text-white/80 font-medium max-w-xl mx-auto">
               Every human on Earth pays <Stat param={POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL} /> per year in governance dysfunction.
