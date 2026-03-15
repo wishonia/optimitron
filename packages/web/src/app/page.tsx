@@ -9,6 +9,9 @@ import { InvisibleGraveyardSection } from "@/components/landing/InvisibleGraveya
 import { OnePercentTreatySection } from "@/components/landing/OnePercentTreatySection";
 import { IncentiveAlignmentBondsSection } from "@/components/landing/IncentiveAlignmentBondsSection";
 import { EarthOptimizationPrizeSection } from "@/components/landing/EarthOptimizationPrizeSection";
+import { DecentralizedFDASection } from "@/components/landing/DecentralizedFDASection";
+import { ImplementationPlanSection } from "@/components/landing/ImplementationPlanSection";
+import { TwoFuturesSection } from "@/components/landing/TwoFuturesSection";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { CountUp } from "@/components/animations/CountUp";
@@ -324,7 +327,10 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      {/* ── 8. Natural Experiments ── */}
+      {/* ── 8. Decentralized FDA ── */}
+      <DecentralizedFDASection />
+
+      {/* ── 9. Natural Experiments ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
@@ -475,16 +481,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 13. Incentive Alignment Bonds ── */}
+      {/* ── 14. Incentive Alignment Bonds ── */}
       <IncentiveAlignmentBondsSection />
-
-      {/* ── 14. Alignment Teaser ── */}
-      <AlignmentTeaser />
 
       {/* ── 15. Earth Optimization Prize ── */}
       <EarthOptimizationPrizeSection />
 
-      {/* ── 16. The Data — Key Stats ── */}
+      {/* ── 16. Alignment Teaser ── */}
+      <AlignmentTeaser />
+
+      {/* ── 17. Implementation Plan ── */}
+      <ImplementationPlanSection />
+
+      {/* ── 18. Two Futures ── */}
+      <TwoFuturesSection />
+
+      {/* ── 19. The Data — Key Stats ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">

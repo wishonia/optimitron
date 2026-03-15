@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
   earthOptimizationPrizePaperLink,
+  incentiveAlignmentBondsPaperLink,
   transparencyLink,
   wishocracyLink,
   alignmentLink,
@@ -11,16 +12,16 @@ import { PrizeDeposit } from "@/components/prize/PrizeDeposit";
 export const metadata: Metadata = {
   title: "Earth Optimization Prize | Optomitron",
   description:
-    "Outcome-based escrow for governance reforms. Donate to fund implementations that measurably improve health and income. Wishocratic allocation ensures your money goes where evidence points.",
+    "A standing market where greed does the coordination. Buy Incentive Alignment Bonds to fund implementations that measurably improve health and income. Wishocratic allocation ensures your money goes where evidence points.",
 };
 
 const mechanismSteps = [
   {
     number: 1,
-    label: "You Deposit",
+    label: "You Buy Bonds",
     description:
-      "Deposit $WISH tokens into the Prize Pool smart contract. Your deposit amount IS your identity and your voting power. No accounts, no registration — just money in escrow.",
-    detail: "Deposit-as-identity eliminates sybil attacks. Fake accounts have zero funds to allocate. Your deposit moves your money, not anyone else's.",
+      "Purchase Incentive Alignment Bonds via the smart contract. Your bond amount IS your identity and your allocation power. No accounts, no registration — just capital in escrow with an attractive return profile either way.",
+    detail: "Bond-as-identity eliminates sybil attacks. Fake accounts have zero funds to allocate. Your purchase moves your money, not anyone else's. Fail scenario: ~4x return. Succeed scenario: 272%/yr revenue share.",
     color: "bg-brutal-pink",
     textColor: "text-white",
     subTextColor: "text-white/70",
@@ -52,8 +53,8 @@ const mechanismSteps = [
     number: 4,
     label: "You Allocate (Wishocratic)",
     description:
-      "You're shown random pairs of implementers with their evidence. For each pair, you split your share based on who you think contributed more. Enough random pairs across enough donors and the allocations converge on a stable distribution.",
-    detail: "The pairwise comparison IS the ranking rule. No judges, no committees, no pre-specified scoring formula. Each contributor is a buyer choosing where their dollars go based on evidence.",
+      "You're shown random pairs of implementers with their evidence. For each pair, you split your share based on who you think contributed more. Enough random pairs across enough bondholders and the allocations converge on a stable distribution.",
+    detail: "The pairwise comparison IS the ranking rule. No judges, no committees, no pre-specified scoring formula. Each bondholder is choosing where their dollars go based on evidence.",
     color: "bg-brutal-cyan",
     textColor: "text-black",
     subTextColor: "text-black/70",
@@ -63,7 +64,7 @@ const mechanismSteps = [
     number: 5,
     label: "Funds Distribute",
     description:
-      "Smart contracts distribute $WISH to implementers proportional to the aggregated Wishocratic allocation weights. Retroactive rewards for verified outcomes — implementers get paid for results, not promises.",
+      "Smart contracts distribute funds to implementers proportional to the aggregated Wishocratic allocation weights. Retroactive rewards for verified outcomes — implementers get paid for results, not promises.",
     detail: "Bonded disputes protect the process. Challengers post a bond to dispute allocations. Losing side pays escalation costs, so frivolous disputes are expensive but genuine ones get resolved.",
     color: "bg-brutal-pink",
     textColor: "text-white",
@@ -103,6 +104,50 @@ const whatYouFund = [
   },
 ];
 
+const requiredFunctions = [
+  { id: 1, name: "Reallocation Wedge", description: "Redirect 1% of military spending ($22B) to clinical trials" },
+  { id: 2, name: "Medical Throughput", description: "Expand trial capacity from 1.9M to 23.4M patients/yr" },
+  { id: 3, name: "Regulatory-Delay Removal", description: "Eliminate 8.2 years of post-safety efficacy waiting" },
+  { id: 4, name: "Preference Aggregation", description: "Collect citizen priorities via pairwise comparison (RAPPA)" },
+  { id: 5, name: "Alignment Scoring", description: "Score politicians against citizen preferences, publish as Hypercerts" },
+  { id: 6, name: "Campaign Automation", description: "Route funds to high-alignment candidates via smart contracts" },
+  { id: 7, name: "Cross-Jurisdiction Analysis", description: "Compare spending, policies, and outcomes across 100+ countries" },
+  { id: 8, name: "Outcome Labels", description: "Generate effectiveness ratings for every treatment from real-world data" },
+  { id: 9, name: "Budget Optimisation", description: "Find optimal spending levels using diminishing-returns modeling" },
+  { id: 10, name: "Policy Impact Scoring", description: "Rank policies by causal impact on median health + income" },
+];
+
+const bountyStages = [
+  {
+    stage: "01",
+    label: "Specification",
+    description: "Publish the plan. Define metrics. Set thresholds. This is done.",
+    status: "Complete",
+    statusColor: "bg-brutal-cyan",
+  },
+  {
+    stage: "02",
+    label: "Pilot",
+    description: "Run in one jurisdiction. Prove the model works. Collect real outcome data.",
+    status: "In Progress",
+    statusColor: "bg-brutal-yellow",
+  },
+  {
+    stage: "03",
+    label: "Adoption",
+    description: "Scale to multiple jurisdictions. Compound evidence. Cross-jurisdiction comparison validates.",
+    status: "Pending",
+    statusColor: "bg-white",
+  },
+  {
+    stage: "04",
+    label: "Outcome Perpetuity",
+    description: "Metrics cross thresholds. Pool unlocks. Implementers get paid. Protocol persists.",
+    status: "Pending",
+    statusColor: "bg-white",
+  },
+];
+
 const contractDetails = [
   {
     label: "Contract",
@@ -126,8 +171,8 @@ const contractDetails = [
   },
   {
     label: "Sybil Resistance",
-    value: "Deposit-as-Identity",
-    detail: "Your allocation power = your deposit. No fake accounts.",
+    value: "Bond-as-Identity",
+    detail: "Your allocation power = your investment. No fake accounts.",
   },
   {
     label: "Dispute Resolution",
@@ -146,14 +191,14 @@ export default function PrizePage() {
             Earth Optimization Prize
           </p>
           <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
-            Fund What Works. Get Paid When It Does.
+            Buy Bonds. Fund What Works. Get Paid When It Does.
           </h1>
           <p className="text-lg text-black/80 leading-relaxed font-medium">
-            Your species spends $101 trillion per year on governance and gets
-            results that would embarrass a moderately competent spreadsheet. This
-            is an outcome-based escrow: money goes in, stays locked until health
-            and income actually improve, then donors decide who contributed most
-            via Wishocratic pairwise comparison.
+            Not a donation. A financial instrument. Incentive Alignment Bonds ARE
+            the prize pool — one mechanism where your investment funds governance
+            reforms and your return depends on whether they work. Fail? ~4x return
+            from the dominant assurance contract. Succeed? Revenue share on
+            trillions in per-capita income gains.
           </p>
           <p className="text-black/60 font-medium leading-relaxed">
             No judges. No committees. No grant applications. Just evidence,
@@ -164,10 +209,10 @@ export default function PrizePage() {
         </div>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a
-            href="#donate"
+            href="#invest"
             className="inline-flex items-center justify-center border-4 border-black bg-pink-500 px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
-            Donate to the Prize Pool
+            Buy Bonds
           </a>
           <NavItemLink
             item={earthOptimizationPrizePaperLink}
@@ -177,6 +222,69 @@ export default function PrizePage() {
           >
             Read the Paper
           </NavItemLink>
+          <NavItemLink
+            item={incentiveAlignmentBondsPaperLink}
+            variant="custom"
+            external
+            className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            IAB Paper
+          </NavItemLink>
+        </div>
+      </section>
+
+      {/* Why This Is Rational */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+          Why This Is Rational
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-black/50 mb-2">
+              Per-Capita Income Gain
+            </div>
+            <div className="text-2xl font-black text-black">
+              $14.9M–$52.1M
+            </div>
+            <p className="text-xs font-medium text-black/60 mt-2">
+              Across adopting jurisdictions, based on health-GDP multiplier
+              and regulatory delay removal.
+            </p>
+          </div>
+          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-black/50 mb-2">
+              Break-Even Probability Shift
+            </div>
+            <div className="text-2xl font-black text-black">
+              0.0067%
+            </div>
+            <p className="text-xs font-medium text-black/60 mt-2">
+              The probability the plan needs to increase success odds by for
+              the expected value of your bond to exceed your investment.
+            </p>
+          </div>
+          <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-black/50 mb-2 text-white/70">
+              Dominant Assurance Contract
+            </div>
+            <div className="text-2xl font-black text-white">
+              Win Either Way
+            </div>
+            <p className="text-xs font-medium text-white/60 mt-2">
+              Plan fails? ~4x return on your bond. Plan succeeds? Revenue share
+              on civilisational-scale welfare gains. No scenario where you
+              &ldquo;just lose your money.&rdquo;
+            </p>
+          </div>
+        </div>
+        <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-sm text-black/70 font-medium leading-relaxed">
+            On my planet, this took about twelve seconds to explain. The expected
+            value calculation is straightforward: even a tiny probability shift on
+            trillions of dollars in welfare gains makes a bond purchase
+            positive-EV. You don&apos;t need to believe the plan will work. You just
+            need to believe it&apos;s not literally impossible. The math does the rest.
+          </p>
         </div>
       </section>
 
@@ -216,16 +324,82 @@ export default function PrizePage() {
         </div>
       </section>
 
+      {/* 10 Required Functions */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">
+          10 Required Functions (v1 Benchmark)
+        </h2>
+        <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
+          The Earth Optimization Plan v1 defines ten functions that must be
+          operational for outcome thresholds to be achievable. Any team can
+          submit a v2 that beats it on cost per DALY averted. Currently the bar
+          is $0.177/DALY risk-adjusted.
+        </p>
+        <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-black text-white">
+                <th className="px-4 py-3 text-left font-black uppercase text-xs">#</th>
+                <th className="px-4 py-3 text-left font-black uppercase text-xs">Function</th>
+                <th className="px-4 py-3 text-left font-black uppercase text-xs hidden md:table-cell">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requiredFunctions.map((fn) => (
+                <tr key={fn.id} className="border-t-2 border-black/10">
+                  <td className="px-4 py-3 font-black text-brutal-pink">{fn.id}</td>
+                  <td className="px-4 py-3 font-black text-black">{fn.name}</td>
+                  <td className="px-4 py-3 text-black/60 font-medium hidden md:table-cell">{fn.description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* How Money Moves — 4-stage bounty */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+          How Money Moves
+        </h2>
+        <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
+          Bond purchases flow through four stages. Money doesn&apos;t move until
+          outcomes exist. Implementers get paid for results, not proposals.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {bountyStages.map((item) => (
+            <div
+              key={item.stage}
+              className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-xs font-black">
+                  {item.stage}
+                </span>
+                <span className={`text-[10px] font-black uppercase px-2 py-0.5 border-2 border-black ${item.statusColor}`}>
+                  {item.status}
+                </span>
+              </div>
+              <h3 className="font-black text-black uppercase text-sm mb-2">
+                {item.label}
+              </h3>
+              <p className="text-xs text-black/60 font-medium leading-relaxed">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* What You Fund */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-          What You&apos;re Funding
+          What Your Bonds Fund
         </h2>
         <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
           The Earth Optimization Plan v1 is the starting benchmark. Any team can
-          submit a v2 that beats it on cost per DALY averted. Currently the bar
-          is $0.177/DALY risk-adjusted. Your species spends $50,000+ per DALY on
-          most interventions. The gap is obscene.
+          submit a v2 that beats it on cost per DALY averted. Your species
+          spends $50,000+ per DALY on most interventions. The gap is obscene.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {whatYouFund.map((item) => (
@@ -250,19 +424,63 @@ export default function PrizePage() {
         </div>
       </section>
 
-      {/* Donate Section */}
-      <section id="donate" className="mb-16">
+      {/* Invest Section */}
+      <section id="invest" className="mb-16">
         <div className="border-4 border-black bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="text-2xl font-black uppercase text-white mb-4">
-            Deposit to the Prize Pool
+            Buy Incentive Alignment Bonds
           </h2>
           <p className="text-sm font-medium text-white/70 mb-6 max-w-2xl">
-            Deposits are held in the PrizePool smart contract until outcome
-            thresholds are met. Your deposit amount determines your Wishocratic
+            Bonds are held in the PrizePool smart contract until outcome
+            thresholds are met. Your bond amount determines your Wishocratic
             allocation power — you decide which implementers get paid, weighted
-            by how much you put in.
+            by how much you invested.
           </p>
           <PrizeDeposit />
+        </div>
+      </section>
+
+      {/* Anti-Capture */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+          Anti-Capture
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="font-black uppercase text-black mb-3">
+              Replacement Rule
+            </h3>
+            <p className="text-sm text-black/70 font-medium leading-relaxed">
+              Any team can submit a v2 plan that beats v1 on cost per DALY
+              averted. The current benchmark is $0.177/DALY risk-adjusted. If
+              you can do it cheaper and prove it, the protocol switches to your
+              plan. No incumbency advantage. No moat. Just results.
+            </p>
+          </div>
+          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="font-black uppercase text-black mb-3">
+              Outcome Perpetuity &gt; Extraction
+            </h3>
+            <p className="text-sm text-black/70 font-medium leading-relaxed">
+              The prize pool persists as long as outcomes persist. It&apos;s not a
+              one-time payout — it&apos;s a standing market. As long as someone is
+              producing measurable improvements in health and income, the bonds
+              keep distributing. Extraction stops when outcomes stop.
+            </p>
+          </div>
+        </div>
+        <div className="border-4 border-black bg-white p-6 mt-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h3 className="font-black uppercase text-black mb-2">
+            The Protocol Itself Is Replaceable
+          </h3>
+          <p className="text-sm text-black/70 font-medium leading-relaxed">
+            If someone builds a better coordination mechanism than IABs +
+            Wishocratic allocation, the protocol should be replaced by it. The
+            goal is outcome maximisation, not protocol preservation. On my
+            planet, we replaced the governance protocol three times in four
+            thousand years. Each time it was mildly inconvenient and
+            comprehensively worth it.
+          </p>
         </div>
       </section>
 
@@ -272,7 +490,7 @@ export default function PrizePage() {
           Three Mechanisms. One System.
         </h2>
         <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
-          Your species keeps conflating &ldquo;donate to charity&rdquo; with
+          Your species keeps conflating &ldquo;invest in governance&rdquo; with
           &ldquo;fund a government.&rdquo; These are three separate economic
           streams that work together. Understanding them takes 30 seconds. On my
           planet, it took about four.
@@ -281,15 +499,15 @@ export default function PrizePage() {
           <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl mb-3">🎯</div>
             <h3 className="font-black uppercase text-white mb-2">
-              Prize Pool
+              IAB Prize Pool
             </h3>
             <p className="text-xs font-black uppercase text-white/80 mb-2">
               You&apos;re here
             </p>
             <p className="text-sm text-white/80 font-medium leading-relaxed">
-              Donors deposit funds into an escrow smart contract. Money stays
+              Investors buy bonds into an escrow smart contract. Money stays
               locked until health and income outcomes measurably improve.
-              Donors then allocate funds to implementers who produced results.
+              Bondholders then allocate funds to implementers who produced results.
             </p>
             <div className="border-2 border-black bg-white mt-4 p-3">
               <div className="text-xs font-black uppercase text-black/50">
@@ -349,8 +567,8 @@ export default function PrizePage() {
             How They Connect
           </h3>
           <p className="text-sm text-black/70 font-medium leading-relaxed">
-            The Prize Pool is <span className="font-black text-black">voluntary</span> — you
-            choose to fund governance reforms that produce measurable outcomes.
+            The IAB Prize Pool is <span className="font-black text-black">investment</span> — you
+            buy bonds that fund governance reforms with attractive return profiles.
             The FairTax is <span className="font-black text-black">automatic</span> — 0.5%
             of every $WISH transaction funds the treasury without anyone filing
             anything. UBI is <span className="font-black text-black">universal</span> — the
@@ -377,11 +595,11 @@ export default function PrizePage() {
           </div>
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-black uppercase text-black/60">
-              Total Deposits
+              Total Invested
             </div>
             <div className="mt-2 text-2xl font-black text-black">$0</div>
             <div className="text-[10px] font-bold text-black/40">
-              Accepting deposits
+              Accepting bond purchases
             </div>
           </div>
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -438,9 +656,9 @@ export default function PrizePage() {
         <p className="text-white/80 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
           The current cost of governance dysfunction is $101 trillion per year.
           The Earth Optimization Plan costs roughly $0.177 per DALY averted.
-          Your species is leaving a 282,000x improvement on the table. On my
-          planet we would find this embarrassing. Here it seems to be called
-          &ldquo;politics.&rdquo;
+          Your species is leaving a 282,000x improvement on the table. The
+          break-even probability shift is 0.0067%. You don&apos;t need to be
+          altruistic. You just need to be numerate.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <NavItemLink

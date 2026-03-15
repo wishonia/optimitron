@@ -1,26 +1,62 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggerGrid } from "@/components/animations/StaggerGrid";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
   earthOptimizationPrizePaperLink,
   prizeLink,
 } from "@/lib/routes";
 
-const prizeFeatures = [
+const coreCards = [
   {
-    title: "Outcome-Based",
-    description: "Not a grant. Grants fund promises. This funds results. You get paid when measurable suffering decreases. Novel concept for your species.",
+    title: "Built on IABs",
+    description:
+      "The prize pool IS the bond pool. Every IAB purchase adds to the prize. No separate fundraising. No galas. No overhead. One financial instrument does the work of an entire philanthropic apparatus.",
+    color: "bg-brutal-pink",
+    textColor: "text-white",
   },
   {
-    title: "Open to Anyone",
-    description: "Researchers. Activists. Policy makers. Engineers. The person who figures out how to end malaria in their spare time. We do not care about your credentials. We care about your numbers.",
+    title: "Two Terminal Metrics",
+    description:
+      "Median healthy life years and median real after-tax income. Health gets 50%. Income gets 50%. Everything else is an intermediate variable. If those two numbers don't move, nobody gets paid.",
+    color: "bg-brutal-yellow",
+    textColor: "text-black",
   },
   {
-    title: "Escrow Until Impact",
-    description: "Money sits in transparent escrow until independently verified outcomes are achieved. No spending it on conferences about spending it on conferences.",
+    title: "Wishocratic Allocation",
+    description:
+      "Donors see random pairs of implementers with evidence. Split your share based on who contributed more. Enough random pairs across enough donors and allocations converge. No judges. No committees.",
+    color: "bg-brutal-cyan",
+    textColor: "text-black",
   },
   {
-    title: "Tied to the Plan",
-    description: "The prize rewards whoever contributes most to actually ending war and disease. Not writing about ending them. Not holding summits about ending them. Ending them.",
+    title: "Anti-Capture",
+    description:
+      "Any team can submit a v2 plan that beats v1 on cost per DALY averted. The protocol itself is replaceable. Outcome perpetuity beats extraction. If you can do it better, the prize is yours.",
+    color: "bg-white",
+    textColor: "text-black",
+  },
+];
+
+const bountyStages = [
+  {
+    stage: "01",
+    label: "Specification",
+    description: "Publish the plan. Define metrics. Set thresholds.",
+  },
+  {
+    stage: "02",
+    label: "Pilot",
+    description: "Run in one jurisdiction. Prove the model works.",
+  },
+  {
+    stage: "03",
+    label: "Adoption",
+    description: "Scale to multiple jurisdictions. Compound evidence.",
+  },
+  {
+    stage: "04",
+    label: "Outcome Perpetuity",
+    description: "Metrics cross thresholds. Pool unlocks. Implementers get paid.",
   },
 ];
 
@@ -33,35 +69,55 @@ export function EarthOptimizationPrizeSection() {
             The Earth Optimization Prize
           </h2>
           <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
-            A standing reward for whoever deserves the most credit for realising the
-            plan to end war and disease. Not for writing a paper about it. Not for
-            giving a TED talk about it. For actually doing it. Your species has a lot
-            of prizes for describing problems. This one is for solving them.
+            A standing market where greed does the coordination. Not a grant programme.
+            Not a charity. A market mechanism that pays whoever produces measurable
+            reductions in human suffering — after the outcomes exist.
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          {prizeFeatures.map((feature, i) => (
-            <ScrollReveal key={feature.title} delay={i * 0.1}>
-              <div className="p-6 border-4 border-black bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] h-full">
-                <h3 className="text-lg font-black text-black mb-3 uppercase">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-black/70 leading-relaxed font-medium">
-                  {feature.description}
-                </p>
-              </div>
-            </ScrollReveal>
+        {/* Core cards 2x2 */}
+        <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {coreCards.map((card) => (
+            <div
+              key={card.title}
+              className={`p-6 border-4 border-black ${card.color} shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`}
+            >
+              <h3 className={`text-lg font-black ${card.textColor} mb-3 uppercase`}>
+                {card.title}
+              </h3>
+              <p className={`text-sm ${card.textColor === "text-white" ? "text-white/80" : "text-black/70"} leading-relaxed font-medium`}>
+                {card.description}
+              </p>
+            </div>
           ))}
-        </div>
+        </StaggerGrid>
 
-        <ScrollReveal delay={0.4}>
-          <div className="p-8 border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
-            <p className="text-black/70 font-medium max-w-2xl mx-auto mb-6">
-              On my planet, the person who eliminated disease got a small statue and
-              a week off. You lot give Nobel Prizes for describing the problem and then
-              do nothing about it for forty years. Let us try paying for outcomes instead.
-            </p>
+        {/* 4-stage bounty strip */}
+        <ScrollReveal>
+          <div className="p-6 border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-12">
+            <h3 className="text-lg font-black text-black mb-6 uppercase text-center">
+              Four-Stage Bounty
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {bountyStages.map((item) => (
+                <div key={item.stage} className="text-center">
+                  <div className="w-10 h-10 bg-brutal-yellow border-2 border-black flex items-center justify-center mx-auto mb-3 text-sm font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    {item.stage}
+                  </div>
+                  <h4 className="font-black text-black text-sm mb-1 uppercase">
+                    {item.label}
+                  </h4>
+                  <p className="text-xs text-black/60 font-medium">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.3}>
+          <div className="text-center">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <NavItemLink
                 item={prizeLink}
