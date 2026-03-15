@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CopyLinkButton } from "@/components/sharing/copy-link-button";
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
+import { WorldIdVerificationCard } from "@/components/personhood/WorldIdVerificationCard";
 import { buildReferendumReferralUrl } from "@/lib/url";
 
 interface ReferendumVoteSectionProps {
@@ -106,6 +107,9 @@ export function ReferendumVoteSection({
             Then share your link below to bring in more verified votes.
           </p>
         </div>
+
+        {/* World ID verification — only show if not yet verified */}
+        <WorldIdVerificationCard show />
 
         <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <h3 className="text-lg font-black uppercase text-black mb-3">

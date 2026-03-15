@@ -1,78 +1,103 @@
 "use client";
 
 import { useState } from "react";
+import {
+  VOTER_LIVES_SAVED,
+  VOTER_SUFFERING_HOURS_PREVENTED,
+  EFFICACY_LAG_YEARS,
+  GLOBAL_DISEASE_DEATHS_DAILY,
+} from "@/lib/parameters-calculations-citations";
 
 interface ShareTemplatesCardProps {
   referralUrl: string;
 }
 
+// Pre-computed impact values from parameters
+const LIVES_PER_VOTE = VOTER_LIVES_SAVED.value.toFixed(1);
+const HOURS_PER_YEAR = 8_760;
+const SUFFERING_YEARS_PER_VOTE = Math.round(
+  VOTER_SUFFERING_HOURS_PREVENTED.value / HOURS_PER_YEAR,
+).toLocaleString();
+const EFFICACY_LAG = EFFICACY_LAG_YEARS.value;
+const DEATHS_DAILY = Math.round(
+  GLOBAL_DISEASE_DEATHS_DAILY.value,
+).toLocaleString();
+
 const TEMPLATES = [
   {
-    label: "The Math One",
+    label: "Impact-Focused",
+    color: "text-brutal-cyan",
     text: (url: string) =>
-      `The break-even probability shift for an Incentive Alignment Bond is 0.0067%. The expected value calculation is embarrassingly simple. ${url}`,
+      `Your vote = ${LIVES_PER_VOTE} lives saved + ${SUFFERING_YEARS_PER_VOTE} years of suffering prevented. It takes 30 seconds. We can get cures to patients ${EFFICACY_LAG} years sooner through pragmatic trials. ${url}`,
   },
   {
-    label: "The Dysfunction Tax",
+    label: "The Math",
+    color: "text-brutal-pink",
     text: (url: string) =>
-      `You're paying ~$5,700/year in political dysfunction tax. A bond that tries to fix that needs a 0.0067% chance of working to be worth buying. Worst case: ~1.8x return from yield. ${url}`,
+      `The break-even probability shift for an Incentive Alignment Bond is 0.0067%. ${DEATHS_DAILY} people die daily from preventable causes. A bond that funds pragmatic clinical trials needs a 0.0067% chance of working to be positive EV. Worst case: ~4.2x from stablecoin yield. ${url}`,
   },
   {
-    label: "The Pluralistic Ignorance",
+    label: "Personal",
+    color: "text-brutal-yellow",
     text: (url: string) =>
-      `Everyone wants better health outcomes. Nobody knows everyone else wants it too. The only bottleneck is proving demand exists. Every verified vote makes it harder to ignore. ${url}`,
+      `Everyone knows someone suffering from disease. What if we could get cures to them ${EFFICACY_LAG} years sooner? Pragmatic trials let patients access treatments after safety testing while collecting real-world efficacy data. 30 seconds to vote: ${url}`,
   },
   {
-    label: "The Singapore Comparison",
+    label: "Data-Driven",
+    color: "text-green-700",
     text: (url: string) =>
-      `Singapore spends 25% of what the US spends on healthcare. Their people live 6 years longer. We're not proposing something radical — we're proposing copying what works. ${url}`,
+      `95% of diseases have no FDA-approved treatment. Pragmatic trials can accelerate cures by ${EFFICACY_LAG} years at 44x less cost. Each verified vote = ${LIVES_PER_VOTE} lives saved. Prove you want it: ${url}`,
   },
   {
-    label: "The Short One",
+    label: "Twitter/X",
+    color: "text-black",
     text: (url: string) =>
-      `Buy a bond. Share your link. Every verified vote you bring in = bigger share of the success pool. Fail case: ~1.8x return. ${url}`,
+      `30 seconds to vote = ${LIVES_PER_VOTE} lives saved + ${SUFFERING_YEARS_PER_VOTE} years of suffering prevented. Make it count: ${url}`,
   },
 ];
 
 export function ShareTemplatesCard({ referralUrl }: ShareTemplatesCardProps) {
-  const [copied, setCopied] = useState<number | null>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-  const handleCopy = async (index: number, text: string) => {
-    await navigator.clipboard.writeText(text);
-    setCopied(index);
-    setTimeout(() => setCopied(null), 2000);
+  const copyTemplate = async (text: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch {
+      // Clipboard API not available
+    }
   };
 
   return (
     <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-      <h3 className="text-lg font-black uppercase text-black mb-4">
+      <h3 className="text-lg font-black uppercase text-black mb-2">
         Share Templates
       </h3>
-      <p className="text-sm font-medium text-black/60 mb-4">
-        Copy-paste messages with your referral link baked in.
+      <p className="text-sm text-black/60 font-medium mb-4">
+        Copy-paste messages with your referral link and real impact numbers
+        baked in.
       </p>
       <div className="space-y-3">
-        {TEMPLATES.map((template, index) => {
-          const message = template.text(referralUrl);
+        {TEMPLATES.map((t, index) => {
+          const text = t.text(referralUrl);
           return (
             <div
-              key={template.label}
-              className="border-2 border-black/20 p-3 flex items-start gap-3"
+              key={t.label}
+              className="border-2 border-black p-4 hover:bg-brutal-yellow/10 transition-colors"
             >
-              <div className="flex-1">
-                <div className="text-xs font-black uppercase text-black/40 mb-1">
-                  {template.label}
-                </div>
-                <p className="text-sm text-black/70 font-medium leading-relaxed">
-                  {message}
-                </p>
+              <div className="flex items-start justify-between gap-4 mb-2">
+                <span className={`text-xs font-black uppercase ${t.color}`}>
+                  {t.label}
+                </span>
+                <button
+                  onClick={() => void copyTemplate(text, index)}
+                  className="text-xs font-black uppercase border-2 border-black px-3 py-1 hover:bg-brutal-pink hover:text-white transition-colors shrink-0"
+                >
+                  {copiedIndex === index ? "Copied!" : "Copy"}
+                </button>
               </div>
-              <button
-                onClick={() => void handleCopy(index, message)}
-                className="shrink-0 border-2 border-black bg-brutal-yellow px-3 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
-              >
-                {copied === index ? "Copied!" : "Copy"}
-              </button>
+              <p className="text-sm text-black/70">{text}</p>
             </div>
           );
         })}
