@@ -5,6 +5,9 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import {
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  TREATY_TRAJECTORY_CAGR_YEAR_20,
+  WISHONIA_TRAJECTORY_CAGR_YEAR_20,
+  GDP_BASELINE_GROWTH_RATE,
 } from "@/lib/parameters-calculations-citations";
 import { fmtParam } from "@/lib/format-parameter";
 
@@ -15,7 +18,7 @@ const scenarios = [
   {
     id: "treaty",
     label: "1% Treaty",
-    rate: 0.179, // 17.9% CAGR — reallocate 1% military spending
+    rate: TREATY_TRAJECTORY_CAGR_YEAR_20.value,
     color: "#00c8c8",
     description: "Redirect 1% of military spending to health R&D",
     lifetimeGainLabel: `${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})} per capita`,
@@ -23,14 +26,14 @@ const scenarios = [
   {
     id: "wishonia",
     label: "Full Optimization",
-    rate: 0.254, // 25.4% CAGR — full governance optimization
+    rate: WISHONIA_TRAJECTORY_CAGR_YEAR_20.value,
     color: "#f472b6",
     description: "Full Optomitron governance optimization",
     lifetimeGainLabel: `${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})} per capita`,
   },
 ];
 
-const CURRENT_RATE = 0.025; // 2.5% current trajectory
+const CURRENT_RATE = GDP_BASELINE_GROWTH_RATE.value;
 
 function formatCurrency(n: number): string {
   if (n >= 1_000_000_000) return `$${(n / 1_000_000_000).toFixed(1)}B`;

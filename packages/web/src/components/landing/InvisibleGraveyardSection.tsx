@@ -5,13 +5,14 @@ import { CountUp } from "@/components/animations/CountUp";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { invisibleGraveyardPaperLink, dfdaSpecPaperLink } from "@/lib/routes";
 import { fmtParam } from "@/lib/format-parameter";
+import { Stat } from "@/components/ui/stat";
 import {
   EFFICACY_LAG_YEARS,
   EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
   CURRENT_CLINICAL_TRIAL_PARTICIPATION_RATE,
   CURRENT_TRIAL_SLOTS_AVAILABLE,
   GLOBAL_DISEASE_DEATHS_DAILY,
-  EXISTING_DRUGS_EFFICACY_LAG_ECONOMIC_LOSS,
+  DFDA_EFFICACY_LAG_ELIMINATION_ECONOMIC_VALUE,
 } from "@/lib/parameters-calculations-citations";
 
 const graveyardStats = [
@@ -50,7 +51,7 @@ export function InvisibleGraveyardSection() {
             The Invisible Graveyard
           </h2>
           <p className="mt-4 text-lg text-white/50 max-w-2xl mx-auto font-medium">
-            {GLOBAL_DISEASE_DEATHS_DAILY.value.toLocaleString()} people die every day from treatable diseases. Not untreatable.
+            <Stat param={GLOBAL_DISEASE_DEATHS_DAILY} /> people die every day from treatable diseases. Not untreatable.
             Treatable. You just have not gotten around to testing the treatments yet.
             At your current pace, clearing the backlog takes 443 years.
           </p>
@@ -77,7 +78,7 @@ export function InvisibleGraveyardSection() {
         <ScrollReveal delay={0.4}>
           <div className="p-8 border-4 border-brutal-yellow bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-3xl sm:text-4xl font-black text-black mb-2">
-              $<CountUp value={1.19} className="text-black" /> Quadrillion
+              <Stat param={{...DFDA_EFFICACY_LAG_ELIMINATION_ECONOMIC_VALUE, unit: "USD"}} />
             </div>
             <p className="text-black/70 font-medium max-w-xl mx-auto mb-1">
               Economic value of lives lost to regulatory delay. At 15 new treatments

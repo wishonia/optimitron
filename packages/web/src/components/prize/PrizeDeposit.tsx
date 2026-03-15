@@ -585,37 +585,6 @@ export function PrizeDeposit() {
         </div>
       )}
 
-      {/* Alternative Methods */}
-      <div className="border-4 border-black bg-brutal-yellow/20 p-6">
-        <h3 className="font-black uppercase text-black mb-3">
-          Traditional Donation
-        </h3>
-        <p className="text-xs font-medium text-black/60 mb-3">
-          Prefer fiat? Your contribution will be converted to USDC and deposited
-          into the IAB Vault. Email{" "}
-          <a
-            href="mailto:mike@warondisease.org"
-            className="font-black text-black underline hover:text-brutal-pink"
-          >
-            mike@warondisease.org
-          </a>{" "}
-          for wire transfer details, DAF contributions, or institutional
-          commitments.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          {["$100", "$500", "$1,000", "$5,000", "$25,000", "Custom"].map(
-            (tier) => (
-              <a
-                key={tier}
-                href="mailto:mike@warondisease.org?subject=Incentive%20Alignment%20Bond%20Purchase"
-                className="border-2 border-black bg-white px-4 py-2 text-sm font-black uppercase hover:bg-brutal-pink/20 transition-colors"
-              >
-                {tier}
-              </a>
-            ),
-          )}
-        </div>
-      </div>
     </div>
   );
 }

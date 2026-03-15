@@ -5,12 +5,14 @@ import { CountUp } from "@/components/animations/CountUp";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { onePercentTreatyPaperLink } from "@/lib/routes";
 import { fmtParam } from "@/lib/format-parameter";
+import { Stat } from "@/components/ui/stat";
 import {
   GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
   TRADITIONAL_PHASE3_COST_PER_PATIENT,
   DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT,
   CURRENT_TRIAL_SLOTS_AVAILABLE,
   DFDA_QUEUE_CLEARANCE_YEARS,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED,
 } from "@/lib/parameters-calculations-citations";
 
 const dfdaCapacity = Math.round(
@@ -95,10 +97,10 @@ export function OnePercentTreatySection() {
         <ScrollReveal delay={0.5}>
           <div className="p-8 border-4 border-black bg-brutal-cyan shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-4xl sm:text-5xl font-black text-black mb-2">
-              <CountUp value={10.7} suffix="B" className="text-black" /> Lives Saved
+              <CountUp value={+(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1)} suffix="B" className="text-black" /> Lives Saved
             </div>
             <p className="text-black/70 font-medium max-w-xl mx-auto">
-              10.7 billion deaths prevented. ROI: essentially infinite. The only
+              <Stat param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED} /> deaths prevented. ROI: essentially infinite. The only
               thing standing between you and this is the part where you actually do it.
             </p>
             <NavItemLink
