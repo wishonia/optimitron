@@ -49,3 +49,19 @@ export function buildCivicVoteUrl(
     ? `${baseUrl}/civic/wishocracys/${shareIdentifier}`
     : `${baseUrl}/civic/wishocracys`;
 }
+
+export function buildReferendumReferralUrl(
+  slug: string,
+  identifier?: string | null,
+  baseUrl: string = getBaseUrl(),
+): string {
+  const base = `${baseUrl}/referendum/${slug}`;
+  return identifier ? `${base}?ref=${identifier}` : base;
+}
+
+export function buildPrizeReferralUrl(
+  identifier?: string | null,
+  baseUrl: string = getBaseUrl(),
+): string {
+  return identifier ? `${baseUrl}/prize?ref=${identifier}` : `${baseUrl}/prize`;
+}

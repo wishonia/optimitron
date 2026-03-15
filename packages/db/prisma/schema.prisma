@@ -291,6 +291,9 @@ model User {
   webPushSubscriptions          WebPushSubscription[]           @relation("UserWebPushSubscriptions")
   notificationPreference        NotificationPreference?         @relation("UserNotificationPreference")
   encryptedAllocations          WishocraticEncryptedAllocation? @relation("UserEncryptedAllocations")
+  createdReferendums            Referendum[]                    @relation("UserCreatedReferendums")
+  referendumVotes               ReferendumVote[]                @relation("UserReferendumVotes")
+  referendumReferrals           ReferendumVote[]                @relation("UserReferendumReferrals")
 
   @@index([email])
   @@index([username])
@@ -1681,6 +1684,7 @@ model Jurisdiction {
   participants    Participant[]
   politicians     Politician[]
   aggregationRuns AggregationRun[]
+  referendums     Referendum[]
 
   @@index([type])
   @@index([parentJurisdictionId])
@@ -2280,4 +2284,92 @@ model WishocraticEncryptedAllocation {
 
   // -- Relations --
   user User @relation("UserEncryptedAllocations", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================================
+// LAYER 3 — Referendums & Verified Votes
+// ============================================================================
+
+enum ReferendumStatus {
+  DRAFT
+  ACTIVE
+  CLOSED
+}
+
+/// A public referendum that users can vote on (e.g., "Should we adopt the 1% Treaty?")
+model Referendum {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Human-readable title
+  title String
+
+  /// URL-safe slug for routing
+  slug String @unique
+
+  /// Rich description or framing text
+  description String?
+
+  /// User who created this referendum (optional for system-created ones)
+  createdByUserId String?
+
+  /// Optional jurisdiction scope
+  jurisdictionId String?
+
+  /// Whether this referendum is accepting votes
+  status ReferendumStatus @default(ACTIVE)
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  createdBy    User?            @relation("UserCreatedReferendums", fields: [createdByUserId], references: [id])
+  jurisdiction Jurisdiction?    @relation(fields: [jurisdictionId], references: [id])
+  votes        ReferendumVote[]
+
+  @@index([slug])
+  @@index([status])
+  @@index([jurisdictionId])
+}
+
+/// A user's vote on a specific referendum
+model ReferendumVote {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// The user who cast this vote
+  userId String
+
+  /// Which referendum this vote is for
+  referendumId String
+
+  /// The citizen's position
+  answer VotePosition
+
+  /// Who brought this voter in via referral link
+  referredByUserId String?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  user       User       @relation("UserReferendumVotes", fields: [userId], references: [id], onDelete: Cascade)
+  referendum Referendum @relation(fields: [referendumId], references: [id])
+  referrer   User?      @relation("UserReferendumReferrals", fields: [referredByUserId], references: [id])
+
+  @@unique([userId, referendumId])
+  @@index([referendumId])
+  @@index([referredByUserId])
 }

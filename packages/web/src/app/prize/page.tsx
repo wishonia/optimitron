@@ -27,6 +27,8 @@ import {
   alignmentLink,
 } from "@/lib/routes";
 import { PrizeDeposit } from "@/components/prize/PrizeDeposit";
+import { BondholderDashboardWrapper } from "@/components/prize/BondholderDashboardWrapper";
+import { BondholderDashboard } from "@/components/prize/BondholderDashboard";
 
 export const metadata: Metadata = {
   title: "Earth Optimization Prize | Optomitron",
@@ -650,6 +652,19 @@ export default function PrizePage() {
           </p>
           <PrizeDeposit />
         </div>
+      </section>
+
+      {/* Referral Dashboard */}
+      <section id="referral-dashboard" className="mb-16">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+          Your Referral Dashboard
+        </h2>
+        <BondholderDashboard />
+      </section>
+
+      {/* Bondholder Dashboard */}
+      <section className="mb-16">
+        <BondholderDashboardWrapper />
       </section>
 
       {/* Anti-Capture */}

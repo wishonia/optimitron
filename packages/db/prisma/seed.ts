@@ -27,6 +27,7 @@ import {
   Valence,
   MeasurementScale,
   JurisdictionType,
+  ReferendumStatus,
   type Prisma,
 } from "../src/generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -676,6 +677,25 @@ async function seedBudgetItems(usJurisdictionId: string) {
 // MAIN
 // ============================================================================
 
+async function seedReferendums() {
+  console.log("🗳️  Seeding referendums...");
+
+  await prisma.referendum.upsert({
+    where: { slug: "1-percent-treaty" },
+    update: {},
+    create: {
+      title: "The 1% Treaty",
+      slug: "1-percent-treaty",
+      description:
+        "Should your government redirect 1% of military spending to pragmatic clinical trials? " +
+        "The 1% Treaty would fund evidence-based health optimization at a fraction of current costs. " +
+        "Every verified vote makes pluralistic ignorance harder to maintain.",
+      status: ReferendumStatus.ACTIVE,
+    },
+  });
+  console.log("  ✓ 1% Treaty referendum");
+}
+
 export async function seedDatabase() {
   console.log("🌱 Starting Optomitron seed...\n");
 
@@ -685,6 +705,7 @@ export async function seedDatabase() {
   const usId = await seedJurisdictions();
   await seedBudgetItems(usId);
   await seedDemoUser();
+  await seedReferendums();
 
   console.log("\n🎉 Seed complete!");
 }
