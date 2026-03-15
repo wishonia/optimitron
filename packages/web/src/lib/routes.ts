@@ -21,6 +21,7 @@ export const ROUTES = {
   federalReserve: "/federal-reserve",
   departmentOfWar: "/department-of-war",
   treasury: "/treasury",
+  scoreboard: "/scoreboard",
   signIn: "/auth/signin",
 } as const;
 
@@ -183,6 +184,14 @@ export const transparencyLink: NavItem = {
   label: "Transparency",
   emoji: "🔍",
   description: "Verifiable attestations, IPFS storage, and the full governance pipeline",
+};
+
+export const scoreboardLink: NavItem = {
+  href: ROUTES.scoreboard,
+  label: "Scoreboard",
+  emoji: "📊",
+  description: "Public politician alignment scores — how your representatives vote vs what citizens want",
+  matchPrefixes: [ROUTES.scoreboard],
 };
 
 export const treasuryLink: NavItem = {

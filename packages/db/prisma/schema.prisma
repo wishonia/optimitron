@@ -2000,6 +2000,10 @@ model AggregationRun {
   /// Filter: which region was included (null = all)
   regionFilter String?
 
+  /// Aggregated citizen preference weights as JSON (avoids FK dependency on Item table).
+  /// Shape: Array<{ itemId: string; itemName: string; weight: number; rank: number; ciLow?: number; ciHigh?: number }>
+  citizenPriorities Json?
+
   /// When this record was created
   createdAt DateTime @default(now())
 
@@ -2120,6 +2124,15 @@ model AlignmentScore {
 
   /// Number of votes compared in this calculation
   votesCompared Int
+
+  /// Per-category alignment scores (JSON: Record<string, number>)
+  categoryScores Json?
+
+  /// When this score was published to the public API / Hypercerts
+  publishedAt DateTime?
+
+  /// On-chain reference (Hypercert CID or Merkle leaf hash)
+  onChainRef String?
 
   /// When this record was created
   createdAt DateTime @default(now())
