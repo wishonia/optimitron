@@ -3,7 +3,7 @@
 import { useAccount, useChainId, useReadContract } from "wagmi";
 import { type Address, formatUnits } from "viem";
 import { getContracts } from "@/lib/contracts/addresses";
-import { alignmentTreasuryAbi } from "@/lib/contracts/alignment-treasury-abi";
+import { ubiDistributorAbi } from "@/lib/contracts/ubi-distributor-abi";
 import { wishTokenAbi } from "@/lib/contracts/wish-token-abi";
 
 const WISH_DECIMALS = 18;
@@ -11,7 +11,7 @@ const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 /** Illustrative demo data when contracts aren't deployed yet */
 const DEMO_DATA = {
-  treasuryBalance: 42_000_000n * 10n ** 18n,
+  ubiPendingBalance: 42_000_000n * 10n ** 18n,
   citizenCount: 1_247n,
   totalSupply: 750_000_000n * 10n ** 18n,
   maxSupply: 1_000_000_000n * 10n ** 18n,
@@ -31,36 +31,36 @@ export function useTreasuryData() {
   const chainId = useChainId();
   const contracts = getContracts(chainId);
 
-  const treasuryAddress = contracts?.alignmentTreasury;
+  const ubiDistributorAddress = contracts?.ubiDistributor;
   const tokenAddress = contracts?.wishToken;
 
   const isDeployed =
-    !!treasuryAddress &&
-    treasuryAddress !== ZERO_ADDRESS &&
+    !!ubiDistributorAddress &&
+    ubiDistributorAddress !== ZERO_ADDRESS &&
     !!tokenAddress &&
     tokenAddress !== ZERO_ADDRESS;
 
   const enabled = isDeployed && isConnected;
 
-  // --- Treasury reads ---
+  // --- UBI Distributor reads ---
 
-  const { data: treasuryBalance } = useReadContract({
-    address: treasuryAddress as Address,
-    abi: alignmentTreasuryAbi,
-    functionName: "treasuryBalance",
+  const { data: ubiPendingBalance } = useReadContract({
+    address: ubiDistributorAddress as Address,
+    abi: ubiDistributorAbi,
+    functionName: "pendingBalance",
     query: { enabled },
   });
 
   const { data: citizenCount } = useReadContract({
-    address: treasuryAddress as Address,
-    abi: alignmentTreasuryAbi,
+    address: ubiDistributorAddress as Address,
+    abi: ubiDistributorAbi,
     functionName: "citizenCount",
     query: { enabled },
   });
 
   const { data: isRegisteredCitizen } = useReadContract({
-    address: treasuryAddress as Address,
-    abi: alignmentTreasuryAbi,
+    address: ubiDistributorAddress as Address,
+    abi: ubiDistributorAbi,
     functionName: "isRegisteredCitizen",
     args: address ? [address] : undefined,
     query: { enabled: enabled && !!address },
@@ -101,8 +101,8 @@ export function useTreasuryData() {
   const isDemo = !isDeployed;
 
   return {
-    // Treasury
-    treasuryBalance: (isDemo ? DEMO_DATA.treasuryBalance : treasuryBalance as bigint | undefined) ?? 0n,
+    // UBI Distributor
+    ubiPendingBalance: (isDemo ? DEMO_DATA.ubiPendingBalance : ubiPendingBalance as bigint | undefined) ?? 0n,
     citizenCount: (isDemo ? DEMO_DATA.citizenCount : citizenCount as bigint | undefined) ?? 0n,
 
     // Token
@@ -119,7 +119,7 @@ export function useTreasuryData() {
     isDemo,
     isConnected,
     address,
-    treasuryAddress,
+    ubiDistributorAddress,
     tokenAddress,
   };
 }

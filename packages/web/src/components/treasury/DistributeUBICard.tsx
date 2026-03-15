@@ -7,23 +7,23 @@ import {
   useWaitForTransactionReceipt,
 } from "wagmi";
 import { type Address } from "viem";
-import { alignmentTreasuryAbi } from "@/lib/contracts/alignment-treasury-abi";
+import { ubiDistributorAbi } from "@/lib/contracts/ubi-distributor-abi";
 import { formatWish, useTreasuryData } from "@/hooks/useTreasuryData";
 
 export function DistributeUBICard() {
   const { isConnected } = useAccount();
   const {
-    treasuryBalance,
+    ubiPendingBalance,
     citizenCount,
     isDeployed,
     isDemo,
-    treasuryAddress,
+    ubiDistributorAddress,
   } = useTreasuryData();
 
   const [distributed, setDistributed] = useState(false);
 
   const citizenCountNum = Number(citizenCount);
-  const perCitizen = citizenCountNum > 0 ? treasuryBalance / citizenCount : 0n;
+  const perCitizen = citizenCountNum > 0 ? ubiPendingBalance / citizenCount : 0n;
 
   const {
     writeContract: writeDistribute,
@@ -41,10 +41,10 @@ export function DistributeUBICard() {
   }, [isConfirmed]);
 
   function handleDistribute() {
-    if (!treasuryAddress) return;
+    if (!ubiDistributorAddress) return;
     writeDistribute({
-      address: treasuryAddress as Address,
-      abi: alignmentTreasuryAbi,
+      address: ubiDistributorAddress as Address,
+      abi: ubiDistributorAbi,
       functionName: "distributeUBI",
     });
   }
@@ -67,10 +67,10 @@ export function DistributeUBICard() {
         <div className="grid gap-3 grid-cols-3 mb-4">
           <div className="border-2 border-black bg-white p-2">
             <div className="text-[10px] font-black uppercase text-black/50">
-              Treasury Balance
+              UBI Pending
             </div>
             <div className="text-sm font-black">
-              {formatWish(treasuryBalance)} $WISH
+              {formatWish(ubiPendingBalance)} $WISH
             </div>
           </div>
           <div className="border-2 border-black bg-white p-2">
@@ -84,7 +84,7 @@ export function DistributeUBICard() {
               Per Citizen
             </div>
             <div className="text-sm font-black">
-              {citizenCountNum > 0 ? `${formatWish(perCitizen)}` : "—"}
+              {citizenCountNum > 0 ? `${formatWish(perCitizen)}` : "\u2014"}
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@ export function DistributeUBICard() {
         {!isDeployed && isDemo && (
           <div className="border-2 border-black bg-brutal-yellow/30 p-3 mb-4">
             <p className="text-xs font-black uppercase text-black/60">
-              Not yet deployed — illustrative data shown above
+              Not yet deployed &mdash; illustrative data shown above
             </p>
           </div>
         )}

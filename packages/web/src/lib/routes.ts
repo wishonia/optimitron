@@ -366,7 +366,7 @@ export const contractsSourceLink: NavItem = {
   label: "Smart Contracts",
   href: "https://github.com/mikepsinn/optomitron/tree/main/packages/treasury/contracts",
   emoji: "📜",
-  description: "IABVault, PrizePool, AlignmentTreasury — all Solidity source",
+  description: "IABVault, PrizePool, WishocraticTreasury, UBIDistributor — all Solidity source",
   external: true,
 };
 

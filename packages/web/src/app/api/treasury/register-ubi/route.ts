@@ -5,7 +5,7 @@ import { sepolia, hardhat } from "viem/chains";
 import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { getContracts } from "@/lib/contracts/addresses";
-import { alignmentTreasuryAbi } from "@/lib/contracts/alignment-treasury-abi";
+import { ubiDistributorAbi } from "@/lib/contracts/ubi-distributor-abi";
 
 export const runtime = "nodejs";
 
@@ -46,22 +46,22 @@ export async function POST(request: Request) {
       );
     }
 
-    // Get treasury owner private key
+    // Get UBI distributor owner private key
     const ownerKey = process.env.TREASURY_OWNER_PRIVATE_KEY;
     if (!ownerKey) {
       return NextResponse.json(
-        { error: "Treasury not configured. Contact admin." },
+        { error: "UBI distributor not configured. Contact admin." },
         { status: 503 },
       );
     }
 
     const chain = getChain();
     const contracts = getContracts(chain.id);
-    const treasuryAddress = contracts?.alignmentTreasury;
+    const ubiDistributorAddress = contracts?.ubiDistributor;
 
-    if (!treasuryAddress || treasuryAddress === ZERO_ADDRESS) {
+    if (!ubiDistributorAddress || ubiDistributorAddress === ZERO_ADDRESS) {
       return NextResponse.json(
-        { error: "Treasury contract not deployed on this network." },
+        { error: "UBI distributor contract not deployed on this network." },
         { status: 503 },
       );
     }
@@ -83,10 +83,10 @@ export async function POST(request: Request) {
       transport: http(rpcUrl),
     });
 
-    // Call registerForUBI on the treasury contract
+    // Call registerForUBI on the UBI distributor contract
     const hash = await walletClient.writeContract({
-      address: treasuryAddress as Address,
-      abi: alignmentTreasuryAbi,
+      address: ubiDistributorAddress as Address,
+      abi: ubiDistributorAbi,
       functionName: "registerForUBI",
       args: [walletAddress as Address, nullifierHash],
     });
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
 
     const message =
       error instanceof Error ? error.message : "UBI registration failed.";
-    console.error("[TREASURY REGISTER UBI] Error:", error);
+    console.error("[UBI REGISTER] Error:", error);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

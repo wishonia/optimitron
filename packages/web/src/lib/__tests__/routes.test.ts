@@ -30,7 +30,9 @@ describe("navigation routes", () => {
       expect.arrayContaining([
         ROUTES.wishocracy,
         ROUTES.alignment,
-        ROUTES.wishonia,
+        ROUTES.prize,
+        ROUTES.treasury,
+        ROUTES.transparency,
         ROUTES.about,
       ]),
     );
@@ -50,6 +52,7 @@ describe("navigation routes", () => {
 
     expect(hrefs).toEqual(
       expect.arrayContaining([
+        ROUTES.referendum,
         ROUTES.outcomes,
         ROUTES.compare,
         ROUTES.policies,
@@ -62,7 +65,7 @@ describe("navigation routes", () => {
   it("keeps nested routes highlighted under the correct parent nav item", () => {
     const studiesLink = requireLink(ROUTES.outcomes, exploreLinks);
     const alignmentLink = requireLink(ROUTES.alignment, topLinks);
-    const trackLink = requireLink(ROUTES.wishonia, topLinks);
+    const trackLink = requireLink(ROUTES.wishonia, footerAppLinks);
 
     expect(isNavItemActive("/outcomes/healthy-life-years", studiesLink)).toBe(true);
     expect(isNavItemActive("/studies/hale/public-health-spending", studiesLink)).toBe(true);

@@ -32,7 +32,7 @@ const DEMO_ALLOCATIONS: { categoryId: BudgetCategoryId; percentage: number }[] =
 ];
 
 export function TreasuryAllocationViz() {
-  const { treasuryBalance, citizenCount, taxRateBps, isDemo } =
+  const { ubiPendingBalance, citizenCount, taxRateBps, isDemo } =
     useTreasuryData();
 
   const citizenCountNum = Number(citizenCount);
@@ -75,7 +75,7 @@ export function TreasuryAllocationViz() {
               Wishocratic Treasury
             </div>
             <div className="text-xs text-black/60 mt-1">
-              {formatWish(treasuryBalance)} $WISH &mdash; citizen-directed
+              {formatWish(ubiPendingBalance)} $WISH &mdash; citizen-directed
             </div>
           </div>
           <div className="flex items-center justify-center px-2 py-1 md:py-0">

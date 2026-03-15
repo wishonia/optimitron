@@ -1,12 +1,12 @@
 /**
- * AlignmentTreasury ABI — $WISH UBI Treasury.
- * Receives $WISH from transaction tax, distributes 100% as UBI
- * equally to all World ID-verified citizens.
+ * UBIDistributor ABI — receives $WISH from the UBI budget category
+ * in WishocraticTreasury and distributes equally to all World ID-verified citizens.
  *
- * Politician funding is handled separately by the IAB mechanism (80/10/10).
- * This contract is purely UBI — no alignment scores, no politician tracking.
+ * This contract is the recipient wallet for the UNIVERSAL_BASIC_INCOME category.
+ * Other categories send to DAO/NGO wallets directly. UBI uniquely needs
+ * per-citizen equal splitting, which is what this contract does.
  */
-export const alignmentTreasuryAbi = [
+export const ubiDistributorAbi = [
   // Constructor
   {
     type: "constructor",
@@ -32,7 +32,7 @@ export const alignmentTreasuryAbi = [
   },
   {
     type: "function",
-    name: "treasuryBalance",
+    name: "pendingBalance",
     inputs: [],
     outputs: [{ name: "", type: "uint256" }],
     stateMutability: "view",

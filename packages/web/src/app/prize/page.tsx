@@ -792,7 +792,7 @@ export default function PrizePage() {
             external
             className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-black transition-colors"
           >
-            IABVault.sol, PrizePool.sol, AlignmentTreasury.sol — full source on GitHub &rarr;
+            IABVault.sol, PrizePool.sol, WishocraticTreasury.sol, UBIDistributor.sol — full source on GitHub &rarr;
           </NavItemLink>
         </div>
       </section>
