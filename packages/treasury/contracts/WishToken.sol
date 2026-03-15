@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @notice ERC-20 with built-in transaction tax for UBI and alignment-based governance funding.
  *
  * Mechanisms:
- *   1. Transaction tax (default 0.5%) on every transfer → sent to AlignmentTreasury
+ *   1. Transaction tax (default 0.5%) on every transfer → sent to WishocraticTreasury
  *   2. UBI distribution via treasury → registered citizens receive periodic payouts
  *   3. Alignment-based rewards → politicians with high citizen alignment scores earn $WISH
  *

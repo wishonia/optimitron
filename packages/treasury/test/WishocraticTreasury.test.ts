@@ -14,9 +14,9 @@ describe("WishocraticTreasury", function () {
     const WishToken = await ethers.getContractFactory("WishToken");
     const wish = await WishToken.deploy(owner.address, INITIAL_SUPPLY, TAX_RATE_BPS);
 
-    // Deploy AlignmentTreasury (for UBI category)
-    const AlignmentTreasury = await ethers.getContractFactory("AlignmentTreasury");
-    const ubiTreasury = await AlignmentTreasury.deploy(await wish.getAddress());
+    // Deploy UBIDistributor (recipient for the UBI budget category)
+    const UBIDistributor = await ethers.getContractFactory("UBIDistributor");
+    const ubiDistributor = await UBIDistributor.deploy(await wish.getAddress());
 
     // Deploy WishocraticTreasury
     const WishocraticTreasury = await ethers.getContractFactory("WishocraticTreasury");
@@ -31,7 +31,7 @@ describe("WishocraticTreasury", function () {
     const EDUCATION = ethers.keccak256(ethers.toUtf8Bytes("EARLY_CHILDHOOD_EDUCATION"));
 
     return {
-      wish, treasury, ubiTreasury, owner,
+      wish, treasury, ubiDistributor, owner,
       recipientA, recipientB, recipientC,
       citizen1, citizen2, anyone,
       UBI, CLINICAL, EDUCATION,
@@ -330,19 +330,19 @@ describe("WishocraticTreasury", function () {
     });
   });
 
-  describe("Integration: WishToken → WishocraticTreasury → AlignmentTreasury → Citizens", function () {
+  describe("Integration: WishToken → WishocraticTreasury → UBIDistributor → Citizens", function () {
     it("full chain: transfer tax → wishocratic split → UBI to citizens", async function () {
       const {
-        wish, treasury, ubiTreasury, owner,
+        wish, treasury, ubiDistributor, owner,
         recipientB, citizen1, citizen2,
         UBI, CLINICAL,
       } = await loadFixture(deployFixture);
 
-      // Make AlignmentTreasury tax-exempt (as it would be in real deployment)
-      await wish.setTaxExempt(await ubiTreasury.getAddress(), true);
+      // Make UBIDistributor tax-exempt (as it would be in real deployment)
+      await wish.setTaxExempt(await ubiDistributor.getAddress(), true);
 
-      // 1. Register UBI category pointing to AlignmentTreasury
-      await treasury.registerRecipient(UBI, await ubiTreasury.getAddress());
+      // 1. Register UBI category pointing to UBIDistributor
+      await treasury.registerRecipient(UBI, await ubiDistributor.getAddress());
       await treasury.registerRecipient(CLINICAL, recipientB.address);
 
       // 2. Set weights: 60% UBI, 40% clinical trials
@@ -352,11 +352,11 @@ describe("WishocraticTreasury", function () {
         100n, 500n,
       );
 
-      // 3. Register citizens in AlignmentTreasury
+      // 3. Register citizens in UBIDistributor
       const null1 = ethers.keccak256(ethers.toUtf8Bytes("worldid-1"));
       const null2 = ethers.keccak256(ethers.toUtf8Bytes("worldid-2"));
-      await ubiTreasury.registerForUBI(citizen1.address, null1);
-      await ubiTreasury.registerForUBI(citizen2.address, null2);
+      await ubiDistributor.registerForUBI(citizen1.address, null1);
+      await ubiDistributor.registerForUBI(citizen2.address, null2);
 
       // 4. Fund WishocraticTreasury (simulate accumulated tax)
       const fundAmount = ethers.parseEther("100000");
@@ -368,13 +368,13 @@ describe("WishocraticTreasury", function () {
       const ubiShare = (fundAmount * 6000n) / 10000n; // 60,000 WISH
       const clinicalShare = (fundAmount * 4000n) / 10000n; // 40,000 WISH
 
-      // AlignmentTreasury should hold the UBI share
-      expect(await wish.balanceOf(await ubiTreasury.getAddress())).to.equal(ubiShare);
+      // UBIDistributor should hold the UBI share
+      expect(await wish.balanceOf(await ubiDistributor.getAddress())).to.equal(ubiShare);
       // Clinical recipient gets their share directly
       expect(await wish.balanceOf(recipientB.address)).to.equal(clinicalShare);
 
       // 6. Distribute UBI to citizens
-      await ubiTreasury.distributeUBI();
+      await ubiDistributor.distributeUBI();
 
       const perCitizen = ubiShare / 2n;
       expect(await wish.balanceOf(citizen1.address)).to.equal(perCitizen);
@@ -383,26 +383,26 @@ describe("WishocraticTreasury", function () {
 
     it("end-to-end: actual transfer tax flows through entire chain", async function () {
       const {
-        wish, treasury, ubiTreasury, owner,
+        wish, treasury, ubiDistributor, owner,
         recipientB, citizen1, citizen2, anyone,
         UBI, CLINICAL,
       } = await loadFixture(deployFixture);
 
-      // Re-exempt owner (setTreasury removed it) and exempt AlignmentTreasury
+      // Re-exempt owner (setTreasury removed it) and exempt UBIDistributor
       await wish.setTaxExempt(owner.address, true);
-      await wish.setTaxExempt(await ubiTreasury.getAddress(), true);
+      await wish.setTaxExempt(await ubiDistributor.getAddress(), true);
 
       // Setup recipients and weights
-      await treasury.registerRecipient(UBI, await ubiTreasury.getAddress());
+      await treasury.registerRecipient(UBI, await ubiDistributor.getAddress());
       await treasury.registerRecipient(CLINICAL, recipientB.address);
       await treasury.updateWeights([UBI, CLINICAL], [5000n, 5000n], 50n, 200n);
 
       // Register citizens
-      await ubiTreasury.registerForUBI(
+      await ubiDistributor.registerForUBI(
         citizen1.address,
         ethers.keccak256(ethers.toUtf8Bytes("wid-1"))
       );
-      await ubiTreasury.registerForUBI(
+      await ubiDistributor.registerForUBI(
         citizen2.address,
         ethers.keccak256(ethers.toUtf8Bytes("wid-2"))
       );
@@ -424,11 +424,11 @@ describe("WishocraticTreasury", function () {
 
       const ubiShare = (expectedTax * 5000n) / 10000n;
 
-      // AlignmentTreasury got its UBI share
-      expect(await wish.balanceOf(await ubiTreasury.getAddress())).to.equal(ubiShare);
+      // UBIDistributor got its UBI share
+      expect(await wish.balanceOf(await ubiDistributor.getAddress())).to.equal(ubiShare);
 
       // Distribute UBI
-      await ubiTreasury.distributeUBI();
+      await ubiDistributor.distributeUBI();
 
       // Each citizen gets half the UBI share
       // citizen1 already had sendAmount - tax from the transfer

@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
  *   3. Owner posts aggregated wishocratic weights (from off-chain eigenvector)
  *   4. Anyone triggers distribute() — splits $WISH proportionally
  *
- * The UBI category's recipient is the AlignmentTreasury contract, which
+ * The UBI category's recipient is the UBIDistributor contract, which
  * distributes equally to World ID citizens. Other categories get registered
  * NGO/DAO/agency wallets.
  *

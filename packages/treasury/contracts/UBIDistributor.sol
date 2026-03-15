@@ -6,25 +6,26 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
- * @title UBITreasury
- * @notice Receives $WISH from transaction tax and distributes equally
- *         to all World ID-verified citizens as Universal Basic Income.
+ * @title UBIDistributor
+ * @notice Receives $WISH (from the UBI budget category in WishocraticTreasury)
+ *         and distributes equally to all World ID-verified citizens.
  *
  * Flow:
- *   1. Transaction tax on every $WISH transfer flows here automatically
+ *   1. WishocraticTreasury sends the UBI category's share here
  *   2. Citizens register with proof of personhood (World ID nullifier hash)
  *   3. Anyone can trigger distributeUBI() — permissionless execution
  *   4. Every registered citizen gets an equal share
  *
- * Politician funding is handled separately by the IAB mechanism (80/10/10 split).
- * This contract is purely UBI — no alignment scores, no politician tracking.
+ * This contract is the *recipient wallet* for the UNIVERSAL_BASIC_INCOME
+ * category in WishocraticTreasury. Other categories send to DAO/NGO wallets.
+ * UBI uniquely needs per-citizen equal splitting, which is what this does.
  */
-contract AlignmentTreasury is Ownable {
+contract UBIDistributor is Ownable {
     using SafeERC20 for IERC20;
 
     IERC20 public wishToken;
 
-    // --- UBI tracking ---
+    // --- Citizen registry ---
 
     /// @notice World ID nullifier hash → citizen wallet (sybil resistance)
     mapping(bytes32 => address) public ubiCitizens;
@@ -41,11 +42,11 @@ contract AlignmentTreasury is Ownable {
     event UBIDistributed(uint256 totalAmount, uint256 recipientCount);
 
     constructor(address _wishToken) Ownable(msg.sender) {
-        require(_wishToken != address(0), "Treasury: zero token");
+        require(_wishToken != address(0), "UBIDistributor: zero token");
         wishToken = IERC20(_wishToken);
     }
 
-    // --- UBI Management ---
+    // --- Citizen Registration ---
 
     /**
      * @notice Register a citizen for UBI. Uses a World ID nullifier hash
@@ -57,9 +58,9 @@ contract AlignmentTreasury is Ownable {
         address citizen,
         bytes32 nullifierHash
     ) external onlyOwner {
-        require(citizen != address(0), "Treasury: zero citizen");
-        require(ubiCitizens[nullifierHash] == address(0), "Treasury: already registered");
-        require(!isRegisteredCitizen[citizen], "Treasury: wallet already registered");
+        require(citizen != address(0), "UBIDistributor: zero citizen");
+        require(ubiCitizens[nullifierHash] == address(0), "UBIDistributor: already registered");
+        require(!isRegisteredCitizen[citizen], "UBIDistributor: wallet already registered");
 
         ubiCitizens[nullifierHash] = citizen;
         isRegisteredCitizen[citizen] = true;
@@ -68,19 +69,21 @@ contract AlignmentTreasury is Ownable {
         emit CitizenRegistered(citizen, nullifierHash);
     }
 
+    // --- Distribution ---
+
     /**
      * @notice Distribute UBI equally to all registered citizens.
      *         Callable by anyone — permissionless execution.
-     *         Distributes the entire treasury balance.
+     *         Distributes the entire balance.
      */
     function distributeUBI() external {
-        require(citizenList.length > 0, "Treasury: no citizens");
+        require(citizenList.length > 0, "UBIDistributor: no citizens");
 
         uint256 balance = wishToken.balanceOf(address(this));
-        require(balance > 0, "Treasury: no funds");
+        require(balance > 0, "UBIDistributor: no funds");
 
         uint256 perCitizen = balance / citizenList.length;
-        require(perCitizen > 0, "Treasury: amount too small");
+        require(perCitizen > 0, "UBIDistributor: amount too small");
 
         uint256 distributed = 0;
         uint256 recipientCount = 0;
@@ -103,8 +106,8 @@ contract AlignmentTreasury is Ownable {
         return citizenList.length;
     }
 
-    /// @notice Current treasury balance
-    function treasuryBalance() external view returns (uint256) {
+    /// @notice Current balance available for distribution
+    function pendingBalance() external view returns (uint256) {
         return wishToken.balanceOf(address(this));
     }
 }
