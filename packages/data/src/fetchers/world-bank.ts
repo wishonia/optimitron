@@ -72,6 +72,12 @@ export const WB_INDICATOR_CODES = {
   POVERTY_RATE: 'SI.POV.DDAY',
   /** Labor force participation rate (% of total population 15+) */
   LABOR_FORCE_PARTICIPATION: 'SL.TLF.CACT.ZS',
+  /** Real interest rate (%) — lending rate adjusted for inflation */
+  REAL_INTEREST_RATE: 'FR.INR.RINR',
+  /** Lending interest rate (%) — commercial bank rate, proxy for central bank transmission */
+  LENDING_INTEREST_RATE: 'FR.INR.LEND',
+  /** Deposit interest rate (%) */
+  DEPOSIT_INTEREST_RATE: 'FR.INR.DPST',
 } as const;
 
 /** Shape of a single record in the World Bank JSON response */
@@ -386,4 +392,20 @@ export async function fetchMaternalMortality(options: FetchOptions = {}): Promis
  */
 export async function fetchPopulation(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchWorldBankIndicator(WB_INDICATOR_CODES.POPULATION, options);
+}
+
+/**
+ * Fetch real interest rate (%) — lending rate adjusted for inflation.
+ * Available for ~150 countries via World Bank.
+ */
+export async function fetchRealInterestRate(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.REAL_INTEREST_RATE, options);
+}
+
+/**
+ * Fetch lending interest rate (%) — commercial bank rate.
+ * Proxy for central bank policy rate transmission.
+ */
+export async function fetchLendingRate(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(WB_INDICATOR_CODES.LENDING_INTEREST_RATE, options);
 }

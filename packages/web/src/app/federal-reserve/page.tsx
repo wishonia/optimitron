@@ -261,6 +261,82 @@ export default function FederalReservePage() {
         </div>
       </section>
 
+      {/* How New Money Actually Reaches You */}
+      <section className="mb-16">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">
+          How New Money Actually Reaches You
+        </h2>
+        <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
+          There are exactly two ways to distribute new money. One of them has
+          been tried for 111 years and produced a 96% loss in purchasing power
+          while making the top 1% fabulously wealthy. The other one is
+          embarrassingly obvious. Let me show you both.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+          <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="font-black uppercase text-white mb-4 text-sm tracking-[0.1em]">
+              Current System (Cantillon)
+            </h3>
+            <div className="space-y-2">
+              {[
+                'Fed creates $4T in new money',
+                'Banks and financial institutions get it first',
+                'They buy assets — stocks, bonds, real estate',
+                'Asset prices rise before new money circulates',
+                'Rich get richer (they own the assets)',
+                'Eventually some trickles to the real economy',
+                'You get higher grocery prices',
+              ].map((step, i) => (
+                <div key={step} className="flex items-start gap-2">
+                  <span className="text-xs font-black text-white/40 mt-0.5 shrink-0">
+                    {i + 1}.
+                  </span>
+                  <span className="text-sm font-medium text-white/80">
+                    {step}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="font-black uppercase text-black mb-4 text-sm tracking-[0.1em]">
+              Wishonian System (Anti-Cantillon)
+            </h3>
+            <div className="space-y-2">
+              {[
+                'Algorithm determines optimal supply expansion',
+                'New $WISH minted to public treasury',
+                'Treasury distributes equally to every verified citizen',
+                'Everyone receives new money at the same time',
+                'No first-mover advantage. No insider access.',
+                'Purchasing power dilution is shared equally',
+                'You get your fair share. Not a grocery bill.',
+              ].map((step, i) => (
+                <div key={step} className="flex items-start gap-2">
+                  <span className="text-xs font-black text-black/40 mt-0.5 shrink-0">
+                    {i + 1}.
+                  </span>
+                  <span className="text-sm font-medium text-black/80">
+                    {step}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-sm text-black/70 font-medium leading-relaxed">
+            The key insight is almost comically simple: when new money is
+            created, give it to everyone equally instead of giving it to banks
+            first. The Cantillon effect disappears entirely. No one gets to
+            spend new money before prices adjust. The algorithm mints to a
+            public treasury. Anyone can trigger distribution. Smart contracts
+            enforce equal per-citizen splits. No middleman. No conference room.
+            No banker who happens to be standing closest to the printer.
+          </p>
+        </div>
+      </section>
+
       {/* 604:1 */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">

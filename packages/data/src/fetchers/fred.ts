@@ -231,3 +231,11 @@ export async function fetchUSMedianIncome(options: FetchOptions = {}): Promise<D
 export async function fetchUSRealGDP(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchFREDSeries(FRED_SERIES.REAL_GDP, options);
 }
+
+/**
+ * Fetch Federal Funds effective rate (monthly, 1954+).
+ * The primary US central bank policy rate.
+ */
+export async function fetchFedFundsRate(options: FetchOptions = {}): Promise<DataPoint[]> {
+  return fetchFREDSeries(FRED_SERIES.FED_FUNDS_RATE, options);
+}

@@ -19,6 +19,7 @@ export const ROUTES = {
   civic: "/civic",
   money: "/money",
   federalReserve: "/federal-reserve",
+  departmentOfWar: "/department-of-war",
   signIn: "/auth/signin",
 } as const;
 
@@ -121,6 +122,13 @@ export const federalReserveLink: NavItem = {
   description: "Why a transparent algorithm beats 12 people guessing about interest rates",
 };
 
+export const departmentOfWarLink: NavItem = {
+  href: ROUTES.departmentOfWar,
+  label: "Department of War",
+  emoji: "💀",
+  description: "We don't have one. War is a negative-sum game and the spreadsheet agrees.",
+};
+
 /** Pages under the "Explore" dropdown in the main nav */
 export const exploreLinks: NavItem[] = [
   studiesLink,
@@ -131,6 +139,7 @@ export const exploreLinks: NavItem[] = [
   discoveriesLink,
   moneyLink,
   federalReserveLink,
+  departmentOfWarLink,
 ];
 
 export const wishocracyLink: NavItem = {
