@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     const { userId } = await requireAuth();
     const body = await req.json();
     const { selections } = body as {
-      selections: Array<{ categoryId: BudgetCategoryId; selected: boolean }>;
+      selections: Array<{ itemId: BudgetCategoryId; selected: boolean }>;
     };
 
     if (!Array.isArray(selections)) {
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     }
 
     const invalidSelections = selections.filter(
-      (selection) => !BUDGET_CATEGORIES[selection.categoryId as BudgetCategoryId],
+      (selection) => !BUDGET_CATEGORIES[selection.itemId as BudgetCategoryId],
     );
 
     if (invalidSelections.length > 0) {
@@ -27,14 +27,14 @@ export async function POST(req: NextRequest) {
       selections.map((selection) =>
         prisma.wishocraticCategorySelection.upsert({
           where: {
-            userId_categoryId: {
+            userId_itemId: {
               userId,
-              categoryId: selection.categoryId,
+              itemId: selection.itemId,
             },
           },
           create: {
             userId,
-            categoryId: selection.categoryId,
+            itemId: selection.itemId,
             selected: selection.selected,
           },
           update: {
