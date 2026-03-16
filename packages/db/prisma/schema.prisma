@@ -460,7 +460,7 @@ model PersonhoodVerification {
   expiresAt DateTime?
 
   /// JSON-encoded provider metadata for future extensibility
-  metadataJson String?
+  providerMetadata String?
 
   /// When this record was created
   createdAt DateTime @default(now())
@@ -1740,7 +1740,9 @@ model Item {
   categorySelections      WishocraticCategorySelection[]
   politicianVotes         PoliticianVote[]
   categoryAlignmentScores CategoryAlignmentScore[]
+  publicGoodsRecipients   PublicGoodsRecipient[]         @relation("publicGoodsItem")
 
+  @@unique([jurisdictionId, name])
   @@index([jurisdictionId])
   @@index([category])
   @@index([active])
@@ -1917,7 +1919,7 @@ model PairwiseComparison {
   itemB Item @relation("itemB", fields: [itemBId], references: [id])
 
   /// Allocation to item A (0-100). Item B gets (100 - allocationA).
-  allocationA Float
+  allocationA Int
 
   /// Response time in milliseconds (engagement quality signal)
   responseTimeMs Int?
@@ -2051,7 +2053,7 @@ model Politician {
   chamber String?
 
   /// External identifier: bioguide ID, local govt ID, etc.
-  externalId String? @unique
+  externalId String?
 
   /// When this record was created
   createdAt DateTime @default(now())
@@ -2066,6 +2068,7 @@ model Politician {
   votes      PoliticianVote[]
   alignments AlignmentScore[]
 
+  @@unique([jurisdictionId, externalId])
   @@index([jurisdictionId])
   @@index([party])
 }
@@ -2093,8 +2096,8 @@ model PoliticianVote {
   /// Source bill or vote reference identifier
   billId String?
 
-  /// Date of the vote
-  voteDate DateTime?
+  /// When this vote was cast
+  votedAt DateTime?
 
   /// When this record was created
   createdAt DateTime @default(now())
@@ -2105,6 +2108,7 @@ model PoliticianVote {
   /// Soft-delete timestamp; non-null means this record is logically deleted
   deletedAt DateTime?
 
+  @@unique([politicianId, itemId])
   @@index([politicianId])
   @@index([itemId])
 }
@@ -2230,6 +2234,8 @@ model CitizenBillVote {
 
   @@unique([userId, billId])
   @@index([userId])
+  @@index([billId])
+  @@index([jurisdictionId])
   @@index([shareIdentifier])
 }
 
@@ -2300,6 +2306,9 @@ model NotificationPreference {
   /// When this record was last updated
   updatedAt DateTime @updatedAt
 
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
   // -- Relations --
   user User @relation("UserNotificationPreference", fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -2326,6 +2335,9 @@ model WishocraticEncryptedAllocation {
 
   /// When this record was last updated
   updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
 
   // -- Relations --
   user User @relation("UserEncryptedAllocations", fields: [userId], references: [id], onDelete: Cascade)
@@ -2429,8 +2441,11 @@ model PublicGoodsRecipient {
   /// Unique identifier
   id String @id @default(cuid())
 
-  /// Matches BudgetCategoryId (e.g., "UNIVERSAL_BASIC_INCOME")
-  categoryId String @unique
+  /// Budget category item (FK to Item — e.g., "UNIVERSAL_BASIC_INCOME")
+  itemId String @unique
+
+  /// Relation to the Item
+  item Item @relation("publicGoodsItem", fields: [itemId], references: [id])
 
   /// Human-readable name
   name String
@@ -2446,6 +2461,9 @@ model PublicGoodsRecipient {
 
   /// When this record was last updated
   updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
 }
 
 /// A record of a wishocratic distribution event on-chain.
@@ -2467,4 +2485,12 @@ model WishocraticDistribution {
 
   /// When this distribution occurred
   createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
+  @@index([weightsHash])
 }

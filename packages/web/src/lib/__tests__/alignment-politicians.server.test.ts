@@ -87,7 +87,7 @@ describe("alignment politician source", () => {
           itemId,
           allocationPct,
           updatedAt: new Date("2026-03-12T00:00:00.000Z"),
-          voteDate: new Date("2026-03-12T00:00:00.000Z"),
+          votedAt: new Date("2026-03-12T00:00:00.000Z"),
         })),
       },
     ]);
@@ -120,14 +120,14 @@ describe("alignment politician source", () => {
             itemId: "ICE_IMMIGRATION_ENFORCEMENT",
             allocationPct: -0.8,
             updatedAt: new Date("2026-03-12T00:00:00.000Z"),
-            voteDate: new Date("2026-03-12T00:00:00.000Z"),
+            votedAt: new Date("2026-03-12T00:00:00.000Z"),
           },
           {
             billId: "118-hjres-7:Senate:1:80",
             itemId: "ICE_IMMIGRATION_ENFORCEMENT",
             allocationPct: -0.7,
             updatedAt: new Date("2026-03-11T00:00:00.000Z"),
-            voteDate: new Date("2026-03-11T00:00:00.000Z"),
+            votedAt: new Date("2026-03-11T00:00:00.000Z"),
           },
         ],
       },
@@ -176,21 +176,21 @@ describe("alignment politician source", () => {
           allocationPct: 0.8,
           billId: `bill-${index + 1}`,
           itemId: "ADDICTION_TREATMENT",
-          voteDate: new Date("2026-03-12T00:00:00.000Z"),
+          votedAt: new Date("2026-03-12T00:00:00.000Z"),
         },
         {
           externalId: benchmark?.externalId,
           allocationPct: -0.6,
           billId: `bill-${index + 10}`,
           itemId: "MILITARY_OPERATIONS",
-          voteDate: new Date("2026-03-13T00:00:00.000Z"),
+          votedAt: new Date("2026-03-13T00:00:00.000Z"),
         },
       ])).filter((row): row is {
         externalId: string;
         allocationPct: number;
         billId: string;
         itemId: "ADDICTION_TREATMENT" | "MILITARY_OPERATIONS";
-        voteDate: Date;
+        votedAt: Date;
       } => typeof row.externalId === "string"),
     );
     mocks.createMany.mockResolvedValue({ count: 4 });
@@ -215,8 +215,8 @@ describe("alignment politician source", () => {
       state: "VT",
       terms: [],
     }));
-    mocks.upsert.mockImplementation(async ({ where }: { where: { externalId: string } }) => ({
-      id: `pol-${where.externalId}`,
+    mocks.upsert.mockImplementation(async ({ where }: { where: { jurisdictionId_externalId: { externalId: string } } }) => ({
+      id: `pol-${where.jurisdictionId_externalId.externalId}`,
     }));
     mocks.deriveRecentLegislativeVoteRows.mockResolvedValue([]);
 
@@ -245,8 +245,8 @@ describe("alignment politician source", () => {
       state: "VT",
       terms: [],
     }));
-    mocks.upsert.mockImplementation(async ({ where }: { where: { externalId: string } }) => ({
-      id: `pol-${where.externalId}`,
+    mocks.upsert.mockImplementation(async ({ where }: { where: { jurisdictionId_externalId: { externalId: string } } }) => ({
+      id: `pol-${where.jurisdictionId_externalId.externalId}`,
     }));
     mocks.deriveRecentLegislativeVoteRows.mockResolvedValue([
       {
@@ -254,14 +254,14 @@ describe("alignment politician source", () => {
         allocationPct: 0.8,
         billId: "bill-bernie",
         itemId: "ADDICTION_TREATMENT",
-        voteDate: new Date("2026-03-12T00:00:00.000Z"),
+        votedAt: new Date("2026-03-12T00:00:00.000Z"),
       },
       {
         externalId: warren.externalId,
         allocationPct: -0.6,
         billId: "bill-warren",
         itemId: "MILITARY_OPERATIONS",
-        voteDate: new Date("2026-03-13T00:00:00.000Z"),
+        votedAt: new Date("2026-03-13T00:00:00.000Z"),
       },
     ]);
     mocks.deleteMany.mockResolvedValue({ count: 7 });
@@ -288,14 +288,14 @@ describe("alignment politician source", () => {
           itemId: "ADDICTION_TREATMENT",
           allocationPct: 0.8,
           billId: "bill-bernie",
-          voteDate: new Date("2026-03-12T00:00:00.000Z"),
+          votedAt: new Date("2026-03-12T00:00:00.000Z"),
         },
         {
           politicianId: `pol-${warren.externalId}`,
           itemId: "MILITARY_OPERATIONS",
           allocationPct: -0.6,
           billId: "bill-warren",
-          voteDate: new Date("2026-03-13T00:00:00.000Z"),
+          votedAt: new Date("2026-03-13T00:00:00.000Z"),
         },
       ],
     });

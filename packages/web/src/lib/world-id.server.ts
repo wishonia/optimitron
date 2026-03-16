@@ -173,7 +173,7 @@ export async function verifyAndSaveWorldIdResult(userId: string, result: IDKitRe
   } = ensureWorldIdResultMatchesUser(result, userId);
   await verifyWorldIdWithProvider(result);
 
-  const metadataJson = JSON.stringify({
+  const providerMetadata = JSON.stringify({
     environment: verifiedResult.environment,
     protocolVersion: verifiedResult.protocol_version,
     responses: verifiedResult.responses.map((response) => response.identifier),
@@ -182,7 +182,7 @@ export async function verifyAndSaveWorldIdResult(userId: string, result: IDKitRe
   await upsertPersonhoodVerification({
     action: verifiedResult.action,
     externalId: primaryResponse.nullifier,
-    metadataJson,
+    providerMetadata,
     provider: PersonhoodProvider.WORLD_ID,
     signalHash: expectedSignalHash,
     userId,

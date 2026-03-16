@@ -75,7 +75,13 @@ export type PersonhoodProvider = z.infer<typeof PersonhoodProviderSchema>;
 export const PersonhoodVerificationStatusSchema = z.enum(['VERIFIED', 'REVOKED']);
 export type PersonhoodVerificationStatus = z.infer<typeof PersonhoodVerificationStatusSchema>;
 
-// 16 enums in the schema:
+export const VotePositionSchema = z.enum(['YES', 'NO', 'ABSTAIN']);
+export type VotePosition = z.infer<typeof VotePositionSchema>;
+
+export const ReferendumStatusSchema = z.enum(['DRAFT', 'ACTIVE', 'CLOSED']);
+export type ReferendumStatus = z.infer<typeof ReferendumStatusSchema>;
+
+// 18 enums in the schema:
 // 1. CombinationOperation  2. FillingType  3. Valence  4. MeasurementScale
 // 5. UnitCodeSystem  6. AnalysisStatus  7. StrengthLevel  8. ConfidenceLevel
 // 9. RelationshipDirection  10. EvidenceGrade  11. NotificationStatus
@@ -184,7 +190,7 @@ export const PersonhoodVerificationSchema = z.object({
   verifiedAt: dateSchema,
   lastVerifiedAt: dateSchema,
   expiresAt: nullableDateSchema,
-  metadataJson: z.string().nullable().optional(),
+  providerMetadata: z.string().nullable().optional(),
   createdAt: dateSchema,
   updatedAt: dateSchema,
   deletedAt: nullableDateSchema,
@@ -658,7 +664,7 @@ export const PairwiseComparisonSchema = z.object({
   participantId: z.string(),
   itemAId: z.string(),
   itemBId: z.string(),
-  allocationA: z.number(),
+  allocationA: z.number().int(),
   responseTimeMs: z.number().int().nullable().optional(),
   sessionId: z.string().nullable().optional(),
   createdAt: dateSchema,
@@ -720,7 +726,7 @@ export const PoliticianVoteSchema = z.object({
   itemId: z.string(),
   allocationPct: z.number(),
   billId: z.string().nullable().optional(),
-  voteDate: nullableDateSchema,
+  votedAt: nullableDateSchema,
   createdAt: dateSchema,
   updatedAt: dateSchema,
   deletedAt: nullableDateSchema,
@@ -739,3 +745,127 @@ export const AlignmentScoreSchema = z.object({
   deletedAt: nullableDateSchema,
 });
 export type AlignmentScoreType = z.infer<typeof AlignmentScoreSchema>;
+
+/** Zod schema for the CategoryAlignmentScore model */
+export const CategoryAlignmentScoreSchema = z.object({
+  id: z.string(),
+  alignmentScoreId: z.string(),
+  itemId: z.string(),
+  score: z.number(),
+});
+export type CategoryAlignmentScoreType = z.infer<typeof CategoryAlignmentScoreSchema>;
+
+/** Zod schema for the CitizenBillVote model */
+export const CitizenBillVoteSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  billId: z.string(),
+  billTitle: z.string(),
+  position: VotePositionSchema,
+  reasoning: z.string().nullable().optional(),
+  jurisdictionId: z.string().nullable().optional(),
+  shareIdentifier: z.string(),
+  cbaSnapshot: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+});
+export type CitizenBillVoteType = z.infer<typeof CitizenBillVoteSchema>;
+
+/** Zod schema for the WebPushSubscription model */
+export const WebPushSubscriptionSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  endpoint: z.string(),
+  p256dh: z.string(),
+  auth: z.string(),
+  userAgent: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  lastSentAt: nullableDateSchema,
+  expired: z.boolean().default(false),
+});
+export type WebPushSubscriptionType = z.infer<typeof WebPushSubscriptionSchema>;
+
+/** Zod schema for the NotificationPreference model */
+export const NotificationPreferenceSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  pushEnabled: z.boolean().default(true),
+  reminderFrequencyMinutes: z.number().int().default(1440),
+  reminderStartTime: z.string().default('09:00'),
+  quietHoursStart: z.string().default('21:00'),
+  lastPushSentAt: nullableDateSchema,
+  lastCheckInAt: nullableDateSchema,
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type NotificationPreferenceType = z.infer<typeof NotificationPreferenceSchema>;
+
+/** Zod schema for the WishocraticEncryptedAllocation model */
+export const WishocraticEncryptedAllocationSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  ciphertext: z.string(),
+  iv: z.string(),
+  algorithm: z.string().default('AES-GCM-256'),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type WishocraticEncryptedAllocationType = z.infer<
+  typeof WishocraticEncryptedAllocationSchema
+>;
+
+/** Zod schema for the Referendum model */
+export const ReferendumSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  slug: z.string(),
+  description: z.string().nullable().optional(),
+  createdByUserId: z.string().nullable().optional(),
+  jurisdictionId: z.string().nullable().optional(),
+  status: ReferendumStatusSchema.default('ACTIVE'),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type ReferendumType = z.infer<typeof ReferendumSchema>;
+
+/** Zod schema for the ReferendumVote model */
+export const ReferendumVoteSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  referendumId: z.string(),
+  answer: VotePositionSchema,
+  referredByUserId: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type ReferendumVoteType = z.infer<typeof ReferendumVoteSchema>;
+
+/** Zod schema for the PublicGoodsRecipient model */
+export const PublicGoodsRecipientSchema = z.object({
+  id: z.string(),
+  itemId: z.string(),
+  name: z.string(),
+  walletAddress: z.string(),
+  active: z.boolean().default(true),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type PublicGoodsRecipientType = z.infer<typeof PublicGoodsRecipientSchema>;
+
+/** Zod schema for the WishocraticDistribution model */
+export const WishocraticDistributionSchema = z.object({
+  id: z.string(),
+  totalAmount: z.string(),
+  recipientCount: z.number().int(),
+  weightsHash: z.string(),
+  txHash: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type WishocraticDistributionType = z.infer<typeof WishocraticDistributionSchema>;

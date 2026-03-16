@@ -78,7 +78,7 @@ interface UpsertPersonhoodVerificationInput {
   action?: string | null;
   expiresAt?: Date | null;
   externalId: string;
-  metadataJson?: string | null;
+  providerMetadata?: string | null;
   provider: PersonhoodProvider;
   signalHash?: string | null;
   userId: string;
@@ -89,7 +89,7 @@ export async function upsertPersonhoodVerification({
   action,
   expiresAt,
   externalId,
-  metadataJson,
+  providerMetadata,
   provider,
   signalHash,
   userId,
@@ -110,7 +110,7 @@ export async function upsertPersonhoodVerification({
       expiresAt: expiresAt ?? null,
       externalId,
       lastVerifiedAt: now,
-      metadataJson: metadataJson ?? null,
+      providerMetadata: providerMetadata ?? null,
       signalHash: signalHash ?? null,
       status: PersonhoodVerificationStatus.VERIFIED,
       verificationLevel: verificationLevel ?? null,
@@ -119,7 +119,7 @@ export async function upsertPersonhoodVerification({
       action: action ?? null,
       expiresAt: expiresAt ?? null,
       externalId,
-      metadataJson: metadataJson ?? null,
+      providerMetadata: providerMetadata ?? null,
       provider,
       signalHash: signalHash ?? null,
       status: PersonhoodVerificationStatus.VERIFIED,

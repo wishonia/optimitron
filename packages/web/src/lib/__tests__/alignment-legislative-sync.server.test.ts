@@ -36,12 +36,12 @@ describe("alignment legislative sync helpers", () => {
 
   it("aggregates raw legislative vote signals into normalized allocations", () => {
     const record = buildAllocationRecordFromStoredVotes([
-      { allocationPct: 1, billId: "bill-1", itemId: "ADDICTION_TREATMENT", updatedAt: new Date(), voteDate: new Date("2026-01-01") },
-      { allocationPct: 0.8, billId: "bill-2", itemId: "ADDICTION_TREATMENT", updatedAt: new Date(), voteDate: new Date("2026-01-02") },
-      { allocationPct: 0.9, billId: "bill-3", itemId: "EARLY_CHILDHOOD_EDUCATION", updatedAt: new Date(), voteDate: new Date("2026-01-03") },
-      { allocationPct: 0.7, billId: "bill-4", itemId: "PRAGMATIC_CLINICAL_TRIALS", updatedAt: new Date(), voteDate: new Date("2026-01-04") },
-      { allocationPct: -0.9, billId: "bill-5", itemId: "MILITARY_OPERATIONS", updatedAt: new Date(), voteDate: new Date("2026-01-05") },
-      { allocationPct: -0.7, billId: "bill-6", itemId: "MILITARY_OPERATIONS", updatedAt: new Date(), voteDate: new Date("2026-01-06") },
+      { allocationPct: 1, billId: "bill-1", itemId: "ADDICTION_TREATMENT", updatedAt: new Date(), votedAt: new Date("2026-01-01") },
+      { allocationPct: 0.8, billId: "bill-2", itemId: "ADDICTION_TREATMENT", updatedAt: new Date(), votedAt: new Date("2026-01-02") },
+      { allocationPct: 0.9, billId: "bill-3", itemId: "EARLY_CHILDHOOD_EDUCATION", updatedAt: new Date(), votedAt: new Date("2026-01-03") },
+      { allocationPct: 0.7, billId: "bill-4", itemId: "PRAGMATIC_CLINICAL_TRIALS", updatedAt: new Date(), votedAt: new Date("2026-01-04") },
+      { allocationPct: -0.9, billId: "bill-5", itemId: "MILITARY_OPERATIONS", updatedAt: new Date(), votedAt: new Date("2026-01-05") },
+      { allocationPct: -0.7, billId: "bill-6", itemId: "MILITARY_OPERATIONS", updatedAt: new Date(), votedAt: new Date("2026-01-06") },
     ]);
 
     expect(record).not.toBeNull();
@@ -54,8 +54,8 @@ describe("alignment legislative sync helpers", () => {
 
   it("returns null when the stored vote coverage is too thin", () => {
     const record = buildAllocationRecordFromStoredVotes([
-      { allocationPct: 1, billId: "bill-1", itemId: "ADDICTION_TREATMENT", updatedAt: new Date(), voteDate: new Date("2026-01-01") },
-      { allocationPct: 0.8, billId: "bill-2", itemId: "EARLY_CHILDHOOD_EDUCATION", updatedAt: new Date(), voteDate: new Date("2026-01-02") },
+      { allocationPct: 1, billId: "bill-1", itemId: "ADDICTION_TREATMENT", updatedAt: new Date(), votedAt: new Date("2026-01-01") },
+      { allocationPct: 0.8, billId: "bill-2", itemId: "EARLY_CHILDHOOD_EDUCATION", updatedAt: new Date(), votedAt: new Date("2026-01-02") },
     ]);
 
     expect(record).toBeNull();
@@ -74,14 +74,14 @@ describe("alignment legislative sync helpers", () => {
           billId: "bill-1",
           itemId: "ICE_IMMIGRATION_ENFORCEMENT",
           updatedAt: new Date(),
-          voteDate: new Date("2026-01-01"),
+          votedAt: new Date("2026-01-01"),
         },
         {
           allocationPct: -0.9,
           billId: "bill-2",
           itemId: "ICE_IMMIGRATION_ENFORCEMENT",
           updatedAt: new Date(),
-          voteDate: new Date("2026-01-02"),
+          votedAt: new Date("2026-01-02"),
         },
       ],
       bernie.allocations,
@@ -93,14 +93,14 @@ describe("alignment legislative sync helpers", () => {
           billId: "bill-1",
           itemId: "ICE_IMMIGRATION_ENFORCEMENT",
           updatedAt: new Date(),
-          voteDate: new Date("2026-01-01"),
+          votedAt: new Date("2026-01-01"),
         },
         {
           allocationPct: 0.9,
           billId: "bill-2",
           itemId: "ICE_IMMIGRATION_ENFORCEMENT",
           updatedAt: new Date(),
-          voteDate: new Date("2026-01-02"),
+          votedAt: new Date("2026-01-02"),
         },
       ],
       bernie.allocations,

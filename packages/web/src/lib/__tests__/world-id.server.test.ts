@@ -128,7 +128,7 @@ describe("world id server helpers", () => {
     expect(mocks.upsertPersonhoodVerification).toHaveBeenCalledWith({
       action: "verify-personhood",
       externalId: "nullifier_1",
-      metadataJson: JSON.stringify({
+      providerMetadata: JSON.stringify({
         environment: "staging",
         protocolVersion: "1",
         responses: ["orb"],

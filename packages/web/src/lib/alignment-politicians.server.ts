@@ -29,7 +29,7 @@ interface SyncablePoliticianRow {
     billId: string | null;
     itemId: string;
     updatedAt: Date;
-    voteDate: Date | null;
+    votedAt: Date | null;
   }>;
 }
 
@@ -38,7 +38,7 @@ interface PreparedPoliticianVoteRow {
   itemId: BudgetCategoryId;
   allocationPct: number;
   billId: string;
-  voteDate: Date | null;
+  votedAt: Date | null;
 }
 
 export interface AlignmentPoliticianSyncResult {
@@ -173,7 +173,7 @@ function prepareVoteSyncRows(
         itemId: row.itemId,
         allocationPct: row.allocationPct,
         billId: row.billId,
-        voteDate: row.voteDate,
+        votedAt: row.votedAt,
       };
     })
     .filter((row): row is PreparedPoliticianVoteRow => row != null);
@@ -217,13 +217,13 @@ export async function loadAlignmentBenchmarkProfiles(): Promise<AlignmentBenchma
         where: {
           deletedAt: null,
         },
-        orderBy: [{ voteDate: "desc" }, { updatedAt: "desc" }],
+        orderBy: [{ votedAt: "desc" }, { updatedAt: "desc" }],
         select: {
           allocationPct: true,
           billId: true,
           itemId: true,
           updatedAt: true,
-          voteDate: true,
+          votedAt: true,
         },
       },
     },
@@ -287,7 +287,10 @@ export async function syncAlignmentBenchmarkPoliticians(): Promise<AlignmentPoli
 
     const politician = await prisma.politician.upsert({
       where: {
-        externalId: benchmark.externalId,
+        jurisdictionId_externalId: {
+          jurisdictionId: usJurisdiction.id,
+          externalId: benchmark.externalId,
+        },
       },
       update: {
         chamber: normalizeMemberChamber(member.chamber),

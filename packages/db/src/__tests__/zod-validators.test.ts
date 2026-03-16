@@ -521,7 +521,7 @@ describe('Auth and referral models', () => {
       signalHash: '0xsignal',
       verifiedAt: now,
       lastVerifiedAt: now,
-      metadataJson: '{"protocolVersion":"3.0"}',
+      providerMetadata: '{"protocolVersion":"3.0"}',
       createdAt: now,
       updatedAt: now,
       deletedAt: null,

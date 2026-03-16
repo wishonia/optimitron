@@ -25,7 +25,7 @@ export interface StoredAlignmentVoteRow {
   billId: string | null;
   itemId: string;
   updatedAt: Date;
-  voteDate: Date | null;
+  votedAt: Date | null;
 }
 
 export interface DerivedAlignmentAllocationRecord {
@@ -41,7 +41,7 @@ export interface DerivedAlignmentVoteRow {
   allocationPct: number;
   billId: string;
   itemId: BudgetCategoryId;
-  voteDate: Date | null;
+  votedAt: Date | null;
 }
 
 type FetchedBill = Awaited<ReturnType<typeof fetchers.fetchBills>>[number];
@@ -95,13 +95,13 @@ function buildLegacyAllocationRecord(
   for (const vote of votes) {
     if (!ALIGNMENT_CATEGORY_IDS.includes(vote.itemId as BudgetCategoryId)) continue;
     const categoryId = vote.itemId as BudgetCategoryId;
-    const timestamp = toTimestamp(vote.voteDate) || toTimestamp(vote.updatedAt);
+    const timestamp = toTimestamp(vote.votedAt) || toTimestamp(vote.updatedAt);
     const existing = latestByCategory.get(categoryId);
     if (!existing || timestamp >= existing.timestamp) {
       latestByCategory.set(categoryId, { allocationPct: vote.allocationPct, timestamp });
     }
     if (timestamp > toTimestamp(latestVoteDate)) {
-      latestVoteDate = vote.voteDate ?? vote.updatedAt;
+      latestVoteDate = vote.votedAt ?? vote.updatedAt;
     }
   }
 
@@ -138,8 +138,8 @@ function collectLegislativeVoteStats(votes: StoredAlignmentVoteRow[]) {
     if (vote.billId) {
       uniqueRollCalls.add(vote.billId);
     }
-    if (toTimestamp(vote.voteDate) > toTimestamp(latestVoteDate)) {
-      latestVoteDate = vote.voteDate;
+    if (toTimestamp(vote.votedAt) > toTimestamp(latestVoteDate)) {
+      latestVoteDate = vote.votedAt;
     }
   }
 
@@ -334,7 +334,7 @@ export async function deriveRecentLegislativeVoteRows(
         continue;
       }
 
-      const voteDate = vote.date ? new Date(vote.date) : null;
+      const votedAt = vote.date ? new Date(vote.date) : null;
       const rollCallId = `${bill.billId}:${vote.chamber}:${vote.session}:${vote.rollCallNumber}`;
 
       for (const memberVote of vote.memberVotes) {
@@ -358,7 +358,7 @@ export async function deriveRecentLegislativeVoteRows(
             ),
             billId: rollCallId,
             itemId: match.categoryId,
-            voteDate,
+            votedAt,
           });
         }
       }
