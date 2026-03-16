@@ -24,8 +24,8 @@ export const CONTRACT_ADDRESSES = {
     wishToken: "0x0000000000000000000000000000000000000000" as Address,
     ubiDistributor: "0x0000000000000000000000000000000000000000" as Address,
     wishocraticTreasury: "0x0000000000000000000000000000000000000000" as Address,
-    voteToken: "0x0000000000000000000000000000000000000000" as Address,
-    voterPrizeTreasury: "0x0000000000000000000000000000000000000000" as Address,
+    voteToken: "0x6bA2557F247516eEDA58b5f35CEB416787CF752A" as Address,
+    voterPrizeTreasury: "0xccf0002e0f74B7efbA86F66eaA37a7BB8f075954" as Address,
   },
   // Localhost (Hardhat)
   31337: {
