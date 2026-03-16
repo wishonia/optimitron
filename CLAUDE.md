@@ -88,18 +88,44 @@ optomitron/
 │   └── extension/    # Chrome extension (Digital Twin Safe)
 ```
 
-### Treasury / Incentive Alignment Bonds
-
-Citizens donate to a transparent crypto treasury. Smart contracts distribute campaign funds to politicians based on Citizen Alignment Scores.
+### Treasury — Three Separate Financial Mechanisms (Two Phases)
 
 **Paper**: `https://github.com/mikepsinn/disease-eradication-plan/blob/main/knowledge/appendix/incentive-alignment-bonds-paper.qmd` ([iab.warondisease.org](https://iab.warondisease.org))
 
 **Contracts** (Hardhat, Solidity 0.8.24, deployed on Base Sepolia testnet):
-- `VoteToken` / `VoterPrizeTreasury` — voting incentives (deployed)
-- `WishToken` / `WishocraticTreasury` — $WISH distribution
-- `IABVault` / `IABSplitter` — Incentive Alignment Bond mechanics
-- `AlignmentScoreOracle` / `PoliticalIncentiveAllocator` — on-chain alignment
-- `UBIDistributor` / `PrizePool` — UBI and prize drawings
+
+#### Phase 1: Earth Optimization Prize — `/prize` page (referendum campaign)
+- **Contracts:** `VoteToken` / `VoterPrizeTreasury` (deployed on Base Sepolia)
+- **Component:** Should use `VoterPrizeTreasuryDeposit` (NOTE: `/prize` currently uses `PrizeDeposit` → `IABVault` — this is wrong, needs to be fixed)
+- **Purpose:** Fund the global referendum campaign to prove demand for the 1% Treaty (reallocate from war to pragmatic clinical trials)
+- **Flow:** Deposit USDC → Aave V3 yield → share referral link → recruit verified voters (World ID) → **referrer** gets VOTE tokens (1:1 per verified vote they brought in) → two outcomes:
+  - **Success** (thresholds met): VOTE holders claim proportional prize share from the treasury
+  - **Failure** (thresholds not met after 15yr maturity): PRIZE shareholders (depositors) claim principal + ~4.2x yield back (`$100 × 1.10^15 = $418`)
+- A depositor who also recruits has upside in BOTH scenarios: yield floor on failure, prize share on success
+- **Break-even probability:** 0.0067% — depositing is positive-EV if you believe there's even a 1-in-15,000 chance the plan works
+- **Key insight:** The Prize is the most important feature on the site. It funds awareness, has zero downside for depositors, and every other feature should funnel toward it.
+
+#### Phase 2: Incentive Alignment Bonds (IABs) — lobbying campaign (after demand is proven)
+- **Contracts:** `IABVault` / `IABSplitter` / `PublicGoodsPool`
+- **Purpose:** After referendum proves demand, raise ~$1B to lobby for the 1% Treaty
+- **Flow:** Deposit USDC → Aave yield → treaty gets passed → $27B/yr treaty revenue splits 80/10/10:
+  - 80% → pragmatic clinical trials (public good)
+  - 10% → returns to IAB investors (on the ~$1B raised)
+  - 10% → superpacs for politicians who supported the treaty / push for expansion
+- **IABs are NOT prizes.** They are a separate lobbying-phase instrument. Do not put IABs on the prize page.
+
+#### $WISH Token — `/treasury` page (monetary reform / UBI / public goods allocation)
+- **Contracts:** `WishToken` / `WishocraticTreasury` / `UBIDistributor`
+- **Purpose:** Replace welfare + IRS + inflationary monetary policy with a single programmable system
+- **How it works:**
+  - Flat 0.5% transaction tax replaces the IRS (no income tax, no filing)
+  - UBI keeps everyone at poverty line, eliminating the welfare bureaucracy
+  - Algorithmic 0% inflation — captured productivity gains prevent inflationary theft
+  - Transaction taxes + productivity gains allocated by 8 billion people via Wishocracy (RAPPA pairwise comparisons between public goods)
+- **Independent contracts from IABs and Prize** — don't mix the contract families or put $WISH mechanics on the prize/IAB pages
+
+#### Supporting Contracts
+- `AlignmentScoreOracle` / `PoliticalIncentiveAllocator` — on-chain alignment scoring
 
 ## Jurisdiction Model ("Government OS")
 

@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import policyData from "@/data/us-policy-analysis.json";
 import { getPolicyPath } from "@/lib/routes";
+import { PrizeCTA } from "@/components/prize/PrizeCTA";
 
 interface BradfordHillScores {
   strength: number;
@@ -238,6 +239,14 @@ export default function PoliciesPage() {
       <p className="text-xs text-black/40 mt-8 font-bold">
         Analysis date: {data.generatedAt} · Source: Optomitron OPG (Optimal Policy Generator)
       </p>
+
+      <div className="mt-10">
+        <PrizeCTA
+          headline="These recommendations need political will to implement."
+          body="The bottleneck is pluralistic ignorance — everyone wants evidence-based policy, nobody knows everyone else does. Deposit USDC, recruit verified voters for the 1% Treaty referendum, earn VOTE tokens."
+          variant="yellow"
+        />
+      </div>
     </div>
   );
 }

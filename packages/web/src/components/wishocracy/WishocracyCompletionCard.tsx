@@ -8,6 +8,7 @@ import { CopyLinkButton } from "@/components/sharing/copy-link-button";
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
 import { Button } from "@/components/ui/button";
 import { alignmentLink } from "@/lib/routes";
+import { PrizeCTA } from "@/components/prize/PrizeCTA";
 import { BUDGET_CATEGORIES, BudgetCategoryId } from "@/lib/wishocracy-data";
 import { Comparison, calculateAllocationsFromPairwise } from "@/lib/wishocracy-calculations";
 
@@ -200,6 +201,14 @@ export function WishocracyCompletionCard({
             </Button>
           )}
         </div>
+      </div>
+
+      <div className="mt-8">
+        <PrizeCTA
+          headline="Now prove demand for the world you just described."
+          body="You've expressed what matters. The 1% Treaty referendum turns preferences into political pressure. Deposit USDC, share your referral link, recruit verified voters. Every person you bring in earns you a VOTE token."
+          variant="pink"
+        />
       </div>
     </div>
   );

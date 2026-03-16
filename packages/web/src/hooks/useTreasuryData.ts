@@ -2,9 +2,8 @@
 
 import { useAccount, useChainId, useReadContract } from "wagmi";
 import { type Address, formatUnits } from "viem";
-import { getContracts } from "@/lib/contracts/addresses";
-import { ubiDistributorAbi } from "@/lib/contracts/ubi-distributor-abi";
-import { wishTokenAbi } from "@/lib/contracts/wish-token-abi";
+import { getContracts } from "@optomitron/treasury-shared/addresses";
+import { ubiDistributorAbi, wishTokenAbi } from "@optomitron/treasury-wish/abi";
 
 const WISH_DECIMALS = 18;
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";

@@ -1,0 +1,27 @@
+{
+  "name": "@optomitron/treasury-prize",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Earth Optimization Prize: VoteToken and VoterPrizeTreasury contracts for Phase 1 referendum",
+  "exports": {
+    "./abi": "./src/abi.ts"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "build": "hardhat compile",
+    "clean": "hardhat clean",
+    "deploy:voter-treasury": "hardhat run scripts/deploy-voter-prize-treasury.ts --network baseSepolia",
+    "deploy:voter-treasury:local": "hardhat run scripts/deploy-voter-prize-treasury.ts --network hardhat"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.1.3",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "ethers": "^6.4.0",
+    "hardhat": "^2.22.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0",
+    "@optomitron/treasury-shared": "workspace:*"
+  }
+}

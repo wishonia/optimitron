@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PrizeCTA } from "@/components/prize/PrizeCTA";
 
 // ─── Inline data (from international-comparisons.ts) ─────────────
 
@@ -122,6 +123,14 @@ export default function ComparePage() {
       {activeTab === "Drug Policy" && <DrugTab />}
       {activeTab === "Education" && <EducationTab />}
       {activeTab === "Criminal Justice" && <JusticeTab />}
+
+      <div className="mt-10">
+        <PrizeCTA
+          headline="Other countries prove this works. Now prove the demand."
+          body="The data above shows what evidence-based governance produces. The 1% Treaty referendum collapses pluralistic ignorance. Deposit USDC, recruit verified voters, earn VOTE tokens."
+          variant="cyan"
+        />
+      </div>
     </div>
   );
 }

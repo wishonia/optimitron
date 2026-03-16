@@ -1,10 +1,7 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { StaggerGrid } from "@/components/animations/StaggerGrid";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
-import {
-  earthOptimizationPrizePaperLink,
-  prizeLink,
-} from "@/lib/routes";
+import { earthOptimizationPrizePaperLink } from "@/lib/routes";
 
 const coreCards = [
   {
@@ -119,13 +116,12 @@ export function EarthOptimizationPrizeSection() {
         <ScrollReveal delay={0.3}>
           <div className="text-center">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <NavItemLink
-                item={prizeLink}
-                variant="custom"
+              <a
+                href="/prize#invest"
                 className="px-8 py-3.5 bg-brutal-yellow text-black font-black uppercase text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
               >
-                View the Prize
-              </NavItemLink>
+                Buy Bonds
+              </a>
               <NavItemLink
                 item={earthOptimizationPrizePaperLink}
                 variant="custom"

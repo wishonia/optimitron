@@ -57,9 +57,9 @@
 
 *Visual*: Navigate to `/prize`. Show the mechanism steps and donation section.
 
-> "Donors deposit $WISH into a Prize Pool smart contract. The funds are locked until health and income metrics cross verifiable thresholds. Then donors vote on which implementers get paid — weighted by deposit amount. Your deposit IS your identity. No sybil attacks possible."
+> "Donors deposit $WISH into a Public Goods Pool smart contract. The funds are locked until health and income metrics cross verifiable thresholds. Then donors vote on which implementers get paid — weighted by deposit amount. Your deposit IS your identity. No sybil attacks possible."
 
-*Visual*: Highlight the PrizePool contract details — deposit-as-identity, Storacha evidence CIDs, bonded disputes.
+*Visual*: Highlight the PublicGoodsPool contract details — deposit-as-identity, Storacha evidence CIDs, bonded disputes.
 
 > "Implementers register with Storacha CIDs linking to their Hypercert evidence. Challengers can post a bond to dispute allocations. Lose → you forfeit the bond. Win → the fraudster gets deactivated. Accountability with teeth."
 

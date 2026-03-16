@@ -1,6 +1,7 @@
 "use client";
 
 import type { AggregateScoreData } from "@/lib/aggregate-alignment.server";
+import { PrizeCTA } from "@/components/prize/PrizeCTA";
 import { CitizenPrioritiesChart } from "./CitizenPrioritiesChart";
 import { ScoreboardTable } from "./ScoreboardTable";
 
@@ -107,6 +108,14 @@ export function ScoreboardDashboard({ data }: ScoreboardDashboardProps) {
           participants means more representative weights. Politicians are scored
           against the aggregate, not any individual citizen&apos;s preferences.
         </p>
+      </section>
+
+      <section className="mt-10">
+        <PrizeCTA
+          headline="The gap between citizens and politicians is the problem. The referendum is the fix."
+          body="The misalignment above exists because nobody has proven demand for change. Deposit USDC, recruit verified voters for the 1% Treaty referendum, earn VOTE tokens for every person you bring in."
+          variant="pink"
+        />
       </section>
     </div>
   );

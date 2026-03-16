@@ -1,0 +1,7 @@
+# Hardhat build artifacts
+artifacts/
+cache/
+typechain-types/
+
+# Dependencies
+node_modules/

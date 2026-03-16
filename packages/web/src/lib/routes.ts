@@ -21,6 +21,7 @@ export const ROUTES = {
   federalReserve: "/federal-reserve",
   departmentOfWar: "/department-of-war",
   treasury: "/treasury",
+  iab: "/iab",
   contribute: "/contribute",
   referendum: "/referendum",
   scoreboard: "/scoreboard",
@@ -205,6 +206,13 @@ export const scoreboardLink: NavItem = {
   matchPrefixes: [ROUTES.scoreboard],
 };
 
+export const iabLink: NavItem = {
+  href: ROUTES.iab,
+  label: "Incentive Alignment Bonds",
+  emoji: "🤝",
+  description: "Phase 2 lobbying bonds — fund the treaty campaign, earn 10% of treaty revenue",
+};
+
 export const treasuryLink: NavItem = {
   href: ROUTES.treasury,
   label: "Treasury",
@@ -376,7 +384,7 @@ export const contractsSourceLink: NavItem = {
   label: "Smart Contracts",
   href: "https://github.com/mikepsinn/optomitron/tree/main/packages/treasury/contracts",
   emoji: "📜",
-  description: "IABVault, PrizePool, WishocraticTreasury, UBIDistributor — all Solidity source",
+  description: "IABVault, PublicGoodsPool, WishocraticTreasury, UBIDistributor — all Solidity source",
   external: true,
 };
 

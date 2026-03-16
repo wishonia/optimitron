@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import budgetData from "@/data/us-budget-analysis.json";
 import { getBudgetCategoryPath } from "@/lib/routes";
+import { PrizeCTA } from "@/components/prize/PrizeCTA";
 
 interface Category {
   name: string;
@@ -387,6 +388,14 @@ export default function BudgetPage() {
       <p className="text-xs text-black/40 mt-8 font-bold">
         Generated {new Date(data.generatedAt).toLocaleDateString()} · Source: Optomitron OBG (Optimal Budget Generator)
       </p>
+
+      <div className="mt-10">
+        <PrizeCTA
+          headline="The gap between current and optimal won't close itself."
+          body="Every misallocated dollar above is a life not saved. The 1% Treaty referendum proves demand for evidence-based budgeting. Deposit USDC, recruit verified voters, earn VOTE tokens."
+          variant="dark"
+        />
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import misconceptionData from "../../../public/data/misconceptions.json";
+import { PrizeCTA } from "@/components/prize/PrizeCTA";
 
 interface KeyStats {
   [key: string]: string | number | undefined;
@@ -355,6 +356,14 @@ export default function MisconceptionsPage() {
             <strong>Second most common:</strong>{" "}
             {data.summary.secondPattern}.
           </p>
+        </div>
+
+        <div className="mt-10">
+          <PrizeCTA
+            headline="The evidence is clear. The only irrational response is to do nothing."
+            body="Every misconception above persists because of pluralistic ignorance. The 1% Treaty referendum proves demand for evidence-based governance. Deposit USDC, recruit verified voters, earn VOTE tokens."
+            variant="pink"
+          />
         </div>
       </div>
     </main>

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ALIGNMENT_BENCHMARK_SOURCE_NOTE } from "@/lib/alignment-benchmarks";
 import type { PersonalAlignmentState } from "@/lib/alignment-report";
 import { wishocracyLink } from "@/lib/routes";
+import { PrizeCTA } from "@/components/prize/PrizeCTA";
 import hypercertData from "@/data/alignment-hypercerts.json";
 
 interface HypercertPolitician {
@@ -428,6 +429,14 @@ export function AlignmentReport({
             </article>
           ))}
         </div>
+      </section>
+
+      <section className="mb-10">
+        <PrizeCTA
+          headline="Prove that voters want representatives who actually represent them."
+          body="The alignment scores above show the gap. The 1% Treaty referendum collapses pluralistic ignorance — everyone wants this, nobody knows everyone else does. Deposit USDC, recruit verified voters, earn VOTE tokens."
+          variant="cyan"
+        />
       </section>
 
       <section className="border-4 border-black bg-brutal-cyan/20 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">

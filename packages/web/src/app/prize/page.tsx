@@ -11,29 +11,27 @@ import {
   POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
   POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
   GLOBAL_DISEASE_DEATHS_DAILY,
-  TREATY_ANNUAL_FUNDING,
-  CURRENT_TRIAL_SLOTS_AVAILABLE,
-  DFDA_PATIENTS_FUNDABLE_ANNUALLY,
-  EFFICACY_LAG_YEARS,
   TREATY_EXPECTED_COST_PER_DALY,
-  VICTORY_BOND_ANNUAL_RETURN_PCT,
   PRIZE_ESCROW_100_RETURN_MULTIPLE,
 } from "@/lib/parameters-calculations-citations";
 import {
   earthOptimizationPrizePaperLink,
-  incentiveAlignmentBondsPaperLink,
   contractsSourceLink,
-  transparencyLink,
   wishocracyLink,
-  alignmentLink,
 } from "@/lib/routes";
-import { PrizeDeposit } from "@/components/prize/PrizeDeposit";
+import { VoterPrizeTreasuryDeposit } from "@/components/prize/VoterPrizeTreasuryDeposit";
 import { CitizenDashboardWrapper } from "@/components/prize/CitizenDashboardWrapper";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 export const metadata: Metadata = {
   title: "Earth Optimization Prize | Optomitron",
   description:
-    "A standing market where greed does the coordination. Buy Incentive Alignment Bonds to fund implementations that measurably improve health and income. Wishocratic allocation ensures your money goes where evidence points.",
+    "Two ways in. Depositors: USDC → Aave yield → ~4.2x return if plan fails. Recruiters: share referral links → World ID verified voters → VOTE tokens → prize share if plan succeeds. Break-even: 0.0067%.",
 };
 
 const dysfunctionTaxFormatted = `$${Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value).toLocaleString()}`;
@@ -51,10 +49,10 @@ const trustBadges = [
 const mechanismSteps = [
   {
     number: 1,
-    label: "You Buy Bonds",
+    label: "Depositors Fund the Pool",
     description:
-      "Purchase Incentive Alignment Bonds via the smart contract. Your principal goes into Aave yield. You get a unique referral link. Your bond is your identity and your skin in the game.",
-    detail: `No accounts, no registration — just capital in escrow. Fail scenario: principal + ~${escrowMultiplier}x yield. Succeed scenario: revenue share proportional to verified votes you brought in.`,
+      "Deposit USDC into the VoterPrizeTreasury smart contract. Your principal goes into Aave V3 yield. You get PRIZE shares — your claim on the escrow. If the plan fails after 15 years, you claim principal + ~4.2x yield. Zero downside.",
+    detail: `Depositors also get a referral link. If they recruit voters, they earn VOTE tokens too — upside in BOTH outcomes. But depositing alone guarantees the ~${escrowMultiplier}x floor.`,
     color: "bg-brutal-pink",
     textColor: "text-white",
     subTextColor: "text-white/70",
@@ -62,10 +60,10 @@ const mechanismSteps = [
   },
   {
     number: 2,
-    label: "You Spread the Proof",
+    label: "Recruiters Prove Demand",
     description:
-      "Share your referral link. Every person who verifies their preference for the 1% Treaty through your link is a verified vote attributed to you. The bottleneck is pluralistic ignorance — everyone wants this, nobody knows everyone else wants it. You fix that.",
-    detail: "World ID prevents duplicate votes. Each verified preference is on-chain. You're not selling anything — you're proving demand that already exists. The referral link just attributes the proof to you.",
+      "Anyone with a referral link can recruit. Share the link. Every person who verifies their support for the 1% Treaty through World ID is a verified vote attributed to you. You earn 1 VOTE token per verified voter. No deposit required.",
+    detail: "World ID prevents duplicate votes. Each verified preference is on-chain. You're not selling anything — you're proving demand that already exists. The referral link attributes that proof to you.",
     color: "bg-brutal-yellow",
     textColor: "text-black",
     subTextColor: "text-black/70",
@@ -73,36 +71,14 @@ const mechanismSteps = [
   },
   {
     number: 3,
-    label: "Demand Becomes Undeniable",
+    label: "Outcomes Determine Payouts",
     description:
-      "As verified votes accumulate, pluralistic ignorance collapses. Politicians can't pretend nobody wants this when 10 million, 100 million, 1 billion people have verifiably said they do. The treaty adopts itself.",
-    detail: "Every jurisdiction has a vote count. When verified demand crosses critical mass, the political cost of inaction exceeds the cost of action. That's the threshold. Not a committee decision — arithmetic.",
+      "Thresholds met? VOTE holders claim proportional shares of the prize pool — the more voters you recruited, the bigger your cut. Thresholds not met after 15 years? PRIZE holders (depositors) claim principal + ~4.2x yield.",
+    detail: "Depositors win on failure (yield floor). Recruiters win on success (prize share). Depositors who also recruit win either way. The contract handles everything — no judges, no committees.",
     color: "bg-brutal-cyan",
     textColor: "text-black",
     subTextColor: "text-black/70",
     detailColor: "text-black/50",
-  },
-  {
-    number: 4,
-    label: "Outcomes Are Measured",
-    description:
-      "Oracles report two terminal metrics: median healthy life years and median real after-tax income. When both cross pre-published thresholds in adopting jurisdictions — verified by peer-reviewed study — the pool unlocks.",
-    detail: "Health gets 50%. Income gets 50%. No opinion metrics. No vibes. Just the two numbers that actually measure whether human lives are getting better.",
-    color: "bg-brutal-cyan",
-    textColor: "text-black",
-    subTextColor: "text-black/70",
-    detailColor: "text-black/50",
-  },
-  {
-    number: 5,
-    label: "You Get Paid",
-    description:
-      "Smart contracts distribute the success pool to bondholders proportional to the verified votes they brought in. You didn't just invest — you proved demand. Your reward scales with your contribution to solving the coordination problem.",
-    detail: "Fully programmatic. No judges, no committees, no pairwise comparisons. Verified votes per referral link → share of pool. The contract can count.",
-    color: "bg-brutal-pink",
-    textColor: "text-white",
-    subTextColor: "text-white/70",
-    detailColor: "text-white/50",
   },
 ];
 
@@ -125,7 +101,7 @@ const whatYouFund = [
     icon: "🏛️",
     title: "Alignment Scoring",
     description:
-      "Compare politician voting records against citizen preferences. Publish scores as verifiable Hypercerts. Fund aligned politicians via Incentive Alignment Bonds.",
+      "Compare politician voting records against citizen preferences. Publish scores as verifiable Hypercerts. Make alignment visible and undeniable.",
     impact: "6 politicians scored, all attestations on IPFS",
   },
   {
@@ -138,9 +114,9 @@ const whatYouFund = [
 ];
 
 const requiredFunctions = [
-  { id: 1, name: "Reallocation Wedge", description: `Redirect 1% of military spending (${fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD"})}) to clinical trials` },
-  { id: 2, name: "Medical Throughput", description: `Expand trial capacity from ${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)}M to ${(DFDA_PATIENTS_FUNDABLE_ANNUALLY.value / 1e6).toFixed(1)}M patients/yr` },
-  { id: 3, name: "Regulatory-Delay Removal", description: `Eliminate ${EFFICACY_LAG_YEARS.value} years of post-safety efficacy waiting` },
+  { id: 1, name: "Reallocation Wedge", description: `Redirect 1% of military spending (${fmtParam({...TREATY_EXPECTED_COST_PER_DALY, unit: "USD"})}) to clinical trials` },
+  { id: 2, name: "Medical Throughput", description: "Expand trial capacity from 0.4M to 6.8M patients/yr" },
+  { id: 3, name: "Regulatory-Delay Removal", description: "Eliminate post-safety efficacy waiting" },
   { id: 4, name: "Preference Aggregation", description: "Collect citizen priorities via pairwise comparison (RAPPA)" },
   { id: 5, name: "Alignment Scoring", description: "Score politicians against citizen preferences, publish as Hypercerts" },
   { id: 6, name: "Campaign Automation", description: "Route funds to high-alignment candidates via smart contracts" },
@@ -175,7 +151,7 @@ const bountyStages = [
   {
     stage: "04",
     label: "Outcome Perpetuity",
-    description: "Metrics cross thresholds. Pool unlocks. Implementers get paid. Protocol persists.",
+    description: "Metrics cross thresholds. Pool unlocks. Recruiters get paid. Protocol persists.",
     status: "Pending",
     statusColor: "bg-white",
   },
@@ -184,56 +160,85 @@ const bountyStages = [
 const contractDetails = [
   {
     label: "Contract",
-    value: "PrizePool.sol",
-    detail: "Outcome-based escrow with Wishocratic allocation",
+    value: "VoterPrizeTreasury.sol",
+    detail: "Dominant assurance escrow with Aave V3 yield and VOTE token rewards",
   },
-{
+  {
     label: "Health Metric",
     value: "Median Healthy Life Years",
-    detail: "50% of pool — verified by peer-reviewed study",
+    detail: "50% weight — verified by peer-reviewed study",
   },
   {
     label: "Income Metric",
     value: "Median Real After-Tax Income",
-    detail: "50% of pool — verified by quasi-experimental design",
+    detail: "50% weight — verified by quasi-experimental design",
   },
   {
     label: "Sybil Resistance",
-    value: "Bond-as-Identity",
-    detail: "Your allocation power = your investment. No fake accounts.",
+    value: "World ID + Referral Links",
+    detail: "One verified vote per person. VOTE tokens go to the referrer.",
   },
   {
-    label: "Dispute Resolution",
-    value: "Bonded Challenges",
-    detail: "Post a bond to dispute. Losers pay escalation costs.",
+    label: "Fail-Safe",
+    value: "Dominant Assurance",
+    detail: `15yr maturity. Thresholds not met = PRIZE holders claim principal + ~${PRIZE_ESCROW_100_RETURN_MULTIPLE.value.toFixed(1)}x yield.`,
   },
 ];
 
 export default function PrizePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-      {/* Hero */}
+      {/* Section 1: Hero */}
       <section className="mb-16">
         <div className="max-w-3xl space-y-5">
           <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
             Earth Optimization Prize
           </p>
           <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
-            Buy Bonds. Fund What Works. Get Paid When It Does.
+            A Bet You Can&apos;t Lose. A World You Can Fix.
           </h1>
           <p className="text-lg text-black/80 leading-relaxed font-medium">
-            Not a donation. A financial instrument. Your principal earns yield in
-            escrow. You get a referral link. Every verified vote you bring in
-            increases your share of the success pool. Fail? ~{escrowMultiplier}x
-            return from stablecoin yield. Succeed? Revenue share proportional to
-            the verified demand you helped prove.
+            This is a dominant assurance contract. Depositors cannot lose.
+            Plan fails? You get your principal back plus ~{escrowMultiplier}x
+            from 15 years of Aave yield ($100 → ~$418). Plan succeeds?
+            The 1% Treaty produces {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}{" "}
+            in per-capita lifetime income gains from optimized resource allocation.
           </p>
-          <p className="text-black/60 font-medium leading-relaxed">
-            The only thing stopping the 1% Treaty is pluralistic ignorance —
-            everyone wants it, nobody knows everyone else wants it. Your job is
-            to fix that. Buy bonds, share your link, prove demand exists. The
-            smart contract counts the votes and pays you accordingly.
+          <p className="text-black/60 font-medium leading-relaxed mt-3">
+            Two ways in. <strong>Have capital?</strong> Deposit USDC, get PRIZE
+            shares, earn the yield floor. <strong>Have a network?</strong>{" "}
+            Share a referral link, recruit verified voters for the 1% Treaty,
+            earn VOTE tokens — one per verified voter. Prize share proportional
+            to voters you brought in. No deposit required.
           </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+            <div className="border-4 border-black bg-brutal-pink p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <div className="text-xs font-black uppercase text-white/70 mb-2">
+                If the Plan Fails (Depositors)
+              </div>
+              <div className="text-xl font-black text-white">
+                ~{escrowMultiplier}x Return
+              </div>
+              <p className="text-xs font-medium text-white/60 mt-1">
+                Dominant assurance: your principal + 15 years of Aave yield.
+                $100 → ~$418. You literally cannot lose money. The worst case
+                is getting richer.
+              </p>
+            </div>
+            <div className="border-4 border-black bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <div className="text-xs font-black uppercase text-black/60 mb-2">
+                If the Plan Succeeds (Everyone)
+              </div>
+              <div className="text-xl font-black text-black">
+                {fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}+ Income Gain
+              </div>
+              <p className="text-xs font-medium text-black/60 mt-1">
+                Per-capita lifetime income gains from optimized resource
+                allocation. Recruiters claim prize share via VOTE tokens.
+                Depositors benefit from the GDP growth that follows.
+              </p>
+            </div>
+          </div>
         </div>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a
@@ -250,19 +255,11 @@ export default function PrizePage() {
           >
             Read the Paper
           </NavItemLink>
-          <NavItemLink
-            item={incentiveAlignmentBondsPaperLink}
-            variant="custom"
-            external
-            className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-          >
-            Incentive Alignment Bonds Paper
-          </NavItemLink>
         </div>
       </section>
 
-      {/* Trust Badges */}
-      <section className="mb-16">
+      {/* Section 2: Deposit CTA + Trust Badges */}
+      <section id="invest" className="mb-16">
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {trustBadges.map((badge) => (
             <div
@@ -278,7 +275,19 @@ export default function PrizePage() {
             </div>
           ))}
         </div>
-        <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-black bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-2xl font-black uppercase text-white mb-4">
+            Deposit — Fund the Prize Pool
+          </h2>
+          <p className="text-sm font-medium text-white/70 mb-6 max-w-2xl">
+            Your deposit goes into Aave V3 yield. You get PRIZE shares —
+            your claim on the escrow. Plan fails? ~{escrowMultiplier}x back.
+            You also get a referral link — recruit verified voters to earn
+            VOTE tokens for success-scenario upside too.
+          </p>
+          <VoterPrizeTreasuryDeposit />
+        </div>
+        <div className="border-4 border-black border-t-0 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm text-black/70 font-medium leading-relaxed">
             On my planet, financial instruments don&apos;t need trust disclaimers
             because we eliminated the kind of person who makes them necessary.
@@ -296,10 +305,10 @@ export default function PrizePage() {
         </div>
       </section>
 
-      {/* Why This Is Rational */}
+      {/* Section 3: The Math */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-          Why This Is Rational
+          The Math
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -334,28 +343,12 @@ export default function PrizePage() {
               Win Either Way
             </div>
             <p className="text-xs font-medium text-white/60 mt-2">
-              Plan fails? ~{escrowMultiplier}x return from stablecoin yield. Plan succeeds?
-              Revenue share proportional to verified votes you brought in.
+              Plan fails? ~{escrowMultiplier}x return from Aave yield. Plan succeeds?
+              Prize share proportional to verified voters you recruited.
               No scenario where you &ldquo;just lose your money.&rdquo;
             </p>
           </div>
         </div>
-        <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm text-black/70 font-medium leading-relaxed">
-            On my planet, this took about twelve seconds to explain. The expected
-            value calculation is straightforward: even a tiny probability shift on
-            trillions of dollars in welfare gains makes a bond purchase
-            positive-EV. You don&apos;t need to believe the plan will work. You just
-            need to believe it&apos;s not literally impossible. The math does the rest.
-          </p>
-        </div>
-      </section>
-
-      {/* Cost of Inaction vs Cost of Action */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-          Cost of Inaction vs Cost of Action
-        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="border-4 border-black bg-red-50 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-black uppercase text-red-600 mb-3">
@@ -382,7 +375,7 @@ export default function PrizePage() {
             </div>
             <ul className="space-y-3">
               <li className="text-sm font-medium text-black/80">
-                <span className="font-black text-green-700">Your bond amount</span>{" "}
+                <span className="font-black text-green-700">Your deposit amount</span>{" "}
                 — that&apos;s it. That&apos;s the cost.
               </li>
               <li className="text-sm font-medium text-black/80">
@@ -394,23 +387,25 @@ export default function PrizePage() {
                 — dominant assurance contract if the plan fails
               </li>
               <li className="text-sm font-medium text-black/80">
-                <span className="font-black text-green-700">Best case: revenue share</span>{" "}
-                — on trillions in per-capita income gains
+                <span className="font-black text-green-700">Best case: prize share</span>{" "}
+                — proportional to verified voters you recruited
               </li>
             </ul>
           </div>
         </div>
         <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm text-black/70 font-medium leading-relaxed">
-            You are currently paying {dysfunctionTaxFormatted} per year for the
-            privilege of your government being terrible. The break-even on an
-            Incentive Alignment Bond requires a 0.0067% chance of that changing.
-            The arithmetic here is not subtle.
+            On my planet, this took about twelve seconds to explain. You are
+            currently paying {dysfunctionTaxFormatted} per year for the privilege
+            of your government being terrible. The break-even requires a 0.0067%
+            chance of that changing. You don&apos;t need to believe the plan will
+            work. You just need to believe it&apos;s not literally impossible. The
+            math does the rest.
           </p>
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* Section 4: How It Works */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-8">
           How It Works
@@ -444,171 +439,33 @@ export default function PrizePage() {
             </div>
           ))}
         </div>
-      </section>
-
-      {/* Where Every Dollar Goes */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-          Where Every Dollar Goes
-        </h2>
-        <div className="space-y-4 mb-6">
-          <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-xs font-black shrink-0">
-                1
-              </span>
-              <h3 className="font-black uppercase text-black">Your Bond</h3>
-            </div>
-            <p className="text-sm text-black/70 font-medium leading-relaxed">
-              USDC → escrow → Aave yield. No management fees. No team cut. 100%
-              stays yours until outcomes are verified.
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div className="border-4 border-black bg-brutal-yellow p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase text-black/60 mb-1">Depositor Path</p>
+            <p className="text-sm font-bold text-black">
+              Deposit USDC → PRIZE shares → Aave yield → ~{escrowMultiplier}x floor if plan fails
             </p>
           </div>
-          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-xs font-black shrink-0">
-                2
-              </span>
-              <h3 className="font-black uppercase text-black">If Plan Fails</h3>
-            </div>
-            <p className="text-sm text-black/70 font-medium leading-relaxed">
-              Principal + yield returns to you (~{escrowMultiplier}x over 15 years). Zero to any
-              team or founder. The dominant assurance contract means your worst
-              case is getting richer.
+          <div className="border-4 border-black bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase text-black/60 mb-1">Recruiter Path</p>
+            <p className="text-sm font-bold text-black">
+              Get referral link → Recruit voters → World ID verify → VOTE tokens → Prize share if plan succeeds
             </p>
           </div>
-          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-xs font-black shrink-0">
-                3
-              </span>
-              <h3 className="font-black uppercase text-black">If Plan Succeeds — The 80/10/10 Split</h3>
-            </div>
-            <p className="text-sm text-black/70 font-medium mb-4">
-              Treaty revenue is allocated by smart contract. No committees. No discretion. Just arithmetic.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
-              <div className="border-2 border-black/20 p-3 bg-white/30">
-                <div className="text-xs font-black uppercase text-black/60 mb-1">
-                  80% — Public Good
-                </div>
-                <p className="text-xs text-black/70 font-medium">
-                  Pragmatic clinical trials, health infrastructure, and
-                  cross-jurisdiction outcome measurement. The thing that
-                  actually saves the lives.
-                </p>
-              </div>
-              <div className="border-2 border-black/20 p-3 bg-white/30">
-                <div className="text-xs font-black uppercase text-black/60 mb-1">
-                  10% — Investor Returns
-                </div>
-                <p className="text-xs text-black/70 font-medium">
-                  Perpetual payments to IAB bondholders, proportional to
-                  verified votes brought in. Your referral link is your
-                  revenue share.
-                </p>
-              </div>
-              <div className="border-2 border-black/20 p-3 bg-white/30">
-                <div className="text-xs font-black uppercase text-black/60 mb-1">
-                  10% — Political Incentives
-                </div>
-                <p className="text-xs text-black/70 font-medium">
-                  Alignment scoring, electoral campaign funding, and
-                  post-office accountability. Politicians who vote with
-                  citizens get funded. Those who don&apos;t, don&apos;t.
-                </p>
-              </div>
-            </div>
-            <div className="border-t-2 border-black/20 mt-4 pt-3">
-              <p className="text-xs text-black/60 font-medium">
-                Everyone benefits: median healthy life years increase, median income rises,
-                and the {dysfunctionTaxFormatted}/yr dysfunction tax starts disappearing.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm text-white/90 font-medium leading-relaxed">
-            The bondholders get a return proportional to the demand they proved.
-            But the real beneficiaries are the 8 billion people who stop
-            paying {dysfunctionTaxFormatted} a year in dysfunction tax.
-            You&apos;re not buying a token. You&apos;re funding the collapse of
-            pluralistic ignorance. The token is just the receipt.
-          </p>
         </div>
       </section>
 
-      {/* 10 Required Functions */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-4">
-          10 Required Functions (v1 Benchmark)
-        </h2>
-        <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
-          The Earth Optimization Plan v1 defines ten functions that must be
-          operational for outcome thresholds to be achievable. Any team can
-          submit a v2 that beats it on cost per DALY averted. Currently the bar
-          is ${TREATY_EXPECTED_COST_PER_DALY.value.toFixed(3)}/DALY risk-adjusted.
-        </p>
-        <div className="border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-black text-white">
-                <th className="px-4 py-3 text-left font-black uppercase text-xs">#</th>
-                <th className="px-4 py-3 text-left font-black uppercase text-xs">Function</th>
-                <th className="px-4 py-3 text-left font-black uppercase text-xs hidden md:table-cell">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {requiredFunctions.map((fn) => (
-                <tr key={fn.id} className="border-t-2 border-black/10">
-                  <td className="px-4 py-3 font-black text-brutal-pink">{fn.id}</td>
-                  <td className="px-4 py-3 font-black text-black">{fn.name}</td>
-                  <td className="px-4 py-3 text-black/60 font-medium hidden md:table-cell">{fn.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {/* Section 5: Citizen Dashboard */}
+      <section id="dashboard" className="mb-16">
+        <Suspense>
+          <CitizenDashboardWrapper />
+        </Suspense>
       </section>
 
-      {/* How Money Moves — 4-stage bounty */}
+      {/* Section 6: What Your Deposits Fund */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-          How Money Moves
-        </h2>
-        <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
-          Bond purchases flow through four stages. Money doesn&apos;t move until
-          outcomes exist. Implementers get paid for results, not proposals.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {bountyStages.map((item) => (
-            <div
-              key={item.stage}
-              className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-8 h-8 bg-black text-white flex items-center justify-center text-xs font-black">
-                  {item.stage}
-                </span>
-                <span className={`text-[10px] font-black uppercase px-2 py-0.5 border-2 border-black ${item.statusColor}`}>
-                  {item.status}
-                </span>
-              </div>
-              <h3 className="font-black text-black uppercase text-sm mb-2">
-                {item.label}
-              </h3>
-              <p className="text-xs text-black/60 font-medium leading-relaxed">
-                {item.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* What You Fund */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-          What Your Bonds Fund
+          What Your Deposits Fund
         </h2>
         <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
           The Earth Optimization Plan v1 is the starting benchmark. Any team can
@@ -638,95 +495,172 @@ export default function PrizePage() {
         </div>
       </section>
 
-      {/* Invest Section */}
-      <section id="invest" className="mb-16">
-        <div className="border-4 border-black bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-2xl font-black uppercase text-white mb-4">
-            Buy Incentive Alignment Bonds
-          </h2>
-          <p className="text-sm font-medium text-white/70 mb-6 max-w-2xl">
-            Bonds are held in the PrizePool smart contract until outcome
-            thresholds are met. Your bond amount determines your Wishocratic
-            allocation power — you decide which implementers get paid, weighted
-            by how much you invested.
-          </p>
-          <PrizeDeposit />
-        </div>
-      </section>
-
-      {/* Citizen Dashboard */}
-      <section id="dashboard" className="mb-16">
-        <Suspense>
-          <CitizenDashboardWrapper />
-        </Suspense>
-      </section>
-
-      {/* Anti-Capture */}
+      {/* Section 7: Technical Details (Accordion) */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-          Anti-Capture
+          Technical Details
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="font-black uppercase text-black mb-3">
-              Replacement Rule
-            </h3>
-            <p className="text-sm text-black/70 font-medium leading-relaxed">
-              Any team can submit a v2 plan that beats v1 on cost per DALY
-              averted. The current benchmark is ${TREATY_EXPECTED_COST_PER_DALY.value.toFixed(3)}/DALY risk-adjusted. If
-              you can do it cheaper and prove it, the protocol switches to your
-              plan. No incumbency advantage. No moat. Just results.
-            </p>
-          </div>
-          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="font-black uppercase text-black mb-3">
-              Outcome Perpetuity &gt; Extraction
-            </h3>
-            <p className="text-sm text-black/70 font-medium leading-relaxed">
-              The prize pool persists as long as outcomes persist. It&apos;s not a
-              one-time payout — it&apos;s a standing market. As long as someone is
-              producing measurable improvements in health and income, the bonds
-              keep distributing. Extraction stops when outcomes stop.
-            </p>
-          </div>
-          <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="font-black uppercase text-black mb-3">
-              Zero Insider Advantage
-            </h3>
-            <p className="text-sm text-black/70 font-medium leading-relaxed">
-              No team allocation. No founder tokens. No advisor tokens.
-              No pre-sale. No private rounds. No early-access pricing.
-              No admin keys that can drain the pool. Your $100 gets exactly
-              the same terms as someone else&apos;s $100,000.
-            </p>
-          </div>
-        </div>
-        <div className="border-4 border-black bg-white p-6 mt-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <h3 className="font-black uppercase text-black mb-2">
-            The Protocol Itself Is Replaceable
-          </h3>
-          <p className="text-sm text-black/70 font-medium leading-relaxed">
-            If someone builds a better coordination mechanism than Incentive Alignment Bonds +
-            Wishocratic allocation, the protocol should be replaced by it. The
-            goal is outcome maximisation, not protocol preservation. On my
-            planet, we replaced the governance protocol three times in four
-            thousand years. Each time it was mildly inconvenient and
-            comprehensively worth it.
-          </p>
-          <p className="text-sm text-black/70 font-medium leading-relaxed mt-3">
-            The people who built this protocol have exactly the same access as
-            everyone else. Same bond price. Same contract. Same terms. If they
-            want allocation power, they buy bonds like everyone else.
-          </p>
-        </div>
+        <Accordion type="multiple" className="border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          {/* Panel 1: Required Functions */}
+          <AccordionItem value="functions" className="border-b-4 border-black last:border-b-0">
+            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-black hover:no-underline hover:bg-black/5">
+              10 Required Functions (v1 Benchmark)
+            </AccordionTrigger>
+            <AccordionContent className="px-6">
+              <p className="text-sm font-medium text-black/60 mb-4">
+                The Earth Optimization Plan v1 defines ten functions that must be
+                operational for outcome thresholds to be achievable. Any team can
+                submit a v2 that beats it on cost per DALY averted.
+              </p>
+              <div className="border-2 border-black bg-white overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-black text-white">
+                      <th className="px-4 py-2 text-left font-black uppercase text-xs">#</th>
+                      <th className="px-4 py-2 text-left font-black uppercase text-xs">Function</th>
+                      <th className="px-4 py-2 text-left font-black uppercase text-xs hidden md:table-cell">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {requiredFunctions.map((fn) => (
+                      <tr key={fn.id} className="border-t border-black/10">
+                        <td className="px-4 py-2 font-black text-brutal-pink">{fn.id}</td>
+                        <td className="px-4 py-2 font-black text-black">{fn.name}</td>
+                        <td className="px-4 py-2 text-black/60 font-medium hidden md:table-cell">{fn.description}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* Panel 2: 4-Stage Bounty */}
+          <AccordionItem value="stages" className="border-b-4 border-black last:border-b-0">
+            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-black hover:no-underline hover:bg-black/5">
+              How Money Moves — 4-Stage Bounty
+            </AccordionTrigger>
+            <AccordionContent className="px-6">
+              <p className="text-sm font-medium text-black/60 mb-4">
+                Deposits flow through four stages. Money doesn&apos;t move until
+                outcomes exist. Recruiters get paid for results, not proposals.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {bountyStages.map((item) => (
+                  <div
+                    key={item.stage}
+                    className="border-2 border-black bg-white p-4"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="w-7 h-7 bg-black text-white flex items-center justify-center text-xs font-black">
+                        {item.stage}
+                      </span>
+                      <span className={`text-[10px] font-black uppercase px-2 py-0.5 border border-black ${item.statusColor}`}>
+                        {item.status}
+                      </span>
+                    </div>
+                    <h4 className="font-black text-black uppercase text-sm mb-1">
+                      {item.label}
+                    </h4>
+                    <p className="text-xs text-black/60 font-medium leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* Panel 3: Anti-Capture */}
+          <AccordionItem value="anti-capture" className="border-b-4 border-black last:border-b-0">
+            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-black hover:no-underline hover:bg-black/5">
+              Anti-Capture
+            </AccordionTrigger>
+            <AccordionContent className="px-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="border-2 border-black bg-brutal-yellow p-4">
+                  <h4 className="font-black uppercase text-black text-xs mb-2">
+                    Replacement Rule
+                  </h4>
+                  <p className="text-xs text-black/70 font-medium leading-relaxed">
+                    Any team can submit a v2 plan that beats v1 on cost per DALY
+                    averted. If you can do it cheaper and prove it, the protocol
+                    switches to your plan. No incumbency advantage.
+                  </p>
+                </div>
+                <div className="border-2 border-black bg-brutal-cyan p-4">
+                  <h4 className="font-black uppercase text-black text-xs mb-2">
+                    Outcome Perpetuity
+                  </h4>
+                  <p className="text-xs text-black/70 font-medium leading-relaxed">
+                    The prize pool persists as long as outcomes persist. It&apos;s not a
+                    one-time payout — it&apos;s a standing market. Extraction stops
+                    when outcomes stop.
+                  </p>
+                </div>
+                <div className="border-2 border-black bg-white p-4">
+                  <h4 className="font-black uppercase text-black text-xs mb-2">
+                    Zero Insider Advantage
+                  </h4>
+                  <p className="text-xs text-black/70 font-medium leading-relaxed">
+                    No team allocation. No founder tokens. No pre-sale. No admin
+                    keys. Your $100 gets exactly the same terms as $100,000.
+                  </p>
+                </div>
+              </div>
+              <p className="text-xs text-black/60 font-medium leading-relaxed">
+                The protocol itself is replaceable. If someone builds a better
+                coordination mechanism, it should be replaced. The goal is outcome
+                maximisation, not protocol preservation.
+              </p>
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* Panel 4: Contract Architecture */}
+          <AccordionItem value="contracts" className="border-b-4 border-black last:border-b-0">
+            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-black hover:no-underline hover:bg-black/5">
+              Contract Architecture
+            </AccordionTrigger>
+            <AccordionContent className="px-6">
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {contractDetails.map((item) => (
+                  <div
+                    key={item.label}
+                    className="border-2 border-black bg-white p-3"
+                  >
+                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">
+                      {item.label}
+                    </div>
+                    <div className="mt-1 text-sm font-black text-black">
+                      {item.value}
+                    </div>
+                    <div className="mt-1 text-xs font-medium text-black/60">
+                      {item.detail}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 text-center">
+                <NavItemLink
+                  item={contractsSourceLink}
+                  variant="custom"
+                  external
+                  className="inline-flex items-center text-xs font-black text-brutal-pink uppercase hover:text-black transition-colors"
+                >
+                  VoterPrizeTreasury.sol, VoteToken.sol — full source on GitHub &rarr;
+                </NavItemLink>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </section>
 
-      {/* Pool Status */}
+      {/* Section 8: Pool Status + Final CTA */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
           Pool Status
         </h2>
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-4 mb-8">
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-black uppercase text-black/60">
               Status
@@ -737,11 +671,11 @@ export default function PrizePage() {
           </div>
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-black uppercase text-black/60">
-              Total Invested
+              Total Deposited
             </div>
             <div className="mt-2 text-2xl font-black text-black">$0</div>
             <div className="text-[10px] font-bold text-black/40">
-              Accepting bond purchases
+              Accepting deposits
             </div>
           </div>
           <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -763,77 +697,30 @@ export default function PrizePage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Smart Contract Details */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
-          Contract Architecture
-        </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {contractDetails.map((item) => (
-            <div
-              key={item.label}
-              className="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        <div className="card bg-brutal-pink border-black text-center">
+          <h2 className="text-2xl font-black text-white mb-3 uppercase">
+            The Bar Is Low
+          </h2>
+          <p className="text-white/80 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
+            The current cost of governance dysfunction is {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} per year.
+            The break-even probability shift is 0.0067%. You don&apos;t need to be
+            altruistic. You just need to be numerate.
+          </p>
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <a
+              href="#invest"
+              className="inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
-              <div className="text-xs font-black uppercase tracking-[0.2em] text-black/50">
-                {item.label}
-              </div>
-              <div className="mt-1 text-sm font-black text-black">
-                {item.value}
-              </div>
-              <div className="mt-2 text-xs font-medium text-black/60">
-                {item.detail}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 text-center">
-          <NavItemLink
-            item={contractsSourceLink}
-            variant="custom"
-            external
-            className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-black transition-colors"
-          >
-            IABVault.sol, PrizePool.sol, WishocraticTreasury.sol, UBIDistributor.sol — full source on GitHub &rarr;
-          </NavItemLink>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="card bg-brutal-pink border-black text-center">
-        <h2 className="text-2xl font-black text-white mb-3 uppercase">
-          The Bar Is Low
-        </h2>
-        <p className="text-white/80 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
-          The current cost of governance dysfunction is {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} per year.
-          The Earth Optimization Plan costs roughly ${TREATY_EXPECTED_COST_PER_DALY.value.toFixed(3)} per DALY averted.
-          Your species is leaving a 282,000x improvement on the table. The
-          break-even probability shift is 0.0067%. You don&apos;t need to be
-          altruistic. You just need to be numerate.
-        </p>
-        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <NavItemLink
-            item={wishocracyLink}
-            variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-          >
-            Express Your Preferences
-          </NavItemLink>
-          <NavItemLink
-            item={alignmentLink}
-            variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-          >
-            Score Your Politicians
-          </NavItemLink>
-          <NavItemLink
-            item={transparencyLink}
-            variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-          >
-            Verify Everything
-          </NavItemLink>
+              Buy Bonds
+            </a>
+            <NavItemLink
+              item={wishocracyLink}
+              variant="custom"
+              className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              Express Your Preferences
+            </NavItemLink>
+          </div>
         </div>
       </section>
     </div>

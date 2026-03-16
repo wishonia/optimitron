@@ -497,6 +497,12 @@ export default function Home() {
             Data, tools, and recommendations. All here. Click something.
           </p>
           <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-4">
+            <a
+              href="/prize#invest"
+              className="px-8 py-3 bg-brutal-pink text-white font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            >
+              Fund the Referendum
+            </a>
             <NavItemLink
               item={compareLink}
               variant="custom"

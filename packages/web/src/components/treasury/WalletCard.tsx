@@ -30,7 +30,7 @@ export function WalletCard() {
             <p className="text-xs font-medium text-black/60 mb-4">
               Connect your wallet to check your $WISH balance, register for UBI,
               and trigger distributions. This is the $WISH monetary system — not
-              the IAB prize pool.
+              the IAB public goods pool.
             </p>
             {connectors.length > 0 && (
               <div className="flex flex-wrap gap-2">

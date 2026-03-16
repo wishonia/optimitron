@@ -13,9 +13,8 @@ import {
 } from "wagmi";
 import { parseUnits, formatUnits, type Address } from "viem";
 import { baseSepolia } from "wagmi/chains";
-import { voterPrizeTreasuryAbi } from "@/lib/contracts/voter-prize-treasury-abi";
-import { voteTokenAbi } from "@/lib/contracts/vote-token-abi";
-import { getContracts } from "@/lib/contracts/addresses";
+import { voterPrizeTreasuryAbi, voteTokenAbi } from "@optomitron/treasury-prize/abi";
+import { getContracts } from "@optomitron/treasury-shared/addresses";
 
 const USDC_DECIMALS = 6;
 const PRESET_AMOUNTS = ["100", "500", "1,000", "5,000"];
