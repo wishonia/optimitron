@@ -21,7 +21,7 @@ export const ROUTES = {
   federalReserve: "/federal-reserve",
   departmentOfWar: "/department-of-war",
   treasury: "/treasury",
-  voterPrize: "/voter-prize",
+  contribute: "/contribute",
   referendum: "/referendum",
   scoreboard: "/scoreboard",
   signIn: "/auth/signin",
@@ -219,12 +219,12 @@ export const prizeLink: NavItem = {
   description: "Earth Optimization Prize — outcome-based escrow for governance reform",
 };
 
-export const voterPrizeLink: NavItem = {
-  href: ROUTES.voterPrize,
-  label: "Voter Prize",
-  emoji: "🗳️",
-  description: "Deposit to fund voters — VOTE token holders claim the prize if outcomes improve",
-  matchPrefixes: [ROUTES.voterPrize],
+export const contributeLink: NavItem = {
+  href: ROUTES.contribute,
+  label: "Earth Prize",
+  emoji: "🌍",
+  description: "Contribute to the Earth Optimization Prize — fund vote recruitment, get your money back if it doesn't work",
+  matchPrefixes: [ROUTES.contribute],
 };
 
 export const earthOptimizationPrizePaperLink: NavItem = {
@@ -247,7 +247,7 @@ export const topLinks: NavItem[] = [
   wishocracyLink,
   alignmentLink,
   prizeLink,
-  voterPrizeLink,
+  contributeLink,
   treasuryLink,
   transparencyLink,
   aboutLink,

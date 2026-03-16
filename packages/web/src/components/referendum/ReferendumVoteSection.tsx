@@ -134,7 +134,7 @@ export function ReferendumVoteSection({
               Your verified vote earned 1 VOTE token. It will be minted
               on-chain in the next batch.{" "}
               <Link
-                href="/voter-prize"
+                href="/contribute"
                 className="font-black text-brutal-pink underline hover:text-black"
               >
                 View your VOTE balance &rarr;
@@ -150,10 +150,10 @@ export function ReferendumVoteSection({
               Verify with World ID below{address ? "" : " and connect a wallet"} to earn 1 VOTE token for this
               vote. VOTE tokens are redeemable for a share of the{" "}
               <Link
-                href="/voter-prize"
+                href="/contribute"
                 className="font-black text-brutal-pink underline hover:text-black"
               >
-                Voter Prize Treasury
+                Earth Optimization Prize
               </Link>{" "}
               if health and income outcomes improve.
             </p>

@@ -6,6 +6,7 @@ import { CheckInHistoryCard } from "@/components/profile/CheckInHistoryCard";
 import { DailyCheckInCard } from "@/components/profile/DailyCheckInCard";
 import { PushNotificationPrompt } from "@/components/notifications/PushNotificationPrompt";
 import { ProfileSnapshotForm } from "@/components/profile/ProfileSnapshotForm";
+import { VoteTokenBalanceCard } from "@/components/prize/VoteTokenBalanceCard";
 import type { ProfilePageData } from "@/lib/profile";
 import { ROUTES } from "@/lib/routes";
 
@@ -52,9 +53,9 @@ export function ProfileHub({ initialData }: ProfileHubProps) {
           color="bg-brutal-yellow"
         />
         <ProfileCTA
-          href={ROUTES.prize}
-          label="Prize"
-          description="Deposit to the Earth Optimization Prize escrow"
+          href={ROUTES.contribute}
+          label="Earth Prize"
+          description="Contribute to the Earth Optimization Prize"
           color="bg-green-200"
         />
       </div>
@@ -65,6 +66,8 @@ export function ProfileHub({ initialData }: ProfileHubProps) {
       </div>
 
       <CheckInHistoryCard history={data.history} />
+
+      <VoteTokenBalanceCard />
 
       <PushNotificationPrompt />
     </div>

@@ -83,7 +83,7 @@ export function VoteTokenBalanceCard() {
           Each verified vote = 1 VOTE.
         </p>
         <Link
-          href="/auth/signin?callbackUrl=/voter-prize"
+          href="/auth/signin?callbackUrl=/contribute"
           className="mt-4 inline-flex items-center justify-center border-4 border-black bg-black px-6 py-2 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
         >
           Sign In
@@ -170,7 +170,10 @@ export function VoteTokenBalanceCard() {
                       {mint.txHash && (
                         <>
                           {" "}
-                          &middot; tx: {mint.txHash.slice(0, 10)}...
+                          &middot;{" "}
+                          <a href={`https://sepolia.basescan.org/tx/${mint.txHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-brutal-pink">
+                            view tx
+                          </a>
                         </>
                       )}
                     </div>

@@ -352,9 +352,9 @@ export function VoterPrizeTreasuryDeposit() {
         {!isConnected ? (
           <div className="space-y-3">
             <p className="text-xs font-medium text-black/60 mb-4">
-              Connect your wallet to deposit USDC into the Voter Prize
-              Treasury. Your deposit earns yield in Aave while it waits for
-              outcome thresholds to be met.
+              Connect your wallet to contribute to the Earth Optimization
+              Prize. Your contribution earns interest in Aave while
+              incentivizing recruiters to get humanity to vote.
             </p>
             {connectors.length > 0 && (
               <div className="flex flex-wrap gap-2">
@@ -429,7 +429,7 @@ export function VoterPrizeTreasuryDeposit() {
               </div>
               <div className="border-2 border-black bg-brutal-cyan/10 p-2">
                 <div className="text-[10px] font-black uppercase text-black/50">
-                  Your Deposit
+                  Your Contribution
                 </div>
                 <div className="text-sm font-black">
                   {userDeposit !== undefined
@@ -477,7 +477,7 @@ export function VoterPrizeTreasuryDeposit() {
       {/* Deposit Form */}
       <div className="border-4 border-black bg-white p-6">
         <h3 className="font-black uppercase text-black mb-3">
-          Deposit to Prize Treasury
+          Contribute to the Prize
         </h3>
 
         {!isDeployed && (
@@ -486,8 +486,8 @@ export function VoterPrizeTreasuryDeposit() {
               Not Yet Deployed
             </div>
             <p className="text-xs font-medium text-black/50 mt-1">
-              The VoterPrizeTreasury contract has not been deployed to this
-              network yet. Switch to Base Sepolia once contracts are live.
+              The prize contract has not been deployed to this network yet.
+              Switch to Base Sepolia once contracts are live.
             </p>
           </div>
         )}
@@ -524,13 +524,16 @@ export function VoterPrizeTreasuryDeposit() {
                     ? "Approving..."
                     : "Depositing..."
                   : needsApproval
-                    ? "Approve & Deposit"
-                    : "Deposit"}
+                    ? "Approve & Contribute"
+                    : "Contribute"}
               </button>
             </div>
             {isDepositConfirmed && (
               <p className="text-xs font-black text-brutal-cyan mt-2">
-                Deposit confirmed! Tx: {depositHash?.slice(0, 10)}...
+                Contribution confirmed!{" "}
+                <a href={`https://sepolia.basescan.org/tx/${depositHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">
+                  View transaction &rarr;
+                </a>
               </p>
             )}
           </div>
@@ -592,7 +595,10 @@ export function VoterPrizeTreasuryDeposit() {
           </div>
           {isRedeemConfirmed && (
             <p className="text-xs font-black text-green-700 mt-2">
-              Redeemed! Tx: {redeemHash?.slice(0, 10)}...
+              Redeemed!{" "}
+              <a href={`https://sepolia.basescan.org/tx/${redeemHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">
+                View transaction &rarr;
+              </a>
             </p>
           )}
         </div>
@@ -605,8 +611,8 @@ export function VoterPrizeTreasuryDeposit() {
             Claim Your Refund
           </h3>
           <p className="text-xs font-medium text-black/60 mb-4">
-            The treasury has matured and thresholds were not met. You can
-            reclaim your principal plus all accrued Aave yield.
+            The prize period has ended and outcome thresholds were not met.
+            You can reclaim your full contribution plus all accrued interest.
           </p>
           <div className="flex items-center gap-4">
             <div>
@@ -632,7 +638,10 @@ export function VoterPrizeTreasuryDeposit() {
           </div>
           {isClaimConfirmed && (
             <p className="text-xs font-black text-green-700 mt-2">
-              Refund claimed! Tx: {claimHash?.slice(0, 10)}...
+              Refund claimed!{" "}
+              <a href={`https://sepolia.basescan.org/tx/${claimHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">
+                View transaction &rarr;
+              </a>
             </p>
           )}
         </div>
@@ -642,7 +651,7 @@ export function VoterPrizeTreasuryDeposit() {
       {isDeployed && isConnected && (
         <div className="border-4 border-black bg-brutal-cyan/10 p-6">
           <h3 className="font-black uppercase text-black mb-3">
-            Live Treasury Status
+            Live Prize Status
           </h3>
           <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
             <div className="border-2 border-black bg-white p-2">
