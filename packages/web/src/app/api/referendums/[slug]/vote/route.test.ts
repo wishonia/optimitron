@@ -112,7 +112,7 @@ describe("POST /api/referendums/[slug]/vote", () => {
     const res = await POST(makeRequest("test-ref", { answer: "yes" }), makeParams("test-ref"));
 
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ vote });
+    await expect(res.json()).resolves.toEqual({ vote, voteTokenMint: null });
     expect(mocks.upsert).toHaveBeenCalledWith({
       where: { userId_referendumId: { userId: "user_1", referendumId: "ref_1" } },
       update: { answer: "YES", deletedAt: null },
@@ -129,7 +129,7 @@ describe("POST /api/referendums/[slug]/vote", () => {
     const res = await POST(makeRequest("test-ref", { answer: "no" }), makeParams("test-ref"));
 
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ vote });
+    await expect(res.json()).resolves.toEqual({ vote, voteTokenMint: null });
     expect(mocks.upsert).toHaveBeenCalledWith(
       expect.objectContaining({
         create: expect.objectContaining({ answer: "NO" }),
@@ -146,7 +146,7 @@ describe("POST /api/referendums/[slug]/vote", () => {
     const res = await POST(makeRequest("test-ref", { answer: "ABSTAIN" }), makeParams("test-ref"));
 
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ vote: updatedVote });
+    await expect(res.json()).resolves.toEqual({ vote: updatedVote, voteTokenMint: null });
     expect(mocks.upsert).toHaveBeenCalledWith(
       expect.objectContaining({
         update: { answer: "ABSTAIN", deletedAt: null },

@@ -81,6 +81,9 @@ export type VotePosition = z.infer<typeof VotePositionSchema>;
 export const ReferendumStatusSchema = z.enum(['DRAFT', 'ACTIVE', 'CLOSED']);
 export type ReferendumStatus = z.infer<typeof ReferendumStatusSchema>;
 
+export const VoteTokenMintStatusSchema = z.enum(['PENDING', 'SUBMITTED', 'CONFIRMED', 'FAILED']);
+export type VoteTokenMintStatus = z.infer<typeof VoteTokenMintStatusSchema>;
+
 // 18 enums in the schema:
 // 1. CombinationOperation  2. FillingType  3. Valence  4. MeasurementScale
 // 5. UnitCodeSystem  6. AnalysisStatus  7. StrengthLevel  8. ConfidenceLevel
@@ -740,6 +743,8 @@ export const AlignmentScoreSchema = z.object({
   aggregationRunId: z.string(),
   score: z.number(),
   votesCompared: z.number().int(),
+  publishedAt: nullableDateSchema,
+  onChainRef: z.string().nullable().optional(),
   createdAt: dateSchema,
   updatedAt: dateSchema,
   deletedAt: nullableDateSchema,
@@ -869,3 +874,38 @@ export const WishocraticDistributionSchema = z.object({
   deletedAt: nullableDateSchema,
 });
 export type WishocraticDistributionType = z.infer<typeof WishocraticDistributionSchema>;
+
+// ============================================================================
+// VOTE TOKEN & VOTER PRIZE TREASURY
+// ============================================================================
+
+/** Zod schema for the VoteTokenMint model */
+export const VoteTokenMintSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  referendumId: z.string(),
+  nullifierHash: z.string(),
+  walletAddress: z.string(),
+  amount: z.string(),
+  txHash: z.string().nullable().optional(),
+  chainId: z.number().int(),
+  status: VoteTokenMintStatusSchema.default('PENDING'),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type VoteTokenMintType = z.infer<typeof VoteTokenMintSchema>;
+
+/** Zod schema for the PrizeTreasuryDeposit model */
+export const PrizeTreasuryDepositSchema = z.object({
+  id: z.string(),
+  depositorAddress: z.string(),
+  amount: z.string(),
+  sharesReceived: z.string(),
+  txHash: z.string(),
+  chainId: z.number().int(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type PrizeTreasuryDepositType = z.infer<typeof PrizeTreasuryDepositSchema>;

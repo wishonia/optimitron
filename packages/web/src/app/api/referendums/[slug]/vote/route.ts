@@ -70,7 +70,52 @@ export async function POST(
       },
     });
 
-    return NextResponse.json({ vote });
+    // Queue VOTE token mint if user has verified World ID + wallet
+    let voteTokenMint = null;
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          personhoodVerifications: {
+            where: { provider: "WORLD_ID", status: "VERIFIED", deletedAt: null },
+            take: 1,
+          },
+        },
+      });
+
+      const verification = user?.personhoodVerifications[0];
+      const walletAddress = (body as Record<string, unknown>).walletAddress as
+        | string
+        | undefined;
+
+      if (verification && walletAddress) {
+        const chainId = 8453; // Base L2
+        const amount = "1000000000000000000"; // 1 VOTE (1e18)
+
+        voteTokenMint = await prisma.voteTokenMint.upsert({
+          where: {
+            userId_referendumId: { userId, referendumId: referendum.id },
+          },
+          update: {
+            walletAddress,
+            deletedAt: null,
+          },
+          create: {
+            userId,
+            referendumId: referendum.id,
+            nullifierHash: verification.externalId,
+            walletAddress,
+            amount,
+            chainId,
+          },
+        });
+      }
+    } catch (mintError) {
+      // Non-blocking: vote succeeds even if mint queue fails
+      console.error("[VOTE TOKEN MINT] Queue error:", mintError);
+    }
+
+    return NextResponse.json({ vote, voteTokenMint });
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

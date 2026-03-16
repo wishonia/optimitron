@@ -294,6 +294,7 @@ model User {
   createdReferendums            Referendum[]                    @relation("UserCreatedReferendums")
   referendumVotes               ReferendumVote[]                @relation("UserReferendumVotes")
   referendumReferrals           ReferendumVote[]                @relation("UserReferendumReferrals")
+  voteTokenMints                VoteTokenMint[]                 @relation("UserVoteTokenMints")
 
   @@index([email])
   @@index([username])
@@ -2155,6 +2156,8 @@ model AlignmentScore {
   categoryScores CategoryAlignmentScore[]
 
   @@unique([politicianId, aggregationRunId])
+  @@index([politicianId])
+  @@index([aggregationRunId])
   @@index([score])
 }
 
@@ -2386,13 +2389,15 @@ model Referendum {
   deletedAt DateTime?
 
   // -- Relations --
-  createdBy    User?            @relation("UserCreatedReferendums", fields: [createdByUserId], references: [id])
-  jurisdiction Jurisdiction?    @relation(fields: [jurisdictionId], references: [id])
-  votes        ReferendumVote[]
+  createdBy      User?            @relation("UserCreatedReferendums", fields: [createdByUserId], references: [id])
+  jurisdiction   Jurisdiction?    @relation(fields: [jurisdictionId], references: [id])
+  votes          ReferendumVote[]
+  voteTokenMints VoteTokenMint[]
 
   @@index([slug])
   @@index([status])
   @@index([jurisdictionId])
+  @@index([createdByUserId])
 }
 
 /// A user's vote on a specific referendum
@@ -2427,8 +2432,103 @@ model ReferendumVote {
   referrer   User?      @relation("UserReferendumReferrals", fields: [referredByUserId], references: [id])
 
   @@unique([userId, referendumId])
+  @@index([userId])
   @@index([referendumId])
   @@index([referredByUserId])
+}
+
+// ============================================================================
+// VOTE TOKEN & VOTER PRIZE TREASURY
+// ============================================================================
+
+enum VoteTokenMintStatus {
+  PENDING
+  SUBMITTED
+  CONFIRMED
+  FAILED
+}
+
+/// Links a referendum vote to an on-chain VOTE token mint.
+/// 1 VOTE per verified vote per referendum.
+model VoteTokenMint {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// The user who voted and receives VOTE tokens
+  userId String
+
+  /// Which referendum this mint is for
+  referendumId String
+
+  /// World ID nullifier hash (sybil resistance)
+  nullifierHash String
+
+  /// Wallet address receiving the VOTE tokens
+  walletAddress String
+
+  /// Amount of VOTE tokens (BigInt as string, e.g. "1000000000000000000" = 1 VOTE)
+  amount String
+
+  /// On-chain transaction hash (set after submission)
+  txHash String?
+
+  /// Chain ID where the transaction was submitted
+  chainId Int
+
+  /// Mint lifecycle status
+  status VoteTokenMintStatus @default(PENDING)
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  user       User       @relation("UserVoteTokenMints", fields: [userId], references: [id], onDelete: Cascade)
+  referendum Referendum @relation(fields: [referendumId], references: [id])
+
+  @@unique([userId, referendumId])
+  @@unique([nullifierHash, referendumId])
+  @@index([userId])
+  @@index([referendumId])
+  @@index([status])
+}
+
+/// Records a contributor's stablecoin deposit into the VoterPrizeTreasury.
+model PrizeTreasuryDeposit {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// On-chain wallet that made the deposit
+  depositorAddress String
+
+  /// Deposit amount (BigInt as string)
+  amount String
+
+  /// PRIZE shares received (BigInt as string)
+  sharesReceived String
+
+  /// On-chain transaction hash
+  txHash String
+
+  /// Chain ID where the deposit was made
+  chainId Int
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  @@index([depositorAddress])
+  @@index([txHash])
 }
 
 // ============================================================================
