@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Check, Copy, ExternalLink, Globe } from "lucide-react"
 import { PrivacyToggle } from "@/components/dashboard/PrivacyToggle"
+import { OrganizationSelector } from "@/components/dashboard/OrganizationSelector"
 import type { DashboardUser } from "@/types/dashboard"
 import Link from "next/link"
 
@@ -173,6 +174,18 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
             />
             <p className="text-xs text-muted-foreground mt-1">
               Profile banner image (recommended: 1500x500px)
+            </p>
+          </div>
+          <div>
+            <Label className="text-sm font-bold uppercase">Organization</Label>
+            <OrganizationSelector
+              value={null}
+              onSelect={(_orgId, _orgName) => {
+                // Organization membership handled via API
+              }}
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Search or create your organization
             </p>
           </div>
         </div>

@@ -15,6 +15,8 @@ export const IMPACT_PER_VOTE = {
 };
 
 export const VOTES_PER_HOUR = 60 / MINUTES_PER_PERSUASION;
+export const LIVES_PER_HOUR = IMPACT_PER_VOTE.lives * VOTES_PER_HOUR;
+export const SUFFERING_YEARS_PER_HOUR = (IMPACT_PER_VOTE.sufferingHours / HOURS_PER_YEAR) * VOTES_PER_HOUR;
 export const VALUE_PER_HOUR = IMPACT_PER_VOTE.economicValue * VOTES_PER_HOUR;
 
 export interface ImpactLedgerMetrics {

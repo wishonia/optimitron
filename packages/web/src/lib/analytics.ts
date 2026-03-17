@@ -1,0 +1,187 @@
+/**
+ * Google Analytics 4 event tracking utility
+ *
+ * Usage:
+ *   import { trackEvent } from '@/lib/analytics'
+ *   trackEvent('deposit_completed', { amount: 50 })
+ */
+
+declare global {
+  interface Window {
+    gtag?: (
+      command: 'event' | 'config' | 'set',
+      targetId: string,
+      config?: Record<string, unknown>
+    ) => void
+  }
+}
+
+type EventParams = Record<string, string | number | boolean | undefined>
+
+export function trackEvent(eventName: string, params?: EventParams): void {
+  if (typeof window === 'undefined' || !window.gtag) {
+    return
+  }
+
+  window.gtag('event', eventName, params)
+}
+
+// ============================================
+// Deposit / Prize Events
+// ============================================
+
+export function trackDepositStarted(params: {
+  amount: number
+  currency?: string
+}): void {
+  trackEvent('deposit_started', {
+    value: params.amount,
+    currency: params.currency || 'USDC',
+  })
+}
+
+export function trackDepositCompleted(params: {
+  amount: number
+  currency?: string
+  transactionId?: string
+}): void {
+  trackEvent('deposit_completed', {
+    value: params.amount,
+    currency: params.currency || 'USDC',
+    transaction_id: params.transactionId,
+  })
+}
+
+// ============================================
+// Referral Events
+// ============================================
+
+export function trackReferralLinkCopied(params: {
+  referralCode: string
+}): void {
+  trackEvent('referral_link_copied', {
+    referral_code: params.referralCode,
+  })
+}
+
+export function trackReferralShared(params: {
+  method: string
+  referralCode: string
+}): void {
+  trackEvent('referral_shared', {
+    method: params.method,
+    referral_code: params.referralCode,
+  })
+}
+
+// ============================================
+// Auth Events
+// ============================================
+
+export function trackSignUp(params: {
+  method: string
+}): void {
+  trackEvent('sign_up', {
+    method: params.method,
+  })
+}
+
+export function trackLogin(params: {
+  method: string
+}): void {
+  trackEvent('login', {
+    method: params.method,
+  })
+}
+
+// ============================================
+// Sharing Events
+// ============================================
+
+export function trackShare(params: {
+  method: string
+  contentType: string
+  itemId?: string
+}): void {
+  trackEvent('share', {
+    method: params.method,
+    content_type: params.contentType,
+    item_id: params.itemId,
+  })
+}
+
+export function trackCopyLink(params: {
+  contentType: string
+  url?: string
+}): void {
+  trackEvent('copy_link', {
+    content_type: params.contentType,
+    url: params.url,
+  })
+}
+
+// ============================================
+// Comparison / RAPPA Events
+// ============================================
+
+export function trackComparisonSubmitted(params: {
+  categoryA: string
+  categoryB: string
+  winner: string
+}): void {
+  trackEvent('comparison_submitted', {
+    category_a: params.categoryA,
+    category_b: params.categoryB,
+    winner: params.winner,
+  })
+}
+
+export function trackComparisonSessionCompleted(params: {
+  comparisonCount: number
+  jurisdictionId?: string
+}): void {
+  trackEvent('comparison_session_completed', {
+    comparison_count: params.comparisonCount,
+    jurisdiction_id: params.jurisdictionId,
+  })
+}
+
+// ============================================
+// Navigation/Engagement Events
+// ============================================
+
+export function trackOutboundLink(params: {
+  url: string
+  linkText?: string
+}): void {
+  trackEvent('outbound_link', {
+    url: params.url,
+    link_text: params.linkText,
+  })
+}
+
+export function trackCtaClick(params: {
+  ctaName: string
+  location: string
+}): void {
+  trackEvent('cta_click', {
+    cta_name: params.ctaName,
+    location: params.location,
+  })
+}
+
+// ============================================
+// Search Events
+// ============================================
+
+export function trackSearch(params: {
+  searchTerm: string
+  searchType: 'policy' | 'organization' | 'jurisdiction' | 'general'
+  resultsCount?: number
+}): void {
+  trackEvent('search', {
+    search_term: params.searchTerm,
+    search_type: params.searchType,
+    results_count: params.resultsCount,
+  })
+}

@@ -1,7 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { calculateImpactLedger, getNextLifeMilestoneMessage, HOURS_PER_YEAR, VALUE_PER_HOUR } from "@/lib/impact-ledger"
 import { formatCurrencyShort, formatLives, formatNumberShort } from "@/lib/formatters"
-import { Sparkles, Clock3, Heart, Coins } from "lucide-react"
+import { Sparkles, Clock3, Heart } from "lucide-react"
+import { ImpactExplainer } from "@/components/shared/ImpactExplainer"
+import { LivesEquation, SufferingEquation, ValueEquation } from "@/components/shared/impact-math"
 
 interface ImpactLedgerCardProps {
   votesLogged: number
@@ -17,24 +19,28 @@ export function ImpactLedgerCard({ votesLogged }: ImpactLedgerCardProps) {
       unit: "voters",
       value: metrics.votesLogged.toLocaleString("en-US"),
       icon: "🗳️",
+      equation: null,
     },
     {
       label: "Lives saved",
       unit: "future lives",
       value: formatLives(metrics.livesSaved),
       icon: "❤️‍🔥",
+      equation: <LivesEquation votes={metrics.votesLogged} className="text-xs text-muted-foreground mt-1" />,
     },
     {
       label: "Suffering prevented",
       unit: "years",
       value: formatNumberShort(metrics.sufferingHoursRemoved / HOURS_PER_YEAR),
       icon: "⏳",
+      equation: <SufferingEquation votes={metrics.votesLogged} className="text-xs text-muted-foreground mt-1" />,
     },
     {
       label: "DALY/QALY value",
       unit: "generated",
       value: formatCurrencyShort(metrics.economicValueCreated, { significantDigits: 3 }),
       icon: "💰",
+      equation: <ValueEquation votes={metrics.votesLogged} className="text-xs text-muted-foreground mt-1" />,
     },
   ]
 
@@ -48,6 +54,7 @@ export function ImpactLedgerCard({ votesLogged }: ImpactLedgerCardProps) {
         <CardTitle className="text-2xl font-black uppercase flex items-center gap-2">
           <Sparkles className="h-6 w-6" />
           IMPACT SCOREBOARD
+          <ImpactExplainer className="ml-1 h-7 w-7" />
         </CardTitle>
         <CardDescription className="font-bold">
           Every referral updates your Earth optimization ledger. Healthy years priced at $150K each (DALY/QALY standard).
@@ -69,6 +76,7 @@ export function ImpactLedgerCard({ votesLogged }: ImpactLedgerCardProps) {
                     {stat.icon}
                   </span>
                 </div>
+                {stat.equation}
               </div>
             ))}
           </div>

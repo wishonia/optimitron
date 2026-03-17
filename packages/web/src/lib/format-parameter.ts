@@ -74,6 +74,52 @@ export function fmtParam(param: Parameter, figures = 3): string {
  *   fmtRaw(604.44)        → "604"
  *   fmtRaw(0.861)         → "0.861"
  */
+/**
+ * Format options for parameter display (used by ParameterValue component)
+ */
+export interface FormatParameterOptions {
+  /** Number of decimal places (default: auto-detect based on magnitude) */
+  precision?: number
+  /** Include unit suffix (default: false) */
+  includeUnit?: boolean
+  /** Compact format - use K/M/B/T suffixes (default: true) */
+  compact?: boolean
+}
+
+/**
+ * Smart formatter that auto-detects unit type and formats accordingly.
+ * Used by shared components (ImpactExplainer, ParameterValue, impact-math).
+ *
+ * @example
+ * formatParameter(GLOBAL_MILITARY_SPENDING_ANNUAL_2024) // "$2.72 trillion"
+ * formatParameter(ANTIDEPRESSANT_TRIAL_EXCLUSION_RATE) // "86.1%"
+ */
+export function formatParameter(
+  param: Parameter,
+  options: FormatParameterOptions = {}
+): string {
+  const { compact = true } = options
+
+  if (!compact) {
+    return fmtParam(param)
+  }
+
+  return fmtParam(param)
+}
+
+/**
+ * Format confidence interval for a parameter.
+ */
+export function formatConfidenceInterval(param: Parameter): string | null {
+  if (!param.confidenceInterval) return null
+
+  const [low, high] = param.confidenceInterval
+  const lowFormatted = fmtParam({ ...param, value: low })
+  const highFormatted = fmtParam({ ...param, value: high })
+
+  return `${lowFormatted} – ${highFormatted}`
+}
+
 export function fmtRaw(value: number, figures = 3): string {
   const abs = Math.abs(value);
   const sign = value < 0 ? "-" : "";
