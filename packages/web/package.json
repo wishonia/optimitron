@@ -78,10 +78,10 @@
     "viem": "^2",
     "wagmi": "^3.5.0",
     "web-push": "^3.6.7",
+    "@google/genai": "^1.30.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@google/genai": "^1.30.0",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^20.11.0",

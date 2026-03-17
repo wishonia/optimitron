@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, type ReactNode } from "react";
+import { useState, useRef, useCallback, lazy, Suspense, type ReactNode } from "react";
 import {
   ChatContainer,
   ConversationContext,
@@ -37,6 +37,8 @@ import { listExplorerOutcomes, getOutcomeMegaStudy } from "../../lib/analysis-ex
 import { getOutcomeHubPath } from "../../lib/analysis-explorer-routes";
 import misconceptionsData from "../../../public/data/misconceptions.json";
 import "./chat-theme.css";
+
+const VoiceChatOverlay = lazy(() => import("./VoiceChatOverlay"));
 
 // --- Extended message types for app-specific cards ---
 type MythCardMessage = { type: "mythCard"; finding: { myth: string; reality: string; grade: string } };
@@ -110,6 +112,8 @@ function pickRandom<T>(arr: T[]): T | undefined {
 }
 
 export default function ChatPage() {
+  const [showVoice, setShowVoice] = useState(false);
+
   const [messages, setMessages] = useState<AppChatMessage[]>([
     {
       type: "text",
@@ -991,6 +995,24 @@ export default function ChatPage() {
         renderCustomMessage={renderCustomMessage}
         recentFoods={recentFoods}
       />
+
+      {/* Voice chat mic button — fixed position */}
+      <button
+        className="opto-voice-fab"
+        onClick={() => setShowVoice(true)}
+        aria-label="Talk to Wishonia"
+        title="Talk to Wishonia"
+        type="button"
+      >
+        <span aria-hidden="true">{'\u{1F3A4}'}</span>
+      </button>
+
+      {/* Voice chat overlay — lazy loaded */}
+      {showVoice && (
+        <Suspense fallback={null}>
+          <VoiceChatOverlay onClose={() => setShowVoice(false)} />
+        </Suspense>
+      )}
     </section>
   );
 }

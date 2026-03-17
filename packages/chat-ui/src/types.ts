@@ -1,5 +1,16 @@
 import type React from 'react';
 
+/** Voice chat state machine */
+export type VoiceState = 'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'error';
+
+/** Raw PCM audio chunk for streaming */
+export interface AudioChunk {
+  /** PCM audio data (Int16) */
+  data: ArrayBuffer;
+  /** Sample rate in Hz */
+  sampleRate: number;
+}
+
 /** Message types for the chat UI */
 
 export type ChatMessage =

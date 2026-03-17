@@ -29,4 +29,8 @@ export const API_ROUTES = {
   treasury: {
     registerUbi: "/api/treasury/register-ubi",
   },
+  voice: {
+    token: "/api/voice/token",
+    rag: "/api/voice/rag",
+  },
 } as const;
