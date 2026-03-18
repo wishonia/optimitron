@@ -9,13 +9,10 @@
  *
  * Output: packages/web/demo-assets/narration/ (WAV files per section)
  */
-import { config } from "dotenv";
+import "./load-env";
 import { GoogleGenAI } from "@google/genai";
 import { writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { join, resolve } from "node:path";
-
-// Load .env from project root
-config({ path: resolve(__dirname, "..", "..", "..", ".env") });
+import { join } from "node:path";
 
 const OUTPUT_DIR = join(__dirname, "..", "demo-assets", "narration");
 

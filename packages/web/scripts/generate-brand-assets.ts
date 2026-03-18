@@ -18,16 +18,9 @@
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync } from "fs";
-import { resolve, join, dirname } from "path";
-import { fileURLToPath } from "url";
-import { config } from "dotenv";
+import { resolve, join } from "path";
+import "./load-env";
 import { generateImage, buildPrompt, BRAND } from "./lib/image-generator";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-config({ path: resolve(__dirname, "../../../.env") });
-config({ path: resolve(__dirname, "../.env") });
 
 const PUBLIC_DIR = resolve(__dirname, "../public");
 const ICONS_DIR = join(PUBLIC_DIR, "icons");

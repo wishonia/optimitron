@@ -1,4 +1,4 @@
-import "../src/lib/server-env";
+import "./load-env";
 import { syncAlignmentBenchmarkPoliticians } from "../src/lib/alignment-politicians.server";
 
 async function main() {

@@ -8,12 +8,7 @@
  * After running, set GEMINI_FILE_SEARCH_STORE_ID in your .env file.
  */
 
-import dotenv from 'dotenv';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: resolve(__dirname, '../../../.env') });
+import './load-env';
 import { GoogleGenAI } from '@google/genai';
 
 const MANUAL_PAGES = [

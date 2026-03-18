@@ -14,13 +14,10 @@
  *   - ffmpeg installed for final assembly
  *   - Site pre-built (`pnpm build`)
  */
-import { config } from "dotenv";
+import "./load-env";
 import { execSync } from "node:child_process";
 import { existsSync, readdirSync, mkdirSync } from "node:fs";
-import { join, resolve } from "node:path";
-
-// Load .env from project root
-config({ path: resolve(__dirname, "..", "..", "..", ".env") });
+import { join } from "node:path";
 
 const ROOT = join(__dirname, "..");
 const DEMO_ASSETS = join(ROOT, "demo-assets");
