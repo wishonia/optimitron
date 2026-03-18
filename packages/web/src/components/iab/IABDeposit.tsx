@@ -280,14 +280,14 @@ export function IABDeposit() {
   return (
     <div className="space-y-6">
       {/* Wallet Connection */}
-      <div className="border-4 border-black bg-white p-6">
-        <h3 className="font-black uppercase text-black mb-3">
+      <div className="border-4 border-primary bg-background p-6">
+        <h3 className="font-black uppercase text-foreground mb-3">
           Connect Wallet
         </h3>
 
         {!isConnected ? (
           <div className="space-y-3">
-            <p className="text-xs font-medium text-black/60 mb-4">
+            <p className="text-xs font-bold text-muted-foreground mb-4">
               Connect your wallet to purchase Incentive Alignment Bonds with
               USDC. Your deposit earns yield in Aave while it waits.
             </p>
@@ -297,7 +297,7 @@ export function IABDeposit() {
                   <button
                     key={connector.uid}
                     onClick={() => connect({ connector })}
-                    className="border-2 border-black bg-brutal-pink px-4 py-2.5 text-sm font-black uppercase text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
+                    className="border-2 border-primary bg-brutal-pink px-4 py-2.5 text-sm font-black uppercase text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
                   >
                     {connector.name === "Injected"
                       ? "Browser Wallet (MetaMask)"
@@ -306,14 +306,14 @@ export function IABDeposit() {
                 ))}
               </div>
             ) : null}
-            <div className="border-2 border-black bg-brutal-cyan/10 p-3">
-              <p className="text-xs font-medium text-black/60">
+            <div className="border-2 border-primary bg-brutal-cyan/10 p-3">
+              <p className="text-xs font-bold text-muted-foreground">
                 Need a wallet?{" "}
                 <a
                   href="https://metamask.io/download/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-black text-black underline hover:text-brutal-pink"
+                  className="font-black text-foreground underline hover:text-brutal-pink"
                 >
                   Install MetaMask
                 </a>{" "}
@@ -326,10 +326,10 @@ export function IABDeposit() {
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div>
-                <div className="text-xs font-black uppercase text-black/50">
+                <div className="text-xs font-black uppercase text-muted-foreground">
                   Connected
                 </div>
-                <code className="text-sm font-bold text-black break-all">
+                <code className="text-sm font-bold text-foreground break-all">
                   {address?.slice(0, 6)}...{address?.slice(-4)}
                 </code>
               </div>
@@ -337,14 +337,14 @@ export function IABDeposit() {
                 {chainId !== sepolia.id && (
                   <button
                     onClick={() => switchChain({ chainId: sepolia.id })}
-                    className="border-2 border-black bg-brutal-yellow px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/80 transition-colors"
+                    className="border-2 border-primary bg-brutal-yellow px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/80 transition-colors"
                   >
                     Switch to Sepolia
                   </button>
                 )}
                 <button
                   onClick={() => disconnect()}
-                  className="border-2 border-black bg-white px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-red/20 transition-colors"
+                  className="border-2 border-primary bg-background px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-red/20 transition-colors"
                 >
                   Disconnect
                 </button>
@@ -353,8 +353,8 @@ export function IABDeposit() {
 
             {/* Balances */}
             <div className="grid gap-2 grid-cols-2">
-              <div className="border-2 border-black bg-brutal-cyan/20 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-brutal-cyan/20 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   USDC Balance
                 </div>
                 <div className="text-sm font-black">
@@ -363,8 +363,8 @@ export function IABDeposit() {
                     : "\u2014"}
                 </div>
               </div>
-              <div className="border-2 border-black bg-brutal-cyan/10 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-brutal-cyan/10 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   Your Bond Value
                 </div>
                 <div className="text-sm font-black">
@@ -377,8 +377,8 @@ export function IABDeposit() {
 
             {/* IAB token info for existing depositor */}
             {hasDeposit && (
-              <div className="border-2 border-black bg-green-50 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-green-50 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   Your IAB Tokens / USDC Value
                 </div>
                 <div className="text-sm font-black">
@@ -386,7 +386,7 @@ export function IABDeposit() {
                   ${userBalance !== undefined
                     ? formatUSDC(userBalance as bigint)
                     : "\u2014"}{" "}
-                  <span className="text-[10px] text-black/40">
+                  <span className="text-[10px] text-muted-foreground">
                     (share price: $
                     {sharePrice !== undefined
                       ? formatUSDC(sharePrice as bigint)
@@ -401,17 +401,17 @@ export function IABDeposit() {
       </div>
 
       {/* Deposit Form */}
-      <div className="border-4 border-black bg-white p-6">
-        <h3 className="font-black uppercase text-black mb-3">
+      <div className="border-4 border-primary bg-background p-6">
+        <h3 className="font-black uppercase text-foreground mb-3">
           Buy Incentive Alignment Bond
         </h3>
 
         {!isDeployed && (
-          <div className="border-2 border-black bg-brutal-yellow/20 p-3 mb-4">
-            <div className="text-xs font-black uppercase text-black/60">
+          <div className="border-2 border-primary bg-brutal-yellow/20 p-3 mb-4">
+            <div className="text-xs font-black uppercase text-muted-foreground">
               Not Yet Deployed
             </div>
-            <p className="text-xs font-medium text-black/50 mt-1">
+            <p className="text-xs font-bold text-muted-foreground mt-1">
               The IABVault contract has not been deployed to this network yet.
               Connect your wallet to Sepolia once contracts are live.
             </p>
@@ -419,8 +419,8 @@ export function IABDeposit() {
         )}
 
         <div className="space-y-3">
-          <div className="border-2 border-black bg-brutal-yellow/20 p-3">
-            <label className="text-xs font-black uppercase text-black/60 block mb-1">
+          <div className="border-2 border-primary bg-brutal-yellow/20 p-3">
+            <label className="text-xs font-black uppercase text-muted-foreground block mb-1">
               Amount (USDC)
             </label>
             <div className="flex gap-2">
@@ -431,7 +431,7 @@ export function IABDeposit() {
                 onChange={(e) =>
                   setAmount(e.target.value.replace(/[^0-9.,]/g, ""))
                 }
-                className="flex-1 border-2 border-black bg-white px-3 py-2 text-lg font-black focus:outline-none focus:border-brutal-pink"
+                className="flex-1 border-2 border-primary bg-background px-3 py-2 text-lg font-black focus:outline-none focus:border-brutal-pink"
                 disabled={!isConnected || !isDeployed || isBusy}
               />
               <button
@@ -443,7 +443,7 @@ export function IABDeposit() {
                   !amount ||
                   parsedAmount === 0n
                 }
-                className="border-2 border-black bg-brutal-pink px-4 py-2 text-sm font-black uppercase text-white hover:bg-brutal-pink/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="border-2 border-primary bg-brutal-pink px-4 py-2 text-sm font-black uppercase text-white hover:bg-brutal-pink/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isBusy
                   ? step === "approving"
@@ -465,7 +465,7 @@ export function IABDeposit() {
               <button
                 key={preset}
                 onClick={() => setAmount(preset)}
-                className="flex-1 border-2 border-black bg-white px-2 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/20 transition-colors disabled:opacity-50"
+                className="flex-1 border-2 border-primary bg-background px-2 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/20 transition-colors disabled:opacity-50"
                 disabled={!isConnected || !isDeployed || isBusy}
               >
                 ${preset}
@@ -477,17 +477,17 @@ export function IABDeposit() {
 
       {/* Claim Refund (visible after maturity if thresholds not met) */}
       {isDeployed && isConnected && canClaimRefund && (
-        <div className="border-4 border-black bg-green-100 p-6">
-          <h3 className="font-black uppercase text-black mb-3">
+        <div className="border-4 border-primary bg-green-100 p-6">
+          <h3 className="font-black uppercase text-foreground mb-3">
             Claim Your Refund
           </h3>
-          <p className="text-xs font-medium text-black/60 mb-4">
+          <p className="text-xs font-bold text-muted-foreground mb-4">
             The bond has matured and thresholds were not met. You can reclaim
             your principal plus all accrued yield.
           </p>
           <div className="flex items-center gap-4">
             <div>
-              <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Refund Amount
               </div>
               <div className="text-lg font-black text-green-700">
@@ -499,7 +499,7 @@ export function IABDeposit() {
             <button
               onClick={handleClaimRefund}
               disabled={isBusy}
-              className="border-2 border-black bg-green-600 px-6 py-2.5 text-sm font-black uppercase text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="border-2 border-primary bg-green-600 px-6 py-2.5 text-sm font-black uppercase text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isClaiming || isClaimConfirming ? "Claiming..." : "Claim Refund"}
             </button>
@@ -514,13 +514,13 @@ export function IABDeposit() {
 
       {/* Live Pool Status */}
       {isDeployed && isConnected && (
-        <div className="border-4 border-black bg-brutal-cyan/10 p-6">
-          <h3 className="font-black uppercase text-black mb-3">
+        <div className="border-4 border-primary bg-brutal-cyan/10 p-6">
+          <h3 className="font-black uppercase text-foreground mb-3">
             Live Vault Status
           </h3>
           <div className="grid gap-3 grid-cols-2">
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Pool Value
               </div>
               <div className="text-sm font-black text-brutal-cyan">
@@ -529,8 +529,8 @@ export function IABDeposit() {
                   : "\u2014"}
               </div>
             </div>
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Bond Holders
               </div>
               <div className="text-sm font-black">
@@ -541,8 +541,8 @@ export function IABDeposit() {
 
           {/* Maturity & threshold status */}
           <div className="grid gap-3 grid-cols-2 mt-3">
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Maturity Date
               </div>
               <div className="text-sm font-black">
@@ -551,8 +551,8 @@ export function IABDeposit() {
                   : "\u2014"}
               </div>
             </div>
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Threshold Status
               </div>
               <div className="text-sm font-black">

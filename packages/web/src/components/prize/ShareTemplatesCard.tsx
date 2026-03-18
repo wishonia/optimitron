@@ -50,7 +50,7 @@ const TEMPLATES = [
   },
   {
     label: "Twitter/X",
-    color: "text-black",
+    color: "text-foreground",
     text: (url: string) =>
       `30 seconds to vote = ${LIVES_PER_VOTE} lives saved + ${SUFFERING_YEARS_PER_VOTE} years of suffering prevented. Make it count: ${url}`,
   },
@@ -70,11 +70,11 @@ export function ShareTemplatesCard({ referralUrl }: ShareTemplatesCardProps) {
   };
 
   return (
-    <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-      <h3 className="text-lg font-black uppercase text-black mb-2">
+    <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <h3 className="text-lg font-black uppercase text-foreground mb-2">
         Share Templates
       </h3>
-      <p className="text-sm text-black/60 font-medium mb-4">
+      <p className="text-sm text-muted-foreground font-bold mb-4">
         Copy-paste messages with your referral link and real impact numbers
         baked in.
       </p>
@@ -84,7 +84,7 @@ export function ShareTemplatesCard({ referralUrl }: ShareTemplatesCardProps) {
           return (
             <div
               key={t.label}
-              className="border-2 border-black p-4 hover:bg-brutal-yellow/10 transition-colors"
+              className="border-2 border-primary p-4 hover:bg-brutal-yellow/10 transition-colors"
             >
               <div className="flex items-start justify-between gap-4 mb-2">
                 <span className={`text-xs font-black uppercase ${t.color}`}>
@@ -92,12 +92,12 @@ export function ShareTemplatesCard({ referralUrl }: ShareTemplatesCardProps) {
                 </span>
                 <button
                   onClick={() => void copyTemplate(text, index)}
-                  className="text-xs font-black uppercase border-2 border-black px-3 py-1 hover:bg-brutal-pink hover:text-white transition-colors shrink-0"
+                  className="text-xs font-black uppercase border-2 border-primary px-3 py-1 hover:bg-brutal-pink hover:text-white transition-colors shrink-0"
                 >
                   {copiedIndex === index ? "Copied!" : "Copy"}
                 </button>
               </div>
-              <p className="text-sm text-black/70">{text}</p>
+              <p className="text-sm text-foreground">{text}</p>
             </div>
           );
         })}

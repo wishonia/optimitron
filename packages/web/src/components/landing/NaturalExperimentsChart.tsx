@@ -58,10 +58,10 @@ export function NaturalExperimentsChart() {
         transition={{ duration: 0.4 }}
         className="text-center mb-12"
       >
-        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
           Times a Country Actually Tried Something
         </h2>
-        <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
+        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
           {experiments.length} natural experiments. Bars show what happened. Click any row for the full breakdown.
         </p>
       </motion.div>
@@ -83,19 +83,19 @@ export function NaturalExperimentsChart() {
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
                 onClick={() => setExpanded(isOpen ? null : i)}
-                className="w-full p-4 border-2 border-black bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-left cursor-pointer"
+                className="w-full p-4 border-2 border-primary bg-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-left cursor-pointer"
               >
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-3">
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs font-black px-2 py-0.5 bg-black text-white">
+                    <span className="text-xs font-black px-2 py-0.5 bg-foreground text-white">
                       {exp.interventionYear}
                     </span>
-                    <span className="text-xs font-black px-2 py-0.5 border-2 border-black">
+                    <span className="text-xs font-black px-2 py-0.5 border-2 border-primary">
                       {exp.jurisdiction}
                     </span>
                   </div>
-                  <span className="font-black text-sm text-black flex-grow">
+                  <span className="font-black text-sm text-foreground flex-grow">
                     {exp.policy}
                   </span>
                   <div className="flex items-center gap-2 shrink-0">
@@ -105,7 +105,7 @@ export function NaturalExperimentsChart() {
                       {primary.percentChange > 0 ? "+" : ""}
                       {primary.percentChange.toFixed(1)}%
                     </span>
-                    <span className="text-black/30 text-xs">
+                    <span className="text-muted-foreground text-xs">
                       {isOpen ? "▲" : "▼"}
                     </span>
                   </div>
@@ -113,10 +113,10 @@ export function NaturalExperimentsChart() {
 
                 {/* Bar */}
                 <div className="flex items-center gap-3">
-                  <div className="text-xs text-black/50 font-bold w-28 sm:w-44 truncate">
+                  <div className="text-xs text-muted-foreground font-bold w-28 sm:w-44 truncate">
                     {primary.metric}
                   </div>
-                  <div className="flex-grow h-5 bg-black/5 border border-black/10 relative overflow-hidden">
+                  <div className="flex-grow h-5 bg-muted border border-primary relative overflow-hidden">
                     <motion.div
                       initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
                       animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
@@ -129,7 +129,7 @@ export function NaturalExperimentsChart() {
                       className={`absolute inset-y-0 left-0 ${good ? "bg-brutal-cyan" : "bg-brutal-red"}`}
                     />
                   </div>
-                  <div className="text-xs text-black/30 font-bold shrink-0 hidden sm:block w-36 text-right">
+                  <div className="text-xs text-muted-foreground font-bold shrink-0 hidden sm:block w-36 text-right">
                     BH:{primary.bradfordHillAverage.toFixed(2)} · {formatP(primary.pValue)}
                   </div>
                 </div>
@@ -145,8 +145,8 @@ export function NaturalExperimentsChart() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden"
                   >
-                    <div className="ml-4 sm:ml-8 border-l-4 border-black pl-4 py-4 space-y-4">
-                      <p className="text-sm text-black/60 font-medium">
+                    <div className="ml-4 sm:ml-8 border-l-4 border-primary pl-4 py-4 space-y-4">
+                      <p className="text-sm text-muted-foreground font-bold">
                         {exp.description}
                       </p>
                       {exp.outcomes.map((o) => {
@@ -157,9 +157,9 @@ export function NaturalExperimentsChart() {
                         return (
                           <div key={o.metric} className="space-y-1">
                             <div className="flex items-center justify-between gap-2">
-                              <span className="text-xs font-bold text-black/70">
+                              <span className="text-xs font-bold text-foreground">
                                 {o.metric}
-                                <span className="text-black/40 ml-1">
+                                <span className="text-muted-foreground ml-1">
                                   ({o.unit})
                                 </span>
                               </span>
@@ -171,7 +171,7 @@ export function NaturalExperimentsChart() {
                               </span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <div className="flex-grow h-3 bg-black/5 relative overflow-hidden">
+                              <div className="flex-grow h-3 bg-muted relative overflow-hidden">
                                 <motion.div
                                   initial={{ scaleX: 0 }}
                                   animate={{ scaleX: 1 }}
@@ -183,11 +183,11 @@ export function NaturalExperimentsChart() {
                                   className={`absolute inset-y-0 left-0 ${o.directionCorrect ? "bg-brutal-cyan/60" : "bg-brutal-red/60"}`}
                                 />
                               </div>
-                              <span className="text-xs text-black/40 font-medium shrink-0">
+                              <span className="text-xs text-muted-foreground font-bold shrink-0">
                                 {o.preMean.toFixed(1)} → {o.postMean.toFixed(1)}
                               </span>
                             </div>
-                            <div className="text-xs text-black/30">
+                            <div className="text-xs text-muted-foreground">
                               BH: {o.bradfordHillAverage.toFixed(3)} ·{" "}
                               {formatP(o.pValue)}
                               {!o.directionCorrect && (
@@ -218,7 +218,7 @@ export function NaturalExperimentsChart() {
         <NavItemLink
           item={policiesLink}
           variant="custom"
-          className="inline-flex items-center text-sm font-black text-brutal-pink hover:text-black uppercase transition-colors"
+          className="inline-flex items-center text-sm font-black text-brutal-pink hover:text-foreground uppercase transition-colors"
         >
           View all policy analyses &rarr;
         </NavItemLink>

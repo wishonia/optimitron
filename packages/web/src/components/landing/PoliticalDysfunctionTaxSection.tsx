@@ -51,10 +51,10 @@ export function PoliticalDysfunctionTaxSection() {
     <section className="bg-brutal-red/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
             The $<CountUp value={Math.round(POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value / 1e12)} className="text-brutal-red" /> Trillion Stupidity Tax
           </h2>
-          <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
             Your civilisation loses <Stat param={{...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"}} /> per year to governance dysfunction.
             That is <Stat param={POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL} /> per human per year in pure waste. Your overhead is almost
             equal to your entire economic output. My toaster runs more efficiently.
@@ -64,14 +64,14 @@ export function PoliticalDysfunctionTaxSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {wasteBreakdown.map((item) => (
             <ScrollReveal key={item.label} delay={0.1}>
-              <div className={`p-6 border-4 border-black ${item.color} shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`}>
+              <div className={`p-6 border-4 border-primary ${item.color} shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`}>
                 <div className="flex items-start justify-between mb-3">
-                  <span className="text-xs font-black px-2.5 py-1 bg-black text-white uppercase">
+                  <span className="text-xs font-black px-2.5 py-1 bg-foreground text-white uppercase">
                     {item.label}
                   </span>
-                  <span className="text-2xl font-black text-black">{item.stat}</span>
+                  <span className="text-2xl font-black text-foreground">{item.stat}</span>
                 </div>
-                <p className="text-sm text-black/70 leading-relaxed font-medium">
+                <p className="text-sm text-foreground leading-relaxed font-bold">
                   {item.detail}
                 </p>
               </div>
@@ -80,11 +80,11 @@ export function PoliticalDysfunctionTaxSection() {
         </div>
 
         <ScrollReveal delay={0.3}>
-          <div className="p-8 border-4 border-black bg-brutal-red shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
+          <div className="p-8 border-4 border-primary bg-brutal-red shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-4xl sm:text-5xl font-black text-white mb-2">
               $<CountUp value={Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value)} className="text-white" />/person/year
             </div>
-            <p className="text-white/80 font-medium max-w-xl mx-auto">
+            <p className="text-background font-bold max-w-xl mx-auto">
               Every human on Earth pays <Stat param={POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL} /> per year in governance dysfunction.
               Not in taxes — in waste. The taxes are on top of that.
             </p>
@@ -92,7 +92,7 @@ export function PoliticalDysfunctionTaxSection() {
               item={politicalDysfunctionTaxPaperLink}
               variant="custom"
               external
-              className="mt-6 inline-flex items-center text-sm font-black text-white/60 uppercase hover:text-white transition-colors"
+              className="mt-6 inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-white transition-colors"
             >
               Read the paper &rarr;
             </NavItemLink>

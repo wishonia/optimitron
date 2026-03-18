@@ -44,21 +44,21 @@ export function TreasuryAllocationViz() {
 
   return (
     <section className="mb-16">
-      <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+      <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
         How It Works
       </h2>
 
-      <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         {/* Flow diagram */}
         <div className="flex flex-col md:flex-row items-stretch gap-0 mb-6">
-          <div className="flex-1 border-4 border-black bg-brutal-yellow p-4 text-center">
-            <div className="text-xs font-black uppercase text-black/50 mb-1">
+          <div className="flex-1 border-4 border-primary bg-brutal-yellow p-4 text-center">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               Step 1
             </div>
-            <div className="text-sm font-black text-black">
+            <div className="text-sm font-black text-foreground">
               Every $WISH Transfer
             </div>
-            <div className="text-xs text-black/60 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               {taxPct}% transaction tax
             </div>
           </div>
@@ -67,14 +67,14 @@ export function TreasuryAllocationViz() {
               &rarr;
             </span>
           </div>
-          <div className="flex-1 border-4 border-black bg-brutal-cyan p-4 text-center">
-            <div className="text-xs font-black uppercase text-black/50 mb-1">
+          <div className="flex-1 border-4 border-primary bg-brutal-cyan p-4 text-center">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               Step 2
             </div>
-            <div className="text-sm font-black text-black">
+            <div className="text-sm font-black text-foreground">
               Wishocratic Treasury
             </div>
-            <div className="text-xs text-black/60 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               {formatWish(ubiPendingBalance)} $WISH &mdash; citizen-directed
             </div>
           </div>
@@ -83,14 +83,14 @@ export function TreasuryAllocationViz() {
               &rarr;
             </span>
           </div>
-          <div className="flex-1 border-4 border-black bg-brutal-pink p-4 text-center">
-            <div className="text-xs font-black uppercase text-black/50 mb-1 text-white/70">
+          <div className="flex-1 border-4 border-primary bg-brutal-pink p-4 text-center">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-1 text-background">
               Step 3
             </div>
             <div className="text-sm font-black text-white">
               Category Recipients
             </div>
-            <div className="text-xs text-white/60 mt-1">
+            <div className="text-xs text-muted-foreground mt-1">
               {citizenCountNum > 0
                 ? `${citizenCountNum.toLocaleString()} citizens directing allocation`
                 : "Vote to direct funds"}
@@ -99,8 +99,8 @@ export function TreasuryAllocationViz() {
         </div>
 
         {/* Wishocratic allocation breakdown */}
-        <div className="border-2 border-black bg-black/5 p-5 mb-6">
-          <h3 className="font-black uppercase text-black text-sm mb-4">
+        <div className="border-2 border-primary bg-muted p-5 mb-6">
+          <h3 className="font-black uppercase text-foreground text-sm mb-4">
             Citizen-Directed Allocation
           </h3>
           <div className="space-y-3">
@@ -112,16 +112,16 @@ export function TreasuryAllocationViz() {
               return (
                 <div key={item.categoryId}>
                   <div className="mb-1 flex items-baseline justify-between gap-2">
-                    <span className="text-xs font-black uppercase tracking-[0.1em] text-black">
+                    <span className="text-xs font-black uppercase tracking-[0.1em] text-foreground">
                       {cat.icon} {cat.name}
                     </span>
-                    <span className="text-xs font-bold text-black/50">
+                    <span className="text-xs font-bold text-muted-foreground">
                       {item.percentage.toFixed(1)}%
                     </span>
                   </div>
-                  <div className="h-5 w-full overflow-hidden border border-black/20 bg-white">
+                  <div className="h-5 w-full overflow-hidden border border-primary bg-background">
                     <div
-                      className={`h-full ${color} border-r border-black/20 transition-all duration-300`}
+                      className={`h-full ${color} border-r border-primary transition-all duration-300`}
                       style={{ width: `${barWidth}%` }}
                     />
                   </div>
@@ -129,18 +129,18 @@ export function TreasuryAllocationViz() {
               );
             })}
           </div>
-          <p className="text-[10px] font-bold text-black/40 mt-3">
+          <p className="text-[10px] font-bold text-muted-foreground mt-3">
             Weights derived from citizen pairwise comparisons via eigenvector aggregation
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Wishocratic UBI */}
-          <div className="border-2 border-black bg-brutal-cyan/10 p-5">
-            <h3 className="font-black uppercase text-black text-sm mb-3">
+          <div className="border-2 border-primary bg-brutal-cyan/10 p-5">
+            <h3 className="font-black uppercase text-foreground text-sm mb-3">
               UBI Is a Category, Not a Guarantee
             </h3>
-            <p className="text-xs text-black/60 font-medium leading-relaxed">
+            <p className="text-xs text-muted-foreground font-bold leading-relaxed">
               Universal Basic Income competes alongside clinical trials,
               education, and every other category. Citizens decide how much goes
               to direct cash vs public goods through pairwise comparisons. If
@@ -150,11 +150,11 @@ export function TreasuryAllocationViz() {
           </div>
 
           {/* Politician funding note */}
-          <div className="border-2 border-black bg-brutal-pink/10 p-5">
-            <h3 className="font-black uppercase text-black text-sm mb-3">
+          <div className="border-2 border-primary bg-brutal-pink/10 p-5">
+            <h3 className="font-black uppercase text-foreground text-sm mb-3">
               Politician Funding? That&apos;s IABs.
             </h3>
-            <p className="text-xs text-black/60 font-medium leading-relaxed">
+            <p className="text-xs text-muted-foreground font-bold leading-relaxed">
               Aligned politicians are funded through the Incentive Alignment
               Bond mechanism &mdash; 10% of IAB revenue flows to the political
               incentive layer. $WISH tax and IABs are completely separate
@@ -164,7 +164,7 @@ export function TreasuryAllocationViz() {
         </div>
 
         {isDemo && (
-          <p className="text-[10px] font-bold text-black/40 mt-4 text-center">
+          <p className="text-[10px] font-bold text-muted-foreground mt-4 text-center">
             Illustrative data &mdash; contracts not yet deployed
           </p>
         )}

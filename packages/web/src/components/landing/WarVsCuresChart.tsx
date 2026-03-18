@@ -69,7 +69,7 @@ export function WarVsCuresChart() {
               viewport={{ once: true }}
               transition={{ duration: 1, ease: [0.87, 0, 0.13, 1], delay: 0.6 }}
               style={{ originX: 0 }}
-              className="relative h-20 sm:h-24 bg-brutal-pink border-4 border-black"
+              className="relative h-20 sm:h-24 bg-brutal-pink border-4 border-primary"
             >
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-sm sm:text-lg md:text-xl font-black text-white uppercase text-center">
@@ -100,7 +100,7 @@ export function WarVsCuresChart() {
                 viewport={{ once: true }}
                 transition={{ duration: 1, ease: [0.87, 0, 0.13, 1], delay: 0.9 }}
                 style={{ originX: 0, width: `${MEDICAL_BAR_PCT}%` }}
-                className="relative h-20 sm:h-24 bg-brutal-cyan border-4 border-black"
+                className="relative h-20 sm:h-24 bg-brutal-cyan border-4 border-primary"
               />
               <motion.span
                 initial={{ opacity: 0, x: -20 }}
@@ -121,7 +121,7 @@ export function WarVsCuresChart() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 1.4 }}
-          className="text-center text-sm text-black/50 font-medium mt-8 max-w-2xl mx-auto"
+          className="text-center text-sm text-muted-foreground font-bold mt-8 max-w-2xl mx-auto"
         >
           Sources: SIPRI Military Expenditure Database 2024, WHO Global Health R&D Observatory.
           The tiny cyan bar is to scale. That&apos;s not a rendering error.

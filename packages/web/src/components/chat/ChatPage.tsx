@@ -979,7 +979,7 @@ export default function ChatPage() {
   );
 
   return (
-    <section className="min-h-screen border-b-4 border-black bg-white pb-8 pt-4">
+    <section className="min-h-screen border-b-4 border-primary bg-background pb-8 pt-4">
       <ChatContainer
         messages={messages as ChatMessage[]}
         onSend={handleSend}

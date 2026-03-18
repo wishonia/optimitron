@@ -33,7 +33,7 @@ export function ResourcePromoCard({
         href={withUtm(MANUAL_URLS.paperback, utmSource)}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-[#FF9900] text-black border-4 border-primary p-3 font-black text-xs sm:text-sm uppercase text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-y-0.5 transition-all flex items-center justify-center gap-1"
+        className="bg-[#FF9900] text-foreground border-4 border-primary p-3 font-black text-xs sm:text-sm uppercase text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:-translate-y-0.5 transition-all flex items-center justify-center gap-1"
       >
         Paperback
         <ExternalLink className="w-3 h-3 stroke-[3px] hidden sm:block" />

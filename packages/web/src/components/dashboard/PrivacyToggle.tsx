@@ -12,13 +12,13 @@ export function PrivacyToggle({ isPublic, onChange }: PrivacyToggleProps) {
   return (
     <div className="w-full">
       <div
-        className="relative flex h-16 w-full cursor-pointer items-center justify-between border-2 border-black bg-white p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        className="relative flex h-16 w-full cursor-pointer items-center justify-between border-2 border-primary bg-background p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         onClick={() => onChange(!isPublic)}
       >
         {/* Sliding Background */}
         <motion.div
           className={cn(
-            "absolute h-[calc(100%-8px)] w-[calc(50%-4px)] border-2 border-black",
+            "absolute h-[calc(100%-8px)] w-[calc(50%-4px)] border-2 border-primary",
             isPublic ? "bg-brutal-yellow" : "bg-muted-foreground/20"
           )}
           initial={false}
@@ -33,7 +33,7 @@ export function PrivacyToggle({ isPublic, onChange }: PrivacyToggleProps) {
         {/* Private Option (Left) */}
         <div className="relative z-10 flex w-1/2 items-center justify-center gap-2">
           <span className="text-xl">🔒</span>
-          <span className={cn("font-black tracking-tight transition-colors", !isPublic ? "text-black" : "text-muted-foreground")}>
+          <span className={cn("font-black tracking-tight transition-colors", !isPublic ? "text-foreground" : "text-muted-foreground")}>
             PRIVATE
           </span>
         </div>
@@ -41,7 +41,7 @@ export function PrivacyToggle({ isPublic, onChange }: PrivacyToggleProps) {
         {/* Public Option (Right) */}
         <div className="relative z-10 flex w-1/2 items-center justify-center gap-2">
           <span className="text-xl">🌍</span>
-          <span className={cn("font-black tracking-tight transition-colors", isPublic ? "text-black" : "text-muted-foreground")}>
+          <span className={cn("font-black tracking-tight transition-colors", isPublic ? "text-foreground" : "text-muted-foreground")}>
             PUBLIC
           </span>
         </div>

@@ -56,10 +56,10 @@ export function OnePercentTreatySection() {
     <section className="bg-brutal-cyan/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
             The 1% Treaty
           </h2>
-          <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
             Take one percent of what you spend on killing each other and spend it on
             not dying instead. This is not a radical proposal. It is basic arithmetic.
             I genuinely do not understand what is taking so long.
@@ -69,10 +69,10 @@ export function OnePercentTreatySection() {
         <div className="space-y-4 mb-12">
           {treatySteps.map((step, i) => (
             <ScrollReveal key={step.label} delay={i * 0.1}>
-              <div className="p-6 border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <div className="p-6 border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-lg font-black text-black/30 line-through">
+                    <span className="text-lg font-black text-muted-foreground line-through">
                       {step.before}
                     </span>
                     <span className="text-brutal-cyan font-black text-xl">&rarr;</span>
@@ -81,10 +81,10 @@ export function OnePercentTreatySection() {
                     </span>
                   </div>
                   <div className="flex-grow">
-                    <span className="text-xs font-black px-2.5 py-1 bg-black text-white uppercase">
+                    <span className="text-xs font-black px-2.5 py-1 bg-foreground text-white uppercase">
                       {step.label}
                     </span>
-                    <p className="text-sm text-black/70 leading-relaxed font-medium mt-2">
+                    <p className="text-sm text-foreground leading-relaxed font-bold mt-2">
                       {step.description}
                     </p>
                   </div>
@@ -95,11 +95,11 @@ export function OnePercentTreatySection() {
         </div>
 
         <ScrollReveal delay={0.5}>
-          <div className="p-8 border-4 border-black bg-brutal-cyan shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-4xl sm:text-5xl font-black text-black mb-2">
-              <CountUp value={+(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1)} suffix="B" className="text-black" /> Lives Saved
+          <div className="p-8 border-4 border-primary bg-brutal-cyan shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="text-4xl sm:text-5xl font-black text-foreground mb-2">
+              <CountUp value={+(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1)} suffix="B" className="text-foreground" /> Lives Saved
             </div>
-            <p className="text-black/70 font-medium max-w-xl mx-auto">
+            <p className="text-foreground font-bold max-w-xl mx-auto">
               <Stat param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED} /> deaths prevented. ROI: essentially infinite. The only
               thing standing between you and this is the part where you actually do it.
             </p>
@@ -107,7 +107,7 @@ export function OnePercentTreatySection() {
               item={onePercentTreatyPaperLink}
               variant="custom"
               external
-              className="mt-6 inline-flex items-center text-sm font-black text-black/60 uppercase hover:text-black transition-colors"
+              className="mt-6 inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-foreground transition-colors"
             >
               Read the paper &rarr;
             </NavItemLink>

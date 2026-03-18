@@ -57,18 +57,18 @@ export function Stat({ param, format, figures = 3, className = "" }: StatProps) 
       </span>
 
       {open && (
-        <span className="absolute bottom-full left-1/2 z-50 mb-2 w-72 -translate-x-1/2 rounded border-2 border-black bg-white p-3 text-left text-xs text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+        <span className="absolute bottom-full left-1/2 z-50 mb-2 w-72 -translate-x-1/2 rounded border-2 border-primary bg-background p-3 text-left text-xs text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
           {param.displayName && (
-            <span className="mb-1 block font-black uppercase text-[10px] tracking-wider text-black/50">
+            <span className="mb-1 block font-black uppercase text-[10px] tracking-wider text-muted-foreground">
               {param.displayName}
             </span>
           )}
           {param.description && (
-            <span className="mb-2 block font-medium leading-relaxed text-black/70">
+            <span className="mb-2 block font-bold leading-relaxed text-foreground">
               {param.description}
             </span>
           )}
-          <span className="flex items-center gap-2 text-[10px] text-black/40">
+          <span className="flex items-center gap-2 text-[10px] text-muted-foreground">
             {param.confidence && (
               <span className={`inline-block rounded px-1.5 py-0.5 font-bold uppercase ${
                 param.confidence === "high"

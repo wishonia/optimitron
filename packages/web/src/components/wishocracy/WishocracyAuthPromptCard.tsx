@@ -35,7 +35,7 @@ export function WishocracyAuthPromptCard({
           transition={{ duration: 0.3 }}
           className="mx-auto mt-8 max-w-2xl"
         >
-          <Card className="border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <Card className="border-4 border-primary bg-background p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="mb-6 text-center">
               <h3 className="text-xl font-black uppercase">
                 {comparisonsCount} Comparisons Saved Locally

@@ -343,14 +343,14 @@ export function VoterPrizeTreasuryDeposit() {
   return (
     <div className="space-y-6">
       {/* Wallet Connection */}
-      <div className="border-4 border-black bg-white p-6">
-        <h3 className="font-black uppercase text-black mb-3">
+      <div className="border-4 border-primary bg-background p-6">
+        <h3 className="font-black uppercase text-foreground mb-3">
           Connect Wallet
         </h3>
 
         {!isConnected ? (
           <div className="space-y-3">
-            <p className="text-xs font-medium text-black/60 mb-4">
+            <p className="text-xs font-bold text-muted-foreground mb-4">
               Connect your wallet to contribute to the Earth Optimization
               Prize. Your contribution earns interest in Aave while
               incentivizing recruiters to get humanity to vote.
@@ -361,7 +361,7 @@ export function VoterPrizeTreasuryDeposit() {
                   <button
                     key={connector.uid}
                     onClick={() => connect({ connector })}
-                    className="border-2 border-black bg-brutal-pink px-4 py-2.5 text-sm font-black uppercase text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
+                    className="border-2 border-primary bg-brutal-pink px-4 py-2.5 text-sm font-black uppercase text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
                   >
                     {connector.name === "Injected"
                       ? "Browser Wallet (MetaMask)"
@@ -370,14 +370,14 @@ export function VoterPrizeTreasuryDeposit() {
                 ))}
               </div>
             )}
-            <div className="border-2 border-black bg-brutal-cyan/10 p-3">
-              <p className="text-xs font-medium text-black/60">
+            <div className="border-2 border-primary bg-brutal-cyan/10 p-3">
+              <p className="text-xs font-bold text-muted-foreground">
                 Need a wallet?{" "}
                 <a
                   href="https://metamask.io/download/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-black text-black underline hover:text-brutal-pink"
+                  className="font-black text-foreground underline hover:text-brutal-pink"
                 >
                   Install MetaMask
                 </a>{" "}
@@ -389,10 +389,10 @@ export function VoterPrizeTreasuryDeposit() {
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div>
-                <div className="text-xs font-black uppercase text-black/50">
+                <div className="text-xs font-black uppercase text-muted-foreground">
                   Connected
                 </div>
-                <code className="text-sm font-bold text-black break-all">
+                <code className="text-sm font-bold text-foreground break-all">
                   {address?.slice(0, 6)}...{address?.slice(-4)}
                 </code>
               </div>
@@ -400,14 +400,14 @@ export function VoterPrizeTreasuryDeposit() {
                 {chainId !== baseSepolia.id && (
                   <button
                     onClick={() => switchChain({ chainId: baseSepolia.id })}
-                    className="border-2 border-black bg-brutal-yellow px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/80 transition-colors"
+                    className="border-2 border-primary bg-brutal-yellow px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/80 transition-colors"
                   >
                     Switch to Base Sepolia
                   </button>
                 )}
                 <button
                   onClick={() => disconnect()}
-                  className="border-2 border-black bg-white px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-red/20 transition-colors"
+                  className="border-2 border-primary bg-background px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-red/20 transition-colors"
                 >
                   Disconnect
                 </button>
@@ -416,8 +416,8 @@ export function VoterPrizeTreasuryDeposit() {
 
             {/* Balances */}
             <div className="grid gap-2 grid-cols-3">
-              <div className="border-2 border-black bg-brutal-cyan/20 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-brutal-cyan/20 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   USDC Balance
                 </div>
                 <div className="text-sm font-black">
@@ -426,8 +426,8 @@ export function VoterPrizeTreasuryDeposit() {
                     : "\u2014"}
                 </div>
               </div>
-              <div className="border-2 border-black bg-brutal-cyan/10 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-brutal-cyan/10 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   Your Contribution
                 </div>
                 <div className="text-sm font-black">
@@ -436,8 +436,8 @@ export function VoterPrizeTreasuryDeposit() {
                     : "\u2014"}
                 </div>
               </div>
-              <div className="border-2 border-black bg-brutal-yellow/20 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-brutal-yellow/20 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   VOTE Tokens
                 </div>
                 <div className="text-sm font-black">
@@ -450,8 +450,8 @@ export function VoterPrizeTreasuryDeposit() {
 
             {/* PRIZE share info */}
             {hasDeposit && (
-              <div className="border-2 border-black bg-green-50 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-green-50 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   Your PRIZE Shares / USDC Value
                 </div>
                 <div className="text-sm font-black">
@@ -459,7 +459,7 @@ export function VoterPrizeTreasuryDeposit() {
                   {userDeposit !== undefined
                     ? formatUSDC(userDeposit as bigint)
                     : "\u2014"}{" "}
-                  <span className="text-[10px] text-black/40">
+                  <span className="text-[10px] text-muted-foreground">
                     (share price: $
                     {sharePrice !== undefined
                       ? formatUSDC(sharePrice as bigint)
@@ -474,17 +474,17 @@ export function VoterPrizeTreasuryDeposit() {
       </div>
 
       {/* Deposit Form */}
-      <div className="border-4 border-black bg-white p-6">
-        <h3 className="font-black uppercase text-black mb-3">
+      <div className="border-4 border-primary bg-background p-6">
+        <h3 className="font-black uppercase text-foreground mb-3">
           Contribute to the Prize
         </h3>
 
         {!isDeployed && (
-          <div className="border-2 border-black bg-brutal-yellow/20 p-3 mb-4">
-            <div className="text-xs font-black uppercase text-black/60">
+          <div className="border-2 border-primary bg-brutal-yellow/20 p-3 mb-4">
+            <div className="text-xs font-black uppercase text-muted-foreground">
               Not Yet Deployed
             </div>
-            <p className="text-xs font-medium text-black/50 mt-1">
+            <p className="text-xs font-bold text-muted-foreground mt-1">
               The prize contract has not been deployed to this network yet.
               Switch to Base Sepolia once contracts are live.
             </p>
@@ -492,8 +492,8 @@ export function VoterPrizeTreasuryDeposit() {
         )}
 
         <div className="space-y-3">
-          <div className="border-2 border-black bg-brutal-yellow/20 p-3">
-            <label className="text-xs font-black uppercase text-black/60 block mb-1">
+          <div className="border-2 border-primary bg-brutal-yellow/20 p-3">
+            <label className="text-xs font-black uppercase text-muted-foreground block mb-1">
               Amount (USDC)
             </label>
             <div className="flex gap-2">
@@ -504,7 +504,7 @@ export function VoterPrizeTreasuryDeposit() {
                 onChange={(e) =>
                   setAmount(e.target.value.replace(/[^0-9.,]/g, ""))
                 }
-                className="flex-1 border-2 border-black bg-white px-3 py-2 text-lg font-black focus:outline-none focus:border-brutal-pink"
+                className="flex-1 border-2 border-primary bg-background px-3 py-2 text-lg font-black focus:outline-none focus:border-brutal-pink"
                 disabled={!isConnected || !isDeployed || isBusy}
               />
               <button
@@ -516,7 +516,7 @@ export function VoterPrizeTreasuryDeposit() {
                   !amount ||
                   parsedAmount === 0n
                 }
-                className="border-2 border-black bg-brutal-pink px-4 py-2 text-sm font-black uppercase text-white hover:bg-brutal-pink/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="border-2 border-primary bg-brutal-pink px-4 py-2 text-sm font-black uppercase text-white hover:bg-brutal-pink/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isBusy
                   ? step === "approving"
@@ -530,7 +530,7 @@ export function VoterPrizeTreasuryDeposit() {
             {isDepositConfirmed && (
               <p className="text-xs font-black text-brutal-cyan mt-2">
                 Contribution confirmed!{" "}
-                <a href={`https://sepolia.basescan.org/tx/${depositHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">
+                <a href={`https://sepolia.basescan.org/tx/${depositHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
                   View transaction &rarr;
                 </a>
               </p>
@@ -541,7 +541,7 @@ export function VoterPrizeTreasuryDeposit() {
               <button
                 key={preset}
                 onClick={() => setAmount(preset)}
-                className="flex-1 border-2 border-black bg-white px-2 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/20 transition-colors disabled:opacity-50"
+                className="flex-1 border-2 border-primary bg-background px-2 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/20 transition-colors disabled:opacity-50"
                 disabled={!isConnected || !isDeployed || isBusy}
               >
                 ${preset}
@@ -553,18 +553,18 @@ export function VoterPrizeTreasuryDeposit() {
 
       {/* Redeem VOTE Tokens (success path) */}
       {isDeployed && isConnected && canRedeemVotes && (
-        <div className="border-4 border-black bg-brutal-cyan p-6">
-          <h3 className="font-black uppercase text-black mb-3">
+        <div className="border-4 border-primary bg-brutal-cyan p-6">
+          <h3 className="font-black uppercase text-foreground mb-3">
             Redeem Your VOTE Tokens
           </h3>
-          <p className="text-xs font-medium text-black/60 mb-4">
+          <p className="text-xs font-bold text-muted-foreground mb-4">
             Outcome thresholds have been met. Your VOTE tokens from verified
             referendum votes entitle you to a proportional share of the prize
             treasury.
           </p>
           <div className="flex items-center gap-4">
             <div>
-              <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Your VOTE Balance
               </div>
               <div className="text-lg font-black">
@@ -572,7 +572,7 @@ export function VoterPrizeTreasuryDeposit() {
               </div>
             </div>
             <div>
-              <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Estimated Payout
               </div>
               <div className="text-lg font-black text-green-700">
@@ -585,7 +585,7 @@ export function VoterPrizeTreasuryDeposit() {
             <button
               onClick={handleRedeemVotes}
               disabled={isBusy}
-              className="border-2 border-black bg-green-600 px-6 py-2.5 text-sm font-black uppercase text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="border-2 border-primary bg-green-600 px-6 py-2.5 text-sm font-black uppercase text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isRedeeming || isRedeemConfirming
                 ? "Redeeming..."
@@ -595,7 +595,7 @@ export function VoterPrizeTreasuryDeposit() {
           {isRedeemConfirmed && (
             <p className="text-xs font-black text-green-700 mt-2">
               Redeemed!{" "}
-              <a href={`https://sepolia.basescan.org/tx/${redeemHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">
+              <a href={`https://sepolia.basescan.org/tx/${redeemHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
                 View transaction &rarr;
               </a>
             </p>
@@ -605,17 +605,17 @@ export function VoterPrizeTreasuryDeposit() {
 
       {/* Claim Refund (failure path) */}
       {isDeployed && isConnected && canClaimRefund && (
-        <div className="border-4 border-black bg-green-100 p-6">
-          <h3 className="font-black uppercase text-black mb-3">
+        <div className="border-4 border-primary bg-green-100 p-6">
+          <h3 className="font-black uppercase text-foreground mb-3">
             Claim Your Refund
           </h3>
-          <p className="text-xs font-medium text-black/60 mb-4">
+          <p className="text-xs font-bold text-muted-foreground mb-4">
             The prize period has ended and outcome thresholds were not met.
             You can reclaim your full contribution plus all accrued interest.
           </p>
           <div className="flex items-center gap-4">
             <div>
-              <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Refund Amount
               </div>
               <div className="text-lg font-black text-green-700">
@@ -628,7 +628,7 @@ export function VoterPrizeTreasuryDeposit() {
             <button
               onClick={handleClaimRefund}
               disabled={isBusy}
-              className="border-2 border-black bg-green-600 px-6 py-2.5 text-sm font-black uppercase text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="border-2 border-primary bg-green-600 px-6 py-2.5 text-sm font-black uppercase text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isClaiming || isClaimConfirming
                 ? "Claiming..."
@@ -638,7 +638,7 @@ export function VoterPrizeTreasuryDeposit() {
           {isClaimConfirmed && (
             <p className="text-xs font-black text-green-700 mt-2">
               Refund claimed!{" "}
-              <a href={`https://sepolia.basescan.org/tx/${claimHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">
+              <a href={`https://sepolia.basescan.org/tx/${claimHash}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
                 View transaction &rarr;
               </a>
             </p>
@@ -648,13 +648,13 @@ export function VoterPrizeTreasuryDeposit() {
 
       {/* Live Treasury Status */}
       {isDeployed && isConnected && (
-        <div className="border-4 border-black bg-brutal-cyan/10 p-6">
-          <h3 className="font-black uppercase text-black mb-3">
+        <div className="border-4 border-primary bg-brutal-cyan/10 p-6">
+          <h3 className="font-black uppercase text-foreground mb-3">
             Live Prize Status
           </h3>
           <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Total Value Locked
               </div>
               <div className="text-sm font-black text-brutal-cyan">
@@ -663,8 +663,8 @@ export function VoterPrizeTreasuryDeposit() {
                   : "\u2014"}
               </div>
             </div>
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Depositors
               </div>
               <div className="text-sm font-black">
@@ -673,8 +673,8 @@ export function VoterPrizeTreasuryDeposit() {
                   : "\u2014"}
               </div>
             </div>
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Maturity Date
               </div>
               <div className="text-sm font-black">
@@ -683,8 +683,8 @@ export function VoterPrizeTreasuryDeposit() {
                   : "\u2014"}
               </div>
             </div>
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Threshold Status
               </div>
               <div className="text-sm font-black">
@@ -699,28 +699,28 @@ export function VoterPrizeTreasuryDeposit() {
 
           {/* Metrics */}
           <div className="grid gap-3 grid-cols-2 mt-3">
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Health Metric (bps)
               </div>
               <div className="text-sm font-black">
                 {healthMetric !== undefined
                   ? String(healthMetric)
                   : "\u2014"}
-                <span className="text-[10px] text-black/40 ml-1">
+                <span className="text-[10px] text-muted-foreground ml-1">
                   / 100 threshold
                 </span>
               </div>
             </div>
-            <div className="border-2 border-black bg-white p-2">
-              <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="border-2 border-primary bg-background p-2">
+              <div className="text-[10px] font-black uppercase text-muted-foreground">
                 Income Metric (bps)
               </div>
               <div className="text-sm font-black">
                 {incomeMetric !== undefined
                   ? String(incomeMetric)
                   : "\u2014"}
-                <span className="text-[10px] text-black/40 ml-1">
+                <span className="text-[10px] text-muted-foreground ml-1">
                   / 50 threshold
                 </span>
               </div>

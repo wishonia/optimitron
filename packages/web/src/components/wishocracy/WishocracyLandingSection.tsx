@@ -85,42 +85,42 @@ export function WishocracyLandingSection() {
   const topCategory = hasCommunityData ? rows[0] : null;
 
   return (
-    <section className="border-y-4 border-black bg-brutal-cyan">
+    <section className="border-y-4 border-primary bg-brutal-cyan">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <div>
-            <div className="mb-4 inline-flex border-2 border-black bg-black px-3 py-1 text-xs font-black uppercase text-white">
+            <div className="mb-4 inline-flex border-2 border-primary bg-foreground px-3 py-1 text-xs font-black uppercase text-white">
               Wishocracy Live
             </div>
-            <h2 className="text-3xl font-black uppercase tracking-tight text-black sm:text-4xl">
+            <h2 className="text-3xl font-black uppercase tracking-tight text-foreground sm:text-4xl">
               Community Budget Priorities
             </h2>
-            <p className="mt-4 max-w-2xl text-base font-medium leading-relaxed text-black/70">
+            <p className="mt-4 max-w-2xl text-base font-bold leading-relaxed text-foreground">
               Save your allocation, compare it with current government spending,
               and see which priorities rise to the top across the community.
             </p>
             <div className="mt-6 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="border-2 border-black bg-white px-4 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
-                <div className="text-2xl font-black text-black">
+              <div className="border-2 border-primary bg-background px-4 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                <div className="text-2xl font-black text-foreground">
                   {summary.totalUsers > 0 ? summary.totalUsers.toLocaleString() : "Live"}
                 </div>
-                <div className="text-xs font-bold uppercase text-black/60">
+                <div className="text-xs font-bold uppercase text-muted-foreground">
                   Saved Voters
                 </div>
               </div>
-              <div className="border-2 border-black bg-white px-4 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
-                <div className="text-2xl font-black text-black">
+              <div className="border-2 border-primary bg-background px-4 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                <div className="text-2xl font-black text-foreground">
                   {summary.totalComparisons > 0 ? summary.totalComparisons.toLocaleString() : "Growing"}
                 </div>
-                <div className="text-xs font-bold uppercase text-black/60">
+                <div className="text-xs font-bold uppercase text-muted-foreground">
                   Comparisons Logged
                 </div>
               </div>
-              <div className="border-2 border-black bg-white px-4 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
-                <div className="text-lg font-black text-black">
+              <div className="border-2 border-primary bg-background px-4 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                <div className="text-lg font-black text-foreground">
                   {topCategory?.category.name ?? "Starts With You"}
                 </div>
-                <div className="text-xs font-bold uppercase text-black/60">
+                <div className="text-xs font-bold uppercase text-muted-foreground">
                   Top Priority
                 </div>
               </div>
@@ -130,35 +130,35 @@ export function WishocracyLandingSection() {
               <NavItemLink
                 item={wishocracyLink}
                 variant="custom"
-                className="inline-flex items-center justify-center border-4 border-black bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 Make Your Allocation
               </NavItemLink>
               <Link
                 href={getSignInPath(wishocracyLink.href)}
-                className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 Sign In to Save and Share
               </Link>
               <NavItemLink
                 item={alignmentLink}
                 variant="custom"
-                className="inline-flex items-center justify-center border-4 border-black bg-brutal-yellow px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="inline-flex items-center justify-center border-4 border-primary bg-brutal-yellow px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 See Alignment Reports
               </NavItemLink>
             </div>
           </div>
 
-          <div className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-background p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
-                <h3 className="text-lg font-black uppercase text-black">Top Community Allocations</h3>
-                <p className="text-xs font-medium text-black/60">
+                <h3 className="text-lg font-black uppercase text-foreground">Top Community Allocations</h3>
+                <p className="text-xs font-bold text-muted-foreground">
                   Live averages from saved Wishocracy submissions
                 </p>
               </div>
-              <div className="text-right text-[11px] font-bold uppercase text-black/50">
+              <div className="text-right text-[11px] font-bold uppercase text-muted-foreground">
                 Community vs Govt
               </div>
             </div>
@@ -169,24 +169,24 @@ export function WishocracyLandingSection() {
                   <div className="mb-2 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">{row.category.icon}</span>
-                      <span className="text-sm font-black uppercase text-black">
+                      <span className="text-sm font-black uppercase text-foreground">
                         {row.category.name}
                       </span>
                     </div>
-                    <div className="text-right text-xs font-bold uppercase text-black/60">
+                    <div className="text-right text-xs font-bold uppercase text-muted-foreground">
                       {row.communityPercent.toFixed(1)}% vs {row.governmentPercent.toFixed(1)}%
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <div className="h-5 overflow-hidden border-2 border-black bg-black/10">
+                    <div className="h-5 overflow-hidden border-2 border-primary bg-muted">
                       <div
                         className="h-full bg-brutal-pink"
                         style={{ width: `${row.communityPercent}%` }}
                       />
                     </div>
-                    <div className="h-5 overflow-hidden border-2 border-black bg-black/10">
+                    <div className="h-5 overflow-hidden border-2 border-primary bg-muted">
                       <div
-                        className="h-full bg-black"
+                        className="h-full bg-foreground"
                         style={{ width: `${row.governmentPercent}%` }}
                       />
                     </div>
@@ -195,7 +195,7 @@ export function WishocracyLandingSection() {
               ))}
             </div>
 
-            <p className="mt-5 text-xs font-medium leading-relaxed text-black/60">
+            <p className="mt-5 text-xs font-bold leading-relaxed text-muted-foreground">
               Pink bars show the saved community average. Black bars show current
               government allocations across the same Wishocracy categories.
             </p>

@@ -74,7 +74,7 @@ export function ScoreboardTable({ politicians }: ScoreboardTableProps) {
 
   if (politicians.length === 0) {
     return (
-      <p className="text-sm font-medium text-black/60">
+      <p className="text-sm font-bold text-muted-foreground">
         No politician scores available yet.
       </p>
     );
@@ -84,7 +84,7 @@ export function ScoreboardTable({ politicians }: ScoreboardTableProps) {
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-left">
         <thead>
-          <tr className="border-b-2 border-black">
+          <tr className="border-b-2 border-primary">
             {(
               [
                 { field: "rank" as const, label: "Rank" },
@@ -97,7 +97,7 @@ export function ScoreboardTable({ politicians }: ScoreboardTableProps) {
               <th
                 key={field}
                 onClick={() => handleSort(field)}
-                className="cursor-pointer select-none px-3 py-3 text-xs font-black uppercase tracking-[0.15em] text-black/60 hover:text-black transition-colors"
+                className="cursor-pointer select-none px-3 py-3 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
               >
                 {label}
                 {sortIndicator(field)}
@@ -109,26 +109,26 @@ export function ScoreboardTable({ politicians }: ScoreboardTableProps) {
           {sorted.map((pol) => (
             <tr
               key={pol.politicianId}
-              className="border-b border-black/10 hover:bg-black/5 transition-colors"
+              className="border-b border-primary hover:bg-muted transition-colors"
             >
-              <td className="px-3 py-3 text-sm font-black text-black/50">
+              <td className="px-3 py-3 text-sm font-black text-muted-foreground">
                 #{pol.rank}
               </td>
               <td className="px-3 py-3">
-                <div className="text-sm font-black text-black">{pol.name}</div>
+                <div className="text-sm font-black text-foreground">{pol.name}</div>
                 {pol.title ? (
-                  <div className="text-xs font-medium text-black/50">
+                  <div className="text-xs font-bold text-muted-foreground">
                     {pol.title}
                     {pol.district ? ` \u00B7 ${pol.district}` : ""}
                   </div>
                 ) : null}
               </td>
-              <td className="px-3 py-3 text-sm font-bold text-black/70">
+              <td className="px-3 py-3 text-sm font-bold text-foreground">
                 {pol.party ?? "\u2014"}
               </td>
               <td className="px-3 py-3">
                 <div className="flex items-center gap-2">
-                  <div className="h-2 w-16 overflow-hidden border border-black/20 bg-black/5">
+                  <div className="h-2 w-16 overflow-hidden border border-primary bg-muted">
                     <div
                       className={`h-full ${scoreBgClass(pol.score)}`}
                       style={{ width: `${Math.min(pol.score, 100)}%` }}
@@ -141,7 +141,7 @@ export function ScoreboardTable({ politicians }: ScoreboardTableProps) {
                   </span>
                 </div>
               </td>
-              <td className="px-3 py-3 text-sm font-bold text-black/60">
+              <td className="px-3 py-3 text-sm font-bold text-muted-foreground">
                 {pol.votesCompared}
               </td>
             </tr>

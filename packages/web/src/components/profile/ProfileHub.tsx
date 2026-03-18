@@ -23,10 +23,10 @@ export function ProfileHub({ initialData }: ProfileHubProps) {
         <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
           Your Data
         </p>
-        <h1 className="text-4xl font-black uppercase tracking-tight text-black">
+        <h1 className="text-4xl font-black uppercase tracking-tight text-foreground">
           Census + Daily Check-In
         </h1>
-        <p className="max-w-3xl text-base font-medium text-black/70">
+        <p className="max-w-3xl text-base font-bold text-foreground">
           Save your location and census snapshot, then rate your health and happiness over
           time.
         </p>
@@ -88,10 +88,10 @@ function ProfileCTA({
   return (
     <Link
       href={href}
-      className={`block border-4 border-black ${color} p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+      className={`block border-4 border-primary ${color} p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
     >
-      <h3 className="text-sm font-black uppercase text-black">{label}</h3>
-      <p className="mt-1 text-xs font-medium text-black/70">{description}</p>
+      <h3 className="text-sm font-black uppercase text-foreground">{label}</h3>
+      <p className="mt-1 text-xs font-bold text-foreground">{description}</p>
     </Link>
   );
 }

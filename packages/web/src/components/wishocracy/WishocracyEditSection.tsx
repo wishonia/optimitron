@@ -130,7 +130,7 @@ export function WishocracyEditSection({
 
   return (
     <div className="max-w-3xl mx-auto mt-8" data-edit-allocations>
-      <Card className="bg-background border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <Card className="bg-background border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         {/* Header - Always visible */}
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -157,10 +157,10 @@ export function WishocracyEditSection({
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="p-6 pt-0 border-t-4 border-black">
+            <div className="p-6 pt-0 border-t-4 border-primary">
               {/* Warning Banner */}
               {showWarning && categoriesToDelete.size > 0 && (
-                <div className="mb-6 p-4 bg-brutal-yellow border-4 border-black rounded">
+                <div className="mb-6 p-4 bg-brutal-yellow border-4 border-primary rounded">
                   <div className="flex items-start gap-3">
                     <AlertTriangle className="w-5 h-5 text-foreground mt-0.5" />
                     <div>
@@ -194,7 +194,7 @@ export function WishocracyEditSection({
                             ? "border-brutal-cyan bg-brutal-cyan/10"
                             : willBeDeleted
                             ? "border-brutal-red bg-brutal-red/20"
-                            : "border-black/30 bg-muted"
+                            : "border-primary bg-muted"
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -213,8 +213,8 @@ export function WishocracyEditSection({
                             onChange={(e) => handleCategoryToggle(categoryId, e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-full h-full bg-muted border-2 border-black peer-checked:bg-brutal-cyan transition-colors" />
-                          <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-foreground border-2 border-black transition-transform peer-checked:translate-x-6" />
+                          <div className="w-full h-full bg-muted border-2 border-primary peer-checked:bg-brutal-cyan transition-colors" />
+                          <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-foreground border-2 border-primary transition-transform peer-checked:translate-x-6" />
                         </label>
                       </div>
                     )
@@ -243,7 +243,7 @@ export function WishocracyEditSection({
                       return (
                         <div
                           key={`${comp.itemAId}-${comp.itemBId}`}
-                          className="p-4 border-2 border-black rounded bg-background"
+                          className="p-4 border-2 border-primary rounded bg-background"
                         >
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
@@ -266,7 +266,7 @@ export function WishocracyEditSection({
                               onChange={(e) =>
                                 handleAllocationChange(comp.itemAId, comp.itemBId, Number(e.target.value))
                               }
-                              className="w-full h-3 bg-background border-2 border-black rounded-none appearance-none cursor-pointer slider-brutal"
+                              className="w-full h-3 bg-background border-2 border-primary rounded-none appearance-none cursor-pointer slider-brutal"
                               style={{
                                 background: `linear-gradient(to right, #FF6B9D ${comp.allocationA}%, #00D9FF ${comp.allocationA}%)`,
                               }}
@@ -295,7 +295,7 @@ export function WishocracyEditSection({
                 <Button
                   onClick={handleSave}
                   disabled={!hasChanges || isSaving}
-                  className="flex-1 h-12 font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 h-12 font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Save className="w-4 h-4 mr-2" />
                   {isSaving ? "Saving..." : "Save Changes"}
@@ -309,7 +309,7 @@ export function WishocracyEditSection({
                   }}
                   disabled={!hasChanges || isSaving}
                   variant="outline"
-                  className="h-12 font-black uppercase border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all disabled:opacity-50"
+                  className="h-12 font-black uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all disabled:opacity-50"
                 >
                   Cancel
                 </Button>

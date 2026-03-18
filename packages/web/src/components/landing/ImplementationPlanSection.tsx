@@ -45,10 +45,10 @@ export function ImplementationPlanSection() {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
       <ScrollReveal className="text-center mb-16">
-        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
           Five Steps. No Altruism Required.
         </h2>
-        <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
+        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
           Every step is driven by self-interest. That&apos;s the point. Systems that
           require everyone to be nice don&apos;t scale. Systems that make selfishness
           productive do. Ask any economist. Or any alien who&apos;s been running a
@@ -60,17 +60,17 @@ export function ImplementationPlanSection() {
         {steps.map((item) => (
           <div
             key={item.step}
-            className="p-6 border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+            className="p-6 border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
           >
             <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-              <div className="w-12 h-12 bg-brutal-pink border-2 border-black flex items-center justify-center text-lg font-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0">
+              <div className="w-12 h-12 bg-brutal-pink border-2 border-primary flex items-center justify-center text-lg font-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0">
                 {item.step}
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-black text-black mb-2 uppercase">
+                <h3 className="text-xl font-black text-foreground mb-2 uppercase">
                   {item.title}
                 </h3>
-                <p className="text-sm text-black/70 leading-relaxed font-medium mb-2">
+                <p className="text-sm text-foreground leading-relaxed font-bold mb-2">
                   {item.description}
                 </p>
                 <p className="text-xs font-black text-brutal-pink uppercase">
@@ -88,7 +88,7 @@ export function ImplementationPlanSection() {
             item={fullManualPaperLink}
             variant="custom"
             external
-            className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-black transition-colors"
+            className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
           >
             Read the full manual &rarr;
           </NavItemLink>

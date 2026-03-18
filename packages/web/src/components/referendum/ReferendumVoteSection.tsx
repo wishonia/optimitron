@@ -77,8 +77,8 @@ export function ReferendumVoteSection({
 
   if (!isActive) {
     return (
-      <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <p className="text-sm font-black uppercase text-black/60">
+      <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <p className="text-sm font-black uppercase text-muted-foreground">
           This referendum is no longer accepting votes.
         </p>
       </div>
@@ -91,17 +91,17 @@ export function ReferendumVoteSection({
     });
 
     return (
-      <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <h3 className="text-lg font-black uppercase text-black mb-2">
+      <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <h3 className="text-lg font-black uppercase text-foreground mb-2">
           Sign In to Vote
         </h3>
-        <p className="text-sm font-medium text-black/70">
+        <p className="text-sm font-bold text-foreground">
           You need an account to cast your vote. Verify with World ID
           afterwards to make it count as a verified vote.
         </p>
         <a
           href={signInHref}
-          className="mt-4 inline-flex items-center justify-center border-4 border-black bg-black px-6 py-2 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]"
+          className="mt-4 inline-flex items-center justify-center border-4 border-primary bg-foreground px-6 py-2 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
         >
           Sign In
         </a>
@@ -114,11 +114,11 @@ export function ReferendumVoteSection({
 
     return (
       <div className="space-y-6">
-        <div className="border-4 border-black bg-green-50 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <h3 className="text-lg font-black uppercase text-black mb-2">
+        <div className="border-4 border-primary bg-green-50 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h3 className="text-lg font-black uppercase text-foreground mb-2">
             Vote Recorded: {answer}
           </h3>
-          <p className="text-sm font-medium text-black/70">
+          <p className="text-sm font-bold text-foreground">
             Verify with World ID to make your vote count as verified.
             Then share your link below to bring in more verified votes.
           </p>
@@ -126,32 +126,32 @@ export function ReferendumVoteSection({
 
         {/* VOTE token earning info */}
         {mintQueued ? (
-          <div className="border-4 border-black bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-lg font-black uppercase text-black mb-2">
+          <div className="border-4 border-primary bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-lg font-black uppercase text-foreground mb-2">
               1 VOTE Token Queued
             </h3>
-            <p className="text-sm font-medium text-black/70">
+            <p className="text-sm font-bold text-foreground">
               Your verified vote earned 1 VOTE token. It will be minted
               on-chain in the next batch.{" "}
               <Link
                 href="/contribute"
-                className="font-black text-brutal-pink underline hover:text-black"
+                className="font-black text-brutal-pink underline hover:text-foreground"
               >
                 View your VOTE balance &rarr;
               </Link>
             </p>
           </div>
         ) : (
-          <div className="border-4 border-black bg-brutal-yellow/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-lg font-black uppercase text-black mb-2">
+          <div className="border-4 border-primary bg-brutal-yellow/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-lg font-black uppercase text-foreground mb-2">
               Earn VOTE Tokens
             </h3>
-            <p className="text-sm font-medium text-black/70">
+            <p className="text-sm font-bold text-foreground">
               Verify with World ID below{address ? "" : " and connect a wallet"} to earn 1 VOTE token for this
               vote. VOTE tokens are redeemable for a share of the{" "}
               <Link
                 href="/contribute"
-                className="font-black text-brutal-pink underline hover:text-black"
+                className="font-black text-brutal-pink underline hover:text-foreground"
               >
                 Earth Optimization Prize
               </Link>{" "}
@@ -163,11 +163,11 @@ export function ReferendumVoteSection({
         {/* World ID verification — only show if not yet verified */}
         <WorldIdVerificationCard show />
 
-        <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <h3 className="text-lg font-black uppercase text-black mb-3">
+        <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h3 className="text-lg font-black uppercase text-foreground mb-3">
             Your Referral Link
           </h3>
-          <p className="text-sm font-medium text-black/60 mb-4">
+          <p className="text-sm font-bold text-muted-foreground mb-4">
             Every verified vote through your link increases your share of the
             success pool. Share it everywhere.
           </p>
@@ -184,8 +184,8 @@ export function ReferendumVoteSection({
   }
 
   return (
-    <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-      <h3 className="text-lg font-black uppercase text-black mb-4">
+    <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <h3 className="text-lg font-black uppercase text-foreground mb-4">
         Cast Your Vote
       </h3>
       {error && (
@@ -197,14 +197,14 @@ export function ReferendumVoteSection({
         <button
           onClick={() => void castVote("YES")}
           disabled={isSubmitting}
-          className="flex-1 border-4 border-black bg-green-500 py-4 text-xl font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+          className="flex-1 border-4 border-primary bg-green-500 py-4 text-xl font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
         >
           Yes
         </button>
         <button
           onClick={() => void castVote("NO")}
           disabled={isSubmitting}
-          className="flex-1 border-4 border-black bg-red-500 py-4 text-xl font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+          className="flex-1 border-4 border-primary bg-red-500 py-4 text-xl font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
         >
           No
         </button>

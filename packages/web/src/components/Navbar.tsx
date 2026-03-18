@@ -48,7 +48,7 @@ function AvatarButton({
   return (
     <Link
       href={href}
-      className="flex items-center justify-center w-10 h-10 border-4 border-black bg-brutal-cyan hover:bg-primary hover:text-primary-foreground font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all rounded-full"
+      className="flex items-center justify-center w-10 h-10 border-4 border-primary bg-brutal-cyan hover:bg-primary hover:text-primary-foreground font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all rounded-full"
       title={isAuthenticated ? "Profile" : "Sign In"}
     >
       {initial ? (
@@ -68,13 +68,13 @@ export default function Navbar() {
   const user = session?.user ?? null;
 
   return (
-    <nav className="sticky top-0 z-50 border-b-4 border-black bg-brutal-yellow">
+    <nav className="sticky top-0 z-50 border-b-4 border-primary bg-brutal-yellow">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link
             href={ROUTES.home}
-            className="text-xl font-black uppercase tracking-tight text-black hover:underline decoration-4"
+            className="text-xl font-black uppercase tracking-tight text-foreground hover:underline decoration-4"
           >
             <span className="sm:hidden">Optimitron</span>
             <span className="hidden sm:inline">⚡ Optimitron</span>
@@ -88,7 +88,7 @@ export default function Navbar() {
               <SheetTrigger asChild>
                 <button
                   type="button"
-                  className="border-4 border-black bg-white p-2 hover:bg-black hover:text-white font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all"
+                  className="border-4 border-primary bg-background p-2 hover:bg-foreground hover:text-white font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all"
                   aria-label="Open menu"
                 >
                   <Menu className="h-5 w-5 stroke-[3px]" />
@@ -96,7 +96,7 @@ export default function Navbar() {
               </SheetTrigger>
 
               <SheetContent side="right" className="overflow-y-auto">
-                <SheetTitle className="text-xl font-black uppercase tracking-tight border-b-4 border-black pb-3 mb-4">
+                <SheetTitle className="text-xl font-black uppercase tracking-tight border-b-4 border-primary pb-3 mb-4">
                   Navigation
                 </SheetTitle>
                 <SheetDescription className="sr-only">
@@ -105,7 +105,7 @@ export default function Navbar() {
 
                 <Accordion type="multiple" defaultValue={navSections.map((s) => s.id)} className="w-full">
                   {navSections.map((section) => (
-                    <AccordionItem key={section.id} value={section.id} className="border-b-2 border-black/20">
+                    <AccordionItem key={section.id} value={section.id} className="border-b-2 border-primary">
                       <AccordionTrigger className="text-sm font-black uppercase tracking-wide py-3 hover:no-underline">
                         {section.label}
                       </AccordionTrigger>
@@ -119,8 +119,8 @@ export default function Navbar() {
                                   href={item.href}
                                   className={`flex items-center gap-2 px-3 py-2 text-sm font-bold uppercase transition-all border-2 ${
                                     active
-                                      ? "border-black bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                                      : "border-transparent hover:border-black hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                      ? "border-primary bg-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                      : "border-transparent hover:border-primary hover:bg-background hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                                   }`}
                                 >
                                   {item.emoji && <span>{item.emoji}</span>}
@@ -136,7 +136,7 @@ export default function Navbar() {
                 </Accordion>
 
                 {/* Auth section */}
-                <div className="border-t-4 border-black mt-4 pt-4 space-y-3">
+                <div className="border-t-4 border-primary mt-4 pt-4 space-y-3">
                   {isAuthenticated && user?.personhoodProvider && (
                     <div className="px-1">
                       <PersonhoodStatusBadge
@@ -150,7 +150,7 @@ export default function Navbar() {
                       <SheetClose asChild>
                         <Link
                           href={profileLink.href}
-                          className="block text-sm font-black uppercase px-3 py-2 border-2 border-transparent hover:border-black hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+                          className="block text-sm font-black uppercase px-3 py-2 border-2 border-transparent hover:border-primary hover:bg-background hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
                         >
                           {profileLink.emoji} {profileLink.label}
                         </Link>
@@ -161,7 +161,7 @@ export default function Navbar() {
                           setOpen(false);
                           void signOut({ callbackUrl: ROUTES.home });
                         }}
-                        className="w-full text-sm font-black uppercase px-3 py-2 border-4 border-black bg-white hover:bg-black hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+                        className="w-full text-sm font-black uppercase px-3 py-2 border-4 border-primary bg-background hover:bg-foreground hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
                       >
                         Sign Out
                       </button>
@@ -170,7 +170,7 @@ export default function Navbar() {
                     <SheetClose asChild>
                       <Link
                         href={getSignInPath(ROUTES.wishocracy)}
-                        className="block text-sm font-black uppercase px-3 py-2 border-4 border-black bg-brutal-cyan text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all"
+                        className="block text-sm font-black uppercase px-3 py-2 border-4 border-primary bg-brutal-cyan text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all"
                       >
                         Sign In
                       </Link>

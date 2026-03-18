@@ -127,10 +127,10 @@ export function PersonalIncomeChart() {
         transition={{ duration: 0.4 }}
         className="text-center mb-8"
       >
-        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
           How Rich Would You Be?
         </h2>
-        <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
+        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
           Enter your income. See what {YEARS} years of compounding looks like with
           and without the {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} governance dysfunction tax.
         </p>
@@ -148,7 +148,7 @@ export function PersonalIncomeChart() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <label
               htmlFor="income-input"
-              className="text-sm font-black uppercase text-black/60"
+              className="text-sm font-black uppercase text-muted-foreground"
             >
               Your Annual Income:
             </label>
@@ -162,13 +162,13 @@ export function PersonalIncomeChart() {
                   const v = parseInt(e.target.value, 10);
                   if (!isNaN(v) && v > 0 && v < 10_000_000) setIncome(v);
                 }}
-                className="w-32 px-3 py-2 border-4 border-black font-black text-lg text-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] transition-all"
+                className="w-32 px-3 py-2 border-4 border-primary font-black text-lg text-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] transition-all"
               />
-              <span className="text-sm font-bold text-black/40">/year</span>
+              <span className="text-sm font-bold text-muted-foreground">/year</span>
             </div>
             <button
               onClick={() => setIncome(DEFAULT_INCOME)}
-              className="text-xs font-bold text-black/40 hover:text-black underline transition-colors"
+              className="text-xs font-bold text-muted-foreground hover:text-foreground underline transition-colors"
             >
               Reset to median
             </button>
@@ -180,10 +180,10 @@ export function PersonalIncomeChart() {
               <button
                 key={s.id}
                 onClick={() => setScenarioIdx(i)}
-                className={`px-4 py-2 text-xs font-black uppercase border-2 border-black transition-all ${
+                className={`px-4 py-2 text-xs font-black uppercase border-2 border-primary transition-all ${
                   scenarioIdx === i
-                    ? "bg-black text-white shadow-none translate-x-[2px] translate-y-[2px]"
-                    : "bg-white text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px]"
+                    ? "bg-foreground text-white shadow-none translate-x-[2px] translate-y-[2px]"
+                    : "bg-background text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px]"
                 }`}
               >
                 {s.label}
@@ -197,7 +197,7 @@ export function PersonalIncomeChart() {
           initial={reduced ? {} : { opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-2 sm:p-4"
+          className="border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-2 sm:p-4"
         >
           <svg
             viewBox={`0 0 ${svgW} ${svgH}`}
@@ -319,27 +319,27 @@ export function PersonalIncomeChart() {
           transition={{ duration: 0.4, delay: 0.6 }}
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6"
         >
-          <div className="p-4 border-2 border-black bg-white text-center">
-            <div className="text-xs font-black uppercase text-black/50 mb-1">
+          <div className="p-4 border-2 border-primary bg-background text-center">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               {YEARS}-Year Status Quo Total
             </div>
             <div className="text-xl font-black text-brutal-red">
               {formatCurrency(totalCurrentEarnings)}
             </div>
           </div>
-          <div className="p-4 border-2 border-black bg-white text-center">
-            <div className="text-xs font-black uppercase text-black/50 mb-1">
+          <div className="p-4 border-2 border-primary bg-background text-center">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               {YEARS}-Year {scenario.label} Total
             </div>
             <div className="text-xl font-black text-brutal-cyan">
               {formatCurrency(totalOptimizedEarnings)}
             </div>
           </div>
-          <div className="p-4 border-4 border-black bg-brutal-yellow shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-xs font-black uppercase text-black/50 mb-1">
+          <div className="p-4 border-4 border-primary bg-brutal-yellow shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               Your Dysfunction Tax
             </div>
-            <div className="text-xl font-black text-black">
+            <div className="text-xl font-black text-foreground">
               {formatCurrency(lifetimeLost)}
             </div>
           </div>
@@ -349,14 +349,14 @@ export function PersonalIncomeChart() {
           initial={reduced ? {} : { opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: 0.8 }}
-          className="text-center text-xs text-black/30 mt-4 font-medium max-w-2xl mx-auto"
+          className="text-center text-xs text-muted-foreground mt-4 font-bold max-w-2xl mx-auto"
         >
           Based on current GDP growth (~2.5%) vs. modelled trajectories from the{" "}
           <a
             href="https://manual.warondisease.org/knowledge/economics/gdp-trajectories.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-black/50"
+            className="underline hover:text-muted-foreground"
           >
             GDP Trajectories analysis
           </a>

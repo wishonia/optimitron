@@ -56,10 +56,10 @@ export function DecentralizedFDASection() {
           transition={{ duration: 0.4 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
             Your Decentralized FDA
           </h2>
-          <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
             Your FDA makes treatments wait <Stat param={EFFICACY_LAG_YEARS} /> AFTER they&apos;ve been proven safe. This replaces the theatre with infrastructure.
           </p>
         </motion.div>
@@ -79,7 +79,7 @@ export function DecentralizedFDASection() {
                   transition={{ duration: 0.4, delay: i * 0.15 }}
                   className="flex items-center justify-between mb-2"
                 >
-                  <span className="text-sm font-black uppercase text-black/60">
+                  <span className="text-sm font-black uppercase text-muted-foreground">
                     {comp.label}
                   </span>
                   <span className={`text-lg sm:text-xl font-black ${comp.ratioColor}`}>
@@ -90,10 +90,10 @@ export function DecentralizedFDASection() {
                 {/* Current (status quo) bar */}
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-black/40 w-16 shrink-0">
+                    <span className="text-xs font-bold text-muted-foreground w-16 shrink-0">
                       Current
                     </span>
-                    <div className="flex-grow relative h-10 bg-black/5 border border-black/10">
+                    <div className="flex-grow relative h-10 bg-muted border border-primary">
                       <motion.div
                         initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
                         animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
@@ -103,10 +103,10 @@ export function DecentralizedFDASection() {
                           ease: [0.87, 0, 0.13, 1],
                         }}
                         style={{ originX: 0, width: `${currentPct}%` }}
-                        className={`absolute inset-y-0 left-0 ${comp.current.color} border-r-2 border-black/20`}
+                        className={`absolute inset-y-0 left-0 ${comp.current.color} border-r-2 border-primary`}
                       />
                       <div className="absolute inset-0 flex items-center pl-3">
-                        <span className="text-sm font-black text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)]">
+                        <span className="text-sm font-black text-white drop-shadow-[0_1px_1px_rgba(0,0,0,1)]">
                           {comp.current.display}
                         </span>
                       </div>
@@ -115,10 +115,10 @@ export function DecentralizedFDASection() {
 
                   {/* Optimized (dFDA) bar */}
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-black/40 w-16 shrink-0">
+                    <span className="text-xs font-bold text-muted-foreground w-16 shrink-0">
                       dFDA
                     </span>
-                    <div className="flex-grow relative h-10 bg-black/5 border border-black/10">
+                    <div className="flex-grow relative h-10 bg-muted border border-primary">
                       <motion.div
                         initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
                         animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
@@ -128,10 +128,10 @@ export function DecentralizedFDASection() {
                           ease: [0.87, 0, 0.13, 1],
                         }}
                         style={{ originX: 0, width: `${optPct}%` }}
-                        className={`absolute inset-y-0 left-0 ${comp.optimized.color} border-r-2 border-black/20`}
+                        className={`absolute inset-y-0 left-0 ${comp.optimized.color} border-r-2 border-primary`}
                       />
                       <div className="absolute inset-0 flex items-center pl-3">
-                        <span className="text-sm font-black text-black">
+                        <span className="text-sm font-black text-foreground">
                           {comp.optimized.display}
                         </span>
                       </div>
@@ -150,15 +150,15 @@ export function DecentralizedFDASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.5 }}
-            className="p-4 border-2 border-black bg-brutal-cyan/30"
+            className="p-4 border-2 border-primary bg-brutal-cyan/30"
           >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-black px-2 py-0.5 bg-black text-white">
+              <span className="text-xs font-black px-2 py-0.5 bg-foreground text-white">
                 Stage 1
               </span>
               <span className="text-xs font-black">~$1/patient</span>
             </div>
-            <p className="text-sm text-black/70 font-medium">
+            <p className="text-sm text-foreground font-bold">
               Real-world evidence from existing data — prescriptions, wearables, lab results. Pattern recognition, not recruitment.
             </p>
           </motion.div>
@@ -167,15 +167,15 @@ export function DecentralizedFDASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.6 }}
-            className="p-4 border-2 border-black bg-brutal-pink/30"
+            className="p-4 border-2 border-primary bg-brutal-pink/30"
           >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-black px-2 py-0.5 bg-black text-white">
+              <span className="text-xs font-black px-2 py-0.5 bg-foreground text-white">
                 Stage 2
               </span>
               <span className="text-xs font-black">~<Stat param={DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT} /></span>
             </div>
-            <p className="text-sm text-black/70 font-medium">
+            <p className="text-sm text-foreground font-bold">
               Pragmatic trials in routine care. Same doctors, same clinics, real patients. Rigorous evidence at human scale.
             </p>
           </motion.div>
@@ -189,14 +189,14 @@ export function DecentralizedFDASection() {
           transition={{ duration: 0.4, delay: 0.7 }}
           className="text-center"
         >
-          <p className="text-sm text-black/50 font-bold mb-3">
+          <p className="text-sm text-muted-foreground font-bold mb-3">
             Every treatment gets an Outcome Label — effectiveness, side effects, optimal dosage — from millions of real patients.
           </p>
           <NavItemLink
             item={dfdaSpecPaperLink}
             variant="custom"
             external
-            className="inline-flex items-center text-sm font-black text-brutal-cyan uppercase hover:text-black transition-colors"
+            className="inline-flex items-center text-sm font-black text-brutal-cyan uppercase hover:text-foreground transition-colors"
           >
             Read the dFDA spec &rarr;
           </NavItemLink>

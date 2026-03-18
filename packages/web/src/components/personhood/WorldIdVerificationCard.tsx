@@ -11,6 +11,7 @@ import { AlertCard } from "@/components/ui/alert-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createLogger } from "@/lib/logger";
+import { clientEnv } from "@/lib/env";
 import type { WorldIdRequestPayload, WorldIdVerificationPayload } from "@/lib/world-id";
 
 const logger = createLogger("world-id-verification-card");
@@ -29,7 +30,7 @@ export function WorldIdVerificationCard({ show }: WorldIdVerificationCardProps) 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   const [isRefreshing, startRefresh] = useTransition();
-  const worldIdEnabled = process.env.NEXT_PUBLIC_WORLD_ID_ENABLED !== "false";
+  const worldIdEnabled = clientEnv.NEXT_PUBLIC_WORLD_ID_ENABLED !== "false";
   const sessionUser = session?.user;
   const isVerified = Boolean(sessionUser?.personhoodVerified);
 
@@ -127,11 +128,11 @@ export function WorldIdVerificationCard({ show }: WorldIdVerificationCardProps) 
 
   return (
     <div className="mx-auto mb-8 max-w-3xl">
-      <Card className="border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <Card className="border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <CardHeader className="gap-3">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <CardTitle className="text-lg font-black uppercase text-black">
+              <CardTitle className="text-lg font-black uppercase text-foreground">
                 Proof of Personhood
               </CardTitle>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -149,7 +150,7 @@ export function WorldIdVerificationCard({ show }: WorldIdVerificationCardProps) 
           {requestError ? <AlertCard type="error" message={requestError} /> : null}
 
           {isVerified ? (
-            <div className="border-2 border-black bg-brutal-cyan/10 p-4">
+            <div className="border-2 border-primary bg-brutal-cyan/10 p-4">
               <div className="flex items-start gap-3">
                 <ShieldCheck className="mt-0.5 h-5 w-5 text-foreground" />
                 <div className="space-y-1 text-sm">
@@ -168,15 +169,15 @@ export function WorldIdVerificationCard({ show }: WorldIdVerificationCardProps) 
               </div>
             </div>
           ) : !worldIdEnabled ? (
-            <div className="border-2 border-dashed border-black bg-muted/30 p-4 text-sm text-muted-foreground">
+            <div className="border-2 border-dashed border-primary bg-muted/30 p-4 text-sm text-muted-foreground">
               World ID verification is disabled for this environment.
             </div>
           ) : (
-            <div className="border-2 border-black bg-brutal-cyan/10 p-4">
+            <div className="border-2 border-primary bg-brutal-cyan/10 p-4">
               <div className="flex items-start gap-3">
-                <ShieldQuestion className="mt-0.5 h-5 w-5 text-black" />
+                <ShieldQuestion className="mt-0.5 h-5 w-5 text-foreground" />
                 <div className="space-y-3 text-sm">
-                  <p className="text-black">
+                  <p className="text-foreground">
                     This does not replace login. It adds a separate uniqueness proof on top of
                     your account.
                   </p>

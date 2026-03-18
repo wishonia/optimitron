@@ -46,13 +46,13 @@ const graveyardStats = [
 
 export function InvisibleGraveyardSection() {
   return (
-    <section className="bg-black">
+    <section className="bg-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
             The Invisible Graveyard
           </h2>
-          <p className="mt-4 text-lg text-white/50 max-w-2xl mx-auto font-medium">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
             <Stat param={GLOBAL_DISEASE_DEATHS_DAILY} /> people die every day from treatable diseases. Not untreatable.
             Treatable. You just have not gotten around to testing the treatments yet.
             At your current pace, clearing the backlog takes {Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value)} years.
@@ -69,7 +69,7 @@ export function InvisibleGraveyardSection() {
                 <h3 className="text-sm font-black text-white uppercase mb-2">
                   {stat.label}
                 </h3>
-                <p className="text-sm text-white/60 leading-relaxed font-medium">
+                <p className="text-sm text-muted-foreground leading-relaxed font-bold">
                   {stat.detail}
                 </p>
               </div>
@@ -79,10 +79,10 @@ export function InvisibleGraveyardSection() {
 
         <ScrollReveal delay={0.4}>
           <div className="p-8 border-4 border-brutal-yellow bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-3xl sm:text-4xl font-black text-black mb-2">
+            <div className="text-3xl sm:text-4xl font-black text-foreground mb-2">
               <Stat param={{...DFDA_EFFICACY_LAG_ELIMINATION_ECONOMIC_VALUE, unit: "USD"}} />
             </div>
-            <p className="text-black/70 font-medium max-w-xl mx-auto mb-1">
+            <p className="text-foreground font-bold max-w-xl mx-auto mb-1">
               Economic value of lives lost to regulatory delay. At 15 new treatments
               per year, your {Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value)}-year queue means most of these diseases will outlive
               your civilisation. Which, given your other numbers, might not be very long.
@@ -92,7 +92,7 @@ export function InvisibleGraveyardSection() {
                 item={invisibleGraveyardPaperLink}
                 variant="custom"
                 external
-                className="inline-flex items-center text-sm font-black text-black/60 uppercase hover:text-black transition-colors"
+                className="inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-foreground transition-colors"
               >
                 Read the paper &rarr;
               </NavItemLink>
@@ -100,7 +100,7 @@ export function InvisibleGraveyardSection() {
                 item={dfdaSpecPaperLink}
                 variant="custom"
                 external
-                className="inline-flex items-center text-sm font-black text-black/60 uppercase hover:text-black transition-colors"
+                className="inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-foreground transition-colors"
               >
                 See the solution (dFDA) &rarr;
               </NavItemLink>

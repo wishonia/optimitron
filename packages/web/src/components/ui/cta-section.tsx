@@ -25,7 +25,7 @@ const bgColorClasses: Record<CTABgColor, { bg: string; text: string }> = {
     text: "text-foreground",
   },
   black: {
-    bg: "bg-black",
+    bg: "bg-foreground",
     text: "text-brutal-pink-foreground",
   },
   foreground: {

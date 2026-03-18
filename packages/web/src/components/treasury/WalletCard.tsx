@@ -20,14 +20,14 @@ export function WalletCard() {
 
   return (
     <section id="connect" className="mb-16">
-      <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <h3 className="font-black uppercase text-black mb-3">
+      <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <h3 className="font-black uppercase text-foreground mb-3">
           Connect Wallet
         </h3>
 
         {!isConnected ? (
           <div className="space-y-3">
-            <p className="text-xs font-medium text-black/60 mb-4">
+            <p className="text-xs font-bold text-muted-foreground mb-4">
               Connect your wallet to check your $WISH balance, register for UBI,
               and trigger distributions. This is the $WISH monetary system — not
               the IAB public goods pool.
@@ -38,7 +38,7 @@ export function WalletCard() {
                   <button
                     key={connector.uid}
                     onClick={() => connect({ connector })}
-                    className="border-2 border-black bg-brutal-cyan px-4 py-2.5 text-sm font-black uppercase text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
+                    className="border-2 border-primary bg-brutal-cyan px-4 py-2.5 text-sm font-black uppercase text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
                   >
                     {connector.name === "Injected"
                       ? "Browser Wallet (MetaMask)"
@@ -47,14 +47,14 @@ export function WalletCard() {
                 ))}
               </div>
             )}
-            <div className="border-2 border-black bg-brutal-cyan/10 p-3">
-              <p className="text-xs font-medium text-black/60">
+            <div className="border-2 border-primary bg-brutal-cyan/10 p-3">
+              <p className="text-xs font-bold text-muted-foreground">
                 Need a wallet?{" "}
                 <a
                   href="https://metamask.io/download/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-black text-black underline hover:text-brutal-cyan"
+                  className="font-black text-foreground underline hover:text-brutal-cyan"
                 >
                   Install MetaMask
                 </a>{" "}
@@ -66,10 +66,10 @@ export function WalletCard() {
           <div className="space-y-3">
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div>
-                <div className="text-xs font-black uppercase text-black/50">
+                <div className="text-xs font-black uppercase text-muted-foreground">
                   Connected
                 </div>
-                <code className="text-sm font-bold text-black break-all">
+                <code className="text-sm font-bold text-foreground break-all">
                   {address?.slice(0, 6)}...{address?.slice(-4)}
                 </code>
               </div>
@@ -77,14 +77,14 @@ export function WalletCard() {
                 {chainId !== sepolia.id && (
                   <button
                     onClick={() => switchChain({ chainId: sepolia.id })}
-                    className="border-2 border-black bg-brutal-yellow px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/80 transition-colors"
+                    className="border-2 border-primary bg-brutal-yellow px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/80 transition-colors"
                   >
                     Switch to Sepolia
                   </button>
                 )}
                 <button
                   onClick={() => disconnect()}
-                  className="border-2 border-black bg-white px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-red/20 transition-colors"
+                  className="border-2 border-primary bg-background px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-red/20 transition-colors"
                 >
                   Disconnect
                 </button>
@@ -92,8 +92,8 @@ export function WalletCard() {
             </div>
 
             <div className="grid gap-2 grid-cols-2">
-              <div className="border-2 border-black bg-brutal-cyan/20 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-brutal-cyan/20 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   $WISH Balance
                 </div>
                 <div className="text-sm font-black">
@@ -102,8 +102,8 @@ export function WalletCard() {
                     : `${formatWish(wishBalance)} $WISH`}
                 </div>
               </div>
-              <div className="border-2 border-black bg-brutal-cyan/10 p-2">
-                <div className="text-[10px] font-black uppercase text-black/50">
+              <div className="border-2 border-primary bg-brutal-cyan/10 p-2">
+                <div className="text-[10px] font-black uppercase text-muted-foreground">
                   Max Supply (Fixed)
                 </div>
                 <div className="text-sm font-black">

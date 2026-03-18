@@ -104,9 +104,9 @@ export function WishocracyCategorySelection({
             {isComplete ? 'Complete!' : `${currentIndex + 1} of ${allCategories.length}`}
           </span>
         </div>
-        <div className="w-full h-3 bg-background border-2 border-black">
+        <div className="w-full h-3 bg-background border-2 border-primary">
           <motion.div
-            className="h-full bg-brutal-cyan border-r-2 border-black"
+            className="h-full bg-brutal-cyan border-r-2 border-primary"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.3 }}
@@ -124,7 +124,7 @@ export function WishocracyCategorySelection({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="bg-background border-4 border-black p-8 md:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <Card className="bg-background border-4 border-primary p-8 md:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <div className="text-center">
                 <div className="text-6xl mb-4">🎯</div>
                 <h3 className="text-2xl md:text-3xl font-black uppercase mb-4">
@@ -141,7 +141,7 @@ export function WishocracyCategorySelection({
                 </p>
                 <Button
                   onClick={handleComplete}
-                  className="w-full h-16 text-xl font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+                  className="w-full h-16 text-xl font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
                 >
                   {selectedCategories.size >= 2 ? 'Start Comparing →' : 'Continue →'}
                 </Button>
@@ -166,7 +166,7 @@ export function WishocracyCategorySelection({
             transition={{ duration: 0.3 }}
             className="cursor-grab active:cursor-grabbing"
           >
-            <Card className="bg-background border-4 border-black p-8 md:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <Card className="bg-background border-4 border-primary p-8 md:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               {/* Category Info */}
               <div className="text-center mb-8">
                 <div className="text-7xl mb-6">{category.icon}</div>
@@ -186,13 +186,13 @@ export function WishocracyCategorySelection({
                 <Button
                   onClick={handleSkip}
                   variant="outline"
-                  className="h-16 text-base sm:text-lg font-black uppercase bg-background hover:bg-muted text-foreground border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all whitespace-normal"
+                  className="h-16 text-base sm:text-lg font-black uppercase bg-background hover:bg-muted text-foreground border-4 border-primary shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all whitespace-normal"
                 >
                   $0
                 </Button>
                 <Button
                   onClick={handleFund}
-                  className="h-16 text-base sm:text-lg font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all whitespace-normal"
+                  className="h-16 text-base sm:text-lg font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-primary shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all whitespace-normal"
                 >
                   More Than $0
                 </Button>

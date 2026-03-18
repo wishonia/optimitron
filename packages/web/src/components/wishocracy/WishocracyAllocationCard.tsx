@@ -21,7 +21,7 @@ export function WishocracyAllocationCard({
 
   return (
     <div className="max-w-3xl mx-auto mt-8" data-complete-list>
-      <Card className="bg-background border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <Card className="bg-background border-4 border-primary p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="text-left">
           <h3 className="font-black text-lg uppercase">Your Budget Allocation</h3>
           <p className="text-xs text-muted-foreground">

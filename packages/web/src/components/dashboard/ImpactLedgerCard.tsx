@@ -65,7 +65,7 @@ export function ImpactLedgerCard({ votesLogged }: ImpactLedgerCardProps) {
           <p className="font-black uppercase text-sm mb-3">Your Total Impact</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {ledgerStats.map((stat) => (
-              <div key={stat.label} className="border-2 border-primary p-4 bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between gap-3 h-full">
+              <div key={stat.label} className="border-2 border-primary p-4 bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between gap-3 h-full">
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-xs uppercase font-bold text-muted-foreground">{stat.label}</p>

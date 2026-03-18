@@ -83,7 +83,7 @@ export function GdpTrajectoryChart({ className = "" }: { className?: string }) {
 
   return (
     <div ref={ref} className={className}>
-      <p className="text-sm text-black/50 font-bold uppercase tracking-wider text-center mb-3">
+      <p className="text-sm text-muted-foreground font-bold uppercase tracking-wider text-center mb-3">
         Here. I drew you a picture since numbers apparently aren&apos;t enough.
       </p>
       <svg

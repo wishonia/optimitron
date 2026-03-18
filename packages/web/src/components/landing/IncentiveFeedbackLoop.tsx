@@ -85,18 +85,18 @@ export function IncentiveFeedbackLoop() {
     <div ref={ref}>
       {/* Fund flow split visualization */}
       <div className="mb-10">
-        <p className="text-xs font-black uppercase text-black/50 text-center mb-3">
+        <p className="text-xs font-black uppercase text-muted-foreground text-center mb-3">
           Where Treaty Funding Goes
         </p>
-        <div className="flex h-12 border-2 border-black overflow-hidden">
+        <div className="flex h-12 border-2 border-primary overflow-hidden">
           <motion.div
             initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.87, 0, 0.13, 1] }}
             style={{ originX: 0 }}
-            className="w-[10%] bg-brutal-yellow border-r-2 border-black flex items-center justify-center"
+            className="w-[10%] bg-brutal-yellow border-r-2 border-primary flex items-center justify-center"
           >
-            <span className="text-[10px] sm:text-xs font-black text-black whitespace-nowrap">
+            <span className="text-[10px] sm:text-xs font-black text-foreground whitespace-nowrap">
               10% Bonds
             </span>
           </motion.div>
@@ -105,7 +105,7 @@ export function IncentiveFeedbackLoop() {
             animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
             transition={{ duration: 0.6, delay: 0.4, ease: [0.87, 0, 0.13, 1] }}
             style={{ originX: 0 }}
-            className="w-[10%] bg-brutal-pink border-r-2 border-black flex items-center justify-center"
+            className="w-[10%] bg-brutal-pink border-r-2 border-primary flex items-center justify-center"
           >
             <span className="text-[10px] sm:text-xs font-black text-white whitespace-nowrap">
               10% Pols
@@ -118,7 +118,7 @@ export function IncentiveFeedbackLoop() {
             style={{ originX: 0 }}
             className="w-[80%] bg-brutal-cyan flex items-center justify-center"
           >
-            <span className="text-xs sm:text-sm font-black text-black">
+            <span className="text-xs sm:text-sm font-black text-foreground">
               80% Pragmatic Trials
             </span>
           </motion.div>
@@ -133,18 +133,18 @@ export function IncentiveFeedbackLoop() {
         {stakeholders.map((s) => (
           <div
             key={s.name}
-            className={`p-4 border-4 border-black ${s.color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
+            className={`p-4 border-4 border-primary ${s.color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
           >
-            <div className="text-xs font-black uppercase tracking-wider text-black/50 mb-1">
+            <div className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-1">
               {s.cut} {s.label}
             </div>
-            <h4 className={`text-lg font-black uppercase ${s.textColor ?? "text-black"} mb-2`}>
+            <h4 className={`text-lg font-black uppercase ${s.textColor ?? "text-foreground"} mb-2`}>
               {s.name}
             </h4>
-            <p className={`text-sm font-medium ${s.textColor ? "text-white/80" : "text-black/60"} mb-3`}>
+            <p className={`text-sm font-bold ${s.textColor ? "text-background" : "text-muted-foreground"} mb-3`}>
               {s.why}
             </p>
-            <div className={`text-sm font-black ${s.textColor ?? "text-black"}`}>
+            <div className={`text-sm font-black ${s.textColor ?? "text-foreground"}`}>
               {s.action}
             </div>
           </div>
@@ -159,7 +159,7 @@ export function IncentiveFeedbackLoop() {
             initial={reduced ? {} : { height: 0, opacity: 0 }}
             animate={isInView ? { height: 40, opacity: 1 } : {}}
             transition={{ duration: 0.4, delay: 0.8 }}
-            className="w-0.5 bg-black/30 hidden md:block"
+            className="w-0.5 bg-muted hidden md:block"
           />
           {/* Center line (always visible) */}
           <motion.div
@@ -176,7 +176,7 @@ export function IncentiveFeedbackLoop() {
             initial={reduced ? {} : { height: 0, opacity: 0 }}
             animate={isInView ? { height: 40, opacity: 1 } : {}}
             transition={{ duration: 0.4, delay: 1.0 }}
-            className="w-0.5 bg-black/30 hidden md:block"
+            className="w-0.5 bg-muted hidden md:block"
           />
         </div>
       </div>
@@ -186,17 +186,17 @@ export function IncentiveFeedbackLoop() {
         initial={reduced ? {} : { opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.4, delay: 1.1 }}
-        className="p-5 border-4 border-black bg-emerald-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4"
+        className="p-5 border-4 border-primary bg-emerald-100 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4"
       >
         <div className="flex items-baseline gap-3 flex-wrap">
-          <h4 className="text-lg font-black uppercase text-black">
+          <h4 className="text-lg font-black uppercase text-foreground">
             GDP Increases
           </h4>
-          <span className="text-sm font-bold text-black/50">
+          <span className="text-sm font-bold text-muted-foreground">
             Everyone gets richer.
           </span>
         </div>
-        <p className="text-sm font-medium text-black/60 mt-1">
+        <p className="text-sm font-bold text-muted-foreground mt-1">
           <Stat param={{...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"}} />–<Stat param={{...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"}} /> per-capita income gains across adopting jurisdictions.
           Bondholders&apos; assets appreciate. Politicians win elections. Citizens live longer.
         </p>
@@ -220,17 +220,17 @@ export function IncentiveFeedbackLoop() {
         initial={reduced ? {} : { opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.4, delay: 1.4 }}
-        className="p-5 border-4 border-black bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6"
+        className="p-5 border-4 border-primary bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6"
       >
         <div className="flex items-baseline gap-3 flex-wrap">
-          <h4 className="text-lg font-black uppercase text-black">
+          <h4 className="text-lg font-black uppercase text-foreground">
             Treaty Expands
           </h4>
-          <span className="text-sm font-bold text-black/50">
+          <span className="text-sm font-bold text-muted-foreground">
             More funding. Bigger pool. Loop repeats at higher scale.
           </span>
         </div>
-        <p className="text-2xl font-black text-black mt-2">
+        <p className="text-2xl font-black text-foreground mt-2">
           1% → 2% → 5% → ...
         </p>
       </motion.div>
@@ -251,9 +251,9 @@ export function IncentiveFeedbackLoop() {
         }}
         className="flex justify-center mb-8"
       >
-        <div className="px-4 py-2 border-2 border-dashed border-black/30 bg-black/5 text-center">
+        <div className="px-4 py-2 border-2 border-dashed border-primary bg-muted text-center">
           <span className="text-lg mr-2">&#8634;</span>
-          <span className="text-sm font-black text-black/50 uppercase">
+          <span className="text-sm font-black text-muted-foreground uppercase">
             Each cycle makes the next bigger
           </span>
         </div>
@@ -261,18 +261,18 @@ export function IncentiveFeedbackLoop() {
 
       {/* Year 1/5/10 escalation */}
       <StepReveal staggerDelay={0.15}>
-        <div className="border-2 border-black bg-black/5 p-4">
-          <p className="text-xs font-black uppercase text-black/40 mb-3">
+        <div className="border-2 border-primary bg-muted p-4">
+          <p className="text-xs font-black uppercase text-muted-foreground mb-3">
             The Inevitable Escalation
           </p>
           <div className="space-y-3">
             {escalationYears.map((y) => (
               <div key={y.year} className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
                 <div className="flex items-baseline gap-2 shrink-0">
-                  <span className="text-sm font-black text-black">{y.year}:</span>
-                  <span className="text-sm font-bold text-black/60">{y.pct} = {y.amount}</span>
+                  <span className="text-sm font-black text-foreground">{y.year}:</span>
+                  <span className="text-sm font-bold text-muted-foreground">{y.pct} = {y.amount}</span>
                 </div>
-                <span className="text-xs font-medium text-black/40">
+                <span className="text-xs font-bold text-muted-foreground">
                   → {y.detail}
                 </span>
               </div>

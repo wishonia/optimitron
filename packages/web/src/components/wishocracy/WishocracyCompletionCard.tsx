@@ -86,7 +86,7 @@ export function WishocracyCompletionCard({
         ) : null}
       </div>
 
-      <div className="mb-6 border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="mb-6 border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="mb-4 text-center text-lg font-black uppercase">Your Top Priorities</h3>
         <div className="space-y-3">
           {topPriorities.map((priority, index) => (
@@ -103,7 +103,7 @@ export function WishocracyCompletionCard({
           ))}
         </div>
 
-        <div className="mt-4 border-t-2 border-black pt-4">
+        <div className="mt-4 border-t-2 border-primary pt-4">
           <Button
             type="button"
             variant="outline"
@@ -119,7 +119,7 @@ export function WishocracyCompletionCard({
         </div>
       </div>
 
-      <div className="mb-6 border-4 border-black bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="mb-6 border-4 border-primary bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="mb-3 text-center text-base font-black uppercase">Share Your Referral Link</h3>
         <p className="mb-4 text-center text-xs text-muted-foreground">
           More humans = better data. Basic statistics, really.

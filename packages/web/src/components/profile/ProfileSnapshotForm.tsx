@@ -143,16 +143,16 @@ export function ProfileSnapshotForm({ onSaved, profile }: ProfileSnapshotFormPro
   }
 
   return (
-    <Card className="border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+    <Card className="border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
       <CardHeader className="gap-3">
-        <CardTitle className="text-2xl font-black uppercase text-black">
+        <CardTitle className="text-2xl font-black uppercase text-foreground">
           Census Snapshot
         </CardTitle>
-        <p className="text-sm font-medium text-black/60">
+        <p className="text-sm font-bold text-muted-foreground">
           Income is saved as annual household income in USD.
         </p>
         {profile.censusUpdatedAt ? (
-          <p className="text-xs font-bold uppercase tracking-wide text-black/50">
+          <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
             Updated {new Date(profile.censusUpdatedAt).toLocaleString()}
           </p>
         ) : null}
@@ -342,7 +342,7 @@ export function ProfileSnapshotForm({ onSaved, profile }: ProfileSnapshotFormPro
               Use Current Location
             </Button>
             {profile.lastIncomeReportedAt ? (
-              <p className="self-center text-xs font-bold uppercase tracking-wide text-black/50">
+              <p className="self-center text-xs font-bold uppercase tracking-wide text-muted-foreground">
                 Income tracked {new Date(profile.lastIncomeReportedAt).toLocaleDateString()}
               </p>
             ) : null}

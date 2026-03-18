@@ -65,10 +65,10 @@ export function BudgetGapChart() {
           transition={{ duration: 0.4 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
             Where Your Money Should Be Going
           </h2>
-          <p className="mt-4 text-lg text-black/60 max-w-2xl mx-auto font-medium">
+          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
             Outlined = what you spend. Filled = what the data says you should. Click any category to see what it&apos;s actually producing.
           </p>
         </motion.div>
@@ -86,16 +86,16 @@ export function BudgetGapChart() {
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.4, delay: i * 0.06 }}
                   onClick={() => setSelected(isOpen ? null : i)}
-                  className="w-full text-left p-4 border-2 border-black bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer"
+                  className="w-full text-left p-4 border-2 border-primary bg-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer"
                 >
                   {/* Label row */}
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="font-black text-sm text-black">
+                      <span className="font-black text-sm text-foreground">
                         {cat.name}
                       </span>
                       <span
-                        className={`text-xs font-black px-1.5 py-0.5 border border-black ${
+                        className={`text-xs font-black px-1.5 py-0.5 border border-primary ${
                           isOverInvested
                             ? "bg-brutal-red/20 text-brutal-red"
                             : "bg-brutal-cyan/20 text-brutal-cyan"
@@ -104,7 +104,7 @@ export function BudgetGapChart() {
                         {cat.investmentStatus}
                       </span>
                     </div>
-                    <div className="flex items-center gap-3 text-xs font-bold text-black/40">
+                    <div className="flex items-center gap-3 text-xs font-bold text-muted-foreground">
                       <span>Grade: {cat.evidenceGrade}</span>
                       <span
                         className={`font-black text-sm ${isOverInvested ? "text-brutal-red" : "text-brutal-cyan"}`}
@@ -116,10 +116,10 @@ export function BudgetGapChart() {
                   </div>
 
                   {/* Bars */}
-                  <div className="relative h-8 bg-black/5 border border-black/10">
+                  <div className="relative h-8 bg-muted border border-primary">
                     {/* Current spending - outlined */}
                     <div
-                      className="absolute inset-y-0 left-0 border-2 border-black/30 border-dashed"
+                      className="absolute inset-y-0 left-0 border-2 border-primary border-dashed"
                       style={{ width: `${currentPct}%` }}
                     />
                     {/* Optimal spending - filled */}
@@ -136,7 +136,7 @@ export function BudgetGapChart() {
                     />
                     {/* Labels inside bar */}
                     <div className="absolute inset-0 flex items-center px-2 gap-4">
-                      <span className="text-xs font-bold text-black/50">
+                      <span className="text-xs font-bold text-muted-foreground">
                         Now: {formatBillions(cat.currentSpending)}
                       </span>
                       <span className={`text-xs font-black ${isOverInvested ? "text-brutal-red" : "text-brutal-cyan"}`}>
@@ -147,10 +147,10 @@ export function BudgetGapChart() {
 
                   {/* Gap label */}
                   <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-black/30">
+                    <span className="text-xs text-muted-foreground">
                       Gap: {formatBillions(cat.gap)}
                     </span>
-                    <span className="text-black/30 text-xs">
+                    <span className="text-muted-foreground text-xs">
                       {isOpen ? "▲" : "▼"}
                     </span>
                   </div>
@@ -166,21 +166,21 @@ export function BudgetGapChart() {
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <div className="ml-4 sm:ml-8 border-l-4 border-black pl-4 py-4">
-                        <p className="text-xs font-bold text-black/50 uppercase mb-3">
+                      <div className="ml-4 sm:ml-8 border-l-4 border-primary pl-4 py-4">
+                        <p className="text-xs font-bold text-muted-foreground uppercase mb-3">
                           Current outcome metrics
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                           {cat.outcomeMetrics.map((m) => (
                             <div
                               key={m.name}
-                              className="p-3 border-2 border-black/20 bg-white"
+                              className="p-3 border-2 border-primary bg-background"
                             >
-                              <div className="text-xs text-black/50 font-bold mb-1">
+                              <div className="text-xs text-muted-foreground font-bold mb-1">
                                 {m.name}
                               </div>
                               <div className="flex items-baseline gap-2">
-                                <span className="text-lg font-black text-black">
+                                <span className="text-lg font-black text-foreground">
                                   {m.value.toLocaleString()}
                                 </span>
                                 <span
@@ -189,7 +189,7 @@ export function BudgetGapChart() {
                                       ? "text-brutal-cyan"
                                       : m.trend === "decreasing"
                                         ? "text-brutal-red"
-                                        : "text-black/40"
+                                        : "text-muted-foreground"
                                   }`}
                                 >
                                   {trendIcon(m.trend)} {m.trend}
@@ -208,9 +208,9 @@ export function BudgetGapChart() {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-6 mt-8 text-xs font-bold text-black/40">
+        <div className="flex items-center justify-center gap-6 mt-8 text-xs font-bold text-muted-foreground">
           <span className="flex items-center gap-1">
-            <span className="w-4 h-3 border-2 border-black/30 border-dashed inline-block" />{" "}
+            <span className="w-4 h-3 border-2 border-primary border-dashed inline-block" />{" "}
             Current
           </span>
           <span className="flex items-center gap-1">
@@ -233,7 +233,7 @@ export function BudgetGapChart() {
           <NavItemLink
             item={budgetLink}
             variant="custom"
-            className="inline-flex items-center text-sm font-black text-brutal-pink hover:text-black uppercase transition-colors"
+            className="inline-flex items-center text-sm font-black text-brutal-pink hover:text-foreground uppercase transition-colors"
           >
             See full budget analysis &rarr;
           </NavItemLink>

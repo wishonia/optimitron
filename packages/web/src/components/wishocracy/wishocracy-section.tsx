@@ -31,7 +31,7 @@ export default function WishocracySection() {
     state.comparisons.length >= state.totalPossiblePairs;
 
   return (
-    <section className="min-h-screen border-b-4 border-black bg-brutal-yellow pb-32 pt-4">
+    <section className="min-h-screen border-b-4 border-primary bg-brutal-yellow pb-32 pt-4">
       <div className="mx-auto max-w-6xl px-4">
         <WishocracyLoadingCard isLoading={state.isLoading} />
 

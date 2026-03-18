@@ -36,7 +36,7 @@ export function CitizenPrioritiesChart({
 }: CitizenPrioritiesChartProps) {
   if (priorities.length === 0) {
     return (
-      <p className="text-sm font-medium text-black/60">
+      <p className="text-sm font-bold text-muted-foreground">
         No preference data available yet.
       </p>
     );
@@ -55,14 +55,14 @@ export function CitizenPrioritiesChart({
         return (
           <div key={item.itemId} className="group">
             <div className="mb-1 flex items-baseline justify-between gap-2">
-              <span className="text-xs font-black uppercase tracking-[0.1em] text-black">
+              <span className="text-xs font-black uppercase tracking-[0.1em] text-foreground">
                 {item.itemName}
               </span>
-              <span className="text-xs font-bold text-black/50">{pct}%</span>
+              <span className="text-xs font-bold text-muted-foreground">{pct}%</span>
             </div>
-            <div className="h-6 w-full overflow-hidden border border-black/20 bg-black/5">
+            <div className="h-6 w-full overflow-hidden border border-primary bg-muted">
               <div
-                className={`h-full ${color} border-r border-black/20 transition-all duration-300`}
+                className={`h-full ${color} border-r border-primary transition-all duration-300`}
                 style={{ width: `${barWidth}%` }}
               />
             </div>

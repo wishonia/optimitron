@@ -66,7 +66,7 @@ export function TwoFuturesSection() {
         transition={{ duration: 0.4 }}
         className="text-center mb-12"
       >
-        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-black">
+        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
           Two Futures. Same Species. Same Year.
         </h2>
       </motion.div>
@@ -80,7 +80,7 @@ export function TwoFuturesSection() {
               Path A — Status Quo
             </span>
           </div>
-          <div className="w-px h-4 bg-black/20 shrink-0" />
+          <div className="w-px h-4 bg-muted shrink-0" />
           <div className="w-1/2 pl-4 text-left">
             <span className="text-xs font-black uppercase text-brutal-cyan">
               Path B — 1% Treaty
@@ -100,7 +100,7 @@ export function TwoFuturesSection() {
             >
               {/* Left side (Path A) — bars grow right-to-left */}
               <div className="w-1/2 pr-2 sm:pr-4 flex items-center justify-end gap-2">
-                <span className="text-xs text-black/50 font-medium text-right hidden sm:block max-w-32 leading-tight">
+                <span className="text-xs text-muted-foreground font-bold text-right hidden sm:block max-w-32 leading-tight">
                   {row.pathA}
                 </span>
                 <div className="w-32 sm:w-48 h-8 relative overflow-hidden">
@@ -113,15 +113,15 @@ export function TwoFuturesSection() {
                       ease: [0.87, 0, 0.13, 1],
                     }}
                     style={{ originX: 1, width: `${row.aWeight}%` }}
-                    className="absolute inset-y-0 right-0 bg-brutal-red/70 border-l-2 border-black/20"
+                    className="absolute inset-y-0 right-0 bg-brutal-red/70 border-l-2 border-primary"
                   />
                 </div>
               </div>
 
               {/* Center metric label */}
-              <div className="shrink-0 w-px self-stretch bg-black/30 relative">
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 py-0.5 border border-black/20 whitespace-nowrap z-10">
-                  <span className="text-xs font-black text-black uppercase">
+              <div className="shrink-0 w-px self-stretch bg-muted relative">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 py-0.5 border border-primary whitespace-nowrap z-10">
+                  <span className="text-xs font-black text-foreground uppercase">
                     {row.metric}
                   </span>
                 </div>
@@ -139,10 +139,10 @@ export function TwoFuturesSection() {
                       ease: [0.87, 0, 0.13, 1],
                     }}
                     style={{ originX: 0, width: `${row.bWeight}%` }}
-                    className="absolute inset-y-0 left-0 bg-brutal-cyan/70 border-r-2 border-black/20"
+                    className="absolute inset-y-0 left-0 bg-brutal-cyan/70 border-r-2 border-primary"
                   />
                 </div>
-                <span className="text-xs text-black/50 font-medium hidden sm:block max-w-32 leading-tight">
+                <span className="text-xs text-muted-foreground font-bold hidden sm:block max-w-32 leading-tight">
                   {row.pathB}
                 </span>
               </div>
@@ -154,9 +154,9 @@ export function TwoFuturesSection() {
         <div className="sm:hidden mt-6 space-y-2">
           {rows.map((row) => (
             <div key={`mobile-${row.metric}`} className="flex items-start gap-2 text-xs">
-              <span className="font-black text-black shrink-0">{row.metric}:</span>
+              <span className="font-black text-foreground shrink-0">{row.metric}:</span>
               <span className="text-brutal-red">{row.pathA}</span>
-              <span className="text-black/30">vs</span>
+              <span className="text-muted-foreground">vs</span>
               <span className="text-brutal-cyan">{row.pathB}</span>
             </div>
           ))}
@@ -170,14 +170,14 @@ export function TwoFuturesSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.4, delay: 0.8 }}
       >
-        <div className="p-6 border-4 border-black bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center max-w-3xl mx-auto">
-          <p className="text-xl font-black text-black mb-4">
+        <div className="p-6 border-4 border-primary bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center max-w-3xl mx-auto">
+          <p className="text-xl font-black text-foreground mb-4">
             Doing nothing IS choosing Path A.
           </p>
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="px-8 py-3.5 bg-black text-white font-black uppercase text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="px-8 py-3.5 bg-foreground text-white font-black uppercase text-lg border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
           >
             Choose Path B
           </NavItemLink>

@@ -31,35 +31,35 @@ export function TreasuryStatusCard() {
     {
       label: "Registered Citizens",
       value: citizenCountNum.toLocaleString(),
-      color: "bg-white",
+      color: "bg-background",
     },
     {
       label: "Transaction Tax",
       value: `${(Number(taxRateBps) / 100).toFixed(1)}%`,
       detail: "On every $WISH transfer",
-      color: "bg-white",
+      color: "bg-background",
     },
     {
       label: "Circulating Supply",
       value: `${formatWish(totalSupply)} $WISH`,
-      color: "bg-white",
+      color: "bg-background",
     },
     {
       label: "Max Supply (Fixed)",
       value: `${formatWish(maxSupply)} $WISH`,
       detail: "No inflation. Ever.",
-      color: "bg-white",
+      color: "bg-background",
     },
   ];
 
   return (
     <section className="mb-16">
       <div className="flex items-center gap-3 mb-6">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground">
           Treasury Status
         </h2>
         {isDemo && (
-          <span className="border-2 border-black bg-brutal-yellow px-2 py-0.5 text-[10px] font-black uppercase">
+          <span className="border-2 border-primary bg-brutal-yellow px-2 py-0.5 text-[10px] font-black uppercase">
             Demo
           </span>
         )}
@@ -68,16 +68,16 @@ export function TreasuryStatusCard() {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className={`border-2 border-black ${stat.color} p-3`}
+            className={`border-2 border-primary ${stat.color} p-3`}
           >
-            <div className="text-[10px] font-black uppercase text-black/50">
+            <div className="text-[10px] font-black uppercase text-muted-foreground">
               {stat.label}
             </div>
-            <div className="text-sm font-black text-black mt-1">
+            <div className="text-sm font-black text-foreground mt-1">
               {stat.value}
             </div>
             {stat.detail && (
-              <div className="text-[10px] font-bold text-black/40 mt-0.5">
+              <div className="text-[10px] font-bold text-muted-foreground mt-0.5">
                 {stat.detail}
               </div>
             )}

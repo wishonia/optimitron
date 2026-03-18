@@ -42,7 +42,7 @@ export function OpportunityCostTicker({
   if (prefersReducedMotion) {
     return (
       <div className={`text-center ${className}`}>
-        <p className="text-sm font-bold text-black/60">
+        <p className="text-sm font-bold text-muted-foreground">
           ~2 million clinical trials could be funded per year with the money
           governments waste. That&apos;s every disease. Every treatment. Every person
           currently told &ldquo;there&apos;s nothing we can do.&rdquo;
@@ -53,11 +53,11 @@ export function OpportunityCostTicker({
 
   return (
     <div
-      className={`p-4 bg-white/80 border-2 border-brutal-red text-center ${className}`}
+      className={`p-4 bg-background border-2 border-brutal-red text-center ${className}`}
     >
       <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6">
         <div>
-          <span className="text-xs font-bold text-black/40 uppercase tracking-wider">
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
             Since you opened this page,{" "}
           </span>
           <span
@@ -67,7 +67,7 @@ export function OpportunityCostTicker({
           >
             $0.0M
           </span>
-          <span className="text-xs font-bold text-black/40 uppercase tracking-wider">
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
             {" "}in governance waste could have funded{" "}
           </span>
           <span
@@ -77,12 +77,12 @@ export function OpportunityCostTicker({
           >
             0.0
           </span>
-          <span className="text-xs font-bold text-black/40 uppercase tracking-wider">
+          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
             {" "}clinical trials
           </span>
         </div>
       </div>
-      <p className="text-[10px] text-black/30 mt-1 italic">
+      <p className="text-[10px] text-muted-foreground mt-1 italic">
         At $50M per trial. 95% of diseases have zero approved treatments.
         The money exists. It&apos;s just being set on fire.
       </p>

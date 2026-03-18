@@ -160,7 +160,7 @@ export function AuthForm({
   }
 
   return (
-    <div className="w-full rounded-xl border-4 border-black bg-white p-5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+    <div className="w-full rounded-xl border-4 border-primary bg-background p-5 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
       <div className="mb-5 text-center">
         <h2 className="text-xl font-black uppercase">Sign In</h2>
       </div>
@@ -178,7 +178,7 @@ export function AuthForm({
         <Button
           type="button"
           disabled={isLoading}
-          className={`w-full font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${buttonClassName}`}
+          className={`w-full font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${buttonClassName}`}
           onClick={() => {
             void handleDemoSignIn();
           }}

@@ -104,7 +104,7 @@ export function LiveDeathTicker({ className = "" }: { className?: string }) {
           >
             <span ref={refs[i]}>{c.format(0)}</span>
           </div>
-          <p className="text-[10px] sm:text-xs font-bold text-white/50 mt-2 uppercase tracking-wider max-w-xs mx-auto">
+          <p className="text-[10px] sm:text-xs font-bold text-muted-foreground mt-2 uppercase tracking-wider max-w-xs mx-auto">
             {c.label}
           </p>
           <p className="text-[10px] text-white/25 mt-1 italic max-w-xs mx-auto">
