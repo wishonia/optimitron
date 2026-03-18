@@ -15,6 +15,7 @@ import { EmailFooter } from "./components/EmailFooter"
 import { SocialShareButtons } from "./components/SocialShareButtons"
 import { ReferralLinkBox } from "./components/ReferralLinkBox"
 import { CTAButton } from "./components/CTAButton"
+import { ResourcePromoSection } from "./components/ResourcePromoSection"
 import { getEmailUrls } from "@/lib/email-urls"
 
 interface WelcomeImpactEmailProps {
@@ -319,6 +320,8 @@ export const WelcomeImpactEmail = ({
               Every person you recruit brings us closer. Let's optimize Earth together.
             </Text>
           </Section>
+
+          <ResourcePromoSection utmSource="welcome_email" />
 
           <EmailFooter reason="you voted in the Optomitron referendum" />
         </Container>

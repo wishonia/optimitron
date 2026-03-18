@@ -15,6 +15,7 @@ import { EmailFooter } from "./components/EmailFooter"
 import { SocialShareButtons } from "./components/SocialShareButtons"
 import { ReferralLinkBox } from "./components/ReferralLinkBox"
 import { CTAButton } from "./components/CTAButton"
+import { ResourcePromoSection } from "./components/ResourcePromoSection"
 import { getEmailUrls } from "@/lib/email-urls"
 
 interface WeeklyUpdateEmailProps {
@@ -362,6 +363,8 @@ export const WeeklyUpdateEmail = ({
           </Section>
 
           <CTAButton href={dashboardLink} margin="40px 0">VIEW FULL DASHBOARD</CTAButton>
+
+          <ResourcePromoSection utmSource="weekly_update" />
 
           <EmailFooter reason="you opted in to weekly updates" />
         </Container>
