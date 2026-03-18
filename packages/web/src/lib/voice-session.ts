@@ -115,6 +115,8 @@ export class VoiceSession {
         },
       });
     } catch (err) {
+      // Clear cached token so next attempt fetches fresh (handles token exhaustion after `uses` limit)
+      this.cachedToken = null;
       const msg = err instanceof Error ? err.message : 'Failed to connect';
       this.callbacks.onError(msg);
 
