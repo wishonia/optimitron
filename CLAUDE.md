@@ -218,6 +218,26 @@ We use **Prisma 7** (`prisma@^7.0.0`, `@prisma/client@^7.0.0`) with `@prisma/ada
 3. **Library packages have ZERO database imports.** Pure functions only.
 4. **Types use Zod schemas** where runtime validation matters.
 5. **One task per agent run.** Quality over quantity.
+6. **No off-brand colors.** Neobrutalist = bold, high-contrast, zero pastels. See color rules below.
+
+## Color Rules (Neobrutalist Aesthetic)
+
+The UI uses a **neobrutalist** design system — bold, high-contrast, no washed-out pastels. Run `pnpm --filter @optimitron/web run audit:colors` to validate.
+
+### Approved Colors ONLY
+- **Brutal tokens:** `brutal-pink`, `brutal-cyan`, `brutal-yellow`, `brutal-red` (and `-foreground` variants)
+- **Semantic tokens:** `primary`, `foreground`, `background`, `muted`, `muted-foreground`, `primary-foreground`, `secondary`, `accent`, `destructive`, `border`, `card`, `popover`, `ring`, `input`, `chart-*`
+- **Fundamentals:** `black`, `white`, `transparent`, `current`, `inherit` — only WITHOUT opacity modifiers
+- **Hard shadows only:** `rgba(0,0,0,1)` — never soft/transparent shadows
+
+### NEVER Use
+- **Opacity modifiers on black/white:** `text-black/50`, `bg-white/70`, etc. → use `text-muted-foreground` or `text-foreground`
+- **Hardcoded `bg-white`/`text-white`:** → use `bg-background`/`text-primary-foreground` (dark mode compat)
+- **Hardcoded `bg-black`/`text-black`:** → use `bg-foreground`/`text-foreground` (dark mode compat)
+- **Tailwind color scales:** `bg-emerald-100`, `text-gray-500`, etc. → use brutal-* or semantic tokens
+- **Hardcoded hex colors:** `#ef4444`, `#666`, `#f5f5f5`, etc. → use CSS custom properties
+- **Soft shadows:** `rgba(0,0,0,0.3)` → use `rgba(0,0,0,1)` for brutal hard shadows
+- **Exception:** Email templates (`emails/`) may use inline hex colors (email clients require it)
 
 ## Tooling
 

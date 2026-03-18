@@ -20,7 +20,8 @@
     "e2e:smoke": "playwright test e2e/smoke.spec.ts",
     "e2e:demo": "playwright test e2e/demo-recording.spec.ts",
     "demo:narration": "tsx scripts/generate-narration.ts",
-    "demo:record": "tsx scripts/record-demo.ts"
+    "demo:record": "tsx scripts/record-demo.ts",
+    "audit:colors": "tsx scripts/audit-colors.ts"
   },
   "dependencies": {
     "@google/genai": "^1.30.0",
