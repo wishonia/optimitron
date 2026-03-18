@@ -34,18 +34,18 @@ const data = misconceptionData as MisconceptionData;
 
 const categoryColors: Record<string, string> = {
   "criminal-justice": "bg-brutal-red text-white",
-  economics: "bg-brutal-cyan text-black",
-  healthcare: "bg-brutal-cyan text-black",
-  education: "bg-brutal-pink text-black",
-  international: "bg-brutal-yellow text-black",
-  environment: "bg-brutal-cyan text-black",
+  economics: "bg-brutal-cyan text-foreground",
+  healthcare: "bg-brutal-cyan text-foreground",
+  education: "bg-brutal-pink text-foreground",
+  international: "bg-brutal-yellow text-foreground",
+  environment: "bg-brutal-cyan text-foreground",
 };
 
 const gradeColors: Record<string, string> = {
-  A: "bg-brutal-cyan text-black",
-  B: "bg-brutal-cyan text-black",
-  C: "bg-brutal-yellow text-black",
-  D: "bg-brutal-red/60 text-black",
+  A: "bg-brutal-cyan text-foreground",
+  B: "bg-brutal-cyan text-foreground",
+  C: "bg-brutal-yellow text-foreground",
+  D: "bg-brutal-red/60 text-foreground",
   F: "bg-brutal-red text-white",
 };
 
@@ -143,7 +143,7 @@ function CorrelationBar({ value }: { value: number }) {
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs text-black/40">
+      <span className="text-xs text-muted-foreground">
         {abs < 0.1 ? "No link" : abs < 0.3 ? "Weak" : abs < 0.7 ? "Moderate" : "Strong"}
       </span>
     </div>
@@ -169,14 +169,14 @@ export default function MisconceptionsPage() {
   return (
     <main className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-black text-black mb-2">
+        <h1 className="text-3xl font-black text-foreground mb-2">
           {data.title}
         </h1>
-        <p className="text-black/60 mb-2">
+        <p className="text-muted-foreground mb-2">
           I tested your species&apos; most popular policy beliefs against actual
           data. The results are&hellip; well. See for yourself.
         </p>
-        <p className="text-black/50 text-sm mb-8">
+        <p className="text-muted-foreground text-sm mb-8">
           {data.summary.gradeFCount} of {data.summary.totalFindings} beliefs
           are flatly contradicted by the evidence. Only{" "}
           {data.summary.gradeACount} survived.
@@ -184,27 +184,27 @@ export default function MisconceptionsPage() {
 
         {/* Summary cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-brutal-red border-2 border-black p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="bg-brutal-red border-2 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl font-black text-white">
               {data.summary.gradeFCount}
             </div>
-            <div className="text-sm text-black">
+            <div className="text-sm text-foreground">
               Grade F (data contradicts)
             </div>
           </div>
-          <div className="bg-brutal-cyan border-2 border-black p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-3xl font-black text-black">
+          <div className="bg-brutal-cyan border-2 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-3xl font-black text-foreground">
               {data.summary.gradeACount}
             </div>
-            <div className="text-sm text-black">
+            <div className="text-sm text-foreground">
               Grade A (data supports)
             </div>
           </div>
-          <div className="bg-brutal-cyan border-2 border-black p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-3xl font-black text-black">
+          <div className="bg-brutal-cyan border-2 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-3xl font-black text-foreground">
               {data.summary.totalFindings}
             </div>
-            <div className="text-sm text-black">Total analyzed</div>
+            <div className="text-sm text-foreground">Total analyzed</div>
           </div>
         </div>
 
@@ -216,8 +216,8 @@ export default function MisconceptionsPage() {
               onClick={() => setFilter(cat)}
               className={`px-3 py-1 text-sm font-black transition-colors ${
                 filter === cat
-                  ? "bg-black text-white"
-                  : "bg-muted text-black hover:bg-brutal-yellow"
+                  ? "bg-foreground text-white"
+                  : "bg-muted text-foreground hover:bg-brutal-yellow"
               }`}
             >
               {cat === "all" ? "All" : cat.replace("-", " ")}
@@ -230,7 +230,7 @@ export default function MisconceptionsPage() {
           {filtered.map((finding) => (
             <div
               key={finding.id}
-              className="bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden"
+              className="bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-primary overflow-hidden"
             >
               <button
                 onClick={() =>
@@ -262,31 +262,31 @@ export default function MisconceptionsPage() {
                         {finding.category.replace("-", " ")}
                       </span>
                     </div>
-                    <h3 className="font-black text-black mt-1">
-                      <span className="text-xs font-normal uppercase tracking-wide text-black/40 block mb-0.5">
+                    <h3 className="font-black text-foreground mt-1">
+                      <span className="text-xs font-normal uppercase tracking-wide text-muted-foreground block mb-0.5">
                         The belief
                       </span>
                       &ldquo;{finding.myth}&rdquo;
                     </h3>
                     <div className="mt-2">
-                      <span className="text-xs font-normal uppercase tracking-wide text-black/40 block mb-0.5">
+                      <span className="text-xs font-normal uppercase tracking-wide text-muted-foreground block mb-0.5">
                         What the data shows
                       </span>
-                      <p className="text-sm text-black">
+                      <p className="text-sm text-foreground">
                         {finding.reality}
                       </p>
                     </div>
                   </div>
-                  <span className="text-black/40 ml-2 mt-1">
+                  <span className="text-muted-foreground ml-2 mt-1">
                     {expandedId === finding.id ? "▼" : "▶"}
                   </span>
                 </div>
               </button>
 
               {expandedId === finding.id && (
-                <div className="px-4 pb-4 border-t border-black">
+                <div className="px-4 pb-4 border-t border-primary">
                   <div className="mt-3">
-                    <h4 className="text-sm font-black text-black mb-2">
+                    <h4 className="text-sm font-black text-foreground mb-2">
                       Key Statistics
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -301,13 +301,13 @@ export default function MisconceptionsPage() {
                             key={key}
                             className="bg-background p-3 text-sm"
                           >
-                            <div className="text-black/50 text-xs mb-0.5">
+                            <div className="text-muted-foreground text-xs mb-0.5">
                               {statLabels[key] ||
                                 key
                                   .replace(/([A-Z])/g, " $1")
                                   .toLowerCase()}
                             </div>
-                            <div className="font-black text-black">
+                            <div className="font-black text-foreground">
                               {formatStatValue(key, value)}
                             </div>
                             {isCorrelation && typeof value === "number" && (
@@ -317,7 +317,7 @@ export default function MisconceptionsPage() {
                         );
                       })}
                     </div>
-                    <p className="mt-3 text-xs text-black/40 leading-relaxed">
+                    <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
                       <strong>What is correlation?</strong> A number from -1 to
                       +1. Values near 0 mean no relationship. Values near +1 or
                       -1 mean a strong relationship. &ldquo;Year-over-year&rdquo;
@@ -325,7 +325,7 @@ export default function MisconceptionsPage() {
                       avoids misleading long-term trends.
                     </p>
                   </div>
-                  <div className="mt-3 text-xs text-black/40">
+                  <div className="mt-3 text-xs text-muted-foreground">
                     Dataset: {finding.dataset}
                   </div>
                 </div>
@@ -335,22 +335,22 @@ export default function MisconceptionsPage() {
         </div>
 
         {/* Methodology note */}
-        <div className="mt-8 border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <h3 className="text-black font-black mb-2">Methodology</h3>
-          <p className="text-sm text-black">
+        <div className="mt-8 border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h3 className="text-foreground font-black mb-2">Methodology</h3>
+          <p className="text-sm text-foreground">
             We compare year-over-year percentage changes — not raw totals —
             because your species has a habit of confusing &ldquo;two things
             both went up over 50 years&rdquo; with &ldquo;one caused the
             other.&rdquo; We call this &ldquo;a statistical error.&rdquo; You
             call it &ldquo;a talking point.&rdquo;
           </p>
-          <p className="text-sm text-black mt-2">
+          <p className="text-sm text-foreground mt-2">
             We also test which direction causation flows — does the policy
             cause the outcome, or does the outcome drive the spending? Data
             from FRED, BLS, IRS, OMB, FBI UCR, CDC, WHO, OECD, and World Bank
             (1950&ndash;2023).
           </p>
-          <p className="text-sm text-black mt-2">
+          <p className="text-sm text-foreground mt-2">
             <strong>Most common mistake:</strong>{" "}
             {data.summary.topPattern}.{" "}
             <strong>Second most common:</strong>{" "}

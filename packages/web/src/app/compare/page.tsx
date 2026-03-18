@@ -94,24 +94,24 @@ export default function ComparePage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black mb-2">
+        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-2">
           International Comparisons
         </h1>
-        <p className="text-black/60 font-medium">
+        <p className="text-muted-foreground font-bold">
           Here&apos;s what happens when other countries try things and you don&apos;t copy them.
         </p>
       </div>
 
       {/* Tab bar */}
-      <div className="flex flex-wrap gap-2 mb-8 border-b-2 border-black pb-4">
+      <div className="flex flex-wrap gap-2 mb-8 border-b-2 border-primary pb-4">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 text-sm font-black uppercase transition-all ${
               activeTab === tab
-                ? "bg-brutal-pink text-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                : "text-black hover:bg-brutal-cyan border-2 border-transparent hover:border-black"
+                ? "bg-brutal-pink text-white border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                : "text-foreground hover:bg-brutal-cyan border-2 border-transparent hover:border-primary"
             }`}
           >
             {tab}
@@ -148,11 +148,11 @@ function HealthTab() {
   return (
     <div className="space-y-8">
       {/* Exemplar callout */}
-      <div className="card bg-brutal-cyan border-black">
-        <p className="text-black font-black mb-1">🏆 Top Performer</p>
-        <p className="text-sm text-black/70 font-medium">
-          <strong className="text-black">Singapore</strong> spends $3,013 per person on health. Life expectancy: 84.1 years.
-          The <strong className="text-black">US</strong> spends $12,555 per person. Life expectancy: 77.5 years.
+      <div className="card bg-brutal-cyan border-primary">
+        <p className="text-foreground font-black mb-1">🏆 Top Performer</p>
+        <p className="text-sm text-foreground font-bold">
+          <strong className="text-foreground">Singapore</strong> spends $3,013 per person on health. Life expectancy: 84.1 years.
+          The <strong className="text-foreground">US</strong> spends $12,555 per person. Life expectancy: 77.5 years.
           It&apos;s like paying four times more for a sandwich and getting fewer years to eat it.
         </p>
       </div>
@@ -163,15 +163,15 @@ function HealthTab() {
         <div className="card">
           <div className="relative w-full h-80 md:h-96">
             {/* Y axis label */}
-            <div className="absolute -left-2 top-1/2 -translate-y-1/2 -rotate-90 text-xs text-black/50 whitespace-nowrap font-bold">
+            <div className="absolute -left-2 top-1/2 -translate-y-1/2 -rotate-90 text-xs text-muted-foreground whitespace-nowrap font-bold">
               Life Expectancy (years)
             </div>
             {/* X axis label */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-xs text-black/50 font-bold">
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-xs text-muted-foreground font-bold">
               Spending per capita (USD PPP)
             </div>
             {/* Plot area */}
-            <div className="ml-8 mb-6 relative w-[calc(100%-2rem)] h-[calc(100%-1.5rem)] border-l-2 border-b-2 border-black">
+            <div className="ml-8 mb-6 relative w-[calc(100%-2rem)] h-[calc(100%-1.5rem)] border-l-2 border-b-2 border-primary">
               {healthData.map((d) => {
                 const x = (d.spending / maxSpending) * 90;
                 const y = ((d.lifeExp - minLife) / (maxLife - minLife)) * 85;
@@ -184,24 +184,24 @@ function HealthTab() {
                     style={{ left: `${x}%`, bottom: `${y}%`, transform: "translate(-50%, 50%)" }}
                   >
                     <div
-                      className={`w-4 h-4 border-2 border-black ${
+                      className={`w-4 h-4 border-2 border-primary ${
                         isUS ? "bg-brutal-red" : isSG ? "bg-brutal-cyan" : "bg-brutal-pink"
                       }`}
                     />
-                    <div className="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white border-2 border-black px-3 py-2 text-xs whitespace-nowrap z-10 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                      <div className="font-black text-black">{d.country}</div>
-                      <div className="text-black/60 font-bold">${d.spending.toLocaleString()}/capita</div>
-                      <div className="text-black/60 font-bold">{d.lifeExp} years</div>
+                    <div className="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-background border-2 border-primary px-3 py-2 text-xs whitespace-nowrap z-10 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      <div className="font-black text-foreground">{d.country}</div>
+                      <div className="text-muted-foreground font-bold">${d.spending.toLocaleString()}/capita</div>
+                      <div className="text-muted-foreground font-bold">{d.lifeExp} years</div>
                     </div>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="flex items-center gap-4 justify-center text-xs text-black/50 mt-2 font-bold">
-            <span className="flex items-center gap-1"><span className="w-3 h-3 bg-brutal-red border border-black" /> US</span>
-            <span className="flex items-center gap-1"><span className="w-3 h-3 bg-brutal-cyan border border-black" /> Singapore</span>
-            <span className="flex items-center gap-1"><span className="w-3 h-3 bg-brutal-pink border border-black" /> Others</span>
+          <div className="flex items-center gap-4 justify-center text-xs text-muted-foreground mt-2 font-bold">
+            <span className="flex items-center gap-1"><span className="w-3 h-3 bg-brutal-red border border-primary" /> US</span>
+            <span className="flex items-center gap-1"><span className="w-3 h-3 bg-brutal-cyan border border-primary" /> Singapore</span>
+            <span className="flex items-center gap-1"><span className="w-3 h-3 bg-brutal-pink border border-primary" /> Others</span>
           </div>
         </div>
       </div>
@@ -209,34 +209,34 @@ function HealthTab() {
       {/* Table */}
       <div>
         <h3 className="section-title">All Countries</h3>
-        <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="overflow-x-auto border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b-2 border-black bg-brutal-yellow">
-                <th className="text-left py-3 px-2 text-black font-black uppercase">Country</th>
-                <th className="text-right py-3 px-2 text-black font-black uppercase">$/Capita</th>
-                <th className="text-right py-3 px-2 text-black font-black uppercase">% GDP</th>
-                <th className="text-right py-3 px-2 text-black font-black uppercase">Life Exp</th>
-                <th className="text-right py-3 px-2 text-black font-black uppercase">Infant Mort</th>
-                <th className="text-center py-3 px-2 text-black font-black uppercase">System</th>
-                <th className="text-center py-3 px-2 text-black font-black uppercase">Universal</th>
+              <tr className="border-b-2 border-primary bg-brutal-yellow">
+                <th className="text-left py-3 px-2 text-foreground font-black uppercase">Country</th>
+                <th className="text-right py-3 px-2 text-foreground font-black uppercase">$/Capita</th>
+                <th className="text-right py-3 px-2 text-foreground font-black uppercase">% GDP</th>
+                <th className="text-right py-3 px-2 text-foreground font-black uppercase">Life Exp</th>
+                <th className="text-right py-3 px-2 text-foreground font-black uppercase">Infant Mort</th>
+                <th className="text-center py-3 px-2 text-foreground font-black uppercase">System</th>
+                <th className="text-center py-3 px-2 text-foreground font-black uppercase">Universal</th>
               </tr>
             </thead>
             <tbody>
               {sortedByEfficiency.map((d) => (
                 <tr
                   key={d.country}
-                  className={`border-b border-black hover:bg-brutal-cyan ${
+                  className={`border-b border-primary hover:bg-brutal-cyan ${
                     d.country === "United States" ? "bg-brutal-red/20" : ""
                   }`}
                 >
-                  <td className="py-2 px-2 text-black font-bold">{d.country}</td>
-                  <td className="py-2 px-2 text-right text-black/70 font-medium">${d.spending.toLocaleString()}</td>
-                  <td className="py-2 px-2 text-right text-black/70 font-medium">{d.pctGDP}%</td>
-                  <td className="py-2 px-2 text-right text-black/70 font-medium">{d.lifeExp}</td>
-                  <td className="py-2 px-2 text-right text-black/70 font-medium">{d.infantMort}</td>
+                  <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>
+                  <td className="py-2 px-2 text-right text-foreground font-bold">${d.spending.toLocaleString()}</td>
+                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.pctGDP}%</td>
+                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.lifeExp}</td>
+                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.infantMort}</td>
                   <td className="py-2 px-2 text-center">
-                    <span className="text-xs px-2 py-0.5 bg-muted border border-black text-black font-bold">{d.system}</span>
+                    <span className="text-xs px-2 py-0.5 bg-muted border border-primary text-foreground font-bold">{d.system}</span>
                   </td>
                   <td className="py-2 px-2 text-center">{d.universal ? "✅" : "❌"}</td>
                 </tr>
@@ -255,57 +255,57 @@ function DrugTab() {
   const sorted = [...drugData].sort((a, b) => a.deaths - b.deaths);
 
   const approachColor: Record<string, string> = {
-    Decriminalization: "bg-brutal-cyan text-black border-black",
-    "Harm Reduction": "bg-brutal-cyan text-black border-black",
-    Mixed: "bg-brutal-yellow text-black border-black",
-    Prohibitionist: "bg-brutal-red text-white border-black",
+    Decriminalization: "bg-brutal-cyan text-foreground border-primary",
+    "Harm Reduction": "bg-brutal-cyan text-foreground border-primary",
+    Mixed: "bg-brutal-yellow text-foreground border-primary",
+    Prohibitionist: "bg-brutal-red text-white border-primary",
   };
 
   return (
     <div className="space-y-8">
-      <div className="card bg-brutal-cyan border-black">
-        <p className="text-black font-black mb-1">🏆 Key Finding</p>
-        <p className="text-sm text-black/70 font-medium">
-          <strong className="text-black">Portugal</strong> decriminalized all drugs in 2001. Drug-induced deaths dropped
+      <div className="card bg-brutal-cyan border-primary">
+        <p className="text-foreground font-black mb-1">🏆 Key Finding</p>
+        <p className="text-sm text-foreground font-bold">
+          <strong className="text-foreground">Portugal</strong> decriminalized all drugs in 2001. Drug-induced deaths dropped
           80%, HIV among people who inject drugs fell 95%, and drug use remained below the EU average.
-          The <strong className="text-black">US prohibitionist approach</strong> produces 32.4 drug deaths per 100K — 108× Portugal&apos;s rate.
+          The <strong className="text-foreground">US prohibitionist approach</strong> produces 32.4 drug deaths per 100K — 108× Portugal&apos;s rate.
         </p>
       </div>
 
-      <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="overflow-x-auto border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-2 border-black bg-brutal-yellow">
-              <th className="text-left py-3 px-2 text-black font-black uppercase">Country</th>
-              <th className="text-center py-3 px-2 text-black font-black uppercase">Approach</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Deaths/100K</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Incarceration</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">HIV (PWID) %</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Treatment %</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Year</th>
+            <tr className="border-b-2 border-primary bg-brutal-yellow">
+              <th className="text-left py-3 px-2 text-foreground font-black uppercase">Country</th>
+              <th className="text-center py-3 px-2 text-foreground font-black uppercase">Approach</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Deaths/100K</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Incarceration</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">HIV (PWID) %</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Treatment %</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Year</th>
             </tr>
           </thead>
           <tbody>
             {sorted.map((d) => (
               <tr
                 key={d.country}
-                className={`border-b border-black hover:bg-brutal-cyan ${
+                className={`border-b border-primary hover:bg-brutal-cyan ${
                   d.country === "United States" ? "bg-brutal-red/20" : ""
                 }`}
               >
-                <td className="py-2 px-2 text-black font-bold">{d.country}</td>
+                <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>
                 <td className="py-2 px-2 text-center">
-                  <span className={`text-xs px-2 py-0.5 border font-bold ${approachColor[d.approach] ?? "bg-muted text-black border-black"}`}>
+                  <span className={`text-xs px-2 py-0.5 border font-bold ${approachColor[d.approach] ?? "bg-muted text-foreground border-primary"}`}>
                     {d.approach}
                   </span>
                 </td>
-                <td className={`py-2 px-2 text-right font-black ${d.deaths > 10 ? "text-brutal-red" : d.deaths < 2 ? "text-brutal-cyan" : "text-black/70"}`}>
+                <td className={`py-2 px-2 text-right font-black ${d.deaths > 10 ? "text-brutal-red" : d.deaths < 2 ? "text-brutal-cyan" : "text-foreground"}`}>
                   {d.deaths}
                 </td>
-                <td className="py-2 px-2 text-right text-black/70 font-medium">{d.incarceration}</td>
-                <td className="py-2 px-2 text-right text-black/70 font-medium">{d.hiv}%</td>
-                <td className="py-2 px-2 text-right text-black/70 font-medium">{d.treatment}%</td>
-                <td className="py-2 px-2 text-right text-black/50 font-bold">{d.year ?? "—"}</td>
+                <td className="py-2 px-2 text-right text-foreground font-bold">{d.incarceration}</td>
+                <td className="py-2 px-2 text-right text-foreground font-bold">{d.hiv}%</td>
+                <td className="py-2 px-2 text-right text-foreground font-bold">{d.treatment}%</td>
+                <td className="py-2 px-2 text-right text-muted-foreground font-bold">{d.year ?? "—"}</td>
               </tr>
             ))}
           </tbody>
@@ -323,11 +323,11 @@ function EducationTab() {
 
   return (
     <div className="space-y-8">
-      <div className="card bg-brutal-cyan border-black">
-        <p className="text-black font-black mb-1">🏆 Key Finding</p>
-        <p className="text-sm text-black/70 font-medium">
-          <strong className="text-black">Singapore</strong> spends 2.9% of GDP on education. Math score: 575 (top globally).
-          The <strong className="text-black">US</strong> spends 4.9% of GDP. Math score: 465. That&apos;s 69% more money for 19% worse results.
+      <div className="card bg-brutal-cyan border-primary">
+        <p className="text-foreground font-black mb-1">🏆 Key Finding</p>
+        <p className="text-sm text-foreground font-bold">
+          <strong className="text-foreground">Singapore</strong> spends 2.9% of GDP on education. Math score: 575 (top globally).
+          The <strong className="text-foreground">US</strong> spends 4.9% of GDP. Math score: 465. That&apos;s 69% more money for 19% worse results.
           Turns out you can&apos;t fix a system by throwing cash at it. Weird.
         </p>
       </div>
@@ -338,35 +338,35 @@ function EducationTab() {
         <div className="space-y-2">
           {sorted.map((d) => (
             <div key={d.country} className="flex items-center gap-3">
-              <span className={`text-xs w-28 truncate font-bold ${d.country === "United States" ? "text-brutal-red" : "text-black/60"}`}>
+              <span className={`text-xs w-28 truncate font-bold ${d.country === "United States" ? "text-brutal-red" : "text-muted-foreground"}`}>
                 {d.country}
               </span>
-              <div className="flex-1 h-6 bg-muted border border-black overflow-hidden relative">
+              <div className="flex-1 h-6 bg-muted border border-primary overflow-hidden relative">
                 <div
                   className={`h-full ${d.country === "United States" ? "bg-brutal-red" : "bg-brutal-pink"}`}
                   style={{ width: `${(d.math / maxMath) * 100}%` }}
                 />
-                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-black font-black">
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-foreground font-black">
                   {d.math}
                 </span>
               </div>
-              <span className="text-xs text-black/50 w-16 text-right font-bold">{d.spending}% GDP</span>
+              <span className="text-xs text-muted-foreground w-16 text-right font-bold">{d.spending}% GDP</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Full table */}
-      <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="overflow-x-auto border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-2 border-black bg-brutal-yellow">
-              <th className="text-left py-3 px-2 text-black font-black uppercase">Country</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Spending %GDP</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Math</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Reading</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Science</th>
-              <th className="text-right py-3 px-2 text-black font-black uppercase">Average</th>
+            <tr className="border-b-2 border-primary bg-brutal-yellow">
+              <th className="text-left py-3 px-2 text-foreground font-black uppercase">Country</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Spending %GDP</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Math</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Reading</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Science</th>
+              <th className="text-right py-3 px-2 text-foreground font-black uppercase">Average</th>
             </tr>
           </thead>
           <tbody>
@@ -375,15 +375,15 @@ function EducationTab() {
               return (
                 <tr
                   key={d.country}
-                  className={`border-b border-black hover:bg-brutal-cyan ${
+                  className={`border-b border-primary hover:bg-brutal-cyan ${
                     d.country === "United States" ? "bg-brutal-red/20" : ""
                   }`}
                 >
-                  <td className="py-2 px-2 text-black font-bold">{d.country}</td>
-                  <td className="py-2 px-2 text-right text-black/70 font-medium">{d.spending}%</td>
-                  <td className="py-2 px-2 text-right text-black/70 font-medium">{d.math}</td>
-                  <td className="py-2 px-2 text-right text-black/70 font-medium">{d.reading}</td>
-                  <td className="py-2 px-2 text-right text-black/70 font-medium">{d.science}</td>
+                  <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>
+                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.spending}%</td>
+                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.math}</td>
+                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.reading}</td>
+                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.science}</td>
                   <td className="py-2 px-2 text-right font-black text-brutal-pink">{avg}</td>
                 </tr>
               );
@@ -402,11 +402,11 @@ function JusticeTab() {
 
   return (
     <div className="space-y-8">
-      <div className="card bg-brutal-cyan border-black">
-        <p className="text-black font-black mb-1">🏆 Key Finding</p>
-        <p className="text-sm text-black/70 font-medium">
-          <strong className="text-black">Norway</strong> rehabilitates prisoners. Recidivism: 20%.
-          The <strong className="text-black">US</strong> punishes them. Recidivism: 76%. Incarceration rate: 531 per 100K — highest in the developed world.
+      <div className="card bg-brutal-cyan border-primary">
+        <p className="text-foreground font-black mb-1">🏆 Key Finding</p>
+        <p className="text-sm text-foreground font-bold">
+          <strong className="text-foreground">Norway</strong> rehabilitates prisoners. Recidivism: 20%.
+          The <strong className="text-foreground">US</strong> punishes them. Recidivism: 76%. Incarceration rate: 531 per 100K — highest in the developed world.
           You&apos;re paying more to make the problem worse. On my planet this would be called a bug. Here it&apos;s called &ldquo;tough on crime.&rdquo;
         </p>
       </div>
@@ -418,35 +418,35 @@ function JusticeTab() {
           {sorted.map((d) => (
             <div key={d.country} className="card py-3">
               <div className="flex items-center gap-3 mb-2">
-                <span className={`text-xs w-28 truncate font-bold ${d.country === "United States" ? "text-brutal-red" : "text-black"}`}>
+                <span className={`text-xs w-28 truncate font-bold ${d.country === "United States" ? "text-brutal-red" : "text-foreground"}`}>
                   {d.country}
                 </span>
-                <span className="text-xs px-2 py-0.5 bg-muted border border-black text-black font-bold">{d.approach}</span>
+                <span className="text-xs px-2 py-0.5 bg-muted border border-primary text-foreground font-bold">{d.approach}</span>
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex-1">
-                  <div className="text-[10px] text-black/50 mb-0.5 font-bold">Incarceration /100K</div>
-                  <div className="h-3 bg-muted border border-black overflow-hidden">
+                  <div className="text-[10px] text-muted-foreground mb-0.5 font-bold">Incarceration /100K</div>
+                  <div className="h-3 bg-muted border border-primary overflow-hidden">
                     <div
                       className={`h-full ${d.incarceration > 200 ? "bg-brutal-red" : "bg-brutal-cyan"}`}
                       style={{ width: `${(d.incarceration / 531) * 100}%` }}
                     />
                   </div>
-                  <div className="text-xs text-black/60 mt-0.5 font-bold">{d.incarceration}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5 font-bold">{d.incarceration}</div>
                 </div>
                 <div className="flex-1">
-                  <div className="text-[10px] text-black/50 mb-0.5 font-bold">Recidivism %</div>
-                  <div className="h-3 bg-muted border border-black overflow-hidden">
+                  <div className="text-[10px] text-muted-foreground mb-0.5 font-bold">Recidivism %</div>
+                  <div className="h-3 bg-muted border border-primary overflow-hidden">
                     <div
                       className={`h-full ${d.recidivism > 50 ? "bg-brutal-red" : "bg-brutal-cyan"}`}
                       style={{ width: `${d.recidivism}%` }}
                     />
                   </div>
-                  <div className="text-xs text-black/60 mt-0.5 font-bold">{d.recidivism}%</div>
+                  <div className="text-xs text-muted-foreground mt-0.5 font-bold">{d.recidivism}%</div>
                 </div>
                 <div className="w-20 text-right">
-                  <div className="text-[10px] text-black/50 font-bold">Homicide</div>
-                  <div className={`text-sm font-black ${d.homicide > 5 ? "text-brutal-red" : "text-black/70"}`}>
+                  <div className="text-[10px] text-muted-foreground font-bold">Homicide</div>
+                  <div className={`text-sm font-black ${d.homicide > 5 ? "text-brutal-red" : "text-foreground"}`}>
                     {d.homicide}
                   </div>
                 </div>

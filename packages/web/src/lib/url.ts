@@ -1,16 +1,13 @@
 import { getUsernameOrReferralCode } from "@/lib/referral.client";
+import { clientEnv } from "@/lib/env";
 
 export function getBaseUrl(): string {
   if (typeof window !== "undefined" && window.location?.origin) {
     return window.location.origin;
   }
 
-  if (process.env.NEXT_PUBLIC_BASE_URL) {
-    return process.env.NEXT_PUBLIC_BASE_URL;
-  }
-
-  if (process.env.NEXTAUTH_URL) {
-    return process.env.NEXTAUTH_URL;
+  if (clientEnv.NEXT_PUBLIC_BASE_URL) {
+    return clientEnv.NEXT_PUBLIC_BASE_URL;
   }
 
   return "http://localhost:3001";

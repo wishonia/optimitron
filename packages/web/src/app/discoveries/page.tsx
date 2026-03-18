@@ -75,10 +75,10 @@ export default async function DiscoveriesPage() {
         <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
           Population Insights
         </p>
-        <h1 className="text-4xl font-black uppercase tracking-tight text-black">
+        <h1 className="text-4xl font-black uppercase tracking-tight text-foreground">
           Health Discoveries
         </h1>
-        <p className="max-w-3xl text-base font-medium text-black/70">
+        <p className="max-w-3xl text-base font-bold text-foreground">
           Aggregated from individual contributor analyses. Each row represents a
           predictor-outcome relationship discovered across multiple people. More
           contributors = higher confidence.
@@ -86,39 +86,39 @@ export default async function DiscoveriesPage() {
       </section>
 
       {discoveries.length === 0 ? (
-        <div className="border-2 border-dashed border-black p-12 text-center">
-          <p className="text-lg font-bold text-black/50">
+        <div className="border-2 border-dashed border-primary p-12 text-center">
+          <p className="text-lg font-bold text-muted-foreground">
             No discoveries yet.
           </p>
-          <p className="text-sm text-black/40 mt-2">
+          <p className="text-sm text-muted-foreground mt-2">
             Discoveries appear here once contributors submit health analyses via
             the browser extension.
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="overflow-x-auto border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b-2 border-black bg-brutal-yellow">
-                <th className="px-4 py-3 text-left font-black uppercase text-black">
+              <tr className="border-b-2 border-primary bg-brutal-yellow">
+                <th className="px-4 py-3 text-left font-black uppercase text-foreground">
                   Predictor
                 </th>
-                <th className="px-4 py-3 text-left font-black uppercase text-black">
+                <th className="px-4 py-3 text-left font-black uppercase text-foreground">
                   Outcome
                 </th>
-                <th className="px-4 py-3 text-right font-black uppercase text-black">
+                <th className="px-4 py-3 text-right font-black uppercase text-foreground">
                   Effect
                 </th>
-                <th className="px-4 py-3 text-right font-black uppercase text-black">
+                <th className="px-4 py-3 text-right font-black uppercase text-foreground">
                   PIS
                 </th>
-                <th className="px-4 py-3 text-right font-black uppercase text-black">
+                <th className="px-4 py-3 text-right font-black uppercase text-foreground">
                   Correlation
                 </th>
-                <th className="px-4 py-3 text-center font-black uppercase text-black">
+                <th className="px-4 py-3 text-center font-black uppercase text-foreground">
                   Contributors
                 </th>
-                <th className="px-4 py-3 text-center font-black uppercase text-black">
+                <th className="px-4 py-3 text-center font-black uppercase text-foreground">
                   Confidence
                 </th>
               </tr>
@@ -129,12 +129,12 @@ export default async function DiscoveriesPage() {
                 return (
                   <tr
                     key={`${d.predictorName}-${d.outcomeName}`}
-                    className={`border-b border-black ${i % 2 === 0 ? "bg-white" : "bg-muted"}`}
+                    className={`border-b border-primary ${i % 2 === 0 ? "bg-background" : "bg-muted"}`}
                   >
-                    <td className="px-4 py-3 font-semibold text-black">
+                    <td className="px-4 py-3 font-semibold text-foreground">
                       {d.predictorName}
                     </td>
-                    <td className="px-4 py-3 text-black/70">
+                    <td className="px-4 py-3 text-foreground">
                       {d.outcomeName}
                     </td>
                     <td className="px-4 py-3 text-right font-mono">

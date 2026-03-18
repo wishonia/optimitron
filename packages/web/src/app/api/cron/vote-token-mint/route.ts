@@ -6,6 +6,7 @@ import {
   getMinterWallet,
   getVoteTokenContract,
 } from "@/lib/contracts/server-client";
+import { serverEnv } from "@/lib/env";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -44,7 +45,7 @@ export async function GET(request: Request) {
       data: { status: "SUBMITTED" },
     });
 
-    const chainId = Number(process.env.VOTE_TOKEN_CHAIN_ID ?? "84532");
+    const chainId = Number(serverEnv.VOTE_TOKEN_CHAIN_ID ?? "84532");
     let txHash: string | null = null;
 
     try {

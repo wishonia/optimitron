@@ -5,6 +5,7 @@ import {
 } from "@optimitron/hypercerts";
 import { prisma } from "@/lib/prisma";
 import { createLogger } from "@/lib/logger";
+import { serverEnv } from "@/lib/env";
 
 const logger = createLogger("score-publication");
 
@@ -29,7 +30,7 @@ export interface ScorePublicationResult {
 export async function publishAggregateScoresToHypercerts(
   aggregationRunId: string,
 ): Promise<ScorePublicationResult> {
-  const contributorDid = process.env.ATPROTO_DID;
+  const contributorDid = serverEnv.ATPROTO_DID;
   if (!contributorDid) {
     throw new Error("ATPROTO_DID is required to publish alignment Hypercerts");
   }
@@ -98,12 +99,12 @@ export async function publishAggregateScoresToHypercerts(
 
       let draftRef = `draft:${aggregationRunId}:${score.politicianId}`;
 
-      if (process.env.ATPROTO_PASSWORD) {
+      if (serverEnv.ATPROTO_PASSWORD) {
         const { createAppPasswordAgent, createAtprotoPublisher } = await import("@optimitron/hypercerts");
         const agent = await createAppPasswordAgent({
-          service: process.env.ATPROTO_PDS_URL ?? "https://bsky.social",
+          service: serverEnv.ATPROTO_PDS_URL ?? "https://bsky.social",
           identifier: contributorDid,
-          password: process.env.ATPROTO_PASSWORD,
+          password: serverEnv.ATPROTO_PASSWORD,
         });
         const publisher = createAtprotoPublisher(agent);
         const bundle = await publishAlignmentHypercertDraft(publisher, contributorDid, draft);

@@ -38,22 +38,22 @@ export default async function JurisdictionListPage({
       <header className="mb-8">
         <Link
           href={getPairStudyPath(outcomeId, predictorId)}
-          className="inline-block text-xs font-bold uppercase text-black/50 hover:text-black mb-3"
+          className="inline-block text-xs font-bold uppercase text-muted-foreground hover:text-foreground mb-3"
         >
           ← Back to Pair Study
         </Link>
-        <h1 className="text-3xl font-black uppercase tracking-tight text-black">
+        <h1 className="text-3xl font-black uppercase tracking-tight text-foreground">
           Jurisdiction N-of-1 Summaries
         </h1>
-        <p className="text-black/60 font-medium mt-2">
+        <p className="text-muted-foreground font-bold mt-2">
           {summary.predictorLabel} → {summary.outcomeLabel}
         </p>
       </header>
 
-      <section className="border-2 border-black bg-white overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <section className="border-2 border-primary bg-background overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-2 border-black bg-brutal-yellow">
+            <tr className="border-b-2 border-primary bg-brutal-yellow">
               <th className="text-left px-3 py-2 font-black uppercase">Jurisdiction</th>
               <th className="text-right px-3 py-2 font-black uppercase">Forward r</th>
               <th className="text-right px-3 py-2 font-black uppercase">Predictive r</th>
@@ -66,19 +66,19 @@ export default async function JurisdictionListPage({
           </thead>
           <tbody>
             {subjects.map(subject => (
-              <tr key={subject.summary.subjectId} className="border-b border-black hover:bg-brutal-cyan">
-                <td className="px-3 py-2 font-bold text-black">{subject.summary.subjectName}</td>
-                <td className="px-3 py-2 text-right text-black/70">{fmt(subject.summary.forwardPearson, 3)}</td>
-                <td className="px-3 py-2 text-right text-black/70">{fmt(subject.summary.predictivePearson, 3)}</td>
-                <td className="px-3 py-2 text-right text-black/70">{fmt(subject.summary.percentChangeFromBaseline, 2)}%</td>
-                <td className="px-3 py-2 text-right text-black/70">{subject.summary.numberOfPairs}</td>
-                <td className="px-3 py-2 text-right text-black/70">{(subject.ranking.score * 100).toFixed(1)}</td>
+              <tr key={subject.summary.subjectId} className="border-b border-primary hover:bg-brutal-cyan">
+                <td className="px-3 py-2 font-bold text-foreground">{subject.summary.subjectName}</td>
+                <td className="px-3 py-2 text-right text-foreground">{fmt(subject.summary.forwardPearson, 3)}</td>
+                <td className="px-3 py-2 text-right text-foreground">{fmt(subject.summary.predictivePearson, 3)}</td>
+                <td className="px-3 py-2 text-right text-foreground">{fmt(subject.summary.percentChangeFromBaseline, 2)}%</td>
+                <td className="px-3 py-2 text-right text-foreground">{subject.summary.numberOfPairs}</td>
+                <td className="px-3 py-2 text-right text-foreground">{(subject.ranking.score * 100).toFixed(1)}</td>
                 <td className="px-3 py-2 text-center">
                   <span
                     className={`inline-block border px-2 py-0.5 text-[10px] font-black uppercase ${
                       subject.qualityGate.passed
-                        ? "bg-brutal-cyan border-black text-black"
-                        : "bg-brutal-yellow border-black text-black"
+                        ? "bg-brutal-cyan border-primary text-foreground"
+                        : "bg-brutal-yellow border-primary text-foreground"
                     }`}
                   >
                     {subject.qualityGate.passed ? "Pass" : "Flagged"}
@@ -87,7 +87,7 @@ export default async function JurisdictionListPage({
                 <td className="px-3 py-2 text-center">
                   <Link
                     href={getJurisdictionStudyPath(outcomeId, predictorId, subject.summary.subjectId)}
-                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-black bg-white hover:bg-brutal-pink"
+                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-primary bg-background hover:bg-brutal-pink"
                   >
                     Open
                   </Link>

@@ -239,6 +239,54 @@ The UI uses a **neobrutalist** design system — bold, high-contrast, no washed-
 - **Soft shadows:** `rgba(0,0,0,0.3)` → use `rgba(0,0,0,1)` for brutal hard shadows
 - **Exception:** Email templates (`emails/`) may use inline hex colors (email clients require it)
 
+## Design Patterns (Neobrutalist)
+
+The reference implementation is `E:\code\dih-neobrutalist`. When in doubt, check how dih-neobrutalist does it.
+
+### Use the Primitives — Never Inline
+
+| Instead of... | Use... |
+|---|---|
+| `<section className="bg-white py-24">` | `<SectionContainer bgColor="background">` |
+| `<h2 className="text-3xl font-black uppercase">` | `<SectionHeader title="..." size="md" />` |
+| `<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">` | `<Container size="xl">` |
+| Inline card with `border-4 border-black shadow-[...]` | `<BrutalCard bgColor="pink" shadowSize={8}>` |
+| Inline stat block | `<StatCard value="$27B" label="Annual savings" color="cyan" />` |
+| Inline CTA section | `<CTASection heading="..." bgColor="pink">` |
+| Inline comparison layout | `<ComparisonCard left={...} right={...} />` |
+
+### Border Weight
+- **Always `border-4 border-primary`** on cards and sections
+- Never `border`, `border-2`, or `border-black` (use `border-primary` for dark mode)
+
+### Shadow Style
+- **Hard, opaque, consistent:** `shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]` (default)
+- Never soft: no `rgba(0,0,0,0.3)`, no `shadow-sm`, `shadow-md`, `shadow-lg`
+- Consistent sizes: 4px (small/hover-in), 8px (default), 12px (hover-out/emphasis)
+
+### Hover Direction (IMPORTANT — opposite of what you'd guess)
+- **Hover OUT (shadow grows):** `hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_...]`
+- This is the dih-neobrutalist convention — card lifts UP and shadow extends
+- NOT: `hover:translate-x-[2px] hover:translate-y-[2px]` (that's push-in, wrong direction)
+
+### Typography
+- **Headings:** `font-black uppercase` always
+- **Body:** `font-bold` (700) minimum — never `font-medium` (500) or `font-normal` (400)
+- **Subtle text:** `text-muted-foreground font-bold` — not `text-black/50 font-medium`
+- **Sizes:** Use the responsive scale from `SectionHeader` (e.g., `text-3xl sm:text-4xl md:text-5xl`)
+
+### Color Usage
+- **Section backgrounds** alternate between brutal tokens: `bg-brutal-pink`, `bg-brutal-cyan`, `bg-brutal-yellow`, `bg-foreground`
+- **Text on colored backgrounds:** use the foreground variant or `text-foreground`/`text-background`
+- **Accent text inline:** `<span className="text-brutal-pink">` or `<span className="bg-brutal-cyan px-2">` (highlighted)
+
+### Do NOT Use
+- `rounded-xl`, `rounded-2xl` — keep `rounded-md` or `rounded-none` for brutal feel
+- `shadow-sm`, `shadow-md`, `shadow-lg` — only hard offset shadows
+- `font-normal`, `font-medium`, `font-light` — too soft for neobrutalist
+- `bg-gray-50`, `bg-gray-100`, etc. — use `bg-muted` or `bg-background`
+- Gradients (`bg-gradient-to-*`) — flat colors only
+
 ## Tooling
 
 - **Monorepo**: pnpm workspaces

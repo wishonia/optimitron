@@ -17,10 +17,10 @@ import {
 import { studiesLink } from "@/lib/routes";
 
 function badgeClass(tone: "neutral" | "info" | "warning" | "danger"): string {
-  if (tone === "info") return "bg-brutal-cyan border-black";
-  if (tone === "warning") return "bg-brutal-yellow border-black";
-  if (tone === "danger") return "bg-brutal-red border-black";
-  return "bg-muted border-black";
+  if (tone === "info") return "bg-brutal-cyan border-primary";
+  if (tone === "warning") return "bg-brutal-yellow border-primary";
+  if (tone === "danger") return "bg-brutal-red border-primary";
+  return "bg-muted border-primary";
 }
 
 export function generateStaticParams() {
@@ -48,22 +48,22 @@ export default async function OutcomeHubPage({
         <NavItemLink
           item={studiesLink}
           variant="custom"
-          className="inline-block text-xs font-bold uppercase text-black/50 hover:text-black mb-3"
+          className="inline-block text-xs font-bold uppercase text-muted-foreground hover:text-foreground mb-3"
         >
           ← All Outcomes
         </NavItemLink>
-        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-black">
+        <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground">
           {outcome.label}
         </h1>
-        <p className="text-black/60 font-medium mt-2">
+        <p className="text-muted-foreground font-bold mt-2">
           Ranked predictors for this outcome using aggregate n-of-1 evidence and multiple-testing correction.
         </p>
       </header>
 
-      <section className="border-2 border-black bg-white overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+      <section className="border-2 border-primary bg-background overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b-2 border-black bg-brutal-yellow">
+            <tr className="border-b-2 border-primary bg-brutal-yellow">
               <th className="text-left px-3 py-2 font-black uppercase">Rank</th>
               <th className="text-left px-3 py-2 font-black uppercase">Predictor</th>
               <th className="text-right px-3 py-2 font-black uppercase">Score</th>
@@ -76,9 +76,9 @@ export default async function OutcomeHubPage({
           </thead>
           <tbody>
             {ranking.rows.map(row => (
-              <tr key={row.predictorId} className="border-b border-black hover:bg-brutal-cyan">
-                <td className="px-3 py-2 font-black text-black">#{row.rank}</td>
-                <td className="px-3 py-2 font-bold text-black">
+              <tr key={row.predictorId} className="border-b border-primary hover:bg-brutal-cyan">
+                <td className="px-3 py-2 font-black text-foreground">#{row.rank}</td>
+                <td className="px-3 py-2 font-bold text-foreground">
                   <div>{row.predictorLabel ?? row.predictorId}</div>
                   <div className="mt-1 flex flex-wrap gap-1">
                     {buildOutcomeQualityBadges(row).map(badge => (
@@ -91,15 +91,15 @@ export default async function OutcomeHubPage({
                     ))}
                   </div>
                 </td>
-                <td className="px-3 py-2 text-right font-bold text-black">{(row.score * 100).toFixed(1)}</td>
-                <td className="px-3 py-2 text-right text-black/70">{(row.confidence * 100).toFixed(1)}%</td>
-                <td className="px-3 py-2 text-right text-black/70">{row.adjustedPValue.toFixed(3)}</td>
-                <td className="px-3 py-2 text-right text-black/70">{row.numberOfUnits}</td>
-                <td className="px-3 py-2 text-right text-black/70">{row.totalPairs}</td>
+                <td className="px-3 py-2 text-right font-bold text-foreground">{(row.score * 100).toFixed(1)}</td>
+                <td className="px-3 py-2 text-right text-foreground">{(row.confidence * 100).toFixed(1)}%</td>
+                <td className="px-3 py-2 text-right text-foreground">{row.adjustedPValue.toFixed(3)}</td>
+                <td className="px-3 py-2 text-right text-foreground">{row.numberOfUnits}</td>
+                <td className="px-3 py-2 text-right text-foreground">{row.totalPairs}</td>
                 <td className="px-3 py-2 text-center">
                   <Link
                     href={getPairStudyPath(outcomeId, row.predictorId)}
-                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-black bg-white hover:bg-brutal-pink"
+                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-primary bg-background hover:bg-brutal-pink"
                   >
                     Open
                   </Link>

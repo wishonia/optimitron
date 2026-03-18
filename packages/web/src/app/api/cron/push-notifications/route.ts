@@ -4,13 +4,14 @@ import { isAuthorizedCronRequest } from "@/lib/cron";
 import { prisma } from "@/lib/prisma";
 import { sendPushNotification } from "@/lib/push-sender.server";
 import { createLogger } from "@/lib/logger";
+import { serverEnv } from "@/lib/env";
 
 const logger = createLogger("push-cron");
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-const BATCH_SIZE = parseInt(process.env.PUSH_BATCH_SIZE ?? "50", 10);
+const BATCH_SIZE = parseInt(serverEnv.PUSH_BATCH_SIZE ?? "50", 10);
 
 function isWithinActiveHours(
   reminderStartTime: string,

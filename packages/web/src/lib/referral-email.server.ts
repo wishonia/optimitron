@@ -1,4 +1,4 @@
-import "@/lib/server-env";
+import { serverEnv } from "@/lib/env";
 import { prisma } from "@/lib/prisma";
 import { getReferralCountsByUserIds } from "@/lib/referral.server";
 import {
@@ -22,7 +22,7 @@ interface ReferralSequenceUser {
 }
 
 function getReferralEmailBatchSize() {
-  const rawValue = Number(process.env.REFERRAL_EMAIL_BATCH_SIZE);
+  const rawValue = Number(serverEnv.REFERRAL_EMAIL_BATCH_SIZE);
   return Number.isFinite(rawValue) && rawValue > 0 ? rawValue : 50;
 }
 

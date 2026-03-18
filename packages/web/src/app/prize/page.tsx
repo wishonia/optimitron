@@ -55,8 +55,8 @@ const mechanismSteps = [
     detail: `Depositors also get a referral link. If they recruit voters, they earn VOTE tokens too — upside in BOTH outcomes. But depositing alone guarantees the ~${escrowMultiplier}x floor.`,
     color: "bg-brutal-pink",
     textColor: "text-white",
-    subTextColor: "text-white/70",
-    detailColor: "text-white/50",
+    subTextColor: "text-background",
+    detailColor: "text-muted-foreground",
   },
   {
     number: 2,
@@ -65,9 +65,9 @@ const mechanismSteps = [
       "Anyone with a referral link can recruit. Share the link. Every person who verifies their support for the 1% Treaty through World ID is a verified vote attributed to you. You earn 1 VOTE token per verified voter. No deposit required.",
     detail: "World ID prevents duplicate votes. Each verified preference is on-chain. You're not selling anything — you're proving demand that already exists. The referral link attributes that proof to you.",
     color: "bg-brutal-yellow",
-    textColor: "text-black",
-    subTextColor: "text-black/70",
-    detailColor: "text-black/50",
+    textColor: "text-foreground",
+    subTextColor: "text-foreground",
+    detailColor: "text-muted-foreground",
   },
   {
     number: 3,
@@ -76,9 +76,9 @@ const mechanismSteps = [
       "Thresholds met? VOTE holders claim proportional shares of the prize pool — the more voters you recruited, the bigger your cut. Thresholds not met after 15 years? PRIZE holders (depositors) claim principal + ~4.2x yield.",
     detail: "Depositors win on failure (yield floor). Recruiters win on success (prize share). Depositors who also recruit win either way. The contract handles everything — no judges, no committees.",
     color: "bg-brutal-cyan",
-    textColor: "text-black",
-    subTextColor: "text-black/70",
-    detailColor: "text-black/50",
+    textColor: "text-foreground",
+    subTextColor: "text-foreground",
+    detailColor: "text-muted-foreground",
   },
 ];
 
@@ -146,14 +146,14 @@ const bountyStages = [
     label: "Adoption",
     description: "Scale to multiple jurisdictions. Compound evidence. Cross-jurisdiction comparison validates.",
     status: "Pending",
-    statusColor: "bg-white",
+    statusColor: "bg-background",
   },
   {
     stage: "04",
     label: "Outcome Perpetuity",
     description: "Metrics cross thresholds. Pool unlocks. Recruiters get paid. Protocol persists.",
     status: "Pending",
-    statusColor: "bg-white",
+    statusColor: "bg-background",
   },
 ];
 
@@ -194,17 +194,17 @@ export default function PrizePage() {
           <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
             Earth Optimization Prize
           </p>
-          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
+          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground">
             A Bet You Can&apos;t Lose. A World You Can Fix.
           </h1>
-          <p className="text-lg text-black/80 leading-relaxed font-medium">
+          <p className="text-lg text-foreground leading-relaxed font-bold">
             This is a dominant assurance contract. Depositors cannot lose.
             Plan fails? You get your principal back plus ~{escrowMultiplier}x
             from 15 years of Aave yield ($100 → ~$418). Plan succeeds?
             The 1% Treaty produces {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}{" "}
             in per-capita lifetime income gains from optimized resource allocation.
           </p>
-          <p className="text-black/60 font-medium leading-relaxed mt-3">
+          <p className="text-muted-foreground font-bold leading-relaxed mt-3">
             Two ways in. <strong>Have capital?</strong> Deposit USDC, get PRIZE
             shares, earn the yield floor. <strong>Have a network?</strong>{" "}
             Share a referral link, recruit verified voters for the 1% Treaty,
@@ -212,27 +212,27 @@ export default function PrizePage() {
             to voters you brought in. No deposit required.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-            <div className="border-4 border-black bg-brutal-pink p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <div className="text-xs font-black uppercase text-white/70 mb-2">
+            <div className="border-4 border-primary bg-brutal-pink p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <div className="text-xs font-black uppercase text-background mb-2">
                 If the Plan Fails (Depositors)
               </div>
               <div className="text-xl font-black text-white">
                 ~{escrowMultiplier}x Return
               </div>
-              <p className="text-xs font-medium text-white/60 mt-1">
+              <p className="text-xs font-bold text-muted-foreground mt-1">
                 Dominant assurance: your principal + 15 years of Aave yield.
                 $100 → ~$418. You literally cannot lose money. The worst case
                 is getting richer.
               </p>
             </div>
-            <div className="border-4 border-black bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <div className="text-xs font-black uppercase text-black/60 mb-2">
+            <div className="border-4 border-primary bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <div className="text-xs font-black uppercase text-muted-foreground mb-2">
                 If the Plan Succeeds (Everyone)
               </div>
-              <div className="text-xl font-black text-black">
+              <div className="text-xl font-black text-foreground">
                 {fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}+ Income Gain
               </div>
-              <p className="text-xs font-medium text-black/60 mt-1">
+              <p className="text-xs font-bold text-muted-foreground mt-1">
                 Per-capita lifetime income gains from optimized resource
                 allocation. Recruiters claim prize share via VOTE tokens.
                 Depositors benefit from the GDP growth that follows.
@@ -243,7 +243,7 @@ export default function PrizePage() {
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a
             href="#invest"
-            className="inline-flex items-center justify-center border-4 border-black bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Deposit to Prize
           </a>
@@ -251,7 +251,7 @@ export default function PrizePage() {
             item={earthOptimizationPrizePaperLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Read the Paper
           </NavItemLink>
@@ -264,22 +264,22 @@ export default function PrizePage() {
           {trustBadges.map((badge) => (
             <div
               key={badge.label}
-              className="border-2 border-black bg-white px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="border-2 border-primary bg-background px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
-              <div className="text-xs font-black uppercase text-black">
+              <div className="text-xs font-black uppercase text-foreground">
                 {badge.label}
               </div>
-              <div className="text-[10px] font-medium text-black/50">
+              <div className="text-[10px] font-bold text-muted-foreground">
                 {badge.detail}
               </div>
             </div>
           ))}
         </div>
-        <div className="border-4 border-black bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-primary bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="text-2xl font-black uppercase text-white mb-4">
             Deposit — Fund the Prize Pool
           </h2>
-          <p className="text-sm font-medium text-white/70 mb-6 max-w-2xl">
+          <p className="text-sm font-bold text-background mb-6 max-w-2xl">
             Your deposit goes into Aave V3 yield. You get PRIZE shares —
             your claim on the escrow. Plan fails? ~{escrowMultiplier}x back.
             You also get a referral link — recruit verified voters to earn
@@ -287,8 +287,8 @@ export default function PrizePage() {
           </p>
           <VoterPrizeTreasuryDeposit />
         </div>
-        <div className="border-4 border-black border-t-0 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm text-black/70 font-medium leading-relaxed">
+        <div className="border-4 border-primary border-t-0 bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-sm text-foreground font-bold leading-relaxed">
             On my planet, financial instruments don&apos;t need trust disclaimers
             because we eliminated the kind of person who makes them necessary.
             You lot still have those people. So here&apos;s the fine print: there
@@ -298,7 +298,7 @@ export default function PrizePage() {
             item={contractsSourceLink}
             variant="custom"
             external
-            className="inline-flex items-center mt-3 text-xs font-black text-brutal-pink uppercase hover:text-black transition-colors"
+            className="inline-flex items-center mt-3 text-xs font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
           >
             View the smart contracts on GitHub &rarr;
           </NavItemLink>
@@ -307,42 +307,42 @@ export default function PrizePage() {
 
       {/* Section 3: The Math */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           The Math
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/50 mb-2">
+          <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
               Per-Capita Income Gain
             </div>
-            <div className="text-2xl font-black text-black">
+            <div className="text-2xl font-black text-foreground">
               {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}
             </div>
-            <p className="text-xs font-medium text-black/60 mt-2">
+            <p className="text-xs font-bold text-muted-foreground mt-2">
               Across adopting jurisdictions, based on health-GDP multiplier
               and regulatory delay removal.
             </p>
           </div>
-          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/50 mb-2">
+          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
               Break-Even Probability Shift
             </div>
-            <div className="text-2xl font-black text-black">
+            <div className="text-2xl font-black text-foreground">
               0.0067%
             </div>
-            <p className="text-xs font-medium text-black/60 mt-2">
+            <p className="text-xs font-bold text-muted-foreground mt-2">
               The probability the plan needs to increase success odds by for
               the expected value of your bond to exceed your investment.
             </p>
           </div>
-          <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/50 mb-2 text-white/70">
+          <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-2 text-background">
               Dominant Assurance Contract
             </div>
             <div className="text-2xl font-black text-white">
               Win Either Way
             </div>
-            <p className="text-xs font-medium text-white/60 mt-2">
+            <p className="text-xs font-bold text-muted-foreground mt-2">
               Plan fails? ~{escrowMultiplier}x return from Aave yield. Plan succeeds?
               Prize share proportional to verified voters you recruited.
               No scenario where you &ldquo;just lose your money.&rdquo;
@@ -350,51 +350,51 @@ export default function PrizePage() {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="border-4 border-black bg-red-50 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-red-50 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-black uppercase text-red-600 mb-3">
               Cost of Doing Nothing
             </div>
             <ul className="space-y-3">
-              <li className="text-sm font-medium text-black/80">
+              <li className="text-sm font-bold text-foreground">
                 <span className="font-black text-red-700">{dysfunctionTaxFormatted}/person/year</span>{" "}
                 — political dysfunction tax you&apos;re already paying
               </li>
-              <li className="text-sm font-medium text-black/80">
+              <li className="text-sm font-bold text-foreground">
                 <span className="font-black text-red-700">{fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})}/yr</span>{" "}
                 — global waste from misaligned governance
               </li>
-              <li className="text-sm font-medium text-black/80">
+              <li className="text-sm font-bold text-foreground">
                 <span className="font-black text-red-700">{deathsPerDayFormatted} deaths/day</span>{" "}
                 — preventable, if anyone was paying attention
               </li>
             </ul>
           </div>
-          <div className="border-4 border-black bg-green-50 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-green-50 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-black uppercase text-green-700 mb-3">
               Cost of Doing Something
             </div>
             <ul className="space-y-3">
-              <li className="text-sm font-medium text-black/80">
+              <li className="text-sm font-bold text-foreground">
                 <span className="font-black text-green-700">Your deposit amount</span>{" "}
                 — that&apos;s it. That&apos;s the cost.
               </li>
-              <li className="text-sm font-medium text-black/80">
+              <li className="text-sm font-bold text-foreground">
                 <span className="font-black text-green-700">0.0067% break-even</span>{" "}
                 — probability shift needed for positive expected value
               </li>
-              <li className="text-sm font-medium text-black/80">
+              <li className="text-sm font-bold text-foreground">
                 <span className="font-black text-green-700">Worst case: ~{escrowMultiplier}x back</span>{" "}
                 — dominant assurance contract if the plan fails
               </li>
-              <li className="text-sm font-medium text-black/80">
+              <li className="text-sm font-bold text-foreground">
                 <span className="font-black text-green-700">Best case: prize share</span>{" "}
                 — proportional to verified voters you recruited
               </li>
             </ul>
           </div>
         </div>
-        <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm text-black/70 font-medium leading-relaxed">
+        <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-sm text-foreground font-bold leading-relaxed">
             On my planet, this took about twelve seconds to explain. You are
             currently paying {dysfunctionTaxFormatted} per year for the privilege
             of your government being terrible. The break-even requires a 0.0067%
@@ -407,7 +407,7 @@ export default function PrizePage() {
 
       {/* Section 4: How It Works */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-8">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-8">
           How It Works
         </h2>
         <div className="space-y-0">
@@ -415,21 +415,21 @@ export default function PrizePage() {
             <div key={step.label} className="flex gap-6">
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-12 h-12 border-4 border-black ${step.color} flex items-center justify-center font-black text-lg shrink-0`}
+                  className={`w-12 h-12 border-4 border-primary ${step.color} flex items-center justify-center font-black text-lg shrink-0`}
                 >
                   {step.number}
                 </div>
                 {index < mechanismSteps.length - 1 && (
-                  <div className="w-1 flex-1 bg-black" />
+                  <div className="w-1 flex-1 bg-foreground" />
                 )}
               </div>
               <div
-                className={`flex-1 border-4 border-black ${step.color} p-6 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
+                className={`flex-1 border-4 border-primary ${step.color} p-6 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
               >
                 <h3 className={`text-xl font-black uppercase ${step.textColor}`}>
                   {step.label}
                 </h3>
-                <p className={`mt-2 text-sm font-medium ${step.subTextColor}`}>
+                <p className={`mt-2 text-sm font-bold ${step.subTextColor}`}>
                   {step.description}
                 </p>
                 <p className={`mt-3 text-xs font-bold ${step.detailColor} leading-relaxed`}>
@@ -440,15 +440,15 @@ export default function PrizePage() {
           ))}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          <div className="border-4 border-black bg-brutal-yellow p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase text-black/60 mb-1">Depositor Path</p>
-            <p className="text-sm font-bold text-black">
+          <div className="border-4 border-primary bg-brutal-yellow p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase text-muted-foreground mb-1">Depositor Path</p>
+            <p className="text-sm font-bold text-foreground">
               Deposit USDC → PRIZE shares → Aave yield → ~{escrowMultiplier}x floor if plan fails
             </p>
           </div>
-          <div className="border-4 border-black bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase text-black/60 mb-1">Recruiter Path</p>
-            <p className="text-sm font-bold text-black">
+          <div className="border-4 border-primary bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase text-muted-foreground mb-1">Recruiter Path</p>
+            <p className="text-sm font-bold text-foreground">
               Get referral link → Recruit voters → World ID verify → VOTE tokens → Prize share if plan succeeds
             </p>
           </div>
@@ -464,10 +464,10 @@ export default function PrizePage() {
 
       {/* Section 6: What Your Deposits Fund */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           What Your Deposits Fund
         </h2>
-        <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
+        <p className="text-sm font-bold text-muted-foreground mb-6 max-w-3xl">
           The Earth Optimization Plan v1 is the starting benchmark. Any team can
           submit a v2 that beats it on cost per DALY averted. Your species
           spends $50,000+ per DALY on most interventions. The gap is obscene.
@@ -476,17 +476,17 @@ export default function PrizePage() {
           {whatYouFund.map((item) => (
             <div
               key={item.title}
-              className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
               <div className="text-3xl mb-3">{item.icon}</div>
-              <h3 className="text-black font-black uppercase mb-2">
+              <h3 className="text-foreground font-black uppercase mb-2">
                 {item.title}
               </h3>
-              <p className="text-sm text-black/60 font-medium leading-relaxed mb-3">
+              <p className="text-sm text-muted-foreground font-bold leading-relaxed mb-3">
                 {item.description}
               </p>
-              <div className="border-2 border-black bg-brutal-cyan px-3 py-1.5 inline-block">
-                <span className="text-xs font-black uppercase text-black">
+              <div className="border-2 border-primary bg-brutal-cyan px-3 py-1.5 inline-block">
+                <span className="text-xs font-black uppercase text-foreground">
                   {item.impact}
                 </span>
               </div>
@@ -497,25 +497,25 @@ export default function PrizePage() {
 
       {/* Section 7: Technical Details (Accordion) */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           Technical Details
         </h2>
-        <Accordion type="multiple" className="border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <Accordion type="multiple" className="border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           {/* Panel 1: Required Functions */}
-          <AccordionItem value="functions" className="border-b-4 border-black last:border-b-0">
-            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-black hover:no-underline hover:bg-black/5">
+          <AccordionItem value="functions" className="border-b-4 border-primary last:border-b-0">
+            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
               10 Required Functions (v1 Benchmark)
             </AccordionTrigger>
             <AccordionContent className="px-6">
-              <p className="text-sm font-medium text-black/60 mb-4">
+              <p className="text-sm font-bold text-muted-foreground mb-4">
                 The Earth Optimization Plan v1 defines ten functions that must be
                 operational for outcome thresholds to be achievable. Any team can
                 submit a v2 that beats it on cost per DALY averted.
               </p>
-              <div className="border-2 border-black bg-white overflow-hidden">
+              <div className="border-2 border-primary bg-background overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-black text-white">
+                    <tr className="bg-foreground text-white">
                       <th className="px-4 py-2 text-left font-black uppercase text-xs">#</th>
                       <th className="px-4 py-2 text-left font-black uppercase text-xs">Function</th>
                       <th className="px-4 py-2 text-left font-black uppercase text-xs hidden md:table-cell">Description</th>
@@ -523,10 +523,10 @@ export default function PrizePage() {
                   </thead>
                   <tbody>
                     {requiredFunctions.map((fn) => (
-                      <tr key={fn.id} className="border-t border-black/10">
+                      <tr key={fn.id} className="border-t border-primary">
                         <td className="px-4 py-2 font-black text-brutal-pink">{fn.id}</td>
-                        <td className="px-4 py-2 font-black text-black">{fn.name}</td>
-                        <td className="px-4 py-2 text-black/60 font-medium hidden md:table-cell">{fn.description}</td>
+                        <td className="px-4 py-2 font-black text-foreground">{fn.name}</td>
+                        <td className="px-4 py-2 text-muted-foreground font-bold hidden md:table-cell">{fn.description}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -536,12 +536,12 @@ export default function PrizePage() {
           </AccordionItem>
 
           {/* Panel 2: 4-Stage Bounty */}
-          <AccordionItem value="stages" className="border-b-4 border-black last:border-b-0">
-            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-black hover:no-underline hover:bg-black/5">
+          <AccordionItem value="stages" className="border-b-4 border-primary last:border-b-0">
+            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
               How Money Moves — 4-Stage Bounty
             </AccordionTrigger>
             <AccordionContent className="px-6">
-              <p className="text-sm font-medium text-black/60 mb-4">
+              <p className="text-sm font-bold text-muted-foreground mb-4">
                 Deposits flow through four stages. Money doesn&apos;t move until
                 outcomes exist. Recruiters get paid for results, not proposals.
               </p>
@@ -549,20 +549,20 @@ export default function PrizePage() {
                 {bountyStages.map((item) => (
                   <div
                     key={item.stage}
-                    className="border-2 border-black bg-white p-4"
+                    className="border-2 border-primary bg-background p-4"
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-7 h-7 bg-black text-white flex items-center justify-center text-xs font-black">
+                      <span className="w-7 h-7 bg-foreground text-white flex items-center justify-center text-xs font-black">
                         {item.stage}
                       </span>
-                      <span className={`text-[10px] font-black uppercase px-2 py-0.5 border border-black ${item.statusColor}`}>
+                      <span className={`text-[10px] font-black uppercase px-2 py-0.5 border border-primary ${item.statusColor}`}>
                         {item.status}
                       </span>
                     </div>
-                    <h4 className="font-black text-black uppercase text-sm mb-1">
+                    <h4 className="font-black text-foreground uppercase text-sm mb-1">
                       {item.label}
                     </h4>
-                    <p className="text-xs text-black/60 font-medium leading-relaxed">
+                    <p className="text-xs text-muted-foreground font-bold leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -572,43 +572,43 @@ export default function PrizePage() {
           </AccordionItem>
 
           {/* Panel 3: Anti-Capture */}
-          <AccordionItem value="anti-capture" className="border-b-4 border-black last:border-b-0">
-            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-black hover:no-underline hover:bg-black/5">
+          <AccordionItem value="anti-capture" className="border-b-4 border-primary last:border-b-0">
+            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
               Anti-Capture
             </AccordionTrigger>
             <AccordionContent className="px-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="border-2 border-black bg-brutal-yellow p-4">
-                  <h4 className="font-black uppercase text-black text-xs mb-2">
+                <div className="border-2 border-primary bg-brutal-yellow p-4">
+                  <h4 className="font-black uppercase text-foreground text-xs mb-2">
                     Replacement Rule
                   </h4>
-                  <p className="text-xs text-black/70 font-medium leading-relaxed">
+                  <p className="text-xs text-foreground font-bold leading-relaxed">
                     Any team can submit a v2 plan that beats v1 on cost per DALY
                     averted. If you can do it cheaper and prove it, the protocol
                     switches to your plan. No incumbency advantage.
                   </p>
                 </div>
-                <div className="border-2 border-black bg-brutal-cyan p-4">
-                  <h4 className="font-black uppercase text-black text-xs mb-2">
+                <div className="border-2 border-primary bg-brutal-cyan p-4">
+                  <h4 className="font-black uppercase text-foreground text-xs mb-2">
                     Outcome Perpetuity
                   </h4>
-                  <p className="text-xs text-black/70 font-medium leading-relaxed">
+                  <p className="text-xs text-foreground font-bold leading-relaxed">
                     The prize pool persists as long as outcomes persist. It&apos;s not a
                     one-time payout — it&apos;s a standing market. Extraction stops
                     when outcomes stop.
                   </p>
                 </div>
-                <div className="border-2 border-black bg-white p-4">
-                  <h4 className="font-black uppercase text-black text-xs mb-2">
+                <div className="border-2 border-primary bg-background p-4">
+                  <h4 className="font-black uppercase text-foreground text-xs mb-2">
                     Zero Insider Advantage
                   </h4>
-                  <p className="text-xs text-black/70 font-medium leading-relaxed">
+                  <p className="text-xs text-foreground font-bold leading-relaxed">
                     No team allocation. No founder tokens. No pre-sale. No admin
                     keys. Your $100 gets exactly the same terms as $100,000.
                   </p>
                 </div>
               </div>
-              <p className="text-xs text-black/60 font-medium leading-relaxed">
+              <p className="text-xs text-muted-foreground font-bold leading-relaxed">
                 The protocol itself is replaceable. If someone builds a better
                 coordination mechanism, it should be replaced. The goal is outcome
                 maximisation, not protocol preservation.
@@ -617,8 +617,8 @@ export default function PrizePage() {
           </AccordionItem>
 
           {/* Panel 4: Contract Architecture */}
-          <AccordionItem value="contracts" className="border-b-4 border-black last:border-b-0">
-            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-black hover:no-underline hover:bg-black/5">
+          <AccordionItem value="contracts" className="border-b-4 border-primary last:border-b-0">
+            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
               Contract Architecture
             </AccordionTrigger>
             <AccordionContent className="px-6">
@@ -626,15 +626,15 @@ export default function PrizePage() {
                 {contractDetails.map((item) => (
                   <div
                     key={item.label}
-                    className="border-2 border-black bg-white p-3"
+                    className="border-2 border-primary bg-background p-3"
                   >
-                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-black/50">
+                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
                       {item.label}
                     </div>
-                    <div className="mt-1 text-sm font-black text-black">
+                    <div className="mt-1 text-sm font-black text-foreground">
                       {item.value}
                     </div>
-                    <div className="mt-1 text-xs font-medium text-black/60">
+                    <div className="mt-1 text-xs font-bold text-muted-foreground">
                       {item.detail}
                     </div>
                   </div>
@@ -645,7 +645,7 @@ export default function PrizePage() {
                   item={contractsSourceLink}
                   variant="custom"
                   external
-                  className="inline-flex items-center text-xs font-black text-brutal-pink uppercase hover:text-black transition-colors"
+                  className="inline-flex items-center text-xs font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
                 >
                   VoterPrizeTreasury.sol, VoteToken.sol — full source on GitHub &rarr;
                 </NavItemLink>
@@ -657,51 +657,51 @@ export default function PrizePage() {
 
       {/* Section 8: Pool Status + Final CTA */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           Pool Status
         </h2>
         <div className="grid gap-4 md:grid-cols-4 mb-8">
-          <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/60">
+          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground">
               Status
             </div>
             <div className="mt-2 text-2xl font-black text-brutal-cyan">
               OPEN
             </div>
           </div>
-          <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/60">
+          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground">
               Total Deposited
             </div>
-            <div className="mt-2 text-2xl font-black text-black">$0</div>
-            <div className="text-[10px] font-bold text-black/40">
+            <div className="mt-2 text-2xl font-black text-foreground">$0</div>
+            <div className="text-[10px] font-bold text-muted-foreground">
               Accepting deposits
             </div>
           </div>
-          <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/60">
+          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground">
               Health Threshold
             </div>
-            <div className="mt-2 text-2xl font-black text-black">1%</div>
-            <div className="text-[10px] font-bold text-black/40">
+            <div className="mt-2 text-2xl font-black text-foreground">1%</div>
+            <div className="text-[10px] font-bold text-muted-foreground">
               Median healthy life years improvement
             </div>
           </div>
-          <div className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/60">
+          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground">
               Income Threshold
             </div>
-            <div className="mt-2 text-2xl font-black text-black">0.5%</div>
-            <div className="text-[10px] font-bold text-black/40">
+            <div className="mt-2 text-2xl font-black text-foreground">0.5%</div>
+            <div className="text-[10px] font-bold text-muted-foreground">
               Median real after-tax income improvement
             </div>
           </div>
         </div>
-        <div className="card bg-brutal-pink border-black text-center">
+        <div className="card bg-brutal-pink border-primary text-center">
           <h2 className="text-2xl font-black text-white mb-3 uppercase">
             The Bar Is Low
           </h2>
-          <p className="text-white/80 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="text-background mb-6 font-bold max-w-2xl mx-auto leading-relaxed">
             The current cost of governance dysfunction is {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} per year.
             The break-even probability shift is 0.0067%. You don&apos;t need to be
             altruistic. You just need to be numerate.
@@ -709,14 +709,14 @@ export default function PrizePage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <a
               href="#invest"
-              className="inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Deposit to Prize
             </a>
             <NavItemLink
               item={wishocracyLink}
               variant="custom"
-              className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
             >
               Express Your Preferences
             </NavItemLink>

@@ -6,13 +6,14 @@ import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { getContracts } from "@optimitron/treasury-shared/addresses";
 import { ubiDistributorAbi } from "@optimitron/treasury-wish/abi";
+import { serverEnv } from "@/lib/env";
 
 export const runtime = "nodejs";
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 function getChain() {
-  const chainId = Number(process.env.TREASURY_CHAIN_ID ?? "11155111");
+  const chainId = Number(serverEnv.TREASURY_CHAIN_ID ?? "11155111");
   return chainId === 31337 ? hardhat : sepolia;
 }
 
@@ -47,7 +48,7 @@ export async function POST(request: Request) {
     }
 
     // Get UBI distributor owner private key
-    const ownerKey = process.env.TREASURY_OWNER_PRIVATE_KEY;
+    const ownerKey = serverEnv.TREASURY_OWNER_PRIVATE_KEY;
     if (!ownerKey) {
       return NextResponse.json(
         { error: "UBI distributor not configured. Contact admin." },
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
     const nullifierHash = verification.externalId as `0x${string}`;
 
     const account = privateKeyToAccount(ownerKey as `0x${string}`);
-    const rpcUrl = process.env.TREASURY_RPC_URL ?? chain.rpcUrls.default.http[0];
+    const rpcUrl = serverEnv.TREASURY_RPC_URL ?? chain.rpcUrls.default.http[0];
 
     const walletClient = createWalletClient({
       account,

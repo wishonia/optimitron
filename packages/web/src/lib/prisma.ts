@@ -1,24 +1,19 @@
 import { PrismaClient } from "@optimitron/db";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { serverEnv } from "@/lib/env";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 function getClient(): PrismaClient {
   if (globalForPrisma.prisma) return globalForPrisma.prisma;
 
-  const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) {
-    throw new Error(
-      "DATABASE_URL is not set. Add it to .env or set it as an environment variable.",
-    );
-  }
-  const adapter = new PrismaPg({ connectionString });
+  const adapter = new PrismaPg({ connectionString: serverEnv.DATABASE_URL });
   const client = new PrismaClient({
     adapter,
-    log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+    log: serverEnv.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
   });
 
-  if (process.env.NODE_ENV !== "production") {
+  if (serverEnv.NODE_ENV !== "production") {
     globalForPrisma.prisma = client;
   }
 

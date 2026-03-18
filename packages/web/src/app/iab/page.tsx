@@ -34,15 +34,15 @@ export default function IABPage() {
           <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
             Phase 2 — After the Referendum
           </p>
-          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
+          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground">
             Incentive Alignment Bonds
           </h1>
-          <p className="text-lg text-black/80 leading-relaxed font-medium">
+          <p className="text-lg text-foreground leading-relaxed font-bold">
             After the{" "}
             <NavItemLink
               item={prizeLink}
               variant="custom"
-              className="font-black text-brutal-pink underline hover:text-black transition-colors"
+              className="font-black text-brutal-pink underline hover:text-foreground transition-colors"
             >
               Earth Optimization Prize referendum
             </NavItemLink>{" "}
@@ -51,7 +51,7 @@ export default function IABPage() {
             money back. Plan succeeds? 10% of {fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD"})}/year
             in treaty revenue flows to bondholders. Everyone else gets higher GDP.
           </p>
-          <p className="text-black/60 font-medium leading-relaxed">
+          <p className="text-muted-foreground font-bold leading-relaxed">
             IABs are Phase 2. Phase 1 is proving demand via the referendum.
             If you haven&apos;t deposited in the Prize yet, start there — it funds
             the awareness campaign that makes IABs possible.
@@ -60,7 +60,7 @@ export default function IABPage() {
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a
             href="#invest"
-            className="inline-flex items-center justify-center border-4 border-black bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Buy IABs
           </a>
@@ -68,14 +68,14 @@ export default function IABPage() {
             item={incentiveAlignmentBondsPaperLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Read the Paper
           </NavItemLink>
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-black bg-brutal-cyan px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-cyan px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Phase 1: Prize
           </NavItemLink>
@@ -84,76 +84,76 @@ export default function IABPage() {
 
       {/* The 80/10/10 Split */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           Where Treaty Revenue Goes
         </h2>
-        <p className="text-sm font-medium text-black/60 mb-6 max-w-3xl">
+        <p className="text-sm font-bold text-muted-foreground mb-6 max-w-3xl">
           The 1% Treaty redirects {fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD"})}/year
           from military spending to pragmatic clinical trials. That revenue is
           split by smart contract. No committees. No discretion. Just arithmetic.
         </p>
         <div className="space-y-4">
-          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-center gap-3 mb-3">
-              <span className="w-12 h-12 bg-black text-white flex items-center justify-center text-lg font-black shrink-0">
+              <span className="w-12 h-12 bg-foreground text-white flex items-center justify-center text-lg font-black shrink-0">
                 80%
               </span>
-              <h3 className="font-black uppercase text-black text-lg">
+              <h3 className="font-black uppercase text-foreground text-lg">
                 Pragmatic Clinical Trials
               </h3>
             </div>
-            <p className="text-sm text-black/70 font-medium leading-relaxed">
+            <p className="text-sm text-foreground font-bold leading-relaxed">
               Subsidizes patient participation in large-scale pragmatic trials.
               Real patients, real conditions, real data — not the $41,117/patient
               Phase III process that takes 8.2 years after safety is already
               proven. This is the part that actually cures the diseases.
             </p>
-            <div className="mt-3 border-2 border-black/20 bg-white/50 px-3 py-2 inline-block">
-              <span className="text-xs font-black uppercase text-black/60">
+            <div className="mt-3 border-2 border-primary bg-background px-3 py-2 inline-block">
+              <span className="text-xs font-black uppercase text-muted-foreground">
                 ~{fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD", value: TREATY_ANNUAL_FUNDING.value * 0.8})}/year
               </span>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-3 mb-3">
-                <span className="w-12 h-12 bg-black text-white flex items-center justify-center text-lg font-black shrink-0">
+                <span className="w-12 h-12 bg-foreground text-white flex items-center justify-center text-lg font-black shrink-0">
                   10%
                 </span>
-                <h3 className="font-black uppercase text-black">
+                <h3 className="font-black uppercase text-foreground">
                   Bondholder Returns
                 </h3>
               </div>
-              <p className="text-sm text-black/70 font-medium leading-relaxed">
+              <p className="text-sm text-foreground font-bold leading-relaxed">
                 Perpetual payments to IAB holders, proportional to their
                 investment. This is why people buy the bonds — positive-EV
                 financial instrument, not a donation.
               </p>
-              <div className="mt-3 border-2 border-black/20 bg-white/50 px-3 py-2 inline-block">
-                <span className="text-xs font-black uppercase text-black/60">
+              <div className="mt-3 border-2 border-primary bg-background px-3 py-2 inline-block">
+                <span className="text-xs font-black uppercase text-muted-foreground">
                   ~{fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD", value: TREATY_ANNUAL_FUNDING.value * 0.1})}/year to investors
                 </span>
               </div>
             </div>
 
-            <div className="border-4 border-black bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-3 mb-3">
-                <span className="w-12 h-12 bg-black text-white flex items-center justify-center text-lg font-black shrink-0">
+                <span className="w-12 h-12 bg-foreground text-white flex items-center justify-center text-lg font-black shrink-0">
                   10%
                 </span>
                 <h3 className="font-black uppercase text-white">
                   SuperPAC for Aligned Politicians
                 </h3>
               </div>
-              <p className="text-sm text-white/70 font-medium leading-relaxed">
+              <p className="text-sm text-background font-bold leading-relaxed">
                 Campaign funding for politicians who supported the treaty and
                 push for expansion. Politicians who vote with citizens get
                 funded. Those who don&apos;t, don&apos;t. Alignment scoring
                 makes it automatic.
               </p>
-              <div className="mt-3 border-2 border-white/30 bg-white/10 px-3 py-2 inline-block">
-                <span className="text-xs font-black uppercase text-white/60">
+              <div className="mt-3 border-2 border-border bg-background px-3 py-2 inline-block">
+                <span className="text-xs font-black uppercase text-muted-foreground">
                   ~{fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD", value: TREATY_ANNUAL_FUNDING.value * 0.1})}/year to aligned politicians
                 </span>
               </div>
@@ -161,8 +161,8 @@ export default function IABPage() {
           </div>
         </div>
 
-        <div className="border-4 border-black bg-white p-6 mt-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm text-black/70 font-medium leading-relaxed">
+        <div className="border-4 border-primary bg-background p-6 mt-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-sm text-foreground font-bold leading-relaxed">
             On my planet, we split revenue by algorithm and nobody argues about
             it. You lot spend most of your revenue on people whose job it is to
             argue about how to split revenue. The 80/10/10 is hardcoded in the
@@ -173,38 +173,38 @@ export default function IABPage() {
 
       {/* Dominant Assurance */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           Dominant Assurance — You Cannot Lose
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="border-4 border-black bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/50 mb-2">
+          <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
               Treaty Fails
             </div>
-            <div className="text-2xl font-black text-black">
+            <div className="text-2xl font-black text-foreground">
               ~{escrowMultiplier}x Your Money Back
             </div>
-            <p className="text-xs font-medium text-black/60 mt-2">
+            <p className="text-xs font-bold text-muted-foreground mt-2">
               Principal + 15 years of Aave yield returned to you. $1,000 → ~$4,200.
               Your &ldquo;worst case&rdquo; is quadrupling your money.
             </p>
           </div>
-          <div className="border-4 border-black bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/50 mb-2">
+          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
               Treaty Succeeds
             </div>
-            <div className="text-2xl font-black text-black">
+            <div className="text-2xl font-black text-foreground">
               {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}
             </div>
-            <p className="text-xs font-medium text-black/60 mt-2">
+            <p className="text-xs font-bold text-muted-foreground mt-2">
               Per-capita lifetime income gain from optimized resource allocation.
               Bondholders also earn 10% of treaty revenue in perpetuity.
               Everyone benefits from higher GDP.
             </p>
           </div>
         </div>
-        <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm text-black/70 font-medium leading-relaxed">
+        <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-sm text-foreground font-bold leading-relaxed">
             You are currently paying {dysfunctionTaxFormatted} per year in
             political dysfunction tax. The break-even on an IAB requires a
             0.0067% chance of that changing. The arithmetic here is not subtle.
@@ -214,10 +214,10 @@ export default function IABPage() {
 
       {/* Calculator */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           Calculate Your Returns
         </h2>
-        <div className="border-4 border-black bg-white p-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-primary bg-background p-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <Suspense>
             <IABCalculator />
           </Suspense>
@@ -226,18 +226,18 @@ export default function IABPage() {
 
       {/* How IABs Differ from the Prize */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           Prize vs IABs — Two Phases, One Goal
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border-4 border-black bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/50 mb-2">
+          <div className="border-4 border-primary bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
               Phase 1 — Now
             </div>
-            <h3 className="text-lg font-black uppercase text-black mb-3">
+            <h3 className="text-lg font-black uppercase text-foreground mb-3">
               Earth Optimization Prize
             </h3>
-            <ul className="space-y-2 text-sm text-black/70 font-medium">
+            <ul className="space-y-2 text-sm text-foreground font-bold">
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">1.</span>
                 <span>Deposit USDC → PRIZE shares (Aave yield)</span>
@@ -251,26 +251,26 @@ export default function IABPage() {
                 <span>Prove demand for the 1% Treaty via global referendum</span>
               </li>
             </ul>
-            <p className="text-xs text-black/50 font-bold mt-3">
+            <p className="text-xs text-muted-foreground font-bold mt-3">
               Purpose: Collapse pluralistic ignorance. Prove everyone wants this.
             </p>
             <NavItemLink
               item={prizeLink}
               variant="custom"
-              className="inline-flex items-center mt-4 text-sm font-black text-brutal-pink uppercase hover:text-black transition-colors"
+              className="inline-flex items-center mt-4 text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
             >
               Go to Prize &rarr;
             </NavItemLink>
           </div>
 
-          <div className="border-4 border-black bg-brutal-pink/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-black/50 mb-2">
+          <div className="border-4 border-primary bg-brutal-pink/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
               Phase 2 — After Demand Is Proven
             </div>
-            <h3 className="text-lg font-black uppercase text-black mb-3">
+            <h3 className="text-lg font-black uppercase text-foreground mb-3">
               Incentive Alignment Bonds
             </h3>
-            <ul className="space-y-2 text-sm text-black/70 font-medium">
+            <ul className="space-y-2 text-sm text-foreground font-bold">
               <li className="flex gap-2">
                 <span className="text-brutal-pink font-black shrink-0">1.</span>
                 <span>Raise ~$1B to lobby for treaty passage</span>
@@ -284,10 +284,10 @@ export default function IABPage() {
                 <span>Bondholders earn perpetual 10% returns</span>
               </li>
             </ul>
-            <p className="text-xs text-black/50 font-bold mt-3">
+            <p className="text-xs text-muted-foreground font-bold mt-3">
               Purpose: Fund the lobbying campaign. Turn proven demand into policy.
             </p>
-            <span className="inline-flex items-center mt-4 text-sm font-black text-black/40 uppercase">
+            <span className="inline-flex items-center mt-4 text-sm font-black text-muted-foreground uppercase">
               You are here
             </span>
           </div>
@@ -296,10 +296,10 @@ export default function IABPage() {
 
       {/* The Self-Reinforcing Loop */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           Why Everyone Lobbies for Expansion
         </h2>
-        <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-center">
             {[
               { label: "IAB deposits", detail: "fund the lobbying campaign", color: "bg-brutal-yellow" },
@@ -309,17 +309,17 @@ export default function IABPage() {
               { label: "Everyone lobbies", detail: "for 1% → 2% → 5%", color: "bg-brutal-yellow" },
             ].map((step, i) => (
               <div key={step.label} className="flex flex-col items-center">
-                <div className={`w-full border-2 border-black ${step.color} p-3`}>
+                <div className={`w-full border-2 border-primary ${step.color} p-3`}>
                   <div className="text-xs font-black uppercase">{step.label}</div>
-                  <div className="text-[10px] font-medium mt-1 opacity-70">{step.detail}</div>
+                  <div className="text-[10px] font-bold mt-1 opacity-70">{step.detail}</div>
                 </div>
                 {i < 4 && (
-                  <div className="text-black font-black text-lg my-1 md:hidden">↓</div>
+                  <div className="text-foreground font-black text-lg my-1 md:hidden">↓</div>
                 )}
               </div>
             ))}
           </div>
-          <p className="text-xs text-black/50 font-medium text-center mt-4">
+          <p className="text-xs text-muted-foreground font-bold text-center mt-4">
             The loop is self-reinforcing. As GDP rises from cured diseases,
             the political cost of NOT expanding the treaty exceeds the cost of expanding it.
             Bondholders earn more. Politicians who expand get funded. Everyone&apos;s income rises.
@@ -329,31 +329,31 @@ export default function IABPage() {
 
       {/* Buy IABs */}
       <section id="invest" className="mb-16">
-        <div className="border-4 border-black bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-primary bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="text-2xl font-black uppercase text-white mb-4">
             Buy Incentive Alignment Bonds
           </h2>
-          <p className="text-sm font-medium text-white/70 mb-4 max-w-2xl">
+          <p className="text-sm font-bold text-background mb-4 max-w-2xl">
             IABs are Phase 2 — not yet deployed. The referendum (Phase 1) must
             prove demand first. Once deployed, your deposit goes into Aave yield
             and earns proportional returns from treaty revenue.
           </p>
-          <div className="border-4 border-white/20 bg-white/10 p-6">
+          <div className="border-4 border-border bg-background p-6">
             <div className="text-center">
-              <div className="text-xs font-black uppercase text-white/50 mb-2">
+              <div className="text-xs font-black uppercase text-muted-foreground mb-2">
                 Contract Status
               </div>
               <div className="text-2xl font-black text-white mb-3">
                 Not Yet Deployed
               </div>
-              <p className="text-sm text-white/60 font-medium mb-4">
+              <p className="text-sm text-muted-foreground font-bold mb-4">
                 Phase 1 (Prize referendum) is live on Base Sepolia. IABs deploy
                 after the referendum proves demand for the 1% Treaty.
               </p>
               <NavItemLink
                 item={prizeLink}
                 variant="custom"
-                className="inline-flex items-center justify-center border-2 border-white bg-white px-6 py-2.5 text-sm font-black uppercase text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)]"
+                className="inline-flex items-center justify-center border-2 border-white bg-background px-6 py-2.5 text-sm font-black uppercase text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
               >
                 Fund the Referendum First &rarr;
               </NavItemLink>
@@ -364,7 +364,7 @@ export default function IABPage() {
 
       {/* Contract Architecture */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-black mb-6">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
           Contract Architecture
         </h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -397,15 +397,15 @@ export default function IABPage() {
           ].map((item) => (
             <div
               key={item.label}
-              className="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="border-2 border-primary bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
-              <div className="text-xs font-black uppercase tracking-[0.2em] text-black/50">
+              <div className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
                 {item.label}
               </div>
-              <div className="mt-1 text-sm font-black text-black">
+              <div className="mt-1 text-sm font-black text-foreground">
                 {item.value}
               </div>
-              <div className="mt-2 text-xs font-medium text-black/60">
+              <div className="mt-2 text-xs font-bold text-muted-foreground">
                 {item.detail}
               </div>
             </div>
@@ -416,7 +416,7 @@ export default function IABPage() {
             item={contractsSourceLink}
             variant="custom"
             external
-            className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-black transition-colors"
+            className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
           >
             Full source on GitHub &rarr;
           </NavItemLink>
@@ -424,11 +424,11 @@ export default function IABPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="card bg-brutal-yellow border-black text-center">
-        <h2 className="text-2xl font-black text-black mb-3 uppercase">
+      <section className="card bg-brutal-yellow border-primary text-center">
+        <h2 className="text-2xl font-black text-foreground mb-3 uppercase">
           Phase 1 First
         </h2>
-        <p className="text-black/70 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
+        <p className="text-foreground mb-6 font-bold max-w-2xl mx-auto leading-relaxed">
           IABs fund the lobbying campaign. But lobbying is pointless without
           proven demand. The referendum comes first. Deposit in the Prize,
           recruit verified voters, collapse pluralistic ignorance. Then we
@@ -438,7 +438,7 @@ export default function IABPage() {
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
           >
             Fund the Referendum
           </NavItemLink>
@@ -446,7 +446,7 @@ export default function IABPage() {
             item={incentiveAlignmentBondsPaperLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
           >
             Read the IAB Paper
           </NavItemLink>

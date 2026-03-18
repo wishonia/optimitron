@@ -1,4 +1,4 @@
-import "@/lib/server-env";
+import { serverEnv } from "@/lib/env";
 import webPush from "web-push";
 import { prisma } from "@/lib/prisma";
 import { createLogger } from "@/lib/logger";
@@ -10,9 +10,9 @@ let vapidConfigured = false;
 function ensureVapidConfigured(): boolean {
   if (vapidConfigured) return true;
 
-  const publicKey = process.env.VAPID_PUBLIC_KEY;
-  const privateKey = process.env.VAPID_PRIVATE_KEY;
-  const subject = process.env.VAPID_SUBJECT ?? "mailto:mike@warondisease.org";
+  const publicKey = serverEnv.VAPID_PUBLIC_KEY;
+  const privateKey = serverEnv.VAPID_PRIVATE_KEY;
+  const subject = serverEnv.VAPID_SUBJECT ?? "mailto:mike@warondisease.org";
 
   if (!publicKey || !privateKey) {
     logger.warn("VAPID keys not configured — push notifications disabled");

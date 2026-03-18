@@ -72,7 +72,7 @@ export default async function CivicVotePage({
 
         <div className="mb-4">
           <span
-            className="inline-block border-2 border-black px-3 py-1 text-lg font-black uppercase"
+            className="inline-block border-2 border-primary px-3 py-1 text-lg font-black uppercase"
             style={{ background: positionColor }}
           >
             {vote.position}
@@ -83,14 +83,14 @@ export default async function CivicVotePage({
         <p className="mb-1 text-sm font-mono opacity-70">{vote.billId}</p>
 
         {vote.reasoning && (
-          <div className="mt-4 border-l-4 border-black pl-4">
+          <div className="mt-4 border-l-4 border-primary pl-4">
             <p className="text-sm font-bold uppercase opacity-60">Reasoning</p>
             <p className="mt-1">{vote.reasoning}</p>
           </div>
         )}
 
         {cba && (
-          <div className="mt-4 border-t-2 border-black pt-4">
+          <div className="mt-4 border-t-2 border-primary pt-4">
             <p className="text-sm font-bold uppercase opacity-60">Cost-Benefit Analysis</p>
             {cba.structural?.overallSignal && (
               <p className="mt-1 text-sm">

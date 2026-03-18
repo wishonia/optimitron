@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI, Modality } from '@google/genai';
+import { serverEnv } from '@/lib/env';
 import {
   VOICE_MODEL,
   WISHONIA_VOICE_SYSTEM_PROMPT,
@@ -17,7 +18,7 @@ import {
  * so the browser cannot override them. API key never leaves the server.
  */
 export async function POST() {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  const apiKey = serverEnv.GOOGLE_GENERATIVE_AI_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
       { error: 'GOOGLE_GENERATIVE_AI_API_KEY not configured' },

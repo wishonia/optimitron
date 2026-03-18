@@ -1,10 +1,10 @@
-import "@/lib/server-env";
+import { serverEnv } from "@/lib/env";
 
 export function isAuthorizedCronRequest(request: Request) {
-  const secret = process.env.CRON_SECRET;
+  const secret = serverEnv.CRON_SECRET;
 
   if (!secret) {
-    return process.env.NODE_ENV !== "production";
+    return serverEnv.NODE_ENV !== "production";
   }
 
   return request.headers.get("authorization") === `Bearer ${secret}`;

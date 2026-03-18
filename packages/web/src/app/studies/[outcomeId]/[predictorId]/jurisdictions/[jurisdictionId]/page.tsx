@@ -41,43 +41,43 @@ export default async function JurisdictionStudyPage({
       <header className="mb-8">
         <Link
           href={getJurisdictionsPath(outcomeId, predictorId)}
-          className="inline-block text-xs font-bold uppercase text-black/50 hover:text-black mb-3"
+          className="inline-block text-xs font-bold uppercase text-muted-foreground hover:text-foreground mb-3"
         >
           ← All Jurisdictions
         </Link>
-        <h1 className="text-3xl font-black uppercase tracking-tight text-black">
+        <h1 className="text-3xl font-black uppercase tracking-tight text-foreground">
           {subject.summary.subjectName}
         </h1>
-        <p className="text-black/60 font-medium mt-2">
+        <p className="text-muted-foreground font-bold mt-2">
           {summary.predictorLabel} → {summary.outcomeLabel}
         </p>
       </header>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-        <div className="border-2 border-black bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="text-xs font-black uppercase text-black/60">Forward Pearson</div>
-          <div className="text-3xl font-black text-black">{fmt(subject.summary.forwardPearson, 3)}</div>
+        <div className="border-2 border-primary bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="text-xs font-black uppercase text-muted-foreground">Forward Pearson</div>
+          <div className="text-3xl font-black text-foreground">{fmt(subject.summary.forwardPearson, 3)}</div>
         </div>
-        <div className="border-2 border-black bg-brutal-yellow p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="text-xs font-black uppercase text-black/60">Predictive Pearson</div>
-          <div className="text-3xl font-black text-black">{fmt(subject.summary.predictivePearson, 3)}</div>
+        <div className="border-2 border-primary bg-brutal-yellow p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="text-xs font-black uppercase text-muted-foreground">Predictive Pearson</div>
+          <div className="text-3xl font-black text-foreground">{fmt(subject.summary.predictivePearson, 3)}</div>
         </div>
-        <div className="border-2 border-black bg-brutal-pink p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="text-xs font-black uppercase text-black/60">Outcome % Change</div>
-          <div className="text-3xl font-black text-black">{fmt(subject.summary.percentChangeFromBaseline, 2)}%</div>
+        <div className="border-2 border-primary bg-brutal-pink p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="text-xs font-black uppercase text-muted-foreground">Outcome % Change</div>
+          <div className="text-3xl font-black text-foreground">{fmt(subject.summary.percentChangeFromBaseline, 2)}%</div>
         </div>
-        <div className="border-2 border-black bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <div className="text-xs font-black uppercase text-black/60">Aligned Pairs</div>
-          <div className="text-3xl font-black text-black">{subject.summary.numberOfPairs}</div>
+        <div className="border-2 border-primary bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="text-xs font-black uppercase text-muted-foreground">Aligned Pairs</div>
+          <div className="text-3xl font-black text-foreground">{subject.summary.numberOfPairs}</div>
         </div>
       </section>
 
-      <section className="border-2 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
-        <h2 className="text-lg font-black uppercase text-black mb-3">N-of-1 Summary</h2>
-        <p className="text-sm text-black/70 font-medium mb-2">
+      <section className="border-2 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+        <h2 className="text-lg font-black uppercase text-foreground mb-3">N-of-1 Summary</h2>
+        <p className="text-sm text-foreground font-bold mb-2">
           This page represents the single-subject causal summary used as one contribution in the aggregate pair study.
         </p>
-        <ul className="text-sm text-black/70 font-medium space-y-1">
+        <ul className="text-sm text-foreground font-bold space-y-1">
           <li>Evidence grade: {subject.summary.evidenceGrade || "N/A"}</li>
           <li>Optimal predictor value: {fmt(subject.summary.optimalPredictorValue, 2)}</li>
           <li>Subject ID: {subject.summary.subjectId}</li>
@@ -86,9 +86,9 @@ export default async function JurisdictionStudyPage({
         </ul>
       </section>
 
-      <section className="border-2 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
-        <h2 className="text-lg font-black uppercase text-black mb-3">Vs Aggregate</h2>
-        <ul className="text-sm text-black/70 font-medium space-y-1">
+      <section className="border-2 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+        <h2 className="text-lg font-black uppercase text-foreground mb-3">Vs Aggregate</h2>
+        <ul className="text-sm text-foreground font-bold space-y-1">
           <li>Direction agreement: {subject.aggregateComparison.directionAgreement}</li>
           <li>
             Predictive Pearson delta: {fmt(subject.aggregateComparison.predictivePearsonDelta, 3)}
@@ -101,9 +101,9 @@ export default async function JurisdictionStudyPage({
       </section>
 
       {!subject.qualityGate.passed && (
-        <section className="border-2 border-black bg-brutal-yellow p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-lg font-black uppercase text-black mb-3">Quality Gate Notes</h2>
-          <ul className="text-sm text-black/80 font-medium space-y-1">
+        <section className="border-2 border-primary bg-brutal-yellow p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-lg font-black uppercase text-foreground mb-3">Quality Gate Notes</h2>
+          <ul className="text-sm text-foreground font-bold space-y-1">
             {subject.qualityGate.reasons.map(reason => (
               <li key={reason.code}>
                 {reason.code}: {reason.message}

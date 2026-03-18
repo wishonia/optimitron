@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { getContracts } from "@optimitron/treasury-shared/addresses";
+import { serverEnv } from "@/lib/env";
 
 /**
  * Server-side ethers.js client for on-chain interactions.
@@ -9,12 +10,9 @@ import { getContracts } from "@optimitron/treasury-shared/addresses";
 function getRpcUrl(chainId: number): string {
   switch (chainId) {
     case 84532: // Base Sepolia
-      return (
-        process.env.BASE_SEPOLIA_RPC_URL ??
-        "https://sepolia.base.org"
-      );
+      return serverEnv.BASE_SEPOLIA_RPC_URL ?? "https://sepolia.base.org";
     case 8453: // Base Mainnet
-      return process.env.BASE_RPC_URL ?? "https://mainnet.base.org";
+      return serverEnv.BASE_RPC_URL ?? "https://mainnet.base.org";
     case 31337: // Hardhat
       return "http://127.0.0.1:8545";
     default:
@@ -27,7 +25,7 @@ export function getProvider(chainId: number): ethers.JsonRpcProvider {
 }
 
 export function getMinterWallet(chainId: number): ethers.Wallet {
-  const key = process.env.VOTE_TOKEN_MINTER_PRIVATE_KEY;
+  const key = serverEnv.VOTE_TOKEN_MINTER_PRIVATE_KEY;
   if (!key) {
     throw new Error("VOTE_TOKEN_MINTER_PRIVATE_KEY is not set");
   }

@@ -1,4 +1,4 @@
-import "@/lib/server-env";
+import { serverEnv } from "@/lib/env";
 import { PersonhoodVerificationStatus } from "@optimitron/db";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -57,7 +57,7 @@ async function getSessionIdentity(userId: string) {
 
 const providers: NextAuthOptions["providers"] = [
   EmailProvider({
-    from: process.env.EMAIL_FROM,
+    from: serverEnv.EMAIL_FROM,
     maxAge: 24 * 60 * 60,
     server: {
       host: "localhost",
@@ -105,17 +105,18 @@ const providers: NextAuthOptions["providers"] = [
   }),
 ];
 
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+if (serverEnv.GOOGLE_CLIENT_ID && serverEnv.GOOGLE_CLIENT_SECRET) {
   providers.push(
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: serverEnv.GOOGLE_CLIENT_ID,
+      clientSecret: serverEnv.GOOGLE_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true,
     }),
   );
 }
 
 export const authOptions: NextAuthOptions = {
+  secret: serverEnv.NEXTAUTH_SECRET,
   adapter: createAuthAdapter(),
   session: {
     strategy: "jwt",

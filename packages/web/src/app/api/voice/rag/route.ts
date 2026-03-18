@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 import { RAG_MODEL } from '@/lib/voice-config';
+import { serverEnv } from '@/lib/env';
 
 interface RAGRequestBody {
   query: string;
@@ -16,7 +17,7 @@ interface RAGRequestBody {
  * context in the request (fileData part). Otherwise falls back to plain generation.
  */
 export async function POST(request: NextRequest) {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  const apiKey = serverEnv.GOOGLE_GENERATIVE_AI_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
       { error: 'GOOGLE_GENERATIVE_AI_API_KEY not configured' },
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const fileId = process.env.GEMINI_FILE_SEARCH_STORE_ID;
+  const fileId = serverEnv.GEMINI_FILE_SEARCH_STORE_ID;
 
   let body: RAGRequestBody;
   try {

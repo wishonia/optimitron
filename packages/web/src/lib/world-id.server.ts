@@ -1,4 +1,4 @@
-import "@/lib/server-env";
+import { serverEnv } from "@/lib/env";
 import type { IDKitResult } from "@worldcoin/idkit";
 import { hashSignal } from "@worldcoin/idkit/hashing";
 import { signRequest } from "@worldcoin/idkit/signing";
@@ -21,26 +21,26 @@ type WorldIdResponseItem =
     };
 
 function getWorldIdEnvironment(): "production" | "staging" {
-  return process.env.WORLD_ID_ENVIRONMENT === "production" ? "production" : "staging";
+  return serverEnv.WORLD_ID_ENVIRONMENT === "production" ? "production" : "staging";
 }
 
 function getWorldIdAction() {
-  return process.env.WORLD_ID_ACTION ?? "verify-personhood";
+  return serverEnv.WORLD_ID_ACTION ?? "verify-personhood";
 }
 
 function getWorldIdAllowLegacyProofs() {
-  return process.env.WORLD_ID_ALLOW_LEGACY_PROOFS !== "false";
+  return serverEnv.WORLD_ID_ALLOW_LEGACY_PROOFS !== "false";
 }
 
 function getWorldIdRequestTtlSeconds() {
-  const rawValue = Number(process.env.WORLD_ID_REQUEST_TTL_SECONDS);
+  const rawValue = Number(serverEnv.WORLD_ID_REQUEST_TTL_SECONDS);
   return Number.isFinite(rawValue) && rawValue > 0 ? rawValue : 300;
 }
 
 function getWorldIdConfig() {
-  const appId = process.env.WORLD_ID_APP_ID;
-  const rpId = process.env.WORLD_ID_RP_ID;
-  const signingKey = process.env.WORLD_ID_SIGNING_KEY;
+  const appId = serverEnv.WORLD_ID_APP_ID;
+  const rpId = serverEnv.WORLD_ID_RP_ID;
+  const signingKey = serverEnv.WORLD_ID_SIGNING_KEY;
 
   if (!appId || !rpId || !signingKey) {
     throw new Error("World ID is not configured.");
@@ -59,7 +59,7 @@ function getWorldIdConfig() {
 
 export function isWorldIdConfigured() {
   return Boolean(
-    process.env.WORLD_ID_APP_ID && process.env.WORLD_ID_RP_ID && process.env.WORLD_ID_SIGNING_KEY,
+    serverEnv.WORLD_ID_APP_ID && serverEnv.WORLD_ID_RP_ID && serverEnv.WORLD_ID_SIGNING_KEY,
   );
 }
 

@@ -1,4 +1,4 @@
-import "@/lib/server-env";
+import { serverEnv } from "@/lib/env";
 import { Resend } from "resend";
 import { render } from "@react-email/components";
 
@@ -18,19 +18,19 @@ interface ResendReactMessage {
 let resendClient: Resend | null = null;
 
 export function getEmailFromAddress() {
-  return process.env.EMAIL_FROM ?? "";
+  return serverEnv.EMAIL_FROM ?? "";
 }
 
 export function isResendConfigured() {
-  return Boolean(process.env.RESEND_API_KEY && getEmailFromAddress());
+  return Boolean(serverEnv.RESEND_API_KEY && getEmailFromAddress());
 }
 
 function getResendClient() {
-  if (!process.env.RESEND_API_KEY) {
+  if (!serverEnv.RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY is not configured.");
   }
 
-  resendClient ??= new Resend(process.env.RESEND_API_KEY);
+  resendClient ??= new Resend(serverEnv.RESEND_API_KEY);
   return resendClient;
 }
 

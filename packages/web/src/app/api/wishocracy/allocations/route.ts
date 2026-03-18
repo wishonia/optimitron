@@ -6,6 +6,7 @@ import {
   isValidWishocraticComparison,
   normalizeWishocraticComparison,
 } from "@/lib/wishocracy-community";
+import { serverEnv } from "@/lib/env";
 
 const logger = createLogger("api/wishocracy/allocations");
 
@@ -102,7 +103,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Encrypt all user allocations as a single blob for breach protection
-    const jurisdictionKey = process.env.WISHOCRACY_JURISDICTION_KEY;
+    const jurisdictionKey = serverEnv.WISHOCRACY_JURISDICTION_KEY;
     if (jurisdictionKey) {
       try {
         const { importKey, encryptJson } = await import("@optimitron/storage");

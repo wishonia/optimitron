@@ -26,7 +26,7 @@ const productSurfaces = [
     cta: "Open Wishocracy",
     tone: "bg-brutal-pink",
     titleColor: "text-white",
-    descColor: "text-white/80",
+    descColor: "text-background",
     ctaColor: "text-white hover:text-brutal-yellow",
   },
   {
@@ -35,9 +35,9 @@ const productSurfaces = [
     desc: "Find out which of your elected officials actually agrees with you. Brace yourself.",
     cta: "Open Alignment",
     tone: "bg-brutal-yellow",
-    titleColor: "text-black",
-    descColor: "text-black/70",
-    ctaColor: "text-black hover:text-brutal-pink",
+    titleColor: "text-foreground",
+    descColor: "text-foreground",
+    ctaColor: "text-foreground hover:text-brutal-pink",
   },
   {
     item: studiesLink,
@@ -45,9 +45,9 @@ const productSurfaces = [
     desc: "Every claim, tested against data. No opinions. No vibes. Just receipts.",
     cta: "Browse Studies",
     tone: "bg-brutal-cyan",
-    titleColor: "text-black",
-    descColor: "text-black/70",
-    ctaColor: "text-black hover:text-brutal-pink",
+    titleColor: "text-foreground",
+    descColor: "text-foreground",
+    ctaColor: "text-foreground hover:text-brutal-pink",
   },
   {
     item: trackLink,
@@ -55,9 +55,9 @@ const productSurfaces = [
     desc: "Log what you do, eat, and feel. I'll tell you what's actually working. Your intuition won't like it.",
     cta: "Open Tracking",
     tone: "bg-brutal-cyan",
-    titleColor: "text-black",
-    descColor: "text-black/70",
-    ctaColor: "text-black hover:text-brutal-pink",
+    titleColor: "text-foreground",
+    descColor: "text-foreground",
+    ctaColor: "text-foreground hover:text-brutal-pink",
   },
 ];
 
@@ -122,23 +122,23 @@ export default function AboutPage() {
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       <section className="mb-16">
         <div className="max-w-3xl space-y-5">
-          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black">
+          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground">
             About The Evidence-Based Earth Optimization Machine
           </h1>
-          <p className="text-lg text-black/80 leading-relaxed font-medium">
+          <p className="text-lg text-foreground leading-relaxed font-bold">
             I built Optimitron because your species keeps making the same
             mistakes and then acting surprised by the results. It takes your
             outcomes, your spending data, and your policies, runs causal
             inference on all of it, and tells you what actually works. You&apos;re
             welcome.
           </p>
-          <p className="text-black/60 font-medium leading-relaxed">
+          <p className="text-muted-foreground font-bold leading-relaxed">
             The public side focuses on healthy life years, income, and the
             policies and budgets that shape them. The personal side lets you
             track your own inputs and outcomes. Think of it as a diagnostic
             tool for both your civilisation and your breakfast choices.
           </p>
-          <p className="text-black/60 font-medium leading-relaxed">
+          <p className="text-muted-foreground font-bold leading-relaxed">
             Your governments are already superintelligences — collective
             intelligence systems controlling the lives of billions. The problem
             isn&apos;t that they&apos;re not smart enough. It&apos;s that
@@ -151,21 +151,21 @@ export default function AboutPage() {
           <NavItemLink
             item={wishocracyLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-black bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Start With Wishocracy
           </NavItemLink>
           <NavItemLink
             item={alignmentLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-black bg-brutal-yellow px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-yellow px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             See Alignment Reports
           </NavItemLink>
           <NavItemLink
             item={studiesLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-black bg-white px-8 py-3 text-sm font-black uppercase text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             Browse Studies
           </NavItemLink>
@@ -178,10 +178,10 @@ export default function AboutPage() {
           {productSurfaces.map((surface) => (
             <div
               key={surface.title}
-              className={`p-6 border-4 border-black ${surface.tone} shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] flex flex-col`}
+              className={`p-6 border-4 border-primary ${surface.tone} shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] flex flex-col`}
             >
               <h3 className={`text-xl font-black ${surface.titleColor} mb-3`}>{surface.title}</h3>
-              <p className={`text-sm ${surface.descColor} leading-relaxed font-medium flex-grow`}>
+              <p className={`text-sm ${surface.descColor} leading-relaxed font-bold flex-grow`}>
                 {surface.desc}
               </p>
               <NavItemLink
@@ -202,8 +202,8 @@ export default function AboutPage() {
           {reasons.map((reason) => (
             <div key={reason.title} className="card">
               <div className="text-3xl mb-3">{reason.icon}</div>
-              <h3 className="text-black font-black mb-2">{reason.title}</h3>
-              <p className="text-sm text-black/60 font-medium leading-relaxed">
+              <h3 className="text-foreground font-black mb-2">{reason.title}</h3>
+              <p className="text-sm text-muted-foreground font-bold leading-relaxed">
                 {reason.desc}
               </p>
             </div>
@@ -217,8 +217,8 @@ export default function AboutPage() {
           {steps.map((step, index) => (
             <div key={step.label} className="card text-center py-5">
               <div className="text-brutal-pink font-black text-lg">{index + 1}</div>
-              <div className="text-black font-black text-sm uppercase">{step.label}</div>
-              <div className="text-xs text-black/50 mt-2 font-medium leading-relaxed">
+              <div className="text-foreground font-black text-sm uppercase">{step.label}</div>
+              <div className="text-xs text-muted-foreground mt-2 font-bold leading-relaxed">
                 {step.desc}
               </div>
             </div>
@@ -228,15 +228,15 @@ export default function AboutPage() {
 
       <section className="mb-16">
         <h2 className="section-title">The Economic System</h2>
-        <p className="text-sm text-black/60 mb-6 font-medium max-w-3xl">
+        <p className="text-sm text-muted-foreground mb-6 font-bold max-w-3xl">
           Diagnosing the problem is step one. Funding the solution is step two.
           Three separate mechanisms, three separate phases. Don&apos;t mix them up.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="card bg-brutal-pink border-black">
+          <div className="card bg-brutal-pink border-primary">
             <div className="text-2xl mb-2">🏆</div>
             <h3 className="font-black text-white mb-2">Prize (Phase 1)</h3>
-            <p className="text-sm text-white/80 font-medium leading-relaxed">
+            <p className="text-sm text-background font-bold leading-relaxed">
               Deposit USDC. Recruit voters for the 1% Treaty referendum. If it
               works, you share the prize. If it doesn&apos;t, you get ~4.2x your
               deposit back from Aave yield after 15 years. Zero downside.
@@ -249,10 +249,10 @@ export default function AboutPage() {
               Join the Prize &rarr;
             </NavItemLink>
           </div>
-          <div className="card bg-brutal-cyan border-black">
+          <div className="card bg-brutal-cyan border-primary">
             <div className="text-2xl mb-2">🤝</div>
-            <h3 className="font-black text-black mb-2">IABs (Phase 2)</h3>
-            <p className="text-sm text-black/60 font-medium leading-relaxed">
+            <h3 className="font-black text-foreground mb-2">IABs (Phase 2)</h3>
+            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
               After the referendum proves demand, raise ~$1B to lobby for the
               treaty. Revenue splits 80/10/10: clinical trials, investors,
               superpacs for aligned politicians.
@@ -260,15 +260,15 @@ export default function AboutPage() {
             <NavItemLink
               item={iabLink}
               variant="custom"
-              className="mt-4 inline-flex items-center text-sm font-black uppercase text-black hover:text-brutal-pink transition-colors"
+              className="mt-4 inline-flex items-center text-sm font-black uppercase text-foreground hover:text-brutal-pink transition-colors"
             >
               Learn About IABs &rarr;
             </NavItemLink>
           </div>
-          <div className="card bg-brutal-yellow border-black">
+          <div className="card bg-brutal-yellow border-primary">
             <div className="text-2xl mb-2">💸</div>
-            <h3 className="font-black text-black mb-2">$WISH</h3>
-            <p className="text-sm text-black/60 font-medium leading-relaxed">
+            <h3 className="font-black text-foreground mb-2">$WISH</h3>
+            <p className="text-sm text-muted-foreground font-bold leading-relaxed">
               Programmable currency with 0.5% transaction tax. Replaces the IRS,
               welfare bureaucracy, and lobbying with automatic UBI and
               wishocratic public goods allocation.
@@ -276,7 +276,7 @@ export default function AboutPage() {
             <NavItemLink
               item={moneyLink}
               variant="custom"
-              className="mt-4 inline-flex items-center text-sm font-black uppercase text-black hover:text-brutal-pink transition-colors"
+              className="mt-4 inline-flex items-center text-sm font-black uppercase text-foreground hover:text-brutal-pink transition-colors"
             >
               How $WISH Works &rarr;
             </NavItemLink>
@@ -286,14 +286,14 @@ export default function AboutPage() {
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="inline-flex items-center text-sm font-black uppercase text-black hover:text-brutal-pink transition-colors"
+            className="inline-flex items-center text-sm font-black uppercase text-foreground hover:text-brutal-pink transition-colors"
           >
             Join the Prize &rarr;
           </NavItemLink>
           <NavItemLink
             item={transparencyLink}
             variant="custom"
-            className="inline-flex items-center text-sm font-black uppercase text-black hover:text-brutal-pink transition-colors"
+            className="inline-flex items-center text-sm font-black uppercase text-foreground hover:text-brutal-pink transition-colors"
           >
             See The Full Pipeline &rarr;
           </NavItemLink>
@@ -302,7 +302,7 @@ export default function AboutPage() {
 
       <section className="mb-16">
         <h2 className="section-title">Research</h2>
-        <p className="text-sm text-black/60 mb-6 font-medium">
+        <p className="text-sm text-muted-foreground mb-6 font-bold">
           I showed my working. All of it. In public. Your species finds this unusual for some reason.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -314,10 +314,10 @@ export default function AboutPage() {
               external
               className="card group hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
             >
-              <h3 className="text-black font-black group-hover:text-brutal-pink transition-colors">
+              <h3 className="text-foreground font-black group-hover:text-brutal-pink transition-colors">
                 {paper.label}
               </h3>
-              <p className="text-sm text-black/60 mt-2 font-medium leading-relaxed">
+              <p className="text-sm text-muted-foreground mt-2 font-bold leading-relaxed">
                 {paper.description}
               </p>
               <span className="text-xs text-brutal-pink mt-3 inline-block font-black uppercase">
@@ -328,11 +328,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="card bg-brutal-cyan border-black text-center">
-        <h2 className="text-2xl font-black text-black mb-3 uppercase">
+      <section className="card bg-brutal-cyan border-primary text-center">
+        <h2 className="text-2xl font-black text-foreground mb-3 uppercase">
           Open By Design
         </h2>
-        <p className="text-black/60 mb-6 font-medium max-w-2xl mx-auto leading-relaxed">
+        <p className="text-muted-foreground mb-6 font-bold max-w-2xl mx-auto leading-relaxed">
           The code is public. The papers are public. The data is public. On my
           planet this is called &ldquo;the bare minimum.&rdquo; Here it seems
           to be called &ldquo;radical transparency.&rdquo;
@@ -346,8 +346,8 @@ export default function AboutPage() {
               external
               className={
                 link.label === "GitHub"
-                  ? "inline-flex items-center justify-center gap-2 bg-black px-6 py-3 text-sm font-black text-white uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-                  : "inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-black text-black uppercase border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                  ? "inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                  : "inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
               }
             >
               {link.label === "GitHub" ? "View GitHub" : "Read The README"}

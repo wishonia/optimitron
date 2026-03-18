@@ -58,11 +58,11 @@ export default async function ReferendumPage({ params, searchParams }: Props) {
         <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink mb-3">
           Referendum
         </p>
-        <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-black mb-4">
+        <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-4">
           {referendum.title}
         </h1>
         {referendum.description && (
-          <p className="text-lg text-black/80 leading-relaxed font-medium">
+          <p className="text-lg text-foreground leading-relaxed font-bold">
             {referendum.description}
           </p>
         )}
@@ -71,7 +71,7 @@ export default async function ReferendumPage({ params, searchParams }: Props) {
       {/* Vote tally */}
       <section className="mb-10">
         <div className="grid grid-cols-3 gap-4">
-          <div className="border-4 border-black bg-green-50 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+          <div className="border-4 border-primary bg-green-50 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-3xl font-black text-green-700">
               {stats.yesVotes}
             </div>
@@ -79,7 +79,7 @@ export default async function ReferendumPage({ params, searchParams }: Props) {
               Yes
             </div>
           </div>
-          <div className="border-4 border-black bg-red-50 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+          <div className="border-4 border-primary bg-red-50 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-3xl font-black text-red-700">
               {stats.noVotes}
             </div>
@@ -87,11 +87,11 @@ export default async function ReferendumPage({ params, searchParams }: Props) {
               No
             </div>
           </div>
-          <div className="border-4 border-black bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-3xl font-black text-black">
+          <div className="border-4 border-primary bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="text-3xl font-black text-foreground">
               {stats.verifiedVotes}
             </div>
-            <div className="text-xs font-black uppercase text-black/60 mt-1">
+            <div className="text-xs font-black uppercase text-muted-foreground mt-1">
               Verified
             </div>
           </div>

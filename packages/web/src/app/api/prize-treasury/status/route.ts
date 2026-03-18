@@ -4,6 +4,7 @@ import {
   getProvider,
   getVoterPrizeTreasuryContract,
 } from "@/lib/contracts/server-client";
+import { serverEnv } from "@/lib/env";
 
 /**
  * GET /api/prize-treasury/status
@@ -33,7 +34,7 @@ export async function GET() {
 
     // Fetch on-chain data if contract is deployed
     let onChain: Record<string, unknown> | null = null;
-    const chainId = Number(process.env.VOTE_TOKEN_CHAIN_ID ?? "84532");
+    const chainId = Number(serverEnv.VOTE_TOKEN_CHAIN_ID ?? "84532");
 
     try {
       const provider = getProvider(chainId);

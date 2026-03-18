@@ -1,8 +1,9 @@
 import { http, createConfig } from "wagmi";
 import { sepolia, baseSepolia, hardhat } from "wagmi/chains";
 import { injected, walletConnect } from "wagmi/connectors";
+import { clientEnv } from "@/lib/env";
 
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "";
+const projectId = clientEnv.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "";
 
 export const wagmiConfig = createConfig({
   chains: [sepolia, baseSepolia, hardhat],

@@ -5,6 +5,7 @@ import { getWishocracyCommunitySummary } from "@/lib/wishocracy-community";
 import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
 import { createLogger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
+import { serverEnv } from "@/lib/env";
 
 const logger = createLogger("wishocratic-treasury");
 
@@ -104,9 +105,9 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
     };
   }
 
-  const wishocraticTreasuryAddress = process.env.WISHOCRATIC_TREASURY_ADDRESS as `0x${string}` | undefined;
-  const deployerKey = process.env.DEPLOYER_PRIVATE_KEY as `0x${string}` | undefined;
-  const rpcUrl = process.env.SEPOLIA_RPC_URL;
+  const wishocraticTreasuryAddress = serverEnv.WISHOCRATIC_TREASURY_ADDRESS as `0x${string}` | undefined;
+  const deployerKey = serverEnv.DEPLOYER_PRIVATE_KEY as `0x${string}` | undefined;
+  const rpcUrl = serverEnv.SEPOLIA_RPC_URL;
 
   if (!wishocraticTreasuryAddress || !deployerKey || !rpcUrl) {
     logger.warn("Missing env vars for on-chain posting — recording off-chain only");
