@@ -41,6 +41,19 @@ export interface FetchedDataset {
   };
 }
 
+/** JSON shape produced by datasetToJSON — used to type the parse boundary. */
+export interface RawDatasetJSON {
+  fetchedAt: string;
+  sources: string[];
+  countriesCount: number;
+  yearRange: [number, number];
+  variablesCount: number;
+  countries: Array<{
+    iso3: string;
+    variables: Record<string, Array<{ year: number; value: number; unit?: string; source?: string }>>;
+  }>;
+}
+
 // ─── Top 50 countries by data availability ───────────────────────────
 
 export const TOP_COUNTRIES = [
@@ -364,10 +377,10 @@ export async function fetchAllCountryData(
 /**
  * Convert fetched data to a flat JSON-serializable format for caching.
  */
-export function datasetToJSON(dataset: FetchedDataset): object {
-  const countriesArr: object[] = [];
+export function datasetToJSON(dataset: FetchedDataset): RawDatasetJSON {
+  const countriesArr: RawDatasetJSON['countries'] = [];
   for (const [iso3, country] of dataset.countries) {
-    const variables: Record<string, object[]> = {};
+    const variables: Record<string, Array<{ year: number; value: number; unit?: string; source?: string }>> = {};
     for (const [varId, series] of country.variables) {
       variables[varId] = series.measurements.map(m => ({
         year: new Date(m.timestamp as number).getFullYear(),
@@ -387,12 +400,11 @@ export function datasetToJSON(dataset: FetchedDataset): object {
 /**
  * Load cached dataset from JSON.
  */
-export function datasetFromJSON(json: any): FetchedDataset {
+export function datasetFromJSON(json: RawDatasetJSON): FetchedDataset {
   const countries = new Map<string, CountryTimeSeries>();
   for (const c of json.countries) {
     const vars = new Map<string, TimeSeries>();
-    for (const [varId, rawPoints] of Object.entries(c.variables)) {
-      const points: Array<{ year: number; value: number; unit: string; source: string }> = rawPoints as Array<{ year: number; value: number; unit: string; source: string }>;
+    for (const [varId, points] of Object.entries(c.variables)) {
       vars.set(varId, {
         variableId: `${c.iso3}:${varId}`,
         name: `${c.iso3} — ${varId}`,

@@ -25,6 +25,7 @@ import {
   datasetFromJSON,
   type FetchedDataset,
   type CountryTimeSeries,
+  type RawDatasetJSON,
 } from '../../data/src/pipelines/fetch-country-timeseries.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -60,7 +61,7 @@ async function getCountryData(): Promise<FetchedDataset> {
     const age = Date.now() - statSync(CACHE_FILE).mtimeMs;
     if (age < CACHE_MAX_AGE_MS) {
       console.log(`📦 Using cached data (${Math.round(age / 3600000)}h old)`);
-      return datasetFromJSON(JSON.parse(readFileSync(CACHE_FILE, 'utf-8')));
+      return datasetFromJSON(JSON.parse(readFileSync(CACHE_FILE, 'utf-8')) as RawDatasetJSON);
     }
   }
   console.log('🌐 Fetching fresh data from World Bank/WHO...');

@@ -16,6 +16,7 @@ import {
   datasetToJSON,
   datasetFromJSON,
   type FetchedDataset,
+  type RawDatasetJSON,
 } from '../../data/src/pipelines/fetch-country-timeseries.ts';
 import { estimateOSL, type SpendingOutcomePoint } from '../../obg/src/index.ts';
 
@@ -38,7 +39,7 @@ async function getCountryData(): Promise<FetchedDataset> {
     const age = Date.now() - stat.mtimeMs;
     if (age < CACHE_MAX_AGE_MS) {
       console.log(`📦 Using cached data (${Math.round(age / 3600000)}h old)`);
-      const json = JSON.parse(readFileSync(CACHE_FILE, 'utf-8'));
+      const json = JSON.parse(readFileSync(CACHE_FILE, 'utf-8')) as RawDatasetJSON;
       return datasetFromJSON(json);
     }
     console.log('📦 Cache expired, re-fetching...');
