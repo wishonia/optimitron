@@ -190,6 +190,45 @@ const REPLACEMENTS: Replacement[] = [
     pattern: /\bbg-red-(?:500|600|700)\b/g,
     replacement: "bg-brutal-red",
   },
+  // --- Brutal token opacity → solid (strip pastel tints) ---
+  // bg-brutal-*/10..70 → bg-brutal-* (solid). Skips hover: prefixed (those are interactive).
+  {
+    label: "bg-brutal-pink/N → bg-brutal-pink (strip pastel)",
+    pattern: /(?<!hover:)\bbg-brutal-pink\/(?:10|20|30|40|50|60|70)\b/g,
+    replacement: "bg-brutal-pink",
+  },
+  {
+    label: "bg-brutal-cyan/N → bg-brutal-cyan (strip pastel)",
+    pattern: /(?<!hover:)\bbg-brutal-cyan\/(?:10|20|30|40|50|60|70)\b/g,
+    replacement: "bg-brutal-cyan",
+  },
+  {
+    label: "bg-brutal-yellow/N → bg-brutal-yellow (strip pastel)",
+    pattern: /(?<!hover:)\bbg-brutal-yellow\/(?:10|20|30|40|50|60|70)\b/g,
+    replacement: "bg-brutal-yellow",
+  },
+  {
+    label: "bg-brutal-red/N → bg-brutal-red (strip pastel)",
+    pattern: /(?<!hover:)\bbg-brutal-red\/(?:10|20|30|40|50|60|70)\b/g,
+    replacement: "bg-brutal-red",
+  },
+  {
+    label: "bg-brutal-green/N → bg-brutal-green (strip pastel)",
+    pattern: /(?<!hover:)\bbg-brutal-green\/(?:10|20|30|40|50|60|70)\b/g,
+    replacement: "bg-brutal-green",
+  },
+  // text-brutal-*/opacity → solid
+  {
+    label: "text-brutal-*/N → text-brutal-* (strip opacity)",
+    pattern: /(?<!hover:)\btext-brutal-(pink|cyan|yellow|red|green)\/\d+\b/g,
+    replacement: "text-brutal-$1",
+  },
+  // border-brutal-*/opacity → solid
+  {
+    label: "border-brutal-*/N → border-brutal-* (strip opacity)",
+    pattern: /(?<!hover:)\bborder-brutal-(pink|cyan|yellow|red|green)\/\d+\b/g,
+    replacement: "border-brutal-$1",
+  },
 ];
 
 // ---------------------------------------------------------------------------

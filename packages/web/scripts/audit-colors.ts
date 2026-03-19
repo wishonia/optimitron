@@ -50,6 +50,22 @@ const RULES: Rule[] = [
     suggestion: "Use semantic tokens: `text-muted-foreground`, `text-foreground`, `bg-muted`",
   },
   {
+    id: "brutal-token-opacity",
+    label: "Opacity on brutal tokens (creates pastels)",
+    pattern:
+      /\b(?:text|bg|border)-brutal-(?:pink|cyan|yellow|red|green)\/\d+/g,
+    // Allow hover opacity (hover:bg-brutal-pink/80) — those are interactive states, not backgrounds
+    filter: (m, line) => {
+      // Allow hover: prefixed versions
+      const idx = line.indexOf(m);
+      if (idx > 0 && line.slice(Math.max(0, idx - 10), idx).includes("hover:")) return true;
+      // Allow /80 and /90 (slight darken on hover is ok)
+      if (/\/(?:80|90)\b/.test(m)) return true;
+      return false;
+    },
+    suggestion: "Use solid brutal token (`bg-brutal-pink`) or semantic token (`bg-muted`). No pastel tints.",
+  },
+  {
     id: "hardcoded-bg-text-white",
     label: "Hardcoded bg-white / text-white",
     pattern: /\b(?:bg-white|text-white)\b/g,
