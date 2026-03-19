@@ -27,7 +27,7 @@ export function IncentiveAlignmentBondsSection() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="bg-brutal-pink/10">
+    <section className="bg-brutal-pink border-t-4 border-b-4 border-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">

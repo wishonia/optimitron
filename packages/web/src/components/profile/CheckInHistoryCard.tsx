@@ -40,7 +40,7 @@ export function CheckInHistoryCard({ history }: CheckInHistoryCardProps) {
             {history.map((entry) => (
               <div
                 key={entry.date}
-                className="grid gap-4 border-4 border-primary bg-brutal-cyan/20 p-4 md:grid-cols-[160px_1fr_1fr]"
+                className="grid gap-4 border-4 border-primary bg-brutal-cyan p-4 md:grid-cols-[160px_1fr_1fr]"
               >
                 <div>
                   <p className="text-sm font-black uppercase text-foreground">

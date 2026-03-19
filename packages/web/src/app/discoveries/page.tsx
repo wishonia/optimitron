@@ -11,7 +11,7 @@ interface AggregateRow {
   outcomeName: string;
   effectSize: number | null;
   predictorImpactScore: number | null;
-  numberOfUnits: number;
+  numberOfSubjects: number;
   forwardPearsonCorrelation: number;
   outcomeFollowUpPercentChangeFromBaseline: number | null;
 }
@@ -25,7 +25,7 @@ async function getDiscoveries(): Promise<AggregateRow[]> {
       forwardPearsonCorrelation: true,
       effectSize: true,
       predictorImpactScore: true,
-      numberOfUnits: true,
+      numberOfSubjects: true,
       outcomeFollowUpPercentChangeFromBaseline: true,
       predictorGlobalVariable: { select: { name: true } },
       outcomeGlobalVariable: { select: { name: true } },
@@ -37,7 +37,7 @@ async function getDiscoveries(): Promise<AggregateRow[]> {
     outcomeName: r.outcomeGlobalVariable.name,
     effectSize: r.effectSize,
     predictorImpactScore: r.predictorImpactScore,
-    numberOfUnits: r.numberOfUnits,
+    numberOfSubjects: r.numberOfSubjects,
     forwardPearsonCorrelation: r.forwardPearsonCorrelation,
     outcomeFollowUpPercentChangeFromBaseline:
       r.outcomeFollowUpPercentChangeFromBaseline,
@@ -49,10 +49,10 @@ function confidenceLabel(units: number): {
   color: string;
 } {
   if (units >= 50)
-    return { label: "High", color: "bg-brutal-cyan/20 text-brutal-cyan" };
+    return { label: "High", color: "bg-brutal-cyan text-brutal-cyan" };
   if (units >= 10)
-    return { label: "Medium", color: "bg-brutal-yellow/20 text-brutal-yellow" };
-  return { label: "Low", color: "bg-brutal-red/20 text-brutal-red" };
+    return { label: "Medium", color: "bg-brutal-yellow text-brutal-yellow" };
+  return { label: "Low", color: "bg-brutal-red text-brutal-red" };
 }
 
 function formatNumber(n: number | null, decimals = 2): string {
@@ -125,7 +125,7 @@ export default async function DiscoveriesPage() {
             </thead>
             <tbody>
               {discoveries.map((d, i) => {
-                const conf = confidenceLabel(d.numberOfUnits);
+                const conf = confidenceLabel(d.numberOfSubjects);
                 return (
                   <tr
                     key={`${d.predictorName}-${d.outcomeName}`}
@@ -149,7 +149,7 @@ export default async function DiscoveriesPage() {
                       {formatNumber(d.forwardPearsonCorrelation, 3)}
                     </td>
                     <td className="px-4 py-3 text-center font-mono">
-                      {d.numberOfUnits}
+                      {d.numberOfSubjects}
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span

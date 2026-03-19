@@ -191,9 +191,9 @@ export function WishocracyEditSection({
                         key={categoryId}
                         className={`p-3 border-2 rounded flex items-center justify-between ${
                           isSelected && !willBeDeleted
-                            ? "border-brutal-cyan bg-brutal-cyan/10"
+                            ? "border-brutal-cyan bg-brutal-cyan"
                             : willBeDeleted
-                            ? "border-brutal-red bg-brutal-red/20"
+                            ? "border-brutal-red bg-brutal-red"
                             : "border-primary bg-muted"
                         }`}
                       >

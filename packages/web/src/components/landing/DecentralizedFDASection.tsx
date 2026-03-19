@@ -27,7 +27,7 @@ const comparisons = [
   },
   {
     label: "Annual Capacity",
-    current: { value: CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6, display: `${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)}M/yr`, color: "bg-brutal-red/60" },
+    current: { value: CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6, display: `${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)}M/yr`, color: "bg-brutal-red" },
     optimized: { value: DFDA_PATIENTS_FUNDABLE_ANNUALLY.value / 1e6, display: `${(DFDA_PATIENTS_FUNDABLE_ANNUALLY.value / 1e6).toFixed(1)}M/yr`, color: "bg-brutal-cyan" },
     ratio: "12x more",
     ratioColor: "text-brutal-cyan",
@@ -47,7 +47,7 @@ export function DecentralizedFDASection() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="bg-brutal-cyan/10">
+    <section className="bg-brutal-cyan">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <motion.div
           initial={reduced ? {} : { opacity: 0, y: 30 }}
@@ -150,7 +150,7 @@ export function DecentralizedFDASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.5 }}
-            className="p-4 border-4 border-primary bg-brutal-cyan/30"
+            className="p-4 border-4 border-primary bg-brutal-cyan"
           >
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-black px-2 py-0.5 bg-foreground text-background">
@@ -167,7 +167,7 @@ export function DecentralizedFDASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.6 }}
-            className="p-4 border-4 border-primary bg-brutal-pink/30"
+            className="p-4 border-4 border-primary bg-brutal-pink"
           >
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-black px-2 py-0.5 bg-foreground text-background">

@@ -25,9 +25,9 @@ interface ScoreboardTableProps {
 }
 
 function scoreColorClass(score: number): string {
-  if (score > 70) return "bg-brutal-cyan/20 text-green-900 border-green-600";
+  if (score > 70) return "bg-brutal-cyan text-green-900 border-green-600";
   if (score >= 40) return "bg-yellow-400/20 text-yellow-900 border-yellow-600";
-  return "bg-brutal-red/20 text-red-900 border-red-600";
+  return "bg-brutal-red text-red-900 border-red-600";
 }
 
 function scoreBgClass(score: number): string {

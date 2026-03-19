@@ -104,7 +104,7 @@ function gradeBadgeColor(grade: string): string {
     case "A": return "bg-brutal-cyan";
     case "B": return "bg-brutal-yellow";
     case "C": return "bg-brutal-yellow";
-    case "D": return "bg-brutal-red/60";
+    case "D": return "bg-brutal-red";
     case "F": return "bg-brutal-red";
     default: return "bg-muted";
   }

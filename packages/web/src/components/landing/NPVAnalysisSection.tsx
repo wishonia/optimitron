@@ -212,7 +212,7 @@ export default function NPVAnalysisSection() {
           <h3 className="text-2xl font-black uppercase mb-6 text-center">WHY NPV ANALYSIS MATTERS</h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <div className="bg-brutal-pink/10 border-l-4 border-brutal-pink p-4 mb-4">
+              <div className="bg-brutal-pink border-l-4 border-brutal-pink p-4 mb-4">
                 <div className="font-black uppercase text-sm mb-2 text-brutal-pink">Simple ROI (higher)</div>
                 <ul className="text-sm space-y-2">
                   <li>Easy to understand</li>
@@ -224,7 +224,7 @@ export default function NPVAnalysisSection() {
               </div>
             </div>
             <div>
-              <div className="bg-brutal-cyan/10 border-l-4 border-brutal-cyan p-4 mb-4">
+              <div className="bg-brutal-cyan border-l-4 border-brutal-cyan p-4 mb-4">
                 <div className="font-black uppercase text-sm mb-2 text-brutal-cyan">NPV-Adjusted ROI ({roiRaw}:1)</div>
                 <ul className="text-sm space-y-2">
                   <li>Academically rigorous</li>
@@ -258,7 +258,7 @@ export default function NPVAnalysisSection() {
             })).map((item) => (
               <div key={item.year} className="flex items-center gap-4">
                 <div className="w-20 text-sm font-bold">Year {item.year}:</div>
-                <div className="flex-1 bg-brutal-pink/10 border-4 border-primary h-12 relative">
+                <div className="flex-1 bg-brutal-pink border-4 border-primary h-12 relative">
                   <div
                     className="bg-brutal-pink h-full flex items-center justify-end pr-2 font-black text-sm text-brutal-pink-foreground"
                     style={{ width: `${item.pct}%` }}

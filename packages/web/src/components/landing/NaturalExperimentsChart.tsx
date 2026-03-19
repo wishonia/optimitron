@@ -180,7 +180,7 @@ export function NaturalExperimentsChart() {
                                     ease: [0.87, 0, 0.13, 1],
                                   }}
                                   style={{ originX: 0, width: `${oBarW}%` }}
-                                  className={`absolute inset-y-0 left-0 ${o.directionCorrect ? "bg-brutal-cyan/60" : "bg-brutal-red/60"}`}
+                                  className={`absolute inset-y-0 left-0 ${o.directionCorrect ? "bg-brutal-cyan" : "bg-brutal-red"}`}
                                 />
                               </div>
                               <span className="text-xs text-muted-foreground font-bold shrink-0">

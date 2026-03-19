@@ -69,7 +69,7 @@ export default async function OutcomeHubPage({
               <th className="text-right px-3 py-2 font-black uppercase">Score</th>
               <th className="text-right px-3 py-2 font-black uppercase">Confidence</th>
               <th className="text-right px-3 py-2 font-black uppercase">Adj p</th>
-              <th className="text-right px-3 py-2 font-black uppercase">Units</th>
+              <th className="text-right px-3 py-2 font-black uppercase">Subjects</th>
               <th className="text-right px-3 py-2 font-black uppercase">Pairs</th>
               <th className="text-center px-3 py-2 font-black uppercase">Study</th>
             </tr>
@@ -94,7 +94,7 @@ export default async function OutcomeHubPage({
                 <td className="px-3 py-2 text-right font-bold text-foreground">{(row.score * 100).toFixed(1)}</td>
                 <td className="px-3 py-2 text-right text-foreground">{(row.confidence * 100).toFixed(1)}%</td>
                 <td className="px-3 py-2 text-right text-foreground">{row.adjustedPValue.toFixed(3)}</td>
-                <td className="px-3 py-2 text-right text-foreground">{row.numberOfUnits}</td>
+                <td className="px-3 py-2 text-right text-foreground">{row.numberOfSubjects}</td>
                 <td className="px-3 py-2 text-right text-foreground">{row.totalPairs}</td>
                 <td className="px-3 py-2 text-center">
                   <Link

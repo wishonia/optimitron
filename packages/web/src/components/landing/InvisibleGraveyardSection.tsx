@@ -62,7 +62,7 @@ export function InvisibleGraveyardSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           {graveyardStats.map((stat, i) => (
             <ScrollReveal key={stat.label} delay={i * 0.1}>
-              <div className="p-6 border-4 border-brutal-yellow bg-brutal-yellow/10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+              <div className="p-6 border-4 border-brutal-yellow bg-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 <div className="text-3xl sm:text-4xl font-black text-brutal-yellow mb-2">
                   <CountUp value={stat.value} suffix={stat.suffix} className="text-brutal-yellow" />
                 </div>

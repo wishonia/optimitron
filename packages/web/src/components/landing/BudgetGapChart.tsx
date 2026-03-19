@@ -56,7 +56,7 @@ export function BudgetGapChart() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="bg-brutal-yellow/10">
+    <section className="bg-brutal-yellow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <motion.div
           initial={reduced ? {} : { opacity: 0, y: 30 }}
@@ -97,8 +97,8 @@ export function BudgetGapChart() {
                       <span
                         className={`text-xs font-black px-1.5 py-0.5 border border-primary ${
                           isOverInvested
-                            ? "bg-brutal-red/20 text-brutal-red"
-                            : "bg-brutal-cyan/20 text-brutal-cyan"
+                            ? "bg-brutal-red text-brutal-red"
+                            : "bg-brutal-cyan text-brutal-cyan"
                         }`}
                       >
                         {cat.investmentStatus}
@@ -132,7 +132,7 @@ export function BudgetGapChart() {
                         ease: [0.87, 0, 0.13, 1],
                       }}
                       style={{ originX: 0, width: `${optimalPct}%` }}
-                      className={`absolute inset-y-0 left-0 ${isOverInvested ? "bg-brutal-red/40" : "bg-brutal-cyan/40"}`}
+                      className={`absolute inset-y-0 left-0 ${isOverInvested ? "bg-brutal-red" : "bg-brutal-cyan"}`}
                     />
                     {/* Labels inside bar */}
                     <div className="absolute inset-0 flex items-center px-2 gap-4">
@@ -214,11 +214,11 @@ export function BudgetGapChart() {
             Current
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-4 h-3 bg-brutal-cyan/40 inline-block" />{" "}
+            <span className="w-4 h-3 bg-brutal-cyan inline-block" />{" "}
             Optimal (increase)
           </span>
           <span className="flex items-center gap-1">
-            <span className="w-4 h-3 bg-brutal-red/40 inline-block" />{" "}
+            <span className="w-4 h-3 bg-brutal-red inline-block" />{" "}
             Optimal (decrease)
           </span>
         </div>

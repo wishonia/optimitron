@@ -322,7 +322,7 @@ export default function Home() {
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <ScrollReveal direction="left">
-              <BrutalCard bgColor="background" shadowSize={8} padding="lg" className="bg-brutal-red/20">
+              <BrutalCard bgColor="background" shadowSize={8} padding="lg" className="border-brutal-red">
                 <h3 className="text-xl font-black text-foreground mb-4 uppercase">
                   What Politicians Actually Do
                 </h3>
@@ -347,7 +347,7 @@ export default function Home() {
               </BrutalCard>
             </ScrollReveal>
             <ScrollReveal direction="right" delay={0.15}>
-              <BrutalCard bgColor="background" shadowSize={8} padding="lg" className="bg-brutal-cyan/20">
+              <BrutalCard bgColor="background" shadowSize={8} padding="lg" className="border-brutal-cyan">
                 <h3 className="text-xl font-black text-foreground mb-4 uppercase">
                   What Wishocracy Does Instead
                 </h3>

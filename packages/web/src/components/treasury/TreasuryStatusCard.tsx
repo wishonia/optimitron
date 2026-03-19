@@ -20,13 +20,13 @@ export function TreasuryStatusCard() {
       label: "UBI Pending",
       value: `${formatWish(ubiPendingBalance)} $WISH`,
       detail: "Awaiting distribution to citizens",
-      color: "bg-brutal-cyan/20",
+      color: "bg-brutal-cyan",
     },
     {
       label: "Per Citizen",
       value: citizenCountNum > 0 ? `${formatWish(perCitizen)} $WISH` : "\u2014",
       detail: citizenCountNum > 0 ? "Next distribution" : "No citizens yet",
-      color: "bg-brutal-cyan/10",
+      color: "bg-brutal-cyan",
     },
     {
       label: "Registered Citizens",

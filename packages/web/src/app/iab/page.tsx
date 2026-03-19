@@ -230,7 +230,7 @@ export default function IABPage() {
           Prize vs IABs — Two Phases, One Goal
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border-4 border-primary bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-black uppercase text-muted-foreground mb-2">
               Phase 1 — Now
             </div>
@@ -263,7 +263,7 @@ export default function IABPage() {
             </NavItemLink>
           </div>
 
-          <div className="border-4 border-primary bg-brutal-pink/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-black uppercase text-muted-foreground mb-2">
               Phase 2 — After Demand Is Proven
             </div>

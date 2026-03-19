@@ -306,7 +306,7 @@ export function IABDeposit() {
                 ))}
               </div>
             ) : null}
-            <div className="border-4 border-primary bg-brutal-cyan/10 p-3">
+            <div className="border-4 border-primary bg-brutal-cyan p-3">
               <p className="text-xs font-bold text-muted-foreground">
                 Need a wallet?{" "}
                 <a
@@ -353,7 +353,7 @@ export function IABDeposit() {
 
             {/* Balances */}
             <div className="grid gap-2 grid-cols-2">
-              <div className="border-4 border-primary bg-brutal-cyan/20 p-2">
+              <div className="border-4 border-primary bg-brutal-cyan p-2">
                 <div className="text-[10px] font-black uppercase text-muted-foreground">
                   USDC Balance
                 </div>
@@ -363,7 +363,7 @@ export function IABDeposit() {
                     : "\u2014"}
                 </div>
               </div>
-              <div className="border-4 border-primary bg-brutal-cyan/10 p-2">
+              <div className="border-4 border-primary bg-brutal-cyan p-2">
                 <div className="text-[10px] font-black uppercase text-muted-foreground">
                   Your Bond Value
                 </div>
@@ -407,7 +407,7 @@ export function IABDeposit() {
         </h3>
 
         {!isDeployed && (
-          <div className="border-4 border-primary bg-brutal-yellow/20 p-3 mb-4">
+          <div className="border-4 border-primary bg-brutal-yellow p-3 mb-4">
             <div className="text-xs font-black uppercase text-muted-foreground">
               Not Yet Deployed
             </div>
@@ -419,7 +419,7 @@ export function IABDeposit() {
         )}
 
         <div className="space-y-3">
-          <div className="border-4 border-primary bg-brutal-yellow/20 p-3">
+          <div className="border-4 border-primary bg-brutal-yellow p-3">
             <label className="text-xs font-black uppercase text-muted-foreground block mb-1">
               Amount (USDC)
             </label>
@@ -514,7 +514,7 @@ export function IABDeposit() {
 
       {/* Live Pool Status */}
       {isDeployed && isConnected && (
-        <div className="border-4 border-primary bg-brutal-cyan/10 p-6">
+        <div className="border-4 border-primary bg-brutal-cyan p-6">
           <h3 className="font-black uppercase text-foreground mb-3">
             Live Vault Status
           </h3>

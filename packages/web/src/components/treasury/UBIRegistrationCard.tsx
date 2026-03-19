@@ -86,7 +86,7 @@ export function UBIRegistrationCard() {
 
         {/* Step 1: Sign in */}
         {!isLoggedIn && (
-          <div className="border-4 border-primary bg-brutal-yellow/20 p-4">
+          <div className="border-4 border-primary bg-brutal-yellow p-4">
             <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               Step 1
             </div>
@@ -108,7 +108,7 @@ export function UBIRegistrationCard() {
 
         {/* Step 3: Register on-chain */}
         {isLoggedIn && isVerified && !isConnected && (
-          <div className="border-4 border-primary bg-brutal-yellow/20 p-4">
+          <div className="border-4 border-primary bg-brutal-yellow p-4">
             <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               Step 3
             </div>
@@ -120,7 +120,7 @@ export function UBIRegistrationCard() {
 
         {isLoggedIn && isVerified && isConnected && (
           <div className="space-y-3">
-            <div className="border-4 border-primary bg-brutal-cyan/10 p-4">
+            <div className="border-4 border-primary bg-brutal-cyan p-4">
               <div className="flex items-center gap-2 mb-2">
                 <ShieldCheck className="h-4 w-4 text-green-600" />
                 <span className="text-xs font-black uppercase text-green-600">
@@ -134,7 +134,7 @@ export function UBIRegistrationCard() {
             </div>
 
             {isDemo && (
-              <div className="border-4 border-primary bg-brutal-yellow/20 p-3">
+              <div className="border-4 border-primary bg-brutal-yellow p-3">
                 <div className="text-xs font-black uppercase text-muted-foreground">
                   Not Yet Deployed
                 </div>

@@ -113,7 +113,7 @@ export function TwoFuturesSection() {
                       ease: [0.87, 0, 0.13, 1],
                     }}
                     style={{ originX: 1, width: `${row.aWeight}%` }}
-                    className="absolute inset-y-0 right-0 bg-brutal-red/70 border-l-2 border-primary"
+                    className="absolute inset-y-0 right-0 bg-brutal-red border-l-2 border-primary"
                   />
                 </div>
               </div>
@@ -139,7 +139,7 @@ export function TwoFuturesSection() {
                       ease: [0.87, 0, 0.13, 1],
                     }}
                     style={{ originX: 0, width: `${row.bWeight}%` }}
-                    className="absolute inset-y-0 left-0 bg-brutal-cyan/70 border-r-2 border-primary"
+                    className="absolute inset-y-0 left-0 bg-brutal-cyan border-r-2 border-primary"
                   />
                 </div>
                 <span className="text-xs text-muted-foreground font-bold hidden sm:block max-w-32 leading-tight">

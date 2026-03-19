@@ -31,8 +31,8 @@ function formatVOTE(weiAmount: string): string {
 
 const STATUS_STYLES: Record<string, { bg: string; text: string }> = {
   CONFIRMED: { bg: "bg-green-100", text: "text-green-800" },
-  PENDING: { bg: "bg-brutal-yellow/30", text: "text-foreground" },
-  SUBMITTED: { bg: "bg-brutal-cyan/30", text: "text-foreground" },
+  PENDING: { bg: "bg-brutal-yellow", text: "text-foreground" },
+  SUBMITTED: { bg: "bg-brutal-cyan", text: "text-foreground" },
   FAILED: { bg: "bg-red-100", text: "text-red-700" },
 };
 
@@ -110,7 +110,7 @@ export function VoteTokenBalanceCard() {
           Your VOTE Tokens
         </h3>
         <div className="grid gap-4 grid-cols-2">
-          <div className="border-4 border-primary bg-brutal-cyan/20 p-4">
+          <div className="border-4 border-primary bg-brutal-cyan p-4">
             <div className="text-xs font-black uppercase text-muted-foreground">
               Confirmed Votes
             </div>
@@ -118,7 +118,7 @@ export function VoteTokenBalanceCard() {
               {data.totalVotes}
             </div>
           </div>
-          <div className="border-4 border-primary bg-brutal-yellow/20 p-4">
+          <div className="border-4 border-primary bg-brutal-yellow p-4">
             <div className="text-xs font-black uppercase text-muted-foreground">
               Total VOTE Balance
             </div>
@@ -129,7 +129,7 @@ export function VoteTokenBalanceCard() {
         </div>
 
         {data.totalVotes === 0 && (
-          <div className="mt-4 border-4 border-primary bg-brutal-yellow/10 p-3">
+          <div className="mt-4 border-4 border-primary bg-brutal-yellow p-3">
             <p className="text-xs font-bold text-muted-foreground">
               You don&apos;t have any VOTE tokens yet. Vote on a{" "}
               <Link

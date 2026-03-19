@@ -23,7 +23,8 @@
     "demo:narration": "tsx scripts/generate-narration.ts",
     "demo:record": "tsx scripts/record-demo.ts",
     "audit:colors": "tsx scripts/audit-colors.ts",
-    "fix:colors": "tsx scripts/fix-colors.ts"
+    "fix:colors": "tsx scripts/fix-colors.ts",
+    "extract:copy": "tsx scripts/extract-copy.ts"
   },
   "dependencies": {
     "@base-org/account": "^2.5.2",

@@ -45,7 +45,7 @@ const gradeColors: Record<string, string> = {
   A: "bg-brutal-cyan text-foreground",
   B: "bg-brutal-cyan text-foreground",
   C: "bg-brutal-yellow text-foreground",
-  D: "bg-brutal-red/60 text-foreground",
+  D: "bg-brutal-red text-foreground",
   F: "bg-brutal-red text-brutal-red-foreground",
 };
 

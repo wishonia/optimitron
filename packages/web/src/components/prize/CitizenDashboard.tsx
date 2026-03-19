@@ -373,7 +373,7 @@ export function CitizenDashboard() {
                 className={`flex items-center gap-3 border-b border-primary pb-2 last:border-0 ${
                   entry.userId ===
                   (session?.user as { id?: string } | undefined)?.id
-                    ? "bg-brutal-cyan/20 -mx-2 px-2 rounded"
+                    ? "bg-brutal-cyan -mx-2 px-2 rounded"
                     : ""
                 }`}
               >

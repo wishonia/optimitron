@@ -59,7 +59,7 @@ const bountyStages = [
 
 export function EarthOptimizationPrizeSection() {
   return (
-    <section className="bg-brutal-yellow/10">
+    <section className="bg-brutal-yellow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">

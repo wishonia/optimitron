@@ -227,7 +227,7 @@ function HealthTab() {
                 <tr
                   key={d.country}
                   className={`border-b border-primary hover:bg-brutal-cyan ${
-                    d.country === "United States" ? "bg-brutal-red/20" : ""
+                    d.country === "United States" ? "bg-brutal-red" : ""
                   }`}
                 >
                   <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>
@@ -290,7 +290,7 @@ function DrugTab() {
               <tr
                 key={d.country}
                 className={`border-b border-primary hover:bg-brutal-cyan ${
-                  d.country === "United States" ? "bg-brutal-red/20" : ""
+                  d.country === "United States" ? "bg-brutal-red" : ""
                 }`}
               >
                 <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>
@@ -376,7 +376,7 @@ function EducationTab() {
                 <tr
                   key={d.country}
                   className={`border-b border-primary hover:bg-brutal-cyan ${
-                    d.country === "United States" ? "bg-brutal-red/20" : ""
+                    d.country === "United States" ? "bg-brutal-red" : ""
                   }`}
                 >
                   <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>

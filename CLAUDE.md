@@ -237,6 +237,7 @@ The UI uses a **neobrutalist** design system — bold, high-contrast, no washed-
 - **Tailwind color scales:** `bg-emerald-100`, `text-gray-500`, etc. → use brutal-* or semantic tokens
 - **Hardcoded hex colors:** `#ef4444`, `#666`, `#f5f5f5`, etc. → use CSS custom properties
 - **Soft shadows:** `rgba(0,0,0,0.3)` → use `rgba(0,0,0,1)` for brutal hard shadows
+- **Opacity on brutal tokens:** `bg-brutal-red/10`, `bg-brutal-yellow/20`, `bg-brutal-cyan/30` → creates washed-out pastels. Use the solid token or `bg-muted` instead. (Exception: `hover:bg-brutal-pink/80` for interactive darken is ok)
 - **Exception:** Email templates (`emails/`) may use inline hex colors (email clients require it)
 
 ## Design Patterns (Neobrutalist)

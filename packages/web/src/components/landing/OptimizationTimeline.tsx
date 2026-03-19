@@ -89,7 +89,7 @@ export function OptimizationTimeline({ userAge, onAgeChange }: OptimizationTimel
 
       {/* Warp Effect Overlay */}
       {isWarping && (
-        <div className="fixed inset-0 pointer-events-none z-50 bg-brutal-cyan/20">
+        <div className="fixed inset-0 pointer-events-none z-50 bg-brutal-cyan">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-4xl font-black text-brutal-cyan animate-pulse">
               TIME WARP

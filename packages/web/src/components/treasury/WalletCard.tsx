@@ -47,7 +47,7 @@ export function WalletCard() {
                 ))}
               </div>
             )}
-            <div className="border-4 border-primary bg-brutal-cyan/10 p-3">
+            <div className="border-4 border-primary bg-brutal-cyan p-3">
               <p className="text-xs font-bold text-muted-foreground">
                 Need a wallet?{" "}
                 <a
@@ -92,7 +92,7 @@ export function WalletCard() {
             </div>
 
             <div className="grid gap-2 grid-cols-2">
-              <div className="border-4 border-primary bg-brutal-cyan/20 p-2">
+              <div className="border-4 border-primary bg-brutal-cyan p-2">
                 <div className="text-[10px] font-black uppercase text-muted-foreground">
                   $WISH Balance
                 </div>
@@ -102,7 +102,7 @@ export function WalletCard() {
                     : `${formatWish(wishBalance)} $WISH`}
                 </div>
               </div>
-              <div className="border-4 border-primary bg-brutal-cyan/10 p-2">
+              <div className="border-4 border-primary bg-brutal-cyan p-2">
                 <div className="text-[10px] font-black uppercase text-muted-foreground">
                   Max Supply (Fixed)
                 </div>

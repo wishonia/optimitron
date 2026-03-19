@@ -119,7 +119,7 @@ export function WishocracyCompletionCard({
         </div>
       </div>
 
-      <div className="mb-6 border-4 border-primary bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="mb-6 border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="mb-3 text-center text-base font-black uppercase">Share Your Referral Link</h3>
         <p className="mb-4 text-center text-xs text-muted-foreground">
           More humans = better data. Basic statistics, really.

@@ -126,7 +126,7 @@ export function ReferendumVoteSection({
 
         {/* VOTE token earning info */}
         {mintQueued ? (
-          <div className="border-4 border-primary bg-brutal-cyan/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-lg font-black uppercase text-foreground mb-2">
               1 VOTE Token Queued
             </h3>
@@ -142,7 +142,7 @@ export function ReferendumVoteSection({
             </p>
           </div>
         ) : (
-          <div className="border-4 border-primary bg-brutal-yellow/20 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-lg font-black uppercase text-foreground mb-2">
               Earn VOTE Tokens
             </h3>

@@ -90,7 +90,7 @@ export function DistributeUBICard() {
         </div>
 
         {!isDeployed && isDemo && (
-          <div className="border-4 border-primary bg-brutal-yellow/30 p-3 mb-4">
+          <div className="border-4 border-primary bg-brutal-yellow p-3 mb-4">
             <p className="text-xs font-black uppercase text-muted-foreground">
               Not yet deployed &mdash; illustrative data shown above
             </p>

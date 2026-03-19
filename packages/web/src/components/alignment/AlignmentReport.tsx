@@ -374,7 +374,7 @@ export function AlignmentReport({
                     {politician.closestMatches.map((gap) => (
                       <span
                         key={`${politician.politicianId}-${gap.itemId}-match`}
-                        className="border-4 border-primary bg-brutal-cyan/30 px-2 py-1 text-xs font-bold uppercase"
+                        className="border-4 border-primary bg-brutal-cyan px-2 py-1 text-xs font-bold uppercase"
                       >
                         {gap.itemName}
                       </span>
@@ -439,7 +439,7 @@ export function AlignmentReport({
         />
       </section>
 
-      <section className="border-4 border-primary bg-brutal-cyan/20 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <section className="border-4 border-primary bg-brutal-cyan p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="flex items-center gap-2 mb-4">
           <Shield className="h-5 w-5" />
           <h2 className="text-2xl font-black uppercase text-foreground">
