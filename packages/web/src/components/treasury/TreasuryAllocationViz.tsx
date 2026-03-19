@@ -87,7 +87,7 @@ export function TreasuryAllocationViz() {
             <div className="text-xs font-black uppercase text-muted-foreground mb-1 text-background">
               Step 3
             </div>
-            <div className="text-sm font-black text-white">
+            <div className="text-sm font-black text-brutal-pink-foreground">
               Category Recipients
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -99,7 +99,7 @@ export function TreasuryAllocationViz() {
         </div>
 
         {/* Wishocratic allocation breakdown */}
-        <div className="border-2 border-primary bg-muted p-5 mb-6">
+        <div className="border-4 border-primary bg-muted p-5 mb-6">
           <h3 className="font-black uppercase text-foreground text-sm mb-4">
             Citizen-Directed Allocation
           </h3>
@@ -136,7 +136,7 @@ export function TreasuryAllocationViz() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Wishocratic UBI */}
-          <div className="border-2 border-primary bg-brutal-cyan/10 p-5">
+          <div className="border-4 border-primary bg-brutal-cyan/10 p-5">
             <h3 className="font-black uppercase text-foreground text-sm mb-3">
               UBI Is a Category, Not a Guarantee
             </h3>
@@ -150,7 +150,7 @@ export function TreasuryAllocationViz() {
           </div>
 
           {/* Politician funding note */}
-          <div className="border-2 border-primary bg-brutal-pink/10 p-5">
+          <div className="border-4 border-primary bg-brutal-pink/10 p-5">
             <h3 className="font-black uppercase text-foreground text-sm mb-3">
               Politician Funding? That&apos;s IABs.
             </h3>

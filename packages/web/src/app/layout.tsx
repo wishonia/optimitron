@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { DM_Sans, Space_Mono, Source_Serif_4 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { cookieToInitialState } from "wagmi";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
+import { wagmiConfig } from "@/lib/wagmi-config";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -64,15 +67,18 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookie = (await headers()).get("cookie");
+  const initialState = cookieToInitialState(wagmiConfig, cookie);
+
   return (
     <html lang="en">
       <body className={`font-sans antialiased ${fontVariables}`}>
-        <Providers>
+        <Providers initialState={initialState}>
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />

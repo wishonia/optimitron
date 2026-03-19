@@ -49,7 +49,7 @@ export function InvisibleGraveyardSection() {
     <section className="bg-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <ScrollReveal className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-background">
             The Invisible Graveyard
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
@@ -62,11 +62,11 @@ export function InvisibleGraveyardSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           {graveyardStats.map((stat, i) => (
             <ScrollReveal key={stat.label} delay={i * 0.1}>
-              <div className="p-6 border-4 border-brutal-yellow bg-brutal-yellow/10 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <div className="p-6 border-4 border-brutal-yellow bg-brutal-yellow/10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 <div className="text-3xl sm:text-4xl font-black text-brutal-yellow mb-2">
                   <CountUp value={stat.value} suffix={stat.suffix} className="text-brutal-yellow" />
                 </div>
-                <h3 className="text-sm font-black text-white uppercase mb-2">
+                <h3 className="text-sm font-black text-background uppercase mb-2">
                   {stat.label}
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed font-bold">
@@ -78,7 +78,7 @@ export function InvisibleGraveyardSection() {
         </div>
 
         <ScrollReveal delay={0.4}>
-          <div className="p-8 border-4 border-brutal-yellow bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
+          <div className="p-8 border-4 border-brutal-yellow bg-brutal-yellow shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-3xl sm:text-4xl font-black text-foreground mb-2">
               <Stat param={{...DFDA_EFFICACY_LAG_ELIMINATION_ECONOMIC_VALUE, unit: "USD"}} />
             </div>

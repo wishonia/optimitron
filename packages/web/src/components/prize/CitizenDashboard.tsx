@@ -146,7 +146,7 @@ export function CitizenDashboard() {
         </p>
         <a
           href="/api/auth/signin"
-          className="inline-flex items-center justify-center border-4 border-primary bg-foreground px-6 py-2 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="inline-flex items-center justify-center border-4 border-primary bg-foreground px-6 py-2 text-sm font-black uppercase text-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
         >
           Sign In
         </a>
@@ -194,7 +194,7 @@ export function CitizenDashboard() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="cursor-help">
-                  <div className="text-3xl font-black text-white">
+                  <div className="text-3xl font-black text-brutal-pink-foreground">
                     {Math.round(livesSaved).toLocaleString()}
                   </div>
                   <div className="text-xs font-bold text-muted-foreground">
@@ -216,7 +216,7 @@ export function CitizenDashboard() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="cursor-help">
-                  <div className="text-3xl font-black text-white">
+                  <div className="text-3xl font-black text-brutal-pink-foreground">
                     {sufferingYearsPrevented.toLocaleString()}
                   </div>
                   <div className="text-xs font-bold text-muted-foreground">
@@ -238,7 +238,7 @@ export function CitizenDashboard() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <div className="cursor-help">
-                  <div className="text-3xl font-black text-white">
+                  <div className="text-3xl font-black text-brutal-pink-foreground">
                     {estimatedReach.toLocaleString()}
                   </div>
                   <div className="text-xs font-bold text-muted-foreground">
@@ -314,7 +314,7 @@ export function CitizenDashboard() {
         </div>
         <Progress
           value={milestoneProgress}
-          className="h-6 border-2 border-primary"
+          className="h-6 border-4 border-primary"
         />
 
         {/* Badge grid */}
@@ -324,9 +324,9 @@ export function CitizenDashboard() {
             return (
               <div
                 key={badge.threshold}
-                className={`p-3 border-2 border-primary text-center transition-all ${
+                className={`p-3 border-4 border-primary text-center transition-all ${
                   unlocked
-                    ? "bg-brutal-yellow shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                    ? "bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                     : "bg-background opacity-40"
                 }`}
               >
@@ -377,17 +377,17 @@ export function CitizenDashboard() {
                     : ""
                 }`}
               >
-                <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+                <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                   {entry.rank}
                 </span>
                 {entry.image ? (
                   <img
                     src={entry.image}
                     alt=""
-                    className="w-8 h-8 border-2 border-primary object-cover shrink-0"
+                    className="w-8 h-8 border-4 border-primary object-cover shrink-0"
                   />
                 ) : (
-                  <span className="w-8 h-8 bg-brutal-yellow border-2 border-primary flex items-center justify-center text-xs font-black shrink-0">
+                  <span className="w-8 h-8 bg-brutal-yellow border-4 border-primary flex items-center justify-center text-xs font-black shrink-0">
                     {entry.name.charAt(0).toUpperCase()}
                   </span>
                 )}
@@ -412,7 +412,7 @@ export function CitizenDashboard() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button className="w-6 h-6 border-2 border-primary bg-background flex items-center justify-center text-xs font-black hover:bg-brutal-pink hover:text-white transition-colors">
+                <button className="w-6 h-6 border-4 border-primary bg-background flex items-center justify-center text-xs font-black hover:bg-brutal-pink hover:text-background transition-colors">
                   ?
                 </button>
               </TooltipTrigger>
@@ -443,7 +443,7 @@ export function CitizenDashboard() {
           </span>
           <span>{TIPPING_POINT_PCT}% target</span>
         </div>
-        <div className="h-6 bg-background border-2 border-primary overflow-hidden">
+        <div className="h-6 bg-background border-4 border-primary overflow-hidden">
           <div
             className="h-full bg-foreground transition-all duration-500"
             style={{ width: `${Math.min(globalPctOfTarget, 100)}%` }}
@@ -492,7 +492,7 @@ function StatCard({
         {label}
       </div>
       <div
-        className={`text-2xl font-black mt-1 ${textWhite ? "text-white" : "text-foreground"}`}
+        className={`text-2xl font-black mt-1 ${textWhite ? "text-brutal-pink-foreground" : "text-foreground"}`}
       >
         {value}
       </div>

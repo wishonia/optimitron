@@ -60,7 +60,7 @@ export default function IABPage() {
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a
             href="#invest"
-            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-brutal-pink-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Buy IABs
           </a>
@@ -68,14 +68,14 @@ export default function IABPage() {
             item={incentiveAlignmentBondsPaperLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Read the Paper
           </NavItemLink>
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-cyan px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-cyan px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Phase 1: Prize
           </NavItemLink>
@@ -95,7 +95,7 @@ export default function IABPage() {
         <div className="space-y-4">
           <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-center gap-3 mb-3">
-              <span className="w-12 h-12 bg-foreground text-white flex items-center justify-center text-lg font-black shrink-0">
+              <span className="w-12 h-12 bg-foreground text-background flex items-center justify-center text-lg font-black shrink-0">
                 80%
               </span>
               <h3 className="font-black uppercase text-foreground text-lg">
@@ -108,7 +108,7 @@ export default function IABPage() {
               Phase III process that takes 8.2 years after safety is already
               proven. This is the part that actually cures the diseases.
             </p>
-            <div className="mt-3 border-2 border-primary bg-background px-3 py-2 inline-block">
+            <div className="mt-3 border-4 border-primary bg-background px-3 py-2 inline-block">
               <span className="text-xs font-black uppercase text-muted-foreground">
                 ~{fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD", value: TREATY_ANNUAL_FUNDING.value * 0.8})}/year
               </span>
@@ -118,7 +118,7 @@ export default function IABPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-3 mb-3">
-                <span className="w-12 h-12 bg-foreground text-white flex items-center justify-center text-lg font-black shrink-0">
+                <span className="w-12 h-12 bg-foreground text-background flex items-center justify-center text-lg font-black shrink-0">
                   10%
                 </span>
                 <h3 className="font-black uppercase text-foreground">
@@ -130,7 +130,7 @@ export default function IABPage() {
                 investment. This is why people buy the bonds — positive-EV
                 financial instrument, not a donation.
               </p>
-              <div className="mt-3 border-2 border-primary bg-background px-3 py-2 inline-block">
+              <div className="mt-3 border-4 border-primary bg-background px-3 py-2 inline-block">
                 <span className="text-xs font-black uppercase text-muted-foreground">
                   ~{fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD", value: TREATY_ANNUAL_FUNDING.value * 0.1})}/year to investors
                 </span>
@@ -139,10 +139,10 @@ export default function IABPage() {
 
             <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-3 mb-3">
-                <span className="w-12 h-12 bg-foreground text-white flex items-center justify-center text-lg font-black shrink-0">
+                <span className="w-12 h-12 bg-foreground text-background flex items-center justify-center text-lg font-black shrink-0">
                   10%
                 </span>
-                <h3 className="font-black uppercase text-white">
+                <h3 className="font-black uppercase text-brutal-pink-foreground">
                   SuperPAC for Aligned Politicians
                 </h3>
               </div>
@@ -305,11 +305,11 @@ export default function IABPage() {
               { label: "IAB deposits", detail: "fund the lobbying campaign", color: "bg-brutal-yellow" },
               { label: "Treaty passes", detail: "1% military → clinical trials", color: "bg-brutal-cyan" },
               { label: "Diseases cured", detail: "80% funds pragmatic trials", color: "bg-brutal-cyan" },
-              { label: "GDP rises", detail: "healthier people earn more", color: "bg-brutal-pink text-white" },
+              { label: "GDP rises", detail: "healthier people earn more", color: "bg-brutal-pink text-brutal-pink-foreground" },
               { label: "Everyone lobbies", detail: "for 1% → 2% → 5%", color: "bg-brutal-yellow" },
             ].map((step, i) => (
               <div key={step.label} className="flex flex-col items-center">
-                <div className={`w-full border-2 border-primary ${step.color} p-3`}>
+                <div className={`w-full border-4 border-primary ${step.color} p-3`}>
                   <div className="text-xs font-black uppercase">{step.label}</div>
                   <div className="text-[10px] font-bold mt-1 opacity-70">{step.detail}</div>
                 </div>
@@ -330,7 +330,7 @@ export default function IABPage() {
       {/* Buy IABs */}
       <section id="invest" className="mb-16">
         <div className="border-4 border-primary bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-2xl font-black uppercase text-white mb-4">
+          <h2 className="text-2xl font-black uppercase text-brutal-pink-foreground mb-4">
             Buy Incentive Alignment Bonds
           </h2>
           <p className="text-sm font-bold text-background mb-4 max-w-2xl">
@@ -343,7 +343,7 @@ export default function IABPage() {
               <div className="text-xs font-black uppercase text-muted-foreground mb-2">
                 Contract Status
               </div>
-              <div className="text-2xl font-black text-white mb-3">
+              <div className="text-2xl font-black text-foreground mb-3">
                 Not Yet Deployed
               </div>
               <p className="text-sm text-muted-foreground font-bold mb-4">
@@ -353,7 +353,7 @@ export default function IABPage() {
               <NavItemLink
                 item={prizeLink}
                 variant="custom"
-                className="inline-flex items-center justify-center border-2 border-white bg-background px-6 py-2.5 text-sm font-black uppercase text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                className="inline-flex items-center justify-center border-2 border-border bg-background px-6 py-2.5 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
               >
                 Fund the Referendum First &rarr;
               </NavItemLink>
@@ -397,7 +397,7 @@ export default function IABPage() {
           ].map((item) => (
             <div
               key={item.label}
-              className="border-2 border-primary bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="border-4 border-primary bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
               <div className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
                 {item.label}
@@ -438,7 +438,7 @@ export default function IABPage() {
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Fund the Referendum
           </NavItemLink>
@@ -446,7 +446,7 @@ export default function IABPage() {
             item={incentiveAlignmentBondsPaperLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Read the IAB Paper
           </NavItemLink>

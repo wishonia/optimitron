@@ -195,7 +195,7 @@ export default function DepartmentOfWarPage() {
           How We Handle Conflict on My Planet
         </h2>
         <div className="border-4 border-primary bg-foreground p-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-lg font-black leading-relaxed text-white">
+          <p className="text-lg font-black leading-relaxed text-background">
             We ended war in year twelve.
           </p>
           <p className="mt-4 font-bold leading-relaxed text-background">
@@ -229,7 +229,7 @@ export default function DepartmentOfWarPage() {
         </p>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-3xl font-black text-white">13+</div>
+            <div className="text-3xl font-black text-brutal-pink-foreground">13+</div>
             <div className="mt-1 text-xs font-black uppercase text-background">
               Wars Since &ldquo;Defense&rdquo; Rebrand
             </div>
@@ -251,7 +251,7 @@ export default function DepartmentOfWarPage() {
 
       {/* CTA */}
       <section className="card border-primary bg-brutal-pink text-center">
-        <h2 className="mb-3 text-2xl font-black uppercase text-white">
+        <h2 className="mb-3 text-2xl font-black uppercase text-brutal-pink-foreground">
           Optimise for Living, Not Killing
         </h2>
         <p className="mx-auto mb-6 max-w-2xl font-bold leading-relaxed text-background">
@@ -265,21 +265,21 @@ export default function DepartmentOfWarPage() {
           <NavItemLink
             item={budgetLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 border-2 border-primary bg-foreground px-6 py-3 text-sm font-black uppercase text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center gap-2 border-4 border-primary bg-foreground px-6 py-3 text-sm font-black uppercase text-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             See the Optimal Budget
           </NavItemLink>
           <NavItemLink
             item={federalReserveLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 border-2 border-primary bg-background px-6 py-3 text-sm font-black uppercase text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center gap-2 border-4 border-primary bg-background px-6 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Stop Printing War Money
           </NavItemLink>
           <NavItemLink
             item={wishocracyLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 border-2 border-primary bg-background px-6 py-3 text-sm font-black uppercase text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center gap-2 border-4 border-primary bg-background px-6 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Set Your Priorities
           </NavItemLink>

@@ -125,6 +125,71 @@ const REPLACEMENTS: Replacement[] = [
     pattern: /\bfont-medium\b/g,
     replacement: "font-bold",
   },
+  // --- Context-aware text-white replacements ---
+  {
+    label: "bg-foreground text-white → bg-foreground text-background",
+    pattern: /\bbg-foreground\s+text-white\b/g,
+    replacement: "bg-foreground text-background",
+  },
+  {
+    label: "bg-brutal-pink text-white → bg-brutal-pink text-brutal-pink-foreground",
+    pattern: /\bbg-brutal-pink\s+text-white\b/g,
+    replacement: "bg-brutal-pink text-brutal-pink-foreground",
+  },
+  {
+    label: "bg-brutal-red text-white → bg-brutal-red text-brutal-red-foreground",
+    pattern: /\bbg-brutal-red\s+text-white\b/g,
+    replacement: "bg-brutal-red text-brutal-red-foreground",
+  },
+  {
+    label: "hover:text-white → hover:text-background",
+    pattern: /\bhover:text-white\b/g,
+    replacement: "hover:text-background",
+  },
+  {
+    label: "hover:bg-black/80 → hover:bg-foreground/80",
+    pattern: /\bhover:bg-black\/80\b/g,
+    replacement: "hover:bg-foreground/80",
+  },
+  // --- Fix hover direction: push-in → lift-out ---
+  {
+    label: "hover push-in → lift-out (shadow shrink to grow)",
+    pattern: /hover:translate-x-\[2px\]\s+hover:translate-y-\[2px\]\s+hover:shadow-\[(?:1|2)px_(?:1|2)px_0px_0px_rgba\(0,0,0,1\)\]/g,
+    replacement: "hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]",
+  },
+  // --- Normalize shadow sizes: 3px/6px → 4px/8px ---
+  {
+    label: "shadow 3px → 4px",
+    pattern: /shadow-\[3px_3px_0px_0px_rgba\(0,0,0,1\)\]/g,
+    replacement: "shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
+  },
+  {
+    label: "shadow 6px → 8px",
+    pattern: /shadow-\[6px_6px_0px_0px_rgba\(0,0,0,1\)\]/g,
+    replacement: "shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
+  },
+  // --- Normalize border widths: border-2 border-primary → border-4 border-primary (on interactive elements) ---
+  {
+    label: "border-2 border-primary → border-4 border-primary",
+    pattern: /\bborder-2\s+border-primary\b/g,
+    replacement: "border-4 border-primary",
+  },
+  // --- Tailwind scale colors → brutal tokens ---
+  {
+    label: "bg-green-500/600/700 → bg-brutal-cyan",
+    pattern: /\bbg-green-(?:500|600|700)\b/g,
+    replacement: "bg-brutal-cyan",
+  },
+  {
+    label: "hover:bg-green-700 → hover:bg-brutal-cyan/80",
+    pattern: /\bhover:bg-green-(?:600|700)\b/g,
+    replacement: "hover:bg-brutal-cyan/80",
+  },
+  {
+    label: "bg-red-500 → bg-brutal-red",
+    pattern: /\bbg-red-(?:500|600|700)\b/g,
+    replacement: "bg-brutal-red",
+  },
 ];
 
 // ---------------------------------------------------------------------------

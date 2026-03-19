@@ -74,7 +74,7 @@ export function IABCalculator() {
               type="text"
               value={amount.toLocaleString("en-US")}
               onChange={handleInput}
-              className="w-full pl-8 pr-3 py-3 text-xl font-black text-foreground border-4 border-primary bg-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+              className="w-full pl-8 pr-3 py-3 text-xl font-black text-foreground border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -82,9 +82,9 @@ export function IABCalculator() {
               <button
                 key={preset}
                 onClick={() => setAmount(preset)}
-                className={`px-3 py-2 text-xs font-black border-2 border-primary transition-colors ${
+                className={`px-3 py-2 text-xs font-black border-4 border-primary transition-colors ${
                   amount === preset
-                    ? "bg-foreground text-white"
+                    ? "bg-foreground text-background"
                     : "bg-background text-foreground hover:bg-muted"
                 }`}
               >
@@ -172,7 +172,7 @@ export function IABCalculator() {
       </div>
 
       {/* Expected value / break-even */}
-      <div className="p-4 border-2 border-primary bg-muted">
+      <div className="p-4 border-4 border-primary bg-muted">
         <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4 mb-2">
           <span className="text-xs font-black uppercase text-muted-foreground">
             Break-even probability

@@ -57,7 +57,7 @@ export function OrganizationEmailSignatureCard({ surveyLink, organizationName, u
   }
 
   return (
-    <Card className="border-2 border-primary mb-8">
+    <Card className="border-4 border-primary mb-8">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase flex items-center gap-2">
           <Mail className="h-6 w-6" />
@@ -69,7 +69,7 @@ export function OrganizationEmailSignatureCard({ surveyLink, organizationName, u
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="border-2 border-primary p-4 bg-background">
+          <div className="border-4 border-primary p-4 bg-background">
             <p className="text-xs text-muted-foreground mb-3 font-bold uppercase">Preview:</p>
             <div
               dangerouslySetInnerHTML={{ __html: generateSignature() }}
@@ -79,7 +79,7 @@ export function OrganizationEmailSignatureCard({ surveyLink, organizationName, u
 
           <Button
             onClick={copySignature}
-            className="w-full bg-brutal-pink hover:bg-brutal-yellow border-2 border-primary font-black uppercase"
+            className="w-full bg-brutal-pink hover:bg-brutal-yellow border-4 border-primary font-black uppercase"
           >
             {copied ? (
               <>

@@ -43,8 +43,8 @@ export function IncentiveAlignmentBondsSection() {
         {/* Two outcomes — clear upside/downside */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <ScrollReveal direction="left">
-            <div className="p-6 border-4 border-primary bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] h-full">
-              <div className="text-xs font-black px-2.5 py-1 bg-foreground text-white inline-block mb-3 uppercase">
+            <div className="p-6 border-4 border-primary bg-brutal-yellow shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] h-full">
+              <div className="text-xs font-black px-2.5 py-1 bg-foreground text-background inline-block mb-3 uppercase">
                 Your Downside (Plan Fails)
               </div>
               <h3 className="text-2xl font-black text-foreground mb-2">
@@ -63,8 +63,8 @@ export function IncentiveAlignmentBondsSection() {
             </div>
           </ScrollReveal>
           <ScrollReveal direction="right" delay={0.15}>
-            <div className="p-6 border-4 border-primary bg-brutal-cyan shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] h-full">
-              <div className="text-xs font-black px-2.5 py-1 bg-foreground text-white inline-block mb-3 uppercase">
+            <div className="p-6 border-4 border-primary bg-brutal-cyan shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] h-full">
+              <div className="text-xs font-black px-2.5 py-1 bg-foreground text-background inline-block mb-3 uppercase">
                 Your Upside (Plan Succeeds)
               </div>
               <h3 className="text-2xl font-black text-foreground mb-2">
@@ -90,7 +90,7 @@ export function IncentiveAlignmentBondsSection() {
             initial={reduced ? {} : { opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.4, delay: 0.3 }}
-            className="p-4 border-2 border-primary bg-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+            className="p-4 border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           >
             <p className="text-xs font-black uppercase text-muted-foreground text-center mb-3">
               Return profile — you win either way
@@ -106,7 +106,7 @@ export function IncentiveAlignmentBondsSection() {
                   ease: [0.87, 0, 0.13, 1],
                 }}
                 style={{ originX: 0 }}
-                className="h-full bg-brutal-yellow border-2 border-primary flex items-center justify-center px-3 w-1/4"
+                className="h-full bg-brutal-yellow border-4 border-primary flex items-center justify-center px-3 w-1/4"
               >
                 <span className="text-xs font-black text-foreground whitespace-nowrap">
                   Fails → ~4.2x
@@ -128,7 +128,7 @@ export function IncentiveAlignmentBondsSection() {
                   ease: [0.87, 0, 0.13, 1],
                 }}
                 style={{ originX: 0 }}
-                className="h-full bg-brutal-cyan border-2 border-primary flex items-center justify-center px-3 flex-grow"
+                className="h-full bg-brutal-cyan border-4 border-primary flex items-center justify-center px-3 flex-grow"
               >
                 <span className="text-xs font-black text-foreground whitespace-nowrap">
                   Succeeds → vote-proportional share
@@ -143,7 +143,7 @@ export function IncentiveAlignmentBondsSection() {
 
         {/* Interactive calculator */}
         <ScrollReveal>
-          <div className="max-w-3xl mx-auto mb-8 p-6 border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <div className="max-w-3xl mx-auto mb-8 p-6 border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-lg font-black text-foreground uppercase text-center mb-2">
               Calculate Your Returns
             </h3>
@@ -157,7 +157,7 @@ export function IncentiveAlignmentBondsSection() {
 
         {/* Feedback loop diagram */}
         <ScrollReveal>
-          <div className="max-w-3xl mx-auto mb-8 p-6 border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <div className="max-w-3xl mx-auto mb-8 p-6 border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="text-lg font-black text-foreground uppercase text-center mb-2">
               Why Everyone Lobbies for Expansion
             </h3>
@@ -176,7 +176,7 @@ export function IncentiveAlignmentBondsSection() {
 
         {/* Phase relationship */}
         <ScrollReveal delay={0.3}>
-          <div className="p-6 border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
+          <div className="p-6 border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
             <p className="text-lg font-black text-foreground mb-2">
               Two Phases. One Goal. Separate Instruments.
             </p>

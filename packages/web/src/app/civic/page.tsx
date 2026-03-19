@@ -27,7 +27,7 @@ export default function CivicIndexPage() {
       <div className="space-y-6">
         <Link
           href={ROUTES.wishonia}
-          className="block border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="block border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
         >
           <h2 className="text-xl font-black uppercase text-foreground mb-2">
             Vote on Bills
@@ -40,7 +40,7 @@ export default function CivicIndexPage() {
 
         <Link
           href={ROUTES.alignment}
-          className="block border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="block border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
         >
           <h2 className="text-xl font-black uppercase text-foreground mb-2">
             Alignment Scores
@@ -53,7 +53,7 @@ export default function CivicIndexPage() {
 
         <Link
           href={ROUTES.referendum}
-          className="block border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="block border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
         >
           <h2 className="text-xl font-black uppercase text-foreground mb-2">
             Referendums

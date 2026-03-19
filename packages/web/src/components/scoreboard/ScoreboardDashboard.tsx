@@ -30,7 +30,7 @@ export function ScoreboardDashboard({ data }: ScoreboardDashboardProps) {
 
       {/* Metadata cards */}
       <section className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="border-2 border-primary bg-brutal-cyan p-4">
+        <div className="border-4 border-primary bg-brutal-cyan p-4">
           <div className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
             Jurisdiction
           </div>
@@ -38,7 +38,7 @@ export function ScoreboardDashboard({ data }: ScoreboardDashboardProps) {
             {data.jurisdiction.name ?? data.jurisdiction.code}
           </div>
         </div>
-        <div className="border-2 border-primary bg-brutal-pink p-4">
+        <div className="border-4 border-primary bg-brutal-pink p-4">
           <div className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
             Comparisons
           </div>
@@ -46,7 +46,7 @@ export function ScoreboardDashboard({ data }: ScoreboardDashboardProps) {
             {data.aggregationRun.comparisonCount.toLocaleString()}
           </div>
         </div>
-        <div className="border-2 border-primary bg-brutal-yellow p-4">
+        <div className="border-4 border-primary bg-brutal-yellow p-4">
           <div className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
             Participants
           </div>
@@ -54,7 +54,7 @@ export function ScoreboardDashboard({ data }: ScoreboardDashboardProps) {
             {data.aggregationRun.participantCount.toLocaleString()}
           </div>
         </div>
-        <div className="border-2 border-primary bg-background p-4">
+        <div className="border-4 border-primary bg-background p-4">
           <div className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
             Consistency
           </div>
@@ -96,7 +96,7 @@ export function ScoreboardDashboard({ data }: ScoreboardDashboardProps) {
       </section>
 
       {/* Footer note */}
-      <section className="border-2 border-primary bg-muted p-6">
+      <section className="border-4 border-primary bg-muted p-6">
         <p className="text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground">
           Last computed:{" "}
           {new Date(data.aggregationRun.computedAt).toLocaleString()} &middot;{" "}

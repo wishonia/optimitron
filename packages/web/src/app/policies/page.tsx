@@ -91,7 +91,7 @@ export default function PoliciesPage() {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="bg-background border-2 border-primary px-3 py-2 text-sm text-foreground font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="bg-background border-4 border-primary px-3 py-2 text-sm text-foreground font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -105,7 +105,7 @@ export default function PoliciesPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortKey)}
-            className="bg-background border-2 border-primary px-3 py-2 text-sm text-foreground font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="bg-background border-4 border-primary px-3 py-2 text-sm text-foreground font-bold shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
           >
             <option value="welfareScore">Welfare Score</option>
             <option value="evidenceGrade">Evidence Grade</option>
@@ -124,7 +124,7 @@ export default function PoliciesPage() {
               className="w-full text-left"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                <span className="flex-shrink-0 w-8 h-8 bg-foreground flex items-center justify-center text-sm font-black text-white">
+                <span className="flex-shrink-0 w-8 h-8 bg-foreground flex items-center justify-center text-sm font-black text-background">
                   {i + 1}
                 </span>
                 <div className="flex-1 min-w-0">
@@ -192,7 +192,7 @@ export default function PoliciesPage() {
                       )}
                       <div className="flex flex-wrap gap-1 mt-2">
                         {policy.blockingFactors.map((f) => (
-                          <span key={f} className="text-xs bg-brutal-red text-white px-2 py-0.5 border border-primary font-bold">
+                          <span key={f} className="text-xs bg-brutal-red text-brutal-red-foreground px-2 py-0.5 border border-primary font-bold">
                             {f.replace(/_/g, " ")}
                           </span>
                         ))}
@@ -225,7 +225,7 @@ export default function PoliciesPage() {
 
                 <Link
                   href={getPolicyPath(policy.name)}
-                  className="inline-block mt-2 border-2 border-primary bg-brutal-pink text-white px-4 py-2 font-bold text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-shadow"
+                  className="inline-block mt-2 border-4 border-primary bg-brutal-pink text-brutal-pink-foreground px-4 py-2 font-bold text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-shadow"
                   onClick={(e) => e.stopPropagation()}
                 >
                   View Full Analysis →

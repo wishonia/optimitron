@@ -25,7 +25,7 @@ const pipelineSteps = [
     techDetail: "Aggregated preference snapshots are content-addressed on IPFS — every version is immutable and linked to its predecessor.",
     color: "bg-brutal-pink",
     borderColor: "border-primary",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
     subTextColor: "text-background",
   },
   {
@@ -73,7 +73,7 @@ const pipelineSteps = [
     techDetail: "No welfare bureaucracy. No IRS. Automated redistribution funded by economic activity, not income tax.",
     color: "bg-brutal-pink",
     borderColor: "border-primary",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
     subTextColor: "text-background",
   },
 ];
@@ -157,7 +157,7 @@ export default function TransparencyPage() {
             {hypercertData.politicians.map((pol) => (
               <div
                 key={pol.politicianId}
-                className="border-2 border-primary bg-muted p-4"
+                className="border-4 border-primary bg-muted p-4"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
@@ -168,7 +168,7 @@ export default function TransparencyPage() {
                       {pol.party} · {pol.chamber}
                     </div>
                   </div>
-                  <div className="border-2 border-primary bg-brutal-cyan px-2 py-1 text-center">
+                  <div className="border-4 border-primary bg-brutal-cyan px-2 py-1 text-center">
                     <div className="text-lg font-black">{pol.alignmentScore}%</div>
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function TransparencyPage() {
                     Activity: {pol.activityUri.split("/").pop()}
                   </div>
                   <div
-                    className="border border-primary bg-brutal-pink px-2 py-1 text-[10px] font-black uppercase text-white truncate"
+                    className="border border-primary bg-brutal-pink px-2 py-1 text-[10px] font-black uppercase text-brutal-pink-foreground truncate"
                     title={pol.evaluationUri}
                   >
                     Evaluation: {pol.evaluationUri.split("/").pop()}
@@ -207,15 +207,15 @@ export default function TransparencyPage() {
             Preference Aggregation Snapshot
           </h3>
           <div className="grid gap-4 md:grid-cols-3 mb-4">
-            <div className="border-2 border-primary bg-brutal-pink p-3">
+            <div className="border-4 border-primary bg-brutal-pink p-3">
               <div className="text-xs font-black uppercase text-background">Participants</div>
-              <div className="text-2xl font-black text-white">{snapshotData.participantCount}</div>
+              <div className="text-2xl font-black text-brutal-pink-foreground">{snapshotData.participantCount}</div>
             </div>
-            <div className="border-2 border-primary bg-brutal-yellow p-3">
+            <div className="border-4 border-primary bg-brutal-yellow p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Consistency Ratio</div>
               <div className="text-2xl font-black">{(snapshotData.consistencyRatio * 100).toFixed(0)}%</div>
             </div>
-            <div className="border-2 border-primary bg-brutal-cyan p-3">
+            <div className="border-4 border-primary bg-brutal-cyan p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Categories</div>
               <div className="text-2xl font-black">{snapshotData.preferenceWeights.length}</div>
             </div>
@@ -224,7 +224,7 @@ export default function TransparencyPage() {
             href={`https://${snapshotData.storageCid}.ipfs.storacha.link/`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border-2 border-primary bg-brutal-cyan px-3 py-2 text-xs font-black uppercase hover:bg-brutal-cyan transition-colors"
+            className="inline-flex items-center gap-2 border-4 border-primary bg-brutal-cyan px-3 py-2 text-xs font-black uppercase hover:bg-brutal-cyan transition-colors"
           >
             View on IPFS: {snapshotData.storageCid.slice(0, 24)}...
           </a>
@@ -248,7 +248,7 @@ export default function TransparencyPage() {
             </p>
           </div>
           <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-xl font-black uppercase text-white mb-3">
+            <h3 className="text-xl font-black uppercase text-brutal-pink-foreground mb-3">
               UBI Replaces Welfare Bureaucracy
             </h3>
             <p className="text-sm font-bold text-background leading-relaxed">
@@ -300,17 +300,17 @@ export default function TransparencyPage() {
             principal + ~4.2x yield. All on-chain. No committee.
           </p>
           <div className="grid gap-4 md:grid-cols-3 mb-4">
-            <div className="border-2 border-primary bg-background p-3">
+            <div className="border-4 border-primary bg-background p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Depositors</div>
               <div className="text-sm font-black mt-1">PRIZE Shares</div>
               <div className="text-xs text-muted-foreground mt-1">USDC → Aave yield. ~4.2x floor if plan fails. Sybil-resistant via capital commitment.</div>
             </div>
-            <div className="border-2 border-primary bg-background p-3">
+            <div className="border-4 border-primary bg-background p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Recruiters</div>
               <div className="text-sm font-black mt-1">VOTE Tokens</div>
               <div className="text-xs text-muted-foreground mt-1">1 VOTE per verified voter recruited via referral link. World ID prevents duplicates.</div>
             </div>
-            <div className="border-2 border-primary bg-background p-3">
+            <div className="border-4 border-primary bg-background p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Outcomes</div>
               <div className="text-sm font-black mt-1">Two Metrics</div>
               <div className="text-xs text-muted-foreground mt-1">Median healthy life years (1% threshold) + median real income (0.5% threshold).</div>
@@ -319,7 +319,7 @@ export default function TransparencyPage() {
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Join the Prize
           </NavItemLink>
@@ -376,7 +376,7 @@ export default function TransparencyPage() {
             item={githubLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             View Source
           </NavItemLink>
@@ -384,7 +384,7 @@ export default function TransparencyPage() {
             item={incentiveAlignmentBondsPaperLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Incentive Alignment Bonds Paper
           </NavItemLink>
@@ -392,7 +392,7 @@ export default function TransparencyPage() {
             item={wishocracyPaperLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Wishocracy Paper
           </NavItemLink>

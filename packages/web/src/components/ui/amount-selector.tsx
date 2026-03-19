@@ -21,7 +21,7 @@ export interface AmountSelectorProps {
 
 const activeColorClasses: Record<AmountSelectorColor, string> = {
   yellow: "bg-brutal-yellow text-foreground",
-  pink: "bg-brutal-pink text-white",
+  pink: "bg-brutal-pink text-brutal-pink-foreground",
   cyan: "bg-brutal-cyan text-foreground",
   green: "bg-brutal-green text-foreground",
 }

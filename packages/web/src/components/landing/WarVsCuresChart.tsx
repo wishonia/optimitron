@@ -72,7 +72,7 @@ export function WarVsCuresChart() {
               className="relative h-20 sm:h-24 bg-brutal-pink border-4 border-primary"
             >
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-sm sm:text-lg md:text-xl font-black text-white uppercase text-center">
+                <span className="text-sm sm:text-lg md:text-xl font-black text-brutal-pink-foreground uppercase text-center">
                   {milFmt} for blowing things up
                 </span>
               </div>

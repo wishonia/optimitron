@@ -12,13 +12,13 @@ export function PrivacyToggle({ isPublic, onChange }: PrivacyToggleProps) {
   return (
     <div className="w-full">
       <div
-        className="relative flex h-16 w-full cursor-pointer items-center justify-between border-2 border-primary bg-background p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        className="relative flex h-16 w-full cursor-pointer items-center justify-between border-4 border-primary bg-background p-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         onClick={() => onChange(!isPublic)}
       >
         {/* Sliding Background */}
         <motion.div
           className={cn(
-            "absolute h-[calc(100%-8px)] w-[calc(50%-4px)] border-2 border-primary",
+            "absolute h-[calc(100%-8px)] w-[calc(50%-4px)] border-4 border-primary",
             isPublic ? "bg-brutal-yellow" : "bg-muted-foreground/20"
           )}
           initial={false}

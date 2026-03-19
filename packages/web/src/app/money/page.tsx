@@ -20,7 +20,7 @@ const problemStats = [
     detail:
       "Your species spends $1.1 trillion per year administering means-tested welfare programs. Case workers, applications, audits, fraud detection — all to decide who deserves to not starve. On my planet, we just... give people money.",
     color: "bg-brutal-pink",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
     detailColor: "text-muted-foreground",
   },
   {
@@ -52,7 +52,7 @@ const mechanisms = [
     detail:
       "The entire IRS budget is $12.3 billion per year. A 0.5% automated transaction tax on a currency with sufficient volume generates the same revenue with zero administrative overhead. The math is not complicated. The politics, apparently, is.",
     color: "bg-brutal-pink",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
     subTextColor: "text-background",
     detailColor: "text-muted-foreground",
   },
@@ -223,7 +223,7 @@ export default function MoneyPage() {
         <div className="space-y-4">
           <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+              <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                 01
               </span>
               <div>
@@ -238,7 +238,7 @@ export default function MoneyPage() {
           </div>
           <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+              <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                 02
               </span>
               <div>
@@ -253,7 +253,7 @@ export default function MoneyPage() {
           </div>
           <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+              <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                 03
               </span>
               <div>
@@ -268,7 +268,7 @@ export default function MoneyPage() {
           </div>
           <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+              <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                 04
               </span>
               <div>
@@ -342,7 +342,7 @@ export default function MoneyPage() {
 
       {/* CTA */}
       <section className="card bg-brutal-pink border-primary text-center">
-        <h2 className="text-2xl font-black text-white mb-3 uppercase">
+        <h2 className="text-2xl font-black text-brutal-pink-foreground mb-3 uppercase">
           Money That Does Something
         </h2>
         <p className="text-background mb-6 font-bold max-w-2xl mx-auto leading-relaxed">
@@ -356,21 +356,21 @@ export default function MoneyPage() {
           <NavItemLink
             item={wishocracyLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Express Your Preferences
           </NavItemLink>
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Deposit to Prize
           </NavItemLink>
           <NavItemLink
             item={aboutLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Learn More
           </NavItemLink>

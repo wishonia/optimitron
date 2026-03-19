@@ -84,16 +84,8 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t-2 border-primary text-center text-sm text-foreground font-bold">
           <p>
-            © {new Date().getFullYear()} Optimitron —{" "}
-            <NavItemLink
-              item={githubLink}
-              variant="custom"
-              external
-              className="text-foreground font-bold hover:underline"
-            >
-              Open source
-            </NavItemLink>{" "}
-            evidence-based policy analysis by{" "}
+            None of this is financial advice. Obviously. Please direct all
+            complaints to{" "}
             <a
               href="https://mikesinn.com"
               className="text-foreground font-bold hover:underline"
@@ -102,7 +94,17 @@ export default function Footer() {
             >
               Mike P. Sinn
             </a>
-            . MIT Licensed.
+            , who insists on trying to fix your planet despite overwhelming
+            evidence that it doesn&apos;t want to be fixed.{" "}
+            <NavItemLink
+              item={githubLink}
+              variant="custom"
+              external
+              className="text-foreground font-bold hover:underline"
+            >
+              Source code
+            </NavItemLink>{" "}
+            available for inspection, not that any of you will read it.
           </p>
         </div>
       </div>

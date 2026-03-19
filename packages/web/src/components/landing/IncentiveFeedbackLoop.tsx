@@ -35,7 +35,7 @@ const stakeholders = [
     label: "alignment rewards",
     color: "bg-brutal-pink",
     borderColor: "border-brutal-pink",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
     why: "Higher alignment scores = more campaign funding. They lobby for expansion.",
     action: "Lobby more →",
   },
@@ -88,7 +88,7 @@ export function IncentiveFeedbackLoop() {
         <p className="text-xs font-black uppercase text-muted-foreground text-center mb-3">
           Where Treaty Funding Goes
         </p>
-        <div className="flex h-12 border-2 border-primary overflow-hidden">
+        <div className="flex h-12 border-4 border-primary overflow-hidden">
           <motion.div
             initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
@@ -107,7 +107,7 @@ export function IncentiveFeedbackLoop() {
             style={{ originX: 0 }}
             className="w-[10%] bg-brutal-pink border-r-2 border-primary flex items-center justify-center"
           >
-            <span className="text-[10px] sm:text-xs font-black text-white whitespace-nowrap">
+            <span className="text-[10px] sm:text-xs font-black text-brutal-pink-foreground whitespace-nowrap">
               10% Pols
             </span>
           </motion.div>
@@ -261,7 +261,7 @@ export function IncentiveFeedbackLoop() {
 
       {/* Year 1/5/10 escalation */}
       <StepReveal staggerDelay={0.15}>
-        <div className="border-2 border-primary bg-muted p-4">
+        <div className="border-4 border-primary bg-muted p-4">
           <p className="text-xs font-black uppercase text-muted-foreground mb-3">
             The Inevitable Escalation
           </p>

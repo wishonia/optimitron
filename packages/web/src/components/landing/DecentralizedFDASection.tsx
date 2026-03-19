@@ -106,7 +106,7 @@ export function DecentralizedFDASection() {
                         className={`absolute inset-y-0 left-0 ${comp.current.color} border-r-2 border-primary`}
                       />
                       <div className="absolute inset-0 flex items-center pl-3">
-                        <span className="text-sm font-black text-white drop-shadow-[0_1px_1px_rgba(0,0,0,1)]">
+                        <span className="text-sm font-black text-brutal-red-foreground drop-shadow-[0_1px_1px_rgba(0,0,0,1)]">
                           {comp.current.display}
                         </span>
                       </div>
@@ -150,10 +150,10 @@ export function DecentralizedFDASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.5 }}
-            className="p-4 border-2 border-primary bg-brutal-cyan/30"
+            className="p-4 border-4 border-primary bg-brutal-cyan/30"
           >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-black px-2 py-0.5 bg-foreground text-white">
+              <span className="text-xs font-black px-2 py-0.5 bg-foreground text-background">
                 Stage 1
               </span>
               <span className="text-xs font-black">~$1/patient</span>
@@ -167,10 +167,10 @@ export function DecentralizedFDASection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.6 }}
-            className="p-4 border-2 border-primary bg-brutal-pink/30"
+            className="p-4 border-4 border-primary bg-brutal-pink/30"
           >
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-black px-2 py-0.5 bg-foreground text-white">
+              <span className="text-xs font-black px-2 py-0.5 bg-foreground text-background">
                 Stage 2
               </span>
               <span className="text-xs font-black">~<Stat param={DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT} /></span>

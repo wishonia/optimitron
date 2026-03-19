@@ -64,9 +64,9 @@ export function PoliticalDysfunctionTaxSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {wasteBreakdown.map((item) => (
             <ScrollReveal key={item.label} delay={0.1}>
-              <div className={`p-6 border-4 border-primary ${item.color} shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`}>
+              <div className={`p-6 border-4 border-primary ${item.color} shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]`}>
                 <div className="flex items-start justify-between mb-3">
-                  <span className="text-xs font-black px-2.5 py-1 bg-foreground text-white uppercase">
+                  <span className="text-xs font-black px-2.5 py-1 bg-foreground text-background uppercase">
                     {item.label}
                   </span>
                   <span className="text-2xl font-black text-foreground">{item.stat}</span>
@@ -80,9 +80,9 @@ export function PoliticalDysfunctionTaxSection() {
         </div>
 
         <ScrollReveal delay={0.3}>
-          <div className="p-8 border-4 border-primary bg-brutal-red shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-4xl sm:text-5xl font-black text-white mb-2">
-              $<CountUp value={Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value)} className="text-white" />/person/year
+          <div className="p-8 border-4 border-primary bg-brutal-red shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="text-4xl sm:text-5xl font-black text-brutal-red-foreground mb-2">
+              $<CountUp value={Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value)} className="text-brutal-red-foreground" />/person/year
             </div>
             <p className="text-background font-bold max-w-xl mx-auto">
               Every human on Earth pays <Stat param={POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL} /> per year in governance dysfunction.
@@ -92,7 +92,7 @@ export function PoliticalDysfunctionTaxSection() {
               item={politicalDysfunctionTaxPaperLink}
               variant="custom"
               external
-              className="mt-6 inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-white transition-colors"
+              className="mt-6 inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-background transition-colors"
             >
               Read the paper &rarr;
             </NavItemLink>

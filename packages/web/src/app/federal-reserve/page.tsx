@@ -30,7 +30,7 @@ const historicalCycles = [
     event: "Silver content in denarius reduced from 95% to 5%",
     result: "1,000% price increases. Empire fragments. Diocletian blames merchants.",
     color: "bg-brutal-pink",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
     detailColor: "text-muted-foreground",
   },
   {
@@ -54,7 +54,7 @@ const historicalCycles = [
     event: "Federal Reserve created. Dollar immediately used to fund WWI without popular consent.",
     result: `Dollar loses 96% of value. ${fmtParam(MONEY_PRINTER_WAR_DEATHS)} across six wars funded by money printing. ${fmtParam({...CUMULATIVE_MILITARY_SPENDING_FED_ERA, unit: "USD"})} in cumulative military spending.`,
     color: "bg-brutal-pink",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
     detailColor: "text-muted-foreground",
   },
 ];
@@ -185,7 +185,7 @@ export default function FederalReservePage() {
             </h3>
             <div className="space-y-3">
               {beforeAfter1971.before.map((item) => (
-                <div key={item.label} className="border-2 border-primary bg-background p-3">
+                <div key={item.label} className="border-4 border-primary bg-background p-3">
                   <div className="text-xs font-black uppercase text-muted-foreground">
                     {item.label}
                   </div>
@@ -197,16 +197,16 @@ export default function FederalReservePage() {
             </div>
           </div>
           <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="font-black uppercase text-white mb-4 text-sm tracking-[0.1em]">
+            <h3 className="font-black uppercase text-brutal-pink-foreground mb-4 text-sm tracking-[0.1em]">
               After 1971 (Fiat Currency)
             </h3>
             <div className="space-y-3">
               {beforeAfter1971.after.map((item) => (
-                <div key={item.label} className="border-2 border-primary bg-background p-3">
+                <div key={item.label} className="border-4 border-primary bg-background p-3">
                   <div className="text-xs font-black uppercase text-muted-foreground">
                     {item.label}
                   </div>
-                  <div className="text-sm font-black text-white mt-0.5">
+                  <div className="text-sm font-black text-foreground mt-0.5">
                     {item.value}
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export default function FederalReservePage() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-3xl font-black text-white">~$4T</div>
+            <div className="text-3xl font-black text-brutal-pink-foreground">~$4T</div>
             <div className="text-xs font-black uppercase text-background mt-1">
               Fed Created (2020)
             </div>
@@ -287,7 +287,7 @@ export default function FederalReservePage() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
           <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="font-black uppercase text-white mb-4 text-sm tracking-[0.1em]">
+            <h3 className="font-black uppercase text-brutal-pink-foreground mb-4 text-sm tracking-[0.1em]">
               Current System (Print &amp; Trickle)
             </h3>
             <div className="space-y-2">
@@ -412,13 +412,13 @@ export default function FederalReservePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="font-black uppercase text-white mb-4 text-sm tracking-[0.1em]">
+            <h3 className="font-black uppercase text-brutal-pink-foreground mb-4 text-sm tracking-[0.1em]">
               Current Mandate (What They Optimise For)
             </h3>
             <div className="space-y-4">
               {dualMandateComparison.current.map((item) => (
                 <div key={item.target} className="border-2 border-border p-4">
-                  <div className="text-sm font-black text-white">
+                  <div className="text-sm font-black text-brutal-pink-foreground">
                     {item.target}
                   </div>
                   <p className="text-xs font-bold text-muted-foreground mt-2 leading-relaxed">
@@ -434,7 +434,7 @@ export default function FederalReservePage() {
             </h3>
             <div className="space-y-4">
               {dualMandateComparison.proposed.map((item) => (
-                <div key={item.target} className="border-2 border-primary p-4 bg-background">
+                <div key={item.target} className="border-4 border-primary p-4 bg-background">
                   <div className="text-sm font-black text-foreground">
                     {item.target}
                   </div>
@@ -463,7 +463,7 @@ export default function FederalReservePage() {
         <div className="space-y-4">
           <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+              <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                 01
               </span>
               <div>
@@ -482,7 +482,7 @@ export default function FederalReservePage() {
           </div>
           <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+              <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                 02
               </span>
               <div>
@@ -501,7 +501,7 @@ export default function FederalReservePage() {
           </div>
           <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+              <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                 03
               </span>
               <div>
@@ -520,7 +520,7 @@ export default function FederalReservePage() {
           </div>
           <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 bg-foreground text-white flex items-center justify-center text-xs font-black shrink-0">
+              <span className="w-8 h-8 bg-foreground text-background flex items-center justify-center text-xs font-black shrink-0">
                 04
               </span>
               <div>
@@ -586,7 +586,7 @@ export default function FederalReservePage() {
 
       {/* CTA */}
       <section className="card bg-brutal-pink border-primary text-center">
-        <h2 className="text-2xl font-black text-white mb-3 uppercase">
+        <h2 className="text-2xl font-black text-brutal-pink-foreground mb-3 uppercase">
           Replace the Building With Nothing
         </h2>
         <p className="text-background mb-6 font-bold max-w-2xl mx-auto leading-relaxed">
@@ -602,21 +602,21 @@ export default function FederalReservePage() {
           <NavItemLink
             item={moneyLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             See How $WISH Works
           </NavItemLink>
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Deposit to Prize
           </NavItemLink>
           <NavItemLink
             item={wishocracyLink}
             variant="custom"
-            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
             Set Your Priorities
           </NavItemLink>

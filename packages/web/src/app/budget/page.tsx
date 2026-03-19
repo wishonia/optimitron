@@ -151,16 +151,16 @@ export default function BudgetPage() {
       <div className="flex gap-2 mb-6">
         <button
           onClick={() => setView("constrained")}
-          className={`px-4 py-2 text-sm font-black uppercase border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
-            isConstrained ? "bg-brutal-pink text-white" : "bg-background text-foreground hover:bg-brutal-cyan"
+          className={`px-4 py-2 text-sm font-black uppercase border-4 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
+            isConstrained ? "bg-brutal-pink text-brutal-pink-foreground" : "bg-background text-foreground hover:bg-brutal-cyan"
           }`}
         >
           Fixed Budget
         </button>
         <button
           onClick={() => setView("unconstrained")}
-          className={`px-4 py-2 text-sm font-black uppercase border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
-            !isConstrained ? "bg-brutal-pink text-white" : "bg-background text-foreground hover:bg-brutal-cyan"
+          className={`px-4 py-2 text-sm font-black uppercase border-4 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all ${
+            !isConstrained ? "bg-brutal-pink text-brutal-pink-foreground" : "bg-background text-foreground hover:bg-brutal-cyan"
           }`}
         >
           Unconstrained
@@ -191,7 +191,7 @@ export default function BudgetPage() {
           {data.topRecommendations.slice(0, 5).map((rec, i) => (
             <div key={i} className="card border-primary">
               <div className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-8 h-8 bg-brutal-pink text-white flex items-center justify-center text-sm font-black border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <span className="flex-shrink-0 w-8 h-8 bg-brutal-pink text-brutal-pink-foreground flex items-center justify-center text-sm font-black border-4 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   {i + 1}
                 </span>
                 <p className="text-sm text-foreground font-bold">{rec}</p>
@@ -210,14 +210,14 @@ export default function BudgetPage() {
         {isConstrained && cr ? (
           <div className="space-y-4">
             {constrainedActionable.map((cat) => (
-              <Link key={cat.name} href={getBudgetCategoryPath(cat.name)} className="card block hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow">
+              <Link key={cat.name} href={getBudgetCategoryPath(cat.name)} className="card block hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-shadow">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
                   <h3 className="text-sm font-black text-foreground">{cat.name}</h3>
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs font-black px-2 py-0.5 border-2 border-primary ${gradeBadgeColor(cat.evidenceGrade)}`}>
+                    <span className={`text-xs font-black px-2 py-0.5 border-4 border-primary ${gradeBadgeColor(cat.evidenceGrade)}`}>
                       {cat.evidenceGrade}
                     </span>
-                    <span className={`text-xs font-black px-2 py-0.5 border-2 border-primary ${actionBadgeStyle(cat.action)}`}>
+                    <span className={`text-xs font-black px-2 py-0.5 border-4 border-primary ${actionBadgeStyle(cat.action)}`}>
                       {cat.action} {pct(cat.reallocationPercent)}
                     </span>
                   </div>
@@ -262,15 +262,15 @@ export default function BudgetPage() {
         ) : (
           <div className="space-y-4">
             {sorted.map((cat) => (
-              <Link key={cat.name} href={getBudgetCategoryPath(cat.name)} className="card block hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-shadow">
+              <Link key={cat.name} href={getBudgetCategoryPath(cat.name)} className="card block hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-shadow">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
                   <h3 className="text-sm font-black text-foreground">{cat.name}</h3>
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs font-black px-2 py-0.5 border-2 border-primary ${gradeBadgeColor(cat.evidenceGrade)}`}>
+                    <span className={`text-xs font-black px-2 py-0.5 border-4 border-primary ${gradeBadgeColor(cat.evidenceGrade)}`}>
                       {cat.evidenceGrade}
                     </span>
                     <span
-                      className={`text-xs font-black px-2 py-0.5 border-2 border-primary ${actionBadgeStyle(cat.recommendedAction)}`}
+                      className={`text-xs font-black px-2 py-0.5 border-4 border-primary ${actionBadgeStyle(cat.recommendedAction)}`}
                     >
                       {actionLabel(cat.recommendedAction)} {pct(cat.gapPercent)}
                     </span>
@@ -307,7 +307,7 @@ export default function BudgetPage() {
       {/* Table */}
       <section>
         <h2 className="section-title">Full Category Breakdown</h2>
-        <div className="overflow-x-auto border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="overflow-x-auto border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b-2 border-primary bg-brutal-yellow">
@@ -341,12 +341,12 @@ export default function BudgetPage() {
                       {cat.isNonDiscretionary ? "—" : `${cat.reallocation >= 0 ? "+" : ""}${fmt(cat.reallocation)}`}
                     </td>
                     <td className="py-3 px-2 text-center">
-                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-primary ${gradeBadgeColor(cat.evidenceGrade)}`}>
+                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-4 border-primary ${gradeBadgeColor(cat.evidenceGrade)}`}>
                         {cat.evidenceGrade}
                       </span>
                     </td>
                     <td className="py-3 px-2 text-center">
-                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-primary ${actionBadgeStyle(cat.action)}`}>
+                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-4 border-primary ${actionBadgeStyle(cat.action)}`}>
                         {cat.action}
                       </span>
                     </td>
@@ -366,13 +366,13 @@ export default function BudgetPage() {
                       {pct(cat.gapPercent)}
                     </td>
                     <td className="py-3 px-2 text-center">
-                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-primary ${gradeBadgeColor(cat.evidenceGrade)}`}>
+                      <span className={`inline-block px-2 py-0.5 text-xs font-black border-4 border-primary ${gradeBadgeColor(cat.evidenceGrade)}`}>
                         {cat.evidenceGrade}
                       </span>
                     </td>
                     <td className="py-3 px-2 text-center">
                       <span
-                        className={`inline-block px-2 py-0.5 text-xs font-black border-2 border-primary ${actionBadgeStyle(cat.recommendedAction)}`}
+                        className={`inline-block px-2 py-0.5 text-xs font-black border-4 border-primary ${actionBadgeStyle(cat.recommendedAction)}`}
                       >
                         {actionLabel(cat.recommendedAction)}
                       </span>

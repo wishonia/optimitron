@@ -65,7 +65,7 @@ export function InfiniteROICard() {
             <div className="text-xs font-bold">From timeline acceleration</div>
           </Card>
 
-          <Card className="bg-background border-2 border-primary p-4 text-center">
+          <Card className="bg-background border-4 border-primary p-4 text-center">
             <div className="text-2xl sm:text-3xl font-black mb-2">
               <ParameterValue param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED} />
             </div>
@@ -73,7 +73,7 @@ export function InfiniteROICard() {
             <div className="text-xs font-bold">From treatments arriving earlier</div>
           </Card>
 
-          <Card className="bg-background border-2 border-primary p-4 text-center">
+          <Card className="bg-background border-4 border-primary p-4 text-center">
             <div className="text-2xl sm:text-3xl font-black mb-2">
               <ParameterValue param={DFDA_NET_SAVINGS_RD_ONLY_ANNUAL} />/yr
             </div>

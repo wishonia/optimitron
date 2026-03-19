@@ -65,7 +65,7 @@ export function DistributeUBICard() {
         </p>
 
         <div className="grid gap-3 grid-cols-3 mb-4">
-          <div className="border-2 border-primary bg-background p-2">
+          <div className="border-4 border-primary bg-background p-2">
             <div className="text-[10px] font-black uppercase text-muted-foreground">
               UBI Pending
             </div>
@@ -73,13 +73,13 @@ export function DistributeUBICard() {
               {formatWish(ubiPendingBalance)} $WISH
             </div>
           </div>
-          <div className="border-2 border-primary bg-background p-2">
+          <div className="border-4 border-primary bg-background p-2">
             <div className="text-[10px] font-black uppercase text-muted-foreground">
               Citizens
             </div>
             <div className="text-sm font-black">{citizenCountNum}</div>
           </div>
-          <div className="border-2 border-primary bg-background p-2">
+          <div className="border-4 border-primary bg-background p-2">
             <div className="text-[10px] font-black uppercase text-muted-foreground">
               Per Citizen
             </div>
@@ -90,7 +90,7 @@ export function DistributeUBICard() {
         </div>
 
         {!isDeployed && isDemo && (
-          <div className="border-2 border-primary bg-brutal-yellow/30 p-3 mb-4">
+          <div className="border-4 border-primary bg-brutal-yellow/30 p-3 mb-4">
             <p className="text-xs font-black uppercase text-muted-foreground">
               Not yet deployed &mdash; illustrative data shown above
             </p>
@@ -101,7 +101,7 @@ export function DistributeUBICard() {
           <button
             onClick={handleDistribute}
             disabled={isBusy || distributed || citizenCountNum === 0}
-            className="border-2 border-primary bg-foreground px-6 py-2.5 text-sm font-black uppercase text-white hover:bg-black/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+            className="border-4 border-primary bg-foreground px-6 py-2.5 text-sm font-black uppercase text-background hover:bg-foreground/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             {isBusy
               ? "Distributing..."

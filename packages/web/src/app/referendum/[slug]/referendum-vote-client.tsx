@@ -96,7 +96,7 @@ export function ReferendumVoteClient({
         </p>
         <a
           href={`/auth/signin?callbackUrl=/referendum/${referendumSlug}${referralCode ? `&ref=${referralCode}` : ""}`}
-          className="inline-flex items-center justify-center border-4 border-primary bg-foreground px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="inline-flex items-center justify-center border-4 border-primary bg-foreground px-8 py-3 text-sm font-black uppercase text-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
         >
           Sign In
         </a>
@@ -156,16 +156,16 @@ export function ReferendumVoteClient({
           <button
             onClick={() => castVote("YES")}
             disabled={submitting}
-            className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+            className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
           >
             <div className="text-3xl font-black text-foreground">YES</div>
           </button>
           <button
             onClick={() => castVote("NO")}
             disabled={submitting}
-            className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
+            className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] disabled:opacity-50"
           >
-            <div className="text-3xl font-black text-white">NO</div>
+            <div className="text-3xl font-black text-brutal-pink-foreground">NO</div>
           </button>
         </div>
         <p className="text-xs text-muted-foreground font-bold text-center mt-4">

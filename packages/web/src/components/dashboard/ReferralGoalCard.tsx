@@ -8,7 +8,7 @@ interface ReferralGoalCardProps {
 
 export function ReferralGoalCard({ stats }: ReferralGoalCardProps) {
   return (
-    <Card className="border-2 border-primary mb-8 bg-brutal-pink">
+    <Card className="border-4 border-primary mb-8 bg-brutal-pink">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase flex items-center gap-2">
           <Target className="h-6 w-6" />
@@ -25,7 +25,7 @@ export function ReferralGoalCard({ stats }: ReferralGoalCardProps) {
               <span>{stats.referrals} referrals</span>
               <span>{stats.referrals >= 2 ? "✓ Goal Met!" : `${2 - stats.referrals} more to goal`}</span>
             </div>
-            <div className="h-8 bg-background border-2 border-primary rounded-none overflow-hidden">
+            <div className="h-8 bg-background border-4 border-primary rounded-none overflow-hidden">
               <div
                 className={`h-full transition-all duration-500 ${stats.referrals >= 2 ? "bg-brutal-cyan" : "bg-primary"}`}
                 style={{ width: `${Math.min((stats.referrals / 2) * 100, 100)}%` }}
@@ -42,7 +42,7 @@ export function ReferralGoalCard({ stats }: ReferralGoalCardProps) {
             ].map((item) => (
               <div
                 key={item.milestone}
-                className={`p-3 border-2 border-primary text-center ${
+                className={`p-3 border-4 border-primary text-center ${
                   stats.referrals >= item.milestone ? "bg-brutal-cyan" : "bg-background opacity-50"
                 }`}
               >

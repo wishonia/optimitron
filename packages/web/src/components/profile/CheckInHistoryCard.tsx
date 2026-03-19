@@ -15,7 +15,7 @@ function RatingBar({ colorClassName, value }: { colorClassName: string; value: n
       <div className="mb-1 flex items-center justify-between text-xs font-bold uppercase text-muted-foreground">
         <span>{value}/5</span>
       </div>
-      <div className="h-3 w-full border-2 border-primary bg-background">
+      <div className="h-3 w-full border-4 border-primary bg-background">
         <div className={`h-full ${colorClassName}`} style={{ width: `${(value / 5) * 100}%` }} />
       </div>
     </div>
@@ -40,7 +40,7 @@ export function CheckInHistoryCard({ history }: CheckInHistoryCardProps) {
             {history.map((entry) => (
               <div
                 key={entry.date}
-                className="grid gap-4 border-2 border-primary bg-brutal-cyan/20 p-4 md:grid-cols-[160px_1fr_1fr]"
+                className="grid gap-4 border-4 border-primary bg-brutal-cyan/20 p-4 md:grid-cols-[160px_1fr_1fr]"
               >
                 <div>
                   <p className="text-sm font-black uppercase text-foreground">

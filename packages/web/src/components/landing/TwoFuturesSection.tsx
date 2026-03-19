@@ -170,14 +170,14 @@ export function TwoFuturesSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.4, delay: 0.8 }}
       >
-        <div className="p-6 border-4 border-primary bg-brutal-yellow shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center max-w-3xl mx-auto">
+        <div className="p-6 border-4 border-primary bg-brutal-yellow shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center max-w-3xl mx-auto">
           <p className="text-xl font-black text-foreground mb-4">
             Doing nothing IS choosing Path A.
           </p>
           <NavItemLink
             item={prizeLink}
             variant="custom"
-            className="px-8 py-3.5 bg-foreground text-white font-black uppercase text-lg border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            className="px-8 py-3.5 bg-foreground text-background font-black uppercase text-lg border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
           >
             Choose Path B
           </NavItemLink>

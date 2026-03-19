@@ -69,7 +69,7 @@ export function OnePercentTreatySection() {
         <div className="space-y-4 mb-12">
           {treatySteps.map((step, i) => (
             <ScrollReveal key={step.label} delay={i * 0.1}>
-              <div className="p-6 border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <div className="p-6 border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   <div className="flex items-center gap-3 shrink-0">
                     <span className="text-lg font-black text-muted-foreground line-through">
@@ -81,7 +81,7 @@ export function OnePercentTreatySection() {
                     </span>
                   </div>
                   <div className="flex-grow">
-                    <span className="text-xs font-black px-2.5 py-1 bg-foreground text-white uppercase">
+                    <span className="text-xs font-black px-2.5 py-1 bg-foreground text-background uppercase">
                       {step.label}
                     </span>
                     <p className="text-sm text-foreground leading-relaxed font-bold mt-2">
@@ -95,7 +95,7 @@ export function OnePercentTreatySection() {
         </div>
 
         <ScrollReveal delay={0.5}>
-          <div className="p-8 border-4 border-primary bg-brutal-cyan shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-center">
+          <div className="p-8 border-4 border-primary bg-brutal-cyan shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-4xl sm:text-5xl font-black text-foreground mb-2">
               <CountUp value={+(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1)} suffix="B" className="text-foreground" /> Lives Saved
             </div>

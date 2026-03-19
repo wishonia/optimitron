@@ -5,8 +5,8 @@ export default function DashboardLoading() {
     <div className="container mx-auto px-4 py-8 max-w-7xl space-y-8">
       {/* Header skeleton */}
       <div className="space-y-2">
-        <Skeleton className="h-10 w-64 border-2 border-primary" />
-        <Skeleton className="h-5 w-96 border-2 border-primary" />
+        <Skeleton className="h-10 w-64 border-4 border-primary" />
+        <Skeleton className="h-5 w-96 border-4 border-primary" />
       </div>
 
       {/* Stats row */}

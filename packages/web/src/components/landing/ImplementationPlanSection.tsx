@@ -60,10 +60,10 @@ export function ImplementationPlanSection() {
         {steps.map((item) => (
           <div
             key={item.step}
-            className="p-6 border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+            className="p-6 border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
             <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-              <div className="w-12 h-12 bg-brutal-pink border-2 border-primary flex items-center justify-center text-lg font-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0">
+              <div className="w-12 h-12 bg-brutal-pink border-4 border-primary flex items-center justify-center text-lg font-black text-brutal-pink-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0">
                 {item.step}
               </div>
               <div className="flex-1">

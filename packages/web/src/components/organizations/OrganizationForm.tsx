@@ -116,7 +116,7 @@ export function OrganizationForm({ onSuccess, onCancel, compact = false, initial
                         value={orgName}
                         onChange={(e) => setOrgName(e.target.value)}
                         placeholder="Your Organization"
-                        className="border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-bold bg-background text-foreground"
+                        className="border-4 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-bold bg-background text-foreground"
                         required
                         autoFocus
                     />
@@ -132,7 +132,7 @@ export function OrganizationForm({ onSuccess, onCancel, compact = false, initial
                         onChange={(e) => setWebsite(e.target.value)}
                         type="url"
                         placeholder="https://yourorganization.org"
-                        className="border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-bold bg-background text-foreground"
+                        className="border-4 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-bold bg-background text-foreground"
                     />
                 </div>
 
@@ -145,7 +145,7 @@ export function OrganizationForm({ onSuccess, onCancel, compact = false, initial
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Brief description..."
-                        className="border-2 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-bold min-h-[80px] bg-background text-foreground"
+                        className="border-4 border-primary shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-bold min-h-[80px] bg-background text-foreground"
                     />
                 </div>
 
@@ -156,7 +156,7 @@ export function OrganizationForm({ onSuccess, onCancel, compact = false, initial
                             variant="outline"
                             onClick={onCancel}
                             disabled={isCreating}
-                            className="border-2 border-primary font-bold uppercase"
+                            className="border-4 border-primary font-bold uppercase"
                         >
                             Cancel
                         </Button>
@@ -164,7 +164,7 @@ export function OrganizationForm({ onSuccess, onCancel, compact = false, initial
                     <Button
                         type="submit"
                         disabled={isCreating}
-                        className="bg-foreground text-background border-2 border-primary hover:bg-brutal-pink hover:text-foreground font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                        className="bg-foreground text-background border-4 border-primary hover:bg-brutal-pink hover:text-foreground font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                     >
                         {isCreating ? (
                             <>

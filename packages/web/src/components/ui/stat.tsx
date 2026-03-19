@@ -57,7 +57,7 @@ export function Stat({ param, format, figures = 3, className = "" }: StatProps) 
       </span>
 
       {open && (
-        <span className="absolute bottom-full left-1/2 z-50 mb-2 w-72 -translate-x-1/2 rounded border-2 border-primary bg-background p-3 text-left text-xs text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+        <span className="absolute bottom-full left-1/2 z-50 mb-2 w-72 -translate-x-1/2 rounded border-4 border-primary bg-background p-3 text-left text-xs text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           {param.displayName && (
             <span className="mb-1 block font-black uppercase text-[10px] tracking-wider text-muted-foreground">
               {param.displayName}

@@ -22,7 +22,7 @@ export function GlobalProgressCard({ progress }: GlobalProgressCardProps) {
   const progressPercentage = (currentProgress / progress.target) * 100
 
   return (
-    <Card className="border-2 border-primary mb-8 bg-brutal-yellow">
+    <Card className="border-4 border-primary mb-8 bg-brutal-yellow">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase flex items-center gap-2">
           <Target className="h-6 w-6" />
@@ -55,7 +55,7 @@ export function GlobalProgressCard({ progress }: GlobalProgressCardProps) {
             <span>{currentProgress.toFixed(1)}% of global population</span>
             <span>{progress.target}% target</span>
           </div>
-          <div className="h-8 bg-background border-2 border-primary rounded-none overflow-hidden">
+          <div className="h-8 bg-background border-4 border-primary rounded-none overflow-hidden">
             <div className="h-full bg-primary transition-all duration-500" style={{ width: `${progressPercentage}%` }} />
           </div>
           <p className="text-sm font-bold">

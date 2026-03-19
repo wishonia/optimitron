@@ -18,7 +18,7 @@ export function WishocracyReferralCard({
 
   return (
     <div className="mx-auto mb-8 max-w-3xl">
-      <div className="border-4 border-primary bg-background p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+      <div className="border-4 border-primary bg-background p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="text-center text-lg font-black uppercase text-foreground">
           Your Referral Link
         </h3>

@@ -31,7 +31,7 @@ export function LeaderboardCard({ leaderboard, user, stats }: LeaderboardCardPro
       ]
 
   return (
-    <Card className="border-2 border-primary" id="leaderboard">
+    <Card className="border-4 border-primary" id="leaderboard">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase">LEADERBOARD</CardTitle>
         <CardDescription className="font-bold">
@@ -45,7 +45,7 @@ export function LeaderboardCard({ leaderboard, user, stats }: LeaderboardCardPro
             return (
               <div
                 key={`${entry.rank}-${entry.userId}`}
-                className={`flex items-center justify-between p-3 border-2 border-primary ${
+                className={`flex items-center justify-between p-3 border-4 border-primary ${
                   isCurrentUser ? "bg-brutal-pink" : "bg-background"
                 }`}
               >
@@ -55,10 +55,10 @@ export function LeaderboardCard({ leaderboard, user, stats }: LeaderboardCardPro
                     <img
                       src={entry.image}
                       alt={entry.name}
-                      className="h-10 w-10 rounded-full border-2 border-primary object-cover"
+                      className="h-10 w-10 rounded-full border-4 border-primary object-cover"
                     />
                   ) : (
-                    <div className="h-10 w-10 rounded-full bg-brutal-cyan border-2 border-primary flex items-center justify-center font-black text-sm">
+                    <div className="h-10 w-10 rounded-full bg-brutal-cyan border-4 border-primary flex items-center justify-center font-black text-sm">
                       {getInitials(entry.name)}
                     </div>
                   )}

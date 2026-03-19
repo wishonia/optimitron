@@ -8,7 +8,7 @@ export function AllocationBar({ percentage, colorClass, label }: AllocationBarPr
     const isLarge = percentage > 50
     const isTiny = percentage < 10
 
-    const barBaseClasses = `border-2 border-primary transition-all duration-500 flex items-center justify-center relative overflow-hidden ${colorClass}`
+    const barBaseClasses = `border-4 border-primary transition-all duration-500 flex items-center justify-center relative overflow-hidden ${colorClass}`
 
     const renderInnerContent = () => {
         if (isLarge) {

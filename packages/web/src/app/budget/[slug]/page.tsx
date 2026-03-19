@@ -231,16 +231,16 @@ export default async function BudgetCategoryPage({
       </NavItemLink>
 
       {/* Hero */}
-      <div className="border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 sm:p-8 mb-8">
+      <div className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 sm:p-8 mb-8">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-4">
           {cat.name}
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="border-2 border-primary p-4 bg-brutal-cyan shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary p-4 bg-brutal-cyan shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Current Spending</div>
             <div className="text-2xl sm:text-3xl font-black text-foreground">{fmt(cat.currentSpending)}</div>
           </div>
-          <div className="border-2 border-primary p-4 bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary p-4 bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Optimal Spending</div>
             <div className="text-2xl sm:text-3xl font-black text-foreground">{fmt(cat.optimalSpending)}</div>
             {cat.oslCiLow !== undefined && cat.oslCiHigh !== undefined && (
@@ -250,7 +250,7 @@ export default async function BudgetCategoryPage({
             )}
           </div>
           <div
-            className={`border-2 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
+            className={`border-4 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
               cat.gap >= 0 ? "bg-brutal-cyan" : "bg-brutal-red"
             }`}
           >
@@ -260,7 +260,7 @@ export default async function BudgetCategoryPage({
             </div>
             <div className="text-xs font-bold text-muted-foreground mt-1">{cat.investmentStatus}</div>
           </div>
-          <div className={`border-2 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${gradeBg(cat.evidenceGrade)}`}>
+          <div className={`border-4 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${gradeBg(cat.evidenceGrade)}`}>
             <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Evidence Grade</div>
             <div className="text-2xl sm:text-3xl font-black text-foreground">{cat.evidenceGrade}</div>
             <div className="text-xs font-bold text-muted-foreground mt-1">{cat.evidenceDescription}</div>
@@ -273,10 +273,10 @@ export default async function BudgetCategoryPage({
 
       {/* Fixed-Budget Reallocation */}
       {constrainedCat && (
-        <section className="border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+        <section className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
           <h2 className="text-lg font-black uppercase text-foreground mb-4">Fixed-Budget Reallocation</h2>
           {constrainedCat.isNonDiscretionary ? (
-            <div className="border-2 border-primary p-4 bg-muted">
+            <div className="border-4 border-primary p-4 bg-muted">
               <p className="text-sm text-muted-foreground font-bold">
                 This is a non-discretionary entitlement, excluded from reallocation.
                 Spending is held at the current level of {fmt(constrainedCat.currentSpending)}.
@@ -284,22 +284,22 @@ export default async function BudgetCategoryPage({
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="border-2 border-primary p-4 bg-background">
+              <div className="border-4 border-primary p-4 bg-background">
                 <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Constrained Optimal</div>
                 <div className="text-xl font-black text-foreground">{fmt(constrainedCat.constrainedOptimal)}</div>
               </div>
-              <div className={`border-2 border-primary p-4 ${constrainedCat.reallocation >= 0 ? "bg-brutal-cyan" : "bg-brutal-red"}`}>
+              <div className={`border-4 border-primary p-4 ${constrainedCat.reallocation >= 0 ? "bg-brutal-cyan" : "bg-brutal-red"}`}>
                 <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Reallocation</div>
-                <div className={`text-xl font-black ${constrainedCat.reallocation >= 0 ? "text-foreground" : "text-white"}`}>
+                <div className={`text-xl font-black ${constrainedCat.reallocation >= 0 ? "text-foreground" : "text-brutal-red-foreground"}`}>
                   {constrainedCat.reallocation >= 0 ? "+" : ""}{fmt(constrainedCat.reallocation)}
                 </div>
                 <div className="text-xs font-bold text-muted-foreground mt-1">
                   {pct(constrainedCat.reallocationPercent)} of current
                 </div>
               </div>
-              <div className="border-2 border-primary p-4 bg-background">
+              <div className="border-4 border-primary p-4 bg-background">
                 <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Action</div>
-                <span className={`inline-block px-3 py-1 text-sm font-black border-2 border-primary ${actionBadgeStyle(constrainedCat.action)}`}>
+                <span className={`inline-block px-3 py-1 text-sm font-black border-4 border-primary ${actionBadgeStyle(constrainedCat.action)}`}>
                   {constrainedCat.action}
                 </span>
               </div>
@@ -309,7 +309,7 @@ export default async function BudgetCategoryPage({
       )}
 
       {/* Bar chart: Current vs Optimal */}
-      <section className="border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+      <section className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
         <h2 className="text-lg font-black uppercase text-foreground mb-4">Current vs Optimal</h2>
         <div className="space-y-3">
           <div>
@@ -317,7 +317,7 @@ export default async function BudgetCategoryPage({
               <span className="text-sm font-bold text-foreground">Current</span>
               <span className="text-sm font-bold text-muted-foreground">{fmt(cat.currentSpending)}</span>
             </div>
-            <div className="h-8 bg-muted border-2 border-primary overflow-hidden">
+            <div className="h-8 bg-muted border-4 border-primary overflow-hidden">
               <div
                 className="h-full bg-brutal-cyan border-r-2 border-primary"
                 style={{ width: `${currentPct}%` }}
@@ -329,7 +329,7 @@ export default async function BudgetCategoryPage({
               <span className="text-sm font-bold text-foreground">Optimal</span>
               <span className="text-sm font-bold text-muted-foreground">{fmt(cat.optimalSpending)}</span>
             </div>
-            <div className="h-8 bg-muted border-2 border-primary overflow-hidden">
+            <div className="h-8 bg-muted border-4 border-primary overflow-hidden">
               <div
                 className="h-full bg-brutal-yellow border-r-2 border-primary"
                 style={{ width: `${optimalPct}%` }}
@@ -344,14 +344,14 @@ export default async function BudgetCategoryPage({
 
       {/* Diminishing Returns */}
       {dr && (
-        <section className="border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+        <section className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
           <h2 className="text-lg font-black uppercase text-foreground mb-4">Diminishing Returns Analysis</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-            <div className="border-2 border-primary p-3 bg-background">
+            <div className="border-4 border-primary p-3 bg-background">
               <div className="text-xs font-bold uppercase text-muted-foreground">Model Type</div>
               <div className="text-lg font-black text-foreground">{dr.modelType}</div>
             </div>
-            <div className="border-2 border-primary p-3 bg-background">
+            <div className="border-4 border-primary p-3 bg-background">
               <div className="text-xs font-bold uppercase text-muted-foreground">R² (Model Fit)</div>
               <div className="text-lg font-black text-foreground">{(dr.r2 * 100).toFixed(0)}%</div>
               <div className="mt-1 h-2 bg-muted border border-primary overflow-hidden">
@@ -359,7 +359,7 @@ export default async function BudgetCategoryPage({
               </div>
             </div>
             {cat.elasticity !== undefined && (
-              <div className="border-2 border-primary p-3 bg-background">
+              <div className="border-4 border-primary p-3 bg-background">
                 <div className="text-xs font-bold uppercase text-muted-foreground">Elasticity</div>
                 <div className="text-lg font-black text-foreground">{cat.elasticity.toFixed(2)}</div>
                 <div className="text-xs text-muted-foreground font-bold mt-1">
@@ -369,16 +369,16 @@ export default async function BudgetCategoryPage({
             )}
           </div>
           <div className="flex flex-wrap gap-2">
-            <span className="text-xs font-bold px-2 py-0.5 border-2 border-primary bg-muted">
+            <span className="text-xs font-bold px-2 py-0.5 border-4 border-primary bg-muted">
               N = {dr.n} observations
             </span>
             {dr.lowFit && (
-              <span className="text-xs font-bold px-2 py-0.5 border-2 border-primary bg-brutal-yellow">
+              <span className="text-xs font-bold px-2 py-0.5 border-4 border-primary bg-brutal-yellow">
                 Low fit (R²&lt;0.3) — treat with caution
               </span>
             )}
             {dr.smallSample && (
-              <span className="text-xs font-bold px-2 py-0.5 border-2 border-primary bg-brutal-yellow">
+              <span className="text-xs font-bold px-2 py-0.5 border-4 border-primary bg-brutal-yellow">
                 Small sample (n≤10) — may overfit
               </span>
             )}
@@ -388,7 +388,7 @@ export default async function BudgetCategoryPage({
 
       {/* Causal Evidence Detail */}
       {hasEvidence && (
-        <section className="border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+        <section className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
           <h2 className="text-lg font-black uppercase text-foreground mb-4">Causal Evidence Detail</h2>
 
           {causalEvidence && (
@@ -397,24 +397,24 @@ export default async function BudgetCategoryPage({
                 OECD Cross-Country Analysis (N-of-1)
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-                <div className="border-2 border-primary p-3 bg-background">
+                <div className="border-4 border-primary p-3 bg-background">
                   <div className="text-xs font-bold uppercase text-muted-foreground">Mean r</div>
                   <div className="text-lg font-black text-foreground">{causalEvidence.forwardPearson.toFixed(3)}</div>
                 </div>
-                <div className="border-2 border-primary p-3 bg-background">
+                <div className="border-4 border-primary p-3 bg-background">
                   <div className="text-xs font-bold uppercase text-muted-foreground">Countries</div>
                   <div className="text-lg font-black text-foreground">{causalEvidence.nCountries}</div>
                   <div className="text-xs text-muted-foreground font-bold">
                     +{causalEvidence.positiveCount} / -{causalEvidence.negativeCount}
                   </div>
                 </div>
-                <div className="border-2 border-primary p-3 bg-background">
+                <div className="border-4 border-primary p-3 bg-background">
                   <div className="text-xs font-bold uppercase text-muted-foreground">Mean % Change</div>
                   <div className={`text-lg font-black ${causalEvidence.meanPercentChange >= 0 ? "text-brutal-cyan" : "text-brutal-red"}`}>
                     {causalEvidence.meanPercentChange >= 0 ? "+" : ""}{causalEvidence.meanPercentChange.toFixed(1)}%
                   </div>
                 </div>
-                <div className="border-2 border-primary p-3 bg-background">
+                <div className="border-4 border-primary p-3 bg-background">
                   <div className="text-xs font-bold uppercase text-muted-foreground">WES Score</div>
                   <div className="text-lg font-black text-foreground">{(causalEvidence.wesScore * 100).toFixed(0)}%</div>
                 </div>
@@ -433,7 +433,7 @@ export default async function BudgetCategoryPage({
                       <span className="text-xs font-bold text-foreground">{label}</span>
                       <span className="text-xs font-black text-foreground">{(val * 100).toFixed(0)}%</span>
                     </div>
-                    <div className="h-4 bg-muted border-2 border-primary overflow-hidden">
+                    <div className="h-4 bg-muted border-4 border-primary overflow-hidden">
                       <div className={`h-full ${barColor(val)}`} style={{ width: `${val * 100}%` }} />
                     </div>
                   </div>
@@ -448,19 +448,19 @@ export default async function BudgetCategoryPage({
                 US Domestic Time Series (2000-2023)
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="border-2 border-primary p-3 bg-background">
+                <div className="border-4 border-primary p-3 bg-background">
                   <div className="text-xs font-bold uppercase text-muted-foreground">Best Outcome</div>
                   <div className="text-sm font-black text-foreground">{domesticEvidence.bestOutcomeName}</div>
                 </div>
-                <div className="border-2 border-primary p-3 bg-background">
+                <div className="border-4 border-primary p-3 bg-background">
                   <div className="text-xs font-bold uppercase text-muted-foreground">Correlation (r)</div>
                   <div className="text-lg font-black text-foreground">{domesticEvidence.correlation.toFixed(3)}</div>
                 </div>
-                <div className="border-2 border-primary p-3 bg-background">
+                <div className="border-4 border-primary p-3 bg-background">
                   <div className="text-xs font-bold uppercase text-muted-foreground">Data Points</div>
                   <div className="text-lg font-black text-foreground">{domesticEvidence.nYears} years</div>
                 </div>
-                <div className="border-2 border-primary p-3 bg-background">
+                <div className="border-4 border-primary p-3 bg-background">
                   <div className="text-xs font-bold uppercase text-muted-foreground">BH Strength</div>
                   <div className="text-lg font-black text-foreground">{(domesticEvidence.bhStrength * 100).toFixed(0)}%</div>
                   <div className="mt-1 h-2 bg-muted border border-primary overflow-hidden">
@@ -474,13 +474,13 @@ export default async function BudgetCategoryPage({
       )}
 
       {/* Outcome Metrics */}
-      <section className="border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+      <section className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
         <h2 className="text-lg font-black uppercase text-foreground mb-4">Outcome Metrics</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {cat.outcomeMetrics.map((m) => (
             <div
               key={m.name}
-              className="border-2 border-primary p-4 bg-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="border-4 border-primary p-4 bg-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               <div className="text-xs font-bold uppercase text-muted-foreground mb-1">{m.name}</div>
               <div className="flex items-end gap-2">
@@ -501,12 +501,12 @@ export default async function BudgetCategoryPage({
 
       {/* Recommendation Callout */}
       <section
-        className={`border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8 ${
+        className={`border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8 ${
           cat.gap >= 0 ? "bg-brutal-cyan" : "bg-brutal-red"
         }`}
       >
         <h2 className="text-lg font-black uppercase text-foreground mb-2">
-          <span className={`inline-block px-2 py-0.5 mr-2 text-sm border-2 border-primary ${actionBadgeStyle(cat.recommendedAction)}`}>
+          <span className={`inline-block px-2 py-0.5 mr-2 text-sm border-4 border-primary ${actionBadgeStyle(cat.recommendedAction)}`}>
             {actionLabel(cat.recommendedAction)}
           </span>
           RECOMMENDATION
@@ -517,17 +517,17 @@ export default async function BudgetCategoryPage({
             : `Spending on ${cat.name} should be decreased by ${fmt(Math.abs(cat.gap))} (${pct(Math.abs(cat.gapPercent))}) to reach the optimal allocation of ${fmt(cat.optimalSpending)}.`}
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
-          <div className="border-2 border-primary p-3 bg-background">
+          <div className="border-4 border-primary p-3 bg-background">
             <div className="text-xs font-bold uppercase text-muted-foreground">Marginal Return</div>
             <div className="text-xl font-black text-foreground">{(cat.marginalReturn * 100).toFixed(2)}%</div>
           </div>
-          <div className="border-2 border-primary p-3 bg-background">
+          <div className="border-4 border-primary p-3 bg-background">
             <div className="text-xs font-bold uppercase text-muted-foreground">Share of Total Budget</div>
             <div className="text-xl font-black text-foreground">
               {((cat.currentSpending / data.totalBudget) * 100).toFixed(1)}%
             </div>
           </div>
-          <div className="border-2 border-primary p-3 bg-background">
+          <div className="border-4 border-primary p-3 bg-background">
             <div className="text-xs font-bold uppercase text-muted-foreground">Income Effect</div>
             <div className={`text-xl font-black ${cat.welfareEffect.incomeEffect >= 0 ? "text-brutal-cyan" : "text-brutal-red"}`}>
               {cat.welfareEffect.incomeEffect >= 0 ? "+" : ""}{(cat.welfareEffect.incomeEffect * 100).toFixed(0)}%
@@ -539,7 +539,7 @@ export default async function BudgetCategoryPage({
               />
             </div>
           </div>
-          <div className="border-2 border-primary p-3 bg-background">
+          <div className="border-4 border-primary p-3 bg-background">
             <div className="text-xs font-bold uppercase text-muted-foreground">Health Effect</div>
             <div className={`text-xl font-black ${cat.welfareEffect.healthEffect >= 0 ? "text-brutal-cyan" : "text-brutal-red"}`}>
               {cat.welfareEffect.healthEffect >= 0 ? "+" : ""}{(cat.welfareEffect.healthEffect * 100).toFixed(0)}%
@@ -555,14 +555,14 @@ export default async function BudgetCategoryPage({
       </section>
 
       {/* Budget Context */}
-      <section className="border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+      <section className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
         <h2 className="text-lg font-black uppercase text-foreground mb-4">Budget Context</h2>
         <div className="space-y-2">
           <div className="flex justify-between text-sm font-bold text-foreground">
             <span>Category share (current)</span>
             <span>{((cat.currentSpending / data.totalBudget) * 100).toFixed(1)}%</span>
           </div>
-          <div className="h-4 bg-muted border-2 border-primary overflow-hidden">
+          <div className="h-4 bg-muted border-4 border-primary overflow-hidden">
             <div
               className="h-full bg-brutal-pink"
               style={{ width: `${(cat.currentSpending / data.totalBudget) * 100}%` }}
@@ -574,7 +574,7 @@ export default async function BudgetCategoryPage({
               {((cat.optimalSpending / totalOptimal) * 100).toFixed(1)}%
             </span>
           </div>
-          <div className="h-4 bg-muted border-2 border-primary overflow-hidden">
+          <div className="h-4 bg-muted border-4 border-primary overflow-hidden">
             <div
               className="h-full bg-brutal-yellow"
               style={{ width: `${(cat.optimalSpending / totalOptimal) * 100}%` }}
@@ -584,7 +584,7 @@ export default async function BudgetCategoryPage({
       </section>
 
       {/* Methodology */}
-      <section className="border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
+      <section className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8">
         <h2 className="text-lg font-black uppercase text-foreground mb-4">
           How Is Optimal Calculated?
         </h2>
@@ -595,7 +595,7 @@ export default async function BudgetCategoryPage({
             category is modeled with a concave utility function — the first dollar spent on a
             category produces more welfare than the billionth dollar.
           </p>
-          <div className="border-2 border-primary bg-brutal-yellow p-4">
+          <div className="border-4 border-primary bg-brutal-yellow p-4">
             <h3 className="text-sm font-black text-foreground uppercase mb-2">
               Budget Impact Score (BIS)
             </h3>
@@ -606,20 +606,20 @@ export default async function BudgetCategoryPage({
               health, education, security, and quality of life.
             </p>
           </div>
-          <div className="border-2 border-primary bg-brutal-cyan p-4">
+          <div className="border-4 border-primary bg-brutal-cyan p-4">
             <h3 className="text-sm font-black text-foreground uppercase mb-2">
               Diminishing Returns Model
             </h3>
             <p>
               Spending follows a logarithmic utility curve:{" "}
-              <code className="bg-foreground text-white px-1 text-xs font-bold">U(x) = α · ln(x + 1)</code>{" "}
+              <code className="bg-foreground text-background px-1 text-xs font-bold">U(x) = α · ln(x + 1)</code>{" "}
               where α is calibrated from the category&apos;s marginal return coefficient. The optimal
               allocation equalizes the marginal utility per dollar across all categories — the
               point where reallocating $1 from any category to another would not improve total
               welfare.
             </p>
           </div>
-          <div className="border-2 border-primary bg-brutal-pink p-4">
+          <div className="border-4 border-primary bg-brutal-pink p-4">
             <h3 className="text-sm font-black text-foreground uppercase mb-2">
               Marginal Return ({(cat.marginalReturn * 100).toFixed(2)}% for {cat.name})
             </h3>
@@ -658,7 +658,7 @@ export default async function BudgetCategoryPage({
         <NavItemLink
           item={budgetLink}
           variant="custom"
-          className="inline-block border-2 border-primary bg-foreground text-white px-4 py-2 font-bold text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-shadow"
+          className="inline-block border-4 border-primary bg-foreground text-background px-4 py-2 font-bold text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-shadow"
         >
           ← All Categories
         </NavItemLink>

@@ -43,14 +43,14 @@ export default function OutcomesIndexPage() {
           return (
             <div
               key={outcome.id}
-              className="border-2 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div>
                   <h2 className="text-xl font-black text-foreground">{outcome.label}</h2>
                   <p className="text-xs font-bold uppercase text-muted-foreground">{outcome.unit}</p>
                 </div>
-                <span className="text-xs font-black border-2 border-primary bg-brutal-cyan px-2 py-1 uppercase">
+                <span className="text-xs font-black border-4 border-primary bg-brutal-cyan px-2 py-1 uppercase">
                   {pairCount} predictor{pairCount === 1 ? "" : "s"}
                 </span>
               </div>
@@ -75,7 +75,7 @@ export default function OutcomesIndexPage() {
 
               <Link
                 href={getOutcomeHubPath(outcome.id)}
-                className="inline-block text-sm font-black uppercase px-3 py-2 border-2 border-primary bg-background hover:bg-brutal-pink transition-colors"
+                className="inline-block text-sm font-black uppercase px-3 py-2 border-4 border-primary bg-background hover:bg-brutal-pink transition-colors"
               >
                 Open Outcome Hub
               </Link>

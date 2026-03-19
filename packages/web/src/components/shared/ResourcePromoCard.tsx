@@ -62,7 +62,7 @@ export function ResourcePromoCard({
   }
 
   return (
-    <div className="border-4 border-primary bg-background p-6 sm:p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+    <div className="border-4 border-primary bg-background p-6 sm:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
       {showDescription && (
         <>
           <p className="text-center font-black uppercase text-lg sm:text-xl mb-2">

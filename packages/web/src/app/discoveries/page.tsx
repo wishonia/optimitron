@@ -96,7 +96,7 @@ export default async function DiscoveriesPage() {
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto border-2 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="overflow-x-auto border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b-2 border-primary bg-brutal-yellow">

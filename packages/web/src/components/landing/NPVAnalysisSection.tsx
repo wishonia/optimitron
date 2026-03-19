@@ -71,7 +71,7 @@ export default function NPVAnalysisSection() {
           <h3 className="text-2xl font-black uppercase mb-6 text-center">MODEL PARAMETERS</h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <div className="bg-background border-2 border-primary p-4">
+              <div className="bg-background border-4 border-primary p-4">
                 <div className="text-sm font-bold uppercase mb-2">Investment</div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -84,7 +84,7 @@ export default function NPVAnalysisSection() {
                   </div>
                 </div>
               </div>
-              <div className="bg-background border-2 border-primary p-4">
+              <div className="bg-background border-4 border-primary p-4">
                 <div className="text-sm font-bold uppercase mb-2">Adoption Curve</div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -99,7 +99,7 @@ export default function NPVAnalysisSection() {
               </div>
             </div>
             <div className="space-y-4">
-              <div className="bg-background border-2 border-primary p-4">
+              <div className="bg-background border-4 border-primary p-4">
                 <div className="text-sm font-bold uppercase mb-2">Returns</div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -112,7 +112,7 @@ export default function NPVAnalysisSection() {
                   </div>
                 </div>
               </div>
-              <div className="bg-background border-2 border-primary p-4">
+              <div className="bg-background border-4 border-primary p-4">
                 <div className="text-sm font-bold uppercase mb-2">Financial Assumptions</div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -236,7 +236,7 @@ export default function NPVAnalysisSection() {
               </div>
             </div>
           </div>
-          <div className="mt-6 bg-brutal-yellow border-2 border-primary p-4">
+          <div className="mt-6 bg-brutal-yellow border-4 border-primary p-4">
             <p className="font-bold text-center">
               The {roiRaw}:1 NPV-adjusted ROI is the <span className="text-brutal-pink">canonical figure</span> we use for
               academic credibility. It&apos;s conservative and passes rigorous financial scrutiny.
@@ -258,7 +258,7 @@ export default function NPVAnalysisSection() {
             })).map((item) => (
               <div key={item.year} className="flex items-center gap-4">
                 <div className="w-20 text-sm font-bold">Year {item.year}:</div>
-                <div className="flex-1 bg-brutal-pink/10 border-2 border-primary h-12 relative">
+                <div className="flex-1 bg-brutal-pink/10 border-4 border-primary h-12 relative">
                   <div
                     className="bg-brutal-pink h-full flex items-center justify-end pr-2 font-black text-sm text-brutal-pink-foreground"
                     style={{ width: `${item.pct}%` }}

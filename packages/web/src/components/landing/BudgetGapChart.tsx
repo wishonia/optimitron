@@ -86,7 +86,7 @@ export function BudgetGapChart() {
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.4, delay: i * 0.06 }}
                   onClick={() => setSelected(isOpen ? null : i)}
-                  className="w-full text-left p-4 border-2 border-primary bg-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer"
+                  className="w-full text-left p-4 border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer"
                 >
                   {/* Label row */}
                   <div className="flex items-center justify-between mb-2">
@@ -119,7 +119,7 @@ export function BudgetGapChart() {
                   <div className="relative h-8 bg-muted border border-primary">
                     {/* Current spending - outlined */}
                     <div
-                      className="absolute inset-y-0 left-0 border-2 border-primary border-dashed"
+                      className="absolute inset-y-0 left-0 border-4 border-primary border-dashed"
                       style={{ width: `${currentPct}%` }}
                     />
                     {/* Optimal spending - filled */}
@@ -174,7 +174,7 @@ export function BudgetGapChart() {
                           {cat.outcomeMetrics.map((m) => (
                             <div
                               key={m.name}
-                              className="p-3 border-2 border-primary bg-background"
+                              className="p-3 border-4 border-primary bg-background"
                             >
                               <div className="text-xs text-muted-foreground font-bold mb-1">
                                 {m.name}
@@ -210,7 +210,7 @@ export function BudgetGapChart() {
         {/* Legend */}
         <div className="flex items-center justify-center gap-6 mt-8 text-xs font-bold text-muted-foreground">
           <span className="flex items-center gap-1">
-            <span className="w-4 h-3 border-2 border-primary border-dashed inline-block" />{" "}
+            <span className="w-4 h-3 border-4 border-primary border-dashed inline-block" />{" "}
             Current
           </span>
           <span className="flex items-center gap-1">

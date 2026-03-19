@@ -80,26 +80,26 @@ export default async function PairStudyPage({
       </header>
 
       <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="border-2 border-primary bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-primary bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-muted-foreground">Evidence Grade</div>
           <div className="text-3xl font-black text-foreground">{study.evidence.evidenceGrade}</div>
         </div>
-        <div className="border-2 border-primary bg-brutal-yellow p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-primary bg-brutal-yellow p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-muted-foreground">Subjects</div>
           <div className="text-3xl font-black text-foreground">{study.coverage.includedSubjects}</div>
         </div>
-        <div className="border-2 border-primary bg-brutal-pink p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-primary bg-brutal-pink p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-muted-foreground">Aligned Pairs</div>
           <div className="text-3xl font-black text-foreground">{study.coverage.alignedPairs}</div>
         </div>
-        <div className="border-2 border-primary bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="border-4 border-primary bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="text-xs font-black uppercase text-muted-foreground">Predictive Pearson</div>
           <div className="text-3xl font-black text-foreground">{fmt(study.evidence.predictivePearson, 3)}</div>
         </div>
       </section>
 
       {study.optimalValue && (
-        <section className="border-2 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+        <section className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
           <h2 className="text-lg font-black uppercase text-foreground mb-3">Optimal Value</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
@@ -127,7 +127,7 @@ export default async function PairStudyPage({
       {study.adaptiveBinTables.map(table => (
         <section
           key={table.tableId}
-          className="border-2 border-primary bg-background overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8"
+          className="border-4 border-primary bg-background overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8"
         >
           <div className="px-4 py-3 border-b-2 border-primary bg-muted">
             <h2 className="text-sm font-black uppercase text-foreground">{table.tableLabel}</h2>
@@ -166,12 +166,12 @@ export default async function PairStudyPage({
         </section>
       ))}
 
-      <section className="border-2 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+      <section className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-black uppercase text-foreground">Subject Drilldowns</h2>
           <Link
             href={getJurisdictionsPath(outcomeId, predictorId)}
-            className="text-xs font-black uppercase px-2 py-1 border-2 border-primary bg-background hover:bg-brutal-pink"
+            className="text-xs font-black uppercase px-2 py-1 border-4 border-primary bg-background hover:bg-brutal-pink"
           >
             View All
           </Link>
@@ -181,7 +181,7 @@ export default async function PairStudyPage({
             <Link
               key={subject.summary.subjectId}
               href={getJurisdictionStudyPath(outcomeId, predictorId, subject.summary.subjectId)}
-              className="border-2 border-primary bg-muted p-3 hover:bg-brutal-cyan"
+              className="border-4 border-primary bg-muted p-3 hover:bg-brutal-cyan"
             >
               <div className="text-sm font-black text-foreground">{subject.summary.subjectName}</div>
               <div className="text-xs text-muted-foreground">r={fmt(subject.summary.forwardPearson, 3)}</div>
@@ -194,7 +194,7 @@ export default async function PairStudyPage({
         </div>
       </section>
 
-      <section className="border-2 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+      <section className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
         <h2 className="text-lg font-black uppercase text-foreground mb-3">Data Flow</h2>
         <div className="space-y-2">
           {study.dataFlow.map(step => (

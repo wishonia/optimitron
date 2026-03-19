@@ -9,7 +9,7 @@ const coreCards = [
     description:
       "Depositors put USDC into Aave V3 yield. Plan fails after 15 years? ~4.2x your money back. Plan succeeds? Everyone benefits from higher GDP. You literally cannot lose money. The worst case is getting richer.",
     color: "bg-brutal-pink",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
   },
   {
     title: "Two Terminal Metrics",
@@ -77,12 +77,12 @@ export function EarthOptimizationPrizeSection() {
           {coreCards.map((card) => (
             <div
               key={card.title}
-              className={`p-6 border-4 border-primary ${card.color} shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]`}
+              className={`p-6 border-4 border-primary ${card.color} shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]`}
             >
               <h3 className={`text-lg font-black ${card.textColor} mb-3 uppercase`}>
                 {card.title}
               </h3>
-              <p className={`text-sm ${card.textColor === "text-white" ? "text-background" : "text-foreground"} leading-relaxed font-bold`}>
+              <p className={`text-sm ${card.textColor === "text-brutal-pink-foreground" ? "text-background" : "text-foreground"} leading-relaxed font-bold`}>
                 {card.description}
               </p>
             </div>
@@ -91,14 +91,14 @@ export function EarthOptimizationPrizeSection() {
 
         {/* 4-stage bounty strip */}
         <ScrollReveal>
-          <div className="p-6 border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] mb-12">
+          <div className="p-6 border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mb-12">
             <h3 className="text-lg font-black text-foreground mb-6 uppercase text-center">
               Four-Stage Bounty
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {bountyStages.map((item) => (
                 <div key={item.stage} className="text-center">
-                  <div className="w-10 h-10 bg-brutal-yellow border-2 border-primary flex items-center justify-center mx-auto mb-3 text-sm font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <div className="w-10 h-10 bg-brutal-yellow border-4 border-primary flex items-center justify-center mx-auto mb-3 text-sm font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     {item.stage}
                   </div>
                   <h4 className="font-black text-foreground text-sm mb-1 uppercase">
@@ -118,7 +118,7 @@ export function EarthOptimizationPrizeSection() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
                 href="/prize#invest"
-                className="px-8 py-3.5 bg-brutal-yellow text-foreground font-black uppercase text-lg border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                className="px-8 py-3.5 bg-brutal-yellow text-foreground font-black uppercase text-lg border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
               >
                 Join the Prize
               </a>

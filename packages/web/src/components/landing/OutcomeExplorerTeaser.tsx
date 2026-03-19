@@ -32,7 +32,7 @@ export function OutcomeExplorerTeaser({ outcomes }: { outcomes: OutcomeCard[] })
             <Link
               key={outcome.id}
               href={getOutcomeHubPath(outcome.id)}
-              className="p-6 border-2 border-primary bg-brutal-cyan shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex flex-col"
+              className="p-6 border-4 border-primary bg-brutal-cyan shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all flex flex-col"
             >
               <h3 className="text-lg font-black text-foreground mb-2">
                 {outcome.label}

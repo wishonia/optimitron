@@ -14,7 +14,7 @@ export function ProvenanceBlock({
   precomputeIndex,
 }: ProvenanceBlockProps) {
   return (
-    <section className="border-2 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+    <section className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
       <h2 className="text-sm font-black uppercase text-foreground mb-3">{title}</h2>
       <p className="text-xs font-bold text-muted-foreground mb-3">
         Explorer payload generated {new Date(generatedAt).toLocaleString()}.

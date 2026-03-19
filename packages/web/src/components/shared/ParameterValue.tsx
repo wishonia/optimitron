@@ -70,7 +70,7 @@ export function ParameterValue({
           </Component>
         </TooltipTrigger>
         <TooltipContent
-          className="max-w-sm bg-background border-2 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+          className="max-w-sm bg-background border-4 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           sideOffset={8}
         >
           <ParameterTooltipContent param={param} confidenceInterval={confidenceInterval} />

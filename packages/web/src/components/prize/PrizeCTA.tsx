@@ -6,11 +6,11 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 const variantStyles = {
   pink: {
     bg: "bg-brutal-pink",
-    text: "text-white",
+    text: "text-brutal-pink-foreground",
     subtext: "text-background",
-    stat: "border-border text-white",
+    stat: "border-border text-brutal-pink-foreground",
     statLabel: "text-muted-foreground",
-    btn: "bg-foreground text-white hover:bg-black/80",
+    btn: "bg-foreground text-background hover:bg-foreground/80",
     kicker: "text-muted-foreground",
   },
   yellow: {
@@ -19,7 +19,7 @@ const variantStyles = {
     subtext: "text-foreground",
     stat: "border-primary text-foreground",
     statLabel: "text-muted-foreground",
-    btn: "bg-foreground text-white hover:bg-black/80",
+    btn: "bg-foreground text-background hover:bg-foreground/80",
     kicker: "text-muted-foreground",
   },
   cyan: {
@@ -28,16 +28,16 @@ const variantStyles = {
     subtext: "text-foreground",
     stat: "border-primary text-foreground",
     statLabel: "text-muted-foreground",
-    btn: "bg-foreground text-white hover:bg-black/80",
+    btn: "bg-foreground text-background hover:bg-foreground/80",
     kicker: "text-muted-foreground",
   },
   dark: {
     bg: "bg-foreground",
-    text: "text-white",
+    text: "text-background",
     subtext: "text-background",
-    stat: "border-border text-white",
+    stat: "border-border text-background",
     statLabel: "text-muted-foreground",
-    btn: "bg-brutal-pink text-white hover:bg-brutal-pink/80",
+    btn: "bg-brutal-pink text-brutal-pink-foreground hover:bg-brutal-pink/80",
     kicker: "text-muted-foreground",
   },
 } as const;
@@ -81,7 +81,7 @@ export function PrizeCTA({ headline, body, variant = "pink" }: PrizeCTAProps) {
         </div>
         <Link
           href="/prize"
-          className={`inline-flex items-center justify-center ${s.btn} border-2 border-primary px-6 py-2.5 text-sm font-black uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]`}
+          className={`inline-flex items-center justify-center ${s.btn} border-4 border-primary px-6 py-2.5 text-sm font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]`}
         >
           Join the Prize
         </Link>

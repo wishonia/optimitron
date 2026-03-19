@@ -93,7 +93,7 @@ export function PushNotificationPrompt() {
         <button
           onClick={() => void handleSubscribe()}
           disabled={loading}
-          className="rounded-md bg-brutal-pink px-3 py-1.5 text-xs font-bold text-white hover:bg-brutal-pink/80 disabled:opacity-50"
+          className="rounded-md bg-brutal-pink px-3 py-1.5 text-xs font-bold text-brutal-pink-foreground hover:bg-brutal-pink/80 disabled:opacity-50"
         >
           Enable Reminders
         </button>

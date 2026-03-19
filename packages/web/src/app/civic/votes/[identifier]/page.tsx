@@ -72,7 +72,7 @@ export default async function CivicVotePage({
 
         <div className="mb-4">
           <span
-            className="inline-block border-2 border-primary px-3 py-1 text-lg font-black uppercase"
+            className="inline-block border-4 border-primary px-3 py-1 text-lg font-black uppercase"
             style={{ background: positionColor }}
           >
             {vote.position}

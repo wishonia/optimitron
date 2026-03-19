@@ -111,7 +111,7 @@ export function OrganizationSelector({ value, onSelect, disabled, initialName }:
             role="combobox"
             aria-expanded={open}
             className={cn(
-              "w-full justify-between border-2 border-primary bg-background",
+              "w-full justify-between border-4 border-primary bg-background",
               !value && "text-muted-foreground",
               disabled && "opacity-50 cursor-not-allowed"
             )}
@@ -128,7 +128,7 @@ export function OrganizationSelector({ value, onSelect, disabled, initialName }:
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-0 border-2 border-primary">
+        <PopoverContent className="w-[300px] p-0 border-4 border-primary">
           <Command shouldFilter={false}>
             <CommandInput
               placeholder="Search organizations..."
@@ -221,7 +221,7 @@ export function OrganizationSelector({ value, onSelect, disabled, initialName }:
               <Input
                 value={createName}
                 onChange={(e) => setCreateName(e.target.value)}
-                className="border-2 border-primary bg-background mt-1"
+                className="border-4 border-primary bg-background mt-1"
                 placeholder="Enter organization name"
               />
             </div>
@@ -229,14 +229,14 @@ export function OrganizationSelector({ value, onSelect, disabled, initialName }:
               <Button
                 variant="outline"
                 onClick={() => setDialogOpen(false)}
-                className="border-2 border-primary"
+                className="border-4 border-primary"
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleCreate}
                 disabled={isCreating || !createName.trim()}
-                className="border-2 border-primary bg-brutal-pink"
+                className="border-4 border-primary bg-brutal-pink"
               >
                 {isCreating ? (
                   <>

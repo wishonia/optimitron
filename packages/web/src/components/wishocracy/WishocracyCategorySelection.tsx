@@ -104,7 +104,7 @@ export function WishocracyCategorySelection({
             {isComplete ? 'Complete!' : `${currentIndex + 1} of ${allCategories.length}`}
           </span>
         </div>
-        <div className="w-full h-3 bg-background border-2 border-primary">
+        <div className="w-full h-3 bg-background border-4 border-primary">
           <motion.div
             className="h-full bg-brutal-cyan border-r-2 border-primary"
             initial={{ width: 0 }}
@@ -186,13 +186,13 @@ export function WishocracyCategorySelection({
                 <Button
                   onClick={handleSkip}
                   variant="outline"
-                  className="h-16 text-base sm:text-lg font-black uppercase bg-background hover:bg-muted text-foreground border-4 border-primary shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all whitespace-normal"
+                  className="h-16 text-base sm:text-lg font-black uppercase bg-background hover:bg-muted text-foreground border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all whitespace-normal"
                 >
                   $0
                 </Button>
                 <Button
                   onClick={handleFund}
-                  className="h-16 text-base sm:text-lg font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-primary shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all whitespace-normal"
+                  className="h-16 text-base sm:text-lg font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all whitespace-normal"
                 >
                   More Than $0
                 </Button>

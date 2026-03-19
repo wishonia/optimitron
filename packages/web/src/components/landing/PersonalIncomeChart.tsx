@@ -162,7 +162,7 @@ export function PersonalIncomeChart() {
                   const v = parseInt(e.target.value, 10);
                   if (!isNaN(v) && v > 0 && v < 10_000_000) setIncome(v);
                 }}
-                className="w-32 px-3 py-2 border-4 border-primary font-black text-lg text-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] transition-all"
+                className="w-32 px-3 py-2 border-4 border-primary font-black text-lg text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] transition-all"
               />
               <span className="text-sm font-bold text-muted-foreground">/year</span>
             </div>
@@ -180,10 +180,10 @@ export function PersonalIncomeChart() {
               <button
                 key={s.id}
                 onClick={() => setScenarioIdx(i)}
-                className={`px-4 py-2 text-xs font-black uppercase border-2 border-primary transition-all ${
+                className={`px-4 py-2 text-xs font-black uppercase border-4 border-primary transition-all ${
                   scenarioIdx === i
-                    ? "bg-foreground text-white shadow-none translate-x-[2px] translate-y-[2px]"
-                    : "bg-background text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px]"
+                    ? "bg-foreground text-background shadow-none translate-x-[2px] translate-y-[2px]"
+                    : "bg-background text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px]"
                 }`}
               >
                 {s.label}
@@ -197,7 +197,7 @@ export function PersonalIncomeChart() {
           initial={reduced ? {} : { opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="border-4 border-primary bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-2 sm:p-4"
+          className="border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-2 sm:p-4"
         >
           <svg
             viewBox={`0 0 ${svgW} ${svgH}`}
@@ -319,7 +319,7 @@ export function PersonalIncomeChart() {
           transition={{ duration: 0.4, delay: 0.6 }}
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6"
         >
-          <div className="p-4 border-2 border-primary bg-background text-center">
+          <div className="p-4 border-4 border-primary bg-background text-center">
             <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               {YEARS}-Year Status Quo Total
             </div>
@@ -327,7 +327,7 @@ export function PersonalIncomeChart() {
               {formatCurrency(totalCurrentEarnings)}
             </div>
           </div>
-          <div className="p-4 border-2 border-primary bg-background text-center">
+          <div className="p-4 border-4 border-primary bg-background text-center">
             <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               {YEARS}-Year {scenario.label} Total
             </div>
@@ -335,7 +335,7 @@ export function PersonalIncomeChart() {
               {formatCurrency(totalOptimizedEarnings)}
             </div>
           </div>
-          <div className="p-4 border-4 border-primary bg-brutal-yellow shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-center">
+          <div className="p-4 border-4 border-primary bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-xs font-black uppercase text-muted-foreground mb-1">
               Your Dysfunction Tax
             </div>

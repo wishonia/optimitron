@@ -20,7 +20,7 @@ export interface StatCardProps {
 
 const colorClasses: Record<StatCardColor, string> = {
   yellow: "bg-brutal-yellow",
-  pink: "bg-brutal-pink text-white",
+  pink: "bg-brutal-pink text-brutal-pink-foreground",
   cyan: "bg-brutal-cyan",
   green: "bg-brutal-green",
   default: "bg-background",

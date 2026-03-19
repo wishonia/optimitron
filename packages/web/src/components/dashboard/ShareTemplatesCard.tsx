@@ -58,7 +58,7 @@ export function ShareTemplatesCard({ referralLink }: ShareTemplatesCardProps) {
   }
 
   return (
-    <Card className="border-2 border-primary mb-8">
+    <Card className="border-4 border-primary mb-8">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase flex items-center gap-2">
           <MessageSquare className="h-6 w-6" />
@@ -73,7 +73,7 @@ export function ShareTemplatesCard({ referralLink }: ShareTemplatesCardProps) {
           {templates.map((template, index) => (
             <div
               key={index}
-              className="border-2 border-primary p-4 bg-background hover:bg-brutal-yellow/10 transition-colors"
+              className="border-4 border-primary p-4 bg-background hover:bg-brutal-yellow/10 transition-colors"
             >
               <div className="flex items-start justify-between gap-4 mb-2">
                 <p className="font-black uppercase text-sm text-brutal-cyan">{template.label}</p>
@@ -81,7 +81,7 @@ export function ShareTemplatesCard({ referralLink }: ShareTemplatesCardProps) {
                   size="sm"
                   variant="outline"
                   onClick={() => void copyTemplate(template.text, index)}
-                  className="border-2 border-primary hover:bg-brutal-pink shrink-0"
+                  className="border-4 border-primary hover:bg-brutal-pink shrink-0"
                 >
                   {copiedIndex === index ? (
                     <>

@@ -8,7 +8,7 @@ interface BadgesSectionProps {
 
 export function BadgesSection({ badges }: BadgesSectionProps) {
   return (
-    <Card className="border-2 border-primary mb-8">
+    <Card className="border-4 border-primary mb-8">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase flex items-center gap-2">
           <Award className="h-6 w-6" />
@@ -24,7 +24,7 @@ export function BadgesSection({ badges }: BadgesSectionProps) {
             badges.map((badge) => (
               <div
                 key={badge.id}
-                className={`p-4 border-2 border-primary rounded-none ${
+                className={`p-4 border-4 border-primary rounded-none ${
                   badge.earned ? "bg-brutal-yellow" : "bg-muted opacity-50"
                 }`}
               >

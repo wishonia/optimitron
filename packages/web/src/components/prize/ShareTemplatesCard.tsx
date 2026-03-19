@@ -84,7 +84,7 @@ export function ShareTemplatesCard({ referralUrl }: ShareTemplatesCardProps) {
           return (
             <div
               key={t.label}
-              className="border-2 border-primary p-4 hover:bg-brutal-yellow/10 transition-colors"
+              className="border-4 border-primary p-4 hover:bg-brutal-yellow/10 transition-colors"
             >
               <div className="flex items-start justify-between gap-4 mb-2">
                 <span className={`text-xs font-black uppercase ${t.color}`}>
@@ -92,7 +92,7 @@ export function ShareTemplatesCard({ referralUrl }: ShareTemplatesCardProps) {
                 </span>
                 <button
                   onClick={() => void copyTemplate(text, index)}
-                  className="text-xs font-black uppercase border-2 border-primary px-3 py-1 hover:bg-brutal-pink hover:text-white transition-colors shrink-0"
+                  className="text-xs font-black uppercase border-4 border-primary px-3 py-1 hover:bg-brutal-pink hover:text-background transition-colors shrink-0"
                 >
                   {copiedIndex === index ? "Copied!" : "Copy"}
                 </button>

@@ -14,7 +14,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
         Impact Stats
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="border-2 border-primary hover:border-brutal-pink hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+        <Card className="border-4 border-primary hover:border-brutal-pink hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -26,7 +26,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-2 border-primary hover:border-brutal-cyan hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+        <Card className="border-4 border-primary hover:border-brutal-cyan hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -41,7 +41,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Card className="border-2 border-primary hover:border-brutal-yellow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+              <Card className="border-4 border-primary hover:border-brutal-yellow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
@@ -61,7 +61,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
           </Tooltip>
         </TooltipProvider>
 
-        <Card className="border-2 border-primary hover:border-primary hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+        <Card className="border-4 border-primary hover:border-primary hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>

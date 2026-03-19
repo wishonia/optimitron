@@ -84,7 +84,7 @@ export function VoteTokenBalanceCard() {
         </p>
         <Link
           href="/auth/signin?callbackUrl=/contribute"
-          className="mt-4 inline-flex items-center justify-center border-4 border-primary bg-foreground px-6 py-2 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="mt-4 inline-flex items-center justify-center border-4 border-primary bg-foreground px-6 py-2 text-sm font-black uppercase text-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
         >
           Sign In
         </Link>
@@ -110,7 +110,7 @@ export function VoteTokenBalanceCard() {
           Your VOTE Tokens
         </h3>
         <div className="grid gap-4 grid-cols-2">
-          <div className="border-2 border-primary bg-brutal-cyan/20 p-4">
+          <div className="border-4 border-primary bg-brutal-cyan/20 p-4">
             <div className="text-xs font-black uppercase text-muted-foreground">
               Confirmed Votes
             </div>
@@ -118,7 +118,7 @@ export function VoteTokenBalanceCard() {
               {data.totalVotes}
             </div>
           </div>
-          <div className="border-2 border-primary bg-brutal-yellow/20 p-4">
+          <div className="border-4 border-primary bg-brutal-yellow/20 p-4">
             <div className="text-xs font-black uppercase text-muted-foreground">
               Total VOTE Balance
             </div>
@@ -129,7 +129,7 @@ export function VoteTokenBalanceCard() {
         </div>
 
         {data.totalVotes === 0 && (
-          <div className="mt-4 border-2 border-primary bg-brutal-yellow/10 p-3">
+          <div className="mt-4 border-4 border-primary bg-brutal-yellow/10 p-3">
             <p className="text-xs font-bold text-muted-foreground">
               You don&apos;t have any VOTE tokens yet. Vote on a{" "}
               <Link
@@ -156,7 +156,7 @@ export function VoteTokenBalanceCard() {
               return (
                 <div
                   key={mint.id}
-                  className="border-2 border-primary p-3 flex items-center justify-between gap-3 flex-wrap"
+                  className="border-4 border-primary p-3 flex items-center justify-between gap-3 flex-wrap"
                 >
                   <div className="flex-1 min-w-0">
                     <Link

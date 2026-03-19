@@ -60,7 +60,7 @@ export default async function OutcomeHubPage({
         </p>
       </header>
 
-      <section className="border-2 border-primary bg-background overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
+      <section className="border-4 border-primary bg-background overflow-x-auto shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-8">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b-2 border-primary bg-brutal-yellow">
@@ -99,7 +99,7 @@ export default async function OutcomeHubPage({
                 <td className="px-3 py-2 text-center">
                   <Link
                     href={getPairStudyPath(outcomeId, row.predictorId)}
-                    className="inline-block px-2 py-1 text-xs font-black uppercase border-2 border-primary bg-background hover:bg-brutal-pink"
+                    className="inline-block px-2 py-1 text-xs font-black uppercase border-4 border-primary bg-background hover:bg-brutal-pink"
                   >
                     Open
                   </Link>

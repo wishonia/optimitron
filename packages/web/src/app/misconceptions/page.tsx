@@ -33,7 +33,7 @@ interface MisconceptionData {
 const data = misconceptionData as MisconceptionData;
 
 const categoryColors: Record<string, string> = {
-  "criminal-justice": "bg-brutal-red text-white",
+  "criminal-justice": "bg-brutal-red text-brutal-red-foreground",
   economics: "bg-brutal-cyan text-foreground",
   healthcare: "bg-brutal-cyan text-foreground",
   education: "bg-brutal-pink text-foreground",
@@ -46,7 +46,7 @@ const gradeColors: Record<string, string> = {
   B: "bg-brutal-cyan text-foreground",
   C: "bg-brutal-yellow text-foreground",
   D: "bg-brutal-red/60 text-foreground",
-  F: "bg-brutal-red text-white",
+  F: "bg-brutal-red text-brutal-red-foreground",
 };
 
 const gradeDescriptions: Record<string, string> = {
@@ -184,15 +184,15 @@ export default function MisconceptionsPage() {
 
         {/* Summary cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-brutal-red border-2 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-3xl font-black text-white">
+          <div className="bg-brutal-red border-4 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-3xl font-black text-brutal-red-foreground">
               {data.summary.gradeFCount}
             </div>
             <div className="text-sm text-foreground">
               Grade F (data contradicts)
             </div>
           </div>
-          <div className="bg-brutal-cyan border-2 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="bg-brutal-cyan border-4 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl font-black text-foreground">
               {data.summary.gradeACount}
             </div>
@@ -200,7 +200,7 @@ export default function MisconceptionsPage() {
               Grade A (data supports)
             </div>
           </div>
-          <div className="bg-brutal-cyan border-2 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="bg-brutal-cyan border-4 border-primary p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl font-black text-foreground">
               {data.summary.totalFindings}
             </div>
@@ -216,7 +216,7 @@ export default function MisconceptionsPage() {
               onClick={() => setFilter(cat)}
               className={`px-3 py-1 text-sm font-black transition-colors ${
                 filter === cat
-                  ? "bg-foreground text-white"
+                  ? "bg-foreground text-background"
                   : "bg-muted text-foreground hover:bg-brutal-yellow"
               }`}
             >
@@ -230,7 +230,7 @@ export default function MisconceptionsPage() {
           {filtered.map((finding) => (
             <div
               key={finding.id}
-              className="bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-2 border-primary overflow-hidden"
+              className="bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] border-4 border-primary overflow-hidden"
             >
               <button
                 onClick={() =>

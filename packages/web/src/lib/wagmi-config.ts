@@ -1,4 +1,4 @@
-import { http, createConfig } from "wagmi";
+import { http, createConfig, cookieStorage, createStorage } from "wagmi";
 import { sepolia, baseSepolia, hardhat } from "wagmi/chains";
 import { injected, walletConnect } from "wagmi/connectors";
 import { clientEnv } from "@/lib/env";
@@ -17,4 +17,5 @@ export const wagmiConfig = createConfig({
     [hardhat.id]: http("http://127.0.0.1:8545"),
   },
   ssr: true,
+  storage: createStorage({ storage: cookieStorage }),
 });

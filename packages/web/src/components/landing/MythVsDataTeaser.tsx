@@ -35,10 +35,10 @@ export function MythVsDataTeaser({
           {findings.map((finding) => (
             <div
               key={finding.id}
-              className="p-6 border-2 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col"
+              className="p-6 border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col"
             >
               <div className="flex items-start gap-3 mb-4">
-                <span className="shrink-0 w-10 h-10 bg-brutal-red text-white font-black text-lg flex items-center justify-center border-2 border-primary">
+                <span className="shrink-0 w-10 h-10 bg-brutal-red text-brutal-red-foreground font-black text-lg flex items-center justify-center border-4 border-primary">
                   {finding.grade}
                 </span>
                 <p className="text-sm font-black text-foreground leading-snug">

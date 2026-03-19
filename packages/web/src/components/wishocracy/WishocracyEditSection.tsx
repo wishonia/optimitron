@@ -213,8 +213,8 @@ export function WishocracyEditSection({
                             onChange={(e) => handleCategoryToggle(categoryId, e.target.checked)}
                             className="sr-only peer"
                           />
-                          <div className="w-full h-full bg-muted border-2 border-primary peer-checked:bg-brutal-cyan transition-colors" />
-                          <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-foreground border-2 border-primary transition-transform peer-checked:translate-x-6" />
+                          <div className="w-full h-full bg-muted border-4 border-primary peer-checked:bg-brutal-cyan transition-colors" />
+                          <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-foreground border-4 border-primary transition-transform peer-checked:translate-x-6" />
                         </label>
                       </div>
                     )
@@ -243,7 +243,7 @@ export function WishocracyEditSection({
                       return (
                         <div
                           key={`${comp.itemAId}-${comp.itemBId}`}
-                          className="p-4 border-2 border-primary rounded bg-background"
+                          className="p-4 border-4 border-primary rounded bg-background"
                         >
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
@@ -266,7 +266,7 @@ export function WishocracyEditSection({
                               onChange={(e) =>
                                 handleAllocationChange(comp.itemAId, comp.itemBId, Number(e.target.value))
                               }
-                              className="w-full h-3 bg-background border-2 border-primary rounded-none appearance-none cursor-pointer slider-brutal"
+                              className="w-full h-3 bg-background border-4 border-primary rounded-none appearance-none cursor-pointer slider-brutal"
                               style={{
                                 background: `linear-gradient(to right, #FF6B9D ${comp.allocationA}%, #00D9FF ${comp.allocationA}%)`,
                               }}

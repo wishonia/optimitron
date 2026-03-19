@@ -88,7 +88,7 @@ function ProfileCTA({
   return (
     <Link
       href={href}
-      className={`block border-4 border-primary ${color} p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+      className={`block border-4 border-primary ${color} p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]`}
     >
       <h3 className="text-sm font-black uppercase text-foreground">{label}</h3>
       <p className="mt-1 text-xs font-bold text-foreground">{description}</p>

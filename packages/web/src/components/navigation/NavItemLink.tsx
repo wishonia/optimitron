@@ -51,10 +51,10 @@ export function getNavItemDescriptionMode(
 
 function getTooltipClasses(variant: NavItemLinkVariant): string {
   if (variant === "topNav") {
-    return "pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-1 w-52 rounded border-2 border-primary bg-background px-3 py-2 text-xs font-bold text-foreground opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100 z-50 normal-case";
+    return "pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-1 w-52 rounded border-4 border-primary bg-background px-3 py-2 text-xs font-bold text-foreground opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100 z-50 normal-case";
   }
 
-  return "pointer-events-none absolute left-0 bottom-full mb-2 w-52 rounded border-2 border-primary bg-background px-3 py-2 text-xs font-bold text-foreground opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100 z-10";
+  return "pointer-events-none absolute left-0 bottom-full mb-2 w-52 rounded border-4 border-primary bg-background px-3 py-2 text-xs font-bold text-foreground opacity-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-opacity group-hover:opacity-100 z-10";
 }
 
 function renderLabel(

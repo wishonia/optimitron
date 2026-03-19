@@ -94,21 +94,21 @@ export function AllocationComparisonCard({
       {/* Comparison Message */}
       <div className="border-primary">
         {difference > 0 ? (
-          <div className="text-center p-4 bg-brutal-cyan border-2 border-primary">
+          <div className="text-center p-4 bg-brutal-cyan border-4 border-primary">
             <p className="text-lg font-black">
               You allocated <span className="text-brutal-cyan text-2xl">{Math.abs(difference)}%</span> MORE
             </p>
             <p className="text-sm font-bold">to {categoryB.label.toLowerCase()} than the average person</p>
           </div>
         ) : difference < 0 ? (
-          <div className="text-center p-4 bg-brutal-pink border-2 border-primary">
+          <div className="text-center p-4 bg-brutal-pink border-4 border-primary">
             <p className="text-lg font-black">
               You allocated <span className="text-brutal-pink text-2xl">{Math.abs(difference)}%</span> LESS
             </p>
             <p className="text-sm font-bold">to {categoryB.label.toLowerCase()} than the average person</p>
           </div>
         ) : (
-          <div className="text-center p-4 bg-brutal-yellow border-2 border-primary">
+          <div className="text-center p-4 bg-brutal-yellow border-4 border-primary">
             <p className="text-lg font-black">
               You matched the community average!
             </p>

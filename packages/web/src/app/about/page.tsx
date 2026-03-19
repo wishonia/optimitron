@@ -25,9 +25,9 @@ const productSurfaces = [
     desc: `Nobody asked you how to spend ${fmtParam({...US_FEDERAL_SPENDING_2024, unit: "USD"})}. This lets you answer anyway.`,
     cta: "Open Wishocracy",
     tone: "bg-brutal-pink",
-    titleColor: "text-white",
+    titleColor: "text-brutal-pink-foreground",
     descColor: "text-background",
-    ctaColor: "text-white hover:text-brutal-yellow",
+    ctaColor: "text-brutal-pink-foreground hover:text-brutal-yellow",
   },
   {
     item: alignmentLink,
@@ -151,21 +151,21 @@ export default function AboutPage() {
           <NavItemLink
             item={wishocracyLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-brutal-pink-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Start With Wishocracy
           </NavItemLink>
           <NavItemLink
             item={alignmentLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-yellow px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-yellow px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             See Alignment Reports
           </NavItemLink>
           <NavItemLink
             item={studiesLink}
             variant="custom"
-            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Browse Studies
           </NavItemLink>
@@ -235,7 +235,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="card bg-brutal-pink border-primary">
             <div className="text-2xl mb-2">🏆</div>
-            <h3 className="font-black text-white mb-2">Prize (Phase 1)</h3>
+            <h3 className="font-black text-brutal-pink-foreground mb-2">Prize (Phase 1)</h3>
             <p className="text-sm text-background font-bold leading-relaxed">
               Deposit USDC. Recruit voters for the 1% Treaty referendum. If it
               works, you share the prize. If it doesn&apos;t, you get ~4.2x your
@@ -244,7 +244,7 @@ export default function AboutPage() {
             <NavItemLink
               item={prizeLink}
               variant="custom"
-              className="mt-4 inline-flex items-center text-sm font-black uppercase text-white hover:text-brutal-yellow transition-colors"
+              className="mt-4 inline-flex items-center text-sm font-black uppercase text-brutal-pink-foreground hover:text-brutal-yellow transition-colors"
             >
               Join the Prize &rarr;
             </NavItemLink>
@@ -312,7 +312,7 @@ export default function AboutPage() {
               item={paper}
               variant="custom"
               external
-              className="card group hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+              className="card group hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all"
             >
               <h3 className="text-foreground font-black group-hover:text-brutal-pink transition-colors">
                 {paper.label}
@@ -346,8 +346,8 @@ export default function AboutPage() {
               external
               className={
                 link.label === "GitHub"
-                  ? "inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-                  : "inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                  ? "inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
+                  : "inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
               }
             >
               {link.label === "GitHub" ? "View GitHub" : "Read The README"}

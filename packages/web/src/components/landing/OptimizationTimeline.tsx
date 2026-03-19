@@ -151,7 +151,7 @@ export function OptimizationTimeline({ userAge, onAgeChange }: OptimizationTimel
       <div className="relative max-w-md mx-auto">
         <div
           ref={statusQuoRef}
-          className="relative w-3 mx-auto border-2 border-primary overflow-hidden"
+          className="relative w-3 mx-auto border-4 border-primary overflow-hidden"
           style={{ height: `${statusQuoHeight}px` }}
         >
           <div

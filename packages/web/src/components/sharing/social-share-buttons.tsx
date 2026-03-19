@@ -19,13 +19,13 @@ export function SocialShareButtons({ url, text }: SocialShareButtonsProps) {
         href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center justify-center border-2 border-primary bg-foreground px-4 py-2 font-bold text-white transition-colors hover:bg-black/80"
+        className="inline-flex items-center justify-center border-4 border-primary bg-foreground px-4 py-2 font-bold text-background transition-colors hover:bg-foreground/80"
       >
         Share on X
       </a>
       <a
         href={`mailto:?subject=${encodeURIComponent("Try Optimitron")}&body=${emailBody}`}
-        className="inline-flex items-center justify-center gap-2 border-2 border-primary bg-background px-4 py-2 font-bold transition-colors hover:bg-muted"
+        className="inline-flex items-center justify-center gap-2 border-4 border-primary bg-background px-4 py-2 font-bold transition-colors hover:bg-muted"
       >
         <Mail className="h-4 w-4" />
         Email

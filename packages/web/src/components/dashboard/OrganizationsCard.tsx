@@ -65,7 +65,7 @@ export function OrganizationsCard({ organizations }: OrganizationsCardProps) {
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="text-xl font-black uppercase">{org.name}</h3>
                   <div
-                    className={`${statusColors[org.status as keyof typeof statusColors] || "bg-background"} border-2 border-primary px-3 py-1 text-xs font-black uppercase flex items-center gap-2`}
+                    className={`${statusColors[org.status as keyof typeof statusColors] || "bg-background"} border-4 border-primary px-3 py-1 text-xs font-black uppercase flex items-center gap-2`}
                   >
                     {statusIcons[org.status as keyof typeof statusIcons]}
                     {org.status}

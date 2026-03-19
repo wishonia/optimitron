@@ -57,7 +57,7 @@ export default function SensitivityAnalysisSection() {
                 <div className="text-xs">Full market capture<br/>0.5x operational costs</div>
               </div>
             </div>
-            <div className="bg-background border-2 border-primary p-4">
+            <div className="bg-background border-4 border-primary p-4">
               <p className="font-black text-lg">
                 Even in the WORST scenario, {worstCaseROI}:1 still beats smallpox eradication ({smallpoxROI}) — humanity&apos;s previous best ROI.
               </p>

@@ -105,7 +105,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
   }
 
   return (
-    <Card className="border-2 border-primary">
+    <Card className="border-4 border-primary">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase">YOUR PROFILE</CardTitle>
         <CardDescription className="font-bold">Manage your public presence</CardDescription>
@@ -117,7 +117,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
             <Input
               value={editForm.name}
               onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-              className="border-2 border-primary bg-background"
+              className="border-4 border-primary bg-background"
             />
           </div>
           <div>
@@ -125,7 +125,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
             <Input
               value={editForm.username}
               onChange={(e) => handleUsernameChange(e.target.value)}
-              className="border-2 border-primary bg-background"
+              className="border-4 border-primary bg-background"
               placeholder="your_handle"
             />
             <p className="text-xs text-muted-foreground mt-1">
@@ -137,7 +137,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
             <Textarea
               value={editForm.bio}
               onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })}
-              className="border-2 border-primary bg-background"
+              className="border-4 border-primary bg-background"
               rows={3}
             />
           </div>
@@ -146,7 +146,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
             <Input
               value={editForm.headline}
               onChange={(e) => setEditForm({ ...editForm, headline: e.target.value })}
-              className="border-2 border-primary bg-background"
+              className="border-4 border-primary bg-background"
               placeholder="Software Engineer | AI Enthusiast"
             />
             <p className="text-xs text-muted-foreground mt-1">
@@ -158,7 +158,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
             <Input
               value={editForm.website}
               onChange={(e) => setEditForm({ ...editForm, website: e.target.value })}
-              className="border-2 border-primary bg-background"
+              className="border-4 border-primary bg-background"
               placeholder="https://yourwebsite.com"
               type="url"
             />
@@ -168,7 +168,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
             <Input
               value={editForm.coverImage}
               onChange={(e) => setEditForm({ ...editForm, coverImage: e.target.value })}
-              className="border-2 border-primary bg-background"
+              className="border-4 border-primary bg-background"
               placeholder="https://example.com/cover.jpg"
               type="url"
             />
@@ -198,7 +198,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
           />
 
           {editForm.isPublic && editForm.username && (
-            <div className="mt-4 p-4 bg-muted/30 border-2 border-primary border-dashed rounded-lg animate-in fade-in slide-in-from-top-2">
+            <div className="mt-4 p-4 bg-muted/30 border-4 border-primary border-dashed rounded-lg animate-in fade-in slide-in-from-top-2">
               <div className="flex items-center justify-between mb-2">
                 <Label className="text-xs font-bold uppercase text-muted-foreground flex items-center gap-1">
                   <Globe className="w-3 h-3" />
@@ -216,13 +216,13 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
                 <Input
                   readOnly
                   value={`${origin}/u/${editForm.username}`}
-                  className="bg-background border-2 border-primary h-9 font-mono text-sm"
+                  className="bg-background border-4 border-primary h-9 font-mono text-sm"
                 />
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleCopyUrl}
-                  className="border-2 border-primary shrink-0 w-24"
+                  className="border-4 border-primary shrink-0 w-24"
                 >
                   {isCopied ? (
                     <>
@@ -240,7 +240,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
         </div>
 
         <div className="flex items-center justify-end pt-4 border-t-2 border-primary">
-          <Button onClick={saveProfile} disabled={isSaving} className="border-2 border-primary bg-brutal-pink w-full sm:w-auto">
+          <Button onClick={saveProfile} disabled={isSaving} className="border-4 border-primary bg-brutal-pink w-full sm:w-auto">
             {isSaving ? "Saving..." : "Update Profile"}
           </Button>
         </div>

@@ -52,7 +52,7 @@ export default async function ReferendumsIndexPage() {
             <Link
               key={referendum.id}
               href={`/referendum/${referendum.slug}`}
-              className="block border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="block border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">

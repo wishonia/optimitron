@@ -88,7 +88,7 @@ export default function Navbar() {
               <SheetTrigger asChild>
                 <button
                   type="button"
-                  className="border-4 border-primary bg-background p-2 hover:bg-foreground hover:text-white font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all"
+                  className="border-4 border-primary bg-background p-2 hover:bg-foreground hover:text-background font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all"
                   aria-label="Open menu"
                 >
                   <Menu className="h-5 w-5 stroke-[3px]" />
@@ -161,7 +161,7 @@ export default function Navbar() {
                           setOpen(false);
                           void signOut({ callbackUrl: ROUTES.home });
                         }}
-                        className="w-full text-sm font-black uppercase px-3 py-2 border-4 border-primary bg-background hover:bg-foreground hover:text-white transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+                        className="w-full text-sm font-black uppercase px-3 py-2 border-4 border-primary bg-background hover:bg-foreground hover:text-background transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
                       >
                         Sign Out
                       </button>

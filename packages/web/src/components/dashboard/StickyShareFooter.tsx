@@ -23,7 +23,7 @@ export function StickyShareFooter({ referrals, referralLink }: StickyShareFooter
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t-4 border-primary bg-brutal-yellow p-4 shadow-[0px_-4px_10px_rgba(0,0,0,1)]">
       <div className="mx-auto max-w-7xl flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-left">
-          <div className="bg-background border-2 border-primary p-2 hidden sm:block">
+          <div className="bg-background border-4 border-primary p-2 hidden sm:block">
             <Heart className="h-6 w-6 text-brutal-pink fill-brutal-pink" />
           </div>
           <div>

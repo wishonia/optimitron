@@ -85,7 +85,7 @@ export function ConnectedAccountsCard({ socialAccounts, onRefresh }: ConnectedAc
   }
 
   return (
-    <Card className="border-2 border-primary">
+    <Card className="border-4 border-primary">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase">CONNECTED ACCOUNTS</CardTitle>
         <CardDescription className="font-bold">
@@ -105,7 +105,7 @@ export function ConnectedAccountsCard({ socialAccounts, onRefresh }: ConnectedAc
               : "Not connected"
 
             return (
-              <div key={row.key} className="flex items-center justify-between p-4 border-2 border-primary bg-background">
+              <div key={row.key} className="flex items-center justify-between p-4 border-4 border-primary bg-background">
                 <div className="flex items-center gap-3">
                   {row.icon}
                   <div>
@@ -115,7 +115,7 @@ export function ConnectedAccountsCard({ socialAccounts, onRefresh }: ConnectedAc
                 </div>
                 <Button
                   variant="outline"
-                  className="border-2 border-primary bg-transparent"
+                  className="border-4 border-primary bg-transparent"
                   onClick={() =>
                     account ? handleDisconnect(row.key) : handleConnect(row.key)
                   }

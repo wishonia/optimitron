@@ -38,7 +38,7 @@ export function ImpactExplainer({ className, iconClassName, size = 18, label = "
             type="button"
             aria-label={label}
             className={cn(
-              "inline-flex items-center justify-center rounded-full border-2 border-primary bg-background text-primary hover:bg-primary hover:text-primary-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary",
+              "inline-flex items-center justify-center rounded-full border-4 border-primary bg-background text-primary hover:bg-primary hover:text-primary-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary",
               className,
             )}
           >

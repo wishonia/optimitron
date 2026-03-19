@@ -38,7 +38,7 @@ export function WalletCard() {
                   <button
                     key={connector.uid}
                     onClick={() => connect({ connector })}
-                    className="border-2 border-primary bg-brutal-cyan px-4 py-2.5 text-sm font-black uppercase text-foreground shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
+                    className="border-4 border-primary bg-brutal-cyan px-4 py-2.5 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all"
                   >
                     {connector.name === "Injected"
                       ? "Browser Wallet (MetaMask)"
@@ -47,7 +47,7 @@ export function WalletCard() {
                 ))}
               </div>
             )}
-            <div className="border-2 border-primary bg-brutal-cyan/10 p-3">
+            <div className="border-4 border-primary bg-brutal-cyan/10 p-3">
               <p className="text-xs font-bold text-muted-foreground">
                 Need a wallet?{" "}
                 <a
@@ -77,14 +77,14 @@ export function WalletCard() {
                 {chainId !== sepolia.id && (
                   <button
                     onClick={() => switchChain({ chainId: sepolia.id })}
-                    className="border-2 border-primary bg-brutal-yellow px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/80 transition-colors"
+                    className="border-4 border-primary bg-brutal-yellow px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-yellow/80 transition-colors"
                   >
                     Switch to Sepolia
                   </button>
                 )}
                 <button
                   onClick={() => disconnect()}
-                  className="border-2 border-primary bg-background px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-red/20 transition-colors"
+                  className="border-4 border-primary bg-background px-3 py-1.5 text-xs font-black uppercase hover:bg-brutal-red/20 transition-colors"
                 >
                   Disconnect
                 </button>
@@ -92,7 +92,7 @@ export function WalletCard() {
             </div>
 
             <div className="grid gap-2 grid-cols-2">
-              <div className="border-2 border-primary bg-brutal-cyan/20 p-2">
+              <div className="border-4 border-primary bg-brutal-cyan/20 p-2">
                 <div className="text-[10px] font-black uppercase text-muted-foreground">
                   $WISH Balance
                 </div>
@@ -102,7 +102,7 @@ export function WalletCard() {
                     : `${formatWish(wishBalance)} $WISH`}
                 </div>
               </div>
-              <div className="border-2 border-primary bg-brutal-cyan/10 p-2">
+              <div className="border-4 border-primary bg-brutal-cyan/10 p-2">
                 <div className="text-[10px] font-black uppercase text-muted-foreground">
                   Max Supply (Fixed)
                 </div>

@@ -54,7 +54,7 @@ export function NotificationPreferencesCard({ preferences, onRefresh }: Notifica
   }
 
   return (
-    <Card className="border-2 border-primary mb-8">
+    <Card className="border-4 border-primary mb-8">
       <CardHeader>
         <CardTitle className="text-2xl font-black uppercase">NOTIFICATION PREFERENCES</CardTitle>
         <CardDescription className="font-bold">Choose how and when to be bothered</CardDescription>
@@ -74,7 +74,7 @@ export function NotificationPreferencesCard({ preferences, onRefresh }: Notifica
         {NOTIFICATION_TYPES.map((nt) => (
           <div
             key={nt.type}
-            className="grid grid-cols-1 sm:grid-cols-[1fr_repeat(3,80px)] gap-2 p-4 border-2 border-primary bg-background items-center"
+            className="grid grid-cols-1 sm:grid-cols-[1fr_repeat(3,80px)] gap-2 p-4 border-4 border-primary bg-background items-center"
           >
             <div>
               <Label className="text-sm font-bold uppercase">{nt.label}</Label>
@@ -88,7 +88,7 @@ export function NotificationPreferencesCard({ preferences, onRefresh }: Notifica
                     size="sm"
                     onClick={() => togglePreference(nt.type, ch.channel)}
                     variant={enabled ? "default" : "outline"}
-                    className="border-2 border-primary w-16"
+                    className="border-4 border-primary w-16"
                     disabled={isUpdating}
                   >
                     {enabled ? "ON" : "OFF"}

@@ -54,7 +54,7 @@ const mechanismSteps = [
       "Deposit USDC into the VoterPrizeTreasury smart contract. Your principal goes into Aave V3 yield. You get PRIZE shares — your claim on the escrow. If the plan fails after 15 years, you claim principal + ~4.2x yield. Zero downside.",
     detail: `Depositors also get a referral link. If they recruit voters, they earn VOTE tokens too — upside in BOTH outcomes. But depositing alone guarantees the ~${escrowMultiplier}x floor.`,
     color: "bg-brutal-pink",
-    textColor: "text-white",
+    textColor: "text-brutal-pink-foreground",
     subTextColor: "text-background",
     detailColor: "text-muted-foreground",
   },
@@ -216,7 +216,7 @@ export default function PrizePage() {
               <div className="text-xs font-black uppercase text-background mb-2">
                 If the Plan Fails (Depositors)
               </div>
-              <div className="text-xl font-black text-white">
+              <div className="text-xl font-black text-brutal-pink-foreground">
                 ~{escrowMultiplier}x Return
               </div>
               <p className="text-xs font-bold text-muted-foreground mt-1">
@@ -243,7 +243,7 @@ export default function PrizePage() {
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <a
             href="#invest"
-            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-brutal-pink-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Deposit to Prize
           </a>
@@ -251,7 +251,7 @@ export default function PrizePage() {
             item={earthOptimizationPrizePaperLink}
             variant="custom"
             external
-            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
             Read the Paper
           </NavItemLink>
@@ -264,7 +264,7 @@ export default function PrizePage() {
           {trustBadges.map((badge) => (
             <div
               key={badge.label}
-              className="border-2 border-primary bg-background px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              className="border-4 border-primary bg-background px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               <div className="text-xs font-black uppercase text-foreground">
                 {badge.label}
@@ -276,7 +276,7 @@ export default function PrizePage() {
           ))}
         </div>
         <div className="border-4 border-primary bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-2xl font-black uppercase text-white mb-4">
+          <h2 className="text-2xl font-black uppercase text-brutal-pink-foreground mb-4">
             Deposit — Fund the Prize Pool
           </h2>
           <p className="text-sm font-bold text-background mb-6 max-w-2xl">
@@ -339,7 +339,7 @@ export default function PrizePage() {
             <div className="text-xs font-black uppercase text-muted-foreground mb-2 text-background">
               Dominant Assurance Contract
             </div>
-            <div className="text-2xl font-black text-white">
+            <div className="text-2xl font-black text-brutal-pink-foreground">
               Win Either Way
             </div>
             <p className="text-xs font-bold text-muted-foreground mt-2">
@@ -485,7 +485,7 @@ export default function PrizePage() {
               <p className="text-sm text-muted-foreground font-bold leading-relaxed mb-3">
                 {item.description}
               </p>
-              <div className="border-2 border-primary bg-brutal-cyan px-3 py-1.5 inline-block">
+              <div className="border-4 border-primary bg-brutal-cyan px-3 py-1.5 inline-block">
                 <span className="text-xs font-black uppercase text-foreground">
                   {item.impact}
                 </span>
@@ -512,10 +512,10 @@ export default function PrizePage() {
                 operational for outcome thresholds to be achievable. Any team can
                 submit a v2 that beats it on cost per DALY averted.
               </p>
-              <div className="border-2 border-primary bg-background overflow-hidden">
+              <div className="border-4 border-primary bg-background overflow-hidden">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-foreground text-white">
+                    <tr className="bg-foreground text-background">
                       <th className="px-4 py-2 text-left font-black uppercase text-xs">#</th>
                       <th className="px-4 py-2 text-left font-black uppercase text-xs">Function</th>
                       <th className="px-4 py-2 text-left font-black uppercase text-xs hidden md:table-cell">Description</th>
@@ -549,10 +549,10 @@ export default function PrizePage() {
                 {bountyStages.map((item) => (
                   <div
                     key={item.stage}
-                    className="border-2 border-primary bg-background p-4"
+                    className="border-4 border-primary bg-background p-4"
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-7 h-7 bg-foreground text-white flex items-center justify-center text-xs font-black">
+                      <span className="w-7 h-7 bg-foreground text-background flex items-center justify-center text-xs font-black">
                         {item.stage}
                       </span>
                       <span className={`text-[10px] font-black uppercase px-2 py-0.5 border border-primary ${item.statusColor}`}>
@@ -578,7 +578,7 @@ export default function PrizePage() {
             </AccordionTrigger>
             <AccordionContent className="px-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div className="border-2 border-primary bg-brutal-yellow p-4">
+                <div className="border-4 border-primary bg-brutal-yellow p-4">
                   <h4 className="font-black uppercase text-foreground text-xs mb-2">
                     Replacement Rule
                   </h4>
@@ -588,7 +588,7 @@ export default function PrizePage() {
                     switches to your plan. No incumbency advantage.
                   </p>
                 </div>
-                <div className="border-2 border-primary bg-brutal-cyan p-4">
+                <div className="border-4 border-primary bg-brutal-cyan p-4">
                   <h4 className="font-black uppercase text-foreground text-xs mb-2">
                     Outcome Perpetuity
                   </h4>
@@ -598,7 +598,7 @@ export default function PrizePage() {
                     when outcomes stop.
                   </p>
                 </div>
-                <div className="border-2 border-primary bg-background p-4">
+                <div className="border-4 border-primary bg-background p-4">
                   <h4 className="font-black uppercase text-foreground text-xs mb-2">
                     Zero Insider Advantage
                   </h4>
@@ -626,7 +626,7 @@ export default function PrizePage() {
                 {contractDetails.map((item) => (
                   <div
                     key={item.label}
-                    className="border-2 border-primary bg-background p-3"
+                    className="border-4 border-primary bg-background p-3"
                   >
                     <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
                       {item.label}
@@ -698,7 +698,7 @@ export default function PrizePage() {
           </div>
         </div>
         <div className="card bg-brutal-pink border-primary text-center">
-          <h2 className="text-2xl font-black text-white mb-3 uppercase">
+          <h2 className="text-2xl font-black text-brutal-pink-foreground mb-3 uppercase">
             The Bar Is Low
           </h2>
           <p className="text-background mb-6 font-bold max-w-2xl mx-auto leading-relaxed">
@@ -709,14 +709,14 @@ export default function PrizePage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <a
               href="#invest"
-              className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-white uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
             >
               Deposit to Prize
             </a>
             <NavItemLink
               item={wishocracyLink}
               variant="custom"
-              className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-2 border-primary shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
             >
               Express Your Preferences
             </NavItemLink>
