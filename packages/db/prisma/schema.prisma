@@ -428,6 +428,7 @@ model User {
   @@index([censusUpdatedAt])
   @@index([createdAt])
   @@index([referralEmailSequenceStep, referralEmailSequenceLastSentAt])
+  @@index([isPublic])
   @@index([deletedAt])
 }
 
@@ -1097,7 +1098,9 @@ model Measurement {
 
   @@unique([userId, globalVariableId, startTime])
   @@index([userId])
+  @@index([userId, startTime])
   @@index([globalVariableId])
+  @@index([globalVariableId, startTime])
   @@index([nOf1VariableId])
   @@index([startTime])
   @@index([userId, globalVariableId, startTime])
@@ -1167,6 +1170,7 @@ model TrackingReminder {
   @@unique([userId, globalVariableId, reminderStartTime, reminderFrequency])
   @@index([userId])
   @@index([globalVariableId])
+  @@index([nOf1VariableId])
   @@index([active])
 }
 
@@ -2305,6 +2309,9 @@ model WebPushSubscription {
   /// When subscription was created
   createdAt DateTime @default(now())
 
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
   /// Last time a notification was sent to this subscription
   lastSentAt DateTime?
 
@@ -2315,6 +2322,7 @@ model WebPushSubscription {
   user User @relation("UserWebPushSubscriptions", fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([expired])
 }
 
 /// User preferences for push notification timing and quiet hours
@@ -2479,6 +2487,7 @@ model ReferendumVote {
   @@index([userId])
   @@index([referendumId])
   @@index([referredByUserId])
+  @@index([createdAt])
 }
 
 // ============================================================================
@@ -2573,6 +2582,7 @@ model PrizeTreasuryDeposit {
 
   @@index([depositorAddress])
   @@index([txHash])
+  @@index([createdAt])
 }
 
 // ============================================================================
@@ -2672,7 +2682,7 @@ model Activity {
   // -- Relations --
   user User @relation("UserActivities", fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, createdAt])
   @@index([type])
   @@index([entityType, entityId])
   @@index([createdAt])
@@ -2899,11 +2909,16 @@ model SurveySection {
   /// When this record was last updated
   updatedAt DateTime @updatedAt
 
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
   // -- Relations --
   survey    Survey           @relation(fields: [surveyId], references: [id], onDelete: Cascade)
   questions SurveyQuestion[]
 
+  @@unique([surveyId, sortOrder])
   @@index([surveyId])
+  @@index([deletedAt])
 }
 
 /// A single question within a survey section
@@ -2941,11 +2956,16 @@ model SurveyQuestion {
   /// When this record was last updated
   updatedAt DateTime @updatedAt
 
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
   // -- Relations --
   section   SurveySection      @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   responses QuestionResponse[]
 
+  @@unique([sectionId, sortOrder])
   @@index([sectionId])
+  @@index([deletedAt])
 }
 
 /// A user's overall response to a survey
@@ -3001,6 +3021,12 @@ model QuestionResponse {
   /// When this record was created
   createdAt DateTime @default(now())
 
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
   // -- Relations --
   surveyResponse SurveyResponse @relation(fields: [surveyResponseId], references: [id], onDelete: Cascade)
   question       SurveyQuestion @relation(fields: [questionId], references: [id])
@@ -3008,6 +3034,7 @@ model QuestionResponse {
   @@unique([surveyResponseId, questionId])
   @@index([surveyResponseId])
   @@index([questionId])
+  @@index([deletedAt])
 }
 
 // ============================================================================
@@ -3071,6 +3098,9 @@ model SocialAccount {
   /// When this record was last updated
   updatedAt DateTime @updatedAt
 
+  /// Soft-delete timestamp; non-null means this record is logically deleted
+  deletedAt DateTime?
+
   // -- Relations --
   user User @relation("UserSocialAccounts", fields: [userId], references: [id], onDelete: Cascade)
 
@@ -3078,6 +3108,7 @@ model SocialAccount {
   @@index([userId])
   @@index([platform])
   @@index([walletAddress])
+  @@index([deletedAt])
 }
 
 /// Email delivery tracking log

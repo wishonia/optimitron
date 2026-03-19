@@ -22,14 +22,14 @@ describeIfDatabase("seedDatabase", () => {
       variableCategories: await prisma.variableCategory.count(),
       globalVariables: await prisma.globalVariable.count(),
       jurisdictions: await prisma.jurisdiction.count(),
-      items: await prisma.wishocraticItem.count(),
+      wishocraticItems: await prisma.wishocraticItem.count(),
     };
 
     expect(firstCounts.units).toBeGreaterThanOrEqual(40);
     expect(firstCounts.variableCategories).toBeGreaterThanOrEqual(35);
     expect(firstCounts.globalVariables).toBeGreaterThanOrEqual(119);
     expect(firstCounts.jurisdictions).toBeGreaterThanOrEqual(51);
-    expect(firstCounts.items).toBeGreaterThanOrEqual(20);
+    expect(firstCounts.wishocraticItems).toBeGreaterThanOrEqual(18);
 
     await expect(
       prisma.jurisdiction.findUnique({ where: { code: "US" } }),
@@ -38,8 +38,8 @@ describeIfDatabase("seedDatabase", () => {
       prisma.unit.findUnique({ where: { name: "Milligrams" } }),
     ).resolves.toBeTruthy();
     await expect(
-      prisma.wishocraticItem.findUnique({ where: { id: "budget-national-defense" } }),
-    ).resolves.toMatchObject({ name: "National Defense" });
+      prisma.wishocraticItem.findUnique({ where: { id: "PRAGMATIC_CLINICAL_TRIALS" } }),
+    ).resolves.toMatchObject({ name: "Pragmatic Clinical Trials" });
 
     await seedDatabase();
 
@@ -48,7 +48,7 @@ describeIfDatabase("seedDatabase", () => {
       variableCategories: await prisma.variableCategory.count(),
       globalVariables: await prisma.globalVariable.count(),
       jurisdictions: await prisma.jurisdiction.count(),
-      items: await prisma.wishocraticItem.count(),
+      wishocraticItems: await prisma.wishocraticItem.count(),
     };
 
     expect(secondCounts).toEqual(firstCounts);

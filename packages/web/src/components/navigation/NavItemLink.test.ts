@@ -15,15 +15,15 @@ describe("NavItemLink helpers", () => {
   });
 
   it("returns active and inactive class variants for top nav links", () => {
-    expect(getNavItemLinkClasses("topNav", true)).toContain("bg-white");
-    expect(getNavItemLinkClasses("topNav", false)).toContain("hover:bg-white");
+    expect(getNavItemLinkClasses("topNav", true)).toContain("bg-background");
+    expect(getNavItemLinkClasses("topNav", false)).toContain("hover:bg-background");
   });
 
   it("returns footer styling without button chrome", () => {
     const classes = getNavItemLinkClasses("footer", false);
 
     expect(classes).toContain("text-sm");
-    expect(classes).toContain("hover:text-black");
+    expect(classes).toContain("hover:text-foreground");
     expect(classes).not.toContain("bg-yellow-300");
   });
 

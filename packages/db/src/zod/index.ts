@@ -843,6 +843,7 @@ export const WebPushSubscriptionSchema = z.object({
   auth: z.string(),
   userAgent: z.string().nullable().optional(),
   createdAt: dateSchema,
+  updatedAt: dateSchema,
   lastSentAt: nullableDateSchema,
   expired: z.boolean().default(false),
 });
@@ -1076,6 +1077,7 @@ export const SurveySectionSchema = z.object({
   conditionalLogic: z.string().nullable().optional(),
   createdAt: dateSchema,
   updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
 });
 export type SurveySectionType = z.infer<typeof SurveySectionSchema>;
 
@@ -1092,6 +1094,7 @@ export const SurveyQuestionSchema = z.object({
   conditionalLogic: z.string().nullable().optional(),
   createdAt: dateSchema,
   updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
 });
 export type SurveyQuestionType = z.infer<typeof SurveyQuestionSchema>;
 
@@ -1115,6 +1118,8 @@ export const QuestionResponseSchema = z.object({
   answer: z.string(),
   score: z.number().nullable().optional(),
   createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
 });
 export type QuestionResponseType = z.infer<typeof QuestionResponseSchema>;
 
@@ -1144,6 +1149,7 @@ export const SocialAccountSchema = z.object({
   verifiedAt: nullableDateSchema,
   createdAt: dateSchema,
   updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
 });
 export type SocialAccountType = z.infer<typeof SocialAccountSchema>;
 

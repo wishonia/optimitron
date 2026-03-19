@@ -13,6 +13,19 @@ vi.mock("@/lib/auth-utils", () => ({
   requireAuth: mocks.requireAuth,
 }));
 
+vi.mock("@/lib/env", () => ({
+  serverEnv: { WISHOCRACY_JURISDICTION_KEY: undefined },
+}));
+
+vi.mock("@optimitron/storage", () => ({
+  importKey: vi.fn().mockResolvedValue("mock-key"),
+  encryptJson: vi.fn().mockResolvedValue({
+    ciphertext: "mock-ciphertext",
+    iv: "mock-iv",
+    algorithm: "AES-GCM-256",
+  }),
+}));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     wishocraticCategorySelection: {
