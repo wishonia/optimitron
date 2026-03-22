@@ -1,8 +1,10 @@
 # Conductor Overhaul Plan (Optimitron)
 
-Date: 2026-02-07
+Date: 2026-02-07 (status updated 2026-03-22)
 
 This plan is based on a full repository scan (agent guidelines, conductor files, all package `src/` trees, reports, web data JSON, and key roadmap docs). It proposes a new track map that aligns the conductor with current code reality and the next critical milestones.
+
+> **Status as of 2026-03-22:** `optimizer-core-v2` is complete. `data-infrastructure-v2` is largely done (6 API fetchers + 9 health importers). `web-integration-v2` partially done (misconceptions, budget, policy, compare, outcomes pages all live). `misconception-tier3-v1` mostly done (15 of 18 analyses). See track table for per-track status.
 
 ## 1) Current State Snapshot (Condensed)
 
@@ -25,20 +27,20 @@ This plan is based on a full repository scan (agent guidelines, conductor files,
 
 ### Track Index (New + Updated)
 
-| Track ID | Title | Priority | Effort | Agent Tier | Dependencies |
-| --- | --- | --- | --- | --- | --- |
-| `optimal-budget-v2` | OBG Minimum Effective Spending + Efficient Frontier | P0 | L | Codex | data-infrastructure-v2, optimizer-core-v2 |
-| `opg-core-v1` | OPG Evidence + Policy Scoring Expansion | P0 | M | Codex | optimizer-core-v2, data-infrastructure-v2 |
-| `obg-opg-integration-v1` | OBG → OPG Budget-Policy Bridge | P0 | M | Claude | optimal-budget-v2, opg-core-v1 |
-| `data-infrastructure-v2` | OECD + Direct Outcomes + FRED Improvements | P0 | L | Codex | none |
-| `optimizer-core-v2` | Partial Correlations + Diminishing Returns Detection | P0 | M | Codex | none |
-| `web-integration-v2` | Wire Library Outputs to Pages + JSON Schema | P1 | M | Codex | optimal-budget-v2, opg-core-v1, misconception-tier3-v1 |
-| `funding-grants-v1` | Gitcoin + Optimism + VitaDAO Applications | P1 | S | Claude | funding-readiness-v1, optimal-budget-v2 |
-| `testing-strategy-v1` | Hypothesis-Driven Tests for Findings | P0 | M | Codex | optimizer-core-v2, optimal-budget-v2, opg-core-v1 |
-| `misconception-tier3-v1` | Remaining Tier 3 Analyses | P1 | M | Codex | data-infrastructure-v2, optimizer-core-v2 |
-| `extension-digital-twin-safe-v1` | Chrome Extension: Data Model + Export | P2 | M | Codex | optimizer-core-v2 |
-| `chat-ui-improvements-v1` | Chat UI: NLP + Measurement Ingestion | P2 | S | Codex | optimizer-core-v2 |
-| `funding-readiness-v2` | Pilot Pack Refresh + Reproducibility | P1 | M | Claude | optimal-budget-v2, web-integration-v2 |
+| Track ID | Title | Priority | Effort | Agent Tier | Dependencies | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| `optimal-budget-v2` | OBG Minimum Effective Spending + Efficient Frontier | P0 | L | Codex | data-infrastructure-v2, optimizer-core-v2 | 🟡 Partial — OSL/diminishing returns/reallocation done; multi-outcome + inflation-adj remaining |
+| `opg-core-v1` | OPG Evidence + Policy Scoring Expansion | P0 | M | Codex | optimizer-core-v2, data-infrastructure-v2 | 🟡 Partial — Bradford Hill + policy scoring + markdown reports done; policy-budget mapping remaining |
+| `obg-opg-integration-v1` | OBG → OPG Budget-Policy Bridge | P0 | M | Claude | optimal-budget-v2, opg-core-v1 | ⬜ Not started |
+| `data-infrastructure-v2` | OECD + Direct Outcomes + FRED Improvements | P0 | L | Codex | none | ✅ Largely done — OECD, World Bank, WHO (incl HALE), FRED, Congress, USAspending all implemented; caching/versioning remaining |
+| `optimizer-core-v2` | Partial Correlations + Diminishing Returns Detection | P0 | M | Codex | none | ✅ Done — `partialCorrelation()` + `estimateDiminishingReturns()` both implemented, tested, exported |
+| `web-integration-v2` | Wire Library Outputs to Pages + JSON Schema | P1 | M | Codex | optimal-budget-v2, opg-core-v1, misconception-tier3-v1 | 🟡 Partial — generate-analysis.ts wires OBG/OPG to web; misconceptions page live; interactive tools remaining |
+| `funding-grants-v1` | Gitcoin + Optimism + VitaDAO Applications | P1 | S | Claude | funding-readiness-v1, optimal-budget-v2 | ⬜ Not started |
+| `testing-strategy-v1` | Hypothesis-Driven Tests for Findings | P0 | M | Codex | optimizer-core-v2, optimal-budget-v2, opg-core-v1 | ⬜ Not started (1,737 tests exist but no formal hypothesis-driven framework) |
+| `misconception-tier3-v1` | Remaining Tier 3 Analyses | P1 | M | Codex | data-infrastructure-v2, optimizer-core-v2 | 🟡 Partial — 15 of 18 tier analyses done; rent control, privatization, college ROI remaining |
+| `extension-digital-twin-safe-v1` | Chrome Extension: Data Model + Export | P2 | M | Codex | optimizer-core-v2 | ⬜ Skeleton only |
+| `chat-ui-improvements-v1` | Chat UI: NLP + Measurement Ingestion | P2 | S | Codex | optimizer-core-v2 | 🟡 Partial — basic NLP + 8 components done; temporal expressions + dose parsing remaining |
+| `funding-readiness-v2` | Pilot Pack Refresh + Reproducibility | P1 | M | Claude | optimal-budget-v2, web-integration-v2 | ⬜ Not started |
 
 Notes:
 - Existing tracks `funding-readiness-v1`, `misconception-analyses-v1`, `optimal-budget-v1` should be archived after their v2 successors are created.
@@ -142,13 +144,13 @@ Below, each proposed track includes:
 - Deliverables: updated datasets, fetchers, cache + versioning.
 - Acceptance: dataset provenance; all sources documented in JSDoc.
 
-**C. `plan.md` checklist**
-1. Replace synthetic OECD direct outcomes with sourced series or mark explicitly as simulated.
-2. Add WHO HALE fetcher + dataset wiring.
-3. Expand OECD panel to include direct outcomes fields (education, healthcare, crime, climate).
-4. Add GDP deflator option for US spending conversion.
-5. Add caching/versioning metadata for static datasets.
-6. Improve FRED fetcher reliability (keys, rate-limit handling).
+**C. `plan.md` checklist** — 🟡 MOSTLY DONE
+1. Replace synthetic OECD direct outcomes with sourced series or mark explicitly as simulated. — ⬜ Remaining
+2. ~~Add WHO HALE fetcher + dataset wiring.~~ ✅ HALE in WHO fetcher (`who.ts`)
+3. ~~Expand OECD panel to include direct outcomes fields.~~ ✅ 4 datasets in OECD fetcher
+4. Add GDP deflator option for US spending conversion. — ⬜ Remaining
+5. Add caching/versioning metadata for static datasets. — ⬜ Remaining
+6. ~~Improve FRED fetcher reliability (keys, rate-limit handling).~~ ✅ Optional API key, graceful degradation
 
 **D. Dependencies**
 - Foundational. No dependencies.
@@ -166,12 +168,12 @@ Below, each proposed track includes:
 - Tests: synthetic datasets with known confounds.
 - Acceptance: partial correlation logic validated and documented.
 
-**C. `plan.md` checklist**
-1. Add `partialCorrelation()` in `statistics.ts`.
-2. Add `partialR` output to `FullAnalysisResult` (non-breaking optional).
-3. Add `diminishingReturnsDetection()` helper (baseline slope change detection).
-4. Add tests for `partialCorrelation` and diminishing returns detection.
-5. Update report generator to include `partialR` when present.
+**C. `plan.md` checklist** — ✅ ALL DONE
+1. ~~Add `partialCorrelation()` in `statistics.ts`.~~ ✅ Implemented + exported
+2. ~~Add `partialR` output to `FullAnalysisResult` (non-breaking optional).~~ ✅
+3. ~~Add `diminishingReturnsDetection()` helper (baseline slope change detection).~~ ✅ Three implementations: statistics.ts, response-curve.ts, obg/diminishing-returns.ts
+4. ~~Add tests for `partialCorrelation` and diminishing returns detection.~~ ✅ Full test coverage
+5. ~~Update report generator to include `partialR` when present.~~ ✅
 
 **D. Dependencies**
 - Foundational. No dependencies.
@@ -189,12 +191,18 @@ Below, each proposed track includes:
 - Deliverables: new pages for misconceptions, efficient frontier, OBG/OPG integration.
 - Acceptance: pages render with current JSON schemas and are versioned.
 
-**C. `plan.md` checklist**
-1. Define JSON schema for OBG v6 and OPG report outputs.
-2. Add `/misconceptions` page with data cards.
-3. Add OBG efficient frontier visualization.
-4. Wire OPG policy recommendations into existing `us-policy-analysis.json`.
-5. Add data freshness metadata to each JSON file.
+**C. `plan.md` checklist** — 🟡 PARTIALLY DONE
+1. Define JSON schema for OBG v6 and OPG report outputs. — ⬜ Remaining
+2. ~~Add `/misconceptions` page with data cards.~~ ✅ Live with 15 findings, category filters
+3. Add OBG efficient frontier visualization. — ⬜ Remaining
+4. ~~Wire OPG policy recommendations into existing `us-policy-analysis.json`.~~ ✅ 12 policies via `generate-analysis.ts`
+5. Add data freshness metadata to each JSON file. — ⬜ Remaining
+
+**Additional done (not in original checklist):**
+- ✅ `/budget` page with 34+ categories from OBG OSL estimation
+- ✅ `/compare` page with cross-country healthcare, drug policy, education comparisons
+- ✅ `/outcomes` page with mega-study rankings from optimizer
+- ✅ `generate-analysis.ts` script wiring OBG/OPG to web
 
 **D. Dependencies**
 - Depends on `optimal-budget-v2`, `opg-core-v1`, and `misconception-tier3-v1`.

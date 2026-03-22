@@ -100,9 +100,9 @@ For any jurisdiction, answer: "Given $X total budget, how should it be allocated
 
 ### Analysis Quality
 - [ ] **Inflation-adjusted per-capita mode** for all analyses
-- [ ] **Confidence intervals** on all estimates (bootstrap or analytical)
+- [x] **Confidence intervals** — ✅ bootstrap CI in wishocracy + OSL estimation in OBG
 - [ ] **Multiple testing correction** (Bonferroni/FDR when running many categories)
-- [ ] **Lag optimization** — auto-test multiple onset delays, report which fits best
+- [x] **Lag optimization** — ✅ onset delay grid search in optimizer temporal alignment
 - [ ] **Structural break detection** — find policy changes (ACA 2010, drug war 1971, Trump tariffs 2018)
 - [ ] **Granger causality test** — formal econometric test alongside our Causal Direction Score
 - [ ] **Instrumental variables** — for cases where reverse causation is strong
@@ -124,7 +124,7 @@ For any jurisdiction, answer: "Given $X total budget, how should it be allocated
 
 ### Reports
 - [ ] **"Life Years Gained per $1M"** ranking — the killer chart (normalize all categories to same unit)
-- [ ] **Optimal US Federal Budget report** — full markdown with all categories, all evidence
+- [x] **Optimal US Federal Budget report** — ✅ generated via `generate-analysis.ts` → `us-budget-analysis.json` (34+ categories)
 - [ ] **Executive summary for policymakers** — 1-page version with just the recommendations
 - [ ] **Per-state optimal budget** — use state-level data where available
 
@@ -138,8 +138,8 @@ For any jurisdiction, answer: "Given $X total budget, how should it be allocated
 4. ✅ Fix Predictive Pearson (was always 0)
 5. ✅ Identify monotonic trend problem → YoY % change solution
 6. [ ] **Add inflation-adjusted per-capita mode**
-7. [ ] **Add HALE (healthy life years) as outcome**
-8. [ ] **Add all major US budget categories with FRED data**
+7. [x] **Add HALE (healthy life years) as outcome** — ✅ WHO fetcher has HALE
+8. [x] **Add all major US budget categories with FRED data** — ✅ 15+ FRED series + USAspending 20 function codes
 9. [ ] **Add "return to citizens" baseline category**
 10. [ ] **Build multi-outcome optimizer (income + health)**
 11. [ ] **Run full US optimal budget with 15+ categories**

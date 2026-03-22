@@ -604,7 +604,7 @@ export function VoterPrizeTreasuryDeposit() {
 
       {/* Claim Refund (failure path) */}
       {isDeployed && isConnected && canClaimRefund && (
-        <div className="border-4 border-primary bg-green-100 p-6">
+        <div className="border-4 border-primary bg-brutal-yellow p-6">
           <h3 className="font-black uppercase text-foreground mb-3">
             Claim Your Refund
           </h3>
