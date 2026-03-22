@@ -615,7 +615,7 @@ model PersonhoodVerification {
 /// A unit of measurement (mg, IU, serving, $/day, 1-5 scale, %, etc.)
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Unit.php
 /// legacy API DDL: units table. Conversion logic: https://github.com/mikepsinn/curedao-api/blob/main/app/Slim/Model/QMUnit.php
-/// TODO: Port from legacy — runtime unit conversion logic (QMUnit::convertTo)
+/// Runtime unit conversion implemented in packages/data/src/unit-conversion.ts
 model Unit {
   /// Unique identifier for this unit
   id String @id @default(cuid())
@@ -680,7 +680,7 @@ model Unit {
 /// Sleep, Vital Sign, Lab Result, Environment, Economic, Policy, etc.
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/VariableCategory.php
 /// legacy API hardcoded categories: https://github.com/mikepsinn/curedao-api/blob/main/app/VariableCategories/
-/// TODO: Port from legacy — seed data with sensible defaults per category
+/// Seed data with defaults implemented in packages/db/prisma/seed.ts (15+ categories)
 model VariableCategory {
   /// Unique identifier for this variable category
   id String @id @default(cuid())
@@ -734,7 +734,7 @@ model VariableCategory {
 /// Examples: "Ibuprofen 200mg", "Overall Mood", "Steps", "GDP per Capita"
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Variable.php
 /// legacy API analysis: https://github.com/mikepsinn/curedao-api/blob/main/app/Variables/QMCommonVariable.php
-/// TODO: Port from legacy — global variable statistics aggregation
+/// Global variable statistics implemented in packages/data/src/variable-statistics.ts (aggregateGlobalStatistics)
 model GlobalVariable {
   /// Unique identifier for this global variable
   id String @id @default(cuid())
@@ -913,8 +913,8 @@ model Subject {
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/UserVariable.php
 /// legacy API analysis: https://github.com/mikepsinn/curedao-api/blob/main/app/Variables/QMUserVariable.php
 /// legacy API daily aggregation: QMUserVariable::getDailyMeasurementsWithTagsAndFillingInTimeRange()
-/// TODO: Port from legacy — running statistics calculation (mean, median, stddev, kurtosis, skewness)
-/// TODO: Port from legacy — daily value aggregation pipeline
+/// Running statistics implemented in packages/data/src/variable-statistics.ts (calculateNOf1VariableStatistics)
+/// Daily value aggregation implemented in packages/data/src/daily-aggregation.ts (aggregateToDaily)
 model NOf1Variable {
   /// Unique identifier for this unit-variable instance
   id String @id @default(cuid())
@@ -1025,7 +1025,7 @@ model NOf1Variable {
 /// The core of the entire measurement system.
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/Measurement.php
 /// legacy API processing: https://github.com/mikepsinn/curedao-api/blob/main/app/Traits/ModelTraits/MeasurementTrait.php
-/// TODO: Port from legacy — measurement value validation (min/max, unit constraints)
+/// Measurement validation implemented in packages/data/src/measurement-validation.ts (validateMeasurement)
 model Measurement {
   /// Unique identifier for this measurement
   id String @id @default(cuid())
@@ -1413,7 +1413,7 @@ model NOf1VariableRelationship {
 /// legacy API reference: https://github.com/mikepsinn/curedao-api/blob/main/app/Models/AggregateCorrelation.php
 /// legacy API analysis pipeline: https://github.com/mikepsinn/curedao-api/blob/main/app/Correlations/QMAggregateCorrelation.php
 /// legacy API aggregates subject-level correlations via weighted averaging by statistical significance.
-/// TODO: Port from legacy — weighted aggregation pipeline across subjects
+/// Weighted aggregation implemented in packages/optimizer/src/statistics.ts (aggregateNOf1VariableRelationships)
 model AggregateVariableRelationship {
   /// Unique identifier for this aggregate-level relationship
   id String @id @default(cuid())
