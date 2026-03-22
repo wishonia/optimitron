@@ -39,7 +39,7 @@ These floors isolate direct welfare objectives instead of forcing a single combi
 |-----------|-----------------------:|----------------|-------------------:|-------------------------:|
 | Combined Direct Welfare | 26.4 | 23.1-44.7 | $21,719 | 16 |
 | Healthy Life Expectancy Only | 20.2 | 18.2-23.1 | $16,638 | 29 |
-| Income Proxy Only | 26.4 | 23.1-44.7 | $21,719 | 16 |
+| Median Income Only | 26.4 | 23.1-44.7 | $21,719 | 16 |
 
 ## Floor Tolerance
 
@@ -99,7 +99,7 @@ The budget-composition summary below comes from the existing US federal budget m
 
 These are jurisdictions with at least two lag-aligned observations inside the minimum-efficient per-capita band and non-negative welfare benchmark scores within that band.
 
-| Jurisdiction | Qualifying Obs | Median % GDP | Median Spend / Capita PPP | Median HALE | Median Income Proxy |
+| Jurisdiction | Qualifying Obs | Median % GDP | Median Spend / Capita PPP | Median HALE | Median After-Tax Income |
 |--------------|---------------:|-------------:|--------------------------:|------------:|--------------------:|
 | Italy | 9 | 43.5 | $15,975 | 71.4 | $16,860 |
 | Sweden | 7 | 32.1 | $16,148 | 70.9 | $19,788 |

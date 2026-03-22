@@ -188,9 +188,10 @@ layout: layout.njk
 
     // Summary stats
     md += `| Metric | Value |\n|--------|-------|\n`;
-    md += `| Current spending | ${fmt(cat.currentSpending)} |\n`;
-    md += `| Real per-capita (2017 USD) | $${cat.currentSpendingRealPerCapita.toFixed(0)} |\n`;
+    md += `| Federal budget line item | ${fmt(cat.currentSpending)} |\n`;
+    md += `| Real per-capita (2017 USD, federal) | $${cat.currentSpendingRealPerCapita.toFixed(0)} |\n`;
     if (eff) {
+      md += `| OECD total gov spending (all levels) | $${eff.usData.spending}/cap |\n`;
       md += `| OECD efficiency rank | **${eff.usRank}/${eff.totalCountries}** |\n`;
       md += `| Overspend ratio | **${eff.overspendRatio}x** |\n`;
       md += `| Floor spending | $${eff.floorSpending}/cap |\n`;

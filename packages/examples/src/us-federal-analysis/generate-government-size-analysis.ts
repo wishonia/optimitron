@@ -1353,7 +1353,7 @@ function buildObjectiveFloors(
     },
     {
       id: 'income_only',
-      name: 'Income Proxy Only',
+      name: 'Median Income Only',
       outcomeIds: ['after_tax_median_income_ppp'],
     },
   ] as const;
@@ -1966,7 +1966,7 @@ function buildMarkdown(data: GovernmentSizeAnalysisData): string {
     'These are jurisdictions with at least two lag-aligned observations inside the minimum-efficient per-capita band and non-negative welfare benchmark scores within that band.',
   );
   lines.push('');
-  lines.push('| Jurisdiction | Qualifying Obs | Median % GDP | Median Spend / Capita PPP | Median HALE | Median Income Proxy |');
+  lines.push('| Jurisdiction | Qualifying Obs | Median % GDP | Median Spend / Capita PPP | Median HALE | Median After-Tax Income |');
   lines.push('|--------------|---------------:|-------------:|--------------------------:|------------:|--------------------:|');
   for (const jurisdiction of data.efficientJurisdictions) {
     lines.push(

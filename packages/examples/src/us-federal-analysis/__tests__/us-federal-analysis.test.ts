@@ -470,6 +470,10 @@ describe('Government Size Report Markdown', () => {
     expect(governmentSizeMarkdown).toContain('Typical Healthy Life Years Growth');
     expect(governmentSizeMarkdown).toContain('Typical Real After-Tax Median Income');
     expect(governmentSizeMarkdown).toContain('Typical Real After-Tax Median Income Growth');
+    expect(governmentSizeMarkdown).toContain('Median Income Only');
+    expect(governmentSizeMarkdown).toContain('Median After-Tax Income');
+    expect(governmentSizeMarkdown).not.toContain('Income Proxy Only');
+    expect(governmentSizeMarkdown).not.toContain('Median Income Proxy');
     expect(governmentSizeMarkdown).toContain('## Limitations');
   });
 });

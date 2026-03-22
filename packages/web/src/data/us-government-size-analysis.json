@@ -1868,7 +1868,7 @@
     },
     {
       "id": "income_only",
-      "name": "Income Proxy Only",
+      "name": "Median Income Only",
       "outcomeIds": [
         "after_tax_median_income_ppp"
       ],
@@ -2844,5 +2844,5 @@
       }
     ]
   },
-  "generatedAt": "2026-03-22T20:33:05.372Z"
+  "generatedAt": "2026-03-22T20:37:04.011Z"
 }
