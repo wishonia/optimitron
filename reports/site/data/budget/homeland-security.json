@@ -1,0 +1,92 @@
+{
+  "name": "Homeland Security",
+  "currentSpending": 62000000000,
+  "currentSpendingRealPerCapita": 139.65,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 0,
+  "gapPercent": 0,
+  "recommendation": "maintain",
+  "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+  "outcomeMetrics": [
+    {
+      "name": "Southwest border encounters",
+      "value": 2048000,
+      "trend": "declining"
+    },
+    {
+      "name": "Domestic terrorism incidents",
+      "value": 38,
+      "trend": "improving"
+    },
+    {
+      "name": "Disaster relief obligated (FEMA)",
+      "value": 34.2,
+      "trend": "declining"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 39,
+      "realPerCapita": 125.75
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 41,
+      "realPerCapita": 129.6
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 42,
+      "realPerCapita": 129.17
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 46,
+      "realPerCapita": 137.27
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 51,
+      "realPerCapita": 148.89
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 52,
+      "realPerCapita": 148.58
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 55,
+      "realPerCapita": 149.81
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 54,
+      "realPerCapita": 135.67
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 57,
+      "realPerCapita": 136.5
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 60,
+      "realPerCapita": 138.68
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 62,
+      "realPerCapita": 139.65
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "homeland-security",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": false
+}

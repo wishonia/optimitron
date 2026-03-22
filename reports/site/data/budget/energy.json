@@ -1,0 +1,92 @@
+{
+  "name": "Energy",
+  "currentSpending": 52000000000,
+  "currentSpendingRealPerCapita": 117.12,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 0,
+  "gapPercent": 0,
+  "recommendation": "maintain",
+  "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+  "outcomeMetrics": [
+    {
+      "name": "Renewable energy share of electricity",
+      "value": 22.7,
+      "trend": "improving"
+    },
+    {
+      "name": "Energy-related CO₂ emissions",
+      "value": 4790,
+      "trend": "improving"
+    },
+    {
+      "name": "Average retail electricity price",
+      "value": 12.7,
+      "trend": "declining"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 29,
+      "realPerCapita": 93.51
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 32,
+      "realPerCapita": 101.15
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 30,
+      "realPerCapita": 92.27
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 31,
+      "realPerCapita": 92.51
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 35,
+      "realPerCapita": 102.18
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 38,
+      "realPerCapita": 108.58
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 42,
+      "realPerCapita": 114.4
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 44,
+      "realPerCapita": 110.55
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 47,
+      "realPerCapita": 112.56
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 50,
+      "realPerCapita": 115.57
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 52,
+      "realPerCapita": 117.12
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "energy",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": false
+}

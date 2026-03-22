@@ -1,0 +1,92 @@
+{
+  "name": "Other Mandatory Programs",
+  "currentSpending": 842000000000,
+  "currentSpendingRealPerCapita": 1896.49,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 0,
+  "gapPercent": 0,
+  "recommendation": "maintain",
+  "evidenceSource": "non-discretionary (mandated)",
+  "outcomeMetrics": [
+    {
+      "name": "SNAP participation",
+      "value": 41.2,
+      "trend": "declining"
+    },
+    {
+      "name": "Unemployment rate",
+      "value": 4.2,
+      "trend": "stable"
+    },
+    {
+      "name": "Poverty rate (overall)",
+      "value": 11.1,
+      "trend": "stable"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 550,
+      "realPerCapita": 1773.37
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 572,
+      "realPerCapita": 1808.13
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 581,
+      "realPerCapita": 1786.88
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 611,
+      "realPerCapita": 1823.32
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 624,
+      "realPerCapita": 1821.74
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 1631,
+      "realPerCapita": 4660.33
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 1765,
+      "realPerCapita": 4807.47
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 984,
+      "realPerCapita": 2472.27
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 853,
+      "realPerCapita": 2042.77
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 836,
+      "realPerCapita": 1932.28
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 842,
+      "realPerCapita": 1896.49
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "other-mandatory-programs",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": true
+}

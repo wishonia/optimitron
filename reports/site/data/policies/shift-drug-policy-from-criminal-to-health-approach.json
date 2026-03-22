@@ -1,0 +1,34 @@
+{
+  "name": "Shift Drug Policy from Criminal to Health Approach",
+  "type": "regulation",
+  "category": "health",
+  "description": "Decriminalize personal drug use, fund treatment and harm reduction. Based on Portugal model (2001).",
+  "recommendationType": "implement",
+  "evidenceGrade": "B",
+  "causalConfidenceScore": 0.695,
+  "policyImpactScore": 0.574,
+  "welfareScore": 39,
+  "incomeEffect": 0.05,
+  "healthEffect": 0.35,
+  "bradfordHillScores": {
+    "strength": 0.982,
+    "consistency": 0.777,
+    "temporality": 1,
+    "gradient": 0.662,
+    "experiment": 0.25,
+    "plausibility": 1,
+    "coherence": 0.95,
+    "analogy": 0.85,
+    "specificity": 0.419
+  },
+  "rationale": "Portugal decriminalized in 2001: drug deaths dropped 80%, HIV among users dropped 90%, treatment uptake tripled. Czech Republic, Switzerland, and Netherlands show similar results.",
+  "currentStatus": "US spends $40B/yr on drug enforcement; 1.5M arrests annually",
+  "recommendedTarget": "Decriminalize personal use, redirect enforcement budget to treatment",
+  "blockingFactors": [
+    "political_opposition"
+  ],
+  "slug": "shift-drug-policy-from-criminal-to-health-approach",
+  "incomePerYear": 2977,
+  "haleMonths": 42,
+  "legislationSlug": "medicare-reform"
+}

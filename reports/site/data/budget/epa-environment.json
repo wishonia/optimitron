@@ -1,0 +1,97 @@
+{
+  "name": "EPA / Environment",
+  "currentSpending": 12000000000,
+  "currentSpendingRealPerCapita": 27.03,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 0,
+  "gapPercent": 0,
+  "recommendation": "maintain",
+  "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+  "outcomeMetrics": [
+    {
+      "name": "Days exceeding Air Quality Index standards",
+      "value": 117,
+      "trend": "declining"
+    },
+    {
+      "name": "Greenhouse gas emissions",
+      "value": 5060,
+      "trend": "improving"
+    },
+    {
+      "name": "Superfund sites cleaned up (cumulative)",
+      "value": 459,
+      "trend": "improving"
+    },
+    {
+      "name": "Clean Water Act compliance rate",
+      "value": 86,
+      "trend": "stable"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 8.1,
+      "realPerCapita": 26.12
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 8.6,
+      "realPerCapita": 27.19
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 8.1,
+      "realPerCapita": 24.91
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 8.8,
+      "realPerCapita": 26.26
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 9,
+      "realPerCapita": 26.28
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 9.4,
+      "realPerCapita": 26.86
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 9.2,
+      "realPerCapita": 25.06
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 10.5,
+      "realPerCapita": 26.38
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 11,
+      "realPerCapita": 26.34
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 11.5,
+      "realPerCapita": 26.58
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 12,
+      "realPerCapita": 27.03
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "epa-environment",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": false
+}

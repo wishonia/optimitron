@@ -1,0 +1,87 @@
+{
+  "name": "Treasury / General Government",
+  "currentSpending": 30000000000,
+  "currentSpendingRealPerCapita": 67.57,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": -3000000000,
+  "gapPercent": -10,
+  "recommendation": "decrease",
+  "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+  "outcomeMetrics": [
+    {
+      "name": "Tax gap (estimated)",
+      "value": 688,
+      "trend": "declining"
+    },
+    {
+      "name": "IRS voluntary compliance rate",
+      "value": 83.6,
+      "trend": "stable"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 23,
+      "realPerCapita": 74.16
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 23,
+      "realPerCapita": 72.7
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 22,
+      "realPerCapita": 67.66
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 24,
+      "realPerCapita": 71.62
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 25,
+      "realPerCapita": 72.99
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 25,
+      "realPerCapita": 71.43
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 27,
+      "realPerCapita": 73.54
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 28,
+      "realPerCapita": 70.35
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 29,
+      "realPerCapita": 69.45
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 29,
+      "realPerCapita": 67.03
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 30,
+      "realPerCapita": 67.57
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "treasury-general-government",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": false
+}

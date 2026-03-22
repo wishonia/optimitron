@@ -1,0 +1,35 @@
+{
+  "name": "Carbon Fee-and-Dividend",
+  "type": "tax_policy",
+  "category": "environment",
+  "description": "Tax carbon emissions, return 100% of revenue as equal citizen dividend. Based on British Columbia model.",
+  "recommendationType": "implement",
+  "evidenceGrade": "B",
+  "causalConfidenceScore": 0.662,
+  "policyImpactScore": 0.55,
+  "welfareScore": 38,
+  "incomeEffect": -0.02,
+  "healthEffect": 0.15,
+  "bradfordHillScores": {
+    "strength": 0.903,
+    "consistency": 0.699,
+    "temporality": 1,
+    "gradient": 0.662,
+    "experiment": 0.25,
+    "plausibility": 1,
+    "coherence": 0.909,
+    "analogy": 0.85,
+    "specificity": 0.383
+  },
+  "rationale": "British Columbia: emissions down 5-15% vs control, GDP growth maintained. Switzerland carbon tax reduced emissions 20%. Dividend protects low-income households.",
+  "currentStatus": "No federal carbon price; 12 states have cap-and-trade or carbon tax",
+  "recommendedTarget": "$50/ton starting price, rising $10/yr, 100% returned as dividend",
+  "blockingFactors": [
+    "political_opposition",
+    "industry_resistance"
+  ],
+  "slug": "carbon-fee-and-dividend",
+  "incomePerYear": -1191,
+  "haleMonths": 18,
+  "legislationSlug": "science-nasa-reform"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Permanent Expanded Child Tax Credit",
+  "type": "tax_policy",
+  "category": "income_security",
+  "description": "Make the 2021 expanded CTC ($3,600/child) permanent and fully refundable.",
+  "recommendationType": "implement",
+  "evidenceGrade": "B",
+  "causalConfidenceScore": 0.666,
+  "policyImpactScore": 0.553,
+  "welfareScore": 38,
+  "incomeEffect": 0.2,
+  "healthEffect": 0.12,
+  "bradfordHillScores": {
+    "strength": 0.931,
+    "consistency": 0.699,
+    "temporality": 1,
+    "gradient": 0.662,
+    "experiment": 0.25,
+    "plausibility": 1,
+    "coherence": 0.909,
+    "analogy": 0.85,
+    "specificity": 0.383
+  },
+  "rationale": "2021 expanded CTC cut child poverty by 46% in 6 months — largest single-year reduction ever. Canada's similar program reduced child poverty by 30%. Cost: ~$100B/yr.",
+  "currentStatus": "Reverted to $2,000/child, not fully refundable (excludes poorest families)",
+  "recommendedTarget": "$3,600/child under 6, $3,000 ages 6-17, fully refundable",
+  "blockingFactors": [
+    "budget_constraint"
+  ],
+  "slug": "permanent-expanded-child-tax-credit",
+  "incomePerYear": 11908,
+  "haleMonths": 14,
+  "legislationSlug": "social-security-reform"
+}

@@ -1,0 +1,92 @@
+{
+  "name": "Labor",
+  "currentSpending": 42000000000,
+  "currentSpendingRealPerCapita": 94.6,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 0,
+  "gapPercent": 0,
+  "recommendation": "maintain",
+  "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+  "outcomeMetrics": [
+    {
+      "name": "Labor force participation rate",
+      "value": 62.5,
+      "trend": "stable"
+    },
+    {
+      "name": "Median weekly earnings",
+      "value": 1145,
+      "trend": "improving"
+    },
+    {
+      "name": "Workplace fatalities",
+      "value": 5283,
+      "trend": "stable"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 43,
+      "realPerCapita": 138.65
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 40,
+      "realPerCapita": 126.44
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 38,
+      "realPerCapita": 116.87
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 37,
+      "realPerCapita": 110.41
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 38,
+      "realPerCapita": 110.94
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 64,
+      "realPerCapita": 182.87
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 47,
+      "realPerCapita": 128.02
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 46,
+      "realPerCapita": 115.57
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 44,
+      "realPerCapita": 105.37
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 43,
+      "realPerCapita": 99.39
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 42,
+      "realPerCapita": 94.6
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "labor",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": false
+}

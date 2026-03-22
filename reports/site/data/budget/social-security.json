@@ -1,0 +1,97 @@
+{
+  "name": "Social Security",
+  "currentSpending": 1461000000000,
+  "currentSpendingRealPerCapita": 3290.7,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 0,
+  "gapPercent": 0,
+  "recommendation": "maintain",
+  "evidenceSource": "non-discretionary (mandated)",
+  "outcomeMetrics": [
+    {
+      "name": "Elderly poverty rate",
+      "value": 10.2,
+      "trend": "stable"
+    },
+    {
+      "name": "Beneficiaries",
+      "value": 67.9,
+      "trend": "improving"
+    },
+    {
+      "name": "Average monthly retirement benefit",
+      "value": 1907,
+      "trend": "improving"
+    },
+    {
+      "name": "Trust fund depletion year (projected)",
+      "value": 2033,
+      "trend": "declining"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 882,
+      "realPerCapita": 2843.85
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 910,
+      "realPerCapita": 2876.56
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 939,
+      "realPerCapita": 2887.92
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 982,
+      "realPerCapita": 2930.44
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 1039,
+      "realPerCapita": 3033.32
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 1090,
+      "realPerCapita": 3114.5
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 1133,
+      "realPerCapita": 3086.04
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 1219,
+      "realPerCapita": 3062.7
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 1354,
+      "realPerCapita": 3242.56
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 1417,
+      "realPerCapita": 3275.17
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 1461,
+      "realPerCapita": 3290.7
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "social-security",
+  "legislationSlug": "social-security-reform",
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": true
+}

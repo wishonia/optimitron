@@ -1,0 +1,87 @@
+{
+  "name": "Commerce / Economic Development",
+  "currentSpending": 18000000000,
+  "currentSpendingRealPerCapita": 40.54,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 1800000000,
+  "gapPercent": 10,
+  "recommendation": "increase",
+  "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+  "outcomeMetrics": [
+    {
+      "name": "GDP growth rate (real)",
+      "value": 2.5,
+      "trend": "stable"
+    },
+    {
+      "name": "New business applications",
+      "value": 5500000,
+      "trend": "improving"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 9,
+      "realPerCapita": 29.02
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 9.5,
+      "realPerCapita": 30.03
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 9.2,
+      "realPerCapita": 28.29
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 11.5,
+      "realPerCapita": 34.32
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 12,
+      "realPerCapita": 35.03
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 34,
+      "realPerCapita": 97.15
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 30,
+      "realPerCapita": 81.71
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 22,
+      "realPerCapita": 55.27
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 20,
+      "realPerCapita": 47.9
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 19,
+      "realPerCapita": 43.92
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 18,
+      "realPerCapita": 40.54
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "commerce-economic-development",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": false
+}

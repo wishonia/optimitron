@@ -1,0 +1,34 @@
+{
+  "name": "Occupational Licensing Reform",
+  "type": "regulation",
+  "category": "economy",
+  "description": "Reduce unnecessary licensing requirements that affect 25% of US workers.",
+  "recommendationType": "implement",
+  "evidenceGrade": "B",
+  "causalConfidenceScore": 0.678,
+  "policyImpactScore": 0.557,
+  "welfareScore": 38,
+  "incomeEffect": 0.08,
+  "healthEffect": 0.01,
+  "bradfordHillScores": {
+    "strength": 0.736,
+    "consistency": 0.865,
+    "temporality": 1,
+    "gradient": 0.662,
+    "experiment": 0.25,
+    "plausibility": 1,
+    "coherence": 0.982,
+    "analogy": 0.85,
+    "specificity": 0.419
+  },
+  "rationale": "Licensed occupations grew from 5% to 25% of workforce since 1950s. States with less licensing have no difference in service quality but 10-15% lower consumer prices. Interior designers need a license in some states; paramedics don't in others.",
+  "currentStatus": "25% of US workers need government license; varies wildly by state",
+  "recommendedTarget": "Federal mutual recognition framework; sunset reviews for all licenses",
+  "blockingFactors": [
+    "industry_resistance"
+  ],
+  "slug": "occupational-licensing-reform",
+  "incomePerYear": 4763,
+  "haleMonths": 1,
+  "legislationSlug": null
+}

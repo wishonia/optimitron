@@ -1,0 +1,92 @@
+{
+  "name": "Justice / Law Enforcement",
+  "currentSpending": 40000000000,
+  "currentSpendingRealPerCapita": 90.09,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 5333333333,
+  "gapPercent": 13.3,
+  "recommendation": "increase",
+  "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+  "outcomeMetrics": [
+    {
+      "name": "Violent crime rate",
+      "value": 363.8,
+      "trend": "improving"
+    },
+    {
+      "name": "Incarceration rate",
+      "value": 531,
+      "trend": "improving"
+    },
+    {
+      "name": "Federal prison population",
+      "value": 158169,
+      "trend": "stable"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 33,
+      "realPerCapita": 106.4
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 33,
+      "realPerCapita": 104.31
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 35,
+      "realPerCapita": 107.64
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 34,
+      "realPerCapita": 101.46
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 34,
+      "realPerCapita": 99.26
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 37,
+      "realPerCapita": 105.72
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 39,
+      "realPerCapita": 106.23
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 38,
+      "realPerCapita": 95.47
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 39,
+      "realPerCapita": 93.4
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 40,
+      "realPerCapita": 92.45
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 40,
+      "realPerCapita": 90.09
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "justice-law-enforcement",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": false
+}

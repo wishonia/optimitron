@@ -1,0 +1,92 @@
+{
+  "name": "HUD / Housing",
+  "currentSpending": 73000000000,
+  "currentSpendingRealPerCapita": 164.42,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": -9733333333,
+  "gapPercent": -13.3,
+  "recommendation": "decrease",
+  "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+  "outcomeMetrics": [
+    {
+      "name": "Total homeless population",
+      "value": 653104,
+      "trend": "declining"
+    },
+    {
+      "name": "Housing cost burden (>30% income)",
+      "value": 30,
+      "trend": "declining"
+    },
+    {
+      "name": "Homeownership rate",
+      "value": 65.6,
+      "trend": "stable"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 37,
+      "realPerCapita": 119.3
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 39,
+      "realPerCapita": 123.28
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 39,
+      "realPerCapita": 119.95
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 41,
+      "realPerCapita": 122.35
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 44,
+      "realPerCapita": 128.46
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 56,
+      "realPerCapita": 160.01
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 63,
+      "realPerCapita": 171.6
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 60,
+      "realPerCapita": 150.75
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 68,
+      "realPerCapita": 162.85
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 71,
+      "realPerCapita": 164.1
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 73,
+      "realPerCapita": 164.42
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "hud-housing",
+  "legislationSlug": null,
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": false
+}

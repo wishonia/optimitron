@@ -9,8 +9,9 @@ layout: layout.njk
 
 | Metric | Value |
 |--------|-------|
-| Current spending | $44B |
-| Real per-capita (2017 USD) | $99 |
+| Federal budget line item | $44B |
+| Real per-capita (2017 USD, federal) | $99 |
+| OECD total gov spending (all levels) | $1991/cap |
 | OECD efficiency rank | **20/23** |
 | Overspend ratio | **2.4x** |
 | Floor spending | $843/cap |

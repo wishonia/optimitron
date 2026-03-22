@@ -1,0 +1,143 @@
+{
+  "name": "Military",
+  "currentSpending": 886000000000,
+  "currentSpendingRealPerCapita": 1995.59,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 0,
+  "gapPercent": 0,
+  "recommendation": "major_decrease",
+  "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.006)",
+  "outcomeMetrics": [
+    {
+      "name": "Global Peace Index ranking (US)",
+      "value": 131,
+      "trend": "declining"
+    },
+    {
+      "name": "Military strength index (Global Firepower)",
+      "value": 1,
+      "trend": "stable"
+    },
+    {
+      "name": "Active duty personnel",
+      "value": 1.33,
+      "trend": "declining"
+    },
+    {
+      "name": "Military spending as % GDP",
+      "value": 3,
+      "trend": "stable"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 596,
+      "realPerCapita": 1921.69
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 604,
+      "realPerCapita": 1909.28
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 610,
+      "realPerCapita": 1876.07
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 654,
+      "realPerCapita": 1951.64
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 686,
+      "realPerCapita": 2002.75
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 714,
+      "realPerCapita": 2040.14
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 742,
+      "realPerCapita": 2021.04
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 766,
+      "realPerCapita": 1924.55
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 806,
+      "realPerCapita": 1930.21
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 849,
+      "realPerCapita": 1962.33
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 886,
+      "realPerCapita": 1995.59
+    }
+  ],
+  "diminishingReturns": {
+    "modelType": "log",
+    "r2": 0.006,
+    "n": 529,
+    "marginalReturn": -0.00014,
+    "elasticity": -0.003,
+    "outcomeName": "Life Expectancy"
+  },
+  "efficiency": {
+    "usRank": 23,
+    "totalCountries": 23,
+    "bestCountry": {
+      "code": "IRL",
+      "name": "Ireland",
+      "spending": 226,
+      "outcome": 82
+    },
+    "usData": {
+      "spending": 2052,
+      "outcome": 76.93
+    },
+    "floorSpending": 226,
+    "floorOutcome": 82.43,
+    "overspendRatio": 9.1,
+    "potentialSavingsPerCapita": 1826,
+    "potentialSavingsTotal": 618901000000,
+    "outcomeName": "Life Expectancy",
+    "topEfficient": [
+      {
+        "name": "Ireland",
+        "spending": 226,
+        "outcome": 82,
+        "rank": 1
+      },
+      {
+        "name": "Spain",
+        "spending": 331,
+        "outcome": 82.87,
+        "rank": 2
+      },
+      {
+        "name": "Austria",
+        "spending": 339,
+        "outcome": 81.3,
+        "rank": 3
+      }
+    ]
+  },
+  "slug": "military",
+  "legislationSlug": "military-reform",
+  "dividendPerAdultYear": 2399,
+  "dividendPerAdultMonth": 200,
+  "isNonDiscretionary": false
+}

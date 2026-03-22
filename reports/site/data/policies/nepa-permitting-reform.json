@@ -1,0 +1,34 @@
+{
+  "name": "NEPA & Permitting Reform",
+  "type": "regulation",
+  "category": "infrastructure",
+  "description": "Streamline environmental review timelines from 4.5 years to 2 years for infrastructure projects.",
+  "recommendationType": "implement",
+  "evidenceGrade": "B",
+  "causalConfidenceScore": 0.584,
+  "policyImpactScore": 0.501,
+  "welfareScore": 38,
+  "incomeEffect": 0.1,
+  "healthEffect": 0.02,
+  "bradfordHillScores": {
+    "strength": 0.811,
+    "consistency": 0.632,
+    "temporality": 1,
+    "gradient": 0.265,
+    "experiment": 0.25,
+    "plausibility": 1,
+    "coherence": 0.865,
+    "analogy": 0.85,
+    "specificity": 0.419
+  },
+  "rationale": "Average NEPA review takes 4.5 years. Canada and EU complete equivalent reviews in 2 years. Delays cost $3.7T in deferred infrastructure investment.",
+  "currentStatus": "Average environmental review: 4.5 years; 40,000+ pages of regulation",
+  "recommendedTarget": "2-year maximum review with categorical exclusions for clean energy",
+  "blockingFactors": [
+    "political_opposition"
+  ],
+  "slug": "nepa-permitting-reform",
+  "incomePerYear": 5954,
+  "haleMonths": 2,
+  "legislationSlug": null
+}

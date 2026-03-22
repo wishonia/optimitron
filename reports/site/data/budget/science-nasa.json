@@ -1,0 +1,143 @@
+{
+  "name": "Science / NASA",
+  "currentSpending": 44000000000,
+  "currentSpendingRealPerCapita": 99.1,
+  "optimalSpendingPerCapita": 1372.1,
+  "optimalSpendingNominal": 465142998744,
+  "gap": 421142998744,
+  "gapPercent": 957.1,
+  "recommendation": "decrease",
+  "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.318)",
+  "outcomeMetrics": [
+    {
+      "name": "R&D as % of GDP (federal)",
+      "value": 0.67,
+      "trend": "stable"
+    },
+    {
+      "name": "US patents granted",
+      "value": 352013,
+      "trend": "stable"
+    },
+    {
+      "name": "Nobel Prizes in science (cumulative, US-affiliated)",
+      "value": 285,
+      "trend": "improving"
+    },
+    {
+      "name": "NASA commercial crew missions",
+      "value": 12,
+      "trend": "improving"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 30,
+      "realPerCapita": 96.73
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 31,
+      "realPerCapita": 97.99
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 31,
+      "realPerCapita": 95.34
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 32,
+      "realPerCapita": 95.49
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 33,
+      "realPerCapita": 96.34
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 35,
+      "realPerCapita": 100.01
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 37,
+      "realPerCapita": 100.78
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 40,
+      "realPerCapita": 100.5
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 42,
+      "realPerCapita": 100.58
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 43,
+      "realPerCapita": 99.39
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 44,
+      "realPerCapita": 99.1
+    }
+  ],
+  "diminishingReturns": {
+    "modelType": "log",
+    "r2": 0.318,
+    "n": 529,
+    "marginalReturn": 88.55407,
+    "elasticity": 0.443,
+    "outcomeName": "GDP per Capita"
+  },
+  "efficiency": {
+    "usRank": 20,
+    "totalCountries": 23,
+    "bestCountry": {
+      "code": "IRL",
+      "name": "Ireland",
+      "spending": 859,
+      "outcome": 75433.33
+    },
+    "usData": {
+      "spending": 1991,
+      "outcome": 57590
+    },
+    "floorSpending": 843,
+    "floorOutcome": 56145,
+    "overspendRatio": 2.4,
+    "potentialSavingsPerCapita": 1147,
+    "potentialSavingsTotal": 388946000000,
+    "outcomeName": "GDP per Capita",
+    "topEfficient": [
+      {
+        "name": "Ireland",
+        "spending": 859,
+        "outcome": 75433.33,
+        "rank": 1
+      },
+      {
+        "name": "Spain",
+        "spending": 472,
+        "outcome": 33080,
+        "rank": 2
+      },
+      {
+        "name": "New Zealand",
+        "spending": 481,
+        "outcome": 33430,
+        "rank": 3
+      }
+    ]
+  },
+  "slug": "science-nasa",
+  "legislationSlug": "science-nasa-reform",
+  "dividendPerAdultYear": 1508,
+  "dividendPerAdultMonth": 126,
+  "isNonDiscretionary": false
+}

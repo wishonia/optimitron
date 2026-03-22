@@ -1,0 +1,35 @@
+{
+  "name": "National Paid Family Leave (12 weeks)",
+  "type": "regulation",
+  "category": "labor",
+  "description": "12 weeks paid family leave at 66% wage replacement. US is the only OECD country without it.",
+  "recommendationType": "implement",
+  "evidenceGrade": "B",
+  "causalConfidenceScore": 0.715,
+  "policyImpactScore": 0.582,
+  "welfareScore": 38,
+  "incomeEffect": 0.05,
+  "healthEffect": 0.15,
+  "bradfordHillScores": {
+    "strength": 0.865,
+    "consistency": 0.97,
+    "temporality": 1,
+    "gradient": 0.662,
+    "experiment": 0.25,
+    "plausibility": 1,
+    "coherence": 0.999,
+    "analogy": 0.85,
+    "specificity": 0.358
+  },
+  "rationale": "Every other OECD country has paid leave. California's program: 18% reduction in nursing home use by new parents, higher breastfeeding rates, no negative employment effects.",
+  "currentStatus": "US is only OECD country with 0 weeks mandated paid family leave",
+  "recommendedTarget": "12 weeks at 66% wage replacement, funded by 0.4% payroll tax",
+  "blockingFactors": [
+    "political_opposition",
+    "budget_constraint"
+  ],
+  "slug": "national-paid-family-leave-12-weeks",
+  "incomePerYear": 2977,
+  "haleMonths": 18,
+  "legislationSlug": null
+}

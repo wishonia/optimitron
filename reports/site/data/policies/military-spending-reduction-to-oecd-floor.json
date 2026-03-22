@@ -1,0 +1,35 @@
+{
+  "name": "Military Spending Reduction to OECD Floor",
+  "type": "budget_allocation",
+  "category": "defense",
+  "description": "Reduce military spending from $2,052/cap to OECD efficient floor of $279/cap (7.4x overspend). OECD data: US ranks 23/23 in military spending efficiency. Ireland achieves life expectancy 82 at $226/cap. Redirect $601B/yr savings to Universal Dividend.",
+  "recommendationType": "reallocate",
+  "evidenceGrade": "B",
+  "causalConfidenceScore": 0.718,
+  "policyImpactScore": 0.582,
+  "welfareScore": 38,
+  "incomeEffect": 0.076,
+  "healthEffect": 0.05,
+  "bradfordHillScores": {
+    "strength": 0.931,
+    "consistency": 0.9,
+    "temporality": 1,
+    "gradient": 0.662,
+    "experiment": 0.25,
+    "plausibility": 1,
+    "coherence": 0.99,
+    "analogy": 0.85,
+    "specificity": 0.477
+  },
+  "rationale": "OECD efficiency analysis: US ranks dead last (23/23) in military spending efficiency. Ireland spends $226/cap with life expectancy 82; Spain $331/cap with 82.87; Austria $339/cap with 81.3. US spends $2,052/cap with life expectancy 76.93. Military spending has R²=0.006 correlation with life expectancy — zero relationship. $601B/yr savings → $4,519/household/yr as Universal Dividend.",
+  "currentStatus": "US spends $886B/yr (7.4x OECD efficient floor), ranks 23/23 in efficiency",
+  "recommendedTarget": "Phased reduction to $279/cap ($95B total). $601B/yr savings → Universal Dividend Pool",
+  "blockingFactors": [
+    "political_opposition",
+    "institutional_resistance"
+  ],
+  "slug": "military-spending-reduction-to-oecd-floor",
+  "incomePerYear": 4525,
+  "haleMonths": 6,
+  "legislationSlug": "military-reform"
+}

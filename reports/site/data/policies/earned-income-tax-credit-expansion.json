@@ -1,0 +1,34 @@
+{
+  "name": "Earned Income Tax Credit Expansion",
+  "type": "tax_policy",
+  "category": "income_security",
+  "description": "Expand EITC for childless workers and increase phase-out thresholds.",
+  "recommendationType": "implement",
+  "evidenceGrade": "B",
+  "causalConfidenceScore": 0.713,
+  "policyImpactScore": 0.58,
+  "welfareScore": 38,
+  "incomeEffect": 0.25,
+  "healthEffect": 0.08,
+  "bradfordHillScores": {
+    "strength": 0.865,
+    "consistency": 0.95,
+    "temporality": 1,
+    "gradient": 0.662,
+    "experiment": 0.25,
+    "plausibility": 1,
+    "coherence": 0.998,
+    "analogy": 0.85,
+    "specificity": 0.383
+  },
+  "rationale": "EITC lifts ~6M people out of poverty annually. Research shows improved infant health, better school performance, and increased labor force participation. Bipartisan support historically.",
+  "currentStatus": "$63B annual cost; benefits phase out at $59K for families",
+  "recommendedTarget": "Double benefit for childless workers ($1,500→$3,000); raise income cap",
+  "blockingFactors": [
+    "budget_constraint"
+  ],
+  "slug": "earned-income-tax-credit-expansion",
+  "incomePerYear": 14885,
+  "haleMonths": 10,
+  "legislationSlug": "social-security-reform"
+}

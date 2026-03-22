@@ -1,0 +1,97 @@
+{
+  "name": "Medicaid",
+  "currentSpending": 616000000000,
+  "currentSpendingRealPerCapita": 1387.46,
+  "optimalSpendingPerCapita": null,
+  "optimalSpendingNominal": null,
+  "gap": 0,
+  "gapPercent": 0,
+  "recommendation": "maintain",
+  "evidenceSource": "non-discretionary (mandated)",
+  "outcomeMetrics": [
+    {
+      "name": "Uninsured rate (overall)",
+      "value": 7.9,
+      "trend": "improving"
+    },
+    {
+      "name": "Medicaid enrollment",
+      "value": 72,
+      "trend": "declining"
+    },
+    {
+      "name": "Infant mortality rate",
+      "value": 5.6,
+      "trend": "declining"
+    },
+    {
+      "name": "Children covered by Medicaid/CHIP",
+      "value": 39.7,
+      "trend": "stable"
+    }
+  ],
+  "historicalRealPerCapita": [
+    {
+      "year": 2015,
+      "nominalBillions": 350,
+      "realPerCapita": 1128.51
+    },
+    {
+      "year": 2016,
+      "nominalBillions": 368,
+      "realPerCapita": 1163.27
+    },
+    {
+      "year": 2017,
+      "nominalBillions": 375,
+      "realPerCapita": 1153.32
+    },
+    {
+      "year": 2018,
+      "nominalBillions": 389,
+      "realPerCapita": 1160.84
+    },
+    {
+      "year": 2019,
+      "nominalBillions": 409,
+      "realPerCapita": 1194.06
+    },
+    {
+      "year": 2020,
+      "nominalBillions": 458,
+      "realPerCapita": 1308.66
+    },
+    {
+      "year": 2021,
+      "nominalBillions": 521,
+      "realPerCapita": 1419.09
+    },
+    {
+      "year": 2022,
+      "nominalBillions": 592,
+      "realPerCapita": 1487.38
+    },
+    {
+      "year": 2023,
+      "nominalBillions": 616,
+      "realPerCapita": 1475.2
+    },
+    {
+      "year": 2024,
+      "nominalBillions": 618,
+      "realPerCapita": 1428.41
+    },
+    {
+      "year": 2025,
+      "nominalBillions": 616,
+      "realPerCapita": 1387.46
+    }
+  ],
+  "diminishingReturns": null,
+  "efficiency": null,
+  "slug": "medicaid",
+  "legislationSlug": "medicaid-reform",
+  "dividendPerAdultYear": 0,
+  "dividendPerAdultMonth": 0,
+  "isNonDiscretionary": true
+}

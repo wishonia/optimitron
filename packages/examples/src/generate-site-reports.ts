@@ -651,5 +651,167 @@ console.log('  ✅ dividend/index.md');
 generateEvaluationPage();
 console.log('  ✅ evaluation/index.md');
 
+// ─── JSON Manifest for Web App ──────────────────────────────────────
+// A single JSON file listing all pages with their metadata, so the
+// Next.js web app can import and render them without parsing markdown.
+
+interface PageManifestEntry {
+  path: string;
+  title: string;
+  type: 'budget' | 'policy' | 'legislation' | 'efficiency' | 'dividend' | 'evaluation' | 'index';
+  category?: string;
+  efficiency?: {
+    rank: number;
+    totalCountries: number;
+    overspendRatio: number;
+    floorSpending: number;
+    potentialSavingsTotal: number;
+    bestCountry: string;
+    outcomeName: string;
+    dividendPerAdultYear: number;
+    dividendPerAdultMonth: number;
+  };
+  policy?: {
+    incomePerYear: number;
+    haleMonths: number;
+    evidenceGrade: string;
+    recommendationType: string;
+  };
+  legislationSlug?: string;
+  recommendation?: string;
+}
+
+function generateManifest() {
+  const pages: PageManifestEntry[] = [];
+  const adults = 258_000_000;
+
+  // Budget categories
+  for (const cat of budgetData.categories) {
+    const slug = slugify(cat.name);
+    const eff = cat.efficiency;
+    const legSlug = LEGISLATION_MAP[cat.name] ?? null;
+    const entry: PageManifestEntry = {
+      path: `/budget/${slug}/`,
+      title: cat.name,
+      type: 'budget',
+      category: cat.name,
+      recommendation: cat.recommendation,
+      legislationSlug: legSlug ?? undefined,
+    };
+    if (eff) {
+      const perAdult = Math.round(eff.potentialSavingsTotal / adults);
+      entry.efficiency = {
+        rank: eff.usRank,
+        totalCountries: eff.totalCountries,
+        overspendRatio: eff.overspendRatio,
+        floorSpending: eff.floorSpending,
+        potentialSavingsTotal: eff.potentialSavingsTotal,
+        bestCountry: eff.bestCountry.name,
+        outcomeName: eff.outcomeName,
+        dividendPerAdultYear: perAdult,
+        dividendPerAdultMonth: Math.round(perAdult / 12),
+      };
+    }
+    pages.push(entry);
+  }
+
+  // Policies
+  for (const p of policyData.policies) {
+    const slug = slugify(p.name);
+    const legSlug = POLICY_TO_LEGISLATION[p.category] ?? undefined;
+    pages.push({
+      path: `/policies/${slug}/`,
+      title: p.name,
+      type: 'policy',
+      category: p.category,
+      legislationSlug: legSlug,
+      recommendation: p.recommendationType,
+      policy: {
+        incomePerYear: Math.round(p.incomeEffect * US_MEDIAN_INCOME),
+        haleMonths: Math.round(p.healthEffect * 12 * 10),
+        evidenceGrade: p.evidenceGrade,
+        recommendationType: p.recommendationType,
+      },
+    });
+  }
+
+  // Legislation
+  for (const [catName, legSlug] of Object.entries(LEGISLATION_MAP)) {
+    if (!existsSync(resolve(LEGISLATION_DIR, `${legSlug}.md`))) continue;
+    pages.push({
+      path: `/legislation/${legSlug}/`,
+      title: `${catName} Reform`,
+      type: 'legislation',
+      category: catName,
+    });
+  }
+
+  // Static pages
+  pages.push({ path: '/efficiency/', title: 'OECD Efficiency Rankings', type: 'efficiency' });
+  pages.push({ path: '/dividend/', title: 'Universal Dividend', type: 'dividend' });
+  pages.push({ path: '/evaluation/', title: 'Evaluation Framework', type: 'evaluation' });
+
+  const manifest = {
+    generatedAt: new Date().toISOString(),
+    pageCount: pages.length,
+    pages,
+  };
+
+  write('manifest.json', JSON.stringify(manifest, null, 2));
+
+  // Also write to web data dir for easy import
+  writeFileSync(
+    resolve(WEB_DATA, 'analysis-manifest.json'),
+    JSON.stringify(manifest, null, 2),
+  );
+}
+
+generateManifest();
+console.log(`  ✅ manifest.json (${budgetData.categories.length + policyData.policies.length + Object.keys(LEGISLATION_MAP).length + 3} pages)`);
+
+// ─── Per-Page JSON Data Files ───────────────────────────────────────
+// Structured data for each page — the web app imports these directly
+// without parsing markdown. One JSON per budget category, per policy.
+
+function generateDataFiles() {
+  const adults = 258_000_000;
+
+  // Budget category JSON files
+  for (const cat of budgetData.categories) {
+    const slug = slugify(cat.name);
+    const eff = cat.efficiency;
+    const perAdult = eff ? Math.round(eff.potentialSavingsTotal / adults) : 0;
+    const data = {
+      ...cat,
+      slug,
+      legislationSlug: LEGISLATION_MAP[cat.name] ?? null,
+      dividendPerAdultYear: perAdult,
+      dividendPerAdultMonth: Math.round(perAdult / 12),
+      isNonDiscretionary: !eff && ['Social Security', 'Medicare', 'Medicaid', 'Interest on Debt', 'Other Mandatory Programs'].includes(cat.name),
+    };
+    write(`data/budget/${slug}.json`, JSON.stringify(data, null, 2));
+  }
+
+  // Policy JSON files
+  for (const p of policyData.policies) {
+    const slug = slugify(p.name);
+    const data = {
+      ...p,
+      slug,
+      incomePerYear: Math.round(p.incomeEffect * US_MEDIAN_INCOME),
+      haleMonths: Math.round(p.healthEffect * 12 * 10),
+      legislationSlug: POLICY_TO_LEGISLATION[p.category] ?? null,
+    };
+    write(`data/policies/${slug}.json`, JSON.stringify(data, null, 2));
+  }
+
+  // Summary JSON (same as the web data files but in the report site)
+  write('data/budget-summary.json', JSON.stringify(budgetData, null, 2));
+  write('data/policy-summary.json', JSON.stringify(policyData, null, 2));
+}
+
+generateDataFiles();
+console.log(`  ✅ data/ — ${budgetData.categories.length} budget + ${policyData.policies.length} policy JSON files`);
+
 console.log('\nDone! Site in reports/site/');
 console.log('Run: cd reports/site && npx @11ty/eleventy --serve');

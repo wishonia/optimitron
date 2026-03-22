@@ -9,8 +9,8 @@ layout: layout.njk
 
 | Metric | Value |
 |--------|-------|
-| Current spending | $616B |
-| Real per-capita (2017 USD) | $1387 |
+| Federal budget line item | $616B |
+| Real per-capita (2017 USD, federal) | $1387 |
 | Recommendation | **MAINTAIN** |
 | Evidence | non-discretionary (mandated) |
 
