@@ -24,6 +24,20 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { CollapseCountdownTimer } from "@/components/animations/CollapseCountdownTimer";
+import { prisma } from "@/lib/prisma";
+
+async function getPoolStats() {
+  try {
+    const deposits = await prisma.prizeTreasuryDeposit.findMany({
+      where: { deletedAt: null },
+      select: { amount: true },
+    });
+    const totalDeposited = deposits.reduce((sum, d) => sum + BigInt(d.amount), 0n);
+    return { poolUSD: Number(totalDeposited) / 1e6 };
+  } catch {
+    return { poolUSD: 0 };
+  }
+}
 import { GameCTA } from "@/components/ui/game-cta";
 
 export const metadata: Metadata = {
@@ -103,7 +117,8 @@ const contractDetails = [
   },
 ];
 
-export default function PrizePage() {
+export default async function PrizePage() {
+  const poolStats = await getPoolStats();
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       {/* HERO — Arcade Cabinet */}
@@ -381,7 +396,7 @@ export default function PrizePage() {
             <div className="font-mono text-xs font-black uppercase text-muted-foreground">
               Prize Pool
             </div>
-            <div className="font-mono mt-2 text-2xl font-black text-foreground">$0</div>
+            <div className="font-mono mt-2 text-2xl font-black text-foreground">${poolStats.poolUSD.toLocaleString()}</div>
             <div className="text-[10px] font-bold text-muted-foreground">
               grows at {poolReturn}/yr
             </div>

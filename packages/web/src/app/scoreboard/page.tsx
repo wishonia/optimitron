@@ -12,6 +12,39 @@ import {
 } from "@/lib/parameters-calculations-citations";
 import { CollapseCountdownTimer } from "@/components/animations/CollapseCountdownTimer";
 import { GdpTrajectoryChart } from "@/components/animations/GdpTrajectoryChart";
+import { getGlobalVerifiedVoteCount } from "@/lib/verified-votes.server";
+import { prisma } from "@/lib/prisma";
+
+async function getGameStats() {
+  try {
+    const [deposits, voteMintsCount, globalVoters] = await Promise.all([
+      prisma.prizeTreasuryDeposit.findMany({
+        where: { deletedAt: null },
+        select: { amount: true },
+      }),
+      prisma.voteTokenMint.count({
+        where: { status: "CONFIRMED", deletedAt: null },
+      }),
+      getGlobalVerifiedVoteCount(),
+    ]);
+
+    const totalDeposited = deposits.reduce(
+      (sum, d) => sum + BigInt(d.amount),
+      0n,
+    );
+    // USDC has 6 decimals
+    const poolUSD = Number(totalDeposited) / 1e6;
+
+    return {
+      poolUSD,
+      verifiedVoters: globalVoters,
+      votePoints: voteMintsCount,
+    };
+  } catch {
+    // No DB connection — return zeros gracefully
+    return { poolUSD: 0, verifiedVoters: 0, votePoints: 0 };
+  }
+}
 
 export const metadata: Metadata = {
   title: "Scoreboard | The Earth Optimization Game",
@@ -25,7 +58,8 @@ const haleGainYears = TREATY_HALE_GAIN_YEAR_15.value;
 const incomeCurrentUSD = CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value;
 const incomeTargetUSD = TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value;
 
-export default function ScoreboardPage() {
+export default async function ScoreboardPage() {
+  const stats = await getGameStats();
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Hero */}
@@ -130,7 +164,7 @@ export default function ScoreboardPage() {
               Prize Pool
             </div>
             <div className="mt-2 text-2xl font-black text-brutal-pink">
-              $0
+              ${stats.poolUSD.toLocaleString()}
             </div>
             <div className="text-[10px] font-bold text-muted-foreground">
               grows at {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} over 15yr
@@ -141,10 +175,10 @@ export default function ScoreboardPage() {
               Verified Voters
             </div>
             <div className="mt-2 text-2xl font-black text-brutal-cyan">
-              0
+              {stats.verifiedVoters.toLocaleString()}
             </div>
             <div className="text-[10px] font-bold text-muted-foreground">
-              of {fmtParam(TREATY_CAMPAIGN_VOTING_BLOC_TARGET)} target
+              of {fmtParam({...TREATY_CAMPAIGN_VOTING_BLOC_TARGET, unit: ""})} target
             </div>
           </div>
           <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
@@ -152,7 +186,7 @@ export default function ScoreboardPage() {
               VOTE Points Earned
             </div>
             <div className="mt-2 text-2xl font-black text-brutal-yellow">
-              0
+              {stats.votePoints.toLocaleString()}
             </div>
             <div className="text-[10px] font-bold text-muted-foreground">
               1 per verified voter recruited
