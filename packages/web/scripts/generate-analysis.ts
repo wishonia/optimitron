@@ -35,13 +35,20 @@ import {
   findOSL,
   marginalReturn as calcMarginalReturn,
   predictOutcome,
+  efficientFrontier,
+  findMinimumEffectiveSpending,
+  overspendRatio,
   type SpendingOutcomePoint,
   type DiminishingReturnsModel,
+  type EfficiencyCategory,
+  type SpendingDecileCategory,
+  type CountrySpending,
 } from '@optimitron/obg';
 
 // Data imports
 import {
   US_FEDERAL_BUDGET,
+  OECD_BUDGET_PANEL,
   toRealPerCapita,
   historicalToRealPerCapita,
   oecdBudgetPanelToSpendingOutcome,
@@ -52,6 +59,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataDir = resolve(__dirname, '../src/data');
 
 const US_POPULATION = 339_000_000; // 2025 estimate
+
+const COUNTRY_NAMES: Record<string, string> = {
+  USA: 'United States', GBR: 'United Kingdom', FRA: 'France',
+  DEU: 'Germany', JPN: 'Japan', CAN: 'Canada', ITA: 'Italy',
+  AUS: 'Australia', NLD: 'Netherlands', BEL: 'Belgium',
+  SWE: 'Sweden', NOR: 'Norway', DNK: 'Denmark', FIN: 'Finland',
+  AUT: 'Austria', CHE: 'Switzerland', ESP: 'Spain', PRT: 'Portugal',
+  IRL: 'Ireland', NZL: 'New Zealand', KOR: 'South Korea',
+  ISR: 'Israel', CZE: 'Czech Republic',
+};
 
 // ─── OECD Category Mappings ─────────────────────────────────────────
 // Maps US federal budget category names to OECD panel spending/outcome fields.
@@ -69,6 +86,12 @@ interface OECDMapping {
 }
 
 const OECD_MAPPINGS: Record<string, OECDMapping> = {
+  // NOTE: OECD health/education/social spending = total government (federal + state + local).
+  // US federal budget categories are federal-only. For categories where federal is a minority
+  // of total government spending (e.g., Education is ~10% federal, ~90% state/local), the
+  // OSL comparison is against total government — the gap reflects the overall system, not just
+  // the federal share. This is intentional: federal policy should consider total government
+  // spending, not just its own slice.
   'Medicare': {
     spendingField: 'healthSpendingPerCapitaPpp',
     outcomeField: 'lifeExpectancyYears',
@@ -108,14 +131,87 @@ const OECD_MAPPINGS: Record<string, OECDMapping> = {
 };
 
 // Non-discretionary categories: skip OSL — these are mandated obligations
+// that Congress cannot simply reallocate via annual appropriations.
+// Military IS discretionary despite being large. Medicaid has discretionary components.
 const NON_DISCRETIONARY = new Set([
   'Interest on Debt',
   'Social Security',
-  'Medicare',
   'Other Mandatory Programs',
 ]);
 
+// ─── Efficiency Analysis Helpers ─────────────────────────────────────
+
+/** Average the latest 3 years of OECD data per country for a given field */
+function latestCountryAverages(
+  spendingField: keyof OECDBudgetPanelDataPoint,
+  outcomeField: keyof OECDBudgetPanelDataPoint,
+  negateOutcome?: boolean,
+): Array<{ code: string; name: string; spending: number; outcome: number }> {
+  // Group by country, take last 3 years with non-null data
+  const byCountry = new Map<string, { spending: number[]; outcome: number[] }>();
+  for (const row of OECD_BUDGET_PANEL) {
+    const s = row[spendingField] as number | null;
+    const o = row[outcomeField] as number | null;
+    if (s == null || o == null) continue;
+    if (!byCountry.has(row.jurisdictionIso3)) {
+      byCountry.set(row.jurisdictionIso3, { spending: [], outcome: [] });
+    }
+    const entry = byCountry.get(row.jurisdictionIso3)!;
+    entry.spending.push(s);
+    entry.outcome.push(negateOutcome ? 100 - o : o);
+  }
+
+  return [...byCountry.entries()].map(([code, data]) => {
+    // Take last 3 entries (sorted by insertion order = chronological)
+    const recentS = data.spending.slice(-3);
+    const recentO = data.outcome.slice(-3);
+    const avgS = recentS.reduce((a, b) => a + b, 0) / recentS.length;
+    const avgO = recentO.reduce((a, b) => a + b, 0) / recentO.length;
+    return { code, name: COUNTRY_NAMES[code] ?? code, spending: avgS, outcome: avgO };
+  }).filter(c => c.spending > 0);
+}
+
+/** Build spending deciles from country averages */
+function buildDeciles(countries: Array<{ spending: number; outcome: number }>): Array<{ decile: number; avgSpending: number; outcome: number }> {
+  const sorted = [...countries].sort((a, b) => a.spending - b.spending);
+  const decileSize = Math.max(1, Math.floor(sorted.length / 10));
+  const deciles: Array<{ decile: number; avgSpending: number; outcome: number }> = [];
+
+  for (let d = 0; d < 10; d++) {
+    const start = d * decileSize;
+    const end = d === 9 ? sorted.length : start + decileSize;
+    const slice = sorted.slice(start, end);
+    if (slice.length === 0) continue;
+    const avgSpending = slice.reduce((s, c) => s + c.spending, 0) / slice.length;
+    const avgOutcome = slice.reduce((s, c) => s + c.outcome, 0) / slice.length;
+    deciles.push({ decile: d + 1, avgSpending, outcome: avgOutcome });
+  }
+  return deciles;
+}
+
 // ─── Budget Analysis (OBG) ──────────────────────────────────────────
+
+interface EfficiencyInfo {
+  /** US rank among OECD countries (1 = most efficient) */
+  usRank: number;
+  totalCountries: number;
+  /** Most efficient country */
+  bestCountry: { code: string; name: string; spending: number; outcome: number };
+  /** US data point */
+  usData: { spending: number; outcome: number };
+  /** Minimum effective spending (floor where outcomes plateau) */
+  floorSpending: number;
+  floorOutcome: number;
+  /** US overspend ratio: actual / floor */
+  overspendRatio: number;
+  /** Potential savings if spending at the floor */
+  potentialSavingsPerCapita: number;
+  potentialSavingsTotal: number;
+  /** Outcome name being measured */
+  outcomeName: string;
+  /** Top 3 most efficient countries for context */
+  topEfficient: Array<{ name: string; spending: number; outcome: number; rank: number }>;
+}
 
 interface BudgetCategoryOutput {
   name: string;
@@ -137,6 +233,91 @@ interface BudgetCategoryOutput {
     elasticity: number | null;
     outcomeName: string;
   } | null;
+  /** Efficient frontier + minimum effective spending analysis */
+  efficiency: EfficiencyInfo | null;
+}
+
+function runEfficiencyAnalysis(mapping: OECDMapping): EfficiencyInfo | null {
+  const countries = latestCountryAverages(
+    mapping.spendingField as keyof OECDBudgetPanelDataPoint,
+    mapping.outcomeField as keyof OECDBudgetPanelDataPoint,
+    mapping.negateOutcome,
+  );
+
+  if (countries.length < 5) return null;
+
+  const usData = countries.find(c => c.code === 'USA');
+  if (!usData) return null;
+
+  // 1. Efficient frontier — rank countries by outcome-per-dollar
+  const direction = mapping.negateOutcome ? 'higher' : 'higher'; // after negation, higher is always better
+  const frontierResult = efficientFrontier([{
+    categoryId: mapping.spendingField,
+    categoryName: mapping.outcomeName,
+    outcomeDirection: direction,
+    countries: countries.map(c => ({
+      countryCode: c.code,
+      countryName: c.name,
+      spending: c.spending,
+      outcome: c.outcome,
+    })),
+  }]);
+
+  const rankings = frontierResult[0]?.rankings ?? [];
+  const usRanking = rankings.find(r => r.countryCode === 'USA');
+  if (!usRanking) return null;
+
+  // 2. Minimum effective spending — find the floor
+  const deciles = buildDeciles(countries);
+  const floorResult = findMinimumEffectiveSpending([{
+    categoryId: mapping.spendingField,
+    categoryName: mapping.outcomeName,
+    deciles,
+  }], {
+    outcomeTolerance: mapping.negateOutcome ? 2 : 1, // wider tolerance for inverted metrics
+    outcomeDirection: 'higher',
+  });
+
+  const floor = floorResult[0];
+  const floorSpending = floor?.floorSpending ?? usData.spending;
+  const floorOutcome = floor?.floorOutcome ?? usData.outcome;
+
+  // 3. Overspend ratio for US
+  const ratio = floorSpending > 0 ? usData.spending / floorSpending : 1;
+  const savingsPerCapita = Math.max(0, usData.spending - floorSpending);
+
+  // Top 3 most efficient
+  const topEfficient = rankings.slice(0, 3).map(r => ({
+    name: COUNTRY_NAMES[r.countryCode] ?? r.countryCode,
+    spending: Math.round(r.spending),
+    outcome: Math.round(r.outcome * 100) / 100,
+    rank: r.rank,
+  }));
+
+  // Best country (rank 1)
+  const best = rankings[0]!;
+
+  return {
+    usRank: usRanking.rank,
+    totalCountries: rankings.length,
+    bestCountry: {
+      code: best.countryCode,
+      name: COUNTRY_NAMES[best.countryCode] ?? best.countryCode,
+      spending: Math.round(best.spending),
+      outcome: Math.round(best.outcome * 100) / 100,
+    },
+    usData: {
+      spending: Math.round(usData.spending),
+      outcome: Math.round(usData.outcome * 100) / 100,
+    },
+    floorSpending: Math.round(floorSpending),
+    floorOutcome: Math.round(floorOutcome * 100) / 100,
+    overspendRatio: Math.round(ratio * 10) / 10,
+    potentialSavingsPerCapita: Math.round(savingsPerCapita),
+    potentialSavingsTotal: Math.round(savingsPerCapita * US_POPULATION),
+    outcomeName: mapping.outcomeName,
+    topEfficient,
+  };
 }
 
 function runOSLAnalysis(
@@ -166,8 +347,6 @@ function runOSLAnalysis(
   const logModel = fitLogModel(data);
   const satModel = fitSaturationModel(data);
   const model = logModel.r2 >= satModel.r2 ? logModel : satModel;
-
-  if (model.r2 < 0.01) return null; // No relationship
 
   // Calculate average marginal return across observed data
   const avgMR = data.reduce(
@@ -229,6 +408,12 @@ function generateBudgetAnalysis() {
     let recommendation = 'maintain';
     let evidenceSource = 'none';
     let drInfo: BudgetCategoryOutput['diminishingReturns'] = null;
+    let efficiencyInfo: EfficiencyInfo | null = null;
+
+    // Run efficiency analysis for all OECD-mapped categories (even non-discretionary)
+    if (mapping) {
+      efficiencyInfo = runEfficiencyAnalysis(mapping);
+    }
 
     if (isNonDiscretionary) {
       // Non-discretionary: no optimization, just report
@@ -237,11 +422,7 @@ function generateBudgetAnalysis() {
       // Real OECD cross-country OSL estimation
       const result = runOSLAnalysis(mapping, currentRealPerCapita);
       if (result) {
-        optimalPerCapita = result.oslPerCapita;
-        optimalNominal = result.oslPerCapita * US_POPULATION;
-        gap = optimalNominal - currentUsd;
-        gapPercent = currentUsd > 0 ? (gap / currentUsd) * 100 : 0;
-        evidenceSource = `OECD cross-country (${result.data.length} observations, ${new Set(result.data.map(d => d.jurisdiction)).size} countries)`;
+        const nCountries = new Set(result.data.map(d => d.jurisdiction)).size;
 
         drInfo = {
           modelType: result.model.type,
@@ -252,12 +433,24 @@ function generateBudgetAnalysis() {
           outcomeName: mapping.outcomeName,
         };
 
-        // Recommendation from gap
-        if (gapPercent > 50) recommendation = 'scale_up';
-        else if (gapPercent > 10) recommendation = 'increase';
-        else if (gapPercent > -10) recommendation = 'maintain';
-        else if (gapPercent > -50) recommendation = 'decrease';
-        else recommendation = 'major_decrease';
+        if (result.model.r2 < 0.01) {
+          // No meaningful relationship found
+          evidenceSource = `OECD cross-country: no significant relationship (R²=${drInfo.r2}, ${result.data.length} obs, ${nCountries} countries)`;
+          recommendation = 'maintain';
+        } else {
+          optimalPerCapita = result.oslPerCapita;
+          optimalNominal = result.oslPerCapita * US_POPULATION;
+          gap = optimalNominal - currentUsd;
+          gapPercent = currentUsd > 0 ? (gap / currentUsd) * 100 : 0;
+          evidenceSource = `OECD cross-country (${result.data.length} obs, ${nCountries} countries, R²=${drInfo.r2})`;
+
+          // Recommendation from gap
+          if (gapPercent > 50) recommendation = 'scale_up';
+          else if (gapPercent > 10) recommendation = 'increase';
+          else if (gapPercent > -10) recommendation = 'maintain';
+          else if (gapPercent > -50) recommendation = 'decrease';
+          else recommendation = 'major_decrease';
+        }
       } else {
         evidenceSource = 'OECD mapping available but insufficient data';
       }
@@ -307,22 +500,42 @@ function generateBudgetAnalysis() {
         realPerCapita: Math.round(h.realPerCapita * 100) / 100,
       })),
       diminishingReturns: drInfo,
+      efficiency: efficiencyInfo,
     });
   }
 
   // Sort by absolute gap (biggest misallocation first)
   categories.sort((a, b) => Math.abs(b.gap) - Math.abs(a.gap));
 
-  // Top recommendations (only categories with real evidence)
-  const topRecommendations = categories
-    .filter(c => c.recommendation !== 'maintain' && c.diminishingReturns !== null)
+  // Top recommendations — prioritize categories with efficiency data showing overspend
+  // Deduplicate: multiple US budget categories may map to the same OECD spending field
+  // (e.g., Medicare, Medicaid, Health all map to healthSpendingPerCapitaPpp).
+  // Only show the most relevant one per OECD field.
+  const seenSpendingFields = new Set<string>();
+  const withEfficiency = categories
+    .filter(c => c.efficiency !== null)
+    .sort((a, b) => (b.efficiency!.overspendRatio) - (a.efficiency!.overspendRatio))
+    .filter(c => {
+      const mapping = OECD_MAPPINGS[c.name];
+      if (!mapping) return true;
+      if (seenSpendingFields.has(mapping.spendingField)) return false;
+      seenSpendingFields.add(mapping.spendingField);
+      return true;
+    });
+
+  const topRecommendations = withEfficiency
     .slice(0, 10)
     .map(c => {
-      const dir = c.gap > 0 ? 'Increase' : 'Decrease';
-      const amt = Math.abs(c.gap);
-      const fmtAmt = amt >= 1e12 ? `$${(amt/1e12).toFixed(1)}T` : `$${(amt/1e9).toFixed(0)}B`;
-      const model = c.diminishingReturns!;
-      return `${dir} ${c.name} by ${fmtAmt} (${model.modelType} model, R²=${model.r2}, ${model.n} observations)`;
+      const e = c.efficiency!;
+      const savings = e.potentialSavingsTotal;
+      const fmtSavings = savings >= 1e12 ? `$${(savings/1e12).toFixed(1)}T` : `$${(savings/1e9).toFixed(0)}B`;
+      if (e.overspendRatio > 1.2) {
+        return `${c.name}: US spends $${e.usData.spending}/cap (rank ${e.usRank}/${e.totalCountries}). ${e.bestCountry.name} spends $${e.bestCountry.spending}/cap with ${e.outcomeName} ${e.bestCountry.outcome}. Overspend: ${e.overspendRatio}x. Potential savings: ${fmtSavings}/yr`;
+      } else if (e.overspendRatio < 0.8) {
+        return `${c.name}: US underspends at $${e.usData.spending}/cap (rank ${e.usRank}/${e.totalCountries}). Floor: $${e.floorSpending}/cap.`;
+      } else {
+        return `${c.name}: US spends $${e.usData.spending}/cap (rank ${e.usRank}/${e.totalCountries}). Near floor ($${e.floorSpending}/cap). ${e.outcomeName}: ${e.usData.outcome}`;
+      }
     });
 
   return {

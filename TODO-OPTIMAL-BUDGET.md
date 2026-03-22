@@ -17,10 +17,10 @@ For any jurisdiction, answer: "Given $X total budget, how should it be allocated
 - [ ] Pareto frontier: show tradeoffs between income-maximizing and health-maximizing budgets
 
 ### P0: Inflation-Adjusted Per-Capita Analysis
-- [ ] Add `toRealPerCapita()` helper: divide by population × deflate by CPI/GDP deflator
-- [ ] Convert all FRED spending series to real per-capita before analysis
-- [ ] Add population data to country-level datasets (World Bank has this)
-- [ ] Re-run all US analyses with inflation-adjusted per-capita inputs
+- [x] Add `toRealPerCapita()` helper: divide by population × deflate by CPI/GDP deflator — ✅ `packages/data/src/inflation-adjustment.ts`
+- [x] Convert all FRED spending series to real per-capita before analysis — ✅ wired into `generate-analysis.ts`
+- [x] Add population data to country-level datasets — ✅ embedded in `inflation-adjustment.ts` (2000-2025)
+- [x] Re-run all US analyses with inflation-adjusted per-capita inputs — ✅ `generate-analysis.ts` now uses real OBG diminishing returns curves fitted to OECD cross-country panel (529 obs, 23 countries) for 7 categories, with CPI-U per-capita adjustment on all 23 categories
 
 ### P0: YoY % Change Mode
 - [ ] Add `firstDifference` option to `runFullAnalysis()` — auto-convert to YoY % change
@@ -99,7 +99,7 @@ For any jurisdiction, answer: "Given $X total budget, how should it be allocated
 ## 🔧 Code Improvements
 
 ### Analysis Quality
-- [ ] **Inflation-adjusted per-capita mode** for all analyses
+- [x] **Inflation-adjusted per-capita mode** — ✅ `toRealPerCapita()` + CPI-U deflator (constant 2017 USD per capita)
 - [x] **Confidence intervals** — ✅ bootstrap CI in wishocracy + OSL estimation in OBG
 - [ ] **Multiple testing correction** (Bonferroni/FDR when running many categories)
 - [x] **Lag optimization** — ✅ onset delay grid search in optimizer temporal alignment
@@ -137,11 +137,11 @@ For any jurisdiction, answer: "Given $X total budget, how should it be allocated
 3. ✅ Add FRED data (65 years US)
 4. ✅ Fix Predictive Pearson (was always 0)
 5. ✅ Identify monotonic trend problem → YoY % change solution
-6. [ ] **Add inflation-adjusted per-capita mode**
+6. [x] **Add inflation-adjusted per-capita mode** — ✅ `toRealPerCapita()` in data package + wired into generate-analysis.ts
 7. [x] **Add HALE (healthy life years) as outcome** — ✅ WHO fetcher has HALE
 8. [x] **Add all major US budget categories with FRED data** — ✅ 15+ FRED series + USAspending 20 function codes
 9. [ ] **Add "return to citizens" baseline category**
 10. [ ] **Build multi-outcome optimizer (income + health)**
-11. [ ] **Run full US optimal budget with 15+ categories**
+11. [x] **Run full US optimal budget with 15+ categories** — ✅ 23 categories, 7 with OECD OSL, 4 non-discretionary, 12 with outcome-trend
 12. [ ] **Generate the report: "How the US Should Actually Spend $6.7 Trillion"**
 13. [ ] **Publish to website with interactive visualization**

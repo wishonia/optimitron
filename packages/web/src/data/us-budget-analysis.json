@@ -11,7 +11,7 @@
       "gap": 1079228675096,
       "gapPercent": 1058.1,
       "recommendation": "scale_up",
-      "evidenceSource": "OECD cross-country (529 observations, 23 countries)",
+      "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.526)",
       "outcomeMetrics": [
         {
           "name": "High school graduation rate",
@@ -103,6 +103,184 @@
         "marginalReturn": 30.58773,
         "elasticity": 0.807,
         "outcomeName": "GDP per Capita"
+      },
+      "efficiency": {
+        "usRank": 8,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "IRL",
+          "name": "Ireland",
+          "spending": 2560,
+          "outcome": 75433.33
+        },
+        "usData": {
+          "spending": 2898,
+          "outcome": 57590
+        },
+        "floorSpending": 2572,
+        "floorOutcome": 57908.33,
+        "overspendRatio": 1.1,
+        "potentialSavingsPerCapita": 326,
+        "potentialSavingsTotal": 110514000000,
+        "outcomeName": "GDP per Capita",
+        "topEfficient": [
+          {
+            "name": "Ireland",
+            "spending": 2560,
+            "outcome": 75433.33,
+            "rank": 1
+          },
+          {
+            "name": "Japan",
+            "spending": 1274,
+            "outcome": 37456.67,
+            "rank": 2
+          },
+          {
+            "name": "Czech Republic",
+            "spending": 1410,
+            "outcome": 34106.67,
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "Medicare",
+      "currentSpending": 874000000000,
+      "currentSpendingRealPerCapita": 1968.57,
+      "optimalSpendingPerCapita": 3937.13,
+      "optimalSpendingNominal": 1334687850467,
+      "gap": 460687850467,
+      "gapPercent": 52.7,
+      "recommendation": "scale_up",
+      "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.11)",
+      "outcomeMetrics": [
+        {
+          "name": "Life expectancy at 65",
+          "value": 18.9,
+          "trend": "declining"
+        },
+        {
+          "name": "Medicare beneficiaries",
+          "value": 67.4,
+          "trend": "improving"
+        },
+        {
+          "name": "Hospital readmission rate (30-day)",
+          "value": 15.3,
+          "trend": "improving"
+        },
+        {
+          "name": "Per-capita Medicare spending",
+          "value": 13050,
+          "trend": "declining"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 546,
+          "realPerCapita": 1760.48
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 588,
+          "realPerCapita": 1858.7
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 595,
+          "realPerCapita": 1829.94
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 605,
+          "realPerCapita": 1805.41
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 651,
+          "realPerCapita": 1900.57
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 776,
+          "realPerCapita": 2217.3
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 755,
+          "realPerCapita": 2056.45
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 747,
+          "realPerCapita": 1876.82
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 839,
+          "realPerCapita": 2009.24
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 869,
+          "realPerCapita": 2008.55
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 874,
+          "realPerCapita": 1968.57
+        }
+      ],
+      "diminishingReturns": {
+        "modelType": "saturation",
+        "r2": 0.11,
+        "n": 529,
+        "marginalReturn": 0.00082,
+        "elasticity": 0.02,
+        "outcomeName": "Life Expectancy"
+      },
+      "efficiency": {
+        "usRank": 23,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "PRT",
+          "name": "Portugal",
+          "spending": 2924,
+          "outcome": 81.37
+        },
+        "usData": {
+          "spending": 10333,
+          "outcome": 76.93
+        },
+        "floorSpending": 3142,
+        "floorOutcome": 82.18,
+        "overspendRatio": 3.3,
+        "potentialSavingsPerCapita": 7191,
+        "potentialSavingsTotal": 2437805500000,
+        "outcomeName": "Life Expectancy",
+        "topEfficient": [
+          {
+            "name": "Portugal",
+            "spending": 2924,
+            "outcome": 81.37,
+            "rank": 1
+          },
+          {
+            "name": "Czech Republic",
+            "spending": 2898,
+            "outcome": 77.97,
+            "rank": 2
+          },
+          {
+            "name": "Israel",
+            "spending": 3110,
+            "outcome": 82.17,
+            "rank": 3
+          }
+        ]
       }
     },
     {
@@ -114,7 +292,7 @@
       "gap": 421142998744,
       "gapPercent": 957.1,
       "recommendation": "scale_up",
-      "evidenceSource": "OECD cross-country (529 observations, 23 countries)",
+      "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.318)",
       "outcomeMetrics": [
         {
           "name": "R&D as % of GDP (federal)",
@@ -201,6 +379,46 @@
         "marginalReturn": 88.55407,
         "elasticity": 0.443,
         "outcomeName": "GDP per Capita"
+      },
+      "efficiency": {
+        "usRank": 20,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "IRL",
+          "name": "Ireland",
+          "spending": 859,
+          "outcome": 75433.33
+        },
+        "usData": {
+          "spending": 1991,
+          "outcome": 57590
+        },
+        "floorSpending": 843,
+        "floorOutcome": 56145,
+        "overspendRatio": 2.4,
+        "potentialSavingsPerCapita": 1147,
+        "potentialSavingsTotal": 388946000000,
+        "outcomeName": "GDP per Capita",
+        "topEfficient": [
+          {
+            "name": "Ireland",
+            "spending": 859,
+            "outcome": 75433.33,
+            "rank": 1
+          },
+          {
+            "name": "Spain",
+            "spending": 472,
+            "outcome": 33080,
+            "rank": 2
+          },
+          {
+            "name": "New Zealand",
+            "spending": 481,
+            "outcome": 33430,
+            "rank": 3
+          }
+        ]
       }
     },
     {
@@ -212,7 +430,7 @@
       "gap": 49547663551,
       "gapPercent": 52.7,
       "recommendation": "scale_up",
-      "evidenceSource": "OECD cross-country (529 observations, 23 countries)",
+      "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.11)",
       "outcomeMetrics": [
         {
           "name": "Life expectancy at birth",
@@ -294,6 +512,46 @@
         "marginalReturn": 0.00179,
         "elasticity": 0.005,
         "outcomeName": "Life Expectancy"
+      },
+      "efficiency": {
+        "usRank": 23,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "PRT",
+          "name": "Portugal",
+          "spending": 2924,
+          "outcome": 81.37
+        },
+        "usData": {
+          "spending": 10333,
+          "outcome": 76.93
+        },
+        "floorSpending": 3142,
+        "floorOutcome": 82.18,
+        "overspendRatio": 3.3,
+        "potentialSavingsPerCapita": 7191,
+        "potentialSavingsTotal": 2437805500000,
+        "outcomeName": "Life Expectancy",
+        "topEfficient": [
+          {
+            "name": "Portugal",
+            "spending": 2924,
+            "outcome": 81.37,
+            "rank": 1
+          },
+          {
+            "name": "Czech Republic",
+            "spending": 2898,
+            "outcome": 77.97,
+            "rank": 2
+          },
+          {
+            "name": "Israel",
+            "spending": 3110,
+            "outcome": 82.17,
+            "rank": 3
+          }
+        ]
       }
     },
     {
@@ -385,7 +643,8 @@
           "realPerCapita": 732.02
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "HUD / Housing",
@@ -471,7 +730,8 @@
           "realPerCapita": 164.42
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Agriculture",
@@ -557,7 +817,8 @@
           "realPerCapita": 85.59
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Justice / Law Enforcement",
@@ -643,7 +904,8 @@
           "realPerCapita": 90.09
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Treasury / General Government",
@@ -724,7 +986,8 @@
           "realPerCapita": 67.57
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "State Department / Diplomacy",
@@ -805,7 +1068,8 @@
           "realPerCapita": 42.79
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Commerce / Economic Development",
@@ -886,7 +1150,8 @@
           "realPerCapita": 40.54
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Social Security",
@@ -977,7 +1242,47 @@
           "realPerCapita": 3290.7
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": {
+        "usRank": 22,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "KOR",
+          "name": "South Korea",
+          "spending": 6037,
+          "outcome": 83.57
+        },
+        "usData": {
+          "spending": 12848,
+          "outcome": 76.93
+        },
+        "floorSpending": 6427,
+        "floorOutcome": 80.77,
+        "overspendRatio": 2,
+        "potentialSavingsPerCapita": 6421,
+        "potentialSavingsTotal": 2176832000000,
+        "outcomeName": "Life Expectancy",
+        "topEfficient": [
+          {
+            "name": "South Korea",
+            "spending": 6037,
+            "outcome": 83.57,
+            "rank": 1
+          },
+          {
+            "name": "Israel",
+            "spending": 6830,
+            "outcome": 82.17,
+            "rank": 2
+          },
+          {
+            "name": "New Zealand",
+            "spending": 6838,
+            "outcome": 82.2,
+            "rank": 3
+          }
+        ]
+      }
     },
     {
       "name": "Interest on Debt",
@@ -1063,7 +1368,8 @@
           "realPerCapita": 2009.11
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Military",
@@ -1074,7 +1380,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "OECD mapping available but insufficient data",
+      "evidenceSource": "OECD cross-country: no significant relationship (R²=0.006, 529 obs, 23 countries)",
       "outcomeMetrics": [
         {
           "name": "Global Peace Index ranking (US)",
@@ -1154,98 +1460,54 @@
           "realPerCapita": 1995.59
         }
       ],
-      "diminishingReturns": null
-    },
-    {
-      "name": "Medicare",
-      "currentSpending": 874000000000,
-      "currentSpendingRealPerCapita": 1968.57,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": 0,
-      "gapPercent": 0,
-      "recommendation": "maintain",
-      "evidenceSource": "non-discretionary (mandated)",
-      "outcomeMetrics": [
-        {
-          "name": "Life expectancy at 65",
-          "value": 18.9,
-          "trend": "declining"
+      "diminishingReturns": {
+        "modelType": "log",
+        "r2": 0.006,
+        "n": 529,
+        "marginalReturn": -0.00014,
+        "elasticity": -0.003,
+        "outcomeName": "Life Expectancy"
+      },
+      "efficiency": {
+        "usRank": 23,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "IRL",
+          "name": "Ireland",
+          "spending": 226,
+          "outcome": 82
         },
-        {
-          "name": "Medicare beneficiaries",
-          "value": 67.4,
-          "trend": "improving"
+        "usData": {
+          "spending": 2052,
+          "outcome": 76.93
         },
-        {
-          "name": "Hospital readmission rate (30-day)",
-          "value": 15.3,
-          "trend": "improving"
-        },
-        {
-          "name": "Per-capita Medicare spending",
-          "value": 13050,
-          "trend": "declining"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 546,
-          "realPerCapita": 1760.48
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 588,
-          "realPerCapita": 1858.7
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 595,
-          "realPerCapita": 1829.94
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 605,
-          "realPerCapita": 1805.41
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 651,
-          "realPerCapita": 1900.57
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 776,
-          "realPerCapita": 2217.3
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 755,
-          "realPerCapita": 2056.45
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 747,
-          "realPerCapita": 1876.82
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 839,
-          "realPerCapita": 2009.24
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 869,
-          "realPerCapita": 2008.55
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 874,
-          "realPerCapita": 1968.57
-        }
-      ],
-      "diminishingReturns": null
+        "floorSpending": 279,
+        "floorOutcome": 82.43,
+        "overspendRatio": 7.4,
+        "potentialSavingsPerCapita": 1774,
+        "potentialSavingsTotal": 601216500000,
+        "outcomeName": "Life Expectancy",
+        "topEfficient": [
+          {
+            "name": "Ireland",
+            "spending": 226,
+            "outcome": 82,
+            "rank": 1
+          },
+          {
+            "name": "Spain",
+            "spending": 331,
+            "outcome": 82.87,
+            "rank": 2
+          },
+          {
+            "name": "Austria",
+            "spending": 339,
+            "outcome": 81.3,
+            "rank": 3
+          }
+        ]
+      }
     },
     {
       "name": "Medicaid",
@@ -1256,7 +1518,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "OECD mapping available but insufficient data",
+      "evidenceSource": "OECD cross-country: no significant relationship (R²=0.001, 529 obs, 23 countries)",
       "outcomeMetrics": [
         {
           "name": "Uninsured rate (overall)",
@@ -1336,7 +1598,54 @@
           "realPerCapita": 1387.46
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": {
+        "modelType": "saturation",
+        "r2": 0.001,
+        "n": 529,
+        "marginalReturn": 0.00006,
+        "elasticity": 0.001,
+        "outcomeName": "Infant Survival (inverted mortality)"
+      },
+      "efficiency": {
+        "usRank": 23,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "CZE",
+          "name": "Czech Republic",
+          "spending": 2898,
+          "outcome": 97.6
+        },
+        "usData": {
+          "spending": 10333,
+          "outcome": 94.83
+        },
+        "floorSpending": 2911,
+        "floorOutcome": 97.55,
+        "overspendRatio": 3.5,
+        "potentialSavingsPerCapita": 7422,
+        "potentialSavingsTotal": 2516171000000,
+        "outcomeName": "Infant Survival (inverted mortality)",
+        "topEfficient": [
+          {
+            "name": "Czech Republic",
+            "spending": 2898,
+            "outcome": 97.6,
+            "rank": 1
+          },
+          {
+            "name": "Portugal",
+            "spending": 2924,
+            "outcome": 97.5,
+            "rank": 2
+          },
+          {
+            "name": "Israel",
+            "spending": 3110,
+            "outcome": 97.5,
+            "rank": 3
+          }
+        ]
+      }
     },
     {
       "name": "Other Mandatory Programs",
@@ -1422,7 +1731,8 @@
           "realPerCapita": 1896.49
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Transportation",
@@ -1513,7 +1823,8 @@
           "realPerCapita": 236.5
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Foreign Aid / International Affairs",
@@ -1599,7 +1910,8 @@
           "realPerCapita": 141.9
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Energy",
@@ -1685,7 +1997,8 @@
           "realPerCapita": 117.12
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "EPA / Environment",
@@ -1776,7 +2089,8 @@
           "realPerCapita": 27.03
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Homeland Security",
@@ -1862,7 +2176,8 @@
           "realPerCapita": 139.65
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Labor",
@@ -1948,7 +2263,8 @@
           "realPerCapita": 94.6
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     },
     {
       "name": "Interior / Natural Resources",
@@ -2034,15 +2350,18 @@
           "realPerCapita": 38.29
         }
       ],
-      "diminishingReturns": null
+      "diminishingReturns": null,
+      "efficiency": null
     }
   ],
   "topRecommendations": [
-    "Increase Education by $1.1T (saturation model, R²=0.526, 529 observations)",
-    "Increase Science / NASA by $421B (log model, R²=0.318, 529 observations)",
-    "Increase Health (non-Medicare/Medicaid) by $50B (saturation model, R²=0.11, 529 observations)"
+    "Military: US spends $2052/cap (rank 23/23). Ireland spends $226/cap with Life Expectancy 82. Overspend: 7.4x. Potential savings: $601B/yr",
+    "Medicaid: US spends $10333/cap (rank 23/23). Czech Republic spends $2898/cap with Infant Survival (inverted mortality) 97.6. Overspend: 3.5x. Potential savings: $2.5T/yr",
+    "Science / NASA: US spends $1991/cap (rank 20/23). Ireland spends $859/cap with GDP per Capita 75433.33. Overspend: 2.4x. Potential savings: $389B/yr",
+    "Social Security: US spends $12848/cap (rank 22/23). South Korea spends $6037/cap with Life Expectancy 83.57. Overspend: 2x. Potential savings: $2.2T/yr",
+    "Education: US spends $2898/cap (rank 8/23). Near floor ($2572/cap). GDP per Capita: 57590"
   ],
-  "generatedAt": "2026-03-22T08:07:57.881Z",
+  "generatedAt": "2026-03-22T08:18:17.614Z",
   "generatedBy": "@optimitron/obg + OECD cross-country panel",
   "inflationAdjustment": {
     "method": "CPI-U deflator",
