@@ -28,8 +28,8 @@ For any jurisdiction, answer: "Given $X total budget, how should it be allocated
 - [ ] Keep absolute values for cross-country panels (different levels matter there)
 
 ### P0: Outcome Data Gaps
-- [ ] **Healthy Life Expectancy (HALE)** — WHO GHO has this; add fetcher
-- [ ] **Median after-tax income** — FRED `MEHOINUSA672N` (real) ✅ have it
+- [x] **Healthy Life Expectancy (HALE)** — ✅ implemented in WHO GHO fetcher (`packages/data/src/fetchers/who.ts`)
+- [x] **Median after-tax income** — FRED `MEHOINUSA672N` (real) ✅ in FRED fetcher
 - [ ] **Inequality-adjusted income** — Gini × median income composite
 - [ ] **Quality-Adjusted Life Years** — combine HALE + income into single welfare metric
 
@@ -104,9 +104,11 @@ For any jurisdiction, answer: "Given $X total budget, how should it be allocated
 - [ ] **Automated data freshness checks** — cron job to detect when new year data is available
 
 ### Website / Visualization
-- [ ] **Misconceptions page** — ranked list of "things everyone thinks are true but data says otherwise"
+- [x] **Misconceptions page** — ✅ `/misconceptions` with 15 myth-vs-reality analyses, category filters
+- [x] **Budget analysis page** — ✅ `/budget` with 34+ categories scored via OSL estimation
+- [x] **Policy analysis page** — ✅ `/policies` with 12 policies scored via Bradford Hill
+- [x] **Country comparison page** — ✅ `/compare` with healthcare, drug policy, education comparisons
 - [ ] **Interactive "what if" budget tool** — slider per category, real-time welfare estimate
-- [ ] **Country comparison tool** — pick any 2 countries, see spending differences + outcome differences
 - [ ] **Causal Direction visualization** — show forward vs reverse arrows with strength
 - [ ] **Time series charts** — spending vs outcome over time per country
 
