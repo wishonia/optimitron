@@ -842,12 +842,12 @@ const REGISTRY_SEED: VariableRegistry = [
       yearMin: 1981,
       yearMax: 2025,
       notes:
-        'Best-available coverage currently combines OECD IDD direct after-tax disposable-income observations with generated World Bank PIP real median-income fallback data.',
+        'Best-available coverage currently combines strict after-tax disposable-income observations from Eurostat EU-SILC and OECD IDD where available, with generated World Bank PIP real median-income fallback data elsewhere.',
     },
     isDerived: true,
     tags: ['welfare-core', 'income', 'best-available'],
     caveats: [
-      'This is not a perfectly homogeneous source: OECD points are direct after-tax disposable-income observations, while non-OECD fallback points use World Bank PIP real median income and are not guaranteed to be after-tax.',
+      'This is not a perfectly homogeneous source: Eurostat EU-SILC and OECD points are direct after-tax disposable-income observations, while fallback points use World Bank PIP real median income and are not guaranteed to be after-tax.',
       'Coverage and concept comparability vary by jurisdiction; inspect source metadata when strict after-tax comparability matters.',
     ],
   },
@@ -876,7 +876,7 @@ const REGISTRY_SEED: VariableRegistry = [
     tags: ['welfare-core', 'income', 'growth', 'best-available'],
     caveats: [
       'Growth is derived from a mixed-source level series and may reflect changes in source composition as well as underlying income.',
-      'Interpret cross-jurisdiction comparisons carefully where coverage switches between OECD direct after-tax data and PIP fallback data.',
+      'Interpret cross-jurisdiction comparisons carefully where coverage switches between Eurostat/OECD direct after-tax data and PIP fallback data.',
     ],
   },
   {

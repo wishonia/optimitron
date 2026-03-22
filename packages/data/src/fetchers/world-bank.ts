@@ -68,6 +68,8 @@ export const WB_INDICATOR_CODES = {
   GNI_PER_CAPITA: 'NY.GNP.PCAP.CD',
   /** GNI per capita, PPP (current international $) */
   GNI_PER_CAPITA_PPP: 'NY.GNP.PCAP.PP.CD',
+  /** PPP conversion factor, private consumption (LCU per international $) */
+  PRIVATE_CONSUMPTION_PPP: 'PA.NUS.PRVT.PP',
   /** Poverty headcount ratio at $2.15/day (% of population) */
   POVERTY_RATE: 'SI.POV.DDAY',
   /** Labor force participation rate (% of total population 15+) */
@@ -352,6 +354,18 @@ export async function fetchGniPerCapita(options: FetchOptions = {}): Promise<Dat
  */
 export async function fetchGniPerCapitaPpp(options: FetchOptions = {}): Promise<DataPoint[]> {
   return fetchWorldBankIndicator(WB_INDICATOR_CODES.GNI_PER_CAPITA_PPP, options);
+}
+
+/**
+ * Fetch PPP conversion factor for private consumption (LCU per international $).
+ */
+export async function fetchPrivateConsumptionPpp(
+  options: FetchOptions = {},
+): Promise<DataPoint[]> {
+  return fetchWorldBankIndicator(
+    WB_INDICATOR_CODES.PRIVATE_CONSUMPTION_PPP,
+    options,
+  );
 }
 
 /**

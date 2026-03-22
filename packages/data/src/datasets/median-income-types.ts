@@ -10,7 +10,10 @@ export type MedianIncomePurchasingPower = 'national_currency' | 'ppp';
 
 export type MedianIncomeDerivation = 'direct' | 'derived';
 
-export type MedianIncomeSource = 'OECD IDD' | 'World Bank PIP';
+export type MedianIncomeSource =
+  | 'OECD IDD'
+  | 'Eurostat EU-SILC'
+  | 'World Bank PIP';
 
 export type MedianIncomeTaxScope =
   | 'after_direct_taxes_and_cash_transfers'

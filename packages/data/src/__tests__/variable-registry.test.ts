@@ -53,6 +53,9 @@ describe('variable registry', () => {
     expect(income?.source.fetcher).toBe('fetchAfterTaxMedianIncomePpp');
     expect(income?.source.provider).toBe('curated_dataset');
     expect(income?.description).toContain('Best-available');
+    expect(income?.caveats.some((caveat) => caveat.includes('Eurostat'))).toBe(
+      true,
+    );
     expect(income?.caveats.some((caveat) => caveat.includes('OECD'))).toBe(
       true,
     );

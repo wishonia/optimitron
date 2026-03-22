@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  buildEurostatMedianIncomeSeries,
   buildOecdMedianIncomeSeries,
   buildPipMedianIncomeSeries,
   renderGeneratedMedianIncomeModule,
 } from '../../datasets/median-income-series-build.js';
 import type { MedianIncomeSeriesMetadata } from '../../datasets/median-income-types.js';
+import type { DerivedEurostatMedianDisposableIncomePoint } from '../../fetchers/eurostat-income.js';
 import type { DerivedOecdMedianDisposableIncomePoint } from '../../fetchers/oecd-income-distribution.js';
 import type { PIPCountryData } from '../../fetchers/world-bank-pip.js';
 
@@ -76,6 +78,23 @@ const oecdRecords: DerivedOecdMedianDisposableIncomePoint[] = [
   },
 ];
 
+const eurostatRecords: DerivedEurostatMedianDisposableIncomePoint[] = [
+  {
+    jurisdictionIso3: 'DEU',
+    jurisdictionName: 'Germany',
+    year: 2021,
+    nominalMedianLocalCurrency: 25000,
+    hicpAnnualAverage: 100,
+    pppPrivateConsumption: 0.8,
+    realMedianLocalCurrency: 25000,
+    nominalMedianPppUsd: 31250,
+    realMedianPppUsd: 31250,
+    estimateType: 'b',
+    source: 'Eurostat EU-SILC',
+    sourceUrl: 'https://ec.europa.eu/eurostat/databrowser/view/ilc_di03/default/table?lang=en',
+  },
+];
+
 describe('Median Income Dataset Build Helpers', () => {
   it('buildPipMedianIncomeSeries converts PIP records to dataset records', () => {
     const records = buildPipMedianIncomeSeries(pipRecords);
@@ -115,11 +134,31 @@ describe('Median Income Dataset Build Helpers', () => {
     );
   });
 
+  it('buildEurostatMedianIncomeSeries creates strict after-tax records in multiple units', () => {
+    const records = buildEurostatMedianIncomeSeries(eurostatRecords);
+
+    expect(records).toHaveLength(4);
+    expect(records).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          jurisdictionIso3: 'DEU',
+          source: 'Eurostat EU-SILC',
+          concept: 'after_tax_median_disposable_income',
+          priceBasis: 'real',
+          purchasingPower: 'ppp',
+          methodology: 'EU-SILC',
+          surveyAcronym: 'EU-SILC',
+          estimateType: 'b',
+        }),
+      ]),
+    );
+  });
+
   it('renderGeneratedMedianIncomeModule embeds metadata and records', () => {
     const metadata: MedianIncomeSeriesMetadata = {
       generatedAt: '2026-03-22T00:00:00.000Z',
       recordCount: 2,
-      sources: ['World Bank PIP'],
+      sources: ['Eurostat EU-SILC', 'World Bank PIP'],
       caveats: ['Example caveat'],
     };
 

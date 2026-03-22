@@ -1,4 +1,7 @@
 import {
+  fetchEurostatMedianDisposableIncomeSeries,
+} from '../fetchers/eurostat-income.js';
+import {
   deriveOecdRealMedianDisposableIncome,
   fetchOECDIDDPoints,
   OECD_IDD_SELECTORS,
@@ -7,7 +10,10 @@ import {
   GENERATED_MEDIAN_INCOME_SERIES,
   MEDIAN_INCOME_SERIES_METADATA,
 } from '../generated/median-income-series.js';
-import { buildOecdMedianIncomeSeries } from './median-income-series-build.js';
+import {
+  buildEurostatMedianIncomeSeries,
+  buildOecdMedianIncomeSeries,
+} from './median-income-series-build.js';
 import type {
   MedianIncomeSeriesQuery,
   MedianIncomeSeriesRecord,
@@ -21,6 +27,7 @@ export const MEDIAN_INCOME_SERIES = GENERATED_MEDIAN_INCOME_SERIES;
 
 export interface MedianIncomeSeriesDependencies {
   fetchOecdIddPoints?: typeof fetchOECDIDDPoints;
+  fetchEurostatMedianDisposableIncomeSeries?: typeof fetchEurostatMedianDisposableIncomeSeries;
 }
 
 export function isStrictAfterTaxMedianIncomeRecord(
@@ -123,6 +130,7 @@ export function rankMedianIncomeRecord(record: MedianIncomeSeriesRecord): number
   if (record.purchasingPower === 'ppp') rank += 10;
   if (record.derivation === 'direct') rank += 5;
   if (record.source === 'OECD IDD') rank += 3;
+  if (record.source === 'Eurostat EU-SILC') rank += 2;
   if (record.isInterpolated === false) rank += 2;
   if (record.isInterpolated === true) rank -= 5;
 
@@ -209,9 +217,16 @@ export async function fetchStrictAfterTaxMedianIncomeSeries(
 
   const fetchOecdIddPoints =
     dependencies.fetchOecdIddPoints ?? fetchOECDIDDPoints;
+  const fetchEurostatMedianIncome =
+    dependencies.fetchEurostatMedianDisposableIncomeSeries ??
+    fetchEurostatMedianDisposableIncomeSeries;
   const refArea = query.jurisdictions?.length ? query.jurisdictions : undefined;
   const fetchOptions = query.period ? { period: query.period } : {};
-  const [medianPoints, cpiPoints, pppPoints] = await Promise.all([
+  const bundledStrictRecords = getMedianIncomeSeries({
+    ...query,
+    strictAfterTaxOnly: true,
+  });
+  const [medianPoints, cpiPoints, pppPoints, eurostatDerived] = await Promise.all([
     fetchOecdIddPoints(
       { ...OECD_IDD_SELECTORS.MEDIAN_DISPOSABLE_INCOME_TOTAL, refArea },
       fetchOptions,
@@ -224,14 +239,29 @@ export async function fetchStrictAfterTaxMedianIncomeSeries(
       { ...OECD_IDD_SELECTORS.PPP_PRIVATE_CONSUMPTION_TOTAL, refArea },
       fetchOptions,
     ),
+    query.source === 'OECD IDD'
+      ? Promise.resolve([])
+      : fetchEurostatMedianIncome({
+          jurisdictions: refArea,
+          period: query.period,
+        }),
   ]);
-  const derived = deriveOecdRealMedianDisposableIncome(
-    medianPoints,
-    cpiPoints,
-    pppPoints,
+  const liveOecdRecords = buildOecdMedianIncomeSeries(
+    deriveOecdRealMedianDisposableIncome(
+      medianPoints,
+      cpiPoints,
+      pppPoints,
+    ),
   );
+  const liveEurostatRecords = buildEurostatMedianIncomeSeries(eurostatDerived);
 
-  return filterMedianIncomeSeries(buildOecdMedianIncomeSeries(derived), query);
+  return filterMedianIncomeSeries(
+    getBestAvailableMedianIncomeSeriesFromRecords(
+      [...bundledStrictRecords, ...liveOecdRecords, ...liveEurostatRecords],
+      { ...query, strictAfterTaxOnly: true },
+    ),
+    query,
+  );
 }
 
 export async function fetchPreferredMedianIncomeSeries(
