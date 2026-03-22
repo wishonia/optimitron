@@ -1,4 +1,3 @@
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { StaggerGrid } from "@/components/animations/StaggerGrid";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { earthOptimizationPrizePaperLink } from "@/lib/routes";
@@ -41,7 +40,7 @@ export function EarthOptimizationPrizeSection() {
   return (
     <section className="bg-brutal-yellow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <ScrollReveal className="text-center mb-16">
+        <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
             The Earth Optimization Prize
           </h2>
@@ -51,7 +50,7 @@ export function EarthOptimizationPrizeSection() {
             actually move. Recruit verified voters now. Get paid in 15 years if
             it worked.
           </p>
-        </ScrollReveal>
+        </div>
 
         <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {coreCards.map((card) => (
@@ -69,21 +68,19 @@ export function EarthOptimizationPrizeSection() {
           ))}
         </StaggerGrid>
 
-        <ScrollReveal delay={0.3}>
-          <div className="text-center">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <GameCTA href="/prize#invest" variant="yellow" size="lg">Play the Game</GameCTA>
-              <NavItemLink
-                item={earthOptimizationPrizePaperLink}
-                variant="custom"
-                external
-                className="inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-foreground transition-colors"
-              >
-                Read the paper &rarr;
-              </NavItemLink>
-            </div>
+        <div className="text-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <GameCTA href="/prize#invest" variant="yellow" size="lg">Play the Game</GameCTA>
+            <NavItemLink
+              item={earthOptimizationPrizePaperLink}
+              variant="custom"
+              external
+              className="inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-foreground transition-colors"
+            >
+              Read the paper &rarr;
+            </NavItemLink>
           </div>
-        </ScrollReveal>
+        </div>
       </div>
     </section>
   );

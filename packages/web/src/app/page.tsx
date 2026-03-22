@@ -5,8 +5,6 @@ import { LandingProblemSection } from "@/components/landing/LandingProblemSectio
 import { LandingPrizeOffer } from "@/components/landing/LandingPrizeOffer";
 import { LandingFAQSection } from "@/components/landing/LandingFAQSection";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { StaggerGrid } from "@/components/animations/StaggerGrid";
 import { HeroEntrance } from "@/components/animations/HeroEntrance";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -199,14 +197,12 @@ export default function Home() {
       {/* ── 7. The Receipts ── */}
       <SectionContainer bgColor="background" borderPosition="none" padding="lg" className="pb-4">
         <Container>
-          <ScrollReveal>
-            <SectionHeader
-              title="The Receipts"
-              subtitle={<>On my planet we call this &ldquo;evidence.&rdquo;</>}
-              size="sm"
-            />
-          </ScrollReveal>
-          <StaggerGrid className="grid grid-cols-3 md:grid-cols-6 gap-3 max-w-4xl mx-auto" staggerDelay={0.05}>
+          <SectionHeader
+            title="The Receipts"
+            subtitle={<>On my planet we call this &ldquo;evidence.&rdquo;</>}
+            size="sm"
+          />
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-3 max-w-4xl mx-auto">
             {[
               { value: outcomeCount, label: "Outcomes" },
               { value: pairCount, label: "Pair Studies" },
@@ -227,21 +223,19 @@ export default function Home() {
                 </div>
               </div>
             ))}
-          </StaggerGrid>
+          </div>
         </Container>
       </SectionContainer>
 
       {/* ── 8. Things You Can Do + Final CTA ── */}
       <SectionContainer bgColor="background" borderPosition="none" padding="lg">
         <Container>
-          <ScrollReveal>
-            <SectionHeader
-              title="Select Mode"
-              subtitle="On my planet, governance takes four minutes a week. Pick a mode."
-              size="lg"
-            />
-          </ScrollReveal>
-          <StaggerGrid className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <SectionHeader
+            title="Select Mode"
+            subtitle="On my planet, governance takes four minutes a week. Pick a mode."
+            size="lg"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {productWorkflows.map((workflow) => (
               <div
                 key={workflow.title}
@@ -263,7 +257,7 @@ export default function Home() {
                 </NavItemLink>
               </div>
             ))}
-          </StaggerGrid>
+          </div>
         </Container>
       </SectionContainer>
 

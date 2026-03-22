@@ -1,6 +1,3 @@
-"use client";
-
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { fmtParam } from "@/lib/format-parameter";
 import {
   POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
@@ -27,7 +24,7 @@ export function LandingProblemSection() {
   return (
     <section className="bg-foreground">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <ScrollReveal className="mb-16 text-center">
+        <div className="mb-16 text-center">
           <h2 className="text-3xl font-black uppercase tracking-tight text-background sm:text-4xl md:text-5xl">
             The Cost of Doing Nothing
           </h2>
@@ -45,85 +42,81 @@ export function LandingProblemSection() {
             </span>{" "}
             ratio. On my planet, we call this a configuration error.
           </p>
-        </ScrollReveal>
+        </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Financial Cost */}
-          <ScrollReveal direction="left">
-            <div className="border-4 border-brutal-yellow bg-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <div className="mb-4 inline-block border-4 border-primary bg-brutal-red px-3 py-1">
-                <span className="text-xs font-black uppercase text-brutal-red-foreground">
-                  Financial Cost
-                </span>
+          <div className="border-4 border-brutal-yellow bg-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <div className="mb-4 inline-block border-4 border-primary bg-brutal-red px-3 py-1">
+              <span className="text-xs font-black uppercase text-brutal-red-foreground">
+                Financial Cost
+              </span>
+            </div>
+            <div className="space-y-6">
+              <div>
+                <div className="text-3xl font-black text-brutal-yellow">
+                  {fmtParam({
+                    ...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
+                    unit: "USD",
+                  })}
+                  /yr
+                </div>
+                <p className="mt-1 text-sm font-bold text-muted-foreground">
+                  Global political dysfunction tax — what misaligned governance
+                  costs in wasted resources, perverse incentives, and missed
+                  opportunities.
+                </p>
               </div>
-              <div className="space-y-6">
-                <div>
-                  <div className="text-3xl font-black text-brutal-yellow">
-                    {fmtParam({
-                      ...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
-                      unit: "USD",
-                    })}
-                    /yr
-                  </div>
-                  <p className="mt-1 text-sm font-bold text-muted-foreground">
-                    Global political dysfunction tax — what misaligned governance
-                    costs in wasted resources, perverse incentives, and missed
-                    opportunities.
-                  </p>
+              <div>
+                <div className="text-2xl font-black text-brutal-yellow">
+                  {fmtParam(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL)}
+                  /person
                 </div>
-                <div>
-                  <div className="text-2xl font-black text-brutal-yellow">
-                    {fmtParam(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL)}
-                    /person
-                  </div>
-                  <p className="mt-1 text-sm font-bold text-muted-foreground">
-                    That&apos;s your share. You are paying this whether you know
-                    it or not.
-                  </p>
-                </div>
+                <p className="mt-1 text-sm font-bold text-muted-foreground">
+                  That&apos;s your share. You are paying this whether you know
+                  it or not.
+                </p>
               </div>
             </div>
-          </ScrollReveal>
+          </div>
 
           {/* Human Cost */}
-          <ScrollReveal direction="right">
-            <div className="border-4 border-brutal-yellow bg-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <div className="mb-4 inline-block border-4 border-primary bg-brutal-yellow px-3 py-1">
-                <span className="text-xs font-black uppercase text-foreground">
-                  Human Cost
-                </span>
+          <div className="border-4 border-brutal-yellow bg-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <div className="mb-4 inline-block border-4 border-primary bg-brutal-yellow px-3 py-1">
+              <span className="text-xs font-black uppercase text-foreground">
+                Human Cost
+              </span>
+            </div>
+            <div className="space-y-6">
+              <div>
+                <div className="text-3xl font-black text-brutal-yellow">
+                  {Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value).toLocaleString()}{" "}
+                  deaths/day
+                </div>
+                <p className="mt-1 text-sm font-bold text-muted-foreground">
+                  Preventable. Treatable. Ignored. Every day your regulatory
+                  system fails to clear the backlog.
+                </p>
               </div>
-              <div className="space-y-6">
-                <div>
-                  <div className="text-3xl font-black text-brutal-yellow">
-                    {Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value).toLocaleString()}{" "}
-                    deaths/day
-                  </div>
-                  <p className="mt-1 text-sm font-bold text-muted-foreground">
-                    Preventable. Treatable. Ignored. Every day your regulatory
-                    system fails to clear the backlog.
-                  </p>
+              <div>
+                <div className="text-2xl font-black text-brutal-yellow">
+                  {fmtParam({
+                    ...EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
+                    unit: "deaths",
+                  })}
                 </div>
-                <div>
-                  <div className="text-2xl font-black text-brutal-yellow">
-                    {fmtParam({
-                      ...EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
-                      unit: "deaths",
-                    })}
-                  </div>
-                  <p className="mt-1 text-sm font-bold text-muted-foreground">
-                    People who died waiting for treatments that were already
-                    proven safe — stuck in{" "}
-                    {fmtParam(EFFICACY_LAG_YEARS)} of
-                    efficacy testing. Just sitting there. Being safe.
-                  </p>
-                </div>
+                <p className="mt-1 text-sm font-bold text-muted-foreground">
+                  People who died waiting for treatments that were already
+                  proven safe — stuck in{" "}
+                  {fmtParam(EFFICACY_LAG_YEARS)} of
+                  efficacy testing. Just sitting there. Being safe.
+                </p>
               </div>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
 
-        <ScrollReveal className="mt-8">
+        <div className="mt-8">
           <div className="border-4 border-brutal-yellow bg-brutal-yellow p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-center text-sm font-bold text-foreground">
               On my planet, when a system kills{" "}
@@ -136,7 +129,7 @@ export function LandingProblemSection() {
               bug. And we fix it.
             </p>
           </div>
-        </ScrollReveal>
+        </div>
       </div>
     </section>
   );

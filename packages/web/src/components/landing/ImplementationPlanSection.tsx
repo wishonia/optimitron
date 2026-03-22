@@ -1,4 +1,3 @@
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { StepReveal } from "@/components/animations/StepReveal";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { fullManualPaperLink } from "@/lib/routes";
@@ -46,7 +45,7 @@ const steps = [
 export function ImplementationPlanSection() {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-      <ScrollReveal className="text-center mb-16">
+      <div className="text-center mb-16">
         <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
           Five Steps. No Altruism Required.
         </h2>
@@ -55,7 +54,7 @@ export function ImplementationPlanSection() {
           millennia. &ldquo;Be nice&rdquo; has never once been a load-bearing
           policy. Greed, though? Greed scales beautifully.
         </p>
-      </ScrollReveal>
+      </div>
 
       <StepReveal className="space-y-6" staggerDelay={0.15}>
         {steps.map((item) => (
@@ -83,18 +82,16 @@ export function ImplementationPlanSection() {
         ))}
       </StepReveal>
 
-      <ScrollReveal delay={0.5}>
-        <div className="text-center mt-8">
-          <NavItemLink
-            item={fullManualPaperLink}
-            variant="custom"
-            external
-            className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
-          >
-            Read the full manual &rarr;
-          </NavItemLink>
-        </div>
-      </ScrollReveal>
+      <div className="text-center mt-8">
+        <NavItemLink
+          item={fullManualPaperLink}
+          variant="custom"
+          external
+          className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
+        >
+          Read the full manual &rarr;
+        </NavItemLink>
+      </div>
     </section>
   );
 }

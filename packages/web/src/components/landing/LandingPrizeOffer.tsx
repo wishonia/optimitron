@@ -1,7 +1,4 @@
-"use client";
-
 import { Suspense } from "react";
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { PrizeCalculator } from "@/components/prize/PrizeCalculator";
 import { GameCTA } from "@/components/ui/game-cta";
 import { fmtParam } from "@/lib/format-parameter";
@@ -24,7 +21,7 @@ export function LandingPrizeOffer() {
   return (
     <section className="bg-brutal-pink">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <ScrollReveal className="mb-16 text-center">
+        <div className="mb-16 text-center">
           <h2 className="text-3xl font-black font-[family-name:var(--font-arcade)] uppercase tracking-tight text-brutal-pink-foreground sm:text-4xl md:text-5xl">
             The Earth Optimization Game
           </h2>
@@ -34,67 +31,63 @@ export function LandingPrizeOffer() {
             make you healthiest and wealthiest. The only way to lose is to not
             play.
           </p>
-        </ScrollReveal>
+        </div>
 
         {/* Two outcomes */}
         <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <ScrollReveal direction="left">
-            <div className="border-4 border-primary bg-brutal-yellow p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <div className="mb-2 text-xs font-black uppercase text-muted-foreground">
-                If the Plan Fails
-              </div>
-              <div className="text-4xl font-black text-foreground">
-                ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} Back
-              </div>
-              <p className="mt-3 text-sm font-bold text-foreground">
-                Your principal grows at{" "}
-                {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} annually in the
-                Wishocratic fund for 15 years. You get it all back. The
-                &ldquo;worst case&rdquo; is multiplying your money.
-              </p>
-              <div className="mt-4 border-4 border-primary bg-background px-3 py-2 inline-block">
-                <span className="text-xs font-black uppercase text-muted-foreground">
-                  vs {fmtParam(CONVENTIONAL_RETIREMENT_RETURN)} in conventional
-                  retirement
-                </span>
-              </div>
+          <div className="border-4 border-primary bg-brutal-yellow p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <div className="mb-2 text-xs font-black uppercase text-muted-foreground">
+              If the Plan Fails
             </div>
-          </ScrollReveal>
+            <div className="text-4xl font-black text-foreground">
+              ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} Back
+            </div>
+            <p className="mt-3 text-sm font-bold text-foreground">
+              Your principal grows at{" "}
+              {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} annually in the
+              Wishocratic fund for 15 years. You get it all back. The
+              &ldquo;worst case&rdquo; is multiplying your money.
+            </p>
+            <div className="mt-4 border-4 border-primary bg-background px-3 py-2 inline-block">
+              <span className="text-xs font-black uppercase text-muted-foreground">
+                vs {fmtParam(CONVENTIONAL_RETIREMENT_RETURN)} in conventional
+                retirement
+              </span>
+            </div>
+          </div>
 
-          <ScrollReveal direction="right">
-            <div className="border-4 border-primary bg-brutal-cyan p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <div className="mb-2 text-xs font-black uppercase text-muted-foreground">
-                If the Plan Succeeds
-              </div>
-              <div className="text-4xl font-black text-foreground">
-                {fmtParam({
-                  ...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
-                  unit: "USD",
-                })}
-                + Per Capita
-              </div>
-              <p className="mt-3 text-sm font-bold text-foreground">
-                Everyone gets richer. VOTE point holders claim proportional
-                shares of the prize pool. Recruiters who brought in verified
-                voters get the biggest share. Everyone else benefits from higher
-                GDP up to{" "}
-                {fmtParam({
-                  ...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
-                  unit: "USD",
-                })}{" "}
-                per capita lifetime.
-              </p>
-              <div className="mt-4 border-4 border-primary bg-background px-3 py-2 inline-block">
-                <span className="text-xs font-black uppercase text-muted-foreground">
-                  Prize share proportional to voters you recruited
-                </span>
-              </div>
+          <div className="border-4 border-primary bg-brutal-cyan p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <div className="mb-2 text-xs font-black uppercase text-muted-foreground">
+              If the Plan Succeeds
             </div>
-          </ScrollReveal>
+            <div className="text-4xl font-black text-foreground">
+              {fmtParam({
+                ...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+                unit: "USD",
+              })}
+              + Per Capita
+            </div>
+            <p className="mt-3 text-sm font-bold text-foreground">
+              Everyone gets richer. VOTE point holders claim proportional
+              shares of the prize pool. Recruiters who brought in verified
+              voters get the biggest share. Everyone else benefits from higher
+              GDP up to{" "}
+              {fmtParam({
+                ...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+                unit: "USD",
+              })}{" "}
+              per capita lifetime.
+            </p>
+            <div className="mt-4 border-4 border-primary bg-background px-3 py-2 inline-block">
+              <span className="text-xs font-black uppercase text-muted-foreground">
+                Prize share proportional to voters you recruited
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* How it works — condensed */}
-        <ScrollReveal className="mb-12">
+        <div className="mb-12">
           <div className="border-4 border-primary bg-background p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="mb-6 text-xl font-black uppercase text-foreground">
               Two Ways In
@@ -123,10 +116,10 @@ export function LandingPrizeOffer() {
               </div>
             </div>
           </div>
-        </ScrollReveal>
+        </div>
 
         {/* Calculator */}
-        <ScrollReveal className="mb-12">
+        <div className="mb-12">
           <div className="border-4 border-primary bg-background p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="mb-6 text-xl font-black uppercase text-foreground">
               Calculate Your Returns
@@ -135,10 +128,10 @@ export function LandingPrizeOffer() {
               <PrizeCalculator />
             </Suspense>
           </div>
-        </ScrollReveal>
+        </div>
 
         {/* Wishonia comment + CTA */}
-        <ScrollReveal>
+        <div>
           <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-sm font-bold text-foreground leading-relaxed">
               You don&apos;t need to be altruistic. You just need to be
@@ -150,7 +143,7 @@ export function LandingPrizeOffer() {
               about twelve seconds to explain.
             </p>
           </div>
-        </ScrollReveal>
+        </div>
 
         <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <GameCTA href="/prize" variant="secondary" size="lg">Play the Game</GameCTA>

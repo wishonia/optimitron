@@ -1,4 +1,3 @@
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import {
   Accordion,
   AccordionItem,
@@ -46,7 +45,7 @@ export function LandingFAQSection() {
   return (
     <section className="bg-background">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-        <ScrollReveal className="mb-12 text-center">
+        <div className="mb-12 text-center">
           <h2 className="text-3xl font-black uppercase tracking-tight text-foreground sm:text-4xl md:text-5xl">
             Frequently Asked Objections
           </h2>
@@ -54,7 +53,7 @@ export function LandingFAQSection() {
             I have been fielding these for 4,237 years. Your species is not as
             original as it thinks.
           </p>
-        </ScrollReveal>
+        </div>
 
         <div className="mx-auto max-w-3xl">
           <Accordion
