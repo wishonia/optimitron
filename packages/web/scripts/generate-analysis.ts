@@ -266,8 +266,13 @@ function runEfficiencyAnalysis(mapping: OECDMapping): EfficiencyInfo | null {
   });
 
   const floor = floorResult[0];
-  const floorSpending = floor?.floorSpending ?? usData.spending;
+  let floorSpending = floor?.floorSpending ?? usData.spending;
   const floorOutcome = floor?.floorOutcome ?? usData.outcome;
+
+  // Clamp floor: can't exceed best country's spending (decile averages can be higher
+  // than the single best performer, which is logically wrong)
+  const bestCountrySpending = rankings[0]?.spending ?? floorSpending;
+  floorSpending = Math.min(floorSpending, bestCountrySpending);
 
   // 3. Overspend ratio for US
   const ratio = floorSpending > 0 ? usData.spending / floorSpending : 1;

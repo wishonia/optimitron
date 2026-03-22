@@ -8,14 +8,25 @@
  * Run: pnpm --filter @optimitron/examples run generate:site
  */
 
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, rmSync, readdirSync } from 'fs';
+import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const WEB_DATA = resolve(__dirname, '../../web/src/data');
 const LEGISLATION_DIR = resolve(WEB_DATA, 'legislation');
 const SITE_DIR = resolve(__dirname, '../../../reports/site');
+
+// Clean old generated content (keep config files like package.json, .eleventy.js, _includes, _data)
+const KEEP_FILES = new Set(['package.json', 'package-lock.json', 'eleventy.config.js', '.gitignore', 'node_modules', '_includes', '_data', '_site', '.eleventy.js']);
+function cleanSiteDir() {
+  if (!existsSync(SITE_DIR)) return;
+  for (const entry of readdirSync(SITE_DIR)) {
+    if (KEEP_FILES.has(entry)) continue;
+    const full = join(SITE_DIR, entry);
+    rmSync(full, { recursive: true, force: true });
+  }
+}
 
 // ─── Load Data ──────────────────────────────────────────────────────
 
@@ -600,6 +611,9 @@ These are the ONLY evaluation criteria. Using the **median** (not mean) prevents
 }
 
 // ─── Main ───────────────────────────────────────────────────────────
+
+console.log('Cleaning old reports...');
+cleanSiteDir();
 
 console.log('Generating analysis site...\n');
 

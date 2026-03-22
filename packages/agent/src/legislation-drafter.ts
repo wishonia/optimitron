@@ -14,6 +14,7 @@
 
 import { GoogleGenAI } from '@google/genai';
 import { resolveGeminiApiKey } from './gemini.js';
+import type { EfficiencyAnalysis } from '@optimitron/obg';
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -40,6 +41,31 @@ export interface EfficiencyEvidence {
     spendingPerCapita: number;
     outcome: number;
   }>;
+}
+
+/**
+ * Convert OBG's canonical EfficiencyAnalysis into the simplified
+ * EfficiencyEvidence used for Gemini prompt construction.
+ */
+export function toEfficiencyEvidence(
+  analysis: EfficiencyAnalysis,
+  category: string,
+): EfficiencyEvidence {
+  return {
+    category,
+    usSpendingPerCapita: analysis.spending,
+    usOutcome: analysis.outcome,
+    outcomeName: analysis.outcomeName,
+    usRank: analysis.rank,
+    totalCountries: analysis.totalCountries,
+    overspendRatio: analysis.overspendRatio,
+    floorSpendingPerCapita: analysis.floorSpending,
+    topCountries: analysis.topEfficient.map(c => ({
+      name: c.name,
+      spendingPerCapita: c.spending,
+      outcome: c.outcome,
+    })),
+  };
 }
 
 export interface PolicyExemplarInput {

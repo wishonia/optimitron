@@ -117,11 +117,11 @@
           "spending": 2898,
           "outcome": 57590
         },
-        "floorSpending": 2572,
+        "floorSpending": 2560,
         "floorOutcome": 57908.33,
         "overspendRatio": 1.1,
-        "potentialSavingsPerCapita": 326,
-        "potentialSavingsTotal": 110514000000,
+        "potentialSavingsPerCapita": 338,
+        "potentialSavingsTotal": 114582000000,
         "outcomeName": "GDP per Capita",
         "topEfficient": [
           {
@@ -388,11 +388,11 @@
           "spending": 10333,
           "outcome": 76.93
         },
-        "floorSpending": 3142,
+        "floorSpending": 2924,
         "floorOutcome": 82.18,
-        "overspendRatio": 3.3,
-        "potentialSavingsPerCapita": 7191,
-        "potentialSavingsTotal": 2437805500000,
+        "overspendRatio": 3.5,
+        "potentialSavingsPerCapita": 7409,
+        "potentialSavingsTotal": 2511764000000,
         "outcomeName": "Life Expectancy",
         "topEfficient": [
           {
@@ -1304,11 +1304,11 @@
           "spending": 2052,
           "outcome": 76.93
         },
-        "floorSpending": 279,
+        "floorSpending": 226,
         "floorOutcome": 82.43,
-        "overspendRatio": 7.4,
-        "potentialSavingsPerCapita": 1774,
-        "potentialSavingsTotal": 601216500000,
+        "overspendRatio": 9.1,
+        "potentialSavingsPerCapita": 1826,
+        "potentialSavingsTotal": 618901000000,
         "outcomeName": "Life Expectancy",
         "topEfficient": [
           {
@@ -2224,12 +2224,12 @@
     }
   ],
   "topRecommendations": [
-    "Military: US spends $2052/cap (rank 23/23). Ireland spends $226/cap with Life Expectancy 82. Overspend: 7.4x. Potential savings: $601B/yr",
-    "Health (non-Medicare/Medicaid): US spends $10333/cap (rank 23/23). Portugal spends $2924/cap with Life Expectancy 81.37. Overspend: 3.3x. Potential savings: $2.4T/yr",
+    "Military: US spends $2052/cap (rank 23/23). Ireland spends $226/cap with Life Expectancy 82. Overspend: 9.1x. Potential savings: $619B/yr",
+    "Health (non-Medicare/Medicaid): US spends $10333/cap (rank 23/23). Portugal spends $2924/cap with Life Expectancy 81.37. Overspend: 3.5x. Potential savings: $2.5T/yr",
     "Science / NASA: US spends $1991/cap (rank 20/23). Ireland spends $859/cap with GDP per Capita 75433.33. Overspend: 2.4x. Potential savings: $389B/yr",
-    "Education: US spends $2898/cap (rank 8/23). Near floor ($2572/cap). GDP per Capita: 57590"
+    "Education: US spends $2898/cap (rank 8/23). Near floor ($2560/cap). GDP per Capita: 57590"
   ],
-  "generatedAt": "2026-03-22T20:28:18.784Z",
+  "generatedAt": "2026-03-22T20:30:26.608Z",
   "generatedBy": "@optimitron/obg + OECD cross-country panel",
   "inflationAdjustment": {
     "method": "CPI-U deflator",

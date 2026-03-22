@@ -10,6 +10,8 @@
     "build": "pnpm run ensure-env && pnpm run build:workspace-deps && next build",
     "start": "next start",
     "sync:alignment-politicians": "tsx scripts/sync-alignment-politicians.ts",
+    "sync:government-size": "tsx scripts/sync-government-size-analysis.ts",
+    "refresh:government-size": "pnpm --dir ../examples run generate:government-size && pnpm run sync:government-size",
     "lint": "next lint",
     "typecheck": "pnpm run build:workspace-deps && tsc --noEmit",
     "test": "pnpm exec vitest run",
