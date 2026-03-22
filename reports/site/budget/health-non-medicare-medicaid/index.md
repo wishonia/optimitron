@@ -17,7 +17,7 @@ layout: layout.njk
 | Floor spending | $2924/cap |
 | Potential savings | **$2.5T/yr** |
 | Recommendation | **MAJOR_DECREASE** |
-| Evidence | OECD cross-country (529 obs, 23 countries, R²=0.11) |
+| Evidence | OECD efficient frontier (23 countries, rank 23/23) |
 | **Your dividend** | **$9,736/yr ($811/mo)** per adult |
 
 ## OECD Efficiency Comparison
@@ -38,7 +38,6 @@ Best: **Portugal** — $2924/cap → Life Expectancy 81.37
 - Model: saturation
 - R²: 0.11
 - Observations: 529
-- Elasticity: 0.005 (1% spending → 0.005% Life Expectancy)
 
 ## Historical Spending (2015–2025)
 

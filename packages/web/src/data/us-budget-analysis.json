@@ -3,15 +3,424 @@
   "totalBudget": 6707000000000,
   "categories": [
     {
+      "name": "Health (non-Medicare/Medicaid)",
+      "currentSpending": 94000000000,
+      "currentSpendingRealPerCapita": 211.72,
+      "optimalSpendingPerCapita": 2924,
+      "optimalSpendingNominal": 991236000000,
+      "gap": 2511651000000,
+      "gapPercent": 71.7,
+      "recommendation": "major_decrease",
+      "evidenceSource": "OECD efficient frontier (23 countries, rank 23/23)",
+      "outcomeMetrics": [
+        {
+          "name": "Life expectancy at birth",
+          "value": 77.5,
+          "trend": "improving"
+        },
+        {
+          "name": "Opioid overdose deaths",
+          "value": 81083,
+          "trend": "improving"
+        },
+        {
+          "name": "NIH-funded clinical trials",
+          "value": 13500,
+          "trend": "improving"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 66,
+          "realPerCapita": 212.8
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 67,
+          "realPerCapita": 211.79
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 65,
+          "realPerCapita": 199.91
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 71,
+          "realPerCapita": 211.87
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 75,
+          "realPerCapita": 218.96
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 122,
+          "realPerCapita": 348.6
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 190,
+          "realPerCapita": 517.52
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 127,
+          "realPerCapita": 319.08
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 102,
+          "realPerCapita": 244.27
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 97,
+          "realPerCapita": 224.2
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 94,
+          "realPerCapita": 211.72
+        }
+      ],
+      "diminishingReturns": {
+        "modelType": "saturation",
+        "r2": 0.11,
+        "n": 529,
+        "marginalReturn": 0,
+        "elasticity": null,
+        "outcomeName": "Life Expectancy"
+      },
+      "efficiency": {
+        "usRank": 23,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "PRT",
+          "name": "Portugal",
+          "spending": 2924,
+          "outcome": 81.37
+        },
+        "usData": {
+          "spending": 10333,
+          "outcome": 76.93
+        },
+        "floorSpending": 2924,
+        "floorOutcome": 82.18,
+        "overspendRatio": 3.5,
+        "potentialSavingsPerCapita": 7409,
+        "potentialSavingsTotal": 2511764000000,
+        "outcomeName": "Life Expectancy",
+        "topEfficient": [
+          {
+            "name": "Portugal",
+            "spending": 2924,
+            "outcome": 81.37,
+            "rank": 1
+          },
+          {
+            "name": "Czech Republic",
+            "spending": 2898,
+            "outcome": 77.97,
+            "rank": 2
+          },
+          {
+            "name": "Israel",
+            "spending": 3110,
+            "outcome": 82.17,
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "Military",
+      "currentSpending": 886000000000,
+      "currentSpendingRealPerCapita": 1995.59,
+      "optimalSpendingPerCapita": 226,
+      "optimalSpendingNominal": 76614000000,
+      "gap": 619014000000,
+      "gapPercent": 89,
+      "recommendation": "major_decrease",
+      "evidenceSource": "OECD efficient frontier (23 countries, rank 23/23)",
+      "outcomeMetrics": [
+        {
+          "name": "Global Peace Index ranking (US)",
+          "value": 131,
+          "trend": "declining"
+        },
+        {
+          "name": "Military strength index (Global Firepower)",
+          "value": 1,
+          "trend": "stable"
+        },
+        {
+          "name": "Active duty personnel",
+          "value": 1.33,
+          "trend": "declining"
+        },
+        {
+          "name": "Military spending as % GDP",
+          "value": 3,
+          "trend": "stable"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 596,
+          "realPerCapita": 1921.69
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 604,
+          "realPerCapita": 1909.28
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 610,
+          "realPerCapita": 1876.07
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 654,
+          "realPerCapita": 1951.64
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 686,
+          "realPerCapita": 2002.75
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 714,
+          "realPerCapita": 2040.14
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 742,
+          "realPerCapita": 2021.04
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 766,
+          "realPerCapita": 1924.55
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 806,
+          "realPerCapita": 1930.21
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 849,
+          "realPerCapita": 1962.33
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 886,
+          "realPerCapita": 1995.59
+        }
+      ],
+      "diminishingReturns": {
+        "modelType": "log",
+        "r2": 0.006,
+        "n": 529,
+        "marginalReturn": 0,
+        "elasticity": null,
+        "outcomeName": "Life Expectancy"
+      },
+      "efficiency": {
+        "usRank": 23,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "IRL",
+          "name": "Ireland",
+          "spending": 226,
+          "outcome": 82
+        },
+        "usData": {
+          "spending": 2052,
+          "outcome": 76.93
+        },
+        "floorSpending": 226,
+        "floorOutcome": 82.43,
+        "overspendRatio": 9.1,
+        "potentialSavingsPerCapita": 1826,
+        "potentialSavingsTotal": 618901000000,
+        "outcomeName": "Life Expectancy",
+        "topEfficient": [
+          {
+            "name": "Ireland",
+            "spending": 226,
+            "outcome": 82,
+            "rank": 1
+          },
+          {
+            "name": "Spain",
+            "spending": 331,
+            "outcome": 82.87,
+            "rank": 2
+          },
+          {
+            "name": "Austria",
+            "spending": 339,
+            "outcome": 81.3,
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
+      "name": "Science / NASA",
+      "currentSpending": 44000000000,
+      "currentSpendingRealPerCapita": 99.1,
+      "optimalSpendingPerCapita": 843,
+      "optimalSpendingNominal": 285777000000,
+      "gap": 389172000000,
+      "gapPercent": 57.7,
+      "recommendation": "decrease",
+      "evidenceSource": "OECD efficient frontier (23 countries, rank 20/23)",
+      "outcomeMetrics": [
+        {
+          "name": "R&D as % of GDP (federal)",
+          "value": 0.67,
+          "trend": "stable"
+        },
+        {
+          "name": "US patents granted",
+          "value": 352013,
+          "trend": "stable"
+        },
+        {
+          "name": "Nobel Prizes in science (cumulative, US-affiliated)",
+          "value": 285,
+          "trend": "improving"
+        },
+        {
+          "name": "NASA commercial crew missions",
+          "value": 12,
+          "trend": "improving"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 30,
+          "realPerCapita": 96.73
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 31,
+          "realPerCapita": 97.99
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 31,
+          "realPerCapita": 95.34
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 32,
+          "realPerCapita": 95.49
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 33,
+          "realPerCapita": 96.34
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 35,
+          "realPerCapita": 100.01
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 37,
+          "realPerCapita": 100.78
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 40,
+          "realPerCapita": 100.5
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 42,
+          "realPerCapita": 100.58
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 43,
+          "realPerCapita": 99.39
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 44,
+          "realPerCapita": 99.1
+        }
+      ],
+      "diminishingReturns": {
+        "modelType": "log",
+        "r2": 0.318,
+        "n": 529,
+        "marginalReturn": 0,
+        "elasticity": null,
+        "outcomeName": "GDP per Capita"
+      },
+      "efficiency": {
+        "usRank": 20,
+        "totalCountries": 23,
+        "bestCountry": {
+          "code": "IRL",
+          "name": "Ireland",
+          "spending": 859,
+          "outcome": 75433.33
+        },
+        "usData": {
+          "spending": 1991,
+          "outcome": 57590
+        },
+        "floorSpending": 843,
+        "floorOutcome": 56145,
+        "overspendRatio": 2.4,
+        "potentialSavingsPerCapita": 1147,
+        "potentialSavingsTotal": 388946000000,
+        "outcomeName": "GDP per Capita",
+        "topEfficient": [
+          {
+            "name": "Ireland",
+            "spending": 859,
+            "outcome": 75433.33,
+            "rank": 1
+          },
+          {
+            "name": "Spain",
+            "spending": 472,
+            "outcome": 33080,
+            "rank": 2
+          },
+          {
+            "name": "New Zealand",
+            "spending": 481,
+            "outcome": 33430,
+            "rank": 3
+          }
+        ]
+      }
+    },
+    {
       "name": "Education",
       "currentSpending": 102000000000,
       "currentSpendingRealPerCapita": 229.74,
-      "optimalSpendingPerCapita": 3484.45,
-      "optimalSpendingNominal": 1181228675096,
-      "gap": 1079228675096,
-      "gapPercent": 1058.1,
-      "recommendation": "scale_up",
-      "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.526)",
+      "optimalSpendingPerCapita": 2560,
+      "optimalSpendingNominal": 867840000000,
+      "gap": 114582000000,
+      "gapPercent": 11.7,
+      "recommendation": "maintain",
+      "evidenceSource": "OECD efficient frontier (23 countries, rank 8/23)",
       "outcomeMetrics": [
         {
           "name": "High school graduation rate",
@@ -100,8 +509,8 @@
         "modelType": "saturation",
         "r2": 0.526,
         "n": 529,
-        "marginalReturn": 30.58773,
-        "elasticity": 0.807,
+        "marginalReturn": 0,
+        "elasticity": null,
         "outcomeName": "GDP per Capita"
       },
       "efficiency": {
@@ -144,876 +553,6 @@
           }
         ]
       }
-    },
-    {
-      "name": "Science / NASA",
-      "currentSpending": 44000000000,
-      "currentSpendingRealPerCapita": 99.1,
-      "optimalSpendingPerCapita": 1372.1,
-      "optimalSpendingNominal": 465142998744,
-      "gap": 421142998744,
-      "gapPercent": 957.1,
-      "recommendation": "decrease",
-      "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.318)",
-      "outcomeMetrics": [
-        {
-          "name": "R&D as % of GDP (federal)",
-          "value": 0.67,
-          "trend": "stable"
-        },
-        {
-          "name": "US patents granted",
-          "value": 352013,
-          "trend": "stable"
-        },
-        {
-          "name": "Nobel Prizes in science (cumulative, US-affiliated)",
-          "value": 285,
-          "trend": "improving"
-        },
-        {
-          "name": "NASA commercial crew missions",
-          "value": 12,
-          "trend": "improving"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 30,
-          "realPerCapita": 96.73
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 31,
-          "realPerCapita": 97.99
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 31,
-          "realPerCapita": 95.34
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 32,
-          "realPerCapita": 95.49
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 33,
-          "realPerCapita": 96.34
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 35,
-          "realPerCapita": 100.01
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 37,
-          "realPerCapita": 100.78
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 40,
-          "realPerCapita": 100.5
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 42,
-          "realPerCapita": 100.58
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 43,
-          "realPerCapita": 99.39
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 44,
-          "realPerCapita": 99.1
-        }
-      ],
-      "diminishingReturns": {
-        "modelType": "log",
-        "r2": 0.318,
-        "n": 529,
-        "marginalReturn": 88.55407,
-        "elasticity": 0.443,
-        "outcomeName": "GDP per Capita"
-      },
-      "efficiency": {
-        "usRank": 20,
-        "totalCountries": 23,
-        "bestCountry": {
-          "code": "IRL",
-          "name": "Ireland",
-          "spending": 859,
-          "outcome": 75433.33
-        },
-        "usData": {
-          "spending": 1991,
-          "outcome": 57590
-        },
-        "floorSpending": 843,
-        "floorOutcome": 56145,
-        "overspendRatio": 2.4,
-        "potentialSavingsPerCapita": 1147,
-        "potentialSavingsTotal": 388946000000,
-        "outcomeName": "GDP per Capita",
-        "topEfficient": [
-          {
-            "name": "Ireland",
-            "spending": 859,
-            "outcome": 75433.33,
-            "rank": 1
-          },
-          {
-            "name": "Spain",
-            "spending": 472,
-            "outcome": 33080,
-            "rank": 2
-          },
-          {
-            "name": "New Zealand",
-            "spending": 481,
-            "outcome": 33430,
-            "rank": 3
-          }
-        ]
-      }
-    },
-    {
-      "name": "Health (non-Medicare/Medicaid)",
-      "currentSpending": 94000000000,
-      "currentSpendingRealPerCapita": 211.72,
-      "optimalSpendingPerCapita": 423.44,
-      "optimalSpendingNominal": 143547663551,
-      "gap": 49547663551,
-      "gapPercent": 52.7,
-      "recommendation": "major_decrease",
-      "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.11)",
-      "outcomeMetrics": [
-        {
-          "name": "Life expectancy at birth",
-          "value": 77.5,
-          "trend": "improving"
-        },
-        {
-          "name": "Opioid overdose deaths",
-          "value": 81083,
-          "trend": "improving"
-        },
-        {
-          "name": "NIH-funded clinical trials",
-          "value": 13500,
-          "trend": "improving"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 66,
-          "realPerCapita": 212.8
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 67,
-          "realPerCapita": 211.79
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 65,
-          "realPerCapita": 199.91
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 71,
-          "realPerCapita": 211.87
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 75,
-          "realPerCapita": 218.96
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 122,
-          "realPerCapita": 348.6
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 190,
-          "realPerCapita": 517.52
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 127,
-          "realPerCapita": 319.08
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 102,
-          "realPerCapita": 244.27
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 97,
-          "realPerCapita": 224.2
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 94,
-          "realPerCapita": 211.72
-        }
-      ],
-      "diminishingReturns": {
-        "modelType": "saturation",
-        "r2": 0.11,
-        "n": 529,
-        "marginalReturn": 0.00179,
-        "elasticity": 0.005,
-        "outcomeName": "Life Expectancy"
-      },
-      "efficiency": {
-        "usRank": 23,
-        "totalCountries": 23,
-        "bestCountry": {
-          "code": "PRT",
-          "name": "Portugal",
-          "spending": 2924,
-          "outcome": 81.37
-        },
-        "usData": {
-          "spending": 10333,
-          "outcome": 76.93
-        },
-        "floorSpending": 2924,
-        "floorOutcome": 82.18,
-        "overspendRatio": 3.5,
-        "potentialSavingsPerCapita": 7409,
-        "potentialSavingsTotal": 2511764000000,
-        "outcomeName": "Life Expectancy",
-        "topEfficient": [
-          {
-            "name": "Portugal",
-            "spending": 2924,
-            "outcome": 81.37,
-            "rank": 1
-          },
-          {
-            "name": "Czech Republic",
-            "spending": 2898,
-            "outcome": 77.97,
-            "rank": 2
-          },
-          {
-            "name": "Israel",
-            "spending": 3110,
-            "outcome": 82.17,
-            "rank": 3
-          }
-        ]
-      }
-    },
-    {
-      "name": "Veterans Affairs",
-      "currentSpending": 325000000000,
-      "currentSpendingRealPerCapita": 732.02,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": 48750000000,
-      "gapPercent": 15,
-      "recommendation": "increase",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
-      "outcomeMetrics": [
-        {
-          "name": "Veteran suicide rate",
-          "value": 33.9,
-          "trend": "stable"
-        },
-        {
-          "name": "VA patient satisfaction (inpatient)",
-          "value": 71,
-          "trend": "improving"
-        },
-        {
-          "name": "Veteran homelessness",
-          "value": 35286,
-          "trend": "improving"
-        },
-        {
-          "name": "Average wait time for primary care",
-          "value": 20.3,
-          "trend": "improving"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 161,
-          "realPerCapita": 519.12
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 167,
-          "realPerCapita": 527.9
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 176,
-          "realPerCapita": 541.29
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 189,
-          "realPerCapita": 564.01
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 200,
-          "realPerCapita": 583.89
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 218,
-          "realPerCapita": 622.9
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 234,
-          "realPerCapita": 637.36
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 267,
-          "realPerCapita": 670.83
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 302,
-          "realPerCapita": 723.23
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 314,
-          "realPerCapita": 725.76
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 325,
-          "realPerCapita": 732.02
-        }
-      ],
-      "diminishingReturns": null,
-      "efficiency": null
-    },
-    {
-      "name": "HUD / Housing",
-      "currentSpending": 73000000000,
-      "currentSpendingRealPerCapita": 164.42,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": -9733333333,
-      "gapPercent": -13.3,
-      "recommendation": "decrease",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
-      "outcomeMetrics": [
-        {
-          "name": "Total homeless population",
-          "value": 653104,
-          "trend": "declining"
-        },
-        {
-          "name": "Housing cost burden (>30% income)",
-          "value": 30,
-          "trend": "declining"
-        },
-        {
-          "name": "Homeownership rate",
-          "value": 65.6,
-          "trend": "stable"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 37,
-          "realPerCapita": 119.3
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 39,
-          "realPerCapita": 123.28
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 39,
-          "realPerCapita": 119.95
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 41,
-          "realPerCapita": 122.35
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 44,
-          "realPerCapita": 128.46
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 56,
-          "realPerCapita": 160.01
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 63,
-          "realPerCapita": 171.6
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 60,
-          "realPerCapita": 150.75
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 68,
-          "realPerCapita": 162.85
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 71,
-          "realPerCapita": 164.1
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 73,
-          "realPerCapita": 164.42
-        }
-      ],
-      "diminishingReturns": null,
-      "efficiency": null
-    },
-    {
-      "name": "Agriculture",
-      "currentSpending": 38000000000,
-      "currentSpendingRealPerCapita": 85.59,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": -7600000000,
-      "gapPercent": -20,
-      "recommendation": "decrease",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
-      "outcomeMetrics": [
-        {
-          "name": "Food insecurity rate",
-          "value": 12.8,
-          "trend": "declining"
-        },
-        {
-          "name": "Farm income (net)",
-          "value": 116.1,
-          "trend": "declining"
-        },
-        {
-          "name": "Crop export value",
-          "value": 171,
-          "trend": "declining"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 25,
-          "realPerCapita": 80.61
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 24,
-          "realPerCapita": 75.87
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 24,
-          "realPerCapita": 73.81
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 25,
-          "realPerCapita": 74.6
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 39,
-          "realPerCapita": 113.86
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 46,
-          "realPerCapita": 131.44
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 28,
-          "realPerCapita": 76.27
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 29,
-          "realPerCapita": 72.86
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 33,
-          "realPerCapita": 79.03
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 36,
-          "realPerCapita": 83.21
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 38,
-          "realPerCapita": 85.59
-        }
-      ],
-      "diminishingReturns": null,
-      "efficiency": null
-    },
-    {
-      "name": "Justice / Law Enforcement",
-      "currentSpending": 40000000000,
-      "currentSpendingRealPerCapita": 90.09,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": 5333333333,
-      "gapPercent": 13.3,
-      "recommendation": "increase",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
-      "outcomeMetrics": [
-        {
-          "name": "Violent crime rate",
-          "value": 363.8,
-          "trend": "improving"
-        },
-        {
-          "name": "Incarceration rate",
-          "value": 531,
-          "trend": "improving"
-        },
-        {
-          "name": "Federal prison population",
-          "value": 158169,
-          "trend": "stable"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 33,
-          "realPerCapita": 106.4
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 33,
-          "realPerCapita": 104.31
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 35,
-          "realPerCapita": 107.64
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 34,
-          "realPerCapita": 101.46
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 34,
-          "realPerCapita": 99.26
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 37,
-          "realPerCapita": 105.72
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 39,
-          "realPerCapita": 106.23
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 38,
-          "realPerCapita": 95.47
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 39,
-          "realPerCapita": 93.4
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 40,
-          "realPerCapita": 92.45
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 40,
-          "realPerCapita": 90.09
-        }
-      ],
-      "diminishingReturns": null,
-      "efficiency": null
-    },
-    {
-      "name": "Treasury / General Government",
-      "currentSpending": 30000000000,
-      "currentSpendingRealPerCapita": 67.57,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": -3000000000,
-      "gapPercent": -10,
-      "recommendation": "decrease",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
-      "outcomeMetrics": [
-        {
-          "name": "Tax gap (estimated)",
-          "value": 688,
-          "trend": "declining"
-        },
-        {
-          "name": "IRS voluntary compliance rate",
-          "value": 83.6,
-          "trend": "stable"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 23,
-          "realPerCapita": 74.16
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 23,
-          "realPerCapita": 72.7
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 22,
-          "realPerCapita": 67.66
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 24,
-          "realPerCapita": 71.62
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 25,
-          "realPerCapita": 72.99
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 25,
-          "realPerCapita": 71.43
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 27,
-          "realPerCapita": 73.54
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 28,
-          "realPerCapita": 70.35
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 29,
-          "realPerCapita": 69.45
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 29,
-          "realPerCapita": 67.03
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 30,
-          "realPerCapita": 67.57
-        }
-      ],
-      "diminishingReturns": null,
-      "efficiency": null
-    },
-    {
-      "name": "State Department / Diplomacy",
-      "currentSpending": 19000000000,
-      "currentSpendingRealPerCapita": 42.79,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": 1900000000,
-      "gapPercent": 10,
-      "recommendation": "increase",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
-      "outcomeMetrics": [
-        {
-          "name": "US passport holders",
-          "value": 160,
-          "trend": "improving"
-        },
-        {
-          "name": "Bilateral trade agreements active",
-          "value": 14,
-          "trend": "stable"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 15,
-          "realPerCapita": 48.36
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 15.5,
-          "realPerCapita": 49
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 15.2,
-          "realPerCapita": 46.75
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 15,
-          "realPerCapita": 44.76
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 15.7,
-          "realPerCapita": 45.84
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 16,
-          "realPerCapita": 45.72
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 16.5,
-          "realPerCapita": 44.94
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 17.2,
-          "realPerCapita": 43.21
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 18,
-          "realPerCapita": 43.11
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 18.5,
-          "realPerCapita": 42.76
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 19,
-          "realPerCapita": 42.79
-        }
-      ],
-      "diminishingReturns": null,
-      "efficiency": null
-    },
-    {
-      "name": "Commerce / Economic Development",
-      "currentSpending": 18000000000,
-      "currentSpendingRealPerCapita": 40.54,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": 1800000000,
-      "gapPercent": 10,
-      "recommendation": "increase",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
-      "outcomeMetrics": [
-        {
-          "name": "GDP growth rate (real)",
-          "value": 2.5,
-          "trend": "stable"
-        },
-        {
-          "name": "New business applications",
-          "value": 5500000,
-          "trend": "improving"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 9,
-          "realPerCapita": 29.02
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 9.5,
-          "realPerCapita": 30.03
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 9.2,
-          "realPerCapita": 28.29
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 11.5,
-          "realPerCapita": 34.32
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 12,
-          "realPerCapita": 35.03
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 34,
-          "realPerCapita": 97.15
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 30,
-          "realPerCapita": 81.71
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 22,
-          "realPerCapita": 55.27
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 20,
-          "realPerCapita": 47.9
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 19,
-          "realPerCapita": 43.92
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 18,
-          "realPerCapita": 40.54
-        }
-      ],
-      "diminishingReturns": null,
-      "efficiency": null
     },
     {
       "name": "Social Security",
@@ -1193,144 +732,6 @@
       ],
       "diminishingReturns": null,
       "efficiency": null
-    },
-    {
-      "name": "Military",
-      "currentSpending": 886000000000,
-      "currentSpendingRealPerCapita": 1995.59,
-      "optimalSpendingPerCapita": null,
-      "optimalSpendingNominal": null,
-      "gap": 0,
-      "gapPercent": 0,
-      "recommendation": "major_decrease",
-      "evidenceSource": "OECD cross-country (529 obs, 23 countries, R²=0.006)",
-      "outcomeMetrics": [
-        {
-          "name": "Global Peace Index ranking (US)",
-          "value": 131,
-          "trend": "declining"
-        },
-        {
-          "name": "Military strength index (Global Firepower)",
-          "value": 1,
-          "trend": "stable"
-        },
-        {
-          "name": "Active duty personnel",
-          "value": 1.33,
-          "trend": "declining"
-        },
-        {
-          "name": "Military spending as % GDP",
-          "value": 3,
-          "trend": "stable"
-        }
-      ],
-      "historicalRealPerCapita": [
-        {
-          "year": 2015,
-          "nominalBillions": 596,
-          "realPerCapita": 1921.69
-        },
-        {
-          "year": 2016,
-          "nominalBillions": 604,
-          "realPerCapita": 1909.28
-        },
-        {
-          "year": 2017,
-          "nominalBillions": 610,
-          "realPerCapita": 1876.07
-        },
-        {
-          "year": 2018,
-          "nominalBillions": 654,
-          "realPerCapita": 1951.64
-        },
-        {
-          "year": 2019,
-          "nominalBillions": 686,
-          "realPerCapita": 2002.75
-        },
-        {
-          "year": 2020,
-          "nominalBillions": 714,
-          "realPerCapita": 2040.14
-        },
-        {
-          "year": 2021,
-          "nominalBillions": 742,
-          "realPerCapita": 2021.04
-        },
-        {
-          "year": 2022,
-          "nominalBillions": 766,
-          "realPerCapita": 1924.55
-        },
-        {
-          "year": 2023,
-          "nominalBillions": 806,
-          "realPerCapita": 1930.21
-        },
-        {
-          "year": 2024,
-          "nominalBillions": 849,
-          "realPerCapita": 1962.33
-        },
-        {
-          "year": 2025,
-          "nominalBillions": 886,
-          "realPerCapita": 1995.59
-        }
-      ],
-      "diminishingReturns": {
-        "modelType": "log",
-        "r2": 0.006,
-        "n": 529,
-        "marginalReturn": -0.00014,
-        "elasticity": -0.003,
-        "outcomeName": "Life Expectancy"
-      },
-      "efficiency": {
-        "usRank": 23,
-        "totalCountries": 23,
-        "bestCountry": {
-          "code": "IRL",
-          "name": "Ireland",
-          "spending": 226,
-          "outcome": 82
-        },
-        "usData": {
-          "spending": 2052,
-          "outcome": 76.93
-        },
-        "floorSpending": 226,
-        "floorOutcome": 82.43,
-        "overspendRatio": 9.1,
-        "potentialSavingsPerCapita": 1826,
-        "potentialSavingsTotal": 618901000000,
-        "outcomeName": "Life Expectancy",
-        "topEfficient": [
-          {
-            "name": "Ireland",
-            "spending": 226,
-            "outcome": 82,
-            "rank": 1
-          },
-          {
-            "name": "Spain",
-            "spending": 331,
-            "outcome": 82.87,
-            "rank": 2
-          },
-          {
-            "name": "Austria",
-            "spending": 339,
-            "outcome": 81.3,
-            "rank": 3
-          }
-        ]
-      }
     },
     {
       "name": "Medicare",
@@ -1517,6 +918,98 @@
       "efficiency": null
     },
     {
+      "name": "Veterans Affairs",
+      "currentSpending": 325000000000,
+      "currentSpendingRealPerCapita": 732.02,
+      "optimalSpendingPerCapita": null,
+      "optimalSpendingNominal": null,
+      "gap": 0,
+      "gapPercent": 0,
+      "recommendation": "maintain",
+      "evidenceSource": "no cross-country data available",
+      "outcomeMetrics": [
+        {
+          "name": "Veteran suicide rate",
+          "value": 33.9,
+          "trend": "stable"
+        },
+        {
+          "name": "VA patient satisfaction (inpatient)",
+          "value": 71,
+          "trend": "improving"
+        },
+        {
+          "name": "Veteran homelessness",
+          "value": 35286,
+          "trend": "improving"
+        },
+        {
+          "name": "Average wait time for primary care",
+          "value": 20.3,
+          "trend": "improving"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 161,
+          "realPerCapita": 519.12
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 167,
+          "realPerCapita": 527.9
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 176,
+          "realPerCapita": 541.29
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 189,
+          "realPerCapita": 564.01
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 200,
+          "realPerCapita": 583.89
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 218,
+          "realPerCapita": 622.9
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 234,
+          "realPerCapita": 637.36
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 267,
+          "realPerCapita": 670.83
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 302,
+          "realPerCapita": 723.23
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 314,
+          "realPerCapita": 725.76
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 325,
+          "realPerCapita": 732.02
+        }
+      ],
+      "diminishingReturns": null,
+      "efficiency": null
+    },
+    {
       "name": "Other Mandatory Programs",
       "currentSpending": 842000000000,
       "currentSpendingRealPerCapita": 1896.49,
@@ -1612,7 +1105,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+      "evidenceSource": "no cross-country data available",
       "outcomeMetrics": [
         {
           "name": "Infrastructure grade (ASCE)",
@@ -1696,6 +1189,93 @@
       "efficiency": null
     },
     {
+      "name": "HUD / Housing",
+      "currentSpending": 73000000000,
+      "currentSpendingRealPerCapita": 164.42,
+      "optimalSpendingPerCapita": null,
+      "optimalSpendingNominal": null,
+      "gap": 0,
+      "gapPercent": 0,
+      "recommendation": "maintain",
+      "evidenceSource": "no cross-country data available",
+      "outcomeMetrics": [
+        {
+          "name": "Total homeless population",
+          "value": 653104,
+          "trend": "declining"
+        },
+        {
+          "name": "Housing cost burden (>30% income)",
+          "value": 30,
+          "trend": "declining"
+        },
+        {
+          "name": "Homeownership rate",
+          "value": 65.6,
+          "trend": "stable"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 37,
+          "realPerCapita": 119.3
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 39,
+          "realPerCapita": 123.28
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 39,
+          "realPerCapita": 119.95
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 41,
+          "realPerCapita": 122.35
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 44,
+          "realPerCapita": 128.46
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 56,
+          "realPerCapita": 160.01
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 63,
+          "realPerCapita": 171.6
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 60,
+          "realPerCapita": 150.75
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 68,
+          "realPerCapita": 162.85
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 71,
+          "realPerCapita": 164.1
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 73,
+          "realPerCapita": 164.42
+        }
+      ],
+      "diminishingReturns": null,
+      "efficiency": null
+    },
+    {
       "name": "Foreign Aid / International Affairs",
       "currentSpending": 63000000000,
       "currentSpendingRealPerCapita": 141.9,
@@ -1704,7 +1284,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+      "evidenceSource": "no cross-country data available",
       "outcomeMetrics": [
         {
           "name": "Foreign aid as % GNI",
@@ -1791,7 +1371,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+      "evidenceSource": "no cross-country data available",
       "outcomeMetrics": [
         {
           "name": "Renewable energy share of electricity",
@@ -1870,6 +1450,180 @@
       "efficiency": null
     },
     {
+      "name": "Justice / Law Enforcement",
+      "currentSpending": 40000000000,
+      "currentSpendingRealPerCapita": 90.09,
+      "optimalSpendingPerCapita": null,
+      "optimalSpendingNominal": null,
+      "gap": 0,
+      "gapPercent": 0,
+      "recommendation": "maintain",
+      "evidenceSource": "no cross-country data available",
+      "outcomeMetrics": [
+        {
+          "name": "Violent crime rate",
+          "value": 363.8,
+          "trend": "improving"
+        },
+        {
+          "name": "Incarceration rate",
+          "value": 531,
+          "trend": "improving"
+        },
+        {
+          "name": "Federal prison population",
+          "value": 158169,
+          "trend": "stable"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 33,
+          "realPerCapita": 106.4
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 33,
+          "realPerCapita": 104.31
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 35,
+          "realPerCapita": 107.64
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 34,
+          "realPerCapita": 101.46
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 34,
+          "realPerCapita": 99.26
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 37,
+          "realPerCapita": 105.72
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 39,
+          "realPerCapita": 106.23
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 38,
+          "realPerCapita": 95.47
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 39,
+          "realPerCapita": 93.4
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 40,
+          "realPerCapita": 92.45
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 40,
+          "realPerCapita": 90.09
+        }
+      ],
+      "diminishingReturns": null,
+      "efficiency": null
+    },
+    {
+      "name": "Agriculture",
+      "currentSpending": 38000000000,
+      "currentSpendingRealPerCapita": 85.59,
+      "optimalSpendingPerCapita": null,
+      "optimalSpendingNominal": null,
+      "gap": 0,
+      "gapPercent": 0,
+      "recommendation": "maintain",
+      "evidenceSource": "no cross-country data available",
+      "outcomeMetrics": [
+        {
+          "name": "Food insecurity rate",
+          "value": 12.8,
+          "trend": "declining"
+        },
+        {
+          "name": "Farm income (net)",
+          "value": 116.1,
+          "trend": "declining"
+        },
+        {
+          "name": "Crop export value",
+          "value": 171,
+          "trend": "declining"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 25,
+          "realPerCapita": 80.61
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 24,
+          "realPerCapita": 75.87
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 24,
+          "realPerCapita": 73.81
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 25,
+          "realPerCapita": 74.6
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 39,
+          "realPerCapita": 113.86
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 46,
+          "realPerCapita": 131.44
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 28,
+          "realPerCapita": 76.27
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 29,
+          "realPerCapita": 72.86
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 33,
+          "realPerCapita": 79.03
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 36,
+          "realPerCapita": 83.21
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 38,
+          "realPerCapita": 85.59
+        }
+      ],
+      "diminishingReturns": null,
+      "efficiency": null
+    },
+    {
       "name": "EPA / Environment",
       "currentSpending": 12000000000,
       "currentSpendingRealPerCapita": 27.03,
@@ -1878,7 +1632,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+      "evidenceSource": "no cross-country data available",
       "outcomeMetrics": [
         {
           "name": "Days exceeding Air Quality Index standards",
@@ -1970,7 +1724,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+      "evidenceSource": "no cross-country data available",
       "outcomeMetrics": [
         {
           "name": "Southwest border encounters",
@@ -2057,7 +1811,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+      "evidenceSource": "no cross-country data available",
       "outcomeMetrics": [
         {
           "name": "Labor force participation rate",
@@ -2136,6 +1890,88 @@
       "efficiency": null
     },
     {
+      "name": "Commerce / Economic Development",
+      "currentSpending": 18000000000,
+      "currentSpendingRealPerCapita": 40.54,
+      "optimalSpendingPerCapita": null,
+      "optimalSpendingNominal": null,
+      "gap": 0,
+      "gapPercent": 0,
+      "recommendation": "maintain",
+      "evidenceSource": "no cross-country data available",
+      "outcomeMetrics": [
+        {
+          "name": "GDP growth rate (real)",
+          "value": 2.5,
+          "trend": "stable"
+        },
+        {
+          "name": "New business applications",
+          "value": 5500000,
+          "trend": "improving"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 9,
+          "realPerCapita": 29.02
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 9.5,
+          "realPerCapita": 30.03
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 9.2,
+          "realPerCapita": 28.29
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 11.5,
+          "realPerCapita": 34.32
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 12,
+          "realPerCapita": 35.03
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 34,
+          "realPerCapita": 97.15
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 30,
+          "realPerCapita": 81.71
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 22,
+          "realPerCapita": 55.27
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 20,
+          "realPerCapita": 47.9
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 19,
+          "realPerCapita": 43.92
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 18,
+          "realPerCapita": 40.54
+        }
+      ],
+      "diminishingReturns": null,
+      "efficiency": null
+    },
+    {
       "name": "Interior / Natural Resources",
       "currentSpending": 17000000000,
       "currentSpendingRealPerCapita": 38.29,
@@ -2144,7 +1980,7 @@
       "gap": 0,
       "gapPercent": 0,
       "recommendation": "maintain",
-      "evidenceSource": "outcome-trend heuristic (no cross-country data)",
+      "evidenceSource": "no cross-country data available",
       "outcomeMetrics": [
         {
           "name": "National park visits",
@@ -2221,6 +2057,170 @@
       ],
       "diminishingReturns": null,
       "efficiency": null
+    },
+    {
+      "name": "Treasury / General Government",
+      "currentSpending": 30000000000,
+      "currentSpendingRealPerCapita": 67.57,
+      "optimalSpendingPerCapita": null,
+      "optimalSpendingNominal": null,
+      "gap": 0,
+      "gapPercent": 0,
+      "recommendation": "maintain",
+      "evidenceSource": "no cross-country data available",
+      "outcomeMetrics": [
+        {
+          "name": "Tax gap (estimated)",
+          "value": 688,
+          "trend": "declining"
+        },
+        {
+          "name": "IRS voluntary compliance rate",
+          "value": 83.6,
+          "trend": "stable"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 23,
+          "realPerCapita": 74.16
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 23,
+          "realPerCapita": 72.7
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 22,
+          "realPerCapita": 67.66
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 24,
+          "realPerCapita": 71.62
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 25,
+          "realPerCapita": 72.99
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 25,
+          "realPerCapita": 71.43
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 27,
+          "realPerCapita": 73.54
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 28,
+          "realPerCapita": 70.35
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 29,
+          "realPerCapita": 69.45
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 29,
+          "realPerCapita": 67.03
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 30,
+          "realPerCapita": 67.57
+        }
+      ],
+      "diminishingReturns": null,
+      "efficiency": null
+    },
+    {
+      "name": "State Department / Diplomacy",
+      "currentSpending": 19000000000,
+      "currentSpendingRealPerCapita": 42.79,
+      "optimalSpendingPerCapita": null,
+      "optimalSpendingNominal": null,
+      "gap": 0,
+      "gapPercent": 0,
+      "recommendation": "maintain",
+      "evidenceSource": "no cross-country data available",
+      "outcomeMetrics": [
+        {
+          "name": "US passport holders",
+          "value": 160,
+          "trend": "improving"
+        },
+        {
+          "name": "Bilateral trade agreements active",
+          "value": 14,
+          "trend": "stable"
+        }
+      ],
+      "historicalRealPerCapita": [
+        {
+          "year": 2015,
+          "nominalBillions": 15,
+          "realPerCapita": 48.36
+        },
+        {
+          "year": 2016,
+          "nominalBillions": 15.5,
+          "realPerCapita": 49
+        },
+        {
+          "year": 2017,
+          "nominalBillions": 15.2,
+          "realPerCapita": 46.75
+        },
+        {
+          "year": 2018,
+          "nominalBillions": 15,
+          "realPerCapita": 44.76
+        },
+        {
+          "year": 2019,
+          "nominalBillions": 15.7,
+          "realPerCapita": 45.84
+        },
+        {
+          "year": 2020,
+          "nominalBillions": 16,
+          "realPerCapita": 45.72
+        },
+        {
+          "year": 2021,
+          "nominalBillions": 16.5,
+          "realPerCapita": 44.94
+        },
+        {
+          "year": 2022,
+          "nominalBillions": 17.2,
+          "realPerCapita": 43.21
+        },
+        {
+          "year": 2023,
+          "nominalBillions": 18,
+          "realPerCapita": 43.11
+        },
+        {
+          "year": 2024,
+          "nominalBillions": 18.5,
+          "realPerCapita": 42.76
+        },
+        {
+          "year": 2025,
+          "nominalBillions": 19,
+          "realPerCapita": 42.79
+        }
+      ],
+      "diminishingReturns": null,
+      "efficiency": null
     }
   ],
   "topRecommendations": [
@@ -2229,7 +2229,7 @@
     "Science / NASA: US spends $1991/cap (rank 20/23). Ireland spends $859/cap with GDP per Capita 75433.33. Overspend: 2.4x. Potential savings: $389B/yr",
     "Education: US spends $2898/cap (rank 8/23). Near floor ($2560/cap). GDP per Capita: 57590"
   ],
-  "generatedAt": "2026-03-22T20:30:26.608Z",
+  "generatedAt": "2026-03-22T20:57:37.346Z",
   "generatedBy": "@optimitron/obg + OECD cross-country panel",
   "inflationAdjustment": {
     "method": "CPI-U deflator",

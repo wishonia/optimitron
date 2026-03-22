@@ -47,7 +47,6 @@ British Columbia: emissions down 5-15% vs control, GDP growth maintained. Switze
 
 ## Related
 
-- [**View Model Legislation →**](../../legislation/science-nasa-reform/)
 - [Policy Rankings](../)
 - [Budget Analysis](../../budget/)
 - [Universal Dividend](../../dividend/)

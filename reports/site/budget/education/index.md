@@ -16,8 +16,8 @@ layout: layout.njk
 | Overspend ratio | **1.1x** |
 | Floor spending | $2560/cap |
 | Potential savings | **$115B/yr** |
-| Recommendation | **SCALE_UP** |
-| Evidence | OECD cross-country (529 obs, 23 countries, R²=0.526) |
+| Recommendation | **MAINTAIN** |
+| Evidence | OECD efficient frontier (23 countries, rank 8/23) |
 | **Your dividend** | **$444/yr ($37/mo)** per adult |
 
 ## OECD Efficiency Comparison
@@ -38,7 +38,6 @@ Best: **Ireland** — $2560/cap → GDP per Capita 75433.33
 - Model: saturation
 - R²: 0.526
 - Observations: 529
-- Elasticity: 0.807 (1% spending → 0.807% GDP per Capita)
 
 ## Historical Spending (2015–2025)
 

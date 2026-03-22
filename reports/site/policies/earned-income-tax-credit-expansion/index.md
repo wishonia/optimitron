@@ -46,7 +46,6 @@ EITC lifts ~6M people out of poverty annually. Research shows improved infant he
 
 ## Related
 
-- [**View Model Legislation →**](../../legislation/social-security-reform/)
 - [Policy Rankings](../)
 - [Budget Analysis](../../budget/)
 - [Universal Dividend](../../dividend/)

@@ -17,7 +17,7 @@ layout: layout.njk
 | Floor spending | $843/cap |
 | Potential savings | **$389B/yr** |
 | Recommendation | **DECREASE** |
-| Evidence | OECD cross-country (529 obs, 23 countries, R²=0.318) |
+| Evidence | OECD efficient frontier (23 countries, rank 20/23) |
 | **Your dividend** | **$1,508/yr ($126/mo)** per adult |
 
 ## OECD Efficiency Comparison
@@ -38,7 +38,6 @@ Best: **Ireland** — $859/cap → GDP per Capita 75433.33
 - Model: log
 - R²: 0.318
 - Observations: 529
-- Elasticity: 0.443 (1% spending → 0.443% GDP per Capita)
 
 ## Historical Spending (2015–2025)
 

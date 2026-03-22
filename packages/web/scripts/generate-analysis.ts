@@ -28,21 +28,14 @@ import {
   type AnalysisMethod,
 } from '@optimitron/opg';
 
-// OBG imports
+// OBG imports — efficiency frontier only (OSL removed, produced contradictory results)
 import {
-  fitLogModel,
-  fitSaturationModel,
-  findOSL,
-  marginalReturn as calcMarginalReturn,
-  predictOutcome,
   efficientFrontier,
   findMinimumEffectiveSpending,
-  overspendRatio,
+  fitLogModel,
+  fitSaturationModel,
   type SpendingOutcomePoint,
   type DiminishingReturnsModel,
-  type EfficiencyCategory,
-  type SpendingDecileCategory,
-  type CountrySpending,
 } from '@optimitron/obg';
 
 // Data imports
@@ -312,71 +305,24 @@ function runEfficiencyAnalysis(mapping: OECDMapping): EfficiencyInfo | null {
   };
 }
 
-function runOSLAnalysis(
+/** Fit a diminishing returns model for informational context only (R², model type).
+ *  NOT used for recommendations or optimal spending — efficiency frontier handles that. */
+function fitModelInfo(
   mapping: OECDMapping,
-  currentPerCapita: number,
-): {
-  model: DiminishingReturnsModel;
-  oslPerCapita: number;
-  mr: number;
-  elasticity: number | null;
-  data: SpendingOutcomePoint[];
-} | null {
-  // Get cross-country data
+): { model: DiminishingReturnsModel; n: number } | null {
   let data = oecdBudgetPanelToSpendingOutcome(
     mapping.spendingField as keyof OECDBudgetPanelDataPoint,
     mapping.outcomeField as keyof OECDBudgetPanelDataPoint,
   );
-
-  // Negate outcome if needed (so higher = better)
   if (mapping.negateOutcome) {
     data = data.map(d => ({ ...d, outcome: 100 - d.outcome }));
   }
-
   if (data.length < 10) return null;
 
-  // Fit both models, pick best
   const logModel = fitLogModel(data);
   const satModel = fitSaturationModel(data);
   const model = logModel.r2 >= satModel.r2 ? logModel : satModel;
-
-  // Calculate average marginal return across observed data
-  const avgMR = data.reduce(
-    (sum, d) => sum + Math.abs(calcMarginalReturn(d.spending, model)), 0,
-  ) / data.length;
-
-  // OSL = where marginal return drops to 50% of average
-  const targetMR = avgMR * 0.5;
-  let oslPerCapita: number;
-
-  if (model.beta <= 0) {
-    // Negative or zero benefit — recommend minimum observed
-    const minSpending = Math.min(...data.map(d => d.spending));
-    oslPerCapita = minSpending;
-  } else if (targetMR > 0) {
-    oslPerCapita = findOSL(model, targetMR);
-    if (oslPerCapita <= 0 || !isFinite(oslPerCapita)) {
-      oslPerCapita = currentPerCapita;
-    }
-  } else {
-    oslPerCapita = currentPerCapita;
-  }
-
-  // Clamp to observed data range (don't extrapolate wildly)
-  const maxObserved = Math.max(...data.map(d => d.spending));
-  const minObserved = Math.min(...data.map(d => d.spending));
-  oslPerCapita = Math.max(minObserved * 0.5, Math.min(oslPerCapita, maxObserved * 1.5));
-
-  // Extra conservative for low-fit models
-  if (model.r2 < 0.3) {
-    oslPerCapita = Math.max(currentPerCapita * 0.5, Math.min(oslPerCapita, currentPerCapita * 2));
-  }
-
-  const mr = calcMarginalReturn(currentPerCapita, model);
-  const predicted = predictOutcome(currentPerCapita, model);
-  const elasticity = predicted !== 0 ? mr * (currentPerCapita / predicted) : null;
-
-  return { model, oslPerCapita, mr, elasticity, data };
+  return { model, n: data.length };
 }
 
 function generateBudgetAnalysis() {
@@ -408,77 +354,44 @@ function generateBudgetAnalysis() {
     }
 
     if (isNonDiscretionary) {
-      // Non-discretionary: no optimization, just report
       evidenceSource = 'non-discretionary (mandated)';
-    } else if (mapping) {
-      // Real OECD cross-country OSL estimation
-      const result = runOSLAnalysis(mapping, currentRealPerCapita);
-      if (result) {
-        const nCountries = new Set(result.data.map(d => d.jurisdiction)).size;
+    } else if (mapping && efficiencyInfo) {
+      // Derive gap/optimal from EFFICIENCY FRONTIER (not OSL curve fitting).
+      // NOTE: OECD spending is total government (federal+state+local), while
+      // currentUsd is federal-only. The gap uses OECD per-capita values to be
+      // comparable across countries. Positive gap = US overspends vs floor.
+      optimalPerCapita = efficiencyInfo.floorSpending;
+      const usOECDSpendingTotal = efficiencyInfo.usData.spending * US_POPULATION; // total gov, not federal
+      optimalNominal = efficiencyInfo.floorSpending * US_POPULATION;
+      gap = usOECDSpendingTotal - optimalNominal; // OECD total vs floor — positive = overspend
+      gapPercent = usOECDSpendingTotal > 0 ? (gap / usOECDSpendingTotal) * 100 : 0;
 
+      const nCountries = efficiencyInfo.totalCountries;
+      evidenceSource = `OECD efficient frontier (${nCountries} countries, rank ${efficiencyInfo.usRank}/${nCountries})`;
+
+      // Fit a diminishing returns model for informational context only
+      const modelInfo = fitModelInfo(mapping);
+      if (modelInfo) {
         drInfo = {
-          modelType: result.model.type,
-          r2: Math.round(result.model.r2 * 1000) / 1000,
-          n: result.model.n,
-          marginalReturn: Math.round(result.mr * 100000) / 100000,
-          elasticity: result.elasticity !== null ? Math.round(result.elasticity * 1000) / 1000 : null,
+          modelType: modelInfo.model.type,
+          r2: Math.round(modelInfo.model.r2 * 1000) / 1000,
+          n: modelInfo.n,
+          marginalReturn: 0,
+          elasticity: null,
           outcomeName: mapping.outcomeName,
         };
-
-        evidenceSource = `OECD cross-country (${result.data.length} obs, ${nCountries} countries, R²=${drInfo.r2})`;
-
-        if (result.model.r2 >= 0.01) {
-          // Meaningful diminishing returns relationship — use OSL for gap
-          optimalPerCapita = result.oslPerCapita;
-          optimalNominal = result.oslPerCapita * US_POPULATION;
-          gap = optimalNominal - currentUsd;
-          gapPercent = currentUsd > 0 ? (gap / currentUsd) * 100 : 0;
-        }
-
-        // Recommendation comes from EFFICIENCY analysis (overspend ratio),
-        // NOT from R² of the curve fit. A low R² means the curve doesn't fit —
-        // but the efficiency ranking still shows peers getting better results for less.
-        if (efficiencyInfo && efficiencyInfo.overspendRatio >= 3) {
-          recommendation = 'major_decrease';
-        } else if (efficiencyInfo && efficiencyInfo.overspendRatio >= 1.5) {
-          recommendation = 'decrease';
-        } else if (gapPercent > 50) {
-          recommendation = 'scale_up';
-        } else if (gapPercent > 10) {
-          recommendation = 'increase';
-        } else if (gapPercent > -10) {
-          recommendation = 'maintain';
-        } else if (gapPercent > -50) {
-          recommendation = 'decrease';
-        } else {
-          recommendation = 'major_decrease';
-        }
-      } else {
-        evidenceSource = 'OECD mapping available but insufficient data';
       }
+
+      // Recommendation from overspend ratio
+      if (efficiencyInfo.overspendRatio >= 3) recommendation = 'major_decrease';
+      else if (efficiencyInfo.overspendRatio >= 1.5) recommendation = 'decrease';
+      else if (efficiencyInfo.overspendRatio <= 0.8) recommendation = 'increase';
+      else recommendation = 'maintain';
+    } else if (mapping) {
+      evidenceSource = 'OECD mapping available but insufficient data';
     } else {
-      // Fallback: outcome trend heuristic
-      const improvingMetrics = cat.outcomeMetrics.filter(m =>
-        m.trend === 'improving' || m.trend === 'increasing'
-      ).length;
-      const decliningMetrics = cat.outcomeMetrics.filter(m =>
-        m.trend === 'declining' || m.trend === 'decreasing' || m.trend === 'worsening'
-      ).length;
-      const totalMetrics = cat.outcomeMetrics.length || 1;
-      const outcomeScore = (improvingMetrics - decliningMetrics) / totalMetrics;
-
-      evidenceSource = 'outcome-trend heuristic (no cross-country data)';
-
-      // For trend-based: only flag strong signals
-      if (outcomeScore <= -0.5) {
-        recommendation = 'decrease';
-        gapPercent = outcomeScore * 20; // -10% to -20%
-        gap = currentUsd * (gapPercent / 100);
-      } else if (outcomeScore >= 0.5) {
-        recommendation = 'increase';
-        gapPercent = outcomeScore * 20;
-        gap = currentUsd * (gapPercent / 100);
-      }
+      // No OECD mapping — just report metrics, no spending recommendation
+      evidenceSource = 'no cross-country data available';
     }
 
     categories.push({

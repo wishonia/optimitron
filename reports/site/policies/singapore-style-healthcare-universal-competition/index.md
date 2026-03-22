@@ -47,7 +47,7 @@ Singapore: life expectancy 84 (US: 77), infant mortality 1.7 (US: 5.4), healthca
 
 ## Related
 
-- [**View Model Legislation →**](../../legislation/medicare-reform/)
+- [**View Model Legislation →**](../../legislation/health-non-medicare-medicaid-reform/)
 - [Policy Rankings](../)
 - [Budget Analysis](../../budget/)
 - [Universal Dividend](../../dividend/)

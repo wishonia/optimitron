@@ -17,7 +17,7 @@ layout: layout.njk
 | Floor spending | $226/cap |
 | Potential savings | **$619B/yr** |
 | Recommendation | **MAJOR_DECREASE** |
-| Evidence | OECD cross-country (529 obs, 23 countries, R²=0.006) |
+| Evidence | OECD efficient frontier (23 countries, rank 23/23) |
 | **Your dividend** | **$2,399/yr ($200/mo)** per adult |
 
 ## OECD Efficiency Comparison
@@ -38,7 +38,6 @@ Best: **Ireland** — $226/cap → Life Expectancy 82
 - Model: log
 - R²: 0.006
 - Observations: 529
-- Elasticity: -0.003 (1% spending → -0.003% Life Expectancy)
 
 ## Historical Spending (2015–2025)
 

@@ -11,8 +11,8 @@ layout: layout.njk
 |--------|-------|
 | Federal budget line item | $38B |
 | Real per-capita (2017 USD, federal) | $86 |
-| Recommendation | **DECREASE** |
-| Evidence | outcome-trend heuristic (no cross-country data) |
+| Recommendation | **MAINTAIN** |
+| Evidence | no cross-country data available |
 
 ## Historical Spending (2015–2025)
 

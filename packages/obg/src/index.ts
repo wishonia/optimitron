@@ -6,8 +6,7 @@ export * from './welfare.js';
 export * from './report.js';
 export * from './country-analysis.js';
 export * from './country-report.js';
-export * from './optimize-budget.js';
-export * from './optimize-budget-multi-outcome.js';
+// optimize-budget.ts and optimize-budget-multi-outcome.ts deleted (unused)
 export * from './minimum-effective-spending.js';
 export * from './efficient-frontier.js';
 export * from './overspend-ratio.js';

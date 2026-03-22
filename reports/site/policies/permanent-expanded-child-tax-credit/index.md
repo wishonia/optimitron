@@ -46,7 +46,6 @@ layout: layout.njk
 
 ## Related
 
-- [**View Model Legislation →**](../../legislation/social-security-reform/)
 - [Policy Rankings](../)
 - [Budget Analysis](../../budget/)
 - [Universal Dividend](../../dividend/)
