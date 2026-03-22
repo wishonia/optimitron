@@ -9,6 +9,8 @@ import {
   POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
   PRIZE_POOL_15YR_MULTIPLE,
   PRIZE_POOL_ANNUAL_RETURN,
+  TRADITIONAL_PHASE3_COST_PER_PATIENT,
+  EFFICACY_LAG_YEARS,
 } from "@/lib/parameters-calculations-citations";
 import {
   incentiveAlignmentBondsPaperLink,
@@ -106,8 +108,8 @@ export default function IABPage() {
             </div>
             <p className="text-sm text-foreground font-bold leading-relaxed">
               Subsidizes patient participation in large-scale pragmatic trials.
-              Real patients, real conditions, real data — not the $41,117/patient
-              Phase III process that takes 8.2 years after safety is already
+              Real patients, real conditions, real data — not the {fmtParam(TRADITIONAL_PHASE3_COST_PER_PATIENT)}/patient
+              Phase III process that takes {fmtParam(EFFICACY_LAG_YEARS)} after safety is already
               proven. This is the part that actually cures the diseases.
             </p>
             <div className="mt-3 border-4 border-primary bg-background px-3 py-2 inline-block">
@@ -357,7 +359,7 @@ export default function IABPage() {
                 variant="custom"
                 className="inline-flex items-center justify-center border-2 border-border bg-background px-6 py-2.5 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
               >
-                Fund the Referendum First &rarr;
+                Invest in the Prize First &rarr;
               </NavItemLink>
             </div>
           </div>
@@ -442,7 +444,7 @@ export default function IABPage() {
             variant="custom"
             className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
-            Fund the Referendum
+            Invest in the Prize
           </NavItemLink>
           <NavItemLink
             item={incentiveAlignmentBondsPaperLink}

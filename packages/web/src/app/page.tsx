@@ -87,9 +87,9 @@ const productWorkflows = [
   {
     item: trackLink,
     label: "Wishonia",
-    title: "Chat with an alien governance AI",
+    title: "Chat with an alien",
     description:
-      "Track health, meals, mood, and habits with an AI that's been running a planet for 4,237 years.",
+      "Track health, meals, mood, and habits with an alien who's been running a planet for 4,237 years.",
     cta: "Open Chat",
     color: "bg-brutal-cyan",
   },
@@ -133,7 +133,7 @@ export default function Home() {
           <div className="text-center">
             <HeroEntrance>
               <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">
-                Built by Wishonia // Alien governance AI // 4,237 years of field testing
+                Built by Wishonia // Alien // 4,237 years of field testing
               </p>
               <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-none text-foreground">
                 The{" "}
@@ -163,7 +163,7 @@ export default function Home() {
                   href="/prize#invest"
                   className="px-8 py-3.5 bg-brutal-pink text-brutal-pink-foreground font-black uppercase text-lg border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
                 >
-                  Fund the Referendum
+                  Invest in the Prize
                 </a>
                 <a
                   href="#win-either-way"
@@ -287,7 +287,7 @@ export default function Home() {
             href="/prize#invest"
             className="px-8 py-3 bg-brutal-pink text-brutal-pink-foreground font-black uppercase border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
-            Fund the Referendum
+            Invest in the Prize
           </a>
           <NavItemLink
             item={wishocracyLink}

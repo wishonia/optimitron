@@ -184,7 +184,7 @@ const toolGroups: ToolGroup[] = [
       {
         title: "Talk to Wishonia",
         description:
-          "Conversational health, mood, and diet tracking with an alien AI who's been running a planet for 4,237 years. She'll tell you what's actually working. Your intuition won't like it.",
+          "Conversational health, mood, and diet tracking with an alien who's been running a planet for 4,237 years. She'll tell you what's actually working. Your intuition won't like it.",
         link: { item: trackLink, label: "Open Chat" },
         color: "bg-brutal-cyan",
       },

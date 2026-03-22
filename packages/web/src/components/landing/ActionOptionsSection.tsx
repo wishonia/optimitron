@@ -28,7 +28,7 @@ export default function ActionOptionsSection() {
     {
       option: "OPTION 3: FUND",
       action: "BACK THE PRIZE",
-      description: `Zero-downside pool. Get ${fmtParam(PRIZE_POOL_15YR_MULTIPLE)} yield if it fails. Fund the referendum if it succeeds.`,
+      description: `Zero-downside pool. Get ${fmtParam(PRIZE_POOL_15YR_MULTIPLE)} yield if it fails. Invest in the prize.`,
       color: "bg-background",
       textColor: "text-foreground",
       accentColor: "text-brutal-pink",

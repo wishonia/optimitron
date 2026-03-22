@@ -158,7 +158,7 @@ export function LandingPrizeOffer() {
             variant="custom"
             className="inline-flex items-center justify-center border-4 border-primary bg-foreground px-8 py-3.5 text-lg font-black uppercase text-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
-            Fund the Referendum
+            Invest in the Prize
           </NavItemLink>
           <NavItemLink
             item={earthOptimizationPrizePaperLink}

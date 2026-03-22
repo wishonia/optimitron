@@ -109,7 +109,7 @@ export function OnePercentTreatySection() {
                 variant="custom"
                 className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-6 py-2.5 text-sm font-black uppercase text-brutal-pink-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
               >
-                Fund This
+                Invest in the Prize
               </NavItemLink>
               <NavItemLink
                 item={onePercentTreatyPaperLink}
