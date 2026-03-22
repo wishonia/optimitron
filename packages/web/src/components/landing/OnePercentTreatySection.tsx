@@ -1,7 +1,6 @@
 "use client";
 
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { CountUp } from "@/components/animations/CountUp";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { onePercentTreatyPaperLink } from "@/lib/routes";
 import { GameCTA } from "@/components/ui/game-cta";
@@ -98,7 +97,7 @@ export function OnePercentTreatySection() {
         <ScrollReveal delay={0.5}>
           <div className="p-8 border-4 border-primary bg-brutal-cyan shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-4xl sm:text-5xl font-black text-foreground mb-2">
-              <CountUp value={+(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1)} suffix="B" className="text-foreground" /> Lives Saved
+              {(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1)}B Lives Saved
             </div>
             <p className="text-foreground font-bold max-w-xl mx-auto">
               <Stat param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED} /> deaths prevented. ROI: essentially infinite. The only

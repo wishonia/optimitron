@@ -6,7 +6,6 @@ import { LandingPrizeOffer } from "@/components/landing/LandingPrizeOffer";
 import { LandingFAQSection } from "@/components/landing/LandingFAQSection";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { CountUp } from "@/components/animations/CountUp";
 import { StaggerGrid } from "@/components/animations/StaggerGrid";
 import { HeroEntrance } from "@/components/animations/HeroEntrance";
 import { SectionContainer } from "@/components/ui/section-container";
@@ -221,7 +220,7 @@ export default function Home() {
                 className="text-center p-3 border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               >
                 <div className="text-2xl font-black text-brutal-pink">
-                  <CountUp value={stat.value} suffix={"suffix" in stat ? stat.suffix : ""} className="text-brutal-pink" />
+                  {stat.value.toLocaleString()}{"suffix" in stat ? stat.suffix : ""}
                 </div>
                 <div className="text-xs text-muted-foreground font-bold mt-1 uppercase">
                   {stat.label}

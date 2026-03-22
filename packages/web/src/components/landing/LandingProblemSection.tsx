@@ -1,7 +1,6 @@
 "use client";
 
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { CountUp } from "@/components/animations/CountUp";
 import { fmtParam } from "@/lib/format-parameter";
 import {
   POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
@@ -42,8 +41,7 @@ export function LandingProblemSection() {
             })}{" "}
             on testing medicines. That&apos;s a{" "}
             <span className="text-brutal-yellow font-black">
-              <CountUp value={milToTrialsRatio} />
-              :1
+              {milToTrialsRatio.toLocaleString()}:1
             </span>{" "}
             ratio. On my planet, we call this a configuration error.
           </p>
@@ -98,9 +96,7 @@ export function LandingProblemSection() {
               <div className="space-y-6">
                 <div>
                   <div className="text-3xl font-black text-brutal-yellow">
-                    <CountUp
-                      value={Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value)}
-                    />{" "}
+                    {Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value).toLocaleString()}{" "}
                     deaths/day
                   </div>
                   <p className="mt-1 text-sm font-bold text-muted-foreground">
