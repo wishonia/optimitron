@@ -9,3 +9,4 @@ export * from './policy-impact-score.js';
 export * from './evidence-grade.js';
 export * from './report.js';
 export * from './policy-evaluation.js';
+export * from './policy-evaluation-schedule.js';

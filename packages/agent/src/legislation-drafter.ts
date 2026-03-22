@@ -142,7 +142,15 @@ Research what specific policies, regulations, and institutional structures the t
 
 5. **IMPLEMENTATION TIMELINE** — Phased rollout (pilot → scale).
 
-6. **EVIDENCE APPENDIX** — Summarize the cross-country evidence for each provision.
+6. **EVALUATION & SUNSET PROVISIONS** — This is critical. The legislation MUST include:
+   - **BASELINE MEASUREMENT** (Section X01): Within 90 days of enactment, the GAO shall establish baseline measurements of (a) real after-tax median household income (source: Census/BLS) and (b) median healthy life expectancy at birth (source: CDC/NCHS). These are the ONLY two metrics that matter.
+   - **REVIEW CADENCE** (Section X02): Biennial review by the GAO. Every 2 years, re-measure both metrics and compare to baseline. Publish results publicly.
+   - **TARGET THRESHOLDS** (Section X03): Define specific expected improvements (e.g., "+0.5 pp/year income growth, +0.3 years HALE within 5 years"). Also define MINIMUM acceptable thresholds (50% of expected).
+   - **HARD SUNSET** (Section X04): If BOTH metrics fail to meet MINIMUM thresholds by the second review (Year 4), the Act automatically expires unless renewed by a supermajority vote. This prevents zombie legislation.
+   - **DATA COLLECTION MANDATE** (Section X05): Require the specific agencies to collect and publish the data needed for evaluation (median income annually from BLS, HALE annually from CDC, per-capita spending from OMB). All data must be publicly accessible.
+   - **BENCHMARK JURISDICTIONS** (Section X06): Name 3-5 OECD countries as ongoing benchmarks. If benchmark countries continue to outperform the US on both metrics despite the reform, the review must explain why and recommend adjustments.
+
+7. **EVIDENCE APPENDIX** — Summarize the cross-country evidence for each provision.
 
 ### REALLOCATION: Where should the savings go?
 
@@ -155,6 +163,51 @@ The savings from reducing ${evidence.category.toLowerCase()} overspend should fu
 - **Pragmatic clinical trials**: The US spends $48B/yr on NIH but <10% goes to pragmatic trials. The UK's NIHR model produces actionable evidence at 1/10th the cost.
 
 The legislation should include BOTH the spending reduction AND the reallocation mechanism. Don't just cut — redirect to what works.
+
+### INTERMEDIATE METRICS & CAUSAL CHAINS
+
+For each provision, don't just state the expected welfare improvement. Show the CAUSAL CHAIN with intermediate metrics that can be measured independently:
+
+Example for healthcare reform:
+  1. Price transparency mandate → **30% reduction in average procedure cost** (measurable: CMS price database)
+  2. Lower costs → **15% increase in preventive care visits** (measurable: CDC BRFSS survey)
+  3. More prevention → **20% reduction in preventable hospitalizations** (measurable: AHRQ PQI)
+  4. Fewer preventable deaths → **+0.3 years median HALE** (measurable: CDC/NCHS)
+  5. Lower healthcare spending → **+$2,100/yr after-tax median income** (measurable: Census CPS)
+
+Each intermediate metric should:
+- Be independently measurable with a named data source
+- Have a specific threshold (number, not "improvement")
+- Explain HOW it translates to the two ultimate metrics (income + HALE)
+- Be included in the data collection mandates
+
+### REPLACEMENT FRAMING: Name what you're replacing and the savings
+
+Every provision MUST explicitly state:
+- **REPLACES**: What existing program/policy/spending this replaces (name it specifically)
+- **CURRENT COST**: What the replaced program costs today
+- **NEW COST**: What the replacement costs
+- **NET SAVINGS**: The difference
+- **SAVINGS DESTINATION**: ALL net savings flow to the Universal Dividend Pool (see below)
+
+Do NOT frame this as "cutting" anything. Frame it as: "Replacing an inefficient system with a proven one, and returning the savings directly to citizens."
+
+### UNIVERSAL DIVIDEND POOL
+
+ALL net savings from every provision in this Act flow to a single "Universal Dividend Pool" distributed equally to every adult citizen as a monthly payment. This is critical for political viability — every citizen has a direct financial incentive to support the reforms.
+
+Calculate the projected per-person annual dividend:
+  Dividend = (Total annual savings from all provisions) / (Adult US population ~258M)
+
+Example: $601B military savings → $2,329/adult/year → $194/month per person
+
+The dividend creates a constituency FOR reform. Instead of "the government is cutting programs," the message is "you get a check every month because we stopped overpaying."
+
+**CITIZEN CHOICE PROVISION**: Every citizen receiving the Universal Dividend may redirect any portion of their payment to any federal budget category of their choosing. This is a simple opt-in on their Treasury account: "Redirect X% of my dividend to [Defense / Healthcare / Education / etc.]". Default = receive the full cash payment.
+
+This eliminates the strongest political objection: "But I liked the old program!" Fine — donate your savings back to it. If enough people do, the program effectively continues via voluntary funding. If they don't, it proves citizens prefer cash over the inefficient program. This is the free market applied to government spending: revealed preference through voluntary allocation, not politicians deciding for you.
+
+Implementation: Same infrastructure as the Presidential Election Campaign Fund checkbox on tax returns, but expanded to all budget categories. Citizens can change their allocation quarterly via IRS.gov or Treasury Direct.
 
 ### Style requirements:
 - Use actual legislative formatting (Section numbers, subsections)

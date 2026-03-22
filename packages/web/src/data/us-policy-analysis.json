@@ -94,6 +94,37 @@
       ]
     },
     {
+      "name": "Military Spending Reduction to OECD Floor",
+      "type": "budget_allocation",
+      "category": "defense",
+      "description": "Reduce military spending from $2,052/cap to OECD efficient floor of $279/cap (7.4x overspend). OECD data: US ranks 23/23 in military spending efficiency. Ireland achieves life expectancy 82 at $226/cap. Redirect $601B/yr savings to Universal Dividend.",
+      "recommendationType": "reallocate",
+      "evidenceGrade": "B",
+      "causalConfidenceScore": 0.718,
+      "policyImpactScore": 0.582,
+      "welfareScore": 38,
+      "incomeEffect": 0.076,
+      "healthEffect": 0.05,
+      "bradfordHillScores": {
+        "strength": 0.931,
+        "consistency": 0.9,
+        "temporality": 1,
+        "gradient": 0.662,
+        "experiment": 0.25,
+        "plausibility": 1,
+        "coherence": 0.99,
+        "analogy": 0.85,
+        "specificity": 0.477
+      },
+      "rationale": "OECD efficiency analysis: US ranks dead last (23/23) in military spending efficiency. Ireland spends $226/cap with life expectancy 82; Spain $331/cap with 82.87; Austria $339/cap with 81.3. US spends $2,052/cap with life expectancy 76.93. Military spending has R²=0.006 correlation with life expectancy — zero relationship. $601B/yr savings → $4,519/household/yr as Universal Dividend.",
+      "currentStatus": "US spends $886B/yr (7.4x OECD efficient floor), ranks 23/23 in efficiency",
+      "recommendedTarget": "Phased reduction to $279/cap ($95B total). $601B/yr savings → Universal Dividend Pool",
+      "blockingFactors": [
+        "political_opposition",
+        "institutional_resistance"
+      ]
+    },
+    {
       "name": "Earned Income Tax Credit Expansion",
       "type": "tax_policy",
       "category": "income_security",
@@ -278,13 +309,13 @@
       "name": "Singapore-Style Healthcare (Universal + Competition)",
       "type": "regulation",
       "category": "health",
-      "description": "Mandatory health savings + catastrophic insurance + price transparency. Singapore spends 4% GDP with better outcomes than US at 17%.",
+      "description": "Mandatory health savings + catastrophic insurance + price transparency. Singapore spends 4% GDP with better outcomes than US at 17%. OECD data: US ranks 23/23 in health spending efficiency at $10,333/cap vs floor of $3,142/cap (3.3x overspend). Savings: $2.4T/yr.",
       "recommendationType": "implement",
       "evidenceGrade": "B",
       "causalConfidenceScore": 0.636,
       "policyImpactScore": 0.541,
       "welfareScore": 40,
-      "incomeEffect": 0.2,
+      "incomeEffect": 0.31,
       "healthEffect": 0.4,
       "bradfordHillScores": {
         "strength": 0.993,
@@ -297,9 +328,9 @@
         "analogy": 0.85,
         "specificity": 0.383
       },
-      "rationale": "Singapore: life expectancy 84 (US: 77), infant mortality 1.7 (US: 5.4), healthcare spending 4% GDP (US: 17%). Key: mandatory savings accounts + price competition + catastrophic coverage.",
-      "currentStatus": "US spends $4.3T/yr (17% GDP) with worse outcomes than peers",
-      "recommendedTarget": "Hybrid model: mandatory HSAs + transparent pricing + catastrophic pool",
+      "rationale": "Singapore: life expectancy 84 (US: 77), infant mortality 1.7 (US: 5.4), healthcare spending 4% GDP (US: 17%). OECD efficiency analysis: US ranks dead last (23/23) at $10,333/cap. Portugal achieves life expectancy 81.4 at $2,924/cap. Floor spending: $3,142/cap. Potential savings: $2.4T/yr → $18,329/household/yr as dividend.",
+      "currentStatus": "US spends $4.3T/yr (17% GDP), ranks 23/23 in OECD health efficiency",
+      "recommendedTarget": "Singapore 3M model: mandatory HSAs + catastrophic insurance + price transparency. Target: $3,142/cap (OECD floor)",
       "blockingFactors": [
         "political_opposition",
         "industry_resistance"
@@ -334,40 +365,9 @@
       "blockingFactors": [
         "political_opposition"
       ]
-    },
-    {
-      "name": "Military Spending Efficiency Audit",
-      "type": "budget_allocation",
-      "category": "defense",
-      "description": "Mandatory independent audit of DoD spending; redirect savings to underfunded categories.",
-      "recommendationType": "reallocate",
-      "evidenceGrade": "C",
-      "causalConfidenceScore": 0,
-      "policyImpactScore": 0.15,
-      "welfareScore": 38,
-      "incomeEffect": 0.03,
-      "healthEffect": 0.01,
-      "bradfordHillScores": {
-        "strength": 0.632,
-        "consistency": 0.393,
-        "temporality": 0,
-        "gradient": 0.265,
-        "experiment": 0.25,
-        "plausibility": 0.85,
-        "coherence": 0.632,
-        "analogy": 0.85,
-        "specificity": 0.477
-      },
-      "rationale": "Pentagon has failed every audit since they became mandatory in 2018. GAO estimates $100-200B/yr in waste, fraud, and cost overruns. F-35 program alone is $180B over budget.",
-      "currentStatus": "$886B military budget; failed 6th consecutive audit",
-      "recommendedTarget": "Independent audit with binding recommendations; freeze until clean audit",
-      "blockingFactors": [
-        "political_opposition",
-        "institutional_resistance"
-      ]
     }
   ],
-  "generatedAt": "2026-03-22T08:18:17.617Z",
+  "generatedAt": "2026-03-22T19:35:36.255Z",
   "generatedBy": "@optimitron/opg",
   "note": "Generated using Bradford Hill scoring and welfare calculation from real cross-country evidence."
 }

@@ -47,7 +47,18 @@ interface PolicyData {
 
 const data = policyData as unknown as PolicyData;
 
-type SortKey = "welfareScore" | "evidenceGrade" | "causalConfidenceScore" | "policyImpactScore";
+const US_MEDIAN_INCOME = 59_540; // 2023 real median household income
+const US_HALE_YEARS = 66.1; // 2023 WHO HALE estimate for US
+
+/** Translate abstract effect percentages into dollar/year amounts per person */
+function incomePerYear(effect: number): number {
+  return Math.round(effect * US_MEDIAN_INCOME);
+}
+function haleMonths(effect: number): number {
+  return Math.round(effect * 12 * 10); // effect is fraction, ×10 years scale ×12 months
+}
+
+type SortKey = "welfareScore" | "evidenceGrade" | "causalConfidenceScore" | "policyImpactScore" | "incomeEffect" | "healthEffect";
 const gradeOrder: Record<string, number> = { A: 1, B: 2, C: 3, D: 4, F: 5 };
 
 export default function PoliciesPage() {
@@ -69,7 +80,12 @@ export default function PoliciesPage() {
       if (sortBy === "evidenceGrade") {
         return (gradeOrder[a.evidenceGrade] ?? 9) - (gradeOrder[b.evidenceGrade] ?? 9);
       }
-      return (b[sortBy] as number) - (a[sortBy] as number);
+      const aVal = a[sortBy];
+      const bVal = b[sortBy];
+      if (typeof aVal === "number" && typeof bVal === "number") {
+        return bVal - aVal;
+      }
+      return 0;
     });
   }, [categoryFilter, sortBy]);
 
@@ -111,6 +127,8 @@ export default function PoliciesPage() {
             <option value="evidenceGrade">Evidence Grade</option>
             <option value="causalConfidenceScore">Causal Confidence</option>
             <option value="policyImpactScore">Policy Impact</option>
+            <option value="incomeEffect">Income Benefit ($)</option>
+            <option value="healthEffect">Health Benefit (HALE)</option>
           </select>
         </div>
       </div>
@@ -146,9 +164,9 @@ export default function PoliciesPage() {
                   )}
                 </div>
                 <div className="flex items-center gap-4 flex-shrink-0">
-                  <Metric label="Welfare" value={`+${policy.welfareScore}`} />
-                  <Metric label="CCS" value={(policy.causalConfidenceScore * 100).toFixed(0) + "%"} />
-                  <Metric label="PIS" value={(policy.policyImpactScore * 100).toFixed(0) + "%"} />
+                  <Metric label="Income" value={`+$${incomePerYear(policy.incomeEffect).toLocaleString()}/yr`} highlight />
+                  <Metric label="Health" value={`+${haleMonths(policy.healthEffect)}mo HALE`} highlight />
+                  <Metric label="Evidence" value={policy.evidenceGrade} />
                   <span className="text-muted-foreground text-lg font-black">
                     {expanded === policy.name ? "▲" : "▼"}
                   </span>
@@ -174,11 +192,18 @@ export default function PoliciesPage() {
                       </p>
                       <p className="text-muted-foreground font-bold">
                         <span className="text-muted-foreground font-bold">Income Effect:</span>{" "}
-                        <span className="text-brutal-cyan font-black">+{(policy.incomeEffect * 100).toFixed(0)}%</span>
+                        <span className="text-brutal-cyan font-black">+${incomePerYear(policy.incomeEffect).toLocaleString()}/yr</span>
+                        <span className="text-muted-foreground"> ({(policy.incomeEffect * 100).toFixed(0)}% of median income)</span>
                       </p>
                       <p className="text-muted-foreground font-bold">
                         <span className="text-muted-foreground font-bold">Health Effect:</span>{" "}
-                        <span className="text-brutal-cyan font-black">+{(policy.healthEffect * 100).toFixed(0)}%</span>
+                        <span className="text-brutal-cyan font-black">+{haleMonths(policy.healthEffect)} months</span>
+                        <span className="text-muted-foreground"> healthy life expectancy</span>
+                      </p>
+                      <p className="text-muted-foreground font-bold">
+                        <span className="text-muted-foreground font-bold">Welfare Score:</span>{" "}
+                        <span className="text-foreground font-black">+{policy.welfareScore}</span>
+                        <span className="text-muted-foreground"> (CCS: {(policy.causalConfidenceScore * 100).toFixed(0)}%)</span>
                       </p>
                       {policy.currentStatus && (
                         <p className="text-muted-foreground font-bold">
@@ -273,10 +298,10 @@ function RecommendationBadge({ type }: { type: string }) {
   );
 }
 
-function Metric({ label, value }: { label: string; value: string }) {
+function Metric({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div className="text-center">
-      <div className="text-sm font-black text-foreground">{value}</div>
+      <div className={`text-sm font-black ${highlight ? "text-brutal-cyan" : "text-foreground"}`}>{value}</div>
       <div className="text-[10px] text-muted-foreground font-bold uppercase">{label}</div>
     </div>
   );

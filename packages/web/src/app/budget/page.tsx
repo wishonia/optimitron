@@ -66,18 +66,25 @@ interface BudgetData {
 
 const data = budgetData as BudgetData;
 
-function fmt(n: number): string {
+function fmt(n: number | undefined | null): string {
+  if (n == null) return "N/A";
   if (Math.abs(n) >= 1e12) return `$${(n / 1e12).toFixed(2)}T`;
   if (Math.abs(n) >= 1e9) return `$${(n / 1e9).toFixed(0)}B`;
   if (Math.abs(n) >= 1e6) return `$${(n / 1e6).toFixed(0)}M`;
   return `$${n.toFixed(0)}`;
 }
 
+function pctSafe(n: number | undefined | null): string {
+  if (n == null) return "N/A";
+  return `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
+}
+
 function pct(n: number): string {
   return `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
 }
 
-function actionBadgeStyle(action: string): string {
+function actionBadgeStyle(action: string | undefined): string {
+  if (!action) return "bg-muted text-foreground";
   const a = action.toLowerCase();
   if (a.includes("major increase") || a === "scale_up") return "bg-brutal-cyan text-foreground";
   if (a.includes("increase") || a === "increase") return "bg-brutal-cyan text-foreground";
@@ -123,7 +130,7 @@ export default function BudgetPage() {
   );
 
   const totalCurrent = data.categories.reduce((s, c) => s + c.currentSpending, 0);
-  const totalOptimal = data.categories.reduce((s, c) => s + c.optimalSpending, 0);
+  const totalOptimal = data.categories.reduce((s, c) => s + (c.optimalSpending ?? 0), 0);
 
   // For constrained view, sort by reallocation amount
   const constrainedSorted = cr
