@@ -24,7 +24,8 @@
     "demo:record": "tsx scripts/record-demo.ts",
     "audit:colors": "tsx scripts/audit-colors.ts",
     "fix:colors": "tsx scripts/fix-colors.ts",
-    "extract:copy": "tsx scripts/extract-copy.ts"
+    "extract:copy": "tsx scripts/extract-copy.ts",
+    "draft:legislation": "tsx scripts/draft-legislation.ts"
   },
   "dependencies": {
     "@base-org/account": "^2.5.2",
@@ -32,6 +33,7 @@
     "@google/genai": "^1.30.0",
     "@metamask/sdk": "^0.34.0",
     "@next-auth/prisma-adapter": "^1.0.7",
+    "@optimitron/agent": "workspace:^",
     "@optimitron/chat-ui": "workspace:^",
     "@optimitron/data": "workspace:^",
     "@optimitron/db": "workspace:^",

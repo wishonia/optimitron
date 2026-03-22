@@ -7,3 +7,4 @@ export * from './who.js';
 export * from './fred.js';
 export * from './congress.js';
 export * from './usaspending.js';
+export * from './world-bank-pip.js';

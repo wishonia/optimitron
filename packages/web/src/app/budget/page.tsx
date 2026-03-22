@@ -6,6 +6,7 @@ import budgetData from "@/data/us-budget-analysis.json";
 import { getBudgetCategoryPath } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
 import { BudgetGapChart } from "@/components/landing/BudgetGapChart";
+import { EfficientFrontierChart, EfficientFrontierSummary } from "@/components/landing/EfficientFrontierChart";
 
 interface Category {
   name: string;
@@ -389,6 +390,52 @@ export default function BudgetPage() {
       <p className="text-xs text-muted-foreground mt-8 font-bold">
         Generated {new Date(data.generatedAt).toLocaleDateString()} · Source: Optimitron OBG (Optimal Budget Generator)
       </p>
+
+      {/* Efficient Frontier */}
+      <div className="mt-10 mb-10">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-2">
+          The Efficient Frontier
+        </h2>
+        <p className="text-sm font-bold text-muted-foreground mb-6 max-w-3xl">
+          Every country is a data point. The frontier shows what the best-performing
+          countries achieve at each spending level, measured by life expectancy — the
+          metric that actually tells you if people are alive and functional. The US is
+          spending 2.6x what the frontier countries spend — for worse outcomes. On my
+          planet, we call this &ldquo;paying extra to be worse at things.&rdquo;
+        </p>
+        <EfficientFrontierSummary className="mb-6" />
+        <h3 className="text-lg font-black uppercase text-foreground mt-6 mb-4">
+          Spending vs Life Expectancy
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="border-4 border-primary bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h4 className="text-xs font-black uppercase text-muted-foreground mb-2">Health Spending</h4>
+            <EfficientFrontierChart category="health" outcome="lifeExpectancy" />
+          </div>
+          <div className="border-4 border-primary bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h4 className="text-xs font-black uppercase text-muted-foreground mb-2">Education Spending</h4>
+            <EfficientFrontierChart category="education" outcome="lifeExpectancy" />
+          </div>
+        </div>
+        <h3 className="text-lg font-black uppercase text-foreground mb-4">
+          Spending vs Median Income
+        </h3>
+        <p className="text-xs font-bold text-muted-foreground mb-4">
+          Real median after-tax income from household surveys (World Bank PIP,
+          2017 PPP dollars). Not GDP — because you can increase GDP by building
+          nuclear bombs and blowing up the rainforest.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="border-4 border-primary bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h4 className="text-xs font-black uppercase text-muted-foreground mb-2">Health Spending</h4>
+            <EfficientFrontierChart category="health" outcome="medianIncome" />
+          </div>
+          <div className="border-4 border-primary bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h4 className="text-xs font-black uppercase text-muted-foreground mb-2">Education Spending</h4>
+            <EfficientFrontierChart category="education" outcome="medianIncome" />
+          </div>
+        </div>
+      </div>
 
       <BudgetGapChart />
 
