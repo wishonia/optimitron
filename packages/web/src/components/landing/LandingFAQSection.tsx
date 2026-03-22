@@ -1,0 +1,85 @@
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  PRIZE_POOL_15YR_MULTIPLE,
+  TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
+} from "@/lib/parameters-calculations-citations";
+
+const objections = [
+  {
+    id: "scam",
+    question: "Isn't this a scam?",
+    answer:
+      "Zero team allocation. No pre-sale. No admin keys. Every transaction is on-chain and auditable. The smart contract controls distribution — not a committee, not a founder, not an alien. It's a dominant assurance contract: the mechanism literally guarantees you can't lose your principal. The code is on GitHub. Read it.",
+  },
+  {
+    id: "politicians",
+    question: "Can politicians just ignore this?",
+    answer: `Chenoweth's research shows that 3.5% of a population is the tipping point for political change — no campaign in history has failed after reaching it. That's ${fmtParam(TREATY_CAMPAIGN_VOTING_BLOC_TARGET)} verified supporters globally. The referendum doesn't ask permission. It proves demand. Once demand is undeniable, ignoring it becomes more expensive than acting on it.`,
+  },
+  {
+    id: "fails",
+    question: "What if the plan fails?",
+    answer: `That's the entire point of dominant assurance. If the plan fails after 15 years, depositors claim their principal plus ~${fmtParam(PRIZE_POOL_15YR_MULTIPLE)} in Wishocratic fund growth. You're not donating. You're making a bet where the worst case is multiplying your money. The plan failing is the scenario designed to make you rich.`,
+  },
+  {
+    id: "trust",
+    question: "Why should I trust an alien?",
+    answer:
+      "You shouldn't. Trust the smart contracts. They're open source, deployed on a public blockchain, with no admin keys. The alien is just the narrator. The maths works whether or not you find her charming. VoterPrizeTreasury.sol and VoteToken.sol — full source on GitHub.",
+  },
+];
+
+/**
+ * Landing section 6: Objection Pre-emption
+ *
+ * Addresses the 4 most common objections with Wishonia-voiced answers.
+ * Uses accordion for compact presentation.
+ */
+export function LandingFAQSection() {
+  return (
+    <section className="bg-background">
+      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+        <ScrollReveal className="mb-12 text-center">
+          <h2 className="text-3xl font-black uppercase tracking-tight text-foreground sm:text-4xl md:text-5xl">
+            Frequently Asked Objections
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-lg font-bold text-muted-foreground">
+            I have been fielding these for 4,237 years. Your species is not as
+            original as it thinks.
+          </p>
+        </ScrollReveal>
+
+        <div className="mx-auto max-w-3xl">
+          <Accordion
+            type="multiple"
+            className="border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            {objections.map((item) => (
+              <AccordionItem
+                key={item.id}
+                value={item.id}
+                className="border-b-4 border-primary last:border-b-0"
+              >
+                <AccordionTrigger className="px-6 py-5 text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="px-6">
+                  <p className="text-sm font-bold text-muted-foreground leading-relaxed pb-2">
+                    {item.answer}
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </div>
+    </section>
+  );
+}

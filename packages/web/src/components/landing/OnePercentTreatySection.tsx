@@ -3,7 +3,7 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { CountUp } from "@/components/animations/CountUp";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
-import { onePercentTreatyPaperLink } from "@/lib/routes";
+import { onePercentTreatyPaperLink, prizeLink } from "@/lib/routes";
 import { fmtParam } from "@/lib/format-parameter";
 import { Stat } from "@/components/ui/stat";
 import {
@@ -103,14 +103,23 @@ export function OnePercentTreatySection() {
               <Stat param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED} /> deaths prevented. ROI: essentially infinite. The only
               thing standing between you and this is the part where you actually do it.
             </p>
-            <NavItemLink
-              item={onePercentTreatyPaperLink}
-              variant="custom"
-              external
-              className="mt-6 inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-foreground transition-colors"
-            >
-              Read the paper &rarr;
-            </NavItemLink>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <NavItemLink
+                item={prizeLink}
+                variant="custom"
+                className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-6 py-2.5 text-sm font-black uppercase text-brutal-pink-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Fund This
+              </NavItemLink>
+              <NavItemLink
+                item={onePercentTreatyPaperLink}
+                variant="custom"
+                external
+                className="inline-flex items-center text-sm font-black text-muted-foreground uppercase hover:text-foreground transition-colors"
+              >
+                Read the paper &rarr;
+              </NavItemLink>
+            </div>
           </div>
         </ScrollReveal>
       </div>

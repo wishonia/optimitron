@@ -6,6 +6,8 @@ import {
   githubLink,
   prizeLink,
 } from "@/lib/routes";
+import { PRIZE_POOL_15YR_MULTIPLE } from "@/lib/parameters-calculations-citations";
+import { fmtParam } from "@/lib/format-parameter";
 import hypercertData from "@/data/alignment-hypercerts.json";
 import snapshotData from "@/data/wishocracy-snapshot.json";
 
@@ -292,18 +294,18 @@ export default function TransparencyPage() {
         <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm font-bold text-foreground leading-relaxed mb-4">
             The Prize is a dominant assurance contract (VoterPrizeTreasury).
-            Depositors fund the escrow with USDC, which earns Aave V3 yield.
+            Depositors fund the pool with USDC, which earns Wishocratic fund yield.
             Recruiters share referral links — each verified voter (World ID)
             earns the recruiter 1 VOTE token. When health and income metrics
             cross thresholds, VOTE holders claim proportional prize share.
             If thresholds aren&apos;t met after 15 years, depositors reclaim
-            principal + ~4.2x yield. All on-chain. No committee.
+            principal + ~{fmtParam(PRIZE_POOL_15YR_MULTIPLE)} yield. All on-chain. No committee.
           </p>
           <div className="grid gap-4 md:grid-cols-3 mb-4">
             <div className="border-4 border-primary bg-background p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Depositors</div>
               <div className="text-sm font-black mt-1">PRIZE Shares</div>
-              <div className="text-xs text-muted-foreground mt-1">USDC → Aave yield. ~4.2x floor if plan fails. Sybil-resistant via capital commitment.</div>
+              <div className="text-xs text-muted-foreground mt-1">USDC → Wishocratic fund yield. ~{fmtParam(PRIZE_POOL_15YR_MULTIPLE)} floor if plan fails. Sybil-resistant via capital commitment.</div>
             </div>
             <div className="border-4 border-primary bg-background p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Recruiters</div>

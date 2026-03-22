@@ -17,7 +17,9 @@ import {
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   VICTORY_BOND_ANNUAL_RETURN_PCT,
   POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
+  PRIZE_POOL_15YR_MULTIPLE,
 } from "@/lib/parameters-calculations-citations";
+import { fmtParam } from "@/lib/format-parameter";
 
 const bondReturnPct = `${(VICTORY_BOND_ANNUAL_RETURN_PCT.value * 100).toFixed(0)}%`;
 
@@ -48,16 +50,16 @@ export function IncentiveAlignmentBondsSection() {
                 Your Downside (Plan Fails)
               </div>
               <h3 className="text-2xl font-black text-foreground mb-2">
-                ~4.2x Your Money Back
+                ~{fmtParam(PRIZE_POOL_15YR_MULTIPLE)} Your Money Back
               </h3>
               <p className="text-sm text-foreground leading-relaxed font-bold mb-3">
                 Dominant assurance contract. If outcome thresholds aren&apos;t met,
-                you get principal + 15 years of stablecoin yield.
+                you get principal + 15 years of Wishocratic fund yield.
               </p>
               <div className="p-3 bg-muted border border-primary">
                 <p className="text-xs font-bold text-muted-foreground">
-                  Invest $1,000 → Get back ~$4,200 if the plan fails.
-                  Your &ldquo;worst case&rdquo; is quadrupling your money.
+                  Invest $1,000 → Get back ~$11,060 if the plan fails.
+                  Your &ldquo;worst case&rdquo; is 11x-ing your money.
                 </p>
               </div>
             </div>
@@ -109,7 +111,7 @@ export function IncentiveAlignmentBondsSection() {
                 className="h-full bg-brutal-yellow border-4 border-primary flex items-center justify-center px-3 w-1/4"
               >
                 <span className="text-xs font-black text-foreground whitespace-nowrap">
-                  Fails → ~4.2x
+                  Fails → ~{fmtParam(PRIZE_POOL_15YR_MULTIPLE)}
                 </span>
               </motion.div>
 

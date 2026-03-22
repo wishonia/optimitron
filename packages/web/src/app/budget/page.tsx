@@ -5,6 +5,7 @@ import Link from "next/link";
 import budgetData from "@/data/us-budget-analysis.json";
 import { getBudgetCategoryPath } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
+import { BudgetGapChart } from "@/components/landing/BudgetGapChart";
 
 interface Category {
   name: string;
@@ -388,6 +389,8 @@ export default function BudgetPage() {
       <p className="text-xs text-muted-foreground mt-8 font-bold">
         Generated {new Date(data.generatedAt).toLocaleDateString()} · Source: Optimitron OBG (Optimal Budget Generator)
       </p>
+
+      <BudgetGapChart />
 
       <div className="mt-10">
         <PrizeCTA

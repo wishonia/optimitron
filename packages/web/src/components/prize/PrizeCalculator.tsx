@@ -3,36 +3,25 @@
 import { useState, useCallback } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
-  WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
-  VICTORY_BOND_ANNUAL_RETURN_PCT,
   PRIZE_POOL_15YR_MULTIPLE,
   PRIZE_POOL_ANNUAL_RETURN,
-  PRIZE_POOL_RESOLUTION_YEARS,
+  VOTE_TOKEN_POTENTIAL_VALUE,
+  VOTE_2_CLAIMS_PAYOUT,
 } from "@/lib/parameters-calculations-citations";
 import { fmtParam } from "@/lib/format-parameter";
 
 /**
- * Interactive return calculator for the Prize/IAB mechanism.
+ * Interactive Prize return calculator.
  *
- * Fail scenario:  principal × PRIZE_POOL_15YR_MULTIPLE (Wishocratic fund, 15-year resolution)
- * Succeed scenario: vote-proportional revenue share + per-capita lifetime income gain
- * Break-even: probability shift per $1K (treaty floor)
+ * Fail scenario:  deposit × PRIZE_POOL_15YR_MULTIPLE (~11.1x over 15 years)
+ * Success scenario: VOTE tokens × pro-rata share of pool (~$194K per VOTE if canonical pool size)
  */
 
 const FAIL_MULTIPLIER = PRIZE_POOL_15YR_MULTIPLE.value;
-const POOL_RETURN_DISPLAY = fmtParam(PRIZE_POOL_ANNUAL_RETURN);
-const POOL_YEARS = PRIZE_POOL_RESOLUTION_YEARS.value;
-
-const ANNUAL_RETURN_RATE = VICTORY_BOND_ANNUAL_RETURN_PCT.value; // base annual revenue share
-
-const TREATY_INCOME_GAIN = TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value; // $14.9M per-capita lifetime
-const WISHONIA_INCOME_GAIN = WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value; // $52.1M per-capita lifetime
-
-// Break-even: 0.0067% probability shift per $1K unreimbursed (treaty floor)
-const BREAKEVEN_PER_1K = 0.0067; // percent
+const VOTE_VALUE = VOTE_TOKEN_POTENTIAL_VALUE.value;
 
 const PRESET_AMOUNTS = [100, 1_000, 10_000, 100_000];
+const PRESET_VOTES = [1, 2, 5, 10];
 
 function formatUSD(n: number): string {
   if (n >= 1_000_000) {
@@ -44,30 +33,30 @@ function formatUSD(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
-export function IABCalculator() {
-  const [amount, setAmount] = useState(1000);
+export function PrizeCalculator() {
+  const [depositAmount, setDepositAmount] = useState(1000);
+  const [voteCount, setVoteCount] = useState(2);
   const reduced = useReducedMotion();
 
-  const handleSlider = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(Number(e.target.value));
+  const handleDepositSlider = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setDepositAmount(Number(e.target.value));
   }, []);
 
-  const handleInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDepositInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value.replace(/[^0-9]/g, "");
-    setAmount(Number(val) || 0);
+    setDepositAmount(Number(val) || 0);
   }, []);
 
-  const failReturn = amount * FAIL_MULTIPLIER;
-  const failProfit = failReturn - amount;
-  const annualRevShare = amount * ANNUAL_RETURN_RATE;
-  const breakevenPct = (amount / 1000) * BREAKEVEN_PER_1K;
+  const failReturn = depositAmount * FAIL_MULTIPLIER;
+  const failProfit = failReturn - depositAmount;
+  const successPayout = voteCount * VOTE_VALUE;
 
   return (
     <div>
-      {/* Input */}
+      {/* Deposit input */}
       <div className="mb-6">
         <label className="block text-xs font-black uppercase text-muted-foreground mb-2">
-          Your Investment
+          Your Deposit (USDC)
         </label>
         <div className="flex items-center gap-4 mb-3">
           <div className="relative flex-grow max-w-xs">
@@ -76,18 +65,18 @@ export function IABCalculator() {
             </span>
             <input
               type="text"
-              value={amount.toLocaleString("en-US")}
-              onChange={handleInput}
-              className="w-full pl-8 pr-3 py-3 text-xl font-black text-foreground border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+              value={depositAmount.toLocaleString("en-US")}
+              onChange={handleDepositInput}
+              className="w-full pl-8 pr-3 py-3 text-xl font-black text-foreground border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none transition-shadow"
             />
           </div>
           <div className="flex gap-2 flex-wrap">
             {PRESET_AMOUNTS.map((preset) => (
               <button
                 key={preset}
-                onClick={() => setAmount(preset)}
+                onClick={() => setDepositAmount(preset)}
                 className={`px-3 py-2 text-xs font-black border-4 border-primary transition-colors ${
-                  amount === preset
+                  depositAmount === preset
                     ? "bg-foreground text-background"
                     : "bg-background text-foreground hover:bg-muted"
                 }`}
@@ -102,38 +91,56 @@ export function IABCalculator() {
           min={100}
           max={100000}
           step={100}
-          value={Math.min(amount, 100000)}
-          onChange={handleSlider}
+          value={Math.min(depositAmount, 100000)}
+          onChange={handleDepositSlider}
           className="w-full h-2 bg-muted appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-foreground [&::-webkit-slider-thumb]:border-0 [&::-webkit-slider-thumb]:cursor-pointer"
         />
       </div>
 
+      {/* VOTE tokens input */}
+      <div className="mb-6">
+        <label className="block text-xs font-black uppercase text-muted-foreground mb-2">
+          Verified Voters You Recruit
+        </label>
+        <div className="flex gap-2 flex-wrap">
+          {PRESET_VOTES.map((preset) => (
+            <button
+              key={preset}
+              onClick={() => setVoteCount(preset)}
+              className={`px-4 py-2 text-sm font-black border-4 border-primary transition-colors ${
+                voteCount === preset
+                  ? "bg-foreground text-background"
+                  : "bg-background text-foreground hover:bg-muted"
+              }`}
+            >
+              {preset} voter{preset > 1 ? "s" : ""}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Two outcomes */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {/* Fail scenario */}
+        {/* Fail scenario (depositor wins) */}
         <motion.div
-          key={`fail-${amount}`}
+          key={`fail-${depositAmount}`}
           initial={reduced ? {} : { opacity: 0.5, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.2 }}
           className="p-5 border-4 border-primary bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         >
           <div className="text-xs font-black uppercase text-muted-foreground mb-1">
-            If the Plan Fails
+            If Metrics Miss Targets (15 Years)
           </div>
           <div className="text-3xl font-black text-foreground mb-1">
             {formatUSD(failReturn)}
           </div>
           <div className="text-sm font-bold text-muted-foreground mb-3">
-            +{formatUSD(failProfit)} profit ({FAIL_MULTIPLIER.toFixed(1)}x your money)
+            +{formatUSD(failProfit)} profit ({fmtParam(PRIZE_POOL_15YR_MULTIPLE)} your deposit)
           </div>
           <div className="text-xs text-muted-foreground font-bold space-y-1">
             <p>
-              {POOL_RETURN_DISPLAY} annual Wishocratic fund return × {POOL_YEARS} years.
-            </p>
-            <p>
-              Principal deployed in the Wishocratic fund.
-              Returned with growth if threshold not met.
+              {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} annual Wishocratic fund return × 15 years.
             </p>
             <p className="font-bold text-muted-foreground pt-1">
               Your &ldquo;worst case&rdquo; is {fmtParam(PRIZE_POOL_15YR_MULTIPLE)} your money.
@@ -141,62 +148,49 @@ export function IABCalculator() {
           </div>
         </motion.div>
 
-        {/* Succeed scenario */}
+        {/* Success scenario (VOTE holders win) */}
         <motion.div
-          key={`succeed-${amount}`}
+          key={`succeed-${voteCount}`}
           initial={reduced ? {} : { opacity: 0.5, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.2 }}
           className="p-5 border-4 border-primary bg-brutal-cyan shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         >
           <div className="text-xs font-black uppercase text-muted-foreground mb-1">
-            If the Plan Succeeds
+            If Metrics Hit Targets (15 Years)
           </div>
           <div className="text-3xl font-black text-foreground mb-1">
-            {formatUSD(annualRevShare)}/yr base
+            {formatUSD(successPayout)}
           </div>
           <div className="text-sm font-bold text-muted-foreground mb-3">
-            + vote-proportional bonus from verified referrals
+            {voteCount} VOTE token{voteCount > 1 ? "s" : ""} × {formatUSD(VOTE_VALUE)} each
           </div>
           <div className="text-xs text-muted-foreground font-bold space-y-1">
             <p>
-              Base {(VICTORY_BOND_ANNUAL_RETURN_PCT.value * 100).toFixed(0)}% revenue share
-              of treaty flows — multiplied by your verified referral votes.
-              Plus your personal lifetime income increases by{" "}
-              <span className="font-bold text-muted-foreground">
-                {formatUSD(TREATY_INCOME_GAIN)}–{formatUSD(WISHONIA_INCOME_GAIN)}
-              </span>{" "}
-              — just for being alive when the treaty passes.
+              VOTE holders split the pool pro-rata. Each VOTE token
+              is worth ~{fmtParam(VOTE_TOKEN_POTENTIAL_VALUE)} if the canonical pool
+              size materializes. You earned {voteCount} by recruiting {voteCount} verified voter{voteCount > 1 ? "s" : ""}.
             </p>
             <p className="font-bold text-muted-foreground pt-1">
-              That&apos;s everyone. Not just bondholders. Everyone.
+              Plus everyone&apos;s lifetime income increases. Not just yours. Everyone&apos;s.
             </p>
           </div>
         </motion.div>
       </div>
 
-      {/* Expected value / break-even */}
+      {/* Break-even */}
       <div className="p-4 border-4 border-primary bg-muted">
         <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4 mb-2">
           <span className="text-xs font-black uppercase text-muted-foreground">
             Break-even probability
           </span>
           <span className="text-lg font-black text-foreground">
-            {breakevenPct < 0.01
-              ? breakevenPct.toFixed(4)
-              : breakevenPct < 1
-                ? breakevenPct.toFixed(3)
-                : breakevenPct.toFixed(1)}%
+            0.0067%
           </span>
         </div>
         <p className="text-xs text-muted-foreground font-bold">
-          If you believe there&apos;s even a{" "}
-          <span className="font-bold text-muted-foreground">
-            {breakevenPct < 1
-              ? `${breakevenPct.toFixed(3)}%`
-              : `${breakevenPct.toFixed(1)}%`}
-          </span>{" "}
-          chance this works, your expected value is positive.
+          That&apos;s 1 in 15,000. If you believe there&apos;s even a 0.0067% chance
+          the 1% Treaty happens and the metrics move, your expected value is positive.
           And if it doesn&apos;t work, you still get {formatUSD(failReturn)} back.
         </p>
       </div>

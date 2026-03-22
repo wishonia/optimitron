@@ -225,7 +225,7 @@ export const prizeLink: NavItem = {
   href: ROUTES.prize,
   label: "Prize",
   emoji: "🏆",
-  description: "Earth Optimization Prize — outcome-based escrow for governance reform",
+  description: "Earth Optimization Prize — outcome-based pool for governance reform",
 };
 
 export const earthOptimizationPrizePaperLink: NavItem = {

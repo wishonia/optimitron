@@ -7,7 +7,8 @@ import {
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
-  PRIZE_ESCROW_100_RETURN_MULTIPLE,
+  PRIZE_POOL_15YR_MULTIPLE,
+  PRIZE_POOL_ANNUAL_RETURN,
 } from "@/lib/parameters-calculations-citations";
 import {
   incentiveAlignmentBondsPaperLink,
@@ -19,11 +20,12 @@ import { IABCalculator } from "@/components/landing/IABCalculator";
 export const metadata: Metadata = {
   title: "Incentive Alignment Bonds | Optimitron",
   description:
-    "Phase 2: After the referendum proves demand, raise ~$1B to lobby for the 1% Treaty. 80% funds pragmatic clinical trials, 10% returns to bondholders, 10% funds aligned politicians. Dominant assurance: ~4.2x return if treaty fails.",
+    "Phase 2: After the referendum proves demand, raise ~$1B to lobby for the 1% Treaty. 80% funds pragmatic clinical trials, 10% returns to bondholders, 10% funds aligned politicians. Dominant assurance return if treaty fails.",
 };
 
-const escrowMultiplier = PRIZE_ESCROW_100_RETURN_MULTIPLE.value.toFixed(1);
-const dysfunctionTaxFormatted = `$${Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value).toLocaleString()}`;
+const poolMultiple = fmtParam(PRIZE_POOL_15YR_MULTIPLE);
+const poolReturn = fmtParam(PRIZE_POOL_ANNUAL_RETURN);
+const dysfunctionTaxFormatted = fmtParam(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL);
 
 export default function IABPage() {
   return (
@@ -47,7 +49,7 @@ export default function IABPage() {
               Earth Optimization Prize referendum
             </NavItemLink>{" "}
             proves demand, IABs raise ~$1B to lobby for the 1% Treaty. This is
-            a dominant assurance contract: plan fails? ~{escrowMultiplier}x your
+            a dominant assurance contract: plan fails? ~{poolMultiple} your
             money back. Plan succeeds? 10% of {fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD"})}/year
             in treaty revenue flows to bondholders. Everyone else gets higher GDP.
           </p>
@@ -182,11 +184,11 @@ export default function IABPage() {
               Treaty Fails
             </div>
             <div className="text-2xl font-black text-foreground">
-              ~{escrowMultiplier}x Your Money Back
+              ~{poolMultiple} Your Money Back
             </div>
             <p className="text-xs font-bold text-muted-foreground mt-2">
-              Principal + 15 years of Aave yield returned to you. $1,000 → ~$4,200.
-              Your &ldquo;worst case&rdquo; is quadrupling your money.
+              Principal + 15 years of Wishocratic fund returns ({poolReturn} annually) returned to you.
+              Your &ldquo;worst case&rdquo; is multiplying your money.
             </p>
           </div>
           <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -240,7 +242,7 @@ export default function IABPage() {
             <ul className="space-y-2 text-sm text-foreground font-bold">
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">1.</span>
-                <span>Deposit USDC → PRIZE shares (Aave yield)</span>
+                <span>Deposit USDC → PRIZE shares (Wishocratic fund yield)</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">2.</span>
@@ -335,7 +337,7 @@ export default function IABPage() {
           </h2>
           <p className="text-sm font-bold text-background mb-4 max-w-2xl">
             IABs are Phase 2 — not yet deployed. The referendum (Phase 1) must
-            prove demand first. Once deployed, your deposit goes into Aave yield
+            prove demand first. Once deployed, your deposit goes into the Wishocratic fund
             and earns proportional returns from treaty revenue.
           </p>
           <div className="border-4 border-border bg-background p-6">
@@ -371,7 +373,7 @@ export default function IABPage() {
           {[
             {
               label: "IABVault",
-              value: "Bond purchases + Aave yield",
+              value: "Bond purchases + Wishocratic fund yield",
               detail: "Depositors get IAB tokens. Principal earns yield. Distributes refunds on failure or revenue share on success.",
             },
             {

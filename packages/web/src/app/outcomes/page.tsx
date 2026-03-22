@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ProvenanceBlock } from "@/components/analysis/provenance-block";
+import { OutcomeExplorerTeaser } from "@/components/landing/OutcomeExplorerTeaser";
+import { WarVsCuresChart } from "@/components/landing/WarVsCuresChart";
+import { NaturalExperimentsChart } from "@/components/landing/NaturalExperimentsChart";
+import { PersonalIncomeChart } from "@/components/landing/PersonalIncomeChart";
 import {
   getExplorerFreshness,
   getExplorerPrecomputeIndex,
@@ -23,8 +27,19 @@ export default function OutcomesIndexPage() {
   const freshness = getExplorerFreshness();
   const precomputeIndex = getExplorerPrecomputeIndex();
 
+  const outcomeCards = outcomes.slice(0, 3).map((outcome) => {
+    const ranking = getOutcomeMegaStudy(outcome.id);
+    const pairsForOutcome = pairSummaries.filter(
+      (p) => p.outcomeId === outcome.id,
+    ).length;
+    return { outcome, ranking, pairCount: pairsForOutcome };
+  });
+
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div>
+      <OutcomeExplorerTeaser outcomes={outcomeCards} />
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       <header className="mb-8">
         <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-2">
           Outcome Hubs
@@ -84,11 +99,17 @@ export default function OutcomesIndexPage() {
         })}
       </section>
 
+      {/* Visualizations */}
+      <WarVsCuresChart />
+      <NaturalExperimentsChart />
+      <PersonalIncomeChart />
+
       <ProvenanceBlock
         generatedAt={freshness.generatedAt}
         sources={freshness.sources}
         precomputeIndex={precomputeIndex}
       />
+    </div>
     </div>
   );
 }

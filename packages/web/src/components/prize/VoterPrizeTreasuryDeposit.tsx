@@ -351,7 +351,7 @@ export function VoterPrizeTreasuryDeposit() {
         {!isConnected ? (
           <div className="space-y-3">
             <p className="text-xs font-bold text-muted-foreground mb-4">
-              Connect your wallet. Your deposit earns yield in Aave while
+              Connect your wallet. Your deposit earns yield in the Wishocratic fund while
               it waits for your species to get its act together.
             </p>
             {connectors.length > 0 && (

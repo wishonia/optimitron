@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card"
 import { Container } from "@/components/ui/container"
 import { SectionContainer } from "@/components/ui/section-container"
 import Link from "next/link"
+import { PRIZE_POOL_15YR_MULTIPLE } from "@/lib/parameters-calculations-citations"
+import { fmtParam } from "@/lib/format-parameter"
 
 export default function ActionOptionsSection() {
   const options = [
@@ -26,7 +28,7 @@ export default function ActionOptionsSection() {
     {
       option: "OPTION 3: FUND",
       action: "BACK THE PRIZE",
-      description: "Zero-downside escrow. Get 4.2x yield if it fails. Fund the referendum if it succeeds.",
+      description: `Zero-downside pool. Get ${fmtParam(PRIZE_POOL_15YR_MULTIPLE)} yield if it fails. Fund the referendum if it succeeds.`,
       color: "bg-background",
       textColor: "text-foreground",
       accentColor: "text-brutal-pink",

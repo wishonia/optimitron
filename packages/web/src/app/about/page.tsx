@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
+import { ImplementationPlanSection } from "@/components/landing/ImplementationPlanSection";
+import { DecentralizedFDASection } from "@/components/landing/DecentralizedFDASection";
 import { fmtParam } from "@/lib/format-parameter";
 import {
   EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
+  PRIZE_POOL_15YR_MULTIPLE,
   US_FEDERAL_SPENDING_2024,
 } from "@/lib/parameters-calculations-citations";
 import {
@@ -238,8 +241,8 @@ export default function AboutPage() {
             <h3 className="font-black text-brutal-pink-foreground mb-2">Prize (Phase 1)</h3>
             <p className="text-sm text-background font-bold leading-relaxed">
               Deposit USDC. Recruit voters for the 1% Treaty referendum. If it
-              works, you share the prize. If it doesn&apos;t, you get ~4.2x your
-              deposit back from Aave yield after 15 years. Zero downside.
+              works, you share the prize. If it doesn&apos;t, you get ~{fmtParam(PRIZE_POOL_15YR_MULTIPLE)} your
+              deposit back from the Wishocratic fund after 15 years. Zero downside.
             </p>
             <NavItemLink
               item={prizeLink}
@@ -299,6 +302,9 @@ export default function AboutPage() {
           </NavItemLink>
         </div>
       </section>
+
+      <ImplementationPlanSection />
+      <DecentralizedFDASection />
 
       <section className="mb-16">
         <h2 className="section-title">Research</h2>
