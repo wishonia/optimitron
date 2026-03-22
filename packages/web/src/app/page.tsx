@@ -54,7 +54,7 @@ const productWorkflows = [
     title: "Play the Earth Optimization Game",
     description:
       "Deposit USDC. Recruit verified voters. Earn VOTE points. The only way to lose is to not play.",
-    cta: "Join the Game",
+    cta: "Play the Game",
     color: "bg-brutal-pink",
   },
   {
@@ -163,7 +163,7 @@ export default function Home() {
                   href="/prize#invest"
                   className="px-8 py-3.5 bg-brutal-pink text-brutal-pink-foreground font-black uppercase text-lg border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
                 >
-                  Invest in the Prize
+                  Play the Game
                 </a>
                 <a
                   href="#win-either-way"
@@ -287,7 +287,7 @@ export default function Home() {
             href="/prize#invest"
             className="px-8 py-3 bg-brutal-pink text-brutal-pink-foreground font-black uppercase border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
-            Invest in the Prize
+            Play the Game
           </a>
           <NavItemLink
             item={wishocracyLink}

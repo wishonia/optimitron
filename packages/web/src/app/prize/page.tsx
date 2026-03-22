@@ -10,12 +10,14 @@ import {
   GLOBAL_DISEASE_DEATHS_DAILY,
   PRIZE_POOL_15YR_MULTIPLE,
   PRIZE_POOL_ANNUAL_RETURN,
+  TREATY_HALE_GAIN_YEAR_15,
 } from "@/lib/parameters-calculations-citations";
 import {
   earthOptimizationPrizePaperLink,
   contractsSourceLink,
   wishocracyLink,
   scoreboardLink,
+  referendumLink,
 } from "@/lib/routes";
 import { VoterPrizeTreasuryDeposit } from "@/components/prize/VoterPrizeTreasuryDeposit";
 import { CitizenDashboardWrapper } from "@/components/prize/CitizenDashboardWrapper";
@@ -29,55 +31,49 @@ import {
 export const metadata: Metadata = {
   title: "The Earth Optimization Game | Optimitron",
   description:
-    "Redirect Earth's resources from the things making you poorest and deadest to the things that make you healthiest and wealthiest. The only way to lose is to not play.",
+    "The only arcade game where you get your coins back 11x if you lose. Insert coin. Play the game. Redirect Earth's resources from what makes you deadest to what makes you healthiest.",
 };
 
-const dysfunctionTaxFormatted = fmtParam(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL);
-const deathsPerDayFormatted = fmtParam(GLOBAL_DISEASE_DEATHS_DAILY);
 const poolMultiple = fmtParam(PRIZE_POOL_15YR_MULTIPLE);
 const poolReturn = fmtParam(PRIZE_POOL_ANNUAL_RETURN);
+const incomeGain = fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"});
+const haleGain = fmtParam(TREATY_HALE_GAIN_YEAR_15);
 
-const trustBadges = [
-  { label: "Zero Team Allocation", detail: "100% to pool" },
-  { label: "No Pre-Sale", detail: "Same price for everyone" },
-  { label: "Fully On-Chain", detail: "Every tx auditable" },
-  { label: "No Admin Keys", detail: "Contract controls distribution" },
-  { label: "You Win Either Way", detail: `Fail: ~${poolMultiple} · Succeed: vote-proportional share` },
-];
-
-const mechanismSteps = [
+const levels = [
   {
-    number: 1,
-    label: "Depositors Fund the Pool",
-    description:
-      `Deposit USDC into the VoterPrizeTreasury smart contract. Your principal goes into the Wishocratic fund (${poolReturn} annually). You get PRIZE shares — your claim on the pool. If the plan fails after 15 years, you claim principal + ~${poolMultiple} growth. Zero downside.`,
-    detail: `Depositors also get a referral link. If they recruit voters, they earn VOTE points too — upside in BOTH outcomes. But depositing alone guarantees the ~${poolMultiple} floor.`,
+    level: "LEVEL 1",
+    title: "DEPOSIT",
+    description: "Insert coins into the prize pool. Get PRIZE shares. Your money grows at " + poolReturn + " annually regardless of outcome.",
     color: "bg-brutal-pink",
     textColor: "text-brutal-pink-foreground",
-    subTextColor: "text-background",
-    detailColor: "text-muted-foreground",
   },
   {
-    number: 2,
-    label: "Recruiters Prove Demand",
-    description:
-      "Anyone with a referral link can recruit. Share the link. Every person who verifies their support for the 1% Treaty through World ID is a verified vote attributed to you. You earn 1 VOTE point per verified voter. No deposit required.",
-    detail: "World ID prevents duplicate votes. Each verified preference is on-chain. You're not selling anything — you're proving demand that already exists. The referral link attributes that proof to you.",
+    level: "LEVEL 2",
+    title: "RECRUIT",
+    description: "Share your referral link. Every person who verifies support for the 1% Treaty via World ID earns you 1 VOTE point. No deposit required.",
     color: "bg-brutal-yellow",
     textColor: "text-foreground",
-    subTextColor: "text-foreground",
-    detailColor: "text-muted-foreground",
   },
   {
-    number: 3,
-    label: "Outcomes Determine Payouts",
-    description:
-      `Thresholds met? VOTE holders claim proportional shares of the prize pool — the more voters you recruited, the bigger your cut. Thresholds not met after 15 years? PRIZE holders (depositors) claim principal + ~${poolMultiple} growth.`,
-    detail: "Depositors win on failure (yield floor). Recruiters win on success (prize share). Depositors who also recruit win either way. The contract handles everything — no judges, no committees.",
+    level: "LEVEL 3",
+    title: "ALLOCATE",
+    description: "Make your wishocratic budget allocation. Tell the system what you think Earth should spend money on. Ten comparisons. Two minutes.",
     color: "bg-brutal-cyan",
     textColor: "text-foreground",
-    subTextColor: "text-foreground",
-    detailColor: "text-muted-foreground",
+  },
+  {
+    level: "LEVEL 4",
+    title: "VOTE",
+    description: "Vote on the 1% Treaty referendum. Redirect 1% of military spending to pragmatic clinical trials. Your vote is verified by World ID.",
+    color: "bg-brutal-yellow",
+    textColor: "text-foreground",
+  },
+  {
+    level: "BOSS LEVEL",
+    title: "WAIT 15 YEARS",
+    description: "Metrics evaluated. If median healthy life years and median income hit targets, VOTE point holders split the pool. If not, depositors get ~" + poolMultiple + " back.",
+    color: "bg-foreground",
+    textColor: "text-background",
   },
 ];
 
@@ -112,114 +108,81 @@ const contractDetails = [
 export default function PrizePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-      {/* Section 1: Hero */}
+      {/* HERO — Arcade Cabinet */}
+      <section className="mb-16 text-center">
+        <p className="font-mono text-sm font-bold uppercase tracking-[0.3em] text-brutal-pink mb-4">
+          The Earth Optimization Game
+        </p>
+        <h1 className="font-mono text-4xl md:text-6xl font-black uppercase tracking-tight text-foreground mb-4">
+          Insert Coin to Play
+        </h1>
+        <p className="text-lg font-bold text-muted-foreground max-w-2xl mx-auto mb-6">
+          The only arcade game where you get your coins back {poolMultiple} if you lose.
+        </p>
+        <p className="text-base font-bold text-foreground max-w-2xl mx-auto">
+          Your deposit is a hedge against your own species. Recruit voters too
+          and you win in both scenarios. The only losing move is not playing.
+        </p>
+      </section>
+
+      {/* GAME OVER CARDS — The Two Outcomes */}
       <section className="mb-16">
-        <div className="max-w-3xl space-y-5">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
-            The Earth Optimization Game
-          </p>
-          <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground">
-            The Only Way to Lose Is to Not Play.
-          </h1>
-          <p className="text-lg text-foreground leading-relaxed font-bold">
-            The objective: redirect Earth&apos;s resources from the things making
-            you poorest and deadest to the things that make you healthiest and
-            wealthiest. This is a dominant assurance contract — depositors
-            cannot lose. Plan fails? ~{poolMultiple} back from {poolReturn} annual
-            growth. Plan succeeds? VOTE point holders split the pool. Everyone&apos;s
-            income increases by{" "}
-            {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}{" "}
-            per capita lifetime.
-          </p>
-          <p className="text-muted-foreground font-bold leading-relaxed mt-3">
-            Two ways in. <strong>Have capital?</strong> Deposit USDC, get PRIZE
-            shares, earn the yield floor. <strong>Have a network?</strong>{" "}
-            Share a referral link, recruit verified voters for the 1% Treaty,
-            earn VOTE points — one per verified voter. Prize share proportional
-            to voters you brought in. No deposit required.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-            <div className="border-4 border-primary bg-brutal-pink p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <div className="text-xs font-black uppercase text-background mb-2">
-                If the Plan Fails (Depositors)
-              </div>
-              <div className="text-xl font-black text-brutal-pink-foreground">
-                ~{poolMultiple} Return
-              </div>
-              <p className="text-xs font-bold text-muted-foreground mt-1">
-                Dominant assurance: your principal + 15 years of Wishocratic fund returns ({poolReturn} annually).
-                You literally cannot lose money. The worst case
-                is getting richer.
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="border-4 border-primary bg-brutal-yellow p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <p className="font-mono text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">
+              Game Over — You Lose
+            </p>
+            <div className="font-mono text-3xl font-black text-foreground mb-3">
+              ~{poolMultiple} BACK
             </div>
-            <div className="border-4 border-primary bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <div className="text-xs font-black uppercase text-muted-foreground mb-2">
-                If the Plan Succeeds (Everyone)
-              </div>
-              <div className="text-xl font-black text-foreground">
-                {fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}+ Income Gain
-              </div>
-              <p className="text-xs font-bold text-muted-foreground mt-1">
-                Everyone gets richer. Not metaphorically. The maths is very
-                clear on this point. Recruiters also get a cut, because
-                apparently your species needs personal incentives to save itself.
-              </p>
+            <p className="text-sm font-bold text-foreground leading-relaxed">
+              Humanity stays stupid. Metrics miss the targets after 15 years.
+              Your coins come back multiplied — {poolReturn} annual growth for
+              15 years. Better than any retirement fund on your planet.
+            </p>
+          </div>
+          <div className="border-4 border-primary bg-brutal-cyan p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <p className="font-mono text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mb-2">
+              Game Over — You Win
+            </p>
+            <div className="font-mono text-3xl font-black text-foreground mb-3">
+              {incomeGain}+ INCOME
             </div>
+            <p className="text-sm font-bold text-foreground leading-relaxed">
+              Humanity gets its act together. You lose the deposit. But your
+              income just went up {incomeGain} per capita lifetime
+              and you gained {haleGain} extra healthy years. You won&apos;t miss
+              the coins.
+            </p>
           </div>
         </div>
-        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-          <a
-            href="#invest"
-            className="inline-flex items-center justify-center border-4 border-primary bg-brutal-pink px-8 py-3 text-sm font-black uppercase text-brutal-pink-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
-          >
-            Deposit to Prize
-          </a>
-          <NavItemLink
-            item={earthOptimizationPrizePaperLink}
-            variant="custom"
-            external
-            className="inline-flex items-center justify-center border-4 border-primary bg-background px-8 py-3 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
-          >
-            Read the Paper
-          </NavItemLink>
+        <div className="border-4 border-primary border-t-0 bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-sm font-bold text-foreground text-center">
+            Recruit voters too? You earn VOTE points.
+            VOTE point holders split the pool if humanity wins.
+            <span className="font-black text-brutal-pink"> You win either way.</span>
+          </p>
         </div>
       </section>
 
-      {/* Section 2: Deposit CTA + Trust Badges */}
+      {/* INSERT COIN — Deposit Section */}
       <section id="invest" className="mb-16">
-        <div className="flex flex-wrap justify-center gap-3 mb-6">
-          {trustBadges.map((badge) => (
-            <div
-              key={badge.label}
-              className="border-4 border-primary bg-background px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-            >
-              <div className="text-xs font-black uppercase text-foreground">
-                {badge.label}
-              </div>
-              <div className="text-[10px] font-bold text-muted-foreground">
-                {badge.detail}
-              </div>
-            </div>
-          ))}
-        </div>
         <div className="border-4 border-primary bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-2xl font-black uppercase text-brutal-pink-foreground mb-4">
-            Deposit — Fund the Prize Pool
+          <h2 className="font-mono text-2xl font-black uppercase text-brutal-pink-foreground mb-4">
+            Insert Coin
           </h2>
           <p className="text-sm font-bold text-background mb-6 max-w-2xl">
             Your deposit goes into the Wishocratic fund ({poolReturn} annually). You get PRIZE shares —
-            your claim on the pool. Plan fails? ~{poolMultiple} back.
-            You also get a referral link — recruit verified voters to earn
+            your claim on the pool. Recruit verified voters to earn
             VOTE points for success-scenario upside too.
           </p>
           <VoterPrizeTreasuryDeposit />
         </div>
         <div className="border-4 border-primary border-t-0 bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm text-foreground font-bold leading-relaxed">
-            On my planet, financial instruments don&apos;t need trust disclaimers
-            because we eliminated the kind of person who makes them necessary.
-            You lot still have those people. So here&apos;s the fine print: there
-            isn&apos;t any. It&apos;s all on-chain.
+            On my planet, arcade games don&apos;t take your money. Yours do.
+            This one doesn&apos;t. It&apos;s all on-chain — no admin keys, no
+            committees, no fine print.
           </p>
           <NavItemLink
             item={contractsSourceLink}
@@ -232,169 +195,96 @@ export default function PrizePage() {
         </div>
       </section>
 
-      {/* Section 3: The Math */}
+      {/* TRUST BADGES */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
-          The Math
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
-              Per-Capita Income Gain
+        <div className="flex flex-wrap justify-center gap-3">
+          {[
+            { label: "Zero Team Allocation", detail: "100% to pool" },
+            { label: "No Pre-Sale", detail: "Same price for everyone" },
+            { label: "Fully On-Chain", detail: "Every tx auditable" },
+            { label: "No Admin Keys", detail: "Contract controls distribution" },
+            { label: "You Win Either Way", detail: `Lose: ~${poolMultiple} · Win: ${incomeGain}+` },
+          ].map((badge) => (
+            <div
+              key={badge.label}
+              className="border-4 border-primary bg-background px-4 py-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            >
+              <div className="font-mono text-xs font-black uppercase text-foreground">
+                {badge.label}
+              </div>
+              <div className="text-[10px] font-bold text-muted-foreground">
+                {badge.detail}
+              </div>
             </div>
-            <div className="text-2xl font-black text-foreground">
-              {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}
-            </div>
-            <p className="text-xs font-bold text-muted-foreground mt-2">
-              Across adopting jurisdictions, based on health-GDP multiplier
-              and regulatory delay removal.
-            </p>
-          </div>
-          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
-              Break-Even Probability Shift
-            </div>
-            <div className="text-2xl font-black text-foreground">
-              0.0067%
-            </div>
-            <p className="text-xs font-bold text-muted-foreground mt-2">
-              The probability the plan needs to increase success odds by for
-              the expected value of your bond to exceed your investment.
-            </p>
-          </div>
-          <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground mb-2 text-background">
-              Dominant Assurance Contract
-            </div>
-            <div className="text-2xl font-black text-brutal-pink-foreground">
-              Win Either Way
-            </div>
-            <p className="text-xs font-bold text-muted-foreground mt-2">
-              Plan fails? ~{poolMultiple} return from Wishocratic fund. Plan succeeds?
-              Prize share proportional to verified voters you recruited.
-              No scenario where you &ldquo;just lose your money.&rdquo;
-            </p>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="border-4 border-primary bg-brutal-red p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-brutal-red-foreground mb-3">
-              Cost of Doing Nothing
-            </div>
-            <ul className="space-y-3">
-              <li className="text-sm font-bold text-brutal-red-foreground">
-                <span className="font-black">{dysfunctionTaxFormatted}/person</span>{" "}
-                — political dysfunction tax you&apos;re already paying
-              </li>
-              <li className="text-sm font-bold text-brutal-red-foreground">
-                <span className="font-black">{fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})}/yr</span>{" "}
-                — global waste from misaligned governance
-              </li>
-              <li className="text-sm font-bold text-brutal-red-foreground">
-                <span className="font-black">{deathsPerDayFormatted}</span>{" "}
-                — preventable, if anyone was paying attention
-              </li>
-            </ul>
-          </div>
-          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-foreground mb-3">
-              Cost of Doing Something
-            </div>
-            <ul className="space-y-3">
-              <li className="text-sm font-bold text-foreground">
-                <span className="font-black">Your deposit amount</span>{" "}
-                — that&apos;s it. That&apos;s the cost.
-              </li>
-              <li className="text-sm font-bold text-foreground">
-                <span className="font-black">0.0067% break-even</span>{" "}
-                — probability shift needed for positive expected value
-              </li>
-              <li className="text-sm font-bold text-foreground">
-                <span className="font-black">Worst case: ~{poolMultiple} back</span>{" "}
-                — dominant assurance contract if the plan fails
-              </li>
-              <li className="text-sm font-bold text-foreground">
-                <span className="font-black">Best case: prize share</span>{" "}
-                — proportional to verified voters you recruited
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm text-foreground font-bold leading-relaxed">
-            On my planet, this took about twelve seconds to explain. You are
-            currently paying {dysfunctionTaxFormatted} for the privilege
-            of your government being terrible. The break-even requires a 0.0067%
-            chance of that changing. You don&apos;t need to believe the plan will
-            work. You just need to believe it&apos;s not literally impossible. The
-            math does the rest.
-          </p>
+          ))}
         </div>
       </section>
 
-      {/* Section 4: How It Works */}
+      {/* LEVELS — How to Play */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-8">
-          How It Works
+        <h2 className="font-mono text-2xl font-black uppercase tracking-tight text-foreground mb-8 text-center">
+          How to Play
         </h2>
-        <div className="space-y-0">
-          {mechanismSteps.map((step, index) => (
-            <div key={step.label} className="flex gap-6">
-              <div className="flex flex-col items-center">
-                <div
-                  className={`w-12 h-12 border-4 border-primary ${step.color} flex items-center justify-center font-black text-lg shrink-0`}
-                >
-                  {step.number}
-                </div>
-                {index < mechanismSteps.length - 1 && (
-                  <div className="w-1 flex-1 bg-foreground" />
-                )}
+        <div className="space-y-4">
+          {levels.map((item) => (
+            <div
+              key={item.level}
+              className={`border-4 border-primary ${item.color} p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex gap-6 items-start`}
+            >
+              <div className="font-mono text-xs font-black uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap shrink-0 pt-1">
+                {item.level}
               </div>
-              <div
-                className={`flex-1 border-4 border-primary ${step.color} p-6 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
-              >
-                <h3 className={`text-xl font-black uppercase ${step.textColor}`}>
-                  {step.label}
+              <div>
+                <h3 className={`font-mono text-lg font-black uppercase ${item.textColor}`}>
+                  {item.title}
                 </h3>
-                <p className={`mt-2 text-sm font-bold ${step.subTextColor}`}>
-                  {step.description}
-                </p>
-                <p className={`mt-3 text-xs font-bold ${step.detailColor} leading-relaxed`}>
-                  {step.detail}
+                <p className={`text-sm font-bold ${item.textColor === "text-background" ? "text-muted" : "text-muted-foreground"} mt-1`}>
+                  {item.description}
                 </p>
               </div>
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          <div className="border-4 border-primary bg-brutal-yellow p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase text-muted-foreground mb-1">Depositor Path</p>
-            <p className="text-sm font-bold text-foreground">
-              Deposit USDC → PRIZE shares → Wishocratic fund → ~{poolMultiple} floor if plan fails
-            </p>
-          </div>
-          <div className="border-4 border-primary bg-brutal-cyan p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase text-muted-foreground mb-1">Recruiter Path</p>
-            <p className="text-sm font-bold text-foreground">
-              Get referral link → Recruit voters → World ID verify → VOTE points → Prize share if plan succeeds
-            </p>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+          <NavItemLink
+            item={scoreboardLink}
+            variant="custom"
+            className="border-4 border-primary bg-brutal-cyan p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all"
+          >
+            <p className="font-mono text-xs font-black uppercase text-muted-foreground">View</p>
+            <p className="font-mono text-sm font-black text-foreground uppercase">High Scores</p>
+          </NavItemLink>
+          <NavItemLink
+            item={wishocracyLink}
+            variant="custom"
+            className="border-4 border-primary bg-brutal-yellow p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all"
+          >
+            <p className="font-mono text-xs font-black uppercase text-muted-foreground">Play</p>
+            <p className="font-mono text-sm font-black text-foreground uppercase">Level 3</p>
+          </NavItemLink>
+          <NavItemLink
+            item={referendumLink}
+            variant="custom"
+            className="border-4 border-primary bg-brutal-pink p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all"
+          >
+            <p className="font-mono text-xs font-black uppercase text-brutal-pink-foreground">Play</p>
+            <p className="font-mono text-sm font-black text-brutal-pink-foreground uppercase">Level 4</p>
+          </NavItemLink>
         </div>
       </section>
 
-      {/* Section 5: The Two Numbers */}
+      {/* THE TWO NUMBERS */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
-          The Only Two Numbers That Matter
+        <h2 className="font-mono text-xl font-black uppercase tracking-tight text-foreground mb-6 text-center">
+          Win Conditions
         </h2>
-        <p className="text-sm font-bold text-muted-foreground mb-6 max-w-3xl">
-          GDP measures how much money moved around. A country could score
-          brilliantly because everyone&apos;s buying coffins. Here&apos;s what
-          actually determines whether VOTE holders get paid.
+        <p className="text-sm font-bold text-muted-foreground mb-6 max-w-3xl text-center mx-auto">
+          Two numbers decide whether VOTE point holders get paid.
+          Everything else is an intermediate variable.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-xl font-black text-foreground mb-3 uppercase">
+            <h3 className="font-mono text-lg font-black text-foreground mb-2 uppercase">
               Median Healthy Life Years
             </h3>
             <p className="text-sm text-foreground leading-relaxed font-bold">
@@ -404,7 +294,7 @@ export default function PrizePage() {
             </p>
           </div>
           <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-xl font-black text-foreground mb-3 uppercase">
+            <h3 className="font-mono text-lg font-black text-foreground mb-2 uppercase">
               Median Real After-Tax Income
             </h3>
             <p className="text-sm text-foreground leading-relaxed font-bold">
@@ -416,28 +306,27 @@ export default function PrizePage() {
         </div>
       </section>
 
-      {/* Section 6: Citizen Dashboard */}
+      {/* CITIZEN DASHBOARD */}
       <section id="dashboard" className="mb-16">
         <Suspense>
           <CitizenDashboardWrapper />
         </Suspense>
       </section>
 
-      {/* Section 6: Technical Details (Accordion) */}
+      {/* TECHNICAL DETAILS */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
+        <h2 className="font-mono text-xl font-black uppercase tracking-tight text-foreground mb-6">
           Technical Details
         </h2>
         <Accordion type="multiple" className="border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          {/* Panel 1: Trust & Transparency */}
           <AccordionItem value="trust" className="border-b-4 border-primary last:border-b-0">
-            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
+            <AccordionTrigger className="px-6 py-4 font-mono text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
               Trust &amp; Transparency
             </AccordionTrigger>
             <AccordionContent className="px-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div className="border-4 border-primary bg-brutal-yellow p-4">
-                  <h4 className="font-black uppercase text-foreground text-xs mb-2">
+                  <h4 className="font-mono font-black uppercase text-foreground text-xs mb-2">
                     Zero Insider Advantage
                   </h4>
                   <p className="text-xs text-foreground font-bold leading-relaxed">
@@ -446,7 +335,7 @@ export default function PrizePage() {
                   </p>
                 </div>
                 <div className="border-4 border-primary bg-brutal-cyan p-4">
-                  <h4 className="font-black uppercase text-foreground text-xs mb-2">
+                  <h4 className="font-mono font-black uppercase text-foreground text-xs mb-2">
                     Fully On-Chain
                   </h4>
                   <p className="text-xs text-foreground font-bold leading-relaxed">
@@ -459,9 +348,8 @@ export default function PrizePage() {
             </AccordionContent>
           </AccordionItem>
 
-          {/* Panel 4: Contract Architecture */}
           <AccordionItem value="contracts" className="border-b-4 border-primary last:border-b-0">
-            <AccordionTrigger className="px-6 py-4 text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
+            <AccordionTrigger className="px-6 py-4 font-mono text-sm font-black uppercase tracking-wide text-foreground hover:no-underline hover:bg-muted">
               Contract Architecture
             </AccordionTrigger>
             <AccordionContent className="px-6">
@@ -471,7 +359,7 @@ export default function PrizePage() {
                     key={item.label}
                     className="border-4 border-primary bg-background p-3"
                   >
-                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                    <div className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
                       {item.label}
                     </div>
                     <div className="mt-1 text-sm font-black text-foreground">
@@ -498,70 +386,81 @@ export default function PrizePage() {
         </Accordion>
       </section>
 
-      {/* Section 8: Pool Status + Final CTA */}
+      {/* POOL STATUS */}
       <section className="mb-16">
-        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
-          Pool Status
+        <h2 className="font-mono text-xl font-black uppercase tracking-tight text-foreground mb-6 text-center">
+          Game Status
         </h2>
         <div className="grid gap-4 md:grid-cols-4 mb-8">
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground">
+          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="font-mono text-xs font-black uppercase text-muted-foreground">
               Status
             </div>
-            <div className="mt-2 text-2xl font-black text-brutal-cyan">
-              OPEN
+            <div className="font-mono mt-2 text-2xl font-black text-brutal-cyan">
+              ACCEPTING COINS
             </div>
           </div>
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground">
-              Total Deposited
+          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="font-mono text-xs font-black uppercase text-muted-foreground">
+              Prize Pool
             </div>
-            <div className="mt-2 text-2xl font-black text-foreground">$0</div>
+            <div className="font-mono mt-2 text-2xl font-black text-foreground">$0</div>
             <div className="text-[10px] font-bold text-muted-foreground">
-              Accepting deposits
+              grows at {poolReturn}/yr
             </div>
           </div>
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground">
-              Health Threshold
+          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="font-mono text-xs font-black uppercase text-muted-foreground">
+              Health Target
             </div>
-            <div className="mt-2 text-2xl font-black text-foreground">1%</div>
+            <div className="font-mono mt-2 text-2xl font-black text-foreground">+{haleGain}</div>
             <div className="text-[10px] font-bold text-muted-foreground">
-              Median healthy life years improvement
+              median healthy life years
             </div>
           </div>
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground">
-              Income Threshold
+          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="font-mono text-xs font-black uppercase text-muted-foreground">
+              Time
             </div>
-            <div className="mt-2 text-2xl font-black text-foreground">0.5%</div>
+            <div className="font-mono mt-2 text-2xl font-black text-foreground">15 YRS</div>
             <div className="text-[10px] font-bold text-muted-foreground">
-              Median real after-tax income improvement
+              until game over
             </div>
           </div>
         </div>
-        <div className="card bg-brutal-pink border-primary text-center">
-          <h2 className="text-2xl font-black text-brutal-pink-foreground mb-3 uppercase">
-            The Bar Is Low
+
+        {/* Final CTA */}
+        <div className="border-4 border-primary bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
+          <h2 className="font-mono text-2xl font-black text-brutal-pink-foreground mb-3 uppercase">
+            Play the Game
           </h2>
           <p className="text-background mb-6 font-bold max-w-2xl mx-auto leading-relaxed">
-            The current cost of governance dysfunction is {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} per year.
-            The break-even probability shift is 0.0067%. You don&apos;t need to be
+            The current cost of governance dysfunction is{" "}
+            {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} per year.
+            The break-even probability is 0.0067%. You don&apos;t need to be
             altruistic. You just need to be numerate.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <a
               href="#invest"
-              className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
+              className="inline-flex items-center justify-center gap-2 font-mono bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
             >
-              Deposit to Prize
+              Insert Coin
             </a>
             <NavItemLink
-              item={wishocracyLink}
+              item={scoreboardLink}
               variant="custom"
-              className="inline-flex items-center justify-center gap-2 bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
+              className="inline-flex items-center justify-center gap-2 font-mono bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
             >
-              Express Your Preferences
+              High Scores
+            </NavItemLink>
+            <NavItemLink
+              item={earthOptimizationPrizePaperLink}
+              variant="custom"
+              external
+              className="inline-flex items-center justify-center gap-2 font-mono bg-background px-6 py-3 text-sm font-black text-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
+            >
+              Read the Manual
             </NavItemLink>
           </div>
         </div>

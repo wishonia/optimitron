@@ -26,13 +26,14 @@ export function LandingPrizeOffer() {
     <section className="bg-brutal-pink">
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <ScrollReveal className="mb-16 text-center">
-          <h2 className="text-3xl font-black uppercase tracking-tight text-brutal-pink-foreground sm:text-4xl md:text-5xl">
+          <h2 className="text-3xl font-black font-mono uppercase tracking-tight text-brutal-pink-foreground sm:text-4xl md:text-5xl">
             The Earth Optimization Game
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg font-bold text-background">
-            The objective: redirect Earth&apos;s resources from the things making
-            you poorest and deadest to the things that make you healthiest and
-            wealthiest. The only way to lose is to not play.
+            INSERT COIN TO PLAY. The objective: redirect Earth&apos;s resources
+            from the things making you poorest and deadest to the things that
+            make you healthiest and wealthiest. The only way to lose is to not
+            play.
           </p>
         </ScrollReveal>
 
@@ -158,7 +159,7 @@ export function LandingPrizeOffer() {
             variant="custom"
             className="inline-flex items-center justify-center border-4 border-primary bg-foreground px-8 py-3.5 text-lg font-black uppercase text-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
           >
-            Invest in the Prize
+            Play the Game
           </NavItemLink>
           <NavItemLink
             item={earthOptimizationPrizePaperLink}

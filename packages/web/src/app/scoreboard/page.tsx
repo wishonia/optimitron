@@ -29,11 +29,11 @@ export default function ScoreboardPage() {
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Hero */}
       <section className="mb-12 space-y-3 text-center">
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
+        <p className="text-sm font-black font-mono uppercase tracking-[0.2em] text-brutal-pink">
           The Earth Optimization Game
         </p>
-        <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground">
-          Humanity&apos;s Scoreboard
+        <h1 className="text-3xl md:text-5xl font-black font-mono uppercase tracking-tight text-foreground">
+          HIGH SCORES
         </h1>
         <p className="mx-auto max-w-2xl text-lg font-bold text-muted-foreground">
           The objective: redirect Earth&apos;s resources from the things making
@@ -44,7 +44,7 @@ export default function ScoreboardPage() {
 
       {/* Two Target Metrics */}
       <section className="mb-12">
-        <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-6 text-center">
+        <h2 className="text-xl font-black font-mono uppercase tracking-tight text-foreground mb-6 text-center">
           The Two Numbers That Matter
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -104,7 +104,7 @@ export default function ScoreboardPage() {
 
       {/* Live Game Stats */}
       <section className="mb-12">
-        <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-6 text-center">
+        <h2 className="text-xl font-black font-mono uppercase tracking-tight text-foreground mb-6 text-center">
           Live Game Status
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -158,7 +158,7 @@ export default function ScoreboardPage() {
       {/* How the Game Works */}
       <section className="mb-12">
         <div className="border-4 border-primary bg-background p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-6 text-center">
+          <h2 className="text-xl font-black font-mono uppercase tracking-tight text-foreground mb-6 text-center">
             How to Play
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -225,7 +225,7 @@ export default function ScoreboardPage() {
             variant="custom"
             className="inline-flex items-center justify-center gap-2 bg-brutal-pink px-8 py-3 text-sm font-black text-brutal-pink-foreground uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
-            Join the Game
+            Play the Game
           </NavItemLink>
           <NavItemLink
             item={wishocracyLink}

@@ -359,7 +359,7 @@ export default function IABPage() {
                 variant="custom"
                 className="inline-flex items-center justify-center border-2 border-border bg-background px-6 py-2.5 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
               >
-                Invest in the Prize First &rarr;
+                Play the Game First &rarr;
               </NavItemLink>
             </div>
           </div>
@@ -444,7 +444,7 @@ export default function IABPage() {
             variant="custom"
             className="inline-flex items-center justify-center gap-2 bg-foreground px-6 py-3 text-sm font-black text-background uppercase border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
           >
-            Invest in the Prize
+            Play the Game
           </NavItemLink>
           <NavItemLink
             item={incentiveAlignmentBondsPaperLink}
