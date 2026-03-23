@@ -33,7 +33,6 @@ import {
   fitLogModel,
   fitSaturationModel,
   analyzeEfficiency,
-  EfficiencyAnalysisSchema,
   type DiminishingReturnsModel,
   type EfficiencyAnalysis,
 } from '@optimitron/obg';

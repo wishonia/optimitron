@@ -45,4 +45,37 @@ export const ARCADE_LABELS = {
   winConditions: "Win Conditions",
   gameStatus: "Game Status",
   howToPlay: "How to Play",
+  armory: "The Armory",
+  itemShop: "Item Shop",
+} as const;
+
+export const ARMORY = {
+  pageTitle: "The Armory",
+  itemCount: (n: number) => `${n} Items Available`,
+  shopkeeperGreeting:
+    "Welcome, hero. Everything here is designed to make your species slightly less terrible at governing itself. Browse. Equip. Try not to break anything.",
+  shopkeeperFooter:
+    "You're still here? Go equip something. The metrics won't move themselves.",
+  shelves: {
+    weapons: {
+      heading: "Weapons",
+      subtitle: "Data in. Optimal policy out. No opinions. No committees. Just maths.",
+    },
+    scrolls: {
+      heading: "Scrolls",
+      subtitle: "Nobody asked 8 billion people what they actually want. These fix that.",
+    },
+    gold: {
+      heading: "Gold & Loot",
+      subtitle: "Diagnosing the problem is step one. These make fixing it profitable.",
+    },
+    seals: {
+      heading: "Seals & Wards",
+      subtitle: "Accountability that can't be argued with because it's on-chain.",
+    },
+    potions: {
+      heading: "Potions",
+      subtitle: "The same causal inference that works on countries works on you.",
+    },
+  },
 } as const;

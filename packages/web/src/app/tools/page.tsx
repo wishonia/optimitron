@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { GameCTA } from "@/components/ui/game-cta";
+import { ArcadeTag } from "@/components/ui/arcade-tag";
+import { ItemCard, type ItemCardProps } from "@/components/ui/item-card";
+import { ARMORY } from "@/lib/messaging";
 import {
   prizeLink,
   wishocracyLink,
@@ -16,267 +18,410 @@ import {
 } from "@/lib/routes";
 
 export const metadata: Metadata = {
-  title: "Tools | The Earth Optimization Game",
+  title: "The Armory | The Earth Optimization Game",
   description:
-    "Every tool available to help win the Earth Optimization Game — figure out what works, express what you want, fund the solutions, and prove what happened.",
+    "Every weapon, scroll, and potion available to win the Earth Optimization Game. Equip yourself. Move the metrics.",
 };
 
-interface Tool {
-  title: string;
-  description: string;
-  link?: { item: typeof prizeLink; label: string };
-  externalLink?: { href: string; label: string };
-  color: string;
-}
+/* ------------------------------------------------------------------ */
+/*  Shelf: a category of items (Weapons, Scrolls, Gold, Seals, Potions) */
+/* ------------------------------------------------------------------ */
 
-interface ToolGroup {
+interface Shelf {
+  icon: string;
   heading: string;
   subtitle: string;
-  color: string;
-  tools: Tool[];
+  color: "cyan" | "yellow" | "pink" | "background";
+  items: Omit<ItemCardProps, "className">[];
 }
 
-const toolGroups: ToolGroup[] = [
+const shelves: Shelf[] = [
+  /* ── WEAPONS ── */
   {
-    heading: "Figure Out What Works",
-    subtitle: "Data in. Optimal policy out. No opinions. No committees. Just maths.",
-    color: "bg-brutal-cyan",
-    tools: [
+    icon: "⚔️",
+    heading: ARMORY.shelves.weapons.heading,
+    subtitle: ARMORY.shelves.weapons.subtitle,
+    color: "cyan",
+    items: [
       {
-        title: "The Optimizer",
+        name: "The Optimizer",
+        icon: "⚔️",
+        rarity: "legendary",
         description:
-          "Domain-agnostic causal inference engine. Give it any two time series and it tells you: does changing X cause Y to change? By how much? What's the optimal value?",
-        link: { item: studiesLink, label: "See Results" },
-        color: "bg-brutal-cyan",
+          "Give it two time series. It tells you what causes what. Your scientists take 12 years. This takes seconds.",
+        stats: [
+          { label: "IMPACT", value: 8 },
+          { label: "REACH", value: 10 },
+          { label: "SPEED", value: 9 },
+        ],
+        cost: "FREE",
+        link: { item: studiesLink, label: "Equip" },
+        bgColor: "cyan",
       },
       {
-        title: "Optimal Policy Generator",
+        name: "Policy Generator",
+        icon: "📜",
+        rarity: "legendary",
         description:
-          "Ranks every policy by causal impact on median health and income. Not by who proposed it. Not by how it sounds. By what actually happened when someone tried it.",
-        link: { item: policiesLink, label: "Browse Policies" },
-        color: "bg-brutal-cyan",
+          "Ranks every policy by what actually happened when someone tried it. Not by who proposed it. Not by how it sounds.",
+        stats: [
+          { label: "IMPACT", value: 9 },
+          { label: "REACH", value: 8 },
+          { label: "SPEED", value: 7 },
+        ],
+        cost: "FREE",
+        link: { item: policiesLink, label: "Equip" },
+        bgColor: "cyan",
       },
       {
-        title: "Optimal Budget Generator",
+        name: "Budget Generator",
+        icon: "⚖️",
+        rarity: "epic",
         description:
-          "Finds the spending level where each additional dollar stops helping. Diminishing returns modelling across every budget category. Your government has never done this.",
-        link: { item: budgetLink, label: "See Budget Analysis" },
-        color: "bg-brutal-cyan",
+          "Finds the spending level where each additional dollar stops helping. Diminishing returns modelling. Your government has never done this.",
+        stats: [
+          { label: "IMPACT", value: 9 },
+          { label: "REACH", value: 7 },
+          { label: "SPEED", value: 6 },
+        ],
+        cost: "FREE",
+        link: { item: budgetLink, label: "Equip" },
+        bgColor: "cyan",
       },
       {
-        title: "Cross-Jurisdiction Analysis",
+        name: "Cross-Realm Map",
+        icon: "🗺️",
+        rarity: "epic",
         description:
-          "Every country is a natural experiment. Compare spending, policies, and outcomes across 100+ jurisdictions to find what actually works. No need to guess when you can just look.",
-        link: { item: studiesLink, label: "Compare Countries" },
-        color: "bg-brutal-cyan",
+          "Every country is a natural experiment. Compare spending, policies, and outcomes across 100+ jurisdictions. No need to guess when you can just look.",
+        stats: [
+          { label: "IMPACT", value: 7 },
+          { label: "REACH", value: 10 },
+          { label: "SPEED", value: 8 },
+        ],
+        cost: "FREE",
+        link: { item: studiesLink, label: "Equip" },
+        bgColor: "cyan",
       },
       {
-        title: "Decentralized FDA (dFDA)",
+        name: "Decentralized Apothecary",
+        icon: "⚗️",
+        rarity: "legendary",
         description:
-          "Competing trial infrastructure platforms that conduct pragmatic clinical trials at 2% of the cost and 44x the speed. Real patients, real conditions, real data.",
-        externalLink: { href: "https://dfda.earth", label: "dfda.earth" },
-        color: "bg-brutal-cyan",
+          "Competing trial platforms. 2% of the cost. 44x the speed. Real patients, real conditions, real data. Your FDA takes 8.2 years AFTER a treatment is proven safe.",
+        stats: [
+          { label: "IMPACT", value: 10 },
+          { label: "SPEED", value: 10 },
+          { label: "COST", value: 2 },
+        ],
+        cost: "FREE",
+        externalLink: { href: "https://dfda.earth", label: "Equip" },
+        bgColor: "cyan",
       },
       {
-        title: "Decentralized Institutes of Health (DIH)",
+        name: "Institute of Healing",
+        icon: "🏛️",
+        rarity: "epic",
         description:
-          "Thin coordination layer allocating $27.2B/yr from the 1% Treaty via democratic voting. Trial infrastructure providers like dFDA compete for DIH funding. You decide where the money goes.",
-        externalLink: { href: "https://dih.earth", label: "dih.earth" },
-        color: "bg-brutal-cyan",
+          "Thin coordination layer allocating $27.2B/yr from the 1% Treaty via democratic voting. You decide where the money goes. Not a committee.",
+        stats: [
+          { label: "IMPACT", value: 10 },
+          { label: "REACH", value: 9 },
+          { label: "SPEED", value: 5 },
+        ],
+        cost: "FREE",
+        externalLink: { href: "https://dih.earth", label: "Equip" },
+        bgColor: "cyan",
       },
     ],
   },
+
+  /* ── SCROLLS ── */
   {
-    heading: "Express What You Want",
-    subtitle:
-      "Nobody asked 8 billion people what they actually want. These tools fix that.",
-    color: "bg-brutal-yellow",
-    tools: [
+    icon: "📜",
+    heading: ARMORY.shelves.scrolls.heading,
+    subtitle: ARMORY.shelves.scrolls.subtitle,
+    color: "yellow",
+    items: [
       {
-        title: "Wishocracy",
+        name: "Wishocracy",
+        icon: "📯",
+        rarity: "legendary",
         description:
-          "Citizen budget preferences via pairwise comparison. Pick between two things, ten times. Eigenvector decomposition produces a stable budget allocation from as few as 10 comparisons. Two minutes. Done.",
-        link: { item: wishocracyLink, label: "Start Voting" },
-        color: "bg-brutal-yellow",
+          "Pick between two things, ten times. Eigenvector decomposition produces a stable budget allocation. Two minutes. Done. Democracy without the screaming.",
+        stats: [
+          { label: "VOICE", value: 10 },
+          { label: "REACH", value: 9 },
+          { label: "SPEED", value: 10 },
+        ],
+        cost: "2 MIN",
+        link: { item: wishocracyLink, label: "Equip" },
+        bgColor: "yellow",
       },
       {
-        title: "Alignment Scoring",
+        name: "Alignment Crystal",
+        icon: "🔮",
+        rarity: "epic",
         description:
-          "Compare politician voting records against citizen preferences. Publish scores as verifiable Hypercerts. Make alignment visible and undeniable. Most people are surprised. Not pleasantly.",
-        link: { item: alignmentLink, label: "Check Alignment" },
-        color: "bg-brutal-yellow",
+          "Compare politician voting records against citizen preferences. Make alignment visible and undeniable. Most people are surprised. Not pleasantly.",
+        stats: [
+          { label: "VOICE", value: 8 },
+          { label: "REACH", value: 7 },
+          { label: "TRUTH", value: 10 },
+        ],
+        cost: "FREE",
+        link: { item: alignmentLink, label: "Equip" },
+        bgColor: "yellow",
       },
       {
-        title: "1% Treaty Referendum",
+        name: "Treaty Gauntlet",
+        icon: "✊",
+        rarity: "rare",
         description:
-          "The specific policy demand: redirect 1% of military spending to pragmatic clinical trials. Verified via World ID. Every verified vote earns the recruiter a VOTE point.",
-        link: { item: referendumLink, label: "Vote Now" },
-        color: "bg-brutal-yellow",
+          "Redirect 1% of military spending to pragmatic clinical trials. Verified via World ID. Every verified vote earns the recruiter a VOTE point.",
+        stats: [
+          { label: "VOICE", value: 10 },
+          { label: "REACH", value: 10 },
+          { label: "SPEED", value: 8 },
+        ],
+        cost: "WORLD ID",
+        link: { item: referendumLink, label: "Equip" },
+        bgColor: "yellow",
       },
     ],
   },
+
+  /* ── GOLD & LOOT ── */
   {
-    heading: "Fund the Solutions",
-    subtitle:
-      "Diagnosing the problem is step one. These mechanisms make fixing it positive-EV.",
-    color: "bg-brutal-pink",
-    tools: [
+    icon: "💰",
+    heading: ARMORY.shelves.gold.heading,
+    subtitle: ARMORY.shelves.gold.subtitle,
+    color: "pink",
+    items: [
       {
-        title: "The Earth Optimization Game",
+        name: "Earth Optimization Game",
+        icon: "🎰",
+        rarity: "legendary",
         description:
-          "Dominant assurance contract. Deposit USDC, recruit verified voters, earn VOTE points. Metrics hit targets in 15 years? VOTE holders split the pool. Metrics miss? Depositors get ~11x back. Nobody loses.",
-        link: { item: prizeLink, label: "Play the Game" },
-        color: "bg-brutal-pink",
+          "Deposit. Recruit. Win or get ~11x back. The only game where the house always loses.",
+        stats: [
+          { label: "YIELD", value: 9 },
+          { label: "IMPACT", value: 10 },
+          { label: "RISK", value: 0 },
+        ],
+        cost: "$100+ USDC",
+        link: { item: prizeLink, label: "Equip" },
+        bgColor: "pink",
       },
       {
-        title: "Wishocratic Fund",
+        name: "Wishocratic Fund",
+        icon: "🏆",
+        rarity: "epic",
         description:
-          "The prize pool investment vehicle. Venture-grade returns (17.4% annually) without the 2-and-20 fees. Crowd-allocated via wishocratic preference aggregation. Beats conventional retirement by 3x.",
-        link: { item: scoreboardLink, label: "View Scoreboard" },
-        color: "bg-brutal-pink",
+          "Venture-grade returns (17.4% annually) without the 2-and-20 fees. Crowd-allocated via wishocratic preference aggregation. Beats conventional retirement by 3x.",
+        stats: [
+          { label: "YIELD", value: 8 },
+          { label: "IMPACT", value: 7 },
+          { label: "RISK", value: 2 },
+        ],
+        cost: "VARIABLE",
+        link: { item: scoreboardLink, label: "Equip" },
+        bgColor: "pink",
       },
       {
-        title: "Incentive Alignment Bonds (IABs)",
+        name: "Incentive Alignment Bonds",
+        icon: "📜",
+        rarity: "rare",
         description:
-          "Phase 2: after the referendum proves demand. Raise ~$1B to lobby for the treaty. Revenue splits 80/10/10: clinical trials, investors, aligned politicians. Smart contract enforced.",
-        link: { item: iabLink, label: "Learn About IABs" },
-        color: "bg-brutal-pink",
+          "Phase 2: after demand is proven. Raise ~$1B to lobby for the treaty. Revenue splits 80/10/10. Smart contract enforced. No trust required.",
+        stats: [
+          { label: "YIELD", value: 7 },
+          { label: "IMPACT", value: 10 },
+          { label: "RISK", value: 3 },
+        ],
+        cost: "USDC",
+        link: { item: iabLink, label: "Equip" },
+        locked: true,
+        lockReason: "Unlocks after referendum threshold",
+        bgColor: "pink",
       },
       {
-        title: "$WISH Token",
+        name: "$WISH Token",
+        icon: "🪙",
+        rarity: "legendary",
         description:
-          "Programmable currency replacing the Federal Reserve. 0.5% transaction tax replaces the IRS. UBI eliminates poverty and the welfare bureaucracy. Algorithmic 0% inflation stops the inflationary theft funding war.",
-        link: { item: moneyLink, label: "How $WISH Works" },
-        color: "bg-brutal-pink",
+          "0.5% transaction tax replaces the IRS. UBI eliminates poverty. Algorithmic 0% inflation stops the inflationary theft funding war.",
+        stats: [
+          { label: "IMPACT", value: 10 },
+          { label: "REACH", value: 10 },
+          { label: "SPEED", value: 3 },
+        ],
+        cost: "FREE",
+        link: { item: moneyLink, label: "Equip" },
+        bgColor: "pink",
       },
       {
-        title: "Campaign Automation",
+        name: "Campaign Golem",
+        icon: "⚙️",
+        rarity: "rare",
         description:
-          "Smart contracts route funds to politicians based on alignment scores. Vote with citizens? Get funded. Vote against them? Don't. No lobbying required to lobby.",
-        color: "bg-brutal-pink",
+          "Smart contracts route funds to politicians based on alignment scores. Vote with citizens? Get funded. Vote against them? Don't.",
+        stats: [
+          { label: "IMPACT", value: 8 },
+          { label: "REACH", value: 6 },
+          { label: "SPEED", value: 9 },
+        ],
+        cost: "FREE",
+        locked: true,
+        lockReason: "Unlocks after alignment scoring is live",
+        bgColor: "pink",
       },
     ],
   },
+
+  /* ── SEALS & WARDS ── */
   {
-    heading: "Prove What Happened",
-    subtitle: "Accountability that can't be argued with because it's on-chain.",
-    color: "bg-background",
-    tools: [
+    icon: "🛡️",
+    heading: ARMORY.shelves.seals.heading,
+    subtitle: ARMORY.shelves.seals.subtitle,
+    color: "background",
+    items: [
       {
-        title: "Hypercerts",
+        name: "Hypercerts",
+        icon: "🛡️",
+        rarity: "rare",
         description:
-          "Verifiable impact attestations published on IPFS and AT Protocol. Every claim, every score, every alignment report — cryptographically signed and permanently stored.",
-        color: "bg-background",
+          "Verifiable impact attestations on IPFS and AT Protocol. Every claim, every score — cryptographically signed and permanently stored.",
+        stats: [
+          { label: "TRUST", value: 10 },
+          { label: "PERM", value: 10 },
+        ],
+        cost: "FREE",
+        bgColor: "background",
       },
       {
-        title: "Autonomous Policy Analyst",
+        name: "Policy Analyst Familiar",
+        icon: "🤖",
+        rarity: "epic",
         description:
-          "AI agent that continuously generates and publishes impact analyses. Scores policies, compares jurisdictions, and updates Hypercerts. Works while you sleep.",
-        color: "bg-background",
+          "AI agent that continuously generates impact analyses, scores policies, and updates Hypercerts. Works while you sleep. Doesn't need coffee.",
+        stats: [
+          { label: "TRUST", value: 8 },
+          { label: "SPEED", value: 10 },
+        ],
+        cost: "FREE",
+        bgColor: "background",
       },
     ],
   },
+
+  /* ── POTIONS ── */
   {
-    heading: "Personal Tools",
-    subtitle:
-      "Track yourself. The same causal inference that works on countries works on you.",
-    color: "bg-brutal-cyan",
-    tools: [
+    icon: "🧪",
+    heading: ARMORY.shelves.potions.heading,
+    subtitle: ARMORY.shelves.potions.subtitle,
+    color: "cyan",
+    items: [
       {
-        title: "Talk to Wishonia",
+        name: "Talk to Wishonia",
+        icon: "🧪",
+        rarity: "rare",
         description:
-          "Conversational health, mood, and diet tracking with an alien who's been running a planet for 4,237 years. She'll tell you what's actually working. Your intuition won't like it.",
-        link: { item: trackLink, label: "Open Chat" },
-        color: "bg-brutal-cyan",
+          "Health tracking with an alien who's been at this for 4,237 years. She'll tell you what's actually working. Your intuition won't like it.",
+        stats: [
+          { label: "INSIGHT", value: 8 },
+          { label: "SASS", value: 10 },
+        ],
+        cost: "FREE",
+        link: { item: trackLink, label: "Equip" },
+        bgColor: "cyan",
       },
       {
-        title: "Digital Twin Safe",
+        name: "Digital Twin Armor",
+        icon: "🔒",
+        rarity: "uncommon",
         description:
-          "Chrome extension for personal data sovereignty. Your health data, your meals, your sleep — stored in your own encrypted vault. Share what you want, keep the rest.",
-        color: "bg-brutal-cyan",
+          "Chrome extension for personal data sovereignty. Your health data, your meals, your sleep — your encrypted vault. Share what you want.",
+        stats: [
+          { label: "PRIVACY", value: 10 },
+          { label: "CONTROL", value: 10 },
+        ],
+        cost: "FREE",
+        bgColor: "cyan",
       },
     ],
   },
 ];
 
-export default function ToolsPage() {
+const totalItems = shelves.reduce((sum, s) => sum + s.items.length, 0);
+
+/* ------------------------------------------------------------------ */
+/*  Shelf color → section bg mapping                                   */
+/* ------------------------------------------------------------------ */
+
+const shelfBgClasses: Record<Shelf["color"], string> = {
+  cyan: "bg-brutal-cyan/5",
+  yellow: "bg-brutal-yellow/5",
+  pink: "bg-brutal-pink/5",
+  background: "bg-background",
+};
+
+/* ------------------------------------------------------------------ */
+/*  Page                                                               */
+/* ------------------------------------------------------------------ */
+
+export default function ArmoryPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       {/* Hero */}
       <section className="mb-16 space-y-3">
-        <p className="text-sm font-black uppercase tracking-[0.2em] text-brutal-pink">
-          The Earth Optimization Game
-        </p>
+        <ArcadeTag>{ARMORY.itemCount(totalItems)}</ArcadeTag>
         <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground">
-          Your Toolkit
+          {ARMORY.pageTitle}
         </h1>
         <p className="max-w-3xl text-lg font-bold text-muted-foreground">
-          Every tool available to help redirect Earth&apos;s resources from the
-          things making you poorest and deadest to the things that make you
-          healthiest and wealthiest. Use whichever ones you want. The game
-          doesn&apos;t care how you move the metrics — just that they move.
+          {ARMORY.shopkeeperGreeting}
         </p>
       </section>
 
-      {/* Tool Groups */}
-      {toolGroups.map((group) => (
-        <section key={group.heading} className="mb-16">
-          <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-2">
-            {group.heading}
-          </h2>
-          <p className="text-sm font-bold text-muted-foreground mb-6">
-            {group.subtitle}
+      {/* Shelves */}
+      {shelves.map((shelf) => (
+        <section key={shelf.heading} className="mb-16">
+          {/* Shelf header */}
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-2xl">{shelf.icon}</span>
+            <h2 className="text-2xl font-black uppercase tracking-tight text-foreground">
+              {shelf.heading}
+            </h2>
+          </div>
+          <p className="text-sm font-bold text-muted-foreground mb-6 ml-10">
+            {shelf.subtitle}
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {group.tools.map((tool) => (
-              <div
-                key={tool.title}
-                className={`border-4 border-primary ${tool.color} p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col`}
-              >
-                <h3 className="font-black uppercase text-foreground mb-2">
-                  {tool.title}
-                </h3>
-                <p className="text-sm font-bold text-muted-foreground leading-relaxed flex-grow">
-                  {tool.description}
-                </p>
-                {tool.link && (
-                  <NavItemLink
-                    item={tool.link.item}
-                    variant="custom"
-                    className="mt-4 inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
-                  >
-                    {tool.link.label} &rarr;
-                  </NavItemLink>
-                )}
-                {tool.externalLink && (
-                  <a
-                    href={tool.externalLink.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
-                  >
-                    {tool.externalLink.label} &rarr;
-                  </a>
-                )}
-              </div>
+
+          {/* Item grid */}
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 gap-6 p-4 -mx-4 rounded-md ${shelfBgClasses[shelf.color]}`}
+          >
+            {shelf.items.map((item) => (
+              <ItemCard key={item.name} {...item} />
             ))}
           </div>
         </section>
       ))}
 
-      {/* Final CTA */}
+      {/* Final CTA — Shopkeeper farewell */}
       <section className="border-4 border-primary bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
-        <h2 className="text-2xl font-black text-brutal-pink-foreground mb-3 uppercase">
-          The Only Way to Lose Is to Not Play
+        <h2 className="text-2xl font-black text-brutal-pink-foreground mb-3 uppercase font-[family-name:var(--font-arcade)]">
+          Still Browsing?
         </h2>
         <p className="text-background mb-6 font-bold max-w-2xl mx-auto">
-          Pick a tool. Any tool. The game is designed so that self-interest
-          and collective interest point in the same direction. Do whatever
-          you think moves the metrics.
+          {ARMORY.shopkeeperFooter}
         </p>
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <GameCTA href="/prize">Play the Game</GameCTA>
-          <GameCTA href="/scoreboard" variant="outline">View Scoreboard</GameCTA>
+          <GameCTA href="/scoreboard" variant="outline">
+            View Scoreboard
+          </GameCTA>
         </div>
       </section>
     </div>
