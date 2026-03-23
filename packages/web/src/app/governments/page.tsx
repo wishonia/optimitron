@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GOVERNMENTS, getGovernmentsByBodyCount, type GovernmentMetrics } from "@optimitron/data";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { GameCTA } from "@/components/ui/game-cta";
+import { GovernmentLeaderboard } from "@/components/shared/GovernmentLeaderboard";
 import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = {
@@ -168,6 +169,19 @@ export default function GovernmentsPage() {
             just hope you never look at it all in one place.
           </p>
         </div>
+      </section>
+
+      {/* Health & Wealth Leaderboard */}
+      <section className="mb-16">
+        <h2 className="font-[family-name:var(--font-arcade)] text-xl font-black uppercase tracking-tight text-foreground mb-2 sm:text-2xl">
+          HEALTH &amp; WEALTH RANKINGS
+        </h2>
+        <p className="text-lg font-bold text-muted-foreground mb-6">
+          The game&apos;s two metrics — healthy life years and income — ranked by
+          country. Click any column to sort. Notice which countries spend the most
+          on military and get the least for it.
+        </p>
+        <GovernmentLeaderboard />
       </section>
 
       {/* Summary Stats */}

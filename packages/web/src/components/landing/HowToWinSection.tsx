@@ -3,24 +3,18 @@ import { Container } from "@/components/ui/container";
 import { SectionHeader } from "@/components/ui/section-header";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { ParameterValue } from "@/components/shared/ParameterValue";
+import { HumanityScoreboard } from "@/components/shared/HumanityScoreboard";
+import { GovernmentLeaderboard } from "@/components/shared/GovernmentLeaderboard";
+import { NavItemLink } from "@/components/navigation/NavItemLink";
+import { governmentsLink } from "@/lib/routes";
 import { TAGLINES } from "@/lib/messaging";
 import {
-  GLOBAL_HALE_CURRENT,
-  TREATY_PROJECTED_HALE_YEAR_15,
-  TREATY_HALE_GAIN_YEAR_15,
-  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15,
-  TREATY_TRAJECTORY_AVG_INCOME_YEAR_15,
   VOTE_TOKEN_POTENTIAL_VALUE,
   PRIZE_POOL_HORIZON_MULTIPLE,
   GLOBAL_COORDINATION_TARGET_SUPPORTERS,
 } from "@/lib/parameters-calculations-citations";
 
 export function HowToWinSection() {
-  const haleGain = TREATY_HALE_GAIN_YEAR_15.value.toFixed(1);
-  const incomeMultiplier = Math.round(
-    TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value /
-      CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value,
-  );
   const targetPeople = `${(GLOBAL_COORDINATION_TARGET_SUPPORTERS.value / 1e9).toFixed(0)} billion`;
 
   return (
@@ -32,59 +26,27 @@ export function HowToWinSection() {
           size="lg"
         />
 
-        {/* The Scoreboard */}
-        <BrutalCard
-          bgColor="background"
-          shadowSize={8}
-          padding="lg"
-          className="mb-8"
-        >
-          <div className="text-center mb-6">
-            <span className="text-xs font-black px-2.5 py-1 bg-foreground text-background uppercase">
-              The Scoreboard
-            </span>
+        {/* Humanity's Scoreboard — reusable component */}
+        <div className="mb-8">
+          <HumanityScoreboard />
+        </div>
+
+        {/* Country leaderboard preview */}
+        <div className="mb-6">
+          <p className="text-lg sm:text-xl font-black text-foreground uppercase mb-4 text-center">
+            Where Does Your Country Rank?
+          </p>
+          <GovernmentLeaderboard limit={5} compact />
+          <div className="mt-3 text-center">
+            <NavItemLink
+              item={governmentsLink}
+              variant="custom"
+              className="text-base font-black text-foreground uppercase hover:text-brutal-pink transition-colors"
+            >
+              See all government scoreboards &rarr;
+            </NavItemLink>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="text-center">
-              <p className="text-lg sm:text-xl font-black uppercase text-muted-foreground mb-2">
-                Healthy Life Expectancy
-              </p>
-              <div className="text-4xl sm:text-5xl md:text-6xl font-black text-foreground">
-                <span className="text-muted-foreground line-through">
-                  {GLOBAL_HALE_CURRENT.value}
-                </span>{" "}
-                <span className="text-brutal-cyan">
-                  {TREATY_PROJECTED_HALE_YEAR_15.value.toFixed(1)}
-                </span>
-              </div>
-              <p className="text-lg sm:text-xl font-bold text-muted-foreground mt-2">
-                +{haleGain} healthy years
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="text-lg sm:text-xl font-black uppercase text-muted-foreground mb-2">
-                Global Median Income
-              </p>
-              <div className="text-4xl sm:text-5xl md:text-6xl font-black text-foreground">
-                <span className="text-muted-foreground line-through">
-                  <ParameterValue
-                    param={CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15}
-                    className="text-muted-foreground"
-                  />
-                </span>{" "}
-                <span className="text-brutal-cyan">
-                  <ParameterValue
-                    param={TREATY_TRAJECTORY_AVG_INCOME_YEAR_15}
-                    className="text-brutal-cyan"
-                  />
-                </span>
-              </div>
-              <p className="text-lg sm:text-xl font-bold text-muted-foreground mt-2">
-                {incomeMultiplier}x lifetime earnings
-              </p>
-            </div>
-          </div>
-        </BrutalCard>
+        </div>
 
         {/* The awareness insight */}
         <div className="text-center mb-8 max-w-3xl mx-auto">

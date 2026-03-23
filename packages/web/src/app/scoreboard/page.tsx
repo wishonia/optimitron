@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { GameCTA } from "@/components/ui/game-cta";
 import { fmtParam } from "@/lib/format-parameter";
+import { HumanityScoreboard } from "@/components/shared/HumanityScoreboard";
 import {
-  GLOBAL_HALE_CURRENT,
-  TREATY_PROJECTED_HALE_YEAR_15,
-  TREATY_HALE_GAIN_YEAR_15,
-  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15,
-  TREATY_TRAJECTORY_AVG_INCOME_YEAR_15,
   PRIZE_POOL_HORIZON_MULTIPLE,
   TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
 } from "@/lib/parameters-calculations-citations";
@@ -52,12 +48,6 @@ export const metadata: Metadata = {
     "Humanity's Scoreboard — live game metrics: global health, income, pool size, verified participants, and wishocratic allocations.",
 };
 
-const haleCurrentYears = GLOBAL_HALE_CURRENT.value;
-const haleTargetYears = TREATY_PROJECTED_HALE_YEAR_15.value;
-const haleGainYears = TREATY_HALE_GAIN_YEAR_15.value;
-const incomeCurrentUSD = CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value;
-const incomeTargetUSD = TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value;
-
 export default async function ScoreboardPage() {
   const stats = await getGameStats();
   return (
@@ -77,64 +67,12 @@ export default async function ScoreboardPage() {
         </p>
       </section>
 
-      {/* Two Target Metrics */}
+      {/* Humanity's Scoreboard — the two metrics that define the game */}
       <section className="mb-12">
         <h2 className="text-xl font-black font-[family-name:var(--font-arcade)] uppercase tracking-tight text-foreground mb-6 text-center">
           The Two Numbers That Matter
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* HALE */}
-          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
-              Median Healthy Life Years (HALE)
-            </div>
-            <div className="flex items-baseline gap-3 mb-3">
-              <div className="text-4xl font-black text-foreground">
-                {haleCurrentYears.toFixed(1)}
-              </div>
-              <div className="text-sm font-bold text-muted-foreground">
-                → {haleTargetYears.toFixed(1)} target
-              </div>
-            </div>
-            <div className="w-full bg-muted border-2 border-primary h-6 mb-2">
-              <div
-                className="h-full bg-brutal-cyan border-r-2 border-primary"
-                style={{ width: `${((haleCurrentYears - 50) / (haleTargetYears - 50)) * 100}%` }}
-              />
-            </div>
-            <p className="text-xs font-bold text-muted-foreground">
-              Need +{haleGainYears.toFixed(1)} healthy years globally. Not
-              &ldquo;are you alive&rdquo; but &ldquo;are you alive and can you
-              open a jar without crying.&rdquo;
-            </p>
-          </div>
-
-          {/* Income */}
-          <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
-              Median Real After-Tax Income
-            </div>
-            <div className="flex items-baseline gap-3 mb-3">
-              <div className="text-4xl font-black text-foreground">
-                {fmtParam({...CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15, unit: "USD"})}
-              </div>
-              <div className="text-sm font-bold text-muted-foreground">
-                → {fmtParam({...TREATY_TRAJECTORY_AVG_INCOME_YEAR_15, unit: "USD"})} target
-              </div>
-            </div>
-            <div className="w-full bg-muted border-2 border-primary h-6 mb-2">
-              <div
-                className="h-full bg-brutal-yellow border-r-2 border-primary"
-                style={{ width: `${(incomeCurrentUSD / incomeTargetUSD) * 100}%` }}
-              />
-            </div>
-            <p className="text-xs font-bold text-muted-foreground">
-              What can a normal person actually buy? Not GDP — that counts arms
-              dealing and divorce lawyers. This counts &ldquo;can you feed your
-              kids.&rdquo;
-            </p>
-          </div>
-        </div>
+        <HumanityScoreboard />
       </section>
 
       {/* GDP Trajectory Chart */}

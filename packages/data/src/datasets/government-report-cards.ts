@@ -45,6 +45,8 @@ export interface GovernmentMetrics {
   // === HEALTH PERFORMANCE ===
   healthSpendingPerCapita: SourcedValue;
   lifeExpectancy: SourcedValue;
+  /** WHO Healthy Life Expectancy at birth (HALE) — years lived in full health */
+  hale: SourcedValue | null;
   clinicalTrialSpending: SourcedValue | null;
 
   // === CORPORATE WELFARE ===
@@ -117,6 +119,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 6.4, source: "CDC WONDER 2023", url: "https://wonder.cdc.gov/" },
     healthSpendingPerCapita: { value: 12_555, source: "CMS 2023", url: "https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data" },
     lifeExpectancy: { value: 77.5, source: "CDC NCHS 2023", url: "https://www.cdc.gov/nchs/fastats/life-expectancy.htm" },
+    hale: { value: 66.1, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: { value: 4_500_000_000, source: "NIH", url: "https://reporter.nih.gov/" },
     corporateWelfareAnnual: { value: 92_000_000_000, source: "Cato Institute", url: "https://www.cato.org/corporate-welfare" },
     fossilFuelSubsidies: { value: 20_000_000_000, source: "IMF 2023 explicit subsidies", url: "https://www.imf.org/en/Topics/climate-change/energy-subsidies" },
@@ -162,6 +165,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 7.3, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 1_775, source: "WHO Global Health Expenditure 2022" },
     lifeExpectancy: { value: 73.4, source: "World Bank 2023" },
+    hale: { value: 64.2, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: { value: 39_000_000_000, source: "IMF 2023 — explicit subsidies" },
@@ -203,6 +207,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 0.5, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 937, source: "WHO Global Health Expenditure 2022" },
     lifeExpectancy: { value: 78.6, source: "World Bank 2023" },
+    hale: { value: 68.5, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: { value: 16_000_000_000, source: "IMF 2023 — explicit subsidies (much higher including externalities)" },
@@ -244,6 +249,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 1.0, source: "ONS 2023" },
     healthSpendingPerCapita: { value: 5_138, source: "OECD Health Statistics 2023" },
     lifeExpectancy: { value: 81.8, source: "World Bank 2023" },
+    hale: { value: 70.1, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: { value: 12_000_000_000, source: "UK Treasury — £10B (~$12B)" },
@@ -285,6 +291,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 1.5, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 3_266, source: "OECD 2023" },
     lifeExpectancy: { value: 83.5, source: "World Bank 2023" },
+    hale: { value: 73.0, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: null,
@@ -326,6 +333,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 1.5, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 2_520, source: "WHO 2022" },
     lifeExpectancy: { value: 77.6, source: "World Bank 2023" },
+    hale: { value: 66.3, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: { value: 27_000_000_000, source: "IMF 2023 — explicit subsidies" },
@@ -368,6 +376,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 0.2, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 3_013, source: "WHO 2022" },
     lifeExpectancy: { value: 84.1, source: "World Bank 2023" },
+    hale: { value: 73.9, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: null,
@@ -414,6 +423,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 1.3, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 5_468, source: "OECD 2023" },
     lifeExpectancy: { value: 82.3, source: "World Bank 2023" },
+    hale: { value: 72.1, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: null,
@@ -459,6 +469,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 2.6, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 1_339, source: "WHO 2022" },
     lifeExpectancy: { value: 76.0, source: "World Bank 2023" },
+    hale: { value: 66.5, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: null,
@@ -504,6 +515,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 2.9, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 345, source: "WHO 2022" },
     lifeExpectancy: { value: 72.0, source: "World Bank 2023" },
+    hale: { value: 60.3, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: null,
@@ -549,6 +561,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 3.9, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 161, source: "WHO 2022" },
     lifeExpectancy: { value: 66.5, source: "World Bank 2023" },
+    hale: { value: 57.4, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: null,
@@ -594,6 +607,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 7.6, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 37, source: "WHO 2022" },
     lifeExpectancy: { value: 66.6, source: "World Bank 2023" },
+    hale: { value: 56.0, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: null,
@@ -639,6 +653,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     homicideRate: { value: 2.5, source: "UNODC 2022" },
     healthSpendingPerCapita: { value: 1_563, source: "WHO 2022" },
     lifeExpectancy: { value: 74.5, source: "World Bank 2023" },
+    hale: { value: 65.4, source: "WHO GHO 2019", url: "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth" },
     clinicalTrialSpending: null,
     corporateWelfareAnnual: null,
     fossilFuelSubsidies: null,
@@ -669,4 +684,28 @@ export function getGovernmentsByBodyCount(): GovernmentMetrics[] {
   return [...GOVERNMENTS].sort(
     (a, b) => b.militaryDeathsCaused.value - a.militaryDeathsCaused.value,
   );
+}
+
+/** Get all governments sorted by HALE (descending — highest healthy life expectancy first) */
+export function getGovernmentsByHALE(): GovernmentMetrics[] {
+  return [...GOVERNMENTS].sort(
+    (a, b) => (b.hale?.value ?? 0) - (a.hale?.value ?? 0),
+  );
+}
+
+/** Get all governments sorted by GDP per capita (descending — highest income first) */
+export function getGovernmentsByIncome(): GovernmentMetrics[] {
+  return [...GOVERNMENTS].sort(
+    (a, b) => b.gdpPerCapita.value - a.gdpPerCapita.value,
+  );
+}
+
+/** Compute military-to-health-spending ratio for a government */
+export function getMilitaryToHealthRatio(gov: GovernmentMetrics): number | null {
+  if (!gov.healthSpendingPerCapita.value || !gov.gdpPerCapita.value) return null;
+  const gdpTotal = gov.militarySpendingAnnual.value / (gov.militaryPctGDP.value / 100);
+  const population = gdpTotal / gov.gdpPerCapita.value;
+  const healthTotal = gov.healthSpendingPerCapita.value * population;
+  if (healthTotal <= 0) return null;
+  return gov.militarySpendingAnnual.value / healthTotal;
 }
