@@ -30,6 +30,7 @@ export const ROUTES = {
   agencies: "/agencies",
   tools: "/tools",
   dashboard: "/dashboard",
+  demo: "/demo",
   signIn: "/auth/signin",
 } as const;
 
@@ -126,15 +127,15 @@ export const moneyLink: NavItem = {
 };
 
 export const federalReserveLink: NavItem = {
-  href: ROUTES.federalReserve,
-  label: "Algorithmic Central Bank",
+  href: "/agencies/dfed",
+  label: "Deprecated Fed",
   emoji: "🏦",
   description: "Why a transparent algorithm beats 12 people guessing about interest rates",
 };
 
 export const departmentOfWarLink: NavItem = {
-  href: ROUTES.departmentOfWar,
-  label: "Department of War",
+  href: "/agencies/ddod",
+  label: "Deprecated DoD",
   emoji: "💀",
   description: "We don't have one. War is a negative-sum game and the spreadsheet agrees.",
 };
@@ -280,6 +281,37 @@ export const aboutLink: NavItem = {
   description: "How the Earth Optimization Game works and why it exists",
 };
 
+export const demoLink: NavItem = {
+  href: ROUTES.demo,
+  label: "Demo",
+  emoji: "🎬",
+  description: "Narrated tour of the Earth Optimization Game — modular playlists for every audience",
+  matchPrefixes: [ROUTES.demo],
+};
+
+export const civicLink: NavItem = {
+  href: ROUTES.civic,
+  label: "Civic",
+  emoji: "📜",
+  description: "Active bills, voting records, and legislative tracking",
+  matchPrefixes: [ROUTES.civic],
+};
+
+export const treasuryLink: NavItem = {
+  href: ROUTES.treasury,
+  label: "Treasury",
+  emoji: "🪙",
+  description: "The $WISH token — 0.5% transaction tax, UBI, and wishocratic allocation",
+  matchPrefixes: [ROUTES.treasury],
+};
+
+export const contributeLink: NavItem = {
+  href: ROUTES.contribute,
+  label: "Contribute",
+  emoji: "🤝",
+  description: "How to contribute to the Earth Optimization Game",
+};
+
 /** Top-level nav items (not in dropdown) */
 export const topLinks: NavItem[] = [
   wishocracyLink,
@@ -298,10 +330,10 @@ export interface NavSection {
 }
 
 export const navSections: NavSection[] = [
-  { id: "participate", label: "Participate", items: [wishocracyLink, alignmentLink, referendumLink] },
-  { id: "explore", label: "Explore", items: [studiesLink, compareLink, policiesLink, budgetLink, governmentsLink, misconceptionsLink, discoveriesLink] },
-  { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink, moneyLink] },
-  { id: "system", label: "System", items: [politicianLeaderboardLink, transparencyLink, agenciesLink, departmentOfWarLink, aboutLink] },
+  { id: "participate", label: "Participate", items: [wishocracyLink, alignmentLink, referendumLink, demoLink] },
+  { id: "explore", label: "Explore", items: [studiesLink, compareLink, policiesLink, budgetLink, governmentsLink, misconceptionsLink, discoveriesLink, civicLink] },
+  { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink, moneyLink, treasuryLink] },
+  { id: "system", label: "System", items: [politicianLeaderboardLink, transparencyLink, agenciesLink, departmentOfWarLink, aboutLink, contributeLink] },
 ];
 
 /** Footer-only internal links */

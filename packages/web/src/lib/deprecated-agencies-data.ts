@@ -540,6 +540,58 @@ function allocateSubsidy(patient) {
       "Your scientists spend half their lives writing essays about why they should be allowed to try curing diseases. Then a committee spends forty minutes rejecting them. You spend $47 billion a year on this. 3.3% of it touches a patient. On my planet, we cured disease in year 340. We did not have grant committees.",
     cardColor: "cyan",
   },
+  {
+    id: "ddod",
+    dName: "dDoD",
+    agencyName: "Department of Defense (née Department of War)",
+    href: "/agencies/ddod",
+    tagline:
+      "War is a negative-sum game and the spreadsheet agrees. We don't have a Department of War because — and I want to be precise here — war is fucking stupid.",
+    stats: [
+      {
+        value: "$2.72T",
+        label: "Global Military/yr",
+        description: "Annual global military spending (SIPRI 2024)",
+        color: "pink",
+      },
+      {
+        value: "604:1",
+        label: "Mil : Clinical Trial Ratio",
+        description: "Dollars on weapons per dollar on curing disease",
+        color: "pink",
+      },
+      {
+        value: "0.6×",
+        label: "Military ROI",
+        description: "Economic multiplier per dollar. Healthcare returns 3.5×.",
+        color: "yellow",
+      },
+      {
+        value: "4.5M+",
+        label: "War Deaths Since 1945",
+        description: "Post-WWII deaths from US military operations alone",
+        color: "pink",
+      },
+    ],
+    codeHeader: "The Department of Defense → 0 lines of code",
+    replacementCode: `// There is no replacement code.
+// You do not need a smart contract to not kill people.
+// That is the entire implementation.
+
+// Dispute resolution: Wishocratic preference aggregation
+// + binding arbitration scored by the Optimizer.
+// Takes six minutes. Nobody dies.
+// See: WishocraticTreasury.sol, Optimizer.ts`,
+    codeLanguage: "solidity",
+    codeExplanation:
+      "War is a negative-sum game. Every participant ends up with less than they started with, including the 'winner.' Disputes are resolved with data, binding arbitration, and an optimisation function that finds the allocation where both parties are measurably better off.",
+    annualSavings: "$2.72T",
+    savingsComparison:
+      "Enough to provide clean water for every human, end homelessness, fund all clinical trials, and eliminate hunger — and still have $2.4 trillion left over.",
+    wishoniaQuote:
+      "In 1947 they renamed the Department of War to the Department of Defense. The wars did not become more defensive. They just sounded nicer. Since the rebrand: 13+ wars, 0 defensive.",
+    cardColor: "pink",
+  },
 ];
 
 /** Get a single agency by its ID */
