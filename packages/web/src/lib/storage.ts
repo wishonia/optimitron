@@ -3,9 +3,25 @@ const STORAGE_KEYS = {
   signupReferral: "signup_referral",
   signupSubscribe: "signup_subscribe",
   pendingWishocracy: "pendingWishocracy",
+  pendingVote: "pending_vote",
+  voteStatusCache: "vote_status_cache",
   chatApiKey: "opto-chat-api-key",
   chatProvider: "opto-chat-provider",
 } as const;
+
+export type PendingVoteData = {
+  answer: string;
+  referredBy: string | null;
+  timestamp: string;
+  militaryAllocationPercent: number;
+  organizationId: string | null;
+};
+
+export type VoteStatusCache = {
+  hasVoted: boolean;
+  voteAnswer: string;
+  referralCode: string;
+};
 
 type PendingWishocracyState = {
   comparisons: Array<{
@@ -120,4 +136,14 @@ export const storage = {
   setPendingWishocracy: (data: PendingWishocracyState) =>
     setStorageItem(STORAGE_KEYS.pendingWishocracy, data),
   removePendingWishocracy: () => removeStorageItem(STORAGE_KEYS.pendingWishocracy),
+
+  getPendingVote: () => getStorageItem<PendingVoteData>(STORAGE_KEYS.pendingVote),
+  setPendingVote: (data: PendingVoteData) =>
+    setStorageItem(STORAGE_KEYS.pendingVote, data),
+  removePendingVote: () => removeStorageItem(STORAGE_KEYS.pendingVote),
+
+  getVoteStatusCache: () => getStorageItem<VoteStatusCache>(STORAGE_KEYS.voteStatusCache),
+  setVoteStatusCache: (data: VoteStatusCache) =>
+    setStorageItem(STORAGE_KEYS.voteStatusCache, data),
+  clearVoteStatusCache: () => removeStorageItem(STORAGE_KEYS.voteStatusCache),
 };

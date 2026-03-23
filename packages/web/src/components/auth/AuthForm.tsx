@@ -18,6 +18,8 @@ interface AuthFormProps {
   referralCode?: string | null;
   initialError?: string | null;
   compact?: boolean;
+  /** Message shown below the success alert after a magic link is sent */
+  emailSuccessFooter?: string;
 }
 
 export function AuthForm({
@@ -25,6 +27,7 @@ export function AuthForm({
   referralCode,
   initialError = null,
   compact = false,
+  emailSuccessFooter,
 }: AuthFormProps) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -166,7 +169,16 @@ export function AuthForm({
       </div>
 
       {error ? <AlertCard type="error" message={error} className="mb-4" /> : null}
-      {infoMessage ? <AlertCard type="info" message={infoMessage} className="mb-4" /> : null}
+      {infoMessage ? (
+        <>
+          <AlertCard type="info" message={infoMessage} className="mb-4" />
+          {emailSuccessFooter ? (
+            <p className="mb-4 text-center text-xs font-bold text-muted-foreground">
+              {emailSuccessFooter}
+            </p>
+          ) : null}
+        </>
+      ) : null}
 
       {referralCode ? (
         <p className="mb-4 text-center text-xs font-bold uppercase text-muted-foreground">

@@ -42,54 +42,54 @@ function getFirstName(name?: string | null) {
 function getSharePrompt(referralCount: number) {
   if (referralCount > 0) {
     const remaining = Math.max(REFERRAL_TARGET - referralCount, 1);
-    return `You already brought in ${referralCount} ${referralCount === 1 ? "person" : "people"}. ${remaining} more will give the sample noticeably more range.`;
+    return `You've earned ${referralCount} VOTE ${referralCount === 1 ? "point" : "points"} so far. ${remaining} more and you hit the first milestone. Each point could be worth $194,000+ if enough people play.`;
   }
 
-  return "Your first three referrals matter the most because they widen the comparison set while the sample is still small.";
+  return "You have 0 VOTE points. Your first recruit earns you 1 point. Each point could be worth $194,000+ if humanity actually plays this game. Right now it's worth $0.";
 }
 
 function getSubject(step: number, referralCount: number) {
   if (step === 0) {
-    return "Your Optimitron referral link is ready";
+    return "You voted. Now earn VOTE points worth $194,000 each";
   }
 
   if (step === 1 && referralCount === 0) {
-    return "Your first 3 invites matter more than the next 30";
+    return "You have 0 VOTE points. Here's how to change that";
   }
 
   if (step === 1) {
-    return `You already brought in ${referralCount}. Keep it moving`;
+    return `${referralCount} VOTE ${referralCount === 1 ? "point" : "points"} earned. The clock is ticking`;
   }
 
   if (referralCount === 0) {
-    return "One forwarded link can widen the sample";
+    return "14 years until the parasitic economy wins. Your move";
   }
 
-  return "You are already shaping the sample";
+  return `${referralCount} points locked in. More players = higher value`;
 }
 
 function getMainCopy(step: number, referralCount: number) {
   if (step === 0) {
-    return "You now have a personal Optimitron ballot link. Every signup through it is attributed to your account.";
+    return "You just earned your first VOTE point. It's currently worth nothing — because VOTE points only have value if enough people deposit into the prize fund. The more people who play, the more each point is worth. Your job: get your friends in.";
   }
 
   if (step === 1 && referralCount === 0) {
-    return "Most people mean to share later and never do. The easiest win is sending your link to one friend, one family member, and one group chat today.";
+    return "The parasitic economy (military spending + cybercrime) is growing 15% annually. By 2040, half of all economic activity is destructive. Stealing beats creating. The system collapses. That's not a prediction — it's compound interest. Each person you recruit moves the needle toward the tipping point and increases the value of your VOTE points.";
   }
 
   if (step === 1) {
-    return "Momentum matters. The fastest way to turn one referral into several is to post the same link in a small group where people already debate priorities.";
+    return "Every recruit increases the value of your existing VOTE points. More players → bigger prize fund → higher per-point payout. If the plan fails, depositors still get 17.4% annual returns. If it succeeds, everyone gets $14.7M richer. Either way, the numbers work. But only if enough people play.";
   }
 
   if (referralCount === 0) {
-    return "If you want the aggregate to reflect more than one bubble, send your link now while the ask is still fresh.";
+    return "Last nudge: 150,000 people die daily from treatable diseases while governments spend $40 on weapons for every $1 on curing disease. Your referral link is the fastest way to change that — and earn VOTE points that could be worth six figures. One text message. That's all it takes.";
   }
 
-  return "You already proved people will click. One more round of sharing usually performs better than waiting a week and starting over.";
+  return "You've proven people will click. The compound effect kicks in now — your recruits recruit their friends, each one adding to the prize pool and increasing your VOTE point value. One more round of sharing while momentum is fresh.";
 }
 
 function buildShareMessage(shareUrl: string) {
-  return `I just mapped my budget priorities on Optimitron. Add yours here: ${shareUrl}`;
+  return `Governments spend $40 on weapons for every $1 on curing disease. Vote to fix it in 30 seconds and earn VOTE points that could be worth $194k: ${shareUrl}`;
 }
 
 export function getReferralSequenceAction(
@@ -143,6 +143,7 @@ export function buildReferralSequenceEmail({
       `Hi ${firstName},`,
       "",
       mainCopy,
+      "",
       sharePrompt,
       "",
       `Your link: ${shareUrl}`,
@@ -150,39 +151,44 @@ export function buildReferralSequenceEmail({
       "Suggested message:",
       shareMessage,
       "",
-      "Best channels right now:",
-      "1. Text one person who already cares about budgeting or policy.",
-      "2. Drop it into one group chat where people already debate tradeoffs.",
-      "3. Post it once on social with your own top priority.",
+      "Three ways to recruit right now:",
+      "1. Text one friend who cares about healthcare or government waste.",
+      "2. Drop it into one group chat — it takes 30 seconds to vote.",
+      "3. Post it on social with: 'Governments spend $40 on weapons for every $1 on curing disease. Vote to fix it.'",
     ].join("\n"),
     html: `
       <div style="background:#f4f4f5;padding:32px 16px;font-family:Arial,sans-serif;color:#111827;">
         <div style="max-width:620px;margin:0 auto;background:#ffffff;border:3px solid #111827;padding:32px;">
-          <p style="margin:0 0 12px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#71717a;">
-            Referral Link
+          <p style="margin:0 0 12px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#FF6B9D;">
+            The Earth Optimization Game
           </p>
           <h1 style="margin:0 0 16px;font-size:28px;line-height:1.2;">
             Hi ${escapeHtml(firstName)},
           </h1>
           <p style="margin:0 0 16px;font-size:16px;line-height:1.6;">${escapeHtml(mainCopy)}</p>
-          <p style="margin:0 0 20px;font-size:16px;line-height:1.6;">${escapeHtml(sharePrompt)}</p>
+          <p style="margin:0 0 20px;font-size:16px;line-height:1.6;font-weight:700;">${escapeHtml(sharePrompt)}</p>
           <a
             href="${escapedShareUrl}"
-            style="display:inline-block;background:#111827;color:#ffffff;padding:14px 24px;text-decoration:none;font-weight:700;border:2px solid #111827;"
+            style="display:inline-block;background:#FF6B9D;color:#ffffff;padding:14px 24px;text-decoration:none;font-weight:700;border:3px solid #111827;font-size:16px;"
           >
-            Open your referral link
+            SHARE YOUR LINK → EARN POINTS
           </a>
-          <div style="margin-top:24px;padding:16px;border:2px solid #111827;background:#fafafa;">
-            <p style="margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#71717a;">
+          <div style="margin-top:24px;padding:16px;border:3px solid #111827;background:#FFE66D;">
+            <p style="margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#111827;">
               Copy-and-send message
             </p>
             <p style="margin:0;font-size:15px;line-height:1.6;">${escapedShareMessage}</p>
           </div>
           <ul style="margin:24px 0 0;padding-left:20px;font-size:15px;line-height:1.7;">
-            <li>Text one person who already cares about tradeoffs.</li>
-            <li>Drop it in one active group chat.</li>
-            <li>Post it once with your own top priority.</li>
+            <li>Text one friend who cares about healthcare or government waste.</li>
+            <li>Drop it in one group chat — it takes 30 seconds to vote.</li>
+            <li>Post on social: &quot;$40 on weapons for every $1 on curing disease. Vote to fix it.&quot;</li>
           </ul>
+          <div style="margin-top:24px;padding:16px;border:3px solid #111827;background:#111827;color:#ffffff;">
+            <p style="margin:0;font-size:13px;line-height:1.6;text-align:center;">
+              <strong>THE MATH:</strong> Each VOTE point = $194,000+ at scale. Depositors earn 17.4% annually even if the plan fails. The break-even probability is 1 in 246 million.
+            </p>
+          </div>
         </div>
       </div>
     `,

@@ -1,4 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
+import path from "path";
+
+const screenshotDir = path.resolve(__dirname, "public/img/screenshots");
 
 export default defineConfig({
   testDir: "./e2e",
@@ -7,9 +10,12 @@ export default defineConfig({
   workers: 1,
   reporter: "html",
   timeout: 120_000,
+  snapshotPathTemplate: `${screenshotDir}/{testName}/{arg}{ext}`,
+  outputDir: screenshotDir,
   use: {
     baseURL: process.env.BASE_URL ?? "http://localhost:3001",
     trace: "on-first-retry",
+    screenshot: "only-on-failure",
     video: {
       mode: "on",
       size: { width: 1920, height: 1080 },

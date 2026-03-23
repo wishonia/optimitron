@@ -18,6 +18,10 @@ export const CTA = {
   browseStudies: "Browse Studies",
   seeTheMmyths: "See the Myths",
   politicianLeaderboard: "Politician Leaderboard",
+  answerTheQuestion: "Answer the Question",
+  convinceMe: "Convince Me First",
+  seeTheMath: "See the Full Math",
+  earnPoints: "Earn VOTE Points",
 } as const;
 
 export const TAGLINES = {
@@ -49,6 +53,43 @@ export const ARCADE_LABELS = {
   itemShop: "Item Shop",
 } as const;
 
+export const VOTE_SECTION = {
+  sliderPrompt:
+    "Adjust the slider to show how you'd split your country's finite resources between the military and clinical trials to cure and treat disease.",
+  realityCheck:
+    "on weapons and military systems for every $1 we spend curing ALL DISEASES COMBINED.",
+  theQuestion:
+    "Should all nations allocate just 1% of military spending to clinical trials to treat and cure disease together, making the world safer and ensuring no country is at a disadvantage?",
+  authPrompt: "Sign In to Start Earning VOTE Points",
+  authSubtext: "Every friend you recruit earns you 1 VOTE point. Each point could be worth $194,000+ if enough people play.",
+  authPrivacy: "30 seconds. No spam. Just proof you're a real human.",
+  emailSuccessFooter:
+    "Your vote is locked in. Now share your link to start earning VOTE points.",
+  sharePrompt: "Each friend who votes earns you 1 VOTE point. Get them in.",
+} as const;
+
+export const VOTE_VALUE = {
+  heading: "What Your Vote Could Be Worth",
+  subheading:
+    "You just cast a free vote. If enough people and foundations deposit into the prize fund, that vote could be worth six figures. On my planet, we call that 'good maths.'",
+  failHeading: "If the Plan Fails",
+  failBody: "annual returns — better than most hedge funds. Their money grew while sitting in the Wishocratic Fund for 15 years.",
+  successHeading: "If the Plan Succeeds",
+  successBody: "VOTE holders claim proportional shares of the prize pool.",
+  breakEvenPrefix: "The break-even probability is 1 in",
+  breakEvenSuffix: "Even pessimists should take this bet.",
+  deadlineHeading: "The Clock Is Ticking",
+  deadlineBody:
+    "The parasitic economy — military spending, cybercrime, regulatory capture — is growing faster than the productive economy. When it hits 50% of GDP, stealing beats creating and the system collapses. That's not a prediction. It's compound interest.",
+  deadlineQuip:
+    "Your VOTE points are worth $194k if 4 billion people play. Worth nothing if they don't. The deadline doesn't care about your schedule.",
+  flywheelHeading: "The Flywheel",
+  flywheelDescription:
+    "Retirement funds, foundations, billionaires — they all have an incentive to deposit because the returns beat conventional investing either way. You have an incentive to get your friends to play because each voter increases your VOTE value.",
+  shopkeeperQuip:
+    "You don't need to be altruistic. You just need to be numerate.",
+} as const;
+
 export const ARMORY = {
   pageTitle: "The Armory",
   itemCount: (n: number) => `${n} Items Available`,
@@ -58,22 +99,27 @@ export const ARMORY = {
     "You're still here? Go equip something. The metrics won't move themselves.",
   shelves: {
     weapons: {
+      icon: "⚔️",
       heading: "Weapons",
       subtitle: "Data in. Optimal policy out. No opinions. No committees. Just maths.",
     },
     scrolls: {
+      icon: "📜",
       heading: "Scrolls",
       subtitle: "Nobody asked 8 billion people what they actually want. These fix that.",
     },
     gold: {
+      icon: "💰",
       heading: "Gold & Loot",
       subtitle: "Diagnosing the problem is step one. These make fixing it profitable.",
     },
     seals: {
+      icon: "🛡️",
       heading: "Seals & Wards",
       subtitle: "Accountability that can't be argued with because it's on-chain.",
     },
     potions: {
+      icon: "🧪",
       heading: "Potions",
       subtitle: "The same causal inference that works on countries works on you.",
     },

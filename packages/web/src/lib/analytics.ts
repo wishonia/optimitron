@@ -53,6 +53,30 @@ export function trackDepositCompleted(params: {
 }
 
 // ============================================
+// Vote Events
+// ============================================
+
+export function trackSliderSubmitted(params: {
+  militaryAllocationPercent: number
+}): void {
+  trackEvent('slider_submitted', {
+    military_allocation_percent: params.militaryAllocationPercent,
+  })
+}
+
+export function trackVoteSubmitted(params: {
+  voteType: string
+  answer: string
+  authenticated: boolean
+}): void {
+  trackEvent('vote_submitted', {
+    vote_type: params.voteType,
+    answer: params.answer,
+    authenticated: params.authenticated,
+  })
+}
+
+// ============================================
 // Referral Events
 // ============================================
 

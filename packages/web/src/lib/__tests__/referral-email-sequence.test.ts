@@ -56,7 +56,7 @@ describe("referral email sequence", () => {
     expect(action).toEqual({ type: "complete", reason: "goal_met" });
   });
 
-  it("builds momentum copy once referrals exist", () => {
+  it("builds urgency copy once referrals exist", () => {
     const email = buildReferralSequenceEmail({
       step: 1,
       referralCount: 2,
@@ -67,5 +67,31 @@ describe("referral email sequence", () => {
     expect(email.subject).toContain("2");
     expect(email.text).toContain("https://example.com/wishocracy/jane");
     expect(email.html).toContain("Copy-and-send message");
+    expect(email.html).toContain("$194,000");
+  });
+
+  it("welcome email emphasizes VOTE point value", () => {
+    const email = buildReferralSequenceEmail({
+      step: 0,
+      referralCount: 0,
+      name: "Alex",
+      shareUrl: "https://example.com/?ref=alex",
+    });
+
+    expect(email.subject).toContain("VOTE point");
+    expect(email.text).toContain("VOTE point");
+    expect(email.html).toContain("EARN POINTS");
+  });
+
+  it("step 2 email includes deadline urgency for zero referrals", () => {
+    const email = buildReferralSequenceEmail({
+      step: 2,
+      referralCount: 0,
+      name: "Bo",
+      shareUrl: "https://example.com/?ref=bo",
+    });
+
+    expect(email.subject).toContain("parasitic economy");
+    expect(email.text).toContain("150,000 people die daily");
   });
 });

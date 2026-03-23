@@ -2,17 +2,15 @@ import type { Metadata } from "next";
 import { OnePercentTreatySection } from "@/components/landing/OnePercentTreatySection";
 import { TwoFuturesSection } from "@/components/landing/TwoFuturesSection";
 import { LandingProblemSection } from "@/components/landing/LandingProblemSection";
-import { LandingPrizeOffer } from "@/components/landing/LandingPrizeOffer";
 import { LandingFAQSection } from "@/components/landing/LandingFAQSection";
+import TreatyVoteSection from "@/components/landing/TreatyVoteSection";
+import VoteImpactSection from "@/components/landing/VoteImpactSection";
+import { VoteValueReveal } from "@/components/landing/VoteValueReveal";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Container } from "@/components/ui/container";
 import { CTASection } from "@/components/ui/cta-section";
-import {
-  listExplorerOutcomes,
-  listExplorerPairSummaries,
-} from "@/lib/analysis-explorer-data";
 import {
   alignmentLink,
   prizeLink,
@@ -24,8 +22,7 @@ import {
   scoreboardLink,
 } from "@/lib/routes";
 import { GameCTA } from "@/components/ui/game-cta";
-import misconceptionData from "../../public/data/misconceptions.json";
-import budgetData from "../data/us-budget-analysis.json";
+import { CTA } from "@/lib/messaging";
 import { fmtParam } from "@/lib/format-parameter";
 import {
   POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
@@ -111,122 +108,89 @@ const productWorkflows = [
 ];
 
 export default function Home() {
-  const outcomes = listExplorerOutcomes();
-  const pairSummaries = listExplorerPairSummaries();
-  const outcomeCount = outcomes.length;
-  const pairCount = pairSummaries.length;
-  const budgetCategoryCount = (budgetData as { categories: unknown[] }).categories.length;
-  const misconceptions = misconceptionData as {
-    findings: Array<{ id: string; myth: string; reality: string; grade: string }>;
-    summary: { totalFindings: number; gradeFCount: number };
-  };
-  const mythsBusted = misconceptions.summary.gradeFCount;
-
   return (
     <div>
       {/* ── 1. Hero ── */}
       <SectionContainer bgColor="background" borderPosition="bottom" className="overflow-hidden">
         <Container className="py-24 sm:py-32">
           <div className="text-center">
-            <>
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">
-                Built by Wishonia // Alien // 4,237 years of field testing
-              </p>
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-none text-foreground">
-                The{" "}
-                <span className="bg-brutal-cyan px-2">Earth</span>{" "}
-                Optimization{" "}
-                <span className="bg-brutal-yellow px-2">Machine</span>
-              </h1>
-              <p className="mt-6 text-xl sm:text-2xl font-black text-foreground max-w-2xl mx-auto">
-                Your species has the{" "}
-                <span className="text-brutal-cyan">data</span>. It has the{" "}
-                <span className="text-brutal-yellow">solutions</span>.
-                It simply refuses to use them.
-              </p>
-              <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed font-bold">
-                Your governments cost you{" "}
-                <span className="font-black text-brutal-red">
-                  {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} a year
-                </span>{" "}
-                in dysfunction and let{" "}
-                <span className="font-black text-brutal-pink">
-                  {fmtParam({...GLOBAL_DISEASE_DEATHS_DAILY, unit: ""})} people die daily
-                </span>{" "}
-                from treatable diseases. I made a spreadsheet. You&apos;re welcome.
-              </p>
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <GameCTA href="/prize#invest" variant="primary" size="lg">Play the Game</GameCTA>
-                <GameCTA href="#win-either-way" variant="yellow" size="lg">See Why It Can&apos;t Lose</GameCTA>
-              </div>
-              <p className="mt-6 text-sm font-bold text-muted-foreground max-w-2xl mx-auto">
-                Everything saves to your{" "}
-                <NavItemLink
-                  item={profileLink}
-                  variant="custom"
-                  className="font-black text-foreground hover:text-brutal-pink"
-                >
-                  {profileLink.label}
-                </NavItemLink>
-                . Budget allocations, alignment reports, daily check-ins. Evidence
-                that you tried.
-              </p>
-            </>
+            <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4">
+              Built by Wishonia // Alien // 4,237 years of field testing
+            </p>
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-none text-foreground">
+              The{" "}
+              <span className="bg-brutal-cyan px-2">Earth</span>{" "}
+              Optimization{" "}
+              <span className="bg-brutal-yellow px-2">Machine</span>
+            </h1>
+            <p className="mt-6 text-xl sm:text-2xl font-black text-foreground max-w-2xl mx-auto">
+              Your species has the{" "}
+              <span className="text-brutal-cyan">data</span>. It has the{" "}
+              <span className="text-brutal-yellow">solutions</span>.
+              It simply refuses to use them.
+            </p>
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed font-bold">
+              Your governments cost you{" "}
+              <span className="font-black text-brutal-red">
+                {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} a year
+              </span>{" "}
+              in dysfunction and let{" "}
+              <span className="font-black text-brutal-pink">
+                {fmtParam({...GLOBAL_DISEASE_DEATHS_DAILY, unit: ""})} people die daily
+              </span>{" "}
+              from treatable diseases. I made a spreadsheet. You&apos;re welcome.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <GameCTA href="#vote" variant="primary" size="lg">
+                {CTA.answerTheQuestion}
+              </GameCTA>
+              <GameCTA href="#evidence" variant="yellow" size="lg">
+                {CTA.convinceMe}
+              </GameCTA>
+            </div>
+            <p className="mt-6 text-sm font-bold text-muted-foreground max-w-2xl mx-auto">
+              Everything saves to your{" "}
+              <NavItemLink
+                item={profileLink}
+                variant="custom"
+                className="font-black text-foreground hover:text-brutal-pink"
+              >
+                {profileLink.label}
+              </NavItemLink>
+              . Budget allocations, alignment reports, daily check-ins. Evidence
+              that you tried.
+            </p>
           </div>
         </Container>
       </SectionContainer>
 
-      {/* ── 2. The Cost of Doing Nothing ── */}
-      <LandingProblemSection />
+      {/* ── 2. Vote — First conversion point (fast converters) ── */}
+      <TreatyVoteSection />
 
-      {/* ── 3. The 1% Treaty ── */}
-      <OnePercentTreatySection />
-
-      {/* ── 4. Win Either Way (Prize Offer) ── */}
-      <div id="win-either-way">
-        <LandingPrizeOffer />
+      {/* ── 3. The Cost of Doing Nothing ── */}
+      <div id="evidence">
+        <LandingProblemSection />
       </div>
+
+      {/* ── 4. The 1% Treaty ── */}
+      <OnePercentTreatySection />
 
       {/* ── 5. Two Futures ── */}
       <TwoFuturesSection />
 
-      {/* ── 6. Frequently Asked Objections ── */}
+      {/* ── 6. Vote — Second conversion point (convinced skeptics) ── */}
+      <TreatyVoteSection />
+
+      {/* ── 7. Your Vote's Impact ── */}
+      <VoteImpactSection />
+
+      {/* ── 8. What Your Vote Could Be Worth ── */}
+      <VoteValueReveal />
+
+      {/* ── 9. Frequently Asked Objections ── */}
       <LandingFAQSection />
 
-      {/* ── 7. The Receipts ── */}
-      <SectionContainer bgColor="background" borderPosition="none" padding="lg" className="pb-4">
-        <Container>
-          <SectionHeader
-            title="The Receipts"
-            subtitle={<>On my planet we call this &ldquo;evidence.&rdquo;</>}
-            size="sm"
-          />
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-3 max-w-4xl mx-auto">
-            {[
-              { value: outcomeCount, label: "Outcomes" },
-              { value: pairCount, label: "Pair Studies" },
-              { value: budgetCategoryCount, label: "Budget Cats" },
-              { value: 20, label: "Countries", suffix: "+" },
-              { value: mythsBusted, label: "Myths Busted" },
-              { value: 50, label: "Years of Data", suffix: "+" },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="text-center p-3 border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <div className="text-2xl font-black text-brutal-pink">
-                  {stat.value.toLocaleString()}{"suffix" in stat ? stat.suffix : ""}
-                </div>
-                <div className="text-xs text-muted-foreground font-bold mt-1 uppercase">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </SectionContainer>
-
-      {/* ── 8. Things You Can Do + Final CTA ── */}
+      {/* ── 10. Select Mode ── */}
       <SectionContainer bgColor="background" borderPosition="none" padding="lg">
         <Container>
           <SectionHeader
@@ -260,14 +224,22 @@ export default function Home() {
         </Container>
       </SectionContainer>
 
+      {/* ── 11. Final CTA ── */}
       <CTASection
         heading="Right Then. Shall We Get On With It?"
         description="I've done the research. I've built the tools. I've written you a manual. At this point I genuinely cannot make it easier."
         bgColor="yellow"
       >
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <GameCTA href="/prize#invest" variant="primary">Play the Game</GameCTA>
-          <GameCTA href="/wishocracy" variant="secondary">Express Your Preferences</GameCTA>
+          <GameCTA href="#vote" variant="primary">
+            {CTA.answerTheQuestion}
+          </GameCTA>
+          <GameCTA href="/prize" variant="secondary">
+            {CTA.seeTheMath}
+          </GameCTA>
+          <GameCTA href="/wishocracy" variant="cyan">
+            {CTA.expressPreferences}
+          </GameCTA>
         </div>
       </CTASection>
     </div>

@@ -18,13 +18,46 @@ const nextConfig = {
     // Type checking is done via `pnpm typecheck`
     ignoreBuildErrors: true,
   },
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     // MetaMask SDK bundles React Native code that references this package.
-    // It's not needed in web builds — alias to false so webpack provides an empty module.
     config.resolve.fallback = {
       ...config.resolve.fallback,
       "@react-native-async-storage/async-storage": false,
     };
+
+    // @optimitron/data barrel re-exports csv-loader which uses node:fs/path/url.
+    // These are server-only but webpack tries to bundle them for the client.
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        url: false,
+      };
+
+      // Rewrite "node:*" scheme imports to bare specifiers so they hit the
+      // fallback stubs above. Webpack 5 doesn't handle the node: scheme natively.
+      config.module = config.module || {};
+      config.module.rules = config.module.rules || [];
+      config.module.rules.push({
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      });
+
+      // NormalModuleReplacementPlugin rewrites node:X → X at resolve time
+      const webpack = require("webpack");
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(
+          /^node:/,
+          (resource) => {
+            resource.request = resource.request.replace(/^node:/, "");
+          },
+        ),
+      );
+    }
+
     return config;
   },
 };

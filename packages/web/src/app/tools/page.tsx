@@ -38,7 +38,7 @@ interface Shelf {
 const shelves: Shelf[] = [
   /* ── WEAPONS ── */
   {
-    icon: "⚔️",
+    icon: ARMORY.shelves.weapons.icon,
     heading: ARMORY.shelves.weapons.heading,
     subtitle: ARMORY.shelves.weapons.subtitle,
     color: "cyan",
@@ -138,7 +138,7 @@ const shelves: Shelf[] = [
 
   /* ── SCROLLS ── */
   {
-    icon: "📜",
+    icon: ARMORY.shelves.scrolls.icon,
     heading: ARMORY.shelves.scrolls.heading,
     subtitle: ARMORY.shelves.scrolls.subtitle,
     color: "yellow",
@@ -193,7 +193,7 @@ const shelves: Shelf[] = [
 
   /* ── GOLD & LOOT ── */
   {
-    icon: "💰",
+    icon: ARMORY.shelves.gold.icon,
     heading: ARMORY.shelves.gold.heading,
     subtitle: ARMORY.shelves.gold.subtitle,
     color: "pink",
@@ -281,7 +281,7 @@ const shelves: Shelf[] = [
 
   /* ── SEALS & WARDS ── */
   {
-    icon: "🛡️",
+    icon: ARMORY.shelves.seals.icon,
     heading: ARMORY.shelves.seals.heading,
     subtitle: ARMORY.shelves.seals.subtitle,
     color: "background",
@@ -317,7 +317,7 @@ const shelves: Shelf[] = [
 
   /* ── POTIONS ── */
   {
-    icon: "🧪",
+    icon: ARMORY.shelves.potions.icon,
     heading: ARMORY.shelves.potions.heading,
     subtitle: ARMORY.shelves.potions.subtitle,
     color: "cyan",
