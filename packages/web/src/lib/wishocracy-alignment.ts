@@ -77,7 +77,7 @@ function normalizeCategoryToken(value: string): string {
 const CATEGORY_LOOKUP = new Map<string, BudgetCategoryId>();
 for (const [categoryId, category] of Object.entries(BUDGET_CATEGORIES)) {
   const typedCategoryId = categoryId as BudgetCategoryId;
-  for (const alias of [typedCategoryId, category.id, category.name]) {
+  for (const alias of [typedCategoryId, category.slug, category.name]) {
     CATEGORY_LOOKUP.set(normalizeCategoryToken(alias), typedCategoryId);
   }
 }

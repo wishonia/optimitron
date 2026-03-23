@@ -42,7 +42,7 @@ export interface PriorityItemSource {
 
 export interface PriorityItem {
   /** Unique slug ID (e.g., 'nuclear_weapons') */
-  readonly id: string;
+  readonly slug: string;
   /** Human-readable name */
   readonly name: string;
   /** Wishonia's voice description — deadpan, data-first, with specific numbers */
@@ -68,7 +68,7 @@ export interface PriorityItem {
 export const US_PRIORITY_ITEMS = {
   // ─── CITIZEN-DIRECTED UBI ────────────────────────────────────────────
   UNIVERSAL_BASIC_INCOME: {
-    id: 'universal_basic_income',
+    slug: 'universal_basic_income',
     name: 'Universal Basic Income',
     description: 'Direct cash to every verified citizen. No conditions, no bureaucracy, no means-testing committees staffed by people who have never missed a meal deciding whether you deserve to eat. GiveDirectly RCTs show unconditional transfers increase earnings by 38%, reduce food insecurity by 42%, and cost 90 cents per dollar delivered. Your current welfare system costs $2.30 per dollar delivered. You are paying $1.30 extra per dollar just for the privilege of humiliating people.',
     icon: '💰',
@@ -90,7 +90,7 @@ export const US_PRIORITY_ITEMS = {
 
   // ─── HIGH-ROI INVESTMENTS ────────────────────────────────────────────
   PRAGMATIC_CLINICAL_TRIALS: {
-    id: 'pragmatic_clinical_trials',
+    slug: 'pragmatic_clinical_trials',
     name: 'Pragmatic Clinical Trials',
     description: 'Your species spends $4.7 trillion a year on healthcare but allocates roughly $1 billion to figuring out which treatments actually work. That is like buying 4.7 million cars and spending $1 on a mechanic. Pragmatic trials test drugs in real patients, in real hospitals, and produce answers in months instead of decades.',
     icon: '🔬',
@@ -112,7 +112,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   ADDICTION_TREATMENT: {
-    id: 'addiction_treatment',
+    slug: 'addiction_treatment',
     name: 'Addiction Treatment Programs',
     description: 'Every dollar spent on evidence-based treatment saves seven in healthcare and criminal justice costs. Instead, you spend most of the money arresting people for being ill and then acting surprised when they relapse in prison. Harm reduction, medication-assisted treatment, and recovery support actually work. Weird how that keeps not mattering.',
     icon: '🏥',
@@ -134,7 +134,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   EARLY_CHILDHOOD_EDUCATION: {
-    id: 'early_childhood_ed',
+    slug: 'early_childhood_ed',
     name: 'Early Childhood Education',
     description: 'The Heckman Equation shows $13 returned for every $1 invested in quality early childhood programs. Pre-K, Head Start, and childcare subsidies produce measurable gains in earnings, health, and reduced crime for decades. On my planet we consider failing to invest in children a form of economic self-harm. Here you call it "fiscal responsibility."',
     icon: '👶',
@@ -155,7 +155,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   CYBERSECURITY: {
-    id: 'cybersecurity',
+    slug: 'cybersecurity',
     name: 'Cybersecurity & Infrastructure Protection',
     description: 'You spend $886 billion a year on defence but less than 0.4% of that protecting the power grids, water systems, and hospitals that your entire civilisation depends on. Ransomware gangs are shutting down hospitals and pipelines while the military buys another aircraft carrier. It is like fitting seventeen deadbolts on the front door and leaving every window wide open.',
     icon: '🔐',
@@ -180,7 +180,7 @@ export const US_PRIORITY_ITEMS = {
 
   // ─── WASTEFUL/LOW-ROI SPENDING ──────────────────────────────────────
   DRUG_WAR_ENFORCEMENT: {
-    id: 'drug_war',
+    slug: 'drug_war',
     name: 'Drug War Enforcement',
     description: 'Fifty-plus years. Over one trillion dollars. Overdose deaths went from 6,100 per year in 1980 to 110,000 in 2023 — an 18x increase. Drug use rates are essentially unchanged. The number of people imprisoned for drug offences rose from 24,000 to 300,000. Meanwhile Portugal decriminalised everything in 2001 and drug deaths dropped 80%, HIV among users fell 95%. Pew Research found zero statistical relationship between drug imprisonment rates and drug use. You are funding the longest-running policy failure in recorded history.',
     icon: '🚔',
@@ -209,7 +209,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   ICE_IMMIGRATION_ENFORCEMENT: {
-    id: 'ice',
+    slug: 'ice',
     name: 'Mass Immigrant Detention Camps',
     description: 'It costs $150-$200 per day to detain one person — $55,000-$73,000 per year. Alternatives to detention cost $4.50/day with 90%+ court appearance rates. Immigrants are 60% less likely to be incarcerated than US-born citizens. Cato Institute found immigrants created a cumulative fiscal surplus of $14.5 trillion from 1994-2023 — every single year they paid more in taxes than they received. Undocumented immigrants alone pay $96.7 billion in taxes annually while being barred from collecting benefits. The CBO projects immigration reduces federal deficits by $0.9 trillion over 2024-2034. You are spending premium prices to remove people who subsidise your government.',
     icon: '🚨',
@@ -237,7 +237,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   FARM_SUBSIDIES_AGRIBUSINESS: {
-    id: 'farm_subsidies',
+    slug: 'farm_subsidies',
     name: 'Agribusiness Subsidies',
     description: 'Seventy-five percent of farm subsidies go to the top 10% of farms, which are mostly enormous corporations that do not need the help. The programme promotes monoculture, damages the environment, and crowds out the small farms your politicians claim to be protecting. It is corporate welfare wearing a straw hat.',
     icon: '🌽',
@@ -258,7 +258,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   FOSSIL_FUEL_SUBSIDIES: {
-    id: 'fossil_fuel_subsidies',
+    slug: 'fossil_fuel_subsidies',
     name: 'Fossil Fuel Subsidies',
     description: 'You are paying $34.8 billion a year in direct subsidies to companies that posted $150 billion in combined profits in 2022. Solar is now 41% cheaper than the cheapest fossil fuel. Wind is 53% cheaper. 91% of new renewable projects undercut fossil fuels on cost. Climate damages already cost the US $240 billion per year — $7 in damage for every $1 in subsidy. You are paying companies to make the planet uninhabitable when the cheaper alternative is already sitting right there.',
     icon: '🛢️',
@@ -284,7 +284,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   NUCLEAR_WEAPONS_MODERNIZATION: {
-    id: 'nuclear_weapons',
+    slug: 'nuclear_weapons',
     name: 'Nuclear Weapons Development',
     description: 'You have 3,700 stockpiled warheads. Defence analysts agree 200-311 provide full deterrence. The UK deters with 200. The 30-year modernisation plan costs $1.7 trillion. The Sentinel ICBM programme is 81% over budget at $141 billion. Research shows just 100 detonations would trigger nuclear winter and kill 5 billion people from famine. You are spending $60 billion a year to go from "can end civilisation 10 times" to "can end it 11 times."',
     icon: '☢️',
@@ -310,7 +310,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   PRISON_CONSTRUCTION: {
-    id: 'prisons',
+    slug: 'prisons',
     name: 'Prison Construction & Operations',
     description: 'The US went from 360,000 inmates in the 1970s to 2.3 million at peak — a 540% increase. Total corrections spending: $115 billion per year. Average cost per federal inmate: $47,162. Recidivism rate: 77% rearrested within 5 years. Since 2000, increased incarceration accounts for nearly zero percent of the crime drop. Norway invested in education and rehab, cut recidivism from 60% to 20%. The Netherlands closed 27 prisons because they ran out of prisoners. You are running the world\'s most expensive failure factory.',
     icon: '🏢',
@@ -339,7 +339,7 @@ export const US_PRIORITY_ITEMS = {
 
   // ─── TRADITIONAL/NECESSARY (for comparison) ─────────────────────────
   MILITARY_OPERATIONS: {
-    id: 'military',
+    slug: 'military',
     name: 'Weapons Systems & Pentagon R&D',
     description: 'The largest military budget on the planet by a factor of three. Since 2001 alone, $8 trillion spent on the War on Terror. Result: global terrorist attacks went from 1,800 per year to 16,900 (a 9x increase). Countries with active jihadist groups tripled from 12 to 40+. After 20 years and $2.3 trillion in Afghanistan, the Taliban retook the country in 11 days. Whether this makes you safer or just makes defence contractors richer is a question your political system is structurally incapable of asking.',
     icon: '🛡️',
@@ -360,7 +360,7 @@ export const US_PRIORITY_ITEMS = {
 
   // ─── ACTIVE WARS & CONFLICTS ─────────────────────────────────────────
   BOMBING_IRAN: {
-    id: 'bombing_iran',
+    slug: 'bombing_iran',
     name: 'Bombing Iran',
     description: 'Operation Epic Fury costs roughly $1 billion per day in airstrikes, cruise missiles, and naval operations. You burned $5.6 billion in munitions in the first two days. Your previous adventures in Iraq and Afghanistan cost $8 trillion, killed 400,000-900,000 civilians, displaced 38 million people, and created ISIS — which did not exist before the 2003 invasion. The Taliban retook Afghanistan in 11 days after 20 years and $2.3 trillion. But I am sure this time will be different.',
     icon: '💣',
@@ -384,7 +384,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   ISRAEL_GAZA_MILITARY_AID: {
-    id: 'israel_gaza_aid',
+    slug: 'israel_gaza_aid',
     name: "Military Aid for Israel's War in Gaza",
     description: 'Twenty-one point seven billion dollars in weapons and munitions since October 2023, funding operations that UN experts have characterised as genocide, with over 65,000 Palestinian civilians killed. The diplomatic cost to the US is incalculable. On my planet, paying for someone else\'s war crimes is also considered a war crime. Here you call it "strategic alliance."',
     icon: '🇮🇱',
@@ -406,7 +406,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   YEMEN_HOUTHI_STRIKES: {
-    id: 'yemen_houthi',
+    slug: 'yemen_houthi',
     name: 'Yemen & Houthi Military Strikes',
     description: 'Operation Rough Rider fires $2 million Tomahawk missiles at groups using $2,000 drones. The Houthi attacks on shipping persist despite the strikes, which means you are spending $2 million to not solve a $2,000 problem. This is the military equivalent of hiring a Michelin-star chef to burn toast.',
     icon: '🚢',
@@ -430,7 +430,7 @@ export const US_PRIORITY_ITEMS = {
 
   // ─── CORPORATE & SURVEILLANCE ────────────────────────────────────────
   CORPORATE_WELFARE: {
-    id: 'corporate_welfare',
+    slug: 'corporate_welfare',
     name: 'Corporate Welfare & Bailouts',
     description: '$188 billion a year in federal corporate tax expenditures alone. Boeing: $16 billion in subsidies. Foxconn promised Wisconsin 13,000 jobs for $4.5 billion in incentives and delivered 1,454. Studies show 75-98% of subsidised projects would have happened without the incentive. Michigan\'s job subsidy programmes delivered 9% of promised jobs. These are the richest entities in human history receiving public money because they have better lobbyists than you have representatives.',
     icon: '🏦',
@@ -458,7 +458,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   AI_MASS_SURVEILLANCE: {
-    id: 'ai_surveillance',
+    slug: 'ai_surveillance',
     name: 'AI Mass Surveillance Programs',
     description: 'Your government is spending billions on AI to track its own citizens. The NSA\'s bulk collection programme was reviewed by the Privacy and Civil Liberties Oversight Board, which found "not a single instance" where it made a concrete difference in a counterterrorism investigation. Facial recognition misidentifies Black faces at 10-100x the rate of white faces. The marginal cost per real terrorist detected via bulk surveillance exceeds $14 billion. You are building a panopticon that does not work and disproportionately harms minorities.',
     icon: '👁️',
@@ -484,7 +484,7 @@ export const US_PRIORITY_ITEMS = {
     jurisdictionCode: 'USA',
   },
   POLICING_VIOLENT_CRIME: {
-    id: 'policing_violent_crime',
+    slug: 'policing_violent_crime',
     name: 'Solving Actual Violent Crime',
     description: 'Your police solve roughly 50% of murders, 30% of arsons, and a staggering 14% of burglaries. Nearly half of all killers simply get away with it. Meanwhile your law enforcement budget is heavily allocated to drug offences and immigration enforcement rather than, you know, solving the crimes that already happened. The clearance rate for rape kits is somehow even more depressing. Perhaps try catching actual criminals before expanding into new hobbies.',
     icon: '🔍',

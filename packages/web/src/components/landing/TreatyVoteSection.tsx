@@ -19,6 +19,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MILITARY_VS_MEDICAL_RESEARCH_RATIO } from "@/lib/parameters-calculations-citations";
 import { trackSliderSubmitted, trackVoteSubmitted } from "@/lib/analytics";
 import { VOTE_SECTION } from "@/lib/messaging";
+import {
+  buildTreatyWishocraticComparison,
+  getMilitaryAllocationPercentFromPendingVote,
+  getTreatyWishocraticComparison,
+} from "@/lib/treaty-vote";
 
 const militaryToMedicalRatioFormatted = `$${MILITARY_VS_MEDICAL_RESEARCH_RATIO.value.toFixed(2)}`;
 const militarySpendingPct = Math.round(
@@ -45,8 +50,10 @@ export default function TreatyVoteSection() {
   // Restore state from localStorage on mount
   useEffect(() => {
     const pendingVote = storage.getPendingVote();
-    if (pendingVote?.militaryAllocationPercent !== undefined) {
-      setMilitaryAllocation(pendingVote.militaryAllocationPercent);
+    const pendingMilitaryAllocation = getMilitaryAllocationPercentFromPendingVote(pendingVote);
+
+    if (pendingVote && pendingMilitaryAllocation !== null) {
+      setMilitaryAllocation(pendingMilitaryAllocation);
       setSliderSubmitted(true);
       setShowSlider(false);
       setUserHasDragged(true);
@@ -167,17 +174,24 @@ export default function TreatyVoteSection() {
   };
 
   const handleSliderSubmit = () => {
-    const referralCode = searchParams?.get("ref") || null;
+    const existingVote = storage.getPendingVote();
+    const referralCode = searchParams?.get("ref") || existingVote?.referredBy || null;
+    const timestamp = existingVote?.timestamp || new Date().toISOString();
+
     storage.setPendingVote({
-      answer: "",
+      answer: existingVote?.answer ?? "",
       referredBy: referralCode,
-      timestamp: new Date().toISOString(),
-      militaryAllocationPercent: militaryAllocation,
-      organizationId: null,
+      timestamp,
+      wishocraticComparison: buildTreatyWishocraticComparison(militaryAllocation, timestamp),
+      organizationId: existingVote?.organizationId ?? null,
     });
     trackSliderSubmitted({ militaryAllocationPercent: militaryAllocation });
     setSliderSubmitted(true);
     setShowSlider(false);
+
+    if (status === "authenticated" && session) {
+      void syncPendingVote(session);
+    }
   };
 
   const clinicalTrialsAllocation = 100 - militaryAllocation;
@@ -195,15 +209,17 @@ export default function TreatyVoteSection() {
     }
 
     const existingVote = storage.getPendingVote();
-    const referralCode = searchParams?.get("ref") || null;
+    const referralCode = searchParams?.get("ref") || existingVote?.referredBy || null;
+    const timestamp = existingVote?.timestamp || new Date().toISOString();
 
     storage.setPendingVote({
       answer: choice.toUpperCase(),
       referredBy: referralCode,
-      timestamp: existingVote?.timestamp || new Date().toISOString(),
-      militaryAllocationPercent:
-        existingVote?.militaryAllocationPercent ?? militaryAllocation,
-      organizationId: null,
+      timestamp,
+      wishocraticComparison:
+        getTreatyWishocraticComparison(existingVote) ??
+        buildTreatyWishocraticComparison(militaryAllocation, timestamp),
+      organizationId: existingVote?.organizationId ?? null,
     });
 
     storage.clearVoteStatusCache();

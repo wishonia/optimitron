@@ -1,3 +1,5 @@
+import type { WishocraticComparisonInput } from "@/lib/wishocracy-comparison";
+
 const STORAGE_KEYS = {
   signupName: "signup_name",
   signupReferral: "signup_referral",
@@ -9,11 +11,17 @@ const STORAGE_KEYS = {
   chatProvider: "opto-chat-provider",
 } as const;
 
+export type PendingVoteComparison = WishocraticComparisonInput & {
+  timestamp: string;
+};
+
 export type PendingVoteData = {
   answer: string;
   referredBy: string | null;
   timestamp: string;
-  militaryAllocationPercent: number;
+  wishocraticComparison?: PendingVoteComparison;
+  /** Legacy fallback for localStorage entries written before canonical comparison storage. */
+  militaryAllocationPercent?: number;
   organizationId: string | null;
 };
 

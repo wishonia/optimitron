@@ -30,6 +30,8 @@ export interface EfficiencyContext {
 }
 
 export interface EnrichedPriorityItem extends Item {
+  /** Stable lowercase slug for URLs, aliases, and display integration. */
+  slug: string;
   /** OBG efficiency data (null if no OECD mapping for this item's fiscal categories) */
   efficiencyContext: EfficiencyContext | null;
   /** ROI ratio from source data (e.g., "45:1", "Negative ROI") */
@@ -114,8 +116,9 @@ export function buildEnrichedPriorityItems(): Record<USPriorityItemId, EnrichedP
 
   for (const [key, item] of Object.entries(US_PRIORITY_ITEMS)) {
     result[key] = {
-      // Item interface fields (for wishocracy library compatibility)
-      id: item.id,
+      // Wishocracy Item.id should be the canonical persisted BudgetCategoryId.
+      id: key,
+      slug: item.slug,
       name: item.name,
       description: item.description,
       currentAllocationUsd: item.annualBudgetBillions * 1e9,
