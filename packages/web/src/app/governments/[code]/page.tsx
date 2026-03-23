@@ -6,10 +6,12 @@ import {
   getGovernment,
   getGovernmentsByHALE,
   getMilitaryToHealthRatio,
+  getAgencyPerformanceByCountry,
 } from "@optimitron/data";
 import { GameCTA } from "@/components/ui/game-cta";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { HumanityScoreboard } from "@/components/shared/HumanityScoreboard";
+import { AgencyGradeChart } from "@/components/shared/AgencyGradeChart";
 import {
   GLOBAL_HALE_CURRENT,
   TREATY_PROJECTED_HALE_YEAR_15,
@@ -394,6 +396,29 @@ export default async function GovernmentDetailPage({ params }: PageProps) {
           )}
         </div>
       </section>
+
+      {/* Agency Performance Grades */}
+      {(() => {
+        const agencies = getAgencyPerformanceByCountry(gov.code);
+        if (agencies.length === 0) return null;
+        return (
+          <section className="mb-12">
+            <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-2">
+              Agency Report Cards
+            </h2>
+            <p className="text-base font-bold text-muted-foreground mb-6">
+              Spending over time vs. outcomes over time. If the lines diverge —
+              spending up, outcomes flat or worse — the agency is failing its
+              mission. Letter grade is computed from trend analysis.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {agencies.map((agency) => (
+                <AgencyGradeChart key={agency.agencyId} agency={agency} />
+              ))}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* CTA */}
       <section className="border-4 border-primary bg-brutal-cyan p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">

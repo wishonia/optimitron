@@ -35,6 +35,7 @@ export * from './natural-experiments.js';
 // import from '@optimitron/data/datasets/aggregated-nof1-drug-enforcement'
 export * from './monetary-policy-panel.js';
 export * from './government-report-cards.js';
+export * from './agency-performance.js';
 export * from './median-income-series.js';
 export * from './us-policy-recommendations.js';
 export * from './oecd-category-mappings.js';
