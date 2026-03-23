@@ -4,7 +4,46 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BUDGET_CATEGORIES, BudgetCategoryId } from "@/lib/wishocracy-data"
+import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data"
+import { buildEnrichedPriorityItems, type EfficiencyContext } from "@/lib/wishocracy-bridge"
+
+const enrichedItems = buildEnrichedPriorityItems()
+
+function EfficiencyTag({ context, roiRatio, annualBudgetBillions }: {
+  context: EfficiencyContext | null
+  roiRatio: string | null
+  annualBudgetBillions: number
+}) {
+  const [expanded, setExpanded] = useState(false)
+
+  const tags: string[] = []
+  if (annualBudgetBillions > 0) tags.push(`$${annualBudgetBillions}B/yr`)
+  if (roiRatio) tags.push(`ROI: ${roiRatio}`)
+  if (context && context.overspendRatio > 1.2) tags.push(`${context.overspendRatio}x overspend`)
+
+  if (tags.length === 0) return null
+
+  return (
+    <div className="mt-2">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="text-[10px] font-bold uppercase text-muted-foreground hover:text-brutal-pink transition-colors"
+      >
+        {tags.join(' · ')} {expanded ? '▲' : '▼'}
+      </button>
+      {expanded && context && (
+        <div className="mt-1 text-[10px] text-muted-foreground space-y-0.5">
+          <div>Efficiency rank: {context.efficiencyRank}</div>
+          <div>Best: {context.bestCountryName} (${context.bestCountrySpendingPerCapita}/cap)</div>
+          <div>US: ${context.usSpendingPerCapita}/cap · Outcome: {context.outcomeName}</div>
+          {context.potentialSavingsBillions > 0 && (
+            <div>Potential savings: ${Math.round(context.potentialSavingsBillions)}B/yr</div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function TruncatedDescription({ text, sources }: { text: string; sources?: readonly { name: string; url: string }[] }) {
   const [expanded, setExpanded] = useState(false)
@@ -207,13 +246,27 @@ export function BudgetPairSlider({
           />
         </div>
 
-        {/* Descriptions Below Slider */}
+        {/* Descriptions + Efficiency Context Below Slider */}
         <div className="flex justify-between gap-4">
           <div className="flex-1 text-center">
             <TruncatedDescription text={catA.description} sources={catA.sources} />
+            {enrichedItems[categoryA] && (
+              <EfficiencyTag
+                context={enrichedItems[categoryA].efficiencyContext}
+                roiRatio={enrichedItems[categoryA].roiRatio}
+                annualBudgetBillions={enrichedItems[categoryA].annualBudgetBillions}
+              />
+            )}
           </div>
           <div className="flex-1 text-center">
             <TruncatedDescription text={catB.description} sources={catB.sources} />
+            {enrichedItems[categoryB] && (
+              <EfficiencyTag
+                context={enrichedItems[categoryB].efficiencyContext}
+                roiRatio={enrichedItems[categoryB].roiRatio}
+                annualBudgetBillions={enrichedItems[categoryB].annualBudgetBillions}
+              />
+            )}
           </div>
         </div>
       </div>

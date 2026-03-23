@@ -17,70 +17,13 @@
  * - "percentOfTotal" is of total federal outlays (~$6.9T FY2025 estimate)
  */
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-
-export interface OutcomeMetric {
-  /** Human-readable metric name */
-  name: string;
-  /** Numeric value */
-  value: number;
-  /** Unit of measurement (e.g. "per 100K", "%", "rank") */
-  unit: string;
-  /** Year the metric was measured */
-  year: number;
-  /** Authoritative data source */
-  source: string;
-  /** Direction of recent trend */
-  trend: 'improving' | 'declining' | 'stable';
-}
-
-export interface HistoricalSpending {
-  year: number;
-  /** Outlays in billions of current-year USD */
-  amount: number;
-}
-
-export interface BudgetCategory {
-  /** Category name */
-  name: string;
-  /** FY2025 outlays in billions of nominal USD */
-  spendingBillions: number;
-  /** Percent of total federal outlays */
-  percentOfTotal: number;
-  /** Whether this is mandatory or discretionary spending */
-  type: 'mandatory' | 'discretionary' | 'net_interest';
-  /** Historical outlays FY2015-FY2025 */
-  historicalSpending: HistoricalSpending[];
-  /** Real-world outcome metrics tied to this spending area */
-  outcomeMetrics: OutcomeMetric[];
-}
-
-export interface FederalBudgetDataset {
-  /** Fiscal year of the primary snapshot */
-  fiscalYear: number;
-  /** Total federal outlays in billions USD */
-  totalOutlays: number;
-  /** Total federal revenues in billions USD */
-  totalRevenues: number;
-  /** Deficit (negative) or surplus in billions USD */
-  deficit: number;
-  /** Gross federal debt in billions USD */
-  grossDebt: number;
-  /** GDP in billions USD for context */
-  gdp: number;
-  /** Budget categories with spending and outcomes */
-  categories: BudgetCategory[];
-  /** Data sources and methodology notes */
-  metadata: {
-    sources: string[];
-    methodology: string;
-    lastUpdated: string;
-  };
-}
+import type { JurisdictionBudget, BudgetCategory, OutcomeMetric, HistoricalSpending } from './jurisdiction-budget.js';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-export const US_FEDERAL_BUDGET: FederalBudgetDataset = {
+export const US_FEDERAL_BUDGET: JurisdictionBudget = {
+  jurisdictionCode: 'USA',
+  population: 339_000_000,
   fiscalYear: 2025,
   totalOutlays: 6872,
   totalRevenues: 4959,
@@ -1290,8 +1233,9 @@ export function getHistoricalSeries(
 export function getSpendingCAGR(categoryName: string): number | undefined {
   const series = getHistoricalSeries(categoryName);
   if (!series || series.length < 2) return undefined;
-  const first = series[0]!;
-  const last = series[series.length - 1]!;
+  const first = series[0];
+  const last = series[series.length - 1];
+  if (!first || !last) return undefined;
   const years = last.year - first.year;
   if (years === 0 || first.amount === 0) return undefined;
   return Math.pow(last.amount / first.amount, 1 / years) - 1;

@@ -45,7 +45,7 @@
   },
   "lint-staged": {
     "packages/*/src/**/*.ts": [
-      "npx eslint --fix"
+      "npx eslint --fix --no-warn-ignored"
     ],
     "packages/db/prisma/**/*.prisma": [
       "pnpm --filter @optimitron/db exec prisma validate",

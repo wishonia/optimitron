@@ -31,6 +31,7 @@
     "test:integration": "pnpm run build:deps && vitest run src/integration-tests/"
   },
   "dependencies": {
+    "zod": "^3.22.4",
     "@optimitron/agent": "workspace:*",
     "@optimitron/data": "workspace:*",
     "@optimitron/hypercerts": "workspace:*",

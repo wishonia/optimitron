@@ -21,10 +21,8 @@ import {
   type CountryEducationData,
   type CountryCriminalJustice,
 } from './international-comparisons.js';
-import {
-  US_FEDERAL_BUDGET,
-  type BudgetCategory,
-} from './us-federal-budget.js';
+import { US_FEDERAL_BUDGET } from './us-federal-budget.js';
+import type { BudgetCategory } from './jurisdiction-budget.js';
 import {
   OECD_BUDGET_PANEL,
   type OECDBudgetPanelDataPoint,

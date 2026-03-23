@@ -253,14 +253,14 @@ export async function draftLegislation(
   const sources: GroundingSource[] = (metadata?.groundingChunks ?? [])
     .filter(c => c.web)
     .map(c => ({
-      url: c.web!.uri,
-      domain: c.web!.title,
+      url: c.web?.uri ?? '',
+      domain: c.web?.title ?? '',
     }));
 
   const citations: CitedClaim[] = (metadata?.groundingSupports ?? [])
     .filter(s => s.segment?.text)
     .map(s => ({
-      text: s.segment!.text,
+      text: s.segment?.text ?? '',
       sourceIndices: s.groundingChunkIndices ?? [],
       confidence: s.confidenceScores ?? [],
     }));
@@ -352,7 +352,8 @@ export function generateSourceFootnotes(draft: LegislationDraft): string {
 
   const lines = ['## Sources\n'];
   for (let i = 0; i < draft.sources.length; i++) {
-    const s = draft.sources[i]!;
+    const s = draft.sources[i];
+    if (!s) continue;
     lines.push(`${i + 1}. [${s.domain}](${s.url})`);
   }
   return lines.join('\n');

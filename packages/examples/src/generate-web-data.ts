@@ -33,14 +33,15 @@ import {
   fitLogModel,
   fitSaturationModel,
   analyzeEfficiency,
+  EfficiencyAnalysisSchema,
   type DiminishingReturnsModel,
   type EfficiencyAnalysis,
 } from '@optimitron/obg';
+import { z } from 'zod';
 
 // Data imports
 import {
   US_FEDERAL_BUDGET,
-  OECD_BUDGET_PANEL,
   toRealPerCapita,
   historicalToRealPerCapita,
   oecdBudgetPanelToSpendingOutcome,
@@ -73,28 +74,71 @@ type OECDMapping = OECDCategoryMapping;
 
 // ─── Budget Analysis (OBG) ──────────────────────────────────────────
 
-interface BudgetCategoryOutput {
-  name: string;
-  currentSpending: number;
-  currentSpendingRealPerCapita: number;
-  optimalSpendingPerCapita: number | null;
-  optimalSpendingNominal: number | null;
-  gap: number;
-  gapPercent: number;
-  recommendation: string;
-  evidenceSource: string;
-  outcomeMetrics: { name: string; value: number; trend: string }[];
-  historicalRealPerCapita: { year: number; nominalBillions: number; realPerCapita: number }[];
-  diminishingReturns: {
-    modelType: string;
-    r2: number;
-    n: number;
-    marginalReturn: number;
-    elasticity: number | null;
-    outcomeName: string;
-  } | null;
-  efficiency: EfficiencyAnalysis | null;
-}
+export const BudgetCategoryOutputSchema = z.object({
+  name: z.string(),
+  currentSpending: z.number(),
+  currentSpendingRealPerCapita: z.number(),
+  optimalSpendingPerCapita: z.number().nullable(),
+  optimalSpendingNominal: z.number().nullable(),
+  gap: z.number(),
+  gapPercent: z.number(),
+  recommendation: z.string(),
+  evidenceSource: z.string(),
+  outcomeMetrics: z.array(z.object({ name: z.string(), value: z.number(), trend: z.string() })),
+  historicalRealPerCapita: z.array(z.object({ year: z.number(), nominalBillions: z.number(), realPerCapita: z.number() })),
+  diminishingReturns: z.object({
+    modelType: z.string(),
+    r2: z.number(),
+    n: z.number(),
+    marginalReturn: z.number(),
+    elasticity: z.number().nullable(),
+    outcomeName: z.string(),
+  }).nullable(),
+  efficiency: EfficiencyAnalysisSchema.nullable(),
+});
+export type BudgetCategoryOutput = z.infer<typeof BudgetCategoryOutputSchema>;
+
+export const BudgetAnalysisOutputSchema = z.object({
+  jurisdiction: z.string(),
+  totalSpendingNominal: z.number(),
+  categories: z.array(BudgetCategoryOutputSchema),
+  topRecommendations: z.array(z.string()),
+  generatedAt: z.string(),
+  generatedBy: z.string(),
+  inflationAdjustment: z.record(z.unknown()),
+  methodology: z.record(z.unknown()),
+  note: z.string(),
+});
+export type BudgetAnalysisOutput = z.infer<typeof BudgetAnalysisOutputSchema>;
+
+export const PolicyOutputSchema = z.object({
+  name: z.string(),
+  type: z.string(),
+  category: z.string(),
+  description: z.string(),
+  recommendationType: z.string(),
+  evidenceGrade: z.string(),
+  causalConfidenceScore: z.number(),
+  policyImpactScore: z.number(),
+  welfareScore: z.number(),
+  incomeEffect: z.number(),
+  healthEffect: z.number(),
+  bradfordHillScores: z.record(z.number()),
+  rationale: z.string(),
+  currentStatus: z.string(),
+  recommendedTarget: z.string(),
+  blockingFactors: z.array(z.string()),
+});
+export type PolicyOutput = z.infer<typeof PolicyOutputSchema>;
+
+export const PolicyAnalysisOutputSchema = z.object({
+  jurisdiction: z.string(),
+  policies: z.array(PolicyOutputSchema),
+  generatedAt: z.string(),
+  generatedBy: z.string(),
+  note: z.string(),
+});
+export type PolicyAnalysisOutput = z.infer<typeof PolicyAnalysisOutputSchema>;
 
 /** Convert OECD panel data to SpendingOutcomePoint[], run OBG efficiency analysis. */
 function runEfficiencyAnalysis(mapping: OECDMapping): EfficiencyAnalysis | null {
@@ -238,7 +282,7 @@ function generateBudgetAnalysis() {
   const seenSpendingFields = new Set<string>();
   const withEfficiency = categories
     .filter(c => c.efficiency !== null)
-    .sort((a, b) => (b.efficiency!.overspendRatio) - (a.efficiency!.overspendRatio))
+    .sort((a, b) => (b.efficiency?.overspendRatio ?? 0) - (a.efficiency?.overspendRatio ?? 0))
     .filter(c => {
       const mapping = OECD_MAPPINGS[c.name];
       if (!mapping) return true;
@@ -250,7 +294,8 @@ function generateBudgetAnalysis() {
   const topRecommendations = withEfficiency
     .slice(0, 10)
     .map(c => {
-      const e = c.efficiency!;
+      const e = c.efficiency;
+      if (!e) return '';
       const savings = e.potentialSavingsTotal;
       const fmtSavings = savings >= 1e12 ? `$${(savings/1e12).toFixed(1)}T` : `$${(savings/1e9).toFixed(0)}B`;
       if (e.overspendRatio > 1.2) {
@@ -309,7 +354,8 @@ function generateEfficiencyPolicies(budgetCategories: BudgetCategoryOutput[]): P
   return budgetCategories
     .filter(c => c.efficiency && c.efficiency.overspendRatio >= 1.5)
     .map(c => {
-      const e = c.efficiency!;
+      const e = c.efficiency;
+      if (!e) return null;
       const savingsPerHH = Math.round(e.potentialSavingsTotal / HOUSEHOLDS);
       const incomeEffect = savingsPerHH / MEDIAN_INCOME;
 
@@ -417,24 +463,24 @@ function generatePolicyAnalysis(budgetCategories: BudgetCategoryOutput[]) {
 
 // ─── Main ────────────────────────────────────────────────────────────
 
-console.log('Generating budget analysis...');
+console.warn('Generating budget analysis...');
 const budgetAnalysis = generateBudgetAnalysis();
 writeFileSync(
   resolve(dataDir, 'us-budget-analysis.json'),
   JSON.stringify(budgetAnalysis, null, 2)
 );
-console.log(`  ✅ ${budgetAnalysis.categories.length} categories → us-budget-analysis.json`);
+console.warn(`  ✅ ${budgetAnalysis.categories.length} categories → us-budget-analysis.json`);
 
 const withOSL = budgetAnalysis.categories.filter(c => c.diminishingReturns !== null);
 const withRecs = budgetAnalysis.categories.filter(c => c.recommendation !== 'maintain');
-console.log(`  📊 ${withOSL.length} with OECD-backed OSL, ${withRecs.length} with non-maintain recommendations`);
+console.warn(`  📊 ${withOSL.length} with OECD-backed OSL, ${withRecs.length} with non-maintain recommendations`);
 
-console.log('\nGenerating policy analysis...');
+console.warn('\nGenerating policy analysis...');
 const policyAnalysis = generatePolicyAnalysis(budgetAnalysis.categories);
 writeFileSync(
   resolve(dataDir, 'us-policy-analysis.json'),
   JSON.stringify(policyAnalysis, null, 2)
 );
-console.log(`  ✅ ${policyAnalysis.policies.length} policies → us-policy-analysis.json`);
+console.warn(`  ✅ ${policyAnalysis.policies.length} policies → us-policy-analysis.json`);
 
-console.log('\nDone! Data generated from real OPG/OBG libraries + OECD cross-country data.');
+console.warn('\nDone! Data generated from real OPG/OBG libraries + OECD cross-country data.');

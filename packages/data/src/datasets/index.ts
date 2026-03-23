@@ -4,7 +4,9 @@
  * Static, evidence-based datasets compiled from public sources.
  */
 
+export * from './jurisdiction-budget.js';
 export * from './us-federal-budget.js';
+export * from './us-priority-items.js';
 export * from './us-policies.js';
 export * from './international-comparisons.js';
 export * from './policy-exemplars.js';

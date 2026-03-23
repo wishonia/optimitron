@@ -11,6 +11,8 @@
 import { writeFileSync, readFileSync, existsSync, mkdirSync, rmSync, readdirSync } from 'fs';
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import type { EfficiencyAnalysis } from '@optimitron/obg';
+import { BudgetAnalysisOutputSchema, PolicyAnalysisOutputSchema, type BudgetCategoryOutput } from './generate-web-data.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const WEB_DATA = resolve(__dirname, '../../web/src/data');
@@ -40,8 +42,8 @@ function cleanSiteDir() {
 
 // ─── Load Data ──────────────────────────────────────────────────────
 
-const budgetData = JSON.parse(readFileSync(resolve(WEB_DATA, 'us-budget-analysis.json'), 'utf-8'));
-const policyData = JSON.parse(readFileSync(resolve(WEB_DATA, 'us-policy-analysis.json'), 'utf-8'));
+const budgetData = BudgetAnalysisOutputSchema.parse(JSON.parse(readFileSync(resolve(WEB_DATA, 'us-budget-analysis.json'), 'utf-8')));
+const policyData = PolicyAnalysisOutputSchema.parse(JSON.parse(readFileSync(resolve(WEB_DATA, 'us-policy-analysis.json'), 'utf-8')));
 
 function slugify(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
@@ -77,9 +79,15 @@ const OECD_FIELD_MAP: Record<string, string> = {
   'Military': 'military', 'Social Security': 'social', 'Education': 'education', 'Science / NASA': 'rd',
 };
 
-function deduplicateByOECDField(categories: any[]): any[] {
+type BudgetCategoryWithEfficiency = BudgetCategoryOutput & { efficiency: EfficiencyAnalysis };
+
+function hasEfficiency(c: BudgetCategoryOutput): c is BudgetCategoryWithEfficiency {
+  return c.efficiency !== null;
+}
+
+function deduplicateByOECDField(categories: BudgetCategoryWithEfficiency[]): BudgetCategoryWithEfficiency[] {
   const seen = new Set<string>();
-  return categories.filter((c: any) => {
+  return categories.filter((c) => {
     const field = OECD_FIELD_MAP[c.name];
     if (!field) return true;
     if (seen.has(field)) return false;
@@ -101,17 +109,17 @@ const POLICY_TO_LEGISLATION: Record<string, string> = {
 // ─── Index Page ─────────────────────────────────────────────────────
 
 function generateIndex() {
-  const withEfficiency = budgetData.categories.filter((c: any) => c.efficiency);
+  const withEfficiency = budgetData.categories.filter(hasEfficiency);
   const dedupForTotal = deduplicateByOECDField(withEfficiency);
-  const totalWasted = dedupForTotal.reduce((sum: number, c: any) => sum + c.efficiency.potentialSavingsTotal, 0);
+  const totalWasted = dedupForTotal.reduce((sum, c) => sum + c.efficiency.potentialSavingsTotal, 0);
 
   const perAdult = Math.round(totalWasted / JURISDICTION.adults);
   const perMonth = Math.round(perAdult / 12);
 
   // Build quick dividend breakdown for the hero
   const dividendRows = dedupForTotal
-    .sort((a: any, b: any) => b.efficiency.potentialSavingsTotal - a.efficiency.potentialSavingsTotal)
-    .map((c: any) => {
+    .sort((a, b) => b.efficiency.potentialSavingsTotal - a.efficiency.potentialSavingsTotal)
+    .map((c) => {
       const e = c.efficiency;
       const pa = Math.round(e.potentialSavingsTotal / JURISDICTION.adults);
       const pm = Math.round(pa / 12);
@@ -139,7 +147,7 @@ Don't like a reform? [Redirect your dividend](./dividend/) to any program you ch
 
 ## The Evidence
 
-${budgetData.categories.length} budget categories analyzed against ${withEfficiency.length > 0 ? withEfficiency[0].efficiency.totalCountries : 28} countries including Singapore, Japan, South Korea, and Switzerland.
+${budgetData.categories.length} budget categories analyzed against ${withEfficiency[0]?.efficiency.totalCountries ?? 28} countries including Singapore, Japan, South Korea, and Switzerland.
 
 ${budgetData.topRecommendations.map((r: string, i: number) => `${i + 1}. ${r}`).join('\n')}
 
@@ -163,7 +171,7 @@ ${budgetData.topRecommendations.map((r: string, i: number) => `${i + 1}. ${r}`).
 function generateBudgetIndex() {
   const cats = budgetData.categories;
 
-  const rows = cats.map((c: any) => {
+  const rows = cats.map((c) => {
     const eff = c.efficiency;
     const slug = slugify(c.name);
     const rank = eff ? `${eff.rank}/${eff.totalCountries}` : '—';
@@ -264,7 +272,7 @@ layout: layout.njk
       md += `- Model: ${dr.modelType}\n`;
       md += `- R²: ${dr.r2}\n`;
       md += `- Observations: ${dr.n}\n`;
-      if (dr.elasticity != null) md += `- Elasticity: ${dr.elasticity} (1% spending → ${dr.elasticity}% ${dr.outcomeName})\n`;
+      if (dr.elasticity !== null) md += `- Elasticity: ${dr.elasticity} (1% spending → ${dr.elasticity}% ${dr.outcomeName})\n`;
       md += `\n`;
     }
 
@@ -301,7 +309,7 @@ layout: layout.njk
     if (eff && eff.overspendRatio >= 1.5) {
       const perAdult = Math.round(eff.potentialSavingsTotal / JURISDICTION.adults);
       const perMonth = Math.round(perAdult / 12);
-      const topNames = eff.topEfficient.map((t: any) => t.name).join(', ');
+      const topNames = eff.topEfficient.map((t) => t.name).join(', ');
       const best = eff.topEfficient[0];
 
       // Wishonia one-liner
@@ -354,7 +362,7 @@ layout: layout.njk
 // ─── Policy Index ───────────────────────────────────────────────────
 
 function generatePolicyIndex() {
-  const rows = policyData.policies.map((p: any) => {
+  const rows = policyData.policies.map((p) => {
     const slug = slugify(p.name);
     const income = Math.round(p.incomeEffect * US_MEDIAN_INCOME);
     const hale = Math.round(p.healthEffect * 12 * 10);
@@ -422,7 +430,7 @@ layout: layout.njk
     md += `## Bradford Hill Scores\n\n`;
     md += `| Criterion | Score |\n|-----------|-------|\n`;
     for (const [k, v] of Object.entries(p.bradfordHillScores)) {
-      md += `| ${k} | ${((v as number) * 100).toFixed(0)}% |\n`;
+      md += `| ${k} | ${(v * 100).toFixed(0)}% |\n`;
     }
     md += '\n';
 
@@ -470,7 +478,7 @@ Each bill is generated by Gemini with Google Search grounding. Every factual cla
 `;
 
   for (const [catName, legSlug] of entries) {
-    const cat = budgetData.categories.find((c: any) => c.name === catName);
+    const cat = budgetData.categories.find((c) => c.name === catName);
     const eff = cat?.efficiency;
     md += `| [${catName} Reform](./${legSlug}/) | ${catName} | ${eff ? eff.overspendRatio + 'x' : '—'} | ${eff ? fmt(eff.potentialSavingsTotal) + '/yr' : '—'} |\n`;
   }
@@ -516,9 +524,9 @@ ${content}
 // ─── Efficiency Index ───────────────────────────────────────────────
 
 function generateEfficiencyIndex() {
-  const withEff = budgetData.categories.filter((c: any) => c.efficiency);
+  const withEff = budgetData.categories.filter(hasEfficiency);
   const dedupForTotal = deduplicateByOECDField(withEff);
-  const totalWasted = dedupForTotal.reduce((sum: number, c: any) => sum + c.efficiency.potentialSavingsTotal, 0);
+  const totalWasted = dedupForTotal.reduce((sum, c) => sum + c.efficiency.potentialSavingsTotal, 0);
   const perAdult = Math.round(totalWasted / 258_000_000);
 
   let md = `---
@@ -538,10 +546,9 @@ The ${JURISDICTION.name} compared to 23 OECD countries across ${withEff.length} 
 |----------|----------|------|-------|-----------|-----------|--------------|
 `;
 
-  for (const c of withEff.sort((a: any, b: any) => b.efficiency.overspendRatio - a.efficiency.overspendRatio)) {
-    const e = c.efficiency;
+  for (const c of withEff.sort((a, b) => b.efficiency.overspendRatio - a.efficiency.overspendRatio)) {
     const slug = slugify(c.name);
-    md += `| [${c.name}](../budget/${slug}/) | $${e.spendingPerCapita} | ${e.rank}/${e.totalCountries} | $${e.floorSpendingPerCapita} | **${e.overspendRatio}x** | ${fmt(e.potentialSavingsTotal)} | ${e.bestCountry.name} ($${e.bestCountry.spendingPerCapita}) |\n`;
+    md += `| [${c.name}](../budget/${slug}/) | $${c.efficiency.spendingPerCapita} | ${c.efficiency.rank}/${c.efficiency.totalCountries} | $${c.efficiency.floorSpendingPerCapita} | **${c.efficiency.overspendRatio}x** | ${fmt(c.efficiency.potentialSavingsTotal)} | ${c.efficiency.bestCountry.name} ($${c.efficiency.bestCountry.spendingPerCapita}) |\n`;
   }
 
   md += `\n## Related\n\n`;
@@ -555,9 +562,9 @@ The ${JURISDICTION.name} compared to 23 OECD countries across ${withEff.length} 
 // ─── Dividend Page ──────────────────────────────────────────────────
 
 function generateDividendPage() {
-  const withEff = budgetData.categories.filter((c: any) => c.efficiency && c.efficiency.overspendRatio >= 1.5);
+  const withEff = budgetData.categories.filter(hasEfficiency).filter(c => c.efficiency.overspendRatio >= 1.5);
   const deduplicated = deduplicateByOECDField(
-    withEff.sort((a: any, b: any) => b.efficiency.overspendRatio - a.efficiency.overspendRatio)
+    withEff.sort((a, b) => b.efficiency.overspendRatio - a.efficiency.overspendRatio)
   );
   const adults = JURISDICTION.adults;
 
@@ -671,43 +678,43 @@ These are the ONLY evaluation criteria. Using the **median** (not mean) prevents
 
 // ─── Main ───────────────────────────────────────────────────────────
 
-console.log('Cleaning old reports...');
+console.warn('Cleaning old reports...');
 cleanSiteDir();
 
-console.log('Generating analysis site...\n');
+console.warn('Generating analysis site...\n');
 
 generateIndex();
-console.log('  ✅ index.md');
+console.warn('  ✅ index.md');
 
 generateBudgetIndex();
-console.log('  ✅ budget/index.md');
+console.warn('  ✅ budget/index.md');
 
 generateBudgetDetails();
-console.log(`  ✅ budget/ — ${budgetData.categories.length} category detail pages`);
+console.warn(`  ✅ budget/ — ${budgetData.categories.length} category detail pages`);
 
 generatePolicyIndex();
-console.log('  ✅ policies/index.md');
+console.warn('  ✅ policies/index.md');
 
 generatePolicyDetails();
-console.log(`  ✅ policies/ — ${policyData.policies.length} policy detail pages`);
+console.warn(`  ✅ policies/ — ${policyData.policies.length} policy detail pages`);
 
 generateLegislationIndex();
-console.log('  ✅ legislation/index.md');
+console.warn('  ✅ legislation/index.md');
 
 generateLegislationDetails();
 const legCount = Object.values(LEGISLATION_MAP).filter(slug =>
   existsSync(resolve(LEGISLATION_DIR, `${slug}.md`))
 ).length;
-console.log(`  ✅ legislation/ — ${legCount} bill detail pages`);
+console.warn(`  ✅ legislation/ — ${legCount} bill detail pages`);
 
 generateEfficiencyIndex();
-console.log('  ✅ efficiency/index.md');
+console.warn('  ✅ efficiency/index.md');
 
 generateDividendPage();
-console.log('  ✅ dividend/index.md');
+console.warn('  ✅ dividend/index.md');
 
 generateEvaluationPage();
-console.log('  ✅ evaluation/index.md');
+console.warn('  ✅ evaluation/index.md');
 
 // ─── JSON Manifest for Web App ──────────────────────────────────────
 // A single JSON file listing all pages with their metadata, so the
@@ -716,9 +723,9 @@ console.log('  ✅ evaluation/index.md');
 // ─── Root Index ─────────────────────────────────────────────────────
 
 function generateRootIndex() {
-  const withEff = budgetData.categories.filter((c: any) => c.efficiency);
+  const withEff = budgetData.categories.filter(hasEfficiency);
   const deduped = deduplicateByOECDField(withEff);
-  const totalWasted = deduped.reduce((sum: number, c: any) => sum + c.efficiency.potentialSavingsTotal, 0);
+  const totalWasted = deduped.reduce((sum, c) => sum + c.efficiency.potentialSavingsTotal, 0);
   const perAdult = Math.round(totalWasted / JURISDICTION.adults);
 
   const md = `---
@@ -745,9 +752,9 @@ What ${JURISDICTION.name} would look like if it adopted each category's most eff
 // ─── Wishonia (Optimal Composite Jurisdiction) ──────────────────────
 
 function generateWishonia() {
-  const withEff = budgetData.categories.filter((c: any) => c.efficiency);
+  const withEff = budgetData.categories.filter(hasEfficiency);
   const deduped = deduplicateByOECDField(
-    withEff.sort((a: any, b: any) => b.efficiency.overspendRatio - a.efficiency.overspendRatio)
+    withEff.sort((a, b) => b.efficiency.overspendRatio - a.efficiency.overspendRatio)
   );
   const adults = JURISDICTION.adults;
 
@@ -755,9 +762,9 @@ function generateWishonia() {
   let totalOptimalSpending = 0;
 
   // Build the composite
-  const rows = deduped.map((c: any) => {
-    const e = c.efficiency;
+  const rows = deduped.map((c) => {
     const label = OECD_FIELD_MAP[c.name] === 'health' ? 'Healthcare (total system)' : c.name;
+    const e = c.efficiency;
     const currentTotal = e.spendingPerCapita * JURISDICTION.population;
     const optimalTotal = e.floorSpendingPerCapita * JURISDICTION.population;
     totalCurrentSpending += currentTotal;
@@ -853,10 +860,10 @@ Don't like a reform? Redirect your dividend back to any program you choose. Your
 }
 
 generateRootIndex();
-console.log('  ✅ index.md (root)');
+console.warn('  ✅ index.md (root)');
 
 generateWishonia();
-console.log('  ✅ wishonia/index.md');
+console.warn('  ✅ wishonia/index.md');
 
-console.log('\nDone! Site in reports/site/');
-console.log('Run: cd reports/site && npx @11ty/eleventy --serve');
+console.warn('\nDone! Site in reports/site/');
+console.warn('Run: cd reports/site && npx @11ty/eleventy --serve');

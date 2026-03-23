@@ -130,7 +130,7 @@ export function analyzeEfficiency(
   // 1. Compute 75th percentile outcome
   const sortedOutcomes = countries.map(c => c.outcome).sort((a, b) => a - b);
   const p75Index = Math.floor(sortedOutcomes.length * 0.75);
-  const p75 = sortedOutcomes[p75Index] ?? sortedOutcomes[sortedOutcomes.length - 1]!;
+  const p75 = sortedOutcomes[p75Index] ?? sortedOutcomes[sortedOutcomes.length - 1] ?? 0;
 
   // 2. High performers: at or above 75th percentile, sorted by spending (cheapest first)
   const highPerformers = countries
@@ -140,7 +140,8 @@ export function analyzeEfficiency(
   if (highPerformers.length === 0) return null;
 
   // 3. Best value = cheapest high performer
-  const bestValue = highPerformers[0]!;
+  const bestValue = highPerformers[0];
+  if (!bestValue) return null;
 
   // 4. Floor = best value's per-capita spending
   const floor = bestValue.spending;
