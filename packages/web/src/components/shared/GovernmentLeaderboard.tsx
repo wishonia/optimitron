@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   type GovernmentMetrics,
   getGovernmentsByHALE,
@@ -97,7 +98,7 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
               </>
             )}
             <th className={`p-3 text-right ${headerClass}`} onClick={() => handleSort("ratio")}>
-              Mil:Health{sortIndicator("ratio")}
+              Mil/Health{sortIndicator("ratio")}
             </th>
           </tr>
         </thead>
@@ -111,8 +112,13 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
               >
                 <td className="p-3 font-black text-muted-foreground">{i + 1}</td>
                 <td className="p-3">
-                  <span className="text-xl mr-2">{gov.flag}</span>
-                  <span className="font-black text-foreground">{gov.name}</span>
+                  <Link
+                    href={`/governments/${gov.code}`}
+                    className="hover:text-brutal-pink transition-colors"
+                  >
+                    <span className="text-xl mr-2">{gov.flag}</span>
+                    <span className="font-black text-foreground">{gov.name}</span>
+                  </Link>
                 </td>
                 <td className="p-3 text-right font-black text-brutal-cyan">
                   {gov.hale?.value.toFixed(1) ?? "—"}
