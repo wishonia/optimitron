@@ -36,8 +36,8 @@ describe("alignment route", () => {
       status: "ready",
       report: {
         generatedAt: "2026-03-12T00:00:00.000Z",
-        comparisonCount: 3,
-        selectedCategoryCount: 3,
+        allocationCount: 3,
+        selectedItemCount: 3,
         totalPossiblePairs: 3,
         completionRatio: 1,
         isPreliminary: false,

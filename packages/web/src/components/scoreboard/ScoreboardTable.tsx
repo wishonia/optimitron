@@ -12,7 +12,7 @@ interface PoliticianRow {
   district: string | null;
   score: number;
   votesCompared: number;
-  categoryScores: Record<string, number>;
+  itemScores: Record<string, number>;
   rank: number;
   onChainRef: string | null;
 }

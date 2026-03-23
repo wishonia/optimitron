@@ -62,7 +62,7 @@ export async function getDashboardData(
   const referralCount = user.referrals.length;
 
   // Count comparisons
-  const comparisonCount = await prisma.activity.count({
+  const allocationCount = await prisma.activity.count({
     where: {
       userId,
       type: ActivityType.SUBMITTED_COMPARISON,
@@ -106,7 +106,7 @@ export async function getDashboardData(
     },
     stats: {
       referrals: referralCount,
-      comparisons: comparisonCount,
+      wishocraticAllocations: allocationCount,
       badges: user.badges.length,
       rank,
     },

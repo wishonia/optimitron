@@ -22,9 +22,9 @@ import { SendToRepCard } from "./SendToRepCard";
 import { ROUTES } from "@/lib/routes";
 import { storage } from "@/lib/storage";
 import {
-  BUDGET_CATEGORIES,
+  WISHOCRATIC_ITEMS,
   getActualGovernmentAllocations,
-  type BudgetCategoryId,
+  type WishocraticItemId,
 } from "../../lib/wishocracy-data";
 import { generateRandomPairs } from "../../lib/wishocracy-utils";
 import {
@@ -74,8 +74,8 @@ const CHAT_BUDGET_PAIR_COUNT = 7;
 function generateChatBudgetPairs(): Array<[string, string]> {
   const idPairs = generateRandomPairs(CHAT_BUDGET_PAIR_COUNT);
   return idPairs.map(([a, b]) => [
-    BUDGET_CATEGORIES[a].name,
-    BUDGET_CATEGORIES[b].name,
+    WISHOCRATIC_ITEMS[a].name,
+    WISHOCRATIC_ITEMS[b].name,
   ]);
 }
 
@@ -222,7 +222,7 @@ export default function ChatPage() {
 
   // --- Fetch bills ---
   const fetchBills = useCallback(
-    async (category?: BudgetCategoryId | null, query?: string | null) => {
+    async (category?: WishocraticItemId | null, query?: string | null) => {
       append({
         type: "text",
         role: "assistant",
@@ -681,7 +681,7 @@ export default function ChatPage() {
           // Map actual allocations to names
           const actualRaw = getActualGovernmentAllocations();
           const actualByName: Record<string, number> = {};
-          for (const [key, cat] of Object.entries(BUDGET_CATEGORIES)) {
+          for (const [key, cat] of Object.entries(WISHOCRATIC_ITEMS)) {
             const pct = actualRaw[key as keyof typeof actualRaw];
             if (pct != null) {
               actualByName[cat.name] = pct;

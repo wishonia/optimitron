@@ -149,23 +149,23 @@ export function trackCopyLink(params: {
 // ============================================
 
 export function trackComparisonSubmitted(params: {
-  categoryA: string
-  categoryB: string
+  itemA: string
+  itemB: string
   winner: string
 }): void {
   trackEvent('comparison_submitted', {
-    category_a: params.categoryA,
-    category_b: params.categoryB,
+    item_a: params.itemA,
+    item_b: params.itemB,
     winner: params.winner,
   })
 }
 
 export function trackComparisonSessionCompleted(params: {
-  comparisonCount: number
+  allocationCount: number
   jurisdictionId?: string
 }): void {
   trackEvent('comparison_session_completed', {
-    comparison_count: params.comparisonCount,
+    comparison_count: params.allocationCount,
     jurisdiction_id: params.jurisdictionId,
   })
 }

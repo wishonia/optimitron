@@ -17,22 +17,22 @@ export async function PATCH(req: NextRequest) {
       } else {
         if (raw.length < 3 || raw.length > 24) {
           return NextResponse.json(
-            { error: "Handle must be between 3 and 24 characters." },
+            { error: "Player name must be between 3 and 24 characters." },
             { status: 400 },
           );
         }
 
-        if (!/^[a-zA-Z0-9_]+$/.test(raw)) {
+        if (!/^[a-zA-Z0-9_-]+$/.test(raw)) {
           return NextResponse.json(
             {
               error:
-                "Handle can only include letters, numbers, and underscores.",
+                "Player name can only include letters, numbers, hyphens, and underscores.",
             },
             { status: 400 },
           );
         }
 
-        const existingHandle = await prisma.user.findFirst({
+        const existingUser = await prisma.user.findFirst({
           where: {
             username: { equals: raw, mode: "insensitive" },
             NOT: { id: userId },
@@ -40,9 +40,9 @@ export async function PATCH(req: NextRequest) {
           select: { id: true },
         });
 
-        if (existingHandle) {
+        if (existingUser) {
           return NextResponse.json(
-            { error: "That handle is already taken. Please choose another." },
+            { error: "That player name is already taken. Please choose another." },
             { status: 400 },
           );
         }

@@ -22,7 +22,7 @@ export interface FiscalCategoryShare {
   share: number;
 }
 
-export interface PriorityItemRoiData {
+export interface WishocraticItemRoiData {
   /** Source of the ROI claim */
   source: string;
   /** ROI ratio string (e.g., '45:1', 'Negative ROI', 'Low ROI') */
@@ -33,14 +33,14 @@ export interface PriorityItemRoiData {
   sourceUrl: string;
 }
 
-export interface PriorityItemSource {
+export interface WishocraticItemSource {
   /** Human-readable source description */
   name: string;
   /** URL */
   url: string;
 }
 
-export interface PriorityItem {
+export interface WishocraticItemDefinition {
   /** Unique slug ID (e.g., 'nuclear_weapons') */
   readonly slug: string;
   /** Human-readable name */
@@ -52,9 +52,9 @@ export interface PriorityItem {
   /** Annual budget in billions USD (0 for proposed items) */
   readonly annualBudgetBillions: number;
   /** ROI data with source citation (null if no clear ROI framing) */
-  readonly roiData: Readonly<PriorityItemRoiData> | null;
+  readonly roiData: Readonly<WishocraticItemRoiData> | null;
   /** Evidence sources */
-  readonly sources: readonly PriorityItemSource[];
+  readonly sources: readonly WishocraticItemSource[];
   /** Which fiscal categories this maps to (from us-federal-budget.ts) */
   readonly fiscalCategoryMappings: readonly FiscalCategoryShare[];
   /** Whether this is existing government spending or proposed */
@@ -65,7 +65,7 @@ export interface PriorityItem {
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-export const US_PRIORITY_ITEMS = {
+export const US_WISHOCRATIC_ITEMS = {
   // ─── CITIZEN-DIRECTED UBI ────────────────────────────────────────────
   UNIVERSAL_BASIC_INCOME: {
     slug: 'universal_basic_income',
@@ -507,29 +507,30 @@ export const US_PRIORITY_ITEMS = {
   },
 } as const;
 
-export type USPriorityItemId = keyof typeof US_PRIORITY_ITEMS;
+export type USWishocraticItemId = keyof typeof US_WISHOCRATIC_ITEMS;
 
 /**
  * Get all priority items as an array (useful for iteration)
  */
-export function getUSPriorityItemsList(): PriorityItem[] {
-  return Object.values(US_PRIORITY_ITEMS);
+export function getUSWishocraticItemsList(): WishocraticItemDefinition[] {
+  return Object.values(US_WISHOCRATIC_ITEMS);
 }
 
 /**
  * Calculate actual government allocation percentages from annual budgets.
  * Returns percentages that sum to 100%.
  */
-export function getUSPriorityAllocations(): Record<USPriorityItemId, number> {
-  const total = Object.values(US_PRIORITY_ITEMS).reduce(
+export function getUSWishocraticAllocations(): Record<USWishocraticItemId, number> {
+  const total = Object.values(US_WISHOCRATIC_ITEMS).reduce(
     (sum, item) => sum + item.annualBudgetBillions,
     0,
   );
 
   const allocations: Record<string, number> = {};
-  for (const [id, item] of Object.entries(US_PRIORITY_ITEMS)) {
+  for (const [id, item] of Object.entries(US_WISHOCRATIC_ITEMS)) {
     allocations[id] = Number(((item.annualBudgetBillions / total) * 100).toFixed(1));
   }
 
-  return allocations as Record<USPriorityItemId, number>;
+  return allocations as Record<USWishocraticItemId, number>;
 }
+

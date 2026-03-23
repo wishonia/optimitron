@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   requireAuth: vi.fn(),
   getCurrentUser: vi.fn(),
+  ensureWishocraticItemsExist: vi.fn(),
   findFirst: vi.fn(),
   findMany: vi.fn(),
   update: vi.fn(),
@@ -51,12 +52,18 @@ vi.mock("@/lib/logger", () => ({
   }),
 }));
 
+vi.mock("@/lib/wishocracy-catalog.server", () => ({
+  ensureWishocraticItemsExist: mocks.ensureWishocraticItemsExist,
+}));
+
 import { GET, POST, PATCH } from "./route";
 
 describe("wishocracy allocations route", () => {
   beforeEach(() => {
     mocks.requireAuth.mockReset();
     mocks.getCurrentUser.mockReset();
+    mocks.ensureWishocraticItemsExist.mockReset();
+    mocks.ensureWishocraticItemsExist.mockResolvedValue(undefined);
     mocks.findFirst.mockReset();
     mocks.findMany.mockReset();
     mocks.update.mockReset();
@@ -152,6 +159,10 @@ describe("wishocracy allocations route", () => {
     );
 
     expect(response.status).toBe(200);
+    expect(mocks.ensureWishocraticItemsExist).toHaveBeenCalledWith([
+      "ADDICTION_TREATMENT",
+      "MILITARY_OPERATIONS",
+    ]);
     expect(mocks.findFirst).toHaveBeenCalledWith({
       where: {
         userId: "user_1",
@@ -176,7 +187,7 @@ describe("wishocracy allocations route", () => {
     const response = await PATCH(
       new Request("http://localhost/api/wishocracy/allocations", {
         method: "PATCH",
-        body: JSON.stringify({ updatedComparisons: [], deletedCategories: [] }),
+        body: JSON.stringify({ updatedAllocations: [], deletedItemIds: [] }),
       }),
     );
 
@@ -191,7 +202,7 @@ describe("wishocracy allocations route", () => {
       new Request("http://localhost/api/wishocracy/allocations", {
         method: "PATCH",
         body: JSON.stringify({
-          updatedComparisons: [
+          updatedAllocations: [
             {
               itemAId: "MILITARY_OPERATIONS",
               itemBId: "ADDICTION_TREATMENT",
@@ -199,12 +210,16 @@ describe("wishocracy allocations route", () => {
               allocationB: 25,
             },
           ],
-          deletedCategories: [],
+          deletedItemIds: [],
         }),
       }),
     );
 
     expect(response.status).toBe(200);
+    expect(mocks.ensureWishocraticItemsExist).toHaveBeenCalledWith([
+      "ADDICTION_TREATMENT",
+      "MILITARY_OPERATIONS",
+    ]);
     expect(mocks.deleteMany).toHaveBeenCalledWith({
       where: {
         userId: "user_1",

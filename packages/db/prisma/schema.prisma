@@ -395,30 +395,30 @@ model User {
   deletedAt DateTime?
 
   // -- Relations --
-  accounts                      Account[]
-  personhoodVerifications       PersonhoodVerification[]
-  referrals                     Referral[]                      @relation("UserReferrals")
-  sessions                      Session[]
-  referral                      Referral?                       @relation("UserReferral")
-  wishocraticAllocations        WishocraticAllocation[]         @relation("UserWishocraticAllocations")
-  wishocraticCategorySelections WishocraticCategorySelection[]  @relation("UserWishocraticCategorySelections")
-  citizenBillVotes              CitizenBillVote[]               @relation("UserCitizenBillVotes")
-  webPushSubscriptions          WebPushSubscription[]           @relation("UserWebPushSubscriptions")
-  userPreference                UserPreference?                 @relation("UserPreference")
-  notificationPreferences       NotificationPreference[]        @relation("UserNotificationPreferences")
-  notifications                 Notification[]                  @relation("UserNotifications")
-  encryptedAllocations          WishocraticEncryptedAllocation? @relation("UserEncryptedAllocations")
-  createdReferendums            Referendum[]                    @relation("UserCreatedReferendums")
-  referendumVotes               ReferendumVote[]                @relation("UserReferendumVotes")
-  referendumReferrals           ReferendumVote[]                @relation("UserReferendumReferrals")
-  voteTokenMints                VoteTokenMint[]                 @relation("UserVoteTokenMints")
-  activities                    Activity[]                      @relation("UserActivities")
-  createdOrganizations          Organization[]                  @relation("OrgCreator")
-  organizationMemberships       OrganizationMember[]            @relation("UserOrgMemberships")
-  badges                        Badge[]                         @relation("UserBadges")
-  socialAccounts                SocialAccount[]                 @relation("UserSocialAccounts")
-  emailLogs                     EmailLog[]                      @relation("UserEmailLogs")
-  surveyResponses               SurveyResponse[]                @relation("UserSurveyResponses")
+  accounts                  Account[]
+  personhoodVerifications   PersonhoodVerification[]
+  referrals                 Referral[]                      @relation("UserReferrals")
+  sessions                  Session[]
+  referral                  Referral?                       @relation("UserReferral")
+  wishocraticAllocations    WishocraticAllocation[]         @relation("UserWishocraticAllocations")
+  wishocraticItemInclusions WishocraticItemInclusion[]      @relation("UserWishocraticItemInclusions")
+  citizenBillVotes          CitizenBillVote[]               @relation("UserCitizenBillVotes")
+  webPushSubscriptions      WebPushSubscription[]           @relation("UserWebPushSubscriptions")
+  userPreference            UserPreference?                 @relation("UserPreference")
+  notificationPreferences   NotificationPreference[]        @relation("UserNotificationPreferences")
+  notifications             Notification[]                  @relation("UserNotifications")
+  encryptedAllocations      WishocraticEncryptedAllocation? @relation("UserEncryptedAllocations")
+  createdReferendums        Referendum[]                    @relation("UserCreatedReferendums")
+  referendumVotes           ReferendumVote[]                @relation("UserReferendumVotes")
+  referendumReferrals       ReferendumVote[]                @relation("UserReferendumReferrals")
+  voteTokenMints            VoteTokenMint[]                 @relation("UserVoteTokenMints")
+  activities                Activity[]                      @relation("UserActivities")
+  createdOrganizations      Organization[]                  @relation("OrgCreator")
+  organizationMemberships   OrganizationMember[]            @relation("UserOrgMemberships")
+  badges                    Badge[]                         @relation("UserBadges")
+  socialAccounts            SocialAccount[]                 @relation("UserSocialAccounts")
+  emailLogs                 EmailLog[]                      @relation("UserEmailLogs")
+  surveyResponses           SurveyResponse[]                @relation("UserSurveyResponses")
 
   @@index([email])
   @@index([username])
@@ -1837,9 +1837,6 @@ model WishocraticItem {
   /// Longer explanation of what this item covers
   description String?
 
-  /// Budget category: "Mandatory" | "Discretionary" | "Other" or custom
-  category String?
-
   /// Current actual budget allocation in USD (for preference gap analysis)
   currentAllocationUsd Float?
 
@@ -1862,17 +1859,16 @@ model WishocraticItem {
   deletedAt DateTime?
 
   // -- Relations --
-  weights                 PreferenceWeight[]
-  wishAllocationsAsA      WishocraticAllocation[]        @relation("wishItemA")
-  wishAllocationsAsB      WishocraticAllocation[]        @relation("wishItemB")
-  categorySelections      WishocraticCategorySelection[]
-  politicianVotes         PoliticianVote[]
-  categoryAlignmentScores CategoryAlignmentScore[]
-  publicGoodsRecipients   PublicGoodsRecipient[]         @relation("publicGoodsItem")
+  weights                        PreferenceWeight[]
+  wishAllocationsAsA             WishocraticAllocation[]         @relation("wishItemA")
+  wishAllocationsAsB             WishocraticAllocation[]         @relation("wishItemB")
+  itemInclusions                 WishocraticItemInclusion[]
+  politicianVotes                PoliticianVote[]
+  wishocraticItemAlignmentScores WishocraticItemAlignmentScore[]
+  publicGoodsRecipients          PublicGoodsRecipient[]          @relation("publicGoodsItem")
 
   @@unique([jurisdictionId, name])
   @@index([jurisdictionId])
-  @@index([category])
   @@index([active])
   @@map("Item")
 }
@@ -1952,19 +1948,21 @@ model WishocraticAllocation {
   @@index([deletedAt])
 }
 
-/// Saved category-inclusion choices for authenticated Wishocracy users
-model WishocraticCategorySelection {
-  /// Unique identifier for this category selection
+/// Persisted yes/no item-inclusion decisions for the Wishocracy pre-allocation screen.
+/// A row with included=true means the user chose to include this item; included=false
+/// means they explicitly excluded it; no row means they haven't decided yet.
+model WishocraticItemInclusion {
+  /// Unique identifier
   id String @id @default(cuid())
 
   /// The user who made this choice
   userId String
 
-  /// Budget category item (FK to WishocraticItem)
+  /// Wishocratic item being included or excluded
   itemId String
 
-  /// Whether the category is included in the user's run
-  selected Boolean
+  /// Whether the item is included in the user's allocation run
+  included Boolean
 
   /// When this record was created
   createdAt DateTime @default(now())
@@ -1976,13 +1974,13 @@ model WishocraticCategorySelection {
   deletedAt DateTime?
 
   // -- Relations --
-  user User            @relation("UserWishocraticCategorySelections", fields: [userId], references: [id], onDelete: Cascade)
+  user User            @relation("UserWishocraticItemInclusions", fields: [userId], references: [id], onDelete: Cascade)
   item WishocraticItem @relation(fields: [itemId], references: [id])
 
   @@unique([userId, itemId])
   @@index([userId])
   @@index([itemId])
-  @@index([selected])
+  @@index([included])
   @@index([createdAt])
   @@index([deletedAt])
 }
@@ -2197,7 +2195,7 @@ model AlignmentScore {
   deletedAt DateTime?
 
   // -- Relations --
-  categoryScores CategoryAlignmentScore[]
+  itemScores WishocraticItemAlignmentScore[]
 
   @@unique([politicianId, aggregationRunId])
   @@index([politicianId])
@@ -2205,8 +2203,8 @@ model AlignmentScore {
   @@index([score])
 }
 
-/// Per-category alignment breakdown for a politician in an aggregation run
-model CategoryAlignmentScore {
+/// Per-item alignment breakdown for a politician in an aggregation run
+model WishocraticItemAlignmentScore {
   /// Unique identifier
   id String @id @default(cuid())
 
@@ -2216,13 +2214,13 @@ model CategoryAlignmentScore {
   /// Relation to the AlignmentScore
   alignmentScore AlignmentScore @relation(fields: [alignmentScoreId], references: [id], onDelete: Cascade)
 
-  /// Budget category item (FK to WishocraticItem)
+  /// Wishocratic item (FK to WishocraticItem)
   itemId String
 
   /// Relation to the WishocraticItem
   item WishocraticItem @relation(fields: [itemId], references: [id])
 
-  /// Alignment score for this category (0-100%)
+  /// Alignment score for this item (0-100%)
   score Float
 
   @@unique([alignmentScoreId, itemId])

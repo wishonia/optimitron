@@ -3,11 +3,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useWishocracyState } from "@/hooks/useWishocracyState";
 import { buildUserReferralUrl, getBaseUrl } from "@/lib/url";
-import { BudgetPairSlider } from "./budget-pair-slider";
+import { WishocraticPairSlider } from "./wishocratic-pair-slider";
 import { ProgressIndicator } from "./progress-indicator";
 import { WishocracyAllocationCard } from "./WishocracyAllocationCard";
 import { WishocracyAuthPromptCard } from "./WishocracyAuthPromptCard";
-import { WishocracyCategorySelection } from "./WishocracyCategorySelection";
+import { WishocracyItemInclusion } from "./WishocracyItemInclusion";
 import { WishocracyCompletionCard } from "./WishocracyCompletionCard";
 import { WishocracyEditSection } from "./WishocracyEditSection";
 import { WishocracyIntroCard } from "./WishocracyIntroCard";
@@ -27,8 +27,8 @@ export default function WishocracySection() {
   const referralCode = state.searchParams?.get("ref") ?? null;
   const isComplete =
     !state.showIntro &&
-    !state.showCategorySelection &&
-    state.comparisons.length >= state.totalPossiblePairs;
+    !state.showItemInclusion &&
+    state.allocations.length >= state.totalPossiblePairs;
 
   return (
     <section className="min-h-screen border-b-4 border-primary bg-brutal-yellow pb-32 pt-4">
@@ -40,28 +40,28 @@ export default function WishocracySection() {
           isLoading={state.isLoading}
           onStart={() => {
             handlers.setShowIntro(false);
-            handlers.setShowCategorySelection(true);
+            handlers.setShowItemInclusion(true);
           }}
         />
 
-        <WishocracyCategorySelection
-          show={state.showCategorySelection}
-          onComplete={handlers.handleCategorySelectionComplete}
+        <WishocracyItemInclusion
+          show={state.showItemInclusion}
+          onComplete={handlers.handleItemInclusionComplete}
           onBack={() => {
-            handlers.setShowCategorySelection(false);
+            handlers.setShowItemInclusion(false);
             handlers.setShowIntro(true);
           }}
         />
 
         {!state.isLoading &&
         !state.showIntro &&
-        !state.showCategorySelection &&
-        state.comparisons.length < state.totalPossiblePairs ? (
-          <ProgressIndicator current={state.comparisons.length} total={state.totalPossiblePairs} />
+        !state.showItemInclusion &&
+        state.allocations.length < state.totalPossiblePairs ? (
+          <ProgressIndicator current={state.allocations.length} total={state.totalPossiblePairs} />
         ) : null}
 
         <WishocracyStatusBar
-          show={!state.isLoading && !state.showIntro && !state.showCategorySelection}
+          show={!state.isLoading && !state.showIntro && !state.showItemInclusion}
           isLoading={state.isLoading}
           isAuthenticated={isAuthenticated}
           referralCode={referralCode}
@@ -77,7 +77,7 @@ export default function WishocracySection() {
 
         <AnimatePresence mode="wait">
           {!state.showIntro &&
-          !state.showCategorySelection &&
+          !state.showItemInclusion &&
           state.shuffledPairs[state.currentPairIndex] ? (
             <motion.div
               key={state.currentPairIndex}
@@ -86,10 +86,10 @@ export default function WishocracySection() {
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.3 }}
             >
-              <BudgetPairSlider
+              <WishocraticPairSlider
                 key={`${state.shuffledPairs[state.currentPairIndex][0]}_${state.shuffledPairs[state.currentPairIndex][1]}`}
-                categoryA={state.shuffledPairs[state.currentPairIndex][0]}
-                categoryB={state.shuffledPairs[state.currentPairIndex][1]}
+                itemA={state.shuffledPairs[state.currentPairIndex][0]}
+                itemB={state.shuffledPairs[state.currentPairIndex][1]}
                 onSubmit={handlers.handlePairSubmit}
               />
             </motion.div>
@@ -99,7 +99,7 @@ export default function WishocracySection() {
         <WishocracyAuthPromptCard
           show={state.showAuthPrompt}
           isAuthenticated={isAuthenticated}
-          comparisonsCount={state.comparisons.length}
+          allocationsCount={state.allocations.length}
           referralCode={referralCode}
           authCardRef={state.authCardRef}
           onDismiss={() => handlers.setShowAuthPrompt(false)}
@@ -107,22 +107,22 @@ export default function WishocracySection() {
 
         <WishocracyCompletionCard
           show={isComplete}
-          comparisons={state.comparisons}
+          comparisons={state.allocations}
           isAuthenticated={isAuthenticated}
           userEmail={state.session?.user?.email}
           shareUrl={shareUrl}
         />
 
         <WishocracyAllocationCard
-          show={!state.showIntro && !state.showCategorySelection}
+          show={!state.showIntro && !state.showItemInclusion}
           isLoading={state.isLoading}
-          comparisons={state.comparisons}
+          comparisons={state.allocations}
         />
 
         {isAuthenticated && isComplete ? (
           <WishocracyEditSection
-            comparisons={state.comparisons}
-            selectedCategories={state.selectedCategories}
+            comparisons={state.allocations}
+            selectedItemIds={state.selectedItemIds}
             onSave={handlers.handleEditSave}
           />
         ) : null}
@@ -130,7 +130,7 @@ export default function WishocracySection() {
         <WishocracyResetButton
           show={isComplete}
           isLoading={state.isLoading}
-          hasComparisons={state.comparisons.length > 0}
+          hasAllocations={state.allocations.length > 0}
           onReset={handlers.handleReset}
         />
       </div>

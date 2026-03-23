@@ -7,24 +7,24 @@ import {
   buildCitizenPreferenceSummary,
   buildPoliticianAlignmentResults,
   type PoliticianAlignmentResult,
-  type StoredWishocraticComparison,
+  type StoredWishocraticAllocation,
 } from "@/lib/wishocracy-alignment";
 import {
-  isValidWishocraticComparison,
-  normalizeWishocraticComparison,
+  isValidWishocraticAllocation,
+  normalizeWishocraticAllocation,
 } from "@/lib/wishocracy-community";
 import { calculateTotalPairs } from "@/lib/wishocracy-utils";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 import { ROUTES } from "@/lib/routes";
 
-const ALL_BUDGET_CATEGORY_IDS = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
+const ALL_WISHOCRATIC_ITEM_IDS = Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[];
 const ALIGNMENT_GAP_THRESHOLD_PCT = 0.5;
 
-const PERSONAL_ALIGNMENT_PRELIMINARY_COMPARISON_THRESHOLD = 10;
+const PERSONAL_ALIGNMENT_PRELIMINARY_ALLOCATION_THRESHOLD = 10;
 const PERSONAL_ALIGNMENT_PRELIMINARY_COMPLETION_THRESHOLD = 0.5;
 
 export interface AlignmentPriorityHighlight {
-  categoryId: BudgetCategoryId;
+  categoryId: WishocraticItemId;
   name: string;
   icon: string;
   percentage: number;
@@ -64,8 +64,8 @@ export interface PersonalAlignmentCandidateReport
   sourceLabel: string;
   sourceNote: string;
   sourceType: AlignmentBenchmarkProfile["sourceType"];
-  normalizedAllocations: Record<BudgetCategoryId, number>;
-  unresolvedCategories: string[];
+  normalizedAllocations: Record<WishocraticItemId, number>;
+  unresolvedItems: string[];
   wantsMore: AlignmentGapHighlight[];
   wantsLess: AlignmentGapHighlight[];
   closestMatches: AlignmentGapHighlight[];
@@ -73,8 +73,8 @@ export interface PersonalAlignmentCandidateReport
 
 export interface PersonalAlignmentReport {
   generatedAt: string;
-  comparisonCount: number;
-  selectedCategoryCount: number;
+  allocationCount: number;
+  selectedItemCount: number;
   totalPossiblePairs: number;
   completionRatio: number;
   isPreliminary: boolean;
@@ -87,15 +87,15 @@ export interface PersonalAlignmentReport {
 }
 
 export type PersonalAlignmentEmptyReason =
-  | "no_comparisons"
+  | "no_allocations"
   | "single_category"
   | "insufficient_data";
 
 export interface PersonalAlignmentEmptyState {
   status: "empty";
   reason: PersonalAlignmentEmptyReason;
-  comparisonCount: number;
-  selectedCategoryCount: number;
+  allocationCount: number;
+  selectedItemCount: number;
   totalPossiblePairs: number;
   completionRatio: number;
   headline: string;
@@ -123,17 +123,17 @@ function toGapHighlight(gap: PreferenceGap): AlignmentGapHighlight {
   };
 }
 
-export function dedupeLatestWishocraticComparisons(
-  comparisons: StoredWishocraticComparison[],
-): StoredWishocraticComparison[] {
+export function dedupeLatestWishocraticAllocations(
+  comparisons: StoredWishocraticAllocation[],
+): StoredWishocraticAllocation[] {
   const latestByPair = new Map<
     string,
-    StoredWishocraticComparison & { itemAId: BudgetCategoryId; itemBId: BudgetCategoryId }
+    StoredWishocraticAllocation & { itemAId: WishocraticItemId; itemBId: WishocraticItemId }
   >();
 
   for (const comparison of comparisons) {
-    const normalized = normalizeWishocraticComparison(comparison);
-    if (!isValidWishocraticComparison(normalized)) {
+    const normalized = normalizeWishocraticAllocation(comparison);
+    if (!isValidWishocraticAllocation(normalized)) {
       continue;
     }
 
@@ -171,40 +171,40 @@ export function dedupeLatestWishocraticComparisons(
 }
 
 export function resolveSelectedCategoryCount(
-  selectedCategoryCount: number,
-  hasComparisons: boolean,
+  selectedItemCount: number,
+  hasAllocations: boolean,
 ): number {
-  if (selectedCategoryCount > 0) {
-    return selectedCategoryCount;
+  if (selectedItemCount > 0) {
+    return selectedItemCount;
   }
 
-  if (hasComparisons) {
-    return ALL_BUDGET_CATEGORY_IDS.length;
+  if (hasAllocations) {
+    return ALL_WISHOCRATIC_ITEM_IDS.length;
   }
 
-  return ALL_BUDGET_CATEGORY_IDS.length;
+  return ALL_WISHOCRATIC_ITEM_IDS.length;
 }
 
 export function calculateAlignmentCompletionRatio(
-  comparisonCount: number,
+  allocationCount: number,
   totalPossiblePairs: number,
 ): number {
   if (totalPossiblePairs <= 0) {
     return 0;
   }
 
-  return Number(Math.min(1, comparisonCount / totalPossiblePairs).toFixed(3));
+  return Number(Math.min(1, allocationCount / totalPossiblePairs).toFixed(3));
 }
 
 export function buildTopPriorityHighlights(
-  allocations: Record<BudgetCategoryId, number>,
+  allocations: Record<WishocraticItemId, number>,
   limit: number = 5,
 ): AlignmentPriorityHighlight[] {
   return Object.entries(allocations)
     .map(([categoryId, percentage]) => ({
-      categoryId: categoryId as BudgetCategoryId,
-      name: BUDGET_CATEGORIES[categoryId as BudgetCategoryId].name,
-      icon: BUDGET_CATEGORIES[categoryId as BudgetCategoryId].icon,
+      categoryId: categoryId as WishocraticItemId,
+      name: WISHOCRATIC_ITEMS[categoryId as WishocraticItemId].name,
+      icon: WISHOCRATIC_ITEMS[categoryId as WishocraticItemId].icon,
       percentage: Number(percentage.toFixed(1)),
     }))
     .filter((category) => category.percentage > 0)
@@ -254,20 +254,20 @@ function findPoliticianResult(
 }
 
 export function buildPersonalAlignmentReport(input: {
-  comparisons: StoredWishocraticComparison[];
-  selectedCategoryCount: number;
+  comparisons: StoredWishocraticAllocation[];
+  selectedItemCount: number;
   benchmarkProfiles: AlignmentBenchmarkProfile[];
   generatedAt?: string;
   candidateSourceType?: AlignmentBenchmarkSourceType | "mixed";
   candidateSourceNote?: string;
   candidateLastSyncedAt?: string | null;
 }): PersonalAlignmentReport {
-  const comparisons = dedupeLatestWishocraticComparisons(input.comparisons);
-  const selectedCategoryCount = resolveSelectedCategoryCount(
-    input.selectedCategoryCount,
+  const comparisons = dedupeLatestWishocraticAllocations(input.comparisons);
+  const selectedItemCount = resolveSelectedCategoryCount(
+    input.selectedItemCount,
     comparisons.length > 0,
   );
-  const totalPossiblePairs = calculateTotalPairs(selectedCategoryCount);
+  const totalPossiblePairs = calculateTotalPairs(selectedItemCount);
   const completionRatio = calculateAlignmentCompletionRatio(
     comparisons.length,
     totalPossiblePairs,
@@ -324,7 +324,7 @@ export function buildPersonalAlignmentReport(input: {
       sourceNote: politician.sourceNote,
       sourceType: politician.sourceType,
       normalizedAllocations: result.normalizedAllocations,
-      unresolvedCategories: result.unresolvedCategories,
+      unresolvedItems: result.unresolvedItems,
       wantsMore: gapHighlights.wantsMore,
       wantsLess: gapHighlights.wantsLess,
       closestMatches: gapHighlights.closestMatches,
@@ -333,12 +333,12 @@ export function buildPersonalAlignmentReport(input: {
 
   return {
     generatedAt: input.generatedAt ?? new Date().toISOString(),
-    comparisonCount: comparisons.length,
-    selectedCategoryCount,
+    allocationCount: comparisons.length,
+    selectedItemCount,
     totalPossiblePairs,
     completionRatio,
     isPreliminary:
-      comparisons.length < PERSONAL_ALIGNMENT_PRELIMINARY_COMPARISON_THRESHOLD &&
+      comparisons.length < PERSONAL_ALIGNMENT_PRELIMINARY_ALLOCATION_THRESHOLD &&
       completionRatio < PERSONAL_ALIGNMENT_PRELIMINARY_COMPLETION_THRESHOLD,
     candidateSourceType: input.candidateSourceType ?? "curated_real",
     candidateSourceNote: input.candidateSourceNote ?? fallbackCandidateSourceNote,
@@ -350,21 +350,21 @@ export function buildPersonalAlignmentReport(input: {
 }
 
 export function buildEmptyPersonalAlignmentState(input: {
-  comparisonCount: number;
-  selectedCategoryCount: number;
+  allocationCount: number;
+  selectedItemCount: number;
 }): PersonalAlignmentEmptyState {
-  const selectedCategoryCount = resolveSelectedCategoryCount(
-    input.selectedCategoryCount,
-    input.comparisonCount > 0,
+  const selectedItemCount = resolveSelectedCategoryCount(
+    input.selectedItemCount,
+    input.allocationCount > 0,
   );
-  const totalPossiblePairs = calculateTotalPairs(selectedCategoryCount);
+  const totalPossiblePairs = calculateTotalPairs(selectedItemCount);
 
-  if (input.selectedCategoryCount === 1) {
+  if (input.selectedItemCount === 1) {
     return {
       status: "empty",
       reason: "single_category",
-      comparisonCount: input.comparisonCount,
-      selectedCategoryCount,
+      allocationCount: input.allocationCount,
+      selectedItemCount,
       totalPossiblePairs,
       completionRatio: 0,
       headline: "Pick at least two categories",
@@ -375,15 +375,15 @@ export function buildEmptyPersonalAlignmentState(input: {
     };
   }
 
-  if (input.comparisonCount > 0) {
+  if (input.allocationCount > 0) {
     return {
       status: "empty",
       reason: "insufficient_data",
-      comparisonCount: input.comparisonCount,
-      selectedCategoryCount,
+      allocationCount: input.allocationCount,
+      selectedItemCount,
       totalPossiblePairs,
       completionRatio: calculateAlignmentCompletionRatio(
-        input.comparisonCount,
+        input.allocationCount,
         totalPossiblePairs,
       ),
       headline: "Add a few more trade-offs",
@@ -396,9 +396,9 @@ export function buildEmptyPersonalAlignmentState(input: {
 
   return {
     status: "empty",
-    reason: "no_comparisons",
-    comparisonCount: 0,
-    selectedCategoryCount,
+    reason: "no_allocations",
+    allocationCount: 0,
+    selectedItemCount,
     totalPossiblePairs,
     completionRatio: 0,
     headline: "Generate your first alignment report",

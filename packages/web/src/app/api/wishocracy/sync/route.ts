@@ -2,15 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-utils";
 import { calculateAllocationsFromPairwise } from "@/lib/wishocracy-calculations";
-import { BUDGET_CATEGORIES, BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, WishocraticItemId } from "@/lib/wishocracy-data";
 import {
-  isBudgetCategoryId,
-  isValidWishocraticComparison,
-  normalizeWishocraticComparison,
+  isWishocraticItemId,
+  isValidWishocraticAllocation,
+  normalizeWishocraticAllocation,
 } from "@/lib/wishocracy-community";
 import { serverEnv } from "@/lib/env";
+import { ensureWishocraticItemsExist } from "@/lib/wishocracy-catalog.server";
 
-interface ComparisonData {
+interface AllocationData {
   itemAId: string;
   itemBId: string;
   allocationA: number;
@@ -22,56 +23,74 @@ export async function POST(req: NextRequest) {
   try {
     const { userId } = await requireAuth();
     const body = await req.json();
-    const { comparisons, selectedCategories } = body as {
-      comparisons: ComparisonData[];
-      selectedCategories?: string[];
+    const { comparisons, includedItemIds } = body as {
+      comparisons: AllocationData[];
+      includedItemIds?: string[];
     };
 
     if (
       (!comparisons || comparisons.length === 0) &&
-      (!selectedCategories || selectedCategories.length === 0)
+      (!includedItemIds || includedItemIds.length === 0)
     ) {
       return NextResponse.json(
-        { error: "At least one comparison or category selection is required." },
+        { error: "At least one comparison or item inclusion is required." },
         { status: 400 },
       );
     }
 
-    if (selectedCategories?.length) {
-      if (!selectedCategories.every(isBudgetCategoryId)) {
-        return NextResponse.json({ error: "Invalid category selections." }, { status: 400 });
+    if (includedItemIds?.length) {
+      if (!includedItemIds.every(isWishocraticItemId)) {
+        return NextResponse.json({ error: "Invalid item inclusions." }, { status: 400 });
       }
 
-      const allCategories = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
-      await prisma.wishocraticCategorySelection.deleteMany({ where: { userId } });
-      await prisma.wishocraticCategorySelection.createMany({
-        data: allCategories.map((categoryId) => ({
+      const allItems = Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[];
+      await ensureWishocraticItemsExist(allItems);
+      await prisma.wishocraticItemInclusion.deleteMany({ where: { userId } });
+      await prisma.wishocraticItemInclusion.createMany({
+        data: allItems.map((itemId) => ({
           userId,
-          itemId: categoryId,
-          selected: selectedCategories.includes(categoryId),
+          itemId,
+          included: includedItemIds.includes(itemId),
         })),
       });
     }
 
-    let syncedComparisons = 0;
+    let syncedAllocations = 0;
     let finalAllocations: Record<string, number> = {};
 
     if (comparisons?.length) {
-      const normalizedComparisons = comparisons.map(normalizeWishocraticComparison);
+      const normalizedAllocations = comparisons.map(normalizeWishocraticAllocation);
+      const validAllocations: Array<
+        AllocationData & { itemAId: WishocraticItemId; itemBId: WishocraticItemId }
+      > = [];
 
-      if (!normalizedComparisons.every(isValidWishocraticComparison)) {
-        return NextResponse.json(
-          { error: "Allocations must reference valid categories and sum to 100 or 0." },
-          { status: 400 },
-        );
+      for (const comparison of normalizedAllocations) {
+        if (!isValidWishocraticAllocation(comparison)) {
+          return NextResponse.json(
+            { error: "Allocations must reference valid categories and sum to 100 or 0." },
+            { status: 400 },
+          );
+        }
+
+        validAllocations.push(comparison);
       }
 
-      finalAllocations = calculateAllocationsFromPairwise(normalizedComparisons);
+      const allocationItemIds = validAllocations.reduce<WishocraticItemId[]>(
+        (itemIds, comparison) => {
+          itemIds.push(comparison.itemAId, comparison.itemBId);
+          return itemIds;
+        },
+        [],
+      );
+
+      await ensureWishocraticItemsExist(allocationItemIds);
+
+      finalAllocations = calculateAllocationsFromPairwise(validAllocations);
 
       await prisma.wishocraticAllocation.deleteMany({ where: { userId } });
 
       const createResult = await prisma.wishocraticAllocation.createMany({
-        data: normalizedComparisons.map((comparison) => ({
+        data: validAllocations.map((comparison) => ({
           userId,
           itemAId: comparison.itemAId,
           itemBId: comparison.itemBId,
@@ -80,12 +99,12 @@ export async function POST(req: NextRequest) {
         })),
       });
 
-      syncedComparisons = createResult.count;
+      syncedAllocations = createResult.count;
     }
 
     // Encrypt all user allocations as a single blob for breach protection
     const jurisdictionKey = serverEnv.WISHOCRACY_JURISDICTION_KEY;
-    if (jurisdictionKey && syncedComparisons > 0) {
+    if (jurisdictionKey && syncedAllocations > 0) {
       try {
         const { importKey, encryptJson } = await import("@optimitron/storage");
         const allAllocations = await prisma.wishocraticAllocation.findMany({
@@ -117,8 +136,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       finalAllocations,
-      syncedSelections: selectedCategories?.length || 0,
-      syncedComparisons,
+      syncedInclusions: includedItemIds?.length || 0,
+      syncedAllocations,
     });
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {

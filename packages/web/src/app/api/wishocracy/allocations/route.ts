@@ -3,10 +3,11 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser, requireAuth } from "@/lib/auth-utils";
 import { createLogger } from "@/lib/logger";
 import {
-  isValidWishocraticComparison,
-  normalizeWishocraticComparison,
+  isValidWishocraticAllocation,
+  normalizeWishocraticAllocation,
 } from "@/lib/wishocracy-community";
 import { serverEnv } from "@/lib/env";
+import { ensureWishocraticItemsExist } from "@/lib/wishocracy-catalog.server";
 
 const logger = createLogger("api/wishocracy/allocations");
 
@@ -31,8 +32,8 @@ export async function GET() {
 
     const seen = new Map<string, (typeof dbAllocations)[number]>();
     for (const allocation of dbAllocations) {
-      const normalized = normalizeWishocraticComparison(allocation);
-      if (!isValidWishocraticComparison(normalized)) {
+      const normalized = normalizeWishocraticAllocation(allocation);
+      if (!isValidWishocraticAllocation(normalized)) {
         continue;
       }
 
@@ -44,7 +45,7 @@ export async function GET() {
     }
 
     const allocations = Array.from(seen.values()).map((allocation) => {
-      const normalized = normalizeWishocraticComparison(allocation);
+      const normalized = normalizeWishocraticAllocation(allocation);
       return {
         itemAId: normalized.itemAId,
         itemBId: normalized.itemBId,
@@ -65,14 +66,16 @@ export async function POST(req: NextRequest) {
   try {
     const { userId } = await requireAuth();
     const body = await req.json();
-    const normalized = normalizeWishocraticComparison(body);
+    const normalized = normalizeWishocraticAllocation(body);
 
-    if (!isValidWishocraticComparison(normalized)) {
+    if (!isValidWishocraticAllocation(normalized)) {
       return NextResponse.json(
         { error: "Allocations must reference valid categories and sum to 100 or 0." },
         { status: 400 },
       );
     }
+
+    await ensureWishocraticItemsExist([normalized.itemAId, normalized.itemBId]);
 
     const existing = await prisma.wishocraticAllocation.findFirst({
       where: {
@@ -152,39 +155,43 @@ export async function PATCH(req: Request) {
     }
 
     const body = await req.json();
-    const { updatedComparisons, deletedCategories } = body as {
-      updatedComparisons: Array<{
+    const { updatedAllocations, deletedItemIds } = body as {
+      updatedAllocations: Array<{
         itemAId: string;
         itemBId: string;
         allocationA: number;
         allocationB: number;
       }>;
-      deletedCategories: string[];
+      deletedItemIds: string[];
     };
 
-    if (deletedCategories?.length) {
+    if (deletedItemIds?.length) {
       await prisma.wishocraticAllocation.deleteMany({
         where: {
           userId: user.id,
           OR: [
-            { itemAId: { in: deletedCategories } },
-            { itemBId: { in: deletedCategories } },
+            { itemAId: { in: deletedItemIds } },
+            { itemBId: { in: deletedItemIds } },
           ],
         },
       });
     }
 
-    if (updatedComparisons?.length) {
-      const normalizedComparisons = updatedComparisons.map(normalizeWishocraticComparison);
+    if (updatedAllocations?.length) {
+      const normalizedAllocations = updatedAllocations.map(normalizeWishocraticAllocation);
 
-      if (!normalizedComparisons.every(isValidWishocraticComparison)) {
+      if (!normalizedAllocations.every(isValidWishocraticAllocation)) {
         return NextResponse.json(
           { error: "Allocations must reference valid categories and sum to 100 or 0." },
           { status: 400 },
         );
       }
 
-      for (const comparison of normalizedComparisons) {
+      await ensureWishocraticItemsExist(
+        normalizedAllocations.flatMap((comparison) => [comparison.itemAId, comparison.itemBId]),
+      );
+
+      for (const comparison of normalizedAllocations) {
         await prisma.wishocraticAllocation.deleteMany({
           where: {
             userId: user.id,
@@ -197,7 +204,7 @@ export async function PATCH(req: Request) {
       }
 
       await prisma.wishocraticAllocation.createMany({
-        data: normalizedComparisons.map((comparison) => ({
+        data: normalizedAllocations.map((comparison) => ({
           userId: user.id,
           itemAId: comparison.itemAId,
           itemBId: comparison.itemBId,

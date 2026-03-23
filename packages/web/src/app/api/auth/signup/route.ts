@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     }
 
     const hashedPassword = await hashPassword(password);
-    const username = await createUniqueUsername(name || email.split("@")[0]);
+    const username = await createUniqueUsername();
     const generatedReferralCode = await createUniqueReferralCode();
     const user = await prisma.user.create({
       data: {

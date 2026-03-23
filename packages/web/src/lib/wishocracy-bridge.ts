@@ -1,13 +1,13 @@
 /**
- * Bridge between OBG budget analysis and Wishocracy priority items.
+ * Bridge between OBG budget analysis and Wishocratic items.
  *
- * Enriches priority items with OBG efficiency data (overspend ratios,
- * optimal spending, best-in-class countries) by mapping priority items
+ * Enriches wishocratic items with OBG efficiency data (overspend ratios,
+ * optimal spending, best-in-class countries) by mapping items
  * to their parent fiscal categories via fiscalCategoryMappings.
  */
 
 import type { Item } from '@optimitron/wishocracy';
-import { US_PRIORITY_ITEMS, type PriorityItem, type USPriorityItemId } from '@optimitron/data/dist/datasets/us-priority-items.js';
+import { US_WISHOCRATIC_ITEMS, type WishocraticItemDefinition, type USWishocraticItemId } from '@optimitron/data/dist/datasets/us-wishocratic-items.js';
 import budgetAnalysisData from '@/data/us-budget-analysis.json';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -29,7 +29,7 @@ export interface EfficiencyContext {
   outcomeName: string;
 }
 
-export interface EnrichedPriorityItem extends Item {
+export interface EnrichedWishocraticItem extends Item {
   /** Stable lowercase slug for URLs, aliases, and display integration. */
   slug: string;
   /** OBG efficiency data (null if no OECD mapping for this item's fiscal categories) */
@@ -79,10 +79,10 @@ function findFiscalCategoryAnalysis(fiscalCategoryId: string): BudgetAnalysisCat
 }
 
 /**
- * Compute weighted efficiency context for a priority item from its fiscal category mappings.
+ * Compute weighted efficiency context for a wishocratic item from its fiscal category mappings.
  * If the item maps to multiple fiscal categories, uses the primary one (highest share).
  */
-function computeEfficiencyContext(item: PriorityItem): EfficiencyContext | null {
+function computeEfficiencyContext(item: WishocraticItemDefinition): EfficiencyContext | null {
   if (item.fiscalCategoryMappings.length === 0) return null;
 
   // Use the fiscal category with the highest share as the primary
@@ -108,23 +108,21 @@ function computeEfficiencyContext(item: PriorityItem): EfficiencyContext | null 
 // ─── Public API ──────────────────────────────────────────────────────────────
 
 /**
- * Build enriched priority items with OBG efficiency data.
- * Returns items suitable for display in the pairwise comparison UI.
+ * Build enriched wishocratic items with OBG efficiency data.
+ * Returns items suitable for display in the pairwise allocation UI.
  */
-export function buildEnrichedPriorityItems(): Record<USPriorityItemId, EnrichedPriorityItem> {
-  const result: Record<string, EnrichedPriorityItem> = {};
+export function buildEnrichedWishocraticItems(): Record<USWishocraticItemId, EnrichedWishocraticItem> {
+  const result: Record<string, EnrichedWishocraticItem> = {};
 
-  for (const [key, item] of Object.entries(US_PRIORITY_ITEMS)) {
+  for (const [key, item] of Object.entries(US_WISHOCRATIC_ITEMS)) {
     result[key] = {
-      // Wishocracy Item.id should be the canonical persisted BudgetCategoryId.
       id: key,
       slug: item.slug,
       name: item.name,
       description: item.description,
       currentAllocationUsd: item.annualBudgetBillions * 1e9,
-      currentAllocationPct: undefined, // computed by wishocracy from comparisons
+      currentAllocationPct: undefined,
 
-      // Enrichment fields
       efficiencyContext: computeEfficiencyContext(item),
       roiRatio: item.roiData?.ratio ?? null,
       annualBudgetBillions: item.annualBudgetBillions,
@@ -133,12 +131,12 @@ export function buildEnrichedPriorityItems(): Record<USPriorityItemId, EnrichedP
     };
   }
 
-  return result as Record<USPriorityItemId, EnrichedPriorityItem>;
+  return result as Record<USWishocraticItemId, EnrichedWishocraticItem>;
 }
 
 /**
- * Get enriched data for a single priority item.
+ * Get enriched data for a single wishocratic item.
  */
-export function getEnrichedPriorityItem(id: USPriorityItemId): EnrichedPriorityItem | undefined {
-  return buildEnrichedPriorityItems()[id];
+export function getEnrichedWishocraticItem(id: USWishocraticItemId): EnrichedWishocraticItem | undefined {
+  return buildEnrichedWishocraticItems()[id];
 }

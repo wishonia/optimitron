@@ -1,14 +1,14 @@
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 
-export interface WishocraticComparisonInput {
+export interface WishocraticAllocationInput {
   itemAId: string;
   itemBId: string;
   allocationA: number;
   allocationB: number;
 }
 
-export function isBudgetCategoryId(value: string): value is BudgetCategoryId {
-  return Object.prototype.hasOwnProperty.call(BUDGET_CATEGORIES, value);
+export function isWishocraticItemId(value: string): value is WishocraticItemId {
+  return Object.prototype.hasOwnProperty.call(WISHOCRATIC_ITEMS, value);
 }
 
 export function isValidAllocationPair(allocationA: number, allocationB: number): boolean {
@@ -22,7 +22,7 @@ export function isValidAllocationPair(allocationA: number, allocationB: number):
   return inRange && (sum === 100 || sum === 0);
 }
 
-export function normalizeWishocraticComparison<T extends WishocraticComparisonInput>(
+export function normalizeWishocraticAllocation<T extends WishocraticAllocationInput>(
   comparison: T,
 ): T {
   if (comparison.itemAId <= comparison.itemBId) {
@@ -38,16 +38,16 @@ export function normalizeWishocraticComparison<T extends WishocraticComparisonIn
   };
 }
 
-export function isValidWishocraticComparison(
-  comparison: WishocraticComparisonInput,
-): comparison is WishocraticComparisonInput & {
-  itemAId: BudgetCategoryId;
-  itemBId: BudgetCategoryId;
+export function isValidWishocraticAllocation(
+  comparison: WishocraticAllocationInput,
+): comparison is WishocraticAllocationInput & {
+  itemAId: WishocraticItemId;
+  itemBId: WishocraticItemId;
 } {
   return (
     comparison.itemAId !== comparison.itemBId &&
-    isBudgetCategoryId(comparison.itemAId) &&
-    isBudgetCategoryId(comparison.itemBId) &&
+    isWishocraticItemId(comparison.itemAId) &&
+    isWishocraticItemId(comparison.itemBId) &&
     isValidAllocationPair(comparison.allocationA, comparison.allocationB)
   );
 }

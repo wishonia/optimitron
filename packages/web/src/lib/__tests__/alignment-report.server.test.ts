@@ -12,7 +12,7 @@ vi.mock("@/lib/prisma", () => ({
     wishocraticAllocation: {
       findMany: mocks.allocationsFindMany,
     },
-    wishocraticCategorySelection: {
+    wishocraticItemInclusion: {
       findMany: mocks.selectionsFindMany,
     },
   },
@@ -51,7 +51,7 @@ describe("alignment report server loader", () => {
     if (state.status !== "empty") {
       throw new Error("Expected empty state.");
     }
-    expect(state.comparisonCount).toBe(0);
+    expect(state.allocationCount).toBe(0);
   });
 
   it("returns a ready state when the user has saved comparisons", async () => {
@@ -93,7 +93,7 @@ describe("alignment report server loader", () => {
     if (state.status !== "ready") {
       throw new Error("Expected ready state.");
     }
-    expect(state.report.comparisonCount).toBe(3);
+    expect(state.report.allocationCount).toBe(3);
     expect(state.report.totalPossiblePairs).toBe(3);
     expect(state.report.ranking.length).toBeGreaterThan(0);
   });

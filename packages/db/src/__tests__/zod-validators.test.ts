@@ -41,7 +41,7 @@ import {
   WishocraticItemSchema,
   ReferralSchema,
   WishocraticAllocationSchema,
-  WishocraticCategorySelectionSchema,
+  WishocraticItemInclusionSchema,
   AggregationRunSchema,
   IntegrationProviderSchema,
   IntegrationConnectionSchema,
@@ -541,16 +541,16 @@ describe('Auth and referral models', () => {
     expect(WishocraticAllocationSchema.safeParse(data).success).toBe(true);
   });
 
-  it('41. validates a WishocraticCategorySelection', () => {
+  it('41. validates a WishocraticItemInclusion', () => {
     const data = {
       id: 'wcs_1',
       userId: 'user_1',
       itemId: 'PRAGMATIC_CLINICAL_TRIALS',
-      selected: true,
+      included: true,
       createdAt: now,
       updatedAt: now,
     };
-    expect(WishocraticCategorySelectionSchema.safeParse(data).success).toBe(true);
+    expect(WishocraticItemInclusionSchema.safeParse(data).success).toBe(true);
   });
 });
 
@@ -809,7 +809,6 @@ describe('Additional models', () => {
       id: 'item_1',
       jurisdictionId: 'jur_1',
       name: 'National Defense',
-      category: 'Discretionary',
       active: true,
       createdAt: now,
       updatedAt: now,
@@ -945,3 +944,4 @@ describe('Edge cases', () => {
     ).toBe(false);
   });
 });
+

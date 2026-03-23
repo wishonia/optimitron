@@ -676,7 +676,6 @@ export const WishocraticItemSchema = z.object({
   jurisdictionId: z.string(),
   name: z.string(),
   description: z.string().nullable().optional(),
-  category: z.string().nullable().optional(),
   currentAllocationUsd: z.number().nullable().optional(),
   currentAllocationPct: z.number().nullable().optional(),
   sourceUrl: z.string().nullable().optional(),
@@ -719,18 +718,18 @@ export const WishocraticAllocationSchema = z.object({
 });
 export type WishocraticAllocationType = z.infer<typeof WishocraticAllocationSchema>;
 
-/** Zod schema for the WishocraticCategorySelection model */
-export const WishocraticCategorySelectionSchema = z.object({
+/** Zod schema for the WishocraticItemInclusion model */
+export const WishocraticItemInclusionSchema = z.object({
   id: z.string(),
   userId: z.string(),
   itemId: z.string(),
-  selected: z.boolean(),
+  included: z.boolean(),
   createdAt: dateSchema,
   updatedAt: dateSchema,
   deletedAt: nullableDateSchema,
 });
-export type WishocraticCategorySelectionType = z.infer<
-  typeof WishocraticCategorySelectionSchema
+export type WishocraticItemInclusionType = z.infer<
+  typeof WishocraticItemInclusionSchema
 >;
 
 
@@ -809,14 +808,14 @@ export const AlignmentScoreSchema = z.object({
 });
 export type AlignmentScoreType = z.infer<typeof AlignmentScoreSchema>;
 
-/** Zod schema for the CategoryAlignmentScore model */
-export const CategoryAlignmentScoreSchema = z.object({
+/** Zod schema for the WishocraticItemAlignmentScore model */
+export const WishocraticItemAlignmentScoreSchema = z.object({
   id: z.string(),
   alignmentScoreId: z.string(),
   itemId: z.string(),
   score: z.number(),
 });
-export type CategoryAlignmentScoreType = z.infer<typeof CategoryAlignmentScoreSchema>;
+export type WishocraticItemAlignmentScoreType = z.infer<typeof WishocraticItemAlignmentScoreSchema>;
 
 /** Zod schema for the CitizenBillVote model */
 export const CitizenBillVoteSchema = z.object({
@@ -1169,3 +1168,4 @@ export const EmailLogSchema = z.object({
   createdAt: dateSchema,
 });
 export type EmailLogType = z.infer<typeof EmailLogSchema>;
+

@@ -1,7 +1,7 @@
 export const API_ROUTES = {
   wishocracy: {
     allocations: "/api/wishocracy/allocations",
-    categorySelections: "/api/wishocracy/category-selections",
+    itemInclusions: "/api/wishocracy/item-inclusions",
     averageAllocations: "/api/wishocracy/average-allocations",
     sync: "/api/wishocracy/sync",
   },

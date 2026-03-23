@@ -13,7 +13,7 @@
       "chamber": "Senate",
       "alignmentScore": 78.3,
       "votesCompared": 14,
-      "categoryScores": [
+      "itemScores": [
         { "itemId": "healthcare", "itemName": "Healthcare", "score": 91.2, "citizenPreferredPct": 18.4, "politicianVotedPct": 20.1 },
         { "itemId": "education", "itemName": "Education", "score": 85.7, "citizenPreferredPct": 15.2, "politicianVotedPct": 14.1 },
         { "itemId": "social-safety-net", "itemName": "Social Safety Net", "score": 88.4, "citizenPreferredPct": 12.8, "politicianVotedPct": 14.5 },
@@ -38,7 +38,7 @@
       "chamber": "Senate",
       "alignmentScore": 74.1,
       "votesCompared": 12,
-      "categoryScores": [
+      "itemScores": [
         { "itemId": "healthcare", "itemName": "Healthcare", "score": 82.5, "citizenPreferredPct": 18.4, "politicianVotedPct": 16.8 },
         { "itemId": "education", "itemName": "Education", "score": 89.3, "citizenPreferredPct": 15.2, "politicianVotedPct": 16.0 },
         { "itemId": "social-safety-net", "itemName": "Social Safety Net", "score": 78.1, "citizenPreferredPct": 12.8, "politicianVotedPct": 11.2 },
@@ -61,7 +61,7 @@
       "chamber": "Senate",
       "alignmentScore": 61.8,
       "votesCompared": 11,
-      "categoryScores": [
+      "itemScores": [
         { "itemId": "healthcare", "itemName": "Healthcare", "score": 45.2, "citizenPreferredPct": 18.4, "politicianVotedPct": 8.1 },
         { "itemId": "education", "itemName": "Education", "score": 38.7, "citizenPreferredPct": 15.2, "politicianVotedPct": 6.4 },
         { "itemId": "defense", "itemName": "Defense", "score": 72.9, "citizenPreferredPct": 8.3, "politicianVotedPct": 12.1 },
@@ -82,7 +82,7 @@
       "chamber": "Senate",
       "alignmentScore": 65.4,
       "votesCompared": 10,
-      "categoryScores": [
+      "itemScores": [
         { "itemId": "healthcare", "itemName": "Healthcare", "score": 62.8, "citizenPreferredPct": 18.4, "politicianVotedPct": 12.3 },
         { "itemId": "education", "itemName": "Education", "score": 58.1, "citizenPreferredPct": 15.2, "politicianVotedPct": 9.8 },
         { "itemId": "infrastructure", "itemName": "Infrastructure", "score": 74.3, "citizenPreferredPct": 11.5, "politicianVotedPct": 10.1 },
@@ -103,7 +103,7 @@
       "chamber": "House",
       "alignmentScore": 72.6,
       "votesCompared": 13,
-      "categoryScores": [
+      "itemScores": [
         { "itemId": "healthcare", "itemName": "Healthcare", "score": 87.4, "citizenPreferredPct": 18.4, "politicianVotedPct": 19.8 },
         { "itemId": "education", "itemName": "Education", "score": 83.2, "citizenPreferredPct": 15.2, "politicianVotedPct": 14.6 },
         { "itemId": "social-safety-net", "itemName": "Social Safety Net", "score": 84.9, "citizenPreferredPct": 12.8, "politicianVotedPct": 15.1 },
@@ -126,7 +126,7 @@
       "chamber": "Senate",
       "alignmentScore": 48.7,
       "votesCompared": 11,
-      "categoryScores": [
+      "itemScores": [
         { "itemId": "healthcare", "itemName": "Healthcare", "score": 32.1, "citizenPreferredPct": 18.4, "politicianVotedPct": 5.8 },
         { "itemId": "defense", "itemName": "Defense", "score": 81.2, "citizenPreferredPct": 8.3, "politicianVotedPct": 16.4 },
         { "itemId": "education", "itemName": "Education", "score": 29.5, "citizenPreferredPct": 15.2, "politicianVotedPct": 4.1 },

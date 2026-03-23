@@ -1,21 +1,21 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { BudgetAllocationBars } from "./BudgetAllocationBars"
+import { WishocraticAllocationBars } from "./WishocraticAllocationBars"
+import type { WishocraticAllocationInput } from "@/lib/wishocracy-allocation"
 
 interface WishocracyAllocationCardProps {
   show: boolean
   isLoading: boolean
-  comparisons: any[]
+  allocations: WishocraticAllocationInput[]
 }
 
 export function WishocracyAllocationCard({
   show,
   isLoading,
-  comparisons
+  allocations,
 }: WishocracyAllocationCardProps) {
-  // Removed isLoading check to prevent card flashing during data fetches
-  if (!show || comparisons.length < 3) {
+  if (!show || allocations.length < 3) {
     return null
   }
 
@@ -29,7 +29,7 @@ export function WishocracyAllocationCard({
           </p>
         </div>
 
-        <BudgetAllocationBars comparisons={comparisons} />
+        <WishocraticAllocationBars allocations={allocations} />
       </Card>
     </div>
   )

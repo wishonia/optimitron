@@ -5,12 +5,13 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { API_ROUTES } from "@/lib/api-routes"
-import { BUDGET_CATEGORIES, BudgetCategoryId, getActualGovernmentAllocations } from "@/lib/wishocracy-data"
-import { calculateAllocationsFromPairwise, Comparison } from "@/lib/wishocracy-calculations"
+import { WISHOCRATIC_ITEMS, WishocraticItemId, getActualGovernmentAllocations } from "@/lib/wishocracy-data"
+import type { WishocraticAllocationInput } from "@/lib/wishocracy-allocation"
+import { calculateAllocationsFromPairwise } from "@/lib/wishocracy-calculations"
 import { ArrowUpDown } from "lucide-react"
 
-function CategoryRow({ category, percentage, govPercent, avgPercent }: {
-  category: (typeof BUDGET_CATEGORIES)[keyof typeof BUDGET_CATEGORIES]
+function ItemRow({ item, percentage, govPercent, avgPercent }: {
+  item: (typeof WISHOCRATIC_ITEMS)[keyof typeof WISHOCRATIC_ITEMS]
   percentage: number
   govPercent: number
   avgPercent: number
@@ -20,8 +21,8 @@ function CategoryRow({ category, percentage, govPercent, avgPercent }: {
   return (
     <div className="space-y-1">
       <div className="flex items-center gap-2 text-sm font-bold">
-        <span className="text-lg">{category.icon}</span>
-        <span className="uppercase flex-1">{category.name}</span>
+        <span className="text-lg">{item.icon}</span>
+        <span className="uppercase flex-1">{item.name}</span>
         <button
           onClick={() => setDetailsOpen(!detailsOpen)}
           className="text-[10px] text-muted-foreground hover:text-brutal-pink transition-colors font-bold"
@@ -71,10 +72,10 @@ function CategoryRow({ category, percentage, govPercent, avgPercent }: {
       {/* Expandable details */}
       {detailsOpen && (
         <div className="pt-1 pb-2 px-2 text-xs text-muted-foreground leading-relaxed">
-          <p>{category.description}</p>
-          {category.sources && category.sources.length > 0 && (
+          <p>{item.description}</p>
+          {item.sources && item.sources.length > 0 && (
             <div className="mt-1.5 flex flex-wrap gap-x-2 gap-y-1">
-              {category.sources.map((s: { name: string; url: string }) => (
+              {item.sources.map((s: { name: string; url: string }) => (
                 <a
                   key={s.url}
                   href={s.url}
@@ -94,18 +95,18 @@ function CategoryRow({ category, percentage, govPercent, avgPercent }: {
   )
 }
 
-interface BudgetAllocationBarsProps {
-  comparisons: Comparison[]
+interface WishocraticAllocationBarsProps {
+  allocations: WishocraticAllocationInput[]
 }
 
-export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps) {
+export function WishocraticAllocationBars({ allocations: pairwiseAllocations }: WishocraticAllocationBarsProps) {
   const [sortBy, setSortBy] = useState<"user" | "government" | "average">("user")
   const [searchQuery, setSearchQuery] = useState("")
-  const [averageAllocations, setAverageAllocations] = useState<Record<BudgetCategoryId, number> | null>(null)
+  const [averageAllocations, setAverageAllocations] = useState<Record<WishocraticItemId, number> | null>(null)
 
-  const allocations = useMemo(() => {
-    return calculateAllocationsFromPairwise(comparisons)
-  }, [comparisons])
+  const percentages = useMemo(() => {
+    return calculateAllocationsFromPairwise(pairwiseAllocations)
+  }, [pairwiseAllocations])
 
   const governmentAllocations = useMemo(() => {
     return getActualGovernmentAllocations()
@@ -127,28 +128,26 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
     fetchAverageAllocations()
   }, [])
 
-  // Sort and filter categories
-  const sortedCategories = useMemo(() => {
-    return Object.entries(allocations)
-      .map(([categoryId, percentage]) => {
-        const budgetCategoryId = categoryId as BudgetCategoryId
+  const sortedItems = useMemo(() => {
+    return Object.entries(percentages)
+      .map(([itemId, percentage]) => {
+        const wishocraticItemId = itemId as WishocraticItemId
         return {
-          categoryId: budgetCategoryId,
+          itemId: wishocraticItemId,
           percentage,
-          category: BUDGET_CATEGORIES[budgetCategoryId],
-          govPercent: governmentAllocations[budgetCategoryId] || 0,
-          avgPercent: averageAllocations?.[budgetCategoryId] || 0,
+          item: WISHOCRATIC_ITEMS[wishocraticItemId],
+          govPercent: governmentAllocations[wishocraticItemId] || 0,
+          avgPercent: averageAllocations?.[wishocraticItemId] || 0,
         }
       })
-      .filter((item) => {
-        // Skip categories that have been removed from BUDGET_CATEGORIES
-        if (!item.category) return false
+      .filter((entry) => {
+        if (!entry.item) return false
 
         if (!searchQuery) return true
         const query = searchQuery.toLowerCase()
         return (
-          item.category.name.toLowerCase().includes(query) ||
-          item.category.description.toLowerCase().includes(query)
+          entry.item.name.toLowerCase().includes(query) ||
+          entry.item.description.toLowerCase().includes(query)
         )
       })
       .sort((a, b) => {
@@ -159,7 +158,7 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
         }
         return b.percentage - a.percentage
       })
-  }, [allocations, governmentAllocations, averageAllocations, sortBy, searchQuery])
+  }, [percentages, governmentAllocations, averageAllocations, sortBy, searchQuery])
 
   return (
     <div>
@@ -188,11 +187,11 @@ export function BudgetAllocationBars({ comparisons }: BudgetAllocationBarsProps)
       </div>
 
       <div className="space-y-3">
-        {sortedCategories.map(({ categoryId, percentage, category, govPercent, avgPercent }) => {
+        {sortedItems.map(({ itemId, percentage, item, govPercent, avgPercent }) => {
           return (
-            <CategoryRow
-              key={categoryId}
-              category={category}
+            <ItemRow
+              key={itemId}
+              item={item}
               percentage={percentage}
               govPercent={govPercent}
               avgPercent={avgPercent}

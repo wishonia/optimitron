@@ -1,16 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
-  getPendingVote: vi.fn(),
-  removePendingVote: vi.fn(),
+  getPendingTreatyVote: vi.fn(),
+  removePendingTreatyVote: vi.fn(),
   setVoteStatusCache: vi.fn(),
   getUsernameOrReferralCode: vi.fn(),
 }));
 
 vi.mock("@/lib/storage", () => ({
   storage: {
-    getPendingVote: mocks.getPendingVote,
-    removePendingVote: mocks.removePendingVote,
+    getPendingTreatyVote: mocks.getPendingTreatyVote,
+    removePendingTreatyVote: mocks.removePendingTreatyVote,
     setVoteStatusCache: mocks.setVoteStatusCache,
   },
 }));
@@ -19,14 +19,14 @@ vi.mock("@/lib/referral.client", () => ({
   getUsernameOrReferralCode: mocks.getUsernameOrReferralCode,
 }));
 
-import { syncPendingVote } from "../vote-utils";
+import { syncPendingTreatyVote } from "../treaty-vote-sync";
 
-describe("vote utils", () => {
+describe("treaty vote sync", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
-    mocks.getPendingVote.mockReset();
-    mocks.removePendingVote.mockReset();
+    mocks.getPendingTreatyVote.mockReset();
+    mocks.removePendingTreatyVote.mockReset();
     mocks.setVoteStatusCache.mockReset();
     mocks.getUsernameOrReferralCode.mockReset();
     mocks.getUsernameOrReferralCode.mockReturnValue("demo-referral");
@@ -34,17 +34,17 @@ describe("vote utils", () => {
   });
 
   it("returns false when there is nothing staged", async () => {
-    mocks.getPendingVote.mockReturnValue(null);
+    mocks.getPendingTreatyVote.mockReturnValue(null);
 
-    await expect(syncPendingVote()).resolves.toBe(false);
+    await expect(syncPendingTreatyVote()).resolves.toBe(false);
   });
 
-  it("syncs a comparison-only staged treaty allocation without clearing it", async () => {
-    mocks.getPendingVote.mockReturnValue({
+  it("syncs an allocation-only staged treaty allocation without clearing it", async () => {
+    mocks.getPendingTreatyVote.mockReturnValue({
       answer: "",
       referredBy: null,
       timestamp: "2026-03-23T12:00:00.000Z",
-      wishocraticComparison: {
+      wishocraticAllocation: {
         itemAId: "MILITARY_OPERATIONS",
         itemBId: "PRAGMATIC_CLINICAL_TRIALS",
         allocationA: 30,
@@ -60,7 +60,7 @@ describe("vote utils", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(syncPendingVote()).resolves.toBe(true);
+    await expect(syncPendingTreatyVote()).resolves.toBe(true);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock).toHaveBeenCalledWith("/api/wishocracy/allocations", {
       method: "POST",
@@ -73,16 +73,22 @@ describe("vote utils", () => {
         timestamp: "2026-03-23T12:00:00.000Z",
       }),
     });
-    expect(mocks.removePendingVote).not.toHaveBeenCalled();
+    expect(mocks.removePendingTreatyVote).not.toHaveBeenCalled();
     expect(mocks.setVoteStatusCache).not.toHaveBeenCalled();
   });
 
-  it("upgrades legacy staged slider data and clears storage once vote and allocation both sync", async () => {
-    mocks.getPendingVote.mockReturnValue({
+  it("clears storage once vote and allocation both sync", async () => {
+    mocks.getPendingTreatyVote.mockReturnValue({
       answer: "YES",
       referredBy: "ref-user",
       timestamp: "2026-03-23T12:00:00.000Z",
-      militaryAllocationPercent: 25,
+      wishocraticAllocation: {
+        itemAId: "MILITARY_OPERATIONS",
+        itemBId: "PRAGMATIC_CLINICAL_TRIALS",
+        allocationA: 25,
+        allocationB: 75,
+        timestamp: "2026-03-23T12:00:00.000Z",
+      },
       organizationId: null,
     });
 
@@ -99,7 +105,7 @@ describe("vote utils", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(
-      syncPendingVote({
+      syncPendingTreatyVote({
         user: {
           id: "user_1",
         },
@@ -129,7 +135,7 @@ describe("vote utils", () => {
         }),
       },
     );
-    expect(mocks.removePendingVote).toHaveBeenCalledTimes(1);
+    expect(mocks.removePendingTreatyVote).toHaveBeenCalledTimes(1);
     expect(mocks.setVoteStatusCache).toHaveBeenCalledWith({
       hasVoted: true,
       voteAnswer: "YES",
@@ -138,11 +144,11 @@ describe("vote utils", () => {
   });
 
   it("keeps staged landing data when the treaty allocation sync fails", async () => {
-    mocks.getPendingVote.mockReturnValue({
+    mocks.getPendingTreatyVote.mockReturnValue({
       answer: "NO",
       referredBy: null,
       timestamp: "2026-03-23T12:00:00.000Z",
-      wishocraticComparison: {
+      wishocraticAllocation: {
         itemAId: "MILITARY_OPERATIONS",
         itemBId: "PRAGMATIC_CLINICAL_TRIALS",
         allocationA: 80,
@@ -165,14 +171,14 @@ describe("vote utils", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(
-      syncPendingVote({
+      syncPendingTreatyVote({
         user: {
           id: "user_1",
         },
       } as never),
     ).resolves.toBe(false);
 
-    expect(mocks.removePendingVote).not.toHaveBeenCalled();
+    expect(mocks.removePendingTreatyVote).not.toHaveBeenCalled();
     expect(mocks.setVoteStatusCache).toHaveBeenCalledWith({
       hasVoted: true,
       voteAnswer: "NO",

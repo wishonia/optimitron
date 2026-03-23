@@ -1,4 +1,4 @@
-import type { BudgetCategoryId } from "@/lib/wishocracy-data";
+import type { WishocraticItemId } from "@/lib/wishocracy-data";
 
 export type AlignmentBenchmarkSourceType =
   | "curated_real"
@@ -20,7 +20,7 @@ export interface AlignmentBenchmarkProfile {
   categoriesCovered?: number;
   lastSyncedAt?: string;
   rollCallCount?: number;
-  allocations: Record<BudgetCategoryId, number>;
+  allocations: Record<WishocraticItemId, number>;
 }
 
 export const ALIGNMENT_BENCHMARK_SOURCE_NOTE =

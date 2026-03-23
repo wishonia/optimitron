@@ -4,13 +4,13 @@ import { storage } from "./storage";
 import type { Session } from "next-auth";
 import { getUsernameOrReferralCode } from "./referral.client";
 import { API_ROUTES } from "./api-routes";
-import { getTreatyWishocraticComparison } from "./treaty-vote";
+import { getTreatyWishocraticAllocation } from "./treaty-vote";
 
 const DEFAULT_REFERENDUM_SLUG = "one-percent-treaty";
 
-async function syncTreatyWishocracyComparison(): Promise<boolean> {
-  const pendingComparison = getTreatyWishocraticComparison(storage.getPendingVote());
-  if (!pendingComparison) {
+async function syncTreatyWishocraticAllocation(): Promise<boolean> {
+  const pendingAllocation = getTreatyWishocraticAllocation(storage.getPendingTreatyVote());
+  if (!pendingAllocation) {
     return true;
   }
 
@@ -18,7 +18,7 @@ async function syncTreatyWishocracyComparison(): Promise<boolean> {
     const response = await fetch(API_ROUTES.wishocracy.allocations, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(pendingComparison),
+      body: JSON.stringify(pendingAllocation),
     });
 
     if (response.ok) {
@@ -89,30 +89,30 @@ async function syncReferendumVote(
  * - referendum vote via the referendum vote API
  * - treaty slider allocation via the Wishocracy allocation API
  */
-export async function syncPendingVote(
+export async function syncPendingTreatyVote(
   session?: Session | null,
   onSuccess?: () => void,
 ): Promise<boolean> {
-  const pendingVote = storage.getPendingVote();
-  const hasPendingVote = Boolean(pendingVote?.answer);
-  const hasPendingComparison = Boolean(getTreatyWishocraticComparison(pendingVote));
+  const pendingTreatyVote = storage.getPendingTreatyVote();
+  const hasPendingVote = Boolean(pendingTreatyVote?.answer);
+  const hasPendingAllocation = Boolean(getTreatyWishocraticAllocation(pendingTreatyVote));
 
-  if (!pendingVote || (!hasPendingVote && !hasPendingComparison)) {
+  if (!pendingTreatyVote || (!hasPendingVote && !hasPendingAllocation)) {
     return false;
   }
 
-  const comparisonSynced = hasPendingComparison
-    ? await syncTreatyWishocracyComparison()
+  const allocationSynced = hasPendingAllocation
+    ? await syncTreatyWishocraticAllocation()
     : true;
   const voteSynced = hasPendingVote
-    ? await syncReferendumVote(pendingVote.answer, pendingVote.referredBy, session)
+    ? await syncReferendumVote(pendingTreatyVote.answer, pendingTreatyVote.referredBy, session)
     : true;
 
-  if (hasPendingVote && comparisonSynced && voteSynced) {
-    storage.removePendingVote();
+  if (hasPendingVote && allocationSynced && voteSynced) {
+    storage.removePendingTreatyVote();
   }
 
-  if (comparisonSynced && voteSynced) {
+  if (allocationSynced && voteSynced) {
     onSuccess?.();
     return true;
   }

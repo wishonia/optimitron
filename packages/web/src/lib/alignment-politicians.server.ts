@@ -11,10 +11,10 @@ import {
   ALIGNMENT_BENCHMARKS,
   type AlignmentBenchmarkProfile,
 } from "@/lib/alignment-benchmarks";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 
 const logger = createLogger("alignment-politicians");
-const ALIGNMENT_CATEGORY_IDS = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
+const ALIGNMENT_CATEGORY_IDS = Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[];
 
 interface SyncablePoliticianRow {
   chamber: string | null;
@@ -35,7 +35,7 @@ interface SyncablePoliticianRow {
 
 interface PreparedPoliticianVoteRow {
   politicianId: string;
-  itemId: BudgetCategoryId;
+  itemId: WishocraticItemId;
   allocationPct: number;
   billId: string;
   votedAt: Date | null;
@@ -98,13 +98,13 @@ function formatMemberDistrict(
 }
 
 function buildLegislativeSummary(
-  allocations: Record<BudgetCategoryId, number>,
+  allocations: Record<WishocraticItemId, number>,
   coverageLevel: "full" | "partial",
 ): string {
   const topCategories = Object.entries(allocations)
     .sort((left, right) => right[1] - left[1])
     .slice(0, 3)
-    .map(([categoryId]) => BUDGET_CATEGORIES[categoryId as BudgetCategoryId].name);
+    .map(([categoryId]) => WISHOCRATIC_ITEMS[categoryId as WishocraticItemId].name);
 
   if (topCategories.length === 0) {
     return "Recent classified congressional votes do not yet cover enough categories to summarize this profile.";

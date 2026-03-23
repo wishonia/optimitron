@@ -1,13 +1,13 @@
 import type { Session } from "next-auth";
 import { API_ROUTES } from "@/lib/api-routes";
-import { BudgetCategoryId, BUDGET_CATEGORIES } from "@/lib/wishocracy-data";
+import { WishocraticItemId, WISHOCRATIC_ITEMS } from "@/lib/wishocracy-data";
 import { storage } from "@/lib/storage";
 import {
-  filterCompletedPairs,
+  filterAllocatedPairs,
   filterRejectedPairs,
-  filterValidComparisons,
+  filterValidAllocations,
   filterValidPairs,
-  generateAllPairsFromCategories,
+  generateAllPairs,
   generateRandomPairs,
   shufflePairs,
   syncPendingWishocracy,
@@ -15,9 +15,9 @@ import {
 
 export const RANDOM_PAIR_BATCH_SIZE = 25;
 export const AUTH_PROMPT_MILESTONES = new Set([5, 10, 15]);
-export const ALL_CATEGORY_IDS = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
+export const ALL_WISHOCRATIC_ITEM_IDS = Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[];
 
-export type PendingComparison = {
+export type PendingWishocraticAllocation = {
   itemAId: string;
   itemBId: string;
   allocationA: number;
@@ -25,90 +25,90 @@ export type PendingComparison = {
   timestamp?: string;
 };
 
-type PendingSelections = Array<{ itemId: string; selected: boolean }> | string[] | undefined;
+type PendingInclusions = Array<{ itemId: string; included: boolean }> | string[] | undefined;
 
-type PersistedSelections = {
+type PersistedInclusion = {
   itemId: string;
-  selected: boolean;
+  included: boolean;
 };
 
 export type HydratedWishocracyState = {
-  comparisons: PendingComparison[];
-  selectedCategories: Set<BudgetCategoryId>;
-  rejectedCategories: Set<BudgetCategoryId>;
-  shuffledPairs: Array<[BudgetCategoryId, BudgetCategoryId]>;
+  allocations: PendingWishocraticAllocation[];
+  selectedItemIds: Set<WishocraticItemId>;
+  rejectedItemIds: Set<WishocraticItemId>;
+  shuffledPairs: Array<[WishocraticItemId, WishocraticItemId]>;
   showIntro: boolean;
 };
 
-export function getRejectedCategories(comparisons: PendingComparison[]) {
-  return comparisons.reduce((rejected, comparison) => {
-    if (comparison.allocationA === 0 && comparison.allocationB === 0) {
-      rejected.add(comparison.itemAId as BudgetCategoryId);
-      rejected.add(comparison.itemBId as BudgetCategoryId);
+export function getExcludedItemIds(allocations: PendingWishocraticAllocation[]) {
+  return allocations.reduce((rejected, allocation) => {
+    if (allocation.allocationA === 0 && allocation.allocationB === 0) {
+      rejected.add(allocation.itemAId as WishocraticItemId);
+      rejected.add(allocation.itemBId as WishocraticItemId);
     }
     return rejected;
-  }, new Set<BudgetCategoryId>());
+  }, new Set<WishocraticItemId>());
 }
 
 export function buildSelectedPairQueue(
-  selectedCategories: Set<BudgetCategoryId>,
-  comparisons: PendingComparison[],
-  rejectedCategories: Set<BudgetCategoryId>,
+  selectedItemIds: Set<WishocraticItemId>,
+  allocations: PendingWishocraticAllocation[],
+  rejectedItemIds: Set<WishocraticItemId>,
 ) {
-  const allPairs = generateAllPairsFromCategories(selectedCategories);
-  const uncompletedPairs = filterCompletedPairs(allPairs, comparisons);
-  return filterRejectedPairs(uncompletedPairs, rejectedCategories);
+  const allPairs = generateAllPairs(selectedItemIds);
+  const uncompletedPairs = filterAllocatedPairs(allPairs, allocations);
+  return filterRejectedPairs(uncompletedPairs, rejectedItemIds);
 }
 
 export function buildRandomPairQueue(
-  comparisons: PendingComparison[],
-  rejectedCategories: Set<BudgetCategoryId>,
+  allocations: PendingWishocraticAllocation[],
+  rejectedItemIds: Set<WishocraticItemId>,
 ) {
   const remainingPairs = filterRejectedPairs(
-    filterCompletedPairs(generateAllPairsFromCategories(ALL_CATEGORY_IDS), comparisons),
-    rejectedCategories,
+    filterAllocatedPairs(generateAllPairs(ALL_WISHOCRATIC_ITEM_IDS), allocations),
+    rejectedItemIds,
   );
 
   return shufflePairs(remainingPairs).slice(0, RANDOM_PAIR_BATCH_SIZE);
 }
 
-function getSelectedCategorySet(selections: PendingSelections) {
+function getIncludedItemSet(selections: PendingInclusions) {
   if (!selections?.length) {
-    return new Set<BudgetCategoryId>();
+    return new Set<WishocraticItemId>();
   }
 
   if (typeof selections[0] === "string") {
     return new Set(
       (selections as string[]).filter(
-        (categoryId): categoryId is BudgetCategoryId =>
-          BUDGET_CATEGORIES[categoryId as BudgetCategoryId] !== undefined,
+        (itemId): itemId is WishocraticItemId =>
+          WISHOCRATIC_ITEMS[itemId as WishocraticItemId] !== undefined,
       ),
     );
   }
 
   return new Set(
-    (selections as PersistedSelections[])
-      .filter((selection) => selection.selected)
-      .map((selection) => selection.itemId)
+    (selections as PersistedInclusion[])
+      .filter((inclusion) => inclusion.included)
+      .map((inclusion) => inclusion.itemId)
       .filter(
-        (categoryId): categoryId is BudgetCategoryId =>
-          BUDGET_CATEGORIES[categoryId as BudgetCategoryId] !== undefined,
+        (itemId): itemId is WishocraticItemId =>
+          WISHOCRATIC_ITEMS[itemId as WishocraticItemId] !== undefined,
       ),
   );
 }
 
 export function shouldShowIntro(
-  comparisons: PendingComparison[],
-  selectedCategories: Set<BudgetCategoryId>,
+  allocations: PendingWishocraticAllocation[],
+  selectedItemIds: Set<WishocraticItemId>,
 ) {
-  return comparisons.length === 0 && selectedCategories.size === 0;
+  return allocations.length === 0 && selectedItemIds.size === 0;
 }
 
 export function getInitialGuestState(): HydratedWishocracyState {
   return {
-    comparisons: [],
-    selectedCategories: new Set<BudgetCategoryId>(),
-    rejectedCategories: new Set<BudgetCategoryId>(),
+    allocations: [],
+    selectedItemIds: new Set<WishocraticItemId>(),
+    rejectedItemIds: new Set<WishocraticItemId>(),
     shuffledPairs: generateRandomPairs(RANDOM_PAIR_BATCH_SIZE),
     showIntro: true,
   };
@@ -119,33 +119,33 @@ export async function hydrateAuthenticatedState(
 ): Promise<HydratedWishocracyState> {
   await syncPendingWishocracy(session);
 
-  const [allocationsResponse, selectionsResponse] = await Promise.all([
+  const [allocationsResponse, inclusionsResponse] = await Promise.all([
     fetch(API_ROUTES.wishocracy.allocations),
-    fetch(API_ROUTES.wishocracy.categorySelections),
+    fetch(API_ROUTES.wishocracy.itemInclusions),
   ]);
   const allocationsPayload = (await allocationsResponse.json()) as {
-    allocations?: PendingComparison[];
+    allocations?: PendingWishocraticAllocation[];
   };
-  const selectionsPayload = (await selectionsResponse.json()) as {
-    selections?: PersistedSelections[];
+  const inclusionsPayload = (await inclusionsResponse.json()) as {
+    inclusions?: PersistedInclusion[];
   };
 
-  const selectedCategories = getSelectedCategorySet(selectionsPayload.selections);
-  const comparisons = filterValidComparisons(
+  const selectedItemIds = getIncludedItemSet(inclusionsPayload.inclusions);
+  const allocations = filterValidAllocations(
     allocationsPayload.allocations ?? [],
-    selectedCategories.size ? selectedCategories : undefined,
+    selectedItemIds.size ? selectedItemIds : undefined,
   );
-  const rejectedCategories = getRejectedCategories(comparisons);
-  const shuffledPairs = selectedCategories.size
-    ? buildSelectedPairQueue(selectedCategories, comparisons, rejectedCategories)
-    : buildRandomPairQueue(comparisons, rejectedCategories);
+  const rejectedItemIds = getExcludedItemIds(allocations);
+  const shuffledPairs = selectedItemIds.size
+    ? buildSelectedPairQueue(selectedItemIds, allocations, rejectedItemIds)
+    : buildRandomPairQueue(allocations, rejectedItemIds);
 
   return {
-    comparisons,
-    selectedCategories,
-    rejectedCategories,
+    allocations,
+    selectedItemIds,
+    rejectedItemIds,
     shuffledPairs,
-    showIntro: shouldShowIntro(comparisons, selectedCategories),
+    showIntro: shouldShowIntro(allocations, selectedItemIds),
   };
 }
 
@@ -155,27 +155,27 @@ export function hydrateGuestState(): HydratedWishocracyState {
     return getInitialGuestState();
   }
 
-  const selectedCategories = getSelectedCategorySet(pending.selectedCategories);
-  const comparisons = filterValidComparisons(
-    pending.comparisons ?? [],
-    selectedCategories.size ? selectedCategories : undefined,
+  const selectedItemIds = getIncludedItemSet(pending.includedItemIds);
+  const allocations = filterValidAllocations(
+    pending.allocations ?? [],
+    selectedItemIds.size ? selectedItemIds : undefined,
   );
-  const rejectedCategories = getRejectedCategories(comparisons);
+  const rejectedItemIds = getExcludedItemIds(allocations);
   const savedPairs = filterRejectedPairs(
     filterValidPairs(pending.shuffledPairs ?? []),
-    rejectedCategories,
+    rejectedItemIds,
   );
   const shuffledPairs = savedPairs.length
     ? savedPairs
-    : selectedCategories.size
-      ? buildSelectedPairQueue(selectedCategories, comparisons, rejectedCategories)
-      : buildRandomPairQueue(comparisons, rejectedCategories);
+    : selectedItemIds.size
+      ? buildSelectedPairQueue(selectedItemIds, allocations, rejectedItemIds)
+      : buildRandomPairQueue(allocations, rejectedItemIds);
 
   return {
-    comparisons,
-    selectedCategories,
-    rejectedCategories,
+    allocations,
+    selectedItemIds,
+    rejectedItemIds,
     shuffledPairs,
-    showIntro: shouldShowIntro(comparisons, selectedCategories),
+    showIntro: shouldShowIntro(allocations, selectedItemIds),
   };
 }

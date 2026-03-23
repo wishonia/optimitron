@@ -12,15 +12,15 @@ import {
   type PreferenceWeight,
 } from "@optimitron/wishocracy";
 import { createEmptyAverageAllocations } from "@/lib/wishocracy-community";
-import { BUDGET_CATEGORIES, type BudgetCategoryId, getActualGovernmentAllocations } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId, getActualGovernmentAllocations } from "@/lib/wishocracy-data";
 
 export const DEFAULT_ALIGNMENT_BOOTSTRAP_ITERATIONS = 250;
 export const DEFAULT_ALIGNMENT_CONFIDENCE_LEVEL = 0.95;
 export const DEFAULT_ALIGNMENT_BOOTSTRAP_SEED = 42;
 
-const ALL_BUDGET_CATEGORY_IDS = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
+const ALL_WISHOCRATIC_ITEM_IDS = Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[];
 
-export interface StoredWishocraticComparison {
+export interface StoredWishocraticAllocation {
   userId: string;
   itemAId: string;
   itemBId: string;
@@ -31,10 +31,10 @@ export interface StoredWishocraticComparison {
 
 export interface CitizenPreferenceSummary {
   preferenceWeights: PreferenceWeight[];
-  citizenAllocations: Record<BudgetCategoryId, number>;
+  citizenAllocations: Record<WishocraticItemId, number>;
   preferenceGaps: PreferenceGap[];
-  actualGovernmentAllocations: Record<BudgetCategoryId, number>;
-  totalComparisons: number;
+  actualGovernmentAllocations: Record<WishocraticItemId, number>;
+  totalAllocations: number;
   totalParticipants: number;
   itemsCompared: number;
   consistencyRatio: number;
@@ -56,16 +56,16 @@ export interface PoliticianAlignmentInput {
 }
 
 export interface NormalizedPoliticianAllocations {
-  allocations: Record<BudgetCategoryId, number>;
-  unresolvedCategories: string[];
+  allocations: Record<WishocraticItemId, number>;
+  unresolvedItems: string[];
   totalInput: number;
 }
 
 export interface PoliticianAlignmentResult {
   politicianId: string;
   name?: string;
-  normalizedAllocations: Record<BudgetCategoryId, number>;
-  unresolvedCategories: string[];
+  normalizedAllocations: Record<WishocraticItemId, number>;
+  unresolvedItems: string[];
   alignment: AlignmentScore;
   preferenceGaps: PreferenceGap[];
 }
@@ -74,9 +74,9 @@ function normalizeCategoryToken(value: string): string {
   return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
 
-const CATEGORY_LOOKUP = new Map<string, BudgetCategoryId>();
-for (const [categoryId, category] of Object.entries(BUDGET_CATEGORIES)) {
-  const typedCategoryId = categoryId as BudgetCategoryId;
+const CATEGORY_LOOKUP = new Map<string, WishocraticItemId>();
+for (const [categoryId, category] of Object.entries(WISHOCRATIC_ITEMS)) {
+  const typedCategoryId = categoryId as WishocraticItemId;
   for (const alias of [typedCategoryId, category.slug, category.name]) {
     CATEGORY_LOOKUP.set(normalizeCategoryToken(alias), typedCategoryId);
   }
@@ -89,22 +89,22 @@ function toRawAllocationEntries(raw: RawPoliticianAllocations): Array<[string, n
   return Object.entries(raw);
 }
 
-function buildBudgetItems(currentAllocationPct?: Record<BudgetCategoryId, number>) {
-  return ALL_BUDGET_CATEGORY_IDS.map((categoryId) => ({
+function buildBudgetItems(currentAllocationPct?: Record<WishocraticItemId, number>) {
+  return ALL_WISHOCRATIC_ITEM_IDS.map((categoryId) => ({
     id: categoryId,
-    name: BUDGET_CATEGORIES[categoryId].name,
+    name: WISHOCRATIC_ITEMS[categoryId].name,
     currentAllocationPct: currentAllocationPct?.[categoryId] ?? 0,
   }));
 }
 
-function convertToPairwiseComparisons(
-  comparisons: StoredWishocraticComparison[],
+function convertToPairwiseAllocations(
+  comparisons: StoredWishocraticAllocation[],
 ): PairwiseComparison[] {
   return comparisons
     .filter(
       (comparison) =>
-        ALL_BUDGET_CATEGORY_IDS.includes(comparison.itemAId as BudgetCategoryId) &&
-        ALL_BUDGET_CATEGORY_IDS.includes(comparison.itemBId as BudgetCategoryId),
+        ALL_WISHOCRATIC_ITEM_IDS.includes(comparison.itemAId as WishocraticItemId) &&
+        ALL_WISHOCRATIC_ITEM_IDS.includes(comparison.itemBId as WishocraticItemId),
     )
     .map((comparison, index) => ({
       id: `wishocracy-${index}`,
@@ -119,7 +119,7 @@ function convertToPairwiseComparisons(
     }));
 }
 
-export function resolveBudgetCategoryId(category: string): BudgetCategoryId | null {
+export function resolveWishocraticItemId(category: string): WishocraticItemId | null {
   return CATEGORY_LOOKUP.get(normalizeCategoryToken(category)) ?? null;
 }
 
@@ -127,17 +127,17 @@ export function mapVoteAllocationsToBudgetCategories(
   raw: RawPoliticianAllocations,
 ): NormalizedPoliticianAllocations {
   const totals = createEmptyAverageAllocations();
-  const unresolvedCategories: string[] = [];
+  const unresolvedItems: string[] = [];
 
   for (const [rawCategory, rawValue] of toRawAllocationEntries(raw)) {
     if (!Number.isFinite(rawValue) || rawValue < 0) {
-      unresolvedCategories.push(rawCategory);
+      unresolvedItems.push(rawCategory);
       continue;
     }
 
-    const categoryId = resolveBudgetCategoryId(rawCategory);
+    const categoryId = resolveWishocraticItemId(rawCategory);
     if (!categoryId) {
-      unresolvedCategories.push(rawCategory);
+      unresolvedItems.push(rawCategory);
       continue;
     }
 
@@ -148,41 +148,41 @@ export function mapVoteAllocationsToBudgetCategories(
   if (totalInput === 0) {
     return {
       allocations: totals,
-      unresolvedCategories,
+      unresolvedItems,
       totalInput,
     };
   }
 
   const normalized = createEmptyAverageAllocations();
-  for (const categoryId of ALL_BUDGET_CATEGORY_IDS) {
+  for (const categoryId of ALL_WISHOCRATIC_ITEM_IDS) {
     normalized[categoryId] = Number(((totals[categoryId] / totalInput) * 100).toFixed(1));
   }
 
   return {
     allocations: normalized,
-    unresolvedCategories,
+    unresolvedItems,
     totalInput,
   };
 }
 
 export function buildCitizenPreferenceSummary(
-  comparisons: StoredWishocraticComparison[],
+  comparisons: StoredWishocraticAllocation[],
   options: {
     bootstrapIterations?: number;
     confidenceLevel?: number;
     bootstrapSeed?: number;
   } = {},
 ): CitizenPreferenceSummary {
-  const pairwiseComparisons = convertToPairwiseComparisons(comparisons);
+  const pairwiseAllocations = convertToPairwiseAllocations(comparisons);
   const actualGovernmentAllocations = getActualGovernmentAllocations();
 
-  if (pairwiseComparisons.length === 0) {
+  if (pairwiseAllocations.length === 0) {
     return {
       preferenceWeights: [],
       citizenAllocations: createEmptyAverageAllocations(),
       preferenceGaps: [],
       actualGovernmentAllocations,
-      totalComparisons: 0,
+      totalAllocations: 0,
       totalParticipants: 0,
       itemsCompared: 0,
       consistencyRatio: 0,
@@ -202,15 +202,15 @@ export function buildCitizenPreferenceSummary(
 
   const itemIds = [
     ...new Set(
-      pairwiseComparisons.flatMap((comparison) => [
+      pairwiseAllocations.flatMap((comparison) => [
         comparison.itemAId,
         comparison.itemBId,
       ]),
     ),
   ].sort();
-  const entries = aggregateComparisons(pairwiseComparisons);
+  const entries = aggregateComparisons(pairwiseAllocations);
   const matrix = buildComparisonMatrix(itemIds, entries);
-  const ciResult = bootstrapConfidenceIntervals(pairwiseComparisons, {
+  const ciResult = bootstrapConfidenceIntervals(pairwiseAllocations, {
     iterations: bootstrapIterations,
     confidenceLevel,
     seed: bootstrapSeed,
@@ -218,8 +218,8 @@ export function buildCitizenPreferenceSummary(
   const citizenAllocations = createEmptyAverageAllocations();
 
   for (const weight of ciResult.weights) {
-    if (ALL_BUDGET_CATEGORY_IDS.includes(weight.itemId as BudgetCategoryId)) {
-      citizenAllocations[weight.itemId as BudgetCategoryId] = Number(
+    if (ALL_WISHOCRATIC_ITEM_IDS.includes(weight.itemId as WishocraticItemId)) {
+      citizenAllocations[weight.itemId as WishocraticItemId] = Number(
         (weight.weight * 100).toFixed(1),
       );
     }
@@ -233,9 +233,9 @@ export function buildCitizenPreferenceSummary(
       buildBudgetItems(actualGovernmentAllocations),
     ),
     actualGovernmentAllocations,
-    totalComparisons: pairwiseComparisons.length,
+    totalAllocations: pairwiseAllocations.length,
     totalParticipants: new Set(
-      pairwiseComparisons.map((comparison) => comparison.participantId),
+      pairwiseAllocations.map((comparison) => comparison.participantId),
     ).size,
     itemsCompared: itemIds.length,
     consistencyRatio: consistencyRatio(matrix),
@@ -263,7 +263,7 @@ export function buildPoliticianAlignmentResults(
       politicianId: politician.politicianId,
       name: politician.name,
       normalizedAllocations: normalized.allocations,
-      unresolvedCategories: normalized.unresolvedCategories,
+      unresolvedItems: normalized.unresolvedItems,
       alignment,
       preferenceGaps: calculatePreferenceGaps(
         summary.preferenceWeights,

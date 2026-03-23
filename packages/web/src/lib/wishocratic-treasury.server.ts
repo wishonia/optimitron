@@ -2,7 +2,7 @@ import { createPublicClient, createWalletClient, http, keccak256, toBytes } from
 import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from "viem/chains";
 import { getWishocracyCommunitySummary } from "@/lib/wishocracy-community";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 import { createLogger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { serverEnv } from "@/lib/env";
@@ -26,7 +26,7 @@ const WISHOCRATIC_TREASURY_ABI = [
 ] as const;
 
 /**
- * Convert a BudgetCategoryId to a bytes32 category hash (matching on-chain registration).
+ * Convert a WishocraticItemId to a bytes32 category hash (matching on-chain registration).
  */
 export function categoryIdToBytes32(categoryId: string): `0x${string}` {
   return keccak256(toBytes(categoryId));
@@ -37,7 +37,7 @@ export function categoryIdToBytes32(categoryId: string): `0x${string}` {
  * Handles rounding so the total is exactly 10000.
  */
 export function percentagesToBasisPoints(
-  allocations: Record<BudgetCategoryId, number>,
+  allocations: Record<WishocraticItemId, number>,
 ): { ids: `0x${string}`[]; weights: bigint[] } {
   const entries = Object.entries(allocations).filter(([, pct]) => pct > 0);
 
@@ -69,8 +69,8 @@ export function percentagesToBasisPoints(
 export interface PostWeightsResult {
   success: boolean;
   totalParticipants: number;
-  totalComparisons: number;
-  categoryCount: number;
+  totalAllocations: number;
+  itemCount: number;
   txHash?: string;
   error?: string;
 }
@@ -86,8 +86,8 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
     return {
       success: false,
       totalParticipants: 0,
-      totalComparisons: 0,
-      categoryCount: 0,
+      totalAllocations: 0,
+      itemCount: 0,
       error: "No participants",
     };
   }
@@ -99,8 +99,8 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
     return {
       success: false,
       totalParticipants: summary.totalUsers,
-      totalComparisons: summary.totalComparisons,
-      categoryCount: 0,
+      totalAllocations: summary.totalAllocations,
+      itemCount: 0,
       error: "No non-zero allocations",
     };
   }
@@ -127,8 +127,8 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
     return {
       success: true,
       totalParticipants: summary.totalUsers,
-      totalComparisons: summary.totalComparisons,
-      categoryCount: ids.length,
+      totalAllocations: summary.totalAllocations,
+      itemCount: ids.length,
     };
   }
 
@@ -144,7 +144,7 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
       address: wishocraticTreasuryAddress,
       abi: WISHOCRATIC_TREASURY_ABI,
       functionName: "updateWeights",
-      args: [ids, weights, BigInt(summary.totalUsers), BigInt(summary.totalComparisons)],
+      args: [ids, weights, BigInt(summary.totalUsers), BigInt(summary.totalAllocations)],
     });
 
     logger.info(`Weights posted on-chain: ${txHash}`);
@@ -165,8 +165,8 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
     return {
       success: true,
       totalParticipants: summary.totalUsers,
-      totalComparisons: summary.totalComparisons,
-      categoryCount: ids.length,
+      totalAllocations: summary.totalAllocations,
+      itemCount: ids.length,
       txHash,
     };
   } catch (error) {
@@ -174,8 +174,8 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
     return {
       success: false,
       totalParticipants: summary.totalUsers,
-      totalComparisons: summary.totalComparisons,
-      categoryCount: ids.length,
+      totalAllocations: summary.totalAllocations,
+      itemCount: ids.length,
       error: String(error),
     };
   }

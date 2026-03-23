@@ -22,6 +22,7 @@ import { ShareTemplatesCard } from "@/components/dashboard/ShareTemplatesCard"
 import { EmailSignatureCard } from "@/components/dashboard/EmailSignatureCard"
 import { ConnectedAccountsCard } from "@/components/dashboard/ConnectedAccountsCard"
 import { StickyShareFooter } from "@/components/dashboard/StickyShareFooter"
+import { PlayerNameBanner } from "@/components/dashboard/PlayerNameBanner"
 import type { DashboardData, LeaderboardEntry } from "@/types/dashboard"
 
 export function DashboardClient({
@@ -66,6 +67,14 @@ export function DashboardClient({
               </Button>
             </div>
           </div>
+
+          {/* Player Name Banner */}
+          <PlayerNameBanner
+            user={user}
+            referralLink={referralLink}
+            onUserChange={setUser}
+            onRefresh={refreshDashboard}
+          />
 
           {/* Impact Ledger */}
           <div className="mb-8" id="impact-ledger">

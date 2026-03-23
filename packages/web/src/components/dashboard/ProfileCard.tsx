@@ -50,7 +50,7 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
   }, [])
 
   const handleUsernameChange = (value: string) => {
-    const sanitized = value.replace(/[^a-zA-Z0-9_]/g, "")
+    const sanitized = value.replace(/[^a-zA-Z0-9_-]/g, "")
     setEditForm((prev) => ({ ...prev, username: sanitized }))
   }
 
@@ -121,15 +121,15 @@ export function ProfileCard({ user, onUserChange, onRefresh }: ProfileCardProps)
             />
           </div>
           <div>
-            <Label className="text-sm font-bold uppercase">Handle</Label>
+            <Label className="text-sm font-bold uppercase">Player Name</Label>
             <Input
               value={editForm.username}
               onChange={(e) => handleUsernameChange(e.target.value)}
               className="border-4 border-primary bg-background"
-              placeholder="your_handle"
+              placeholder="your-player-name"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              3-24 characters. Letters, numbers, and underscores only.
+              3-24 characters. Letters, numbers, hyphens, and underscores.
             </p>
           </div>
           <div>

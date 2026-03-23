@@ -1,16 +1,16 @@
 import { useState, useCallback } from "react";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 
 interface BillSearchCardProps {
-  onSearch: (category: BudgetCategoryId | null, query: string | null) => void;
+  onSearch: (category: WishocraticItemId | null, query: string | null) => void;
 }
 
-const categoryEntries = Object.entries(BUDGET_CATEGORIES) as Array<
-  [BudgetCategoryId, (typeof BUDGET_CATEGORIES)[BudgetCategoryId]]
+const categoryEntries = Object.entries(WISHOCRATIC_ITEMS) as Array<
+  [WishocraticItemId, (typeof WISHOCRATIC_ITEMS)[WishocraticItemId]]
 >;
 
 export function BillSearchCard({ onSearch }: BillSearchCardProps) {
-  const [category, setCategory] = useState<BudgetCategoryId | "">("");
+  const [category, setCategory] = useState<WishocraticItemId | "">("");
   const [query, setQuery] = useState("");
 
   const handleSubmit = useCallback(() => {
@@ -27,7 +27,7 @@ export function BillSearchCard({ onSearch }: BillSearchCardProps) {
         <select
           className="opto-bill-search__select"
           value={category}
-          onChange={(e) => setCategory(e.target.value as BudgetCategoryId | "")}
+          onChange={(e) => setCategory(e.target.value as WishocraticItemId | "")}
         >
           <option value="">All categories</option>
           {categoryEntries.map(([id, cat]) => (

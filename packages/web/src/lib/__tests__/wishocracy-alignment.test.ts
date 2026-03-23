@@ -3,9 +3,9 @@ import {
   buildCitizenPreferenceSummary,
   buildPoliticianAlignmentResults,
   mapVoteAllocationsToBudgetCategories,
-  resolveBudgetCategoryId,
+  resolveWishocraticItemId,
 } from "@/lib/wishocracy-alignment";
-import { BUDGET_CATEGORIES } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS } from "@/lib/wishocracy-data";
 
 const comparisons = [
   {
@@ -40,9 +40,9 @@ const comparisons = [
 
 describe("wishocracy alignment utilities", () => {
   it("resolves category keys, ids, and names", () => {
-    expect(resolveBudgetCategoryId("MILITARY_OPERATIONS")).toBe("MILITARY_OPERATIONS");
-    expect(resolveBudgetCategoryId("military")).toBe("MILITARY_OPERATIONS");
-    expect(resolveBudgetCategoryId(BUDGET_CATEGORIES.MILITARY_OPERATIONS.name)).toBe(
+    expect(resolveWishocraticItemId("MILITARY_OPERATIONS")).toBe("MILITARY_OPERATIONS");
+    expect(resolveWishocraticItemId("military")).toBe("MILITARY_OPERATIONS");
+    expect(resolveWishocraticItemId(WISHOCRATIC_ITEMS.MILITARY_OPERATIONS.name)).toBe(
       "MILITARY_OPERATIONS",
     );
   });
@@ -51,14 +51,14 @@ describe("wishocracy alignment utilities", () => {
     const result = mapVoteAllocationsToBudgetCategories({
       military: 20,
       ADDICTION_TREATMENT: 30,
-      [BUDGET_CATEGORIES.PRAGMATIC_CLINICAL_TRIALS.name]: 50,
+      [WISHOCRATIC_ITEMS.PRAGMATIC_CLINICAL_TRIALS.name]: 50,
       unknown_bucket: 10,
     });
 
     expect(result.allocations.MILITARY_OPERATIONS).toBe(20);
     expect(result.allocations.ADDICTION_TREATMENT).toBe(30);
     expect(result.allocations.PRAGMATIC_CLINICAL_TRIALS).toBe(50);
-    expect(result.unresolvedCategories).toEqual(["unknown_bucket"]);
+    expect(result.unresolvedItems).toEqual(["unknown_bucket"]);
   });
 
   it("builds citizen preference summaries with confidence intervals", () => {
@@ -67,7 +67,7 @@ describe("wishocracy alignment utilities", () => {
       bootstrapSeed: 7,
     });
 
-    expect(summary.totalComparisons).toBe(4);
+    expect(summary.totalAllocations).toBe(4);
     expect(summary.totalParticipants).toBe(2);
     expect(summary.itemsCompared).toBe(3);
     expect(summary.consistencyRatio).toBeGreaterThanOrEqual(0);

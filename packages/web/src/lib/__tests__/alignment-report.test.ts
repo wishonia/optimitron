@@ -3,12 +3,12 @@ import { ALIGNMENT_BENCHMARKS } from "@/lib/alignment-benchmarks";
 import {
   buildEmptyPersonalAlignmentState,
   buildPersonalAlignmentReport,
-  dedupeLatestWishocraticComparisons,
+  dedupeLatestWishocraticAllocations,
 } from "@/lib/alignment-report";
 
 describe("alignment report utilities", () => {
   it("keeps the latest normalized wishocratic comparison per pair", () => {
-    const comparisons = dedupeLatestWishocraticComparisons([
+    const comparisons = dedupeLatestWishocraticAllocations([
       {
         userId: "user-1",
         itemAId: "MILITARY_OPERATIONS",
@@ -46,8 +46,8 @@ describe("alignment report utilities", () => {
 
   it("returns a category-selection empty state when only one category is in scope", () => {
     const state = buildEmptyPersonalAlignmentState({
-      comparisonCount: 0,
-      selectedCategoryCount: 1,
+      allocationCount: 0,
+      selectedItemCount: 1,
     });
 
     expect(state.status).toBe("empty");
@@ -83,13 +83,13 @@ describe("alignment report utilities", () => {
           timestamp: "2026-03-11T00:10:00.000Z",
         },
       ],
-      selectedCategoryCount: 3,
+      selectedItemCount: 3,
       benchmarkProfiles: ALIGNMENT_BENCHMARKS,
       generatedAt: "2026-03-12T00:00:00.000Z",
     });
 
-    expect(report.comparisonCount).toBe(3);
-    expect(report.selectedCategoryCount).toBe(3);
+    expect(report.allocationCount).toBe(3);
+    expect(report.selectedItemCount).toBe(3);
     expect(report.totalPossiblePairs).toBe(3);
     expect(report.completionRatio).toBe(1);
     expect(report.isPreliminary).toBe(false);

@@ -25,7 +25,7 @@ vi.mock("@/lib/logger", () => ({
 import {
   buildWishocracyCommunitySummary,
   getWishocracyCommunitySummary,
-  normalizeWishocraticComparison,
+  normalizeWishocraticAllocation,
 } from "../wishocracy-community";
 
 describe("wishocracy community helpers", () => {
@@ -36,7 +36,7 @@ describe("wishocracy community helpers", () => {
 
   it("normalizes reversed comparison pairs", () => {
     expect(
-      normalizeWishocraticComparison({
+      normalizeWishocraticAllocation({
         itemAId: "MILITARY_OPERATIONS",
         itemBId: "ADDICTION_TREATMENT",
         allocationA: 80,
@@ -87,7 +87,7 @@ describe("wishocracy community helpers", () => {
     ]);
 
     expect(summary.totalUsers).toBe(2);
-    expect(summary.totalComparisons).toBe(2);
+    expect(summary.totalAllocations).toBe(2);
     expect(summary.averageAllocations.ADDICTION_TREATMENT).toBe(65);
     expect(summary.averageAllocations.MILITARY_OPERATIONS).toBe(35);
     expect(summary.topCategories[0]).toEqual({
@@ -102,7 +102,7 @@ describe("wishocracy community helpers", () => {
     await expect(getWishocracyCommunitySummary()).resolves.toEqual({
       averageAllocations: expect.any(Object),
       totalUsers: 0,
-      totalComparisons: 0,
+      totalAllocations: 0,
       topCategories: [],
     });
     expect(mocks.error).toHaveBeenCalled();

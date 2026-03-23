@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BUDGET_CATEGORIES } from "../wishocracy-data";
+import { WISHOCRATIC_ITEMS } from "../wishocracy-data";
 import {
   calculateAllocationsFromPairwise,
 } from "../wishocracy-calculations";
@@ -40,7 +40,7 @@ describe("wishocracy calculations", () => {
     ]);
 
     expect(Object.keys(allocations)).toHaveLength(
-      Object.keys(BUDGET_CATEGORIES).length,
+      Object.keys(WISHOCRATIC_ITEMS).length,
     );
     expect(Object.values(allocations).every((value) => value === 0)).toBe(true);
   });

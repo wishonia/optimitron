@@ -6,7 +6,7 @@
 
 export * from './jurisdiction-budget.js';
 export * from './us-federal-budget.js';
-export * from './us-priority-items.js';
+export * from './us-wishocratic-items.js';
 export * from './us-policies.js';
 export * from './international-comparisons.js';
 export * from './policy-exemplars.js';
@@ -38,3 +38,4 @@ export * from './government-report-cards.js';
 export * from './median-income-series.js';
 export * from './us-policy-recommendations.js';
 export * from './oecd-category-mappings.js';
+

@@ -10,7 +10,7 @@ import { wishocracyLink } from "@/lib/routes";
 interface WishocracyAuthPromptCardProps {
   show: boolean;
   isAuthenticated: boolean;
-  comparisonsCount: number;
+  allocationsCount: number;
   referralCode: string | null;
   authCardRef: RefObject<HTMLDivElement>;
   onDismiss: () => void;
@@ -19,7 +19,7 @@ interface WishocracyAuthPromptCardProps {
 export function WishocracyAuthPromptCard({
   show,
   isAuthenticated,
-  comparisonsCount,
+  allocationsCount,
   referralCode,
   authCardRef,
   onDismiss,
@@ -38,7 +38,7 @@ export function WishocracyAuthPromptCard({
           <Card className="border-4 border-primary bg-background p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="mb-6 text-center">
               <h3 className="text-xl font-black uppercase">
-                {comparisonsCount} Comparisons Saved Locally
+                {allocationsCount} Comparisons Saved Locally
               </h3>
               <p className="mt-3 text-sm text-muted-foreground">
                 Create an account now and Optimitron will keep your allocations, progress, and

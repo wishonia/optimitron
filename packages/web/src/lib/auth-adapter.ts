@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 import {
   createUniqueReferralCode,
   createUniqueUsername,
-  getUserHandleSeed,
 } from "@/lib/user-identity.server";
 
 export function createAuthAdapter(): Adapter {
@@ -13,7 +12,7 @@ export function createAuthAdapter(): Adapter {
   return {
     ...adapter,
     async createUser(user: Parameters<NonNullable<Adapter["createUser"]>>[0]) {
-      const username = await createUniqueUsername(getUserHandleSeed(user.name, user.email));
+      const username = await createUniqueUsername();
       const referralCode = await createUniqueReferralCode();
 
       return prisma.user.create({

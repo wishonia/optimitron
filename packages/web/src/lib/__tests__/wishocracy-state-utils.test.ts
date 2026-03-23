@@ -26,7 +26,7 @@ import { API_ROUTES } from "../api-routes";
 import {
   buildSelectedPairQueue,
   getInitialGuestState,
-  getRejectedCategories,
+  getExcludedItemIds,
   hydrateAuthenticatedState,
   hydrateGuestState,
   shouldShowIntro,
@@ -40,7 +40,7 @@ describe("wishocracy state utils", () => {
   });
 
   it("marks both categories as rejected for 0/0 comparisons", () => {
-    const rejected = getRejectedCategories([
+    const rejected = getExcludedItemIds([
       {
         itemAId: "PRAGMATIC_CLINICAL_TRIALS",
         itemBId: "MILITARY_OPERATIONS",
@@ -61,7 +61,7 @@ describe("wishocracy state utils", () => {
   });
 
   it("builds selected queues without completed or rejected pairs", () => {
-    const selectedCategories = new Set([
+    const selectedItemIds = new Set([
       "PRAGMATIC_CLINICAL_TRIALS",
       "ADDICTION_TREATMENT",
       "EARLY_CHILDHOOD_EDUCATION",
@@ -69,7 +69,7 @@ describe("wishocracy state utils", () => {
     ] as const);
 
     const queue = buildSelectedPairQueue(
-      selectedCategories,
+      selectedItemIds,
       [
         {
           itemAId: "PRAGMATIC_CLINICAL_TRIALS",
@@ -89,7 +89,7 @@ describe("wishocracy state utils", () => {
 
   it("hydrates guest progress from local storage and filters invalid pairs", () => {
     mocks.getPendingWishocracy.mockReturnValue({
-      comparisons: [
+      allocations: [
         {
           itemAId: "PRAGMATIC_CLINICAL_TRIALS",
           itemBId: "ADDICTION_TREATMENT",
@@ -111,7 +111,7 @@ describe("wishocracy state utils", () => {
         ["MILITARY_OPERATIONS", "EARLY_CHILDHOOD_EDUCATION"],
         ["PRAGMATIC_CLINICAL_TRIALS", "NOT_REAL_CATEGORY"],
       ],
-      selectedCategories: [
+      includedItemIds: [
         "PRAGMATIC_CLINICAL_TRIALS",
         "ADDICTION_TREATMENT",
         "EARLY_CHILDHOOD_EDUCATION",
@@ -121,8 +121,8 @@ describe("wishocracy state utils", () => {
 
     const state = hydrateGuestState();
 
-    expect(state.comparisons).toHaveLength(2);
-    expect(state.selectedCategories).toEqual(
+    expect(state.allocations).toHaveLength(2);
+    expect(state.selectedItemIds).toEqual(
       new Set([
         "PRAGMATIC_CLINICAL_TRIALS",
         "ADDICTION_TREATMENT",
@@ -130,7 +130,7 @@ describe("wishocracy state utils", () => {
         "MILITARY_OPERATIONS",
       ]),
     );
-    expect(state.rejectedCategories).toEqual(
+    expect(state.rejectedItemIds).toEqual(
       new Set(["ADDICTION_TREATMENT", "MILITARY_OPERATIONS"]),
     );
     expect(state.shuffledPairs).toEqual([["PRAGMATIC_CLINICAL_TRIALS", "EARLY_CHILDHOOD_EDUCATION"]]);
@@ -158,9 +158,9 @@ describe("wishocracy state utils", () => {
   it("creates the initial guest state with a random batch and intro enabled", () => {
     const state = getInitialGuestState();
 
-    expect(state.comparisons).toEqual([]);
-    expect(state.selectedCategories.size).toBe(0);
-    expect(state.rejectedCategories.size).toBe(0);
+    expect(state.allocations).toEqual([]);
+    expect(state.selectedItemIds.size).toBe(0);
+    expect(state.rejectedItemIds.size).toBe(0);
     expect(state.shuffledPairs).toHaveLength(25);
     expect(state.showIntro).toBe(true);
   });
@@ -188,18 +188,18 @@ describe("wishocracy state utils", () => {
       })
       .mockResolvedValueOnce({
         json: async () => ({
-          selections: [
+          inclusions: [
             {
               itemId: "PRAGMATIC_CLINICAL_TRIALS",
-              selected: true,
+              included: true,
             },
             {
               itemId: "ADDICTION_TREATMENT",
-              selected: true,
+              included: true,
             },
             {
               itemId: "EARLY_CHILDHOOD_EDUCATION",
-              selected: true,
+              included: true,
             },
           ],
         }),
@@ -214,15 +214,15 @@ describe("wishocracy state utils", () => {
 
     expect(mocks.syncPendingWishocracy).toHaveBeenCalled();
     expect(fetchMock).toHaveBeenNthCalledWith(1, API_ROUTES.wishocracy.allocations);
-    expect(fetchMock).toHaveBeenNthCalledWith(2, API_ROUTES.wishocracy.categorySelections);
-    expect(state.selectedCategories).toEqual(
+    expect(fetchMock).toHaveBeenNthCalledWith(2, API_ROUTES.wishocracy.itemInclusions);
+    expect(state.selectedItemIds).toEqual(
       new Set([
         "PRAGMATIC_CLINICAL_TRIALS",
         "ADDICTION_TREATMENT",
         "EARLY_CHILDHOOD_EDUCATION",
       ]),
     );
-    expect(state.comparisons).toEqual([
+    expect(state.allocations).toEqual([
       {
         itemAId: "PRAGMATIC_CLINICAL_TRIALS",
         itemBId: "ADDICTION_TREATMENT",
@@ -230,7 +230,7 @@ describe("wishocracy state utils", () => {
         allocationB: 40,
       },
     ]);
-    expect(state.rejectedCategories.size).toBe(0);
+    expect(state.rejectedItemIds.size).toBe(0);
     expect(state.shuffledPairs).toEqual([
       ["PRAGMATIC_CLINICAL_TRIALS", "EARLY_CHILDHOOD_EDUCATION"],
       ["ADDICTION_TREATMENT", "EARLY_CHILDHOOD_EDUCATION"],

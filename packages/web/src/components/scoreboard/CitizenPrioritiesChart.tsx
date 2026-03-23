@@ -1,6 +1,6 @@
 "use client";
 
-interface PriorityItem {
+interface WishocraticItemWeight {
   itemId: string;
   itemName: string;
   weight: number;
@@ -10,7 +10,7 @@ interface PriorityItem {
 }
 
 interface CitizenPrioritiesChartProps {
-  priorities: PriorityItem[];
+  priorities: WishocraticItemWeight[];
 }
 
 const BAR_COLORS = [

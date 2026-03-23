@@ -5,32 +5,32 @@ import { useEffect, useMemo, useState } from "react";
 import { API_ROUTES } from "@/lib/api-routes";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
-  BUDGET_CATEGORIES,
+  WISHOCRATIC_ITEMS,
   getActualGovernmentAllocations,
-  type BudgetCategoryId,
+  type WishocraticItemId,
 } from "@/lib/wishocracy-data";
 import { alignmentLink, getSignInPath, wishocracyLink } from "@/lib/routes";
 
 type WishocracyLandingSummary = {
-  averageAllocations: Record<BudgetCategoryId, number>;
+  averageAllocations: Record<WishocraticItemId, number>;
   totalUsers: number;
-  totalComparisons: number;
+  totalAllocations: number;
   topCategories: Array<{
-    categoryId: BudgetCategoryId;
+    categoryId: WishocraticItemId;
     percentage: number;
   }>;
 };
 
 function createEmptySummary(): WishocracyLandingSummary {
-  const averageAllocations = Object.keys(BUDGET_CATEGORIES).reduce((allocations, categoryId) => {
-    allocations[categoryId as BudgetCategoryId] = 0;
+  const averageAllocations = Object.keys(WISHOCRATIC_ITEMS).reduce((allocations, categoryId) => {
+    allocations[categoryId as WishocraticItemId] = 0;
     return allocations;
-  }, {} as Record<BudgetCategoryId, number>);
+  }, {} as Record<WishocraticItemId, number>);
 
   return {
     averageAllocations,
     totalUsers: 0,
-    totalComparisons: 0,
+    totalAllocations: 0,
     topCategories: [],
   };
 }
@@ -68,7 +68,7 @@ export function WishocracyLandingSection() {
   const rows = useMemo(() => {
     const source = summary.topCategories.length
       ? summary.topCategories
-      : (Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[]).map((categoryId) => ({
+      : (Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[]).map((categoryId) => ({
           categoryId,
           percentage: summary.averageAllocations[categoryId],
         }));
@@ -77,7 +77,7 @@ export function WishocracyLandingSection() {
       categoryId,
       communityPercent: percentage,
       governmentPercent: governmentAllocations[categoryId],
-      category: BUDGET_CATEGORIES[categoryId],
+      category: WISHOCRATIC_ITEMS[categoryId],
     }));
   }, [governmentAllocations, summary.averageAllocations, summary.topCategories]);
 
@@ -110,7 +110,7 @@ export function WishocracyLandingSection() {
               </div>
               <div className="border-4 border-primary bg-background px-4 py-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <div className="text-2xl font-black text-foreground">
-                  {summary.totalComparisons > 0 ? summary.totalComparisons.toLocaleString() : "Growing"}
+                  {summary.totalAllocations > 0 ? summary.totalAllocations.toLocaleString() : "Growing"}
                 </div>
                 <div className="text-xs font-bold uppercase text-muted-foreground">
                   Comparisons Logged

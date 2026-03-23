@@ -109,7 +109,7 @@ describe("getDashboardData", () => {
     expect(result.user.name).toBe("Test User");
     expect(result.user.username).toBe("testuser");
     expect(result.stats.referrals).toBe(1);
-    expect(result.stats.comparisons).toBe(3);
+    expect(result.stats.wishocraticAllocations).toBe(3);
     expect(result.stats.badges).toBe(1);
     expect(result.stats.rank).toBe(1);
     expect(result.badges).toHaveLength(1);

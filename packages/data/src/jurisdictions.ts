@@ -7,24 +7,28 @@
  */
 
 import { US_FEDERAL_BUDGET } from './datasets/us-federal-budget.js';
-import { US_PRIORITY_ITEMS, getUSPriorityAllocations } from './datasets/us-priority-items.js';
 import type { JurisdictionBudget } from './datasets/jurisdiction-budget.js';
-import type { PriorityItem } from './datasets/us-priority-items.js';
+import type { WishocraticItemDefinition } from './datasets/us-wishocratic-items.js';
+import {
+  DEFAULT_WISHOCRATIC_ITEMS_JURISDICTION_CODE,
+  WISHOCRATIC_ITEMS_BY_JURISDICTION,
+} from './wishocratic-items-registry.js';
 
 export interface JurisdictionData {
   /** Budget data with fiscal categories */
   budget: JurisdictionBudget;
-  /** Citizen priority items for pairwise comparison */
-  priorityItems: Record<string, PriorityItem>;
-  /** Calculate allocation percentages from priority item budgets */
-  getAllocations: () => Record<string, number>;
+  /** Wishocratic items for pairwise comparison */
+  wishocraticItems: Record<string, WishocraticItemDefinition>;
+  /** Calculate allocation percentages from wishocratic item budgets */
+  getWishocraticAllocations: () => Record<string, number>;
 }
 
 const JURISDICTIONS: Record<string, JurisdictionData> = {
   USA: {
     budget: US_FEDERAL_BUDGET,
-    priorityItems: US_PRIORITY_ITEMS,
-    getAllocations: getUSPriorityAllocations,
+    wishocraticItems: WISHOCRATIC_ITEMS_BY_JURISDICTION.USA.wishocraticItems,
+    getWishocraticAllocations:
+      WISHOCRATIC_ITEMS_BY_JURISDICTION.USA.getWishocraticAllocations,
   },
 };
 
@@ -39,4 +43,5 @@ export function getAvailableJurisdictions(): string[] {
 }
 
 /** Default jurisdiction code */
-export const DEFAULT_JURISDICTION_CODE = 'USA';
+export const DEFAULT_JURISDICTION_CODE = DEFAULT_WISHOCRATIC_ITEMS_JURISDICTION_CODE;
+

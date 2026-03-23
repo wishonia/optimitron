@@ -9,12 +9,13 @@ import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
 import { Button } from "@/components/ui/button";
 import { alignmentLink } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
-import { BUDGET_CATEGORIES, BudgetCategoryId } from "@/lib/wishocracy-data";
-import { Comparison, calculateAllocationsFromPairwise } from "@/lib/wishocracy-calculations";
+import { WISHOCRATIC_ITEMS, WishocraticItemId } from "@/lib/wishocracy-data";
+import type { WishocraticAllocationInput } from "@/lib/wishocracy-allocation";
+import { calculateAllocationsFromPairwise } from "@/lib/wishocracy-calculations";
 
 interface WishocracyCompletionCardProps {
   show: boolean;
-  comparisons: Comparison[];
+  allocations: WishocraticAllocationInput[];
   isAuthenticated: boolean;
   userEmail?: string | null;
   shareUrl: string;
@@ -22,7 +23,7 @@ interface WishocracyCompletionCardProps {
 
 export function WishocracyCompletionCard({
   show,
-  comparisons,
+  allocations: pairwiseAllocations,
   isAuthenticated,
   userEmail,
   shareUrl,
@@ -56,13 +57,13 @@ export function WishocracyCompletionCard({
     return null;
   }
 
-  const allocations = calculateAllocationsFromPairwise(comparisons);
-  const topPriorities = Object.entries(allocations)
+  const percentages = calculateAllocationsFromPairwise(pairwiseAllocations);
+  const topPriorities = Object.entries(percentages)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 5)
-    .map(([categoryId, percentage]) => ({
-      categoryId,
-      category: BUDGET_CATEGORIES[categoryId as BudgetCategoryId],
+    .map(([itemId, percentage]) => ({
+      itemId,
+      item: WISHOCRATIC_ITEMS[itemId as WishocraticItemId],
       percentage,
     }));
 
@@ -90,11 +91,11 @@ export function WishocracyCompletionCard({
         <h3 className="mb-4 text-center text-lg font-black uppercase">Your Top Priorities</h3>
         <div className="space-y-3">
           {topPriorities.map((priority, index) => (
-            <div key={priority.categoryId} className="flex items-center gap-3">
+            <div key={priority.itemId} className="flex items-center gap-3">
               <span className="w-8 text-2xl font-black text-brutal-pink">{index + 1}.</span>
-              <span className="text-2xl">{priority.category.icon}</span>
+              <span className="text-2xl">{priority.item.icon}</span>
               <div className="flex-1">
-                <div className="text-sm font-bold uppercase">{priority.category.name}</div>
+                <div className="text-sm font-bold uppercase">{priority.item.name}</div>
                 <div className="text-xs text-muted-foreground">
                   {priority.percentage.toFixed(1)}% of your ideal budget
                 </div>

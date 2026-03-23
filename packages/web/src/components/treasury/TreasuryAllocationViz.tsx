@@ -1,7 +1,7 @@
 "use client";
 
 import { formatWish, useTreasuryData } from "@/hooks/useTreasuryData";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 
 const BAR_COLORS = [
   "bg-brutal-pink",
@@ -22,7 +22,7 @@ const BAR_COLORS = [
  * Demo wishocratic allocations (shown when no real community data is available).
  * Roughly mirrors what an informed electorate might produce.
  */
-const DEMO_ALLOCATIONS: { categoryId: BudgetCategoryId; percentage: number }[] = [
+const DEMO_ALLOCATIONS: { categoryId: WishocraticItemId; percentage: number }[] = [
   { categoryId: "UNIVERSAL_BASIC_INCOME", percentage: 18.2 },
   { categoryId: "PRAGMATIC_CLINICAL_TRIALS", percentage: 14.5 },
   { categoryId: "EARLY_CHILDHOOD_EDUCATION", percentage: 12.8 },
@@ -105,7 +105,7 @@ export function TreasuryAllocationViz() {
           </h3>
           <div className="space-y-3">
             {allocations.map((item, index) => {
-              const cat = BUDGET_CATEGORIES[item.categoryId];
+              const cat = WISHOCRATIC_ITEMS[item.categoryId];
               const barWidth = Math.max((item.percentage / maxPct) * 100, 2);
               const color = BAR_COLORS[index % BAR_COLORS.length]!;
 

@@ -58,6 +58,7 @@ describe("signup auth route", () => {
   });
 
   it("creates the user, records attribution, and sends the welcome email", async () => {
+    // email check → no existing user; username uniqueness → available; referral code → available
     mocks.findUnique.mockResolvedValueOnce(null);
     mocks.hashPassword.mockResolvedValue("hashed-password");
     mocks.findUnique.mockResolvedValueOnce(null);
@@ -66,7 +67,7 @@ describe("signup auth route", () => {
       id: "user_1",
       email: "user@example.com",
       name: "Test User",
-      username: "test-user",
+      username: "covert-optimizer",
       referralCode: "REFCODE1",
       newsletterSubscribed: true,
       referralEmailSequenceLastSentAt: null,
@@ -93,7 +94,7 @@ describe("signup auth route", () => {
         email: "user@example.com",
         password: "hashed-password",
         name: "Test User",
-        username: "test-user",
+        username: expect.any(String),
         referralCode: expect.any(String),
         newsletterSubscribed: true,
       },

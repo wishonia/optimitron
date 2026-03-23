@@ -5,7 +5,7 @@ import {
   inferLegislativeBudgetDirection,
   type LegislativeBillInput,
 } from "@/lib/alignment-legislative-classification";
-import type { BudgetCategoryId } from "@/lib/wishocracy-data";
+import type { WishocraticItemId } from "@/lib/wishocracy-data";
 
 export interface ClassifiedBill {
   billId: string;
@@ -17,7 +17,7 @@ export interface ClassifiedBill {
   subjects: string[];
   latestAction: { date: string; text: string } | null;
   categories: Array<{
-    categoryId: BudgetCategoryId;
+    categoryId: WishocraticItemId;
     confidence: string;
     score: number;
   }>;
@@ -27,7 +27,7 @@ export interface ClassifiedBill {
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const limit = Math.min(parseInt(searchParams.get("limit") ?? "5", 10), 20);
-  const category = searchParams.get("category") as BudgetCategoryId | null;
+  const category = searchParams.get("category") as WishocraticItemId | null;
   const query = searchParams.get("q")?.toLowerCase() ?? null;
 
   try {

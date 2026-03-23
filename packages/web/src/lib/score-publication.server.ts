@@ -52,7 +52,7 @@ export async function publishAggregateScoresToHypercerts(
               externalId: true,
             },
           },
-          categoryScores: {
+          itemScores: {
             select: { itemId: true, score: true },
           },
         },
@@ -87,7 +87,7 @@ export async function publishAggregateScoresToHypercerts(
         alignmentScore: score.score,
         votesCompared: score.votesCompared,
         participantCount: run.participantCount,
-        categoryScores: score.categoryScores.map((cs) => ({
+        itemScores: score.itemScores.map((cs) => ({
           itemId: cs.itemId,
           score: cs.score,
         })),

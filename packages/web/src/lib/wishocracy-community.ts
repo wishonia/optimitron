@@ -1,54 +1,54 @@
 import { prisma } from "@/lib/prisma";
 import { calculateAllocationsFromPairwise } from "@/lib/wishocracy-calculations";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 import { createLogger } from "@/lib/logger";
 import {
-  isBudgetCategoryId,
+  isWishocraticItemId,
   isValidAllocationPair,
-  isValidWishocraticComparison,
-  normalizeWishocraticComparison,
-  type WishocraticComparisonInput,
-} from "@/lib/wishocracy-comparison";
+  isValidWishocraticAllocation,
+  normalizeWishocraticAllocation,
+  type WishocraticAllocationInput,
+} from "@/lib/wishocracy-allocation";
 
 const logger = createLogger("wishocracy-community");
 export {
-  isBudgetCategoryId,
+  isWishocraticItemId,
   isValidAllocationPair,
-  isValidWishocraticComparison,
-  normalizeWishocraticComparison,
-  type WishocraticComparisonInput,
-} from "@/lib/wishocracy-comparison";
+  isValidWishocraticAllocation,
+  normalizeWishocraticAllocation,
+  type WishocraticAllocationInput,
+} from "@/lib/wishocracy-allocation";
 
-export interface WishocraticStoredAllocation extends WishocraticComparisonInput {
+export interface WishocraticStoredAllocation extends WishocraticAllocationInput {
   userId: string;
   updatedAt: Date;
 }
 
 export interface WishocracyCommunityCategory {
-  categoryId: BudgetCategoryId;
+  categoryId: WishocraticItemId;
   percentage: number;
 }
 
 export interface WishocracyCommunitySummary {
-  averageAllocations: Record<BudgetCategoryId, number>;
+  averageAllocations: Record<WishocraticItemId, number>;
   totalUsers: number;
-  totalComparisons: number;
+  totalAllocations: number;
   topCategories: WishocracyCommunityCategory[];
 }
 
-export function createEmptyAverageAllocations(): Record<BudgetCategoryId, number> {
-  return Object.keys(BUDGET_CATEGORIES).reduce((allocations, categoryId) => {
-    allocations[categoryId as BudgetCategoryId] = 0;
+export function createEmptyAverageAllocations(): Record<WishocraticItemId, number> {
+  return Object.keys(WISHOCRATIC_ITEMS).reduce((allocations, categoryId) => {
+    allocations[categoryId as WishocraticItemId] = 0;
     return allocations;
-  }, {} as Record<BudgetCategoryId, number>);
+  }, {} as Record<WishocraticItemId, number>);
 }
 
 function buildTopCategories(
-  averageAllocations: Record<BudgetCategoryId, number>,
+  averageAllocations: Record<WishocraticItemId, number>,
 ): WishocracyCommunityCategory[] {
   return Object.entries(averageAllocations)
     .map(([categoryId, percentage]) => ({
-      categoryId: categoryId as BudgetCategoryId,
+      categoryId: categoryId as WishocraticItemId,
       percentage,
     }))
     .filter((entry) => entry.percentage > 0)
@@ -58,15 +58,15 @@ function buildTopCategories(
 
 function dedupeLatestAllocations(
   allocations: WishocraticStoredAllocation[],
-): Map<string, Array<WishocraticComparisonInput & { itemAId: BudgetCategoryId; itemBId: BudgetCategoryId }>> {
+): Map<string, Array<WishocraticAllocationInput & { itemAId: WishocraticItemId; itemBId: WishocraticItemId }>> {
   const latestByUserPair = new Map<
     string,
-    WishocraticStoredAllocation & { itemAId: BudgetCategoryId; itemBId: BudgetCategoryId }
+    WishocraticStoredAllocation & { itemAId: WishocraticItemId; itemBId: WishocraticItemId }
   >();
 
   for (const allocation of allocations) {
-    const normalized = normalizeWishocraticComparison(allocation);
-    if (!isValidWishocraticComparison(normalized)) {
+    const normalized = normalizeWishocraticAllocation(allocation);
+    if (!isValidWishocraticAllocation(normalized)) {
       continue;
     }
 
@@ -80,7 +80,7 @@ function dedupeLatestAllocations(
 
   const allocationsByUser = new Map<
     string,
-    Array<WishocraticComparisonInput & { itemAId: BudgetCategoryId; itemBId: BudgetCategoryId }>
+    Array<WishocraticAllocationInput & { itemAId: WishocraticItemId; itemBId: WishocraticItemId }>
   >();
 
   for (const allocation of latestByUserPair.values()) {
@@ -102,29 +102,29 @@ export function buildWishocracyCommunitySummary(
     return {
       averageAllocations,
       totalUsers: 0,
-      totalComparisons: 0,
+      totalAllocations: 0,
       topCategories: [],
     };
   }
 
-  let totalComparisons = 0;
+  let totalAllocations = 0;
   for (const userComparisons of allocationsByUser.values()) {
-    totalComparisons += userComparisons.length;
+    totalAllocations += userComparisons.length;
     const userAllocations = calculateAllocationsFromPairwise(userComparisons);
 
-    for (const categoryId of Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[]) {
+    for (const categoryId of Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[]) {
       averageAllocations[categoryId] += userAllocations[categoryId] / allocationsByUser.size;
     }
   }
 
-  for (const categoryId of Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[]) {
+  for (const categoryId of Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[]) {
     averageAllocations[categoryId] = Number(averageAllocations[categoryId].toFixed(1));
   }
 
   return {
     averageAllocations,
     totalUsers: allocationsByUser.size,
-    totalComparisons,
+    totalAllocations,
     topCategories: buildTopCategories(averageAllocations),
   };
 }

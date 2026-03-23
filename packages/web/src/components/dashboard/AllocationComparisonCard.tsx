@@ -15,8 +15,8 @@ interface AllocationComparisonCardProps {
   userAllocation: number | null
   averageAllocation: number
   governmentAllocation?: number
-  categoryA: AllocationCategory
-  categoryB: AllocationCategory
+  itemA: AllocationCategory
+  itemB: AllocationCategory
   title?: string
 }
 
@@ -24,8 +24,8 @@ export function AllocationComparisonCard({
   userAllocation,
   averageAllocation,
   governmentAllocation = 98,
-  categoryA,
-  categoryB,
+  itemA,
+  itemB,
   title = "WISHOCRATIC ALLOCATION",
 }: AllocationComparisonCardProps) {
   if (userAllocation === null) {
@@ -47,46 +47,46 @@ export function AllocationComparisonCard({
         {/* Category B (complement) */}
         <div>
           <div className="flex items-baseline justify-between mb-2">
-            <span className="text-sm font-bold uppercase">{categoryB.label}</span>
+            <span className="text-sm font-bold uppercase">{itemB.label}</span>
           </div>
 
           <AllocationBar
             percentage={userB}
-            colorClass={categoryB.colorClass}
-            label={categoryB.userLabel}
+            colorClass={itemB.colorClass}
+            label={itemB.userLabel}
           />
           <AllocationBar
             percentage={avgB}
-            colorClass={categoryB.colorClass}
-            label={categoryB.avgLabel}
+            colorClass={itemB.colorClass}
+            label={itemB.avgLabel}
           />
           <AllocationBar
             percentage={govB}
-            colorClass={categoryB.colorClass}
-            label={categoryB.govLabel}
+            colorClass={itemB.colorClass}
+            label={itemB.govLabel}
           />
         </div>
 
         {/* Category A */}
         <div>
           <div className="flex items-baseline justify-between mb-2">
-            <span className="text-sm font-bold uppercase">{categoryA.label}</span>
+            <span className="text-sm font-bold uppercase">{itemA.label}</span>
           </div>
 
           <AllocationBar
             percentage={userAllocation}
-            colorClass={categoryA.colorClass}
-            label={categoryA.userLabel}
+            colorClass={itemA.colorClass}
+            label={itemA.userLabel}
           />
           <AllocationBar
             percentage={averageAllocation}
-            colorClass={categoryA.colorClass}
-            label={categoryA.avgLabel}
+            colorClass={itemA.colorClass}
+            label={itemA.avgLabel}
           />
           <AllocationBar
             percentage={governmentAllocation}
-            colorClass={categoryA.colorClass}
-            label={categoryA.govLabel}
+            colorClass={itemA.colorClass}
+            label={itemA.govLabel}
           />
         </div>
       </div>
@@ -98,14 +98,14 @@ export function AllocationComparisonCard({
             <p className="text-lg font-black">
               You allocated <span className="text-brutal-cyan text-2xl">{Math.abs(difference)}%</span> MORE
             </p>
-            <p className="text-sm font-bold">to {categoryB.label.toLowerCase()} than the average person</p>
+            <p className="text-sm font-bold">to {itemB.label.toLowerCase()} than the average person</p>
           </div>
         ) : difference < 0 ? (
           <div className="text-center p-4 bg-brutal-pink border-4 border-primary">
             <p className="text-lg font-black">
               You allocated <span className="text-brutal-pink text-2xl">{Math.abs(difference)}%</span> LESS
             </p>
-            <p className="text-sm font-bold">to {categoryB.label.toLowerCase()} than the average person</p>
+            <p className="text-sm font-bold">to {itemB.label.toLowerCase()} than the average person</p>
           </div>
         ) : (
           <div className="text-center p-4 bg-brutal-yellow border-4 border-primary">

@@ -10,8 +10,11 @@
  */
 
 export {
-  US_PRIORITY_ITEMS as BUDGET_CATEGORIES,
-  getUSPriorityAllocations as getActualGovernmentAllocations,
-} from '@optimitron/data/dist/datasets/us-priority-items.js';
+  DEFAULT_WISHOCRATIC_ITEMS as WISHOCRATIC_ITEMS,
+  DEFAULT_WISHOCRATIC_ITEMS_JURISDICTION_CODE as DEFAULT_WISHOCRACY_JURISDICTION_CODE,
+  getDefaultWishocraticAllocations as getActualGovernmentAllocations,
+} from '@optimitron/data/dist/wishocratic-items-registry.js';
 
-export type { USPriorityItemId as BudgetCategoryId } from '@optimitron/data/dist/datasets/us-priority-items.js';
+export type {
+  DefaultWishocraticItemId as WishocraticItemId,
+} from '@optimitron/data/dist/wishocratic-items-registry.js';

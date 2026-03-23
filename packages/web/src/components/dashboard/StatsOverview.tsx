@@ -31,7 +31,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-bold uppercase text-muted-foreground">Comparisons</p>
-                <p className="text-4xl font-black text-brutal-cyan">{stats.comparisons}</p>
+                <p className="text-4xl font-black text-brutal-cyan">{stats.wishocraticAllocations}</p>
               </div>
               <BarChart3 className="h-12 w-12 text-brutal-cyan" />
             </div>

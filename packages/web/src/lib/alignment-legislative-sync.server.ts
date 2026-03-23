@@ -9,9 +9,9 @@ import {
   deriveCategorySupportSignal,
   inferLegislativeBudgetDirection,
 } from "@/lib/alignment-legislative-classification";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 
-const ALIGNMENT_CATEGORY_IDS = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[];
+const ALIGNMENT_CATEGORY_IDS = Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[];
 const MAX_ROLL_CALLS_PER_BILL = 3;
 const MIN_ROLL_CALLS_FOR_PARTIAL_PROFILE = 2;
 const MIN_ROLL_CALLS_PER_PROFILE = 6;
@@ -29,7 +29,7 @@ export interface StoredAlignmentVoteRow {
 }
 
 export interface DerivedAlignmentAllocationRecord {
-  allocations: Record<BudgetCategoryId, number>;
+  allocations: Record<WishocraticItemId, number>;
   categoriesCovered: number;
   coverageLevel: "full" | "partial";
   latestVoteDate: Date | null;
@@ -40,7 +40,7 @@ export interface DerivedAlignmentVoteRow {
   externalId: string;
   allocationPct: number;
   billId: string;
-  itemId: BudgetCategoryId;
+  itemId: WishocraticItemId;
   votedAt: Date | null;
 }
 
@@ -70,31 +70,31 @@ function normalizeSignal(value: number): number {
 }
 
 function normalizeAllocationRecord(
-  weights: Record<BudgetCategoryId, number>,
-): Record<BudgetCategoryId, number> {
+  weights: Record<WishocraticItemId, number>,
+): Record<WishocraticItemId, number> {
   const total = Object.values(weights).reduce((sum, value) => sum + value, 0);
   if (total <= 0) {
     return ALIGNMENT_CATEGORY_IDS.reduce((record, categoryId) => {
       record[categoryId] = 0;
       return record;
-    }, {} as Record<BudgetCategoryId, number>);
+    }, {} as Record<WishocraticItemId, number>);
   }
 
   return ALIGNMENT_CATEGORY_IDS.reduce((record, categoryId) => {
     record[categoryId] = Number(((weights[categoryId] / total) * 100).toFixed(1));
     return record;
-  }, {} as Record<BudgetCategoryId, number>);
+  }, {} as Record<WishocraticItemId, number>);
 }
 
 function buildLegacyAllocationRecord(
   votes: StoredAlignmentVoteRow[],
 ): DerivedAlignmentAllocationRecord | null {
-  const latestByCategory = new Map<BudgetCategoryId, { allocationPct: number; timestamp: number }>();
+  const latestByCategory = new Map<WishocraticItemId, { allocationPct: number; timestamp: number }>();
   let latestVoteDate: Date | null = null;
 
   for (const vote of votes) {
-    if (!ALIGNMENT_CATEGORY_IDS.includes(vote.itemId as BudgetCategoryId)) continue;
-    const categoryId = vote.itemId as BudgetCategoryId;
+    if (!ALIGNMENT_CATEGORY_IDS.includes(vote.itemId as WishocraticItemId)) continue;
+    const categoryId = vote.itemId as WishocraticItemId;
     const timestamp = toTimestamp(vote.votedAt) || toTimestamp(vote.updatedAt);
     const existing = latestByCategory.get(categoryId);
     if (!existing || timestamp >= existing.timestamp) {
@@ -115,7 +115,7 @@ function buildLegacyAllocationRecord(
         (latestByCategory.get(categoryId)?.allocationPct ?? 0).toFixed(1),
       );
       return record;
-    }, {} as Record<BudgetCategoryId, number>),
+    }, {} as Record<WishocraticItemId, number>),
     categoriesCovered: latestByCategory.size,
     coverageLevel: "full",
     latestVoteDate,
@@ -124,13 +124,13 @@ function buildLegacyAllocationRecord(
 }
 
 function collectLegislativeVoteStats(votes: StoredAlignmentVoteRow[]) {
-  const byCategory = new Map<BudgetCategoryId, { count: number; sum: number }>();
+  const byCategory = new Map<WishocraticItemId, { count: number; sum: number }>();
   const uniqueRollCalls = new Set<string>();
   let latestVoteDate: Date | null = null;
 
   for (const vote of votes) {
-    if (!ALIGNMENT_CATEGORY_IDS.includes(vote.itemId as BudgetCategoryId)) continue;
-    const categoryId = vote.itemId as BudgetCategoryId;
+    if (!ALIGNMENT_CATEGORY_IDS.includes(vote.itemId as WishocraticItemId)) continue;
+    const categoryId = vote.itemId as WishocraticItemId;
     const stats = byCategory.get(categoryId) ?? { count: 0, sum: 0 };
     stats.count += 1;
     stats.sum += normalizeSignal(vote.allocationPct);
@@ -177,7 +177,7 @@ export function buildAllocationRecordFromStoredVotes(
     const averageSignal = normalizeSignal(stats.sum / stats.count);
     record[categoryId] = ((averageSignal + 1) / 2) * stats.count + SIGNAL_PRIOR;
     return record;
-  }, {} as Record<BudgetCategoryId, number>);
+  }, {} as Record<WishocraticItemId, number>);
 
   return {
     allocations: normalizeAllocationRecord(weights),
@@ -190,7 +190,7 @@ export function buildAllocationRecordFromStoredVotes(
 
 export function buildPartialAllocationRecordFromStoredVotes(
   votes: StoredAlignmentVoteRow[],
-  baselineAllocations: Record<BudgetCategoryId, number>,
+  baselineAllocations: Record<WishocraticItemId, number>,
 ): DerivedAlignmentAllocationRecord | null {
   if (votes.length === 0 || votes.every(isLegacyBenchmarkVote)) {
     return null;
@@ -229,7 +229,7 @@ export function buildPartialAllocationRecordFromStoredVotes(
       ).toFixed(4),
     );
     return record;
-  }, {} as Record<BudgetCategoryId, number>);
+  }, {} as Record<WishocraticItemId, number>);
 
   return {
     allocations: normalizeAllocationRecord(weights),

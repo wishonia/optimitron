@@ -1,21 +1,21 @@
 import { useState, useCallback } from "react";
 import type { ClassifiedBill } from "@/app/api/civic/bills/route";
 import { BillCard } from "./BillCard";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 
 interface BillListCardProps {
   bills: ClassifiedBill[];
   onVote?: (bill: ClassifiedBill) => void;
   onAnalysis?: (bill: ClassifiedBill) => void;
-  onFilter?: (category: BudgetCategoryId | null, query: string | null) => void;
+  onFilter?: (category: WishocraticItemId | null, query: string | null) => void;
 }
 
-const categoryEntries = Object.entries(BUDGET_CATEGORIES) as Array<
-  [BudgetCategoryId, (typeof BUDGET_CATEGORIES)[BudgetCategoryId]]
+const categoryEntries = Object.entries(WISHOCRATIC_ITEMS) as Array<
+  [WishocraticItemId, (typeof WISHOCRATIC_ITEMS)[WishocraticItemId]]
 >;
 
 export function BillListCard({ bills, onVote, onAnalysis, onFilter }: BillListCardProps) {
-  const [filterCategory, setFilterCategory] = useState<BudgetCategoryId | "">("");
+  const [filterCategory, setFilterCategory] = useState<WishocraticItemId | "">("");
   const [filterQuery, setFilterQuery] = useState("");
 
   const handleFilter = useCallback(() => {
@@ -33,7 +33,7 @@ export function BillListCard({ bills, onVote, onAnalysis, onFilter }: BillListCa
           <select
             className="opto-bill-list__select"
             value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value as BudgetCategoryId | "")}
+            onChange={(e) => setFilterCategory(e.target.value as WishocraticItemId | "")}
           >
             <option value="">All categories</option>
             {categoryEntries.map(([id, cat]) => (

@@ -100,7 +100,7 @@ export async function getPersonalAlignmentState(
         updatedAt: true,
       },
     }),
-    prisma.wishocraticCategorySelection.findMany({
+    prisma.wishocraticItemInclusion.findMany({
       where: { userId, selected: true },
       select: {
         itemId: true,
@@ -111,8 +111,8 @@ export async function getPersonalAlignmentState(
 
   if (allocations.length === 0) {
     return buildEmptyPersonalAlignmentState({
-      comparisonCount: 0,
-      selectedCategoryCount: selections.length,
+      allocationCount: 0,
+      selectedItemCount: selections.length,
     });
   }
 
@@ -125,15 +125,15 @@ export async function getPersonalAlignmentState(
       allocationB: allocation.allocationB,
       timestamp: allocation.updatedAt,
     })),
-    selectedCategoryCount: selections.length,
+    selectedItemCount: selections.length,
     benchmarkProfiles,
     ...summarizeCandidateSource(benchmarkProfiles),
   });
 
-  if (report.comparisonCount === 0 || report.topPriorities.length === 0) {
+  if (report.allocationCount === 0 || report.topPriorities.length === 0) {
     return buildEmptyPersonalAlignmentState({
-      comparisonCount: report.comparisonCount,
-      selectedCategoryCount: selections.length,
+      allocationCount: report.allocationCount,
+      selectedItemCount: selections.length,
     });
   }
 

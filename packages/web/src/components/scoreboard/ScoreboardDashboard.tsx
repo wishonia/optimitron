@@ -43,7 +43,7 @@ export function ScoreboardDashboard({ data }: ScoreboardDashboardProps) {
             Comparisons
           </div>
           <div className="mt-2 text-2xl font-black text-foreground">
-            {data.aggregationRun.comparisonCount.toLocaleString()}
+            {data.aggregationRun.allocationCount.toLocaleString()}
           </div>
         </div>
         <div className="border-4 border-primary bg-brutal-yellow p-4">
@@ -101,7 +101,7 @@ export function ScoreboardDashboard({ data }: ScoreboardDashboardProps) {
         <p className="text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground">
           Last computed:{" "}
           {new Date(data.aggregationRun.computedAt).toLocaleString()} &middot;{" "}
-          {data.aggregationRun.comparisonCount} pairwise comparisons from{" "}
+          {data.aggregationRun.allocationCount} pairwise comparisons from{" "}
           {data.aggregationRun.participantCount} participants
         </p>
         <p className="mt-2 text-xs font-bold text-muted-foreground">

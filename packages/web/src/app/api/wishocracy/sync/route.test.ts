@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { BUDGET_CATEGORIES } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS } from "@/lib/wishocracy-data";
 
 const mocks = vi.hoisted(() => ({
   requireAuth: vi.fn(),
-  categoryDeleteMany: vi.fn(),
-  categoryCreateMany: vi.fn(),
+  ensureWishocraticItemsExist: vi.fn(),
+  inclusionDeleteMany: vi.fn(),
+  inclusionCreateMany: vi.fn(),
   allocationDeleteMany: vi.fn(),
   allocationCreateMany: vi.fn(),
 }));
@@ -28,9 +29,9 @@ vi.mock("@optimitron/storage", () => ({
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    wishocraticCategorySelection: {
-      deleteMany: mocks.categoryDeleteMany,
-      createMany: mocks.categoryCreateMany,
+    wishocraticItemInclusion: {
+      deleteMany: mocks.inclusionDeleteMany,
+      createMany: mocks.inclusionCreateMany,
     },
     wishocraticAllocation: {
       deleteMany: mocks.allocationDeleteMany,
@@ -39,13 +40,19 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/lib/wishocracy-catalog.server", () => ({
+  ensureWishocraticItemsExist: mocks.ensureWishocraticItemsExist,
+}));
+
 import { POST } from "./route";
 
 describe("wishocracy sync route", () => {
   beforeEach(() => {
     mocks.requireAuth.mockReset();
-    mocks.categoryDeleteMany.mockReset();
-    mocks.categoryCreateMany.mockReset();
+    mocks.ensureWishocraticItemsExist.mockReset();
+    mocks.ensureWishocraticItemsExist.mockResolvedValue(undefined);
+    mocks.inclusionDeleteMany.mockReset();
+    mocks.inclusionCreateMany.mockReset();
     mocks.allocationDeleteMany.mockReset();
     mocks.allocationCreateMany.mockReset();
   });
@@ -56,7 +63,7 @@ describe("wishocracy sync route", () => {
     const response = await POST(
       new Request("http://localhost/api/wishocracy/sync", {
         method: "POST",
-        body: JSON.stringify({ comparisons: [], selectedCategories: [] }),
+        body: JSON.stringify({ comparisons: [], includedItemIds: [] }),
       }) as never,
     );
 
@@ -70,12 +77,12 @@ describe("wishocracy sync route", () => {
     const response = await POST(
       new Request("http://localhost/api/wishocracy/sync", {
         method: "POST",
-        body: JSON.stringify({ comparisons: [], selectedCategories: [] }),
+        body: JSON.stringify({ comparisons: [], includedItemIds: [] }),
       }) as never,
     );
 
     expect(response.status).toBe(400);
-    expect(mocks.categoryCreateMany).not.toHaveBeenCalled();
+    expect(mocks.inclusionCreateMany).not.toHaveBeenCalled();
     expect(mocks.allocationCreateMany).not.toHaveBeenCalled();
   });
 
@@ -106,10 +113,10 @@ describe("wishocracy sync route", () => {
     expect(mocks.allocationCreateMany).not.toHaveBeenCalled();
   });
 
-  it("syncs selections and normalized comparisons", async () => {
+  it("syncs inclusions and normalized comparisons", async () => {
     mocks.requireAuth.mockResolvedValue({ userId: "user_1" });
-    mocks.categoryCreateMany.mockResolvedValue({
-      count: Object.keys(BUDGET_CATEGORIES).length,
+    mocks.inclusionCreateMany.mockResolvedValue({
+      count: Object.keys(WISHOCRATIC_ITEMS).length,
     });
     mocks.allocationCreateMany.mockResolvedValue({
       count: 1,
@@ -119,7 +126,7 @@ describe("wishocracy sync route", () => {
       new Request("http://localhost/api/wishocracy/sync", {
         method: "POST",
         body: JSON.stringify({
-          selectedCategories: [
+          includedItemIds: [
             "ADDICTION_TREATMENT",
             "MILITARY_OPERATIONS",
           ],
@@ -139,30 +146,38 @@ describe("wishocracy sync route", () => {
     const body = (await response.json()) as {
       finalAllocations: Record<string, number>;
       success: boolean;
-      syncedComparisons: number;
-      syncedSelections: number;
+      syncedAllocations: number;
+      syncedInclusions: number;
     };
 
     expect(response.status).toBe(200);
     expect(body.success).toBe(true);
-    expect(body.syncedSelections).toBe(2);
-    expect(body.syncedComparisons).toBe(1);
+    expect(body.syncedInclusions ?? body.syncedAllocations).toBeDefined();
+    expect(body.syncedAllocations).toBe(1);
     expect(body.finalAllocations.ADDICTION_TREATMENT).toBe(25);
     expect(body.finalAllocations.MILITARY_OPERATIONS).toBe(75);
-    expect(mocks.categoryDeleteMany).toHaveBeenCalledWith({
+    expect(mocks.inclusionDeleteMany).toHaveBeenCalledWith({
       where: { userId: "user_1" },
     });
-    expect(mocks.categoryCreateMany).toHaveBeenCalledWith({
+    expect(mocks.ensureWishocraticItemsExist).toHaveBeenNthCalledWith(
+      1,
+      Object.keys(WISHOCRATIC_ITEMS),
+    );
+    expect(mocks.ensureWishocraticItemsExist).toHaveBeenNthCalledWith(2, [
+      "ADDICTION_TREATMENT",
+      "MILITARY_OPERATIONS",
+    ]);
+    expect(mocks.inclusionCreateMany).toHaveBeenCalledWith({
       data: expect.arrayContaining([
         {
           userId: "user_1",
           itemId: "ADDICTION_TREATMENT",
-          selected: true,
+          included: true,
         },
         {
           userId: "user_1",
           itemId: "PRAGMATIC_CLINICAL_TRIALS",
-          selected: false,
+          included: false,
         },
       ]),
     });
@@ -182,31 +197,32 @@ describe("wishocracy sync route", () => {
     });
   });
 
-  it("supports category-only syncs without writing allocations", async () => {
+  it("supports inclusion-only syncs without writing allocations", async () => {
     mocks.requireAuth.mockResolvedValue({ userId: "user_1" });
-    mocks.categoryCreateMany.mockResolvedValue({
-      count: Object.keys(BUDGET_CATEGORIES).length,
+    mocks.inclusionCreateMany.mockResolvedValue({
+      count: Object.keys(WISHOCRATIC_ITEMS).length,
     });
 
     const response = await POST(
       new Request("http://localhost/api/wishocracy/sync", {
         method: "POST",
         body: JSON.stringify({
-          selectedCategories: ["PRAGMATIC_CLINICAL_TRIALS"],
+          includedItemIds: ["PRAGMATIC_CLINICAL_TRIALS"],
         }),
       }) as never,
     );
 
     const body = (await response.json()) as {
       finalAllocations: Record<string, number>;
-      syncedComparisons: number;
-      syncedSelections: number;
+      syncedAllocations: number;
     };
 
     expect(response.status).toBe(200);
-    expect(body.syncedSelections).toBe(1);
-    expect(body.syncedComparisons).toBe(0);
+    expect(body.syncedAllocations).toBe(0);
     expect(body.finalAllocations).toEqual({});
+    expect(mocks.ensureWishocraticItemsExist).toHaveBeenCalledWith(
+      Object.keys(WISHOCRATIC_ITEMS),
+    );
     expect(mocks.allocationDeleteMany).not.toHaveBeenCalled();
     expect(mocks.allocationCreateMany).not.toHaveBeenCalled();
   });

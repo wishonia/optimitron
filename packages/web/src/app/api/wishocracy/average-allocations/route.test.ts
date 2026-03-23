@@ -23,7 +23,7 @@ describe("wishocracy average allocations route", () => {
         PRAGMATIC_CLINICAL_TRIALS: 45,
       },
       totalUsers: 12,
-      totalComparisons: 48,
+      totalAllocations: 48,
       topCategories: [
         { categoryId: "ADDICTION_TREATMENT", percentage: 55 },
       ],
@@ -38,7 +38,7 @@ describe("wishocracy average allocations route", () => {
         PRAGMATIC_CLINICAL_TRIALS: 45,
       },
       totalUsers: 12,
-      totalComparisons: 48,
+      totalAllocations: 48,
       topCategories: [{ categoryId: "ADDICTION_TREATMENT", percentage: 55 }],
     });
   });

@@ -4,10 +4,10 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data"
-import { buildEnrichedPriorityItems, type EfficiencyContext } from "@/lib/wishocracy-bridge"
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data"
+import { buildEnrichedWishocraticItems, type EfficiencyContext } from "@/lib/wishocracy-bridge"
 
-const enrichedItems = buildEnrichedPriorityItems()
+const enrichedItems = buildEnrichedWishocraticItems()
 
 function EfficiencyTag({ context, roiRatio, annualBudgetBillions }: {
   context: EfficiencyContext | null
@@ -97,20 +97,20 @@ function TruncatedDescription({ text, sources }: { text: string; sources?: reado
   )
 }
 
-interface BudgetPairSliderProps {
-  categoryA: BudgetCategoryId
-  categoryB: BudgetCategoryId
+interface WishocraticPairSliderProps {
+  itemA: WishocraticItemId
+  itemB: WishocraticItemId
   initialAllocation?: number
   onSubmit: (allocationA: number, allocationB: number) => void
 }
 
-export function BudgetPairSlider({
-  categoryA,
-  categoryB,
+export function WishocraticPairSlider({
+  itemA,
+  itemB,
   initialAllocation = 50,
   onSubmit,
-}: BudgetPairSliderProps) {
-  // Slider value represents allocation to categoryB (0-100)
+}: WishocraticPairSliderProps) {
+  // Slider value represents allocation to itemB (0-100)
   // This makes dragging right (toward B) increase B's allocation
   const [sliderValue, setSliderValue] = useState(100 - initialAllocation)
   const [hasInteracted, setHasInteracted] = useState(false)
@@ -151,10 +151,10 @@ export function BudgetPairSlider({
     timers.push(hideTimer)
 
     return () => timers.forEach(timer => clearTimeout(timer))
-  }, [categoryA, categoryB, initialAllocation])
+  }, [itemA, itemB, initialAllocation])
 
-  const catA = BUDGET_CATEGORIES[categoryA]
-  const catB = BUDGET_CATEGORIES[categoryB]
+  const itemA = WISHOCRATIC_ITEMS[itemA]
+  const itemB = WISHOCRATIC_ITEMS[itemB]
 
   // Calculate allocations from slider value
   // Always use actual slider value (not animated) so slider stays at 50% during tutorial
@@ -175,7 +175,7 @@ export function BudgetPairSlider({
   }
 
   // Guard against invalid categories
-  if (!catA || !catB) {
+  if (!itemA || !itemB) {
     return (
       <Card className="bg-background border-4 border-primary p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-4xl mx-auto">
         <p className="text-center text-brutal-red font-bold">
@@ -196,21 +196,21 @@ export function BudgetPairSlider({
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <div className="flex-1 text-center">
-            <div className="text-6xl mb-3">{catA.icon}</div>
+            <div className="text-6xl mb-3">{itemA.icon}</div>
             <div className="text-4xl sm:text-5xl font-black text-brutal-pink mb-2">
               {allocation}%
             </div>
             <div className="text-sm sm:text-base font-bold uppercase px-2">
-              {catA.name}
+              {itemA.name}
             </div>
           </div>
           <div className="flex-1 text-center">
-            <div className="text-6xl mb-3">{catB.icon}</div>
+            <div className="text-6xl mb-3">{itemB.icon}</div>
             <div className="text-4xl sm:text-5xl font-black text-brutal-cyan mb-2">
               {allocationB}%
             </div>
             <div className="text-sm sm:text-base font-bold uppercase px-2">
-              {catB.name}
+              {itemB.name}
             </div>
           </div>
         </div>
@@ -249,22 +249,22 @@ export function BudgetPairSlider({
         {/* Descriptions + Efficiency Context Below Slider */}
         <div className="flex justify-between gap-4">
           <div className="flex-1 text-center">
-            <TruncatedDescription text={catA.description} sources={catA.sources} />
-            {enrichedItems[categoryA] && (
+            <TruncatedDescription text={itemA.description} sources={itemA.sources} />
+            {enrichedItems[itemA] && (
               <EfficiencyTag
-                context={enrichedItems[categoryA].efficiencyContext}
-                roiRatio={enrichedItems[categoryA].roiRatio}
-                annualBudgetBillions={enrichedItems[categoryA].annualBudgetBillions}
+                context={enrichedItems[itemA].efficiencyContext}
+                roiRatio={enrichedItems[itemA].roiRatio}
+                annualBudgetBillions={enrichedItems[itemA].annualBudgetBillions}
               />
             )}
           </div>
           <div className="flex-1 text-center">
-            <TruncatedDescription text={catB.description} sources={catB.sources} />
-            {enrichedItems[categoryB] && (
+            <TruncatedDescription text={itemB.description} sources={itemB.sources} />
+            {enrichedItems[itemB] && (
               <EfficiencyTag
-                context={enrichedItems[categoryB].efficiencyContext}
-                roiRatio={enrichedItems[categoryB].roiRatio}
-                annualBudgetBillions={enrichedItems[categoryB].annualBudgetBillions}
+                context={enrichedItems[itemB].efficiencyContext}
+                roiRatio={enrichedItems[itemB].roiRatio}
+                annualBudgetBillions={enrichedItems[itemB].annualBudgetBillions}
               />
             )}
           </div>

@@ -1,6 +1,6 @@
 import {
-  BUDGET_CATEGORIES,
-  type BudgetCategoryId,
+  WISHOCRATIC_ITEMS,
+  type WishocraticItemId,
 } from "./wishocracy-data";
 import type {
   LegislativeCategoryMatch,
@@ -8,7 +8,7 @@ import type {
 } from "./alignment-legislative-classification";
 
 export interface StructuralCBACategory {
-  categoryId: BudgetCategoryId;
+  categoryId: WishocraticItemId;
   name: string;
   direction: LegislativeBudgetDirection;
   roi: string | null;
@@ -41,7 +41,7 @@ export function buildStructuralCBA(
   direction: LegislativeBudgetDirection,
 ): StructuralCBA {
   const categories: StructuralCBACategory[] = matches.map((m) => {
-    const cat = BUDGET_CATEGORIES[m.categoryId];
+    const cat = WISHOCRATIC_ITEMS[m.categoryId];
     return {
       categoryId: m.categoryId,
       name: cat?.name ?? m.categoryId,

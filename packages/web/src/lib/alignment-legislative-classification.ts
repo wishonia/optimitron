@@ -1,4 +1,4 @@
-import type { BudgetCategoryId } from "@/lib/wishocracy-data";
+import type { WishocraticItemId } from "@/lib/wishocracy-data";
 import { ALIGNMENT_LEGISLATIVE_CATEGORY_RULES } from "@/lib/alignment-legislative-config";
 
 export interface LegislativeBillInput {
@@ -13,7 +13,7 @@ export type LegislativeMatchConfidence = "high" | "medium" | "low";
 export type LegislativeBudgetDirection = "increase" | "decrease";
 
 export interface LegislativeCategoryMatch {
-  categoryId: BudgetCategoryId;
+  categoryId: WishocraticItemId;
   confidence: LegislativeMatchConfidence;
   matchedTerms: string[];
   score: number;
@@ -21,7 +21,7 @@ export interface LegislativeCategoryMatch {
 }
 
 interface CategoryRule {
-  categoryId: BudgetCategoryId;
+  categoryId: WishocraticItemId;
   keywords: readonly string[];
   policyAreas?: readonly string[];
 }

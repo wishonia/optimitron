@@ -7,10 +7,10 @@ import { prisma } from "@/lib/prisma";
 import { createLogger } from "@/lib/logger";
 import {
   buildCitizenPreferenceSummary,
-  type StoredWishocraticComparison,
+  type StoredWishocraticAllocation,
 } from "@/lib/wishocracy-alignment";
 import { loadAlignmentBenchmarkProfiles } from "@/lib/alignment-politicians.server";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 
 const logger = createLogger("aggregate-alignment");
 
@@ -27,7 +27,7 @@ export interface AggregateAlignmentResult {
   aggregationRunId: string;
   jurisdictionId: string;
   jurisdictionCode: string;
-  comparisonCount: number;
+  allocationCount: number;
   participantCount: number;
   consistencyRatio: number;
   politicianScores: Array<{
@@ -47,7 +47,7 @@ export interface AggregateScoreData {
   };
   aggregationRun: {
     id: string;
-    comparisonCount: number;
+    allocationCount: number;
     participantCount: number;
     consistencyRatio: number | null;
     computedAt: string;
@@ -62,7 +62,7 @@ export interface AggregateScoreData {
     district: string | null;
     score: number;
     votesCompared: number;
-    categoryScores: Record<string, number>;
+    itemScores: Record<string, number>;
     rank: number;
     onChainRef: string | null;
   }>;
@@ -73,7 +73,7 @@ export interface AggregateScoreData {
  * Resolve budget category display name from its ID.
  */
 function getCategoryName(categoryId: string): string {
-  const cat = BUDGET_CATEGORIES[categoryId as BudgetCategoryId];
+  const cat = WISHOCRATIC_ITEMS[categoryId as WishocraticItemId];
   return cat?.name ?? categoryId;
 }
 
@@ -117,7 +117,7 @@ export async function computeAggregateAlignmentScores(
   }
 
   // 2. Convert to the format expected by wishocracy functions
-  const comparisons: StoredWishocraticComparison[] = allocations.map((a) => ({
+  const comparisons: StoredWishocraticAllocation[] = allocations.map((a) => ({
     userId: a.userId,
     itemAId: a.itemAId,
     itemBId: a.itemBId,
@@ -134,7 +134,7 @@ export async function computeAggregateAlignmentScores(
   }
 
   logger.info(
-    `Aggregated ${summary.totalComparisons} comparisons from ${summary.totalParticipants} participants, CR=${summary.consistencyRatio.toFixed(3)}`,
+    `Aggregated ${summary.totalAllocations} comparisons from ${summary.totalParticipants} participants, CR=${summary.consistencyRatio.toFixed(3)}`,
   );
 
   // 4. Load politician profiles (benchmark + Congress sync)
@@ -158,7 +158,7 @@ export async function computeAggregateAlignmentScores(
   const aggregationRun = await prisma.aggregationRun.create({
     data: {
       jurisdictionId: jurisdiction.id,
-      comparisonCount: summary.totalComparisons,
+      allocationCount: summary.totalAllocations,
       participantCount: summary.totalParticipants,
       consistencyRatio: summary.consistencyRatio,
     },
@@ -208,7 +208,7 @@ export async function computeAggregateAlignmentScores(
         aggregationRunId: aggregationRun.id,
         score: score.score,
         votesCompared: score.votesCompared,
-        categoryScores: score.categoryScores ?? {},
+        itemScores: score.itemScores ?? {},
         rank: index + 1,
         name: dbPolitician.name,
       };
@@ -216,12 +216,12 @@ export async function computeAggregateAlignmentScores(
     .filter((d): d is NonNullable<typeof d> => d != null);
 
   if (scoreData.length > 0) {
-    // Create AlignmentScore records (without categoryScores — now a relation)
+    // Create AlignmentScore records (without itemScores — now a relation)
     await prisma.alignmentScore.createMany({
-      data: scoreData.map(({ rank: _rank, name: _name, categoryScores: _cs, ...rest }) => rest),
+      data: scoreData.map(({ rank: _rank, name: _name, itemScores: _cs, ...rest }) => rest),
     });
 
-    // Create CategoryAlignmentScore child records for each score
+    // Create WishocraticItemAlignmentScore child records for each score
     const createdScores = await prisma.alignmentScore.findMany({
       where: { aggregationRunId: aggregationRun.id },
       select: { id: true, politicianId: true },
@@ -234,7 +234,7 @@ export async function computeAggregateAlignmentScores(
     const categoryRows = scoreData.flatMap((d) => {
       const alignmentScoreId = scoreByPoliticianId.get(d.politicianId);
       if (!alignmentScoreId) return [];
-      return Object.entries(d.categoryScores).map(([itemId, scoreValue]) => ({
+      return Object.entries(d.itemScores).map(([itemId, scoreValue]) => ({
         alignmentScoreId,
         itemId,
         score: scoreValue,
@@ -242,7 +242,7 @@ export async function computeAggregateAlignmentScores(
     });
 
     if (categoryRows.length > 0) {
-      await prisma.categoryAlignmentScore.createMany({ data: categoryRows });
+      await prisma.itemAlignmentScore.createMany({ data: categoryRows });
     }
   }
 
@@ -254,7 +254,7 @@ export async function computeAggregateAlignmentScores(
     aggregationRunId: aggregationRun.id,
     jurisdictionId: jurisdiction.id,
     jurisdictionCode: jurisdictionCode,
-    comparisonCount: summary.totalComparisons,
+    allocationCount: summary.totalAllocations,
     participantCount: summary.totalParticipants,
     consistencyRatio: summary.consistencyRatio,
     politicianScores: scoreData.map((d) => ({
@@ -290,7 +290,7 @@ export async function getLatestAggregateScores(
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
-      comparisonCount: true,
+      allocationCount: true,
       participantCount: true,
       consistencyRatio: true,
       createdAt: true,
@@ -327,7 +327,7 @@ export async function getLatestAggregateScores(
           externalId: true,
         },
       },
-      categoryScores: {
+      itemScores: {
         select: { itemId: true, score: true },
       },
     },
@@ -351,7 +351,7 @@ export async function getLatestAggregateScores(
     },
     aggregationRun: {
       id: latestRun.id,
-      comparisonCount: latestRun.comparisonCount,
+      allocationCount: latestRun.allocationCount,
       participantCount: latestRun.participantCount,
       consistencyRatio: latestRun.consistencyRatio,
       computedAt: latestRun.createdAt.toISOString(),
@@ -366,8 +366,8 @@ export async function getLatestAggregateScores(
       district: s.politician.district,
       score: Number(s.score.toFixed(1)),
       votesCompared: s.votesCompared,
-      categoryScores: Object.fromEntries(
-        s.categoryScores.map((cs) => [cs.itemId, cs.score]),
+      itemScores: Object.fromEntries(
+        s.itemScores.map((cs) => [cs.itemId, cs.score]),
       ),
       rank: index + 1,
       onChainRef: s.onChainRef,

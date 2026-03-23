@@ -1,5 +1,5 @@
 import type { ClassifiedBill } from "@/app/api/civic/bills/route";
-import { BUDGET_CATEGORIES, type BudgetCategoryId } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from "@/lib/wishocracy-data";
 
 interface BillCardProps {
   bill: ClassifiedBill;
@@ -27,7 +27,7 @@ export function BillCard({ bill, onVote, onAnalysis }: BillCardProps) {
       )}
       <div className="opto-bill-card__categories">
         {bill.categories.map((cat) => {
-          const info = BUDGET_CATEGORIES[cat.categoryId as BudgetCategoryId];
+          const info = WISHOCRATIC_ITEMS[cat.categoryId as WishocraticItemId];
           return (
             <span key={cat.categoryId} className="opto-bill-card__category-chip">
               {info?.icon ?? ""} {info?.name ?? cat.categoryId}

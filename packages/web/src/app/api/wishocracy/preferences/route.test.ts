@@ -14,7 +14,7 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import { GET, POST } from "./route";
-import { BUDGET_CATEGORIES } from "@/lib/wishocracy-data";
+import { WISHOCRATIC_ITEMS } from "@/lib/wishocracy-data";
 
 const sampleComparisons = [
   {
@@ -63,14 +63,14 @@ describe("wishocracy preferences route", () => {
       new NextRequest("http://localhost/api/wishocracy/preferences"),
     );
     const body = (await response.json()) as {
-      totalComparisons: number;
+      totalAllocations: number;
       totalParticipants: number;
       preferenceWeights: unknown[];
       preferenceGaps: unknown[];
     };
 
     expect(response.status).toBe(200);
-    expect(body.totalComparisons).toBe(0);
+    expect(body.totalAllocations).toBe(0);
     expect(body.totalParticipants).toBe(0);
     expect(body.preferenceWeights).toEqual([]);
     expect(body.preferenceGaps).toEqual([]);
@@ -85,7 +85,7 @@ describe("wishocracy preferences route", () => {
       ),
     );
     const body = (await response.json()) as {
-      totalComparisons: number;
+      totalAllocations: number;
       totalParticipants: number;
       itemsCompared: number;
       preferenceWeights: Array<{ ciLow?: number; ciHigh?: number }>;
@@ -93,7 +93,7 @@ describe("wishocracy preferences route", () => {
     };
 
     expect(response.status).toBe(200);
-    expect(body.totalComparisons).toBe(4);
+    expect(body.totalAllocations).toBe(4);
     expect(body.totalParticipants).toBe(2);
     expect(body.itemsCompared).toBe(3);
     expect(body.preferenceWeights).toHaveLength(3);
@@ -139,9 +139,9 @@ describe("wishocracy preferences route", () => {
               politicianId: "misaligned",
               name: "Misaligned Candidate",
               votes: [
-                { category: BUDGET_CATEGORIES.MILITARY_OPERATIONS.name, allocationPct: 80 },
-                { category: BUDGET_CATEGORIES.ADDICTION_TREATMENT.name, allocationPct: 10 },
-                { category: BUDGET_CATEGORIES.PRAGMATIC_CLINICAL_TRIALS.name, allocationPct: 10 },
+                { category: WISHOCRATIC_ITEMS.MILITARY_OPERATIONS.name, allocationPct: 80 },
+                { category: WISHOCRATIC_ITEMS.ADDICTION_TREATMENT.name, allocationPct: 10 },
+                { category: WISHOCRATIC_ITEMS.PRAGMATIC_CLINICAL_TRIALS.name, allocationPct: 10 },
                 { category: "mystery_bucket", allocationPct: 5 },
               ],
             },
@@ -153,7 +153,7 @@ describe("wishocracy preferences route", () => {
       ranking: Array<{ politicianId: string; score: number }>;
       politicians: Array<{
         politicianId: string;
-        unresolvedCategories: string[];
+        unresolvedItems: string[];
         normalizedAllocations: Record<string, number>;
       }>;
     };
@@ -161,7 +161,7 @@ describe("wishocracy preferences route", () => {
     expect(response.status).toBe(200);
     expect(body.ranking[0]?.politicianId).toBe("aligned");
     expect(body.ranking[0]?.score).toBeGreaterThan(body.ranking[1]?.score ?? 0);
-    expect(body.politicians[1]?.unresolvedCategories).toEqual(["mystery_bucket"]);
+    expect(body.politicians[1]?.unresolvedItems).toEqual(["mystery_bucket"]);
     expect(body.politicians[0]?.normalizedAllocations.MILITARY_OPERATIONS).toBe(25);
   });
 });

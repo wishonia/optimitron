@@ -4,29 +4,29 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence, PanInfo } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BUDGET_CATEGORIES, BudgetCategoryId } from "@/lib/wishocracy-data"
+import { WISHOCRATIC_ITEMS, WishocraticItemId } from "@/lib/wishocracy-data"
 import { ChevronLeft } from "lucide-react"
 
-interface WishocracyCategorySelectionProps {
+interface WishocracyItemInclusionProps {
   show: boolean
-  onComplete: (selectedCategories: Set<BudgetCategoryId>) => void
+  onComplete: (includedItemIds: Set<WishocraticItemId>) => void
   onBack: () => void
 }
 
-export function WishocracyCategorySelection({
+export function WishocracyItemInclusion({
   show,
   onComplete,
   onBack
-}: WishocracyCategorySelectionProps) {
-  const allCategories = Object.keys(BUDGET_CATEGORIES) as BudgetCategoryId[]
+}: WishocracyItemInclusionProps) {
+  const allItems = Object.keys(WISHOCRATIC_ITEMS) as WishocraticItemId[]
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [selectedCategories, setSelectedCategories] = useState<Set<BudgetCategoryId>>(new Set())
+  const [includedItemIds, setIncludedItemIds] = useState<Set<WishocraticItemId>>(new Set())
   const [direction, setDirection] = useState<'left' | 'right' | null>(null)
 
-  const currentCategory = allCategories[currentIndex]
-  const category = BUDGET_CATEGORIES[currentCategory]
-  const progress = ((currentIndex / allCategories.length) * 100).toFixed(0)
-  const isComplete = currentIndex >= allCategories.length
+  const currentItemId = allItems[currentIndex]
+  const category = WISHOCRATIC_ITEMS[currentItemId]
+  const progress = ((currentIndex / allItems.length) * 100).toFixed(0)
+  const isComplete = currentIndex >= allItems.length
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -46,7 +46,7 @@ export function WishocracyCategorySelection({
 
   const handleFund = () => {
     setDirection('right')
-    setSelectedCategories(prev => new Set([...prev, currentCategory]))
+    setIncludedItemIds(prev => new Set([...prev, currentItemId]))
     setTimeout(() => {
       setCurrentIndex(prev => prev + 1)
       setDirection(null)
@@ -71,7 +71,7 @@ export function WishocracyCategorySelection({
   }
 
   const handleComplete = () => {
-    onComplete(selectedCategories)
+    onComplete(includedItemIds)
   }
 
   if (!show) return null
@@ -101,7 +101,7 @@ export function WishocracyCategorySelection({
             Back
           </button>
           <span className="text-sm font-bold uppercase">
-            {isComplete ? 'Complete!' : `${currentIndex + 1} of ${allCategories.length}`}
+            {isComplete ? 'Complete!' : `${currentIndex + 1} of ${allItems.length}`}
           </span>
         </div>
         <div className="w-full h-3 bg-background border-4 border-primary">
@@ -128,14 +128,14 @@ export function WishocracyCategorySelection({
               <div className="text-center">
                 <div className="text-6xl mb-4">🎯</div>
                 <h3 className="text-2xl md:text-3xl font-black uppercase mb-4">
-                  {selectedCategories.size === 0
-                    ? 'All Selections Complete!'
-                    : `${selectedCategories.size} ${selectedCategories.size === 1 ? 'Category' : 'Categories'} Selected!`}
+                  {includedItemIds.size === 0
+                    ? 'All Items Reviewed!'
+                    : `${includedItemIds.size} ${includedItemIds.size === 1 ? 'Item' : 'Items'} Included!`}
                 </h3>
                 <p className="text-muted-foreground mb-6">
-                  {selectedCategories.size >= 2
+                  {includedItemIds.size >= 2
                     ? "Now let's compare them to discover your priorities."
-                    : selectedCategories.size === 1
+                    : includedItemIds.size === 1
                     ? "You've selected one category. Ready to continue?"
                     : "You've chosen $0 for all categories. Ready to continue?"}
                 </p>
@@ -143,7 +143,7 @@ export function WishocracyCategorySelection({
                   onClick={handleComplete}
                   className="w-full h-16 text-xl font-black uppercase bg-brutal-cyan hover:bg-brutal-cyan/90 text-foreground border-4 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
                 >
-                  {selectedCategories.size >= 2 ? 'Start Comparing →' : 'Continue →'}
+                  {includedItemIds.size >= 2 ? 'Start Comparing →' : 'Continue →'}
                 </Button>
               </div>
             </Card>
@@ -151,7 +151,7 @@ export function WishocracyCategorySelection({
         ) : (
           /* Category Card */
           <motion.div
-            key={currentCategory}
+            key={currentItemId}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.7}

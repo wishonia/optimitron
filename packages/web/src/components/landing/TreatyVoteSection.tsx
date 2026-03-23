@@ -11,7 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { storage } from "@/lib/storage";
 import { ReferralLinkCard } from "@/components/dashboard/ReferralLinkCard";
 import { AuthForm } from "@/components/auth/AuthForm";
-import { syncPendingVote } from "@/lib/vote-utils";
+import { syncPendingTreatyVote } from "@/lib/treaty-vote-sync";
 import { getUsernameOrReferralCode } from "@/lib/referral.client";
 import { buildUserReferralUrl, getBaseUrl } from "@/lib/url";
 import confetti from "canvas-confetti";
@@ -20,9 +20,9 @@ import { MILITARY_VS_MEDICAL_RESEARCH_RATIO } from "@/lib/parameters-calculation
 import { trackSliderSubmitted, trackVoteSubmitted } from "@/lib/analytics";
 import { VOTE_SECTION } from "@/lib/messaging";
 import {
-  buildTreatyWishocraticComparison,
-  getMilitaryAllocationPercentFromPendingVote,
-  getTreatyWishocraticComparison,
+  buildTreatyWishocraticAllocation,
+  getMilitaryAllocationPercentFromPendingTreatyVote,
+  getTreatyWishocraticAllocation,
 } from "@/lib/treaty-vote";
 
 const militaryToMedicalRatioFormatted = `$${MILITARY_VS_MEDICAL_RESEARCH_RATIO.value.toFixed(2)}`;
@@ -49,16 +49,16 @@ export default function TreatyVoteSection() {
 
   // Restore state from localStorage on mount
   useEffect(() => {
-    const pendingVote = storage.getPendingVote();
-    const pendingMilitaryAllocation = getMilitaryAllocationPercentFromPendingVote(pendingVote);
+    const pendingTreatyVote = storage.getPendingTreatyVote();
+    const pendingMilitaryAllocation = getMilitaryAllocationPercentFromPendingTreatyVote(pendingTreatyVote);
 
-    if (pendingVote && pendingMilitaryAllocation !== null) {
+    if (pendingTreatyVote && pendingMilitaryAllocation !== null) {
       setMilitaryAllocation(pendingMilitaryAllocation);
       setSliderSubmitted(true);
       setShowSlider(false);
       setUserHasDragged(true);
-      if (pendingVote.answer) {
-        setAnswer(pendingVote.answer.toLowerCase() as "yes" | "no");
+      if (pendingTreatyVote.answer) {
+        setAnswer(pendingTreatyVote.answer.toLowerCase() as "yes" | "no");
       }
     }
   }, []);
@@ -145,7 +145,7 @@ export default function TreatyVoteSection() {
   useEffect(() => {
     if (status === "authenticated" && session && !hasSyncedRef.current) {
       hasSyncedRef.current = true;
-      void syncPendingVote(session);
+      void syncPendingTreatyVote(session);
     }
   }, [status, session]);
 
@@ -174,15 +174,15 @@ export default function TreatyVoteSection() {
   };
 
   const handleSliderSubmit = () => {
-    const existingVote = storage.getPendingVote();
+    const existingVote = storage.getPendingTreatyVote();
     const referralCode = searchParams?.get("ref") || existingVote?.referredBy || null;
     const timestamp = existingVote?.timestamp || new Date().toISOString();
 
-    storage.setPendingVote({
+    storage.setPendingTreatyVote({
       answer: existingVote?.answer ?? "",
       referredBy: referralCode,
       timestamp,
-      wishocraticComparison: buildTreatyWishocraticComparison(militaryAllocation, timestamp),
+      wishocraticAllocation: buildTreatyWishocraticAllocation(militaryAllocation, timestamp),
       organizationId: existingVote?.organizationId ?? null,
     });
     trackSliderSubmitted({ militaryAllocationPercent: militaryAllocation });
@@ -190,7 +190,7 @@ export default function TreatyVoteSection() {
     setShowSlider(false);
 
     if (status === "authenticated" && session) {
-      void syncPendingVote(session);
+      void syncPendingTreatyVote(session);
     }
   };
 
@@ -208,17 +208,17 @@ export default function TreatyVoteSection() {
       triggerConfetti();
     }
 
-    const existingVote = storage.getPendingVote();
+    const existingVote = storage.getPendingTreatyVote();
     const referralCode = searchParams?.get("ref") || existingVote?.referredBy || null;
     const timestamp = existingVote?.timestamp || new Date().toISOString();
 
-    storage.setPendingVote({
+    storage.setPendingTreatyVote({
       answer: choice.toUpperCase(),
       referredBy: referralCode,
       timestamp,
-      wishocraticComparison:
-        getTreatyWishocraticComparison(existingVote) ??
-        buildTreatyWishocraticComparison(militaryAllocation, timestamp),
+      wishocraticAllocation:
+        getTreatyWishocraticAllocation(existingVote) ??
+        buildTreatyWishocraticAllocation(militaryAllocation, timestamp),
       organizationId: existingVote?.organizationId ?? null,
     });
 
@@ -232,7 +232,7 @@ export default function TreatyVoteSection() {
     }, 600);
 
     if (status === "authenticated" && session) {
-      await syncPendingVote(session);
+      await syncPendingTreatyVote(session);
       const referralIdentifier = getUsernameOrReferralCode(session.user);
       if (referralIdentifier) {
         storage.setVoteStatusCache({

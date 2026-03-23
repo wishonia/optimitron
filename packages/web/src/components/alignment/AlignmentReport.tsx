@@ -122,14 +122,14 @@ export function AlignmentReport({
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
                   Comparisons Saved
                 </div>
-                <div className="mt-2 text-3xl font-black text-foreground">{state.comparisonCount}</div>
+                <div className="mt-2 text-3xl font-black text-foreground">{state.allocationCount}</div>
               </div>
               <div className="border-4 border-primary bg-brutal-yellow p-4">
                 <div className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">
                   Categories In Scope
                 </div>
                 <div className="mt-2 text-3xl font-black text-foreground">
-                  {state.selectedCategoryCount}
+                  {state.selectedItemCount}
                 </div>
               </div>
               <div className="border-4 border-primary bg-brutal-pink p-4">
@@ -229,7 +229,7 @@ export function AlignmentReport({
                 Comparisons
               </div>
               <div className="mt-2 text-3xl font-black text-foreground">
-                {state.report.comparisonCount}
+                {state.report.allocationCount}
               </div>
             </div>
             <div className="border-4 border-primary bg-brutal-yellow p-4">
@@ -237,7 +237,7 @@ export function AlignmentReport({
                 Categories
               </div>
               <div className="mt-2 text-3xl font-black text-foreground">
-                {state.report.selectedCategoryCount}
+                {state.report.selectedItemCount}
               </div>
             </div>
             <div className="border-4 border-primary bg-brutal-cyan p-4">

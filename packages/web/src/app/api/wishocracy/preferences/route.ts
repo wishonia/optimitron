@@ -99,7 +99,7 @@ function parsePoliticians(
   return { politicians };
 }
 
-async function fetchWishocraticComparisons() {
+async function fetchWishocraticAllocations() {
   return prisma.wishocraticAllocation.findMany({
     select: {
       userId: true,
@@ -114,7 +114,7 @@ async function fetchWishocraticComparisons() {
 
 export async function GET(req: NextRequest) {
   try {
-    const comparisons = await fetchWishocraticComparisons();
+    const comparisons = await fetchWishocraticAllocations();
     const summary = buildCitizenPreferenceSummary(comparisons, {
       bootstrapIterations: parsePositiveInteger(
         req.nextUrl.searchParams.get("bootstrapIterations"),
@@ -144,7 +144,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: parsed.error }, { status: 400 });
     }
 
-    const comparisons = await fetchWishocraticComparisons();
+    const comparisons = await fetchWishocraticAllocations();
     const summary = buildCitizenPreferenceSummary(comparisons, {
       bootstrapIterations: parsePositiveInteger(
         body.bootstrapIterations,

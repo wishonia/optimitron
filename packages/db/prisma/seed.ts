@@ -609,8 +609,8 @@ async function seedJurisdictions() {
 async function seedWishocraticItems(usJurisdictionId: string) {
   console.log("💰 Seeding Optimitron budget categories...");
 
-  // Optimitron budget categories — these are the items citizens compare in
-  // pairwise RAPPA surveys. IDs match BudgetCategoryId in wishocracy-data.ts
+  // Wishocratic items — these are the items citizens compare in pairwise
+  // RAPPA surveys. IDs match WishocraticItemId in wishocracy-data.ts
   // so WishocraticAllocation.itemAId/itemBId map directly to Item.id.
   const categories: {
     id: string;

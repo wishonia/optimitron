@@ -1,4 +1,4 @@
-import type { BudgetCategoryId } from "@/lib/wishocracy-data";
+import type { WishocraticItemId } from "@/lib/wishocracy-data";
 
 export interface AlignmentBillFeedConfig {
   billType?: string;
@@ -6,7 +6,7 @@ export interface AlignmentBillFeedConfig {
 }
 
 export interface AlignmentLegislativeCategoryRule {
-  categoryId: BudgetCategoryId;
+  categoryId: WishocraticItemId;
   keywords: readonly string[];
   policyAreas?: readonly string[];
 }

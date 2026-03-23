@@ -5,17 +5,17 @@ import { Button } from "@/components/ui/button"
 interface WishocracyResetButtonProps {
   show: boolean
   isLoading: boolean
-  hasComparisons: boolean
+  hasAllocations: boolean
   onReset: () => void
 }
 
 export function WishocracyResetButton({
   show,
   isLoading,
-  hasComparisons,
+  hasAllocations,
   onReset
 }: WishocracyResetButtonProps) {
-  if (!show || isLoading || !hasComparisons) {
+  if (!show || isLoading || !hasAllocations) {
     return null
   }
 

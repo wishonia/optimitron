@@ -1,27 +1,25 @@
-import type { WishocraticComparisonInput } from "@/lib/wishocracy-comparison";
+import type { WishocraticAllocationInput } from "@/lib/wishocracy-allocation";
 
 const STORAGE_KEYS = {
   signupName: "signup_name",
   signupReferral: "signup_referral",
   signupSubscribe: "signup_subscribe",
   pendingWishocracy: "pendingWishocracy",
-  pendingVote: "pending_vote",
+  pendingTreatyVote: "pending_treaty_vote",
   voteStatusCache: "vote_status_cache",
   chatApiKey: "opto-chat-api-key",
   chatProvider: "opto-chat-provider",
 } as const;
 
-export type PendingVoteComparison = WishocraticComparisonInput & {
+export type PendingWishocraticAllocation = WishocraticAllocationInput & {
   timestamp: string;
 };
 
-export type PendingVoteData = {
+export type PendingTreatyVoteState = {
   answer: string;
   referredBy: string | null;
   timestamp: string;
-  wishocraticComparison?: PendingVoteComparison;
-  /** Legacy fallback for localStorage entries written before canonical comparison storage. */
-  militaryAllocationPercent?: number;
+  wishocraticAllocation?: PendingWishocraticAllocation;
   organizationId: string | null;
 };
 
@@ -32,7 +30,7 @@ export type VoteStatusCache = {
 };
 
 type PendingWishocracyState = {
-  comparisons: Array<{
+  allocations: Array<{
     itemAId: string;
     itemBId: string;
     allocationA: number;
@@ -41,7 +39,7 @@ type PendingWishocracyState = {
   }>;
   currentPairIndex: number;
   shuffledPairs: Array<[string, string]>;
-  selectedCategories?: string[];
+  includedItemIds?: string[];
   startedAt?: string;
 };
 
@@ -145,10 +143,11 @@ export const storage = {
     setStorageItem(STORAGE_KEYS.pendingWishocracy, data),
   removePendingWishocracy: () => removeStorageItem(STORAGE_KEYS.pendingWishocracy),
 
-  getPendingVote: () => getStorageItem<PendingVoteData>(STORAGE_KEYS.pendingVote),
-  setPendingVote: (data: PendingVoteData) =>
-    setStorageItem(STORAGE_KEYS.pendingVote, data),
-  removePendingVote: () => removeStorageItem(STORAGE_KEYS.pendingVote),
+  getPendingTreatyVote: () =>
+    getStorageItem<PendingTreatyVoteState>(STORAGE_KEYS.pendingTreatyVote),
+  setPendingTreatyVote: (data: PendingTreatyVoteState) =>
+    setStorageItem(STORAGE_KEYS.pendingTreatyVote, data),
+  removePendingTreatyVote: () => removeStorageItem(STORAGE_KEYS.pendingTreatyVote),
 
   getVoteStatusCache: () => getStorageItem<VoteStatusCache>(STORAGE_KEYS.voteStatusCache),
   setVoteStatusCache: (data: VoteStatusCache) =>
