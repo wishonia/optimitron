@@ -38,8 +38,6 @@ export const ROUTES = {
   prize: "/prize",
   scoreboard: "/scoreboard",
   iab: "/iab",
-  // Money
-  money: "/money",
   // Analysis
   compare: "/compare",
   misconceptions: "/misconceptions",
@@ -288,11 +286,11 @@ export const governmentsLink: NavItem = {
 
 
 export const politicianLeaderboardLink: NavItem = {
-  href: ROUTES.politicians,
+  href: "/governments/US/politicians",
   label: "Politician Leaderboard",
   emoji: "🏛️",
   description: "How your representatives actually vote vs what you actually wanted. The receipts.",
-  matchPrefixes: [ROUTES.politicians],
+  matchPrefixes: [ROUTES.politicians, "/governments"],
 };
 
 export const scoreboardLink: NavItem = {
@@ -343,13 +341,8 @@ export const demoLink: NavItem = {
 /** @deprecated Use dtreasuryLink instead */
 export const treasuryLink = dtreasuryLink;
 
-export const moneyLink: NavItem = {
-  href: ROUTES.money,
-  label: "Money \u2014 Why It\u2019s Broken & How to Fix It",
-  emoji: "\uD83D\uDCB8",
-  description: "97% of your dollar\u2019s value destroyed in one century. Gold standard wages, Fed failures, inequality data, and the $WISH alternative.",
-  matchPrefixes: [ROUTES.money],
-};
+/** @deprecated Use dtreasuryLink instead — /money page removed */
+export const moneyLink = dtreasuryLink;
 
 export const contributeLink: NavItem = {
   href: ROUTES.contribute,

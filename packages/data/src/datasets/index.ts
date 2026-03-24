@@ -60,4 +60,5 @@ export * from './us-fda-approved-drug-deaths.js';
 export * from './us-gold-standard-wages.js';
 export * from './us-pre-fed-prosperity.js';
 export * from './us-tariff-history.js';
+export * from './us-politician-scorecards.js';
 export * from './wishonia-agencies.js';

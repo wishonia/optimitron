@@ -445,6 +445,26 @@ export default async function GovernmentDetailPage({ params }: PageProps) {
         </section>
       )}
 
+      {/* Politician Alignment */}
+      <section className="mb-12">
+        <div className="border-4 border-primary bg-brutal-yellow p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="mb-3 text-2xl font-black uppercase text-foreground">
+            {gov.name} Politician Alignment
+          </h2>
+          <p className="mb-6 text-lg font-bold text-foreground">
+            How do {gov.name}&apos;s politicians actually vote compared to what
+            citizens want? The scoreboard makes the gap impossible to ignore.
+          </p>
+          <GameCTA
+            href={`/governments/${gov.code}/politicians`}
+            variant="secondary"
+            size="lg"
+          >
+            See Politician Scores
+          </GameCTA>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="border-4 border-primary bg-brutal-cyan p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <h2 className="mb-3 text-2xl font-black uppercase text-foreground">
