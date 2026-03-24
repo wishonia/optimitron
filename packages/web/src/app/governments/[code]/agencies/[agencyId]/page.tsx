@@ -15,6 +15,38 @@ import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { ROUTES } from "@/lib/routes";
 import { AgencyGradeChart } from "@/components/shared/AgencyGradeChart";
 import { HistoricalTrendChart } from "@/components/shared/HistoricalTrendChart";
+import { SupplementaryStatCards } from "@/components/shared/SupplementaryStatCards";
+import { DrugDisasterTable } from "@/components/shared/DrugDisasterTable";
+import { LieComparisonCard } from "@/components/shared/LieComparisonCard";
+import { IronicLawCallout } from "@/components/shared/IronicLawCallout";
+import { CoupTable } from "@/components/shared/CoupTable";
+import { LobbyingCard } from "@/components/shared/LobbyingCard";
+import { StatCard } from "@/components/ui/stat-card";
+import { getAgencyById } from "@/lib/deprecated-agencies-data";
+
+// Supplementary datasets
+import {
+  FDA_APPROVED_DRUG_DISASTERS,
+  FDA_DRUG_DISASTER_SUMMARY,
+} from "@optimitron/data";
+import { PHARMA_PATENT_STATS } from "@optimitron/data";
+import { IRONIC_LAWS } from "@optimitron/data";
+import { GOVERNMENT_LIES } from "@optimitron/data";
+import { LOBBYING_BY_INDUSTRY } from "@optimitron/data";
+import { REVOLVING_DOOR_STATS } from "@optimitron/data";
+import { CIA_COUPS } from "@optimitron/data";
+import {
+  HEALTHCARE_WASTE_CATEGORIES,
+  DRUG_PRICE_COMPARISONS,
+} from "@optimitron/data";
+import { INSURER_DENIAL_RATES, DENIAL_SYSTEM_STATS } from "@optimitron/data";
+import { PREVENTABLE_DEATH_CATEGORIES } from "@optimitron/data";
+import {
+  CORPORATE_TAX_RATE_EFFECTIVE,
+  ZERO_TAX_COMPANIES_2020,
+} from "@optimitron/data";
+import { IMMIGRATION_KEY_STATISTICS } from "@optimitron/data";
+import { CONGRESSIONAL_TRADING_STATS } from "@optimitron/data";
 
 // ---------------------------------------------------------------------------
 // Wishonia replacement mapping
@@ -32,6 +64,14 @@ const wishoniaReplacements: Record<string, { href: string; label: string }> = {
   epa: { href: "/agencies/dcbo", label: "dCBO — Policy Scoring" },
   fbi: { href: "/agencies/dgao", label: "dGAO — Transparency & Audit" },
   cyber: { href: "/agencies/dgao", label: "dGAO — Transparency & Audit" },
+};
+
+/** Maps AgencyPerformance IDs to DeprecatedAgency IDs for institutional stats */
+const deprecatedAgencyMapping: Record<string, string> = {
+  nih: "dih",
+  fda: "dih",
+  hhs: "dih",
+  dod: "ddod",
 };
 
 // ---------------------------------------------------------------------------
@@ -136,6 +176,8 @@ export default async function AgencyDetailPage({ params }: PageProps) {
     : null;
 
   const replacement = wishoniaReplacements[agency.agencyId];
+  const deprecatedId = deprecatedAgencyMapping[agency.agencyId];
+  const institutionalData = deprecatedId ? getAgencyById(deprecatedId) : undefined;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
@@ -175,6 +217,38 @@ export default async function AgencyDetailPage({ params }: PageProps) {
         </h2>
         <AgencyGradeChart agency={agency} showAllOutcomes />
       </section>
+
+      {/* Institutional stats — "why it's broken" data from deprecated agency analysis */}
+      {institutionalData && (
+        <section className="mb-12">
+          <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-2">
+            What This Costs You
+          </h2>
+          <p className="text-base font-bold text-muted-foreground italic mb-4">
+            &ldquo;{institutionalData.tagline}&rdquo;
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+            {institutionalData.stats.map((stat) => (
+              <StatCard key={stat.label} {...stat} />
+            ))}
+          </div>
+          <BrutalCard bgColor="foreground" shadowSize={8} padding="md">
+            <div className="flex items-baseline justify-between">
+              <div>
+                <div className="text-xs font-black uppercase text-muted-foreground">
+                  Annual Savings If Deprecated
+                </div>
+                <div className="text-3xl sm:text-4xl font-black text-brutal-pink mt-1">
+                  {institutionalData.annualSavings}
+                </div>
+              </div>
+              <div className="text-sm font-bold text-muted-foreground text-right max-w-[200px]">
+                {institutionalData.savingsComparison}
+              </div>
+            </div>
+          </BrutalCard>
+        </section>
+      )}
 
       {/* Historical Before/After (if data exists) */}
       {(() => {
@@ -245,6 +319,306 @@ export default async function AgencyDetailPage({ params }: PageProps) {
           </blockquote>
         </BrutalCard>
       </section>
+
+      {/* ══════════════════════════════════════════════════════════════ */}
+      {/*  Supplementary Data — per-agency sections                     */}
+      {/* ══════════════════════════════════════════════════════════════ */}
+
+      {/* FDA: Drug disasters + patent abuse + PDUFA + pharma lobbying */}
+      {agency.agencyId === "fda" && (
+        <>
+          <section className="mb-12">
+            <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+              FDA-Approved Drug Disasters
+            </h2>
+            <p className="text-base font-bold text-muted-foreground mb-4">
+              These drugs PASSED the 8.2-year efficacy review. The process kills more people through delay than it saves through rejection.
+            </p>
+            <DrugDisasterTable disasters={FDA_APPROVED_DRUG_DISASTERS} />
+          </section>
+          <SupplementaryStatCards
+            title="Patent Abuse"
+            subtitle="Why drugs stay expensive forever"
+            items={PHARMA_PATENT_STATS.map((s) => ({
+              name: s.metric,
+              emoji: "💊",
+              value: s.value,
+              description: s.description,
+              source: s.source,
+              sourceUrl: s.sourceUrl,
+            }))}
+          />
+          {(() => {
+            const pdufa = IRONIC_LAWS.find((l) => l.id === "pdufa");
+            return pdufa ? <IronicLawCallout law={pdufa} /> : null;
+          })()}
+          {(() => {
+            const pharma = LOBBYING_BY_INDUSTRY.find((l) => l.industry.includes("Pharma"));
+            return pharma ? (
+              <section className="mb-12">
+                <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+                  Who Buys the Dysfunction
+                </h2>
+                <LobbyingCard industry={pharma} />
+              </section>
+            ) : null;
+          })()}
+          {(() => {
+            const revDoor = REVOLVING_DOOR_STATS.find((s) => s.metric.includes("FDA"));
+            return revDoor ? (
+              <section className="mb-12">
+                <BrutalCard bgColor="red" shadowSize={8} padding="lg">
+                  <div className="text-xs font-black uppercase text-brutal-red-foreground mb-2">
+                    The Revolving Door
+                  </div>
+                  <div className="text-2xl sm:text-3xl font-black text-brutal-red-foreground mb-2">
+                    {revDoor.value}
+                  </div>
+                  <p className="text-base font-bold text-brutal-red-foreground">
+                    {revDoor.description}
+                  </p>
+                </BrutalCard>
+              </section>
+            ) : null;
+          })()}
+        </>
+      )}
+
+      {/* HHS: Healthcare waste + insurance denials + preventable deaths + ACA */}
+      {agency.agencyId === "hhs" && (
+        <>
+          <SupplementaryStatCards
+            title="Healthcare Waste"
+            subtitle="Where your $4.5 trillion per year actually goes"
+            items={HEALTHCARE_WASTE_CATEGORIES.map((c) => ({
+              name: c.name,
+              emoji: c.emoji,
+              value: `$${(c.annualCost / 1e9).toFixed(0)}B/yr`,
+              description: c.description,
+              comparison: c.comparison,
+              source: c.source,
+              sourceUrl: c.sourceUrl,
+            }))}
+            columns={2}
+          />
+          <SupplementaryStatCards
+            title="Preventable Deaths"
+            subtitle="People who didn't have to die"
+            items={PREVENTABLE_DEATH_CATEGORIES.map((c) => ({
+              name: c.name,
+              emoji: c.emoji,
+              value: `${c.annualDeaths.toLocaleString()}/yr`,
+              description: c.description,
+              comparison: c.comparison,
+              source: c.source,
+              sourceUrl: c.sourceUrl,
+            }))}
+            columns={2}
+          />
+          {(() => {
+            const aca = IRONIC_LAWS.find((l) => l.id === "aca");
+            return aca ? <IronicLawCallout law={aca} /> : null;
+          })()}
+        </>
+      )}
+
+      {/* DEA: Drug war ironic law */}
+      {agency.agencyId === "dea" && (
+        <>
+          {(() => {
+            const drugFree = IRONIC_LAWS.find((l) => l.id === "drug-free-america");
+            return drugFree ? <IronicLawCallout law={drugFree} /> : null;
+          })()}
+        </>
+      )}
+
+      {/* DoD: Ironic law + CIA coups + war lies + defense lobbying + revolving door */}
+      {agency.agencyId === "dod" && (
+        <>
+          {(() => {
+            const dod = IRONIC_LAWS.find((l) => l.id === "dept-of-defense");
+            return dod ? <IronicLawCallout law={dod} /> : null;
+          })()}
+          <section className="mb-12">
+            <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+              CIA-Backed Regime Changes
+            </h2>
+            <p className="text-base font-bold text-muted-foreground mb-4">
+              Democracies overthrown for corporate interests. Every entry is declassified or publicly acknowledged.
+            </p>
+            <CoupTable coups={CIA_COUPS} />
+          </section>
+          {(() => {
+            const pentagonPapers = GOVERNMENT_LIES.find((l) => l.id === "pentagon-papers");
+            return pentagonPapers ? (
+              <section className="mb-12">
+                <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+                  Documented Lies
+                </h2>
+                <LieComparisonCard lie={pentagonPapers} />
+              </section>
+            ) : null;
+          })()}
+          {(() => {
+            const torture = GOVERNMENT_LIES.find((l) => l.id === "torture-program");
+            return torture ? <LieComparisonCard lie={torture} /> : null;
+          })()}
+          {(() => {
+            const defense = LOBBYING_BY_INDUSTRY.find((l) => l.industry.includes("Defense"));
+            return defense ? (
+              <section className="mb-12">
+                <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+                  Defense Lobbying
+                </h2>
+                <LobbyingCard industry={defense} />
+              </section>
+            ) : null;
+          })()}
+          {(() => {
+            const pentagon = REVOLVING_DOOR_STATS.find((s) => s.metric.includes("Pentagon"));
+            return pentagon ? (
+              <section className="mb-12">
+                <BrutalCard bgColor="red" shadowSize={8} padding="lg">
+                  <div className="text-xs font-black uppercase text-brutal-red-foreground mb-2">
+                    The Revolving Door
+                  </div>
+                  <div className="text-2xl sm:text-3xl font-black text-brutal-red-foreground mb-2">
+                    {pentagon.value}
+                  </div>
+                  <p className="text-base font-bold text-brutal-red-foreground">
+                    {pentagon.description}
+                  </p>
+                </BrutalCard>
+              </section>
+            ) : null;
+          })()}
+        </>
+      )}
+
+      {/* State Dept: CIA coups */}
+      {agency.agencyId === "state" && (
+        <section className="mb-12">
+          <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+            CIA-Backed Regime Changes
+          </h2>
+          <CoupTable coups={CIA_COUPS} />
+        </section>
+      )}
+
+      {/* IRS: Corporate tax avoidance */}
+      {agency.agencyId === "irs" && (
+        <>
+          <SupplementaryStatCards
+            title="Corporate Tax Avoidance"
+            subtitle="They extract from the system without paying into it"
+            items={ZERO_TAX_COMPANIES_2020.map((c) => ({
+              name: c.company,
+              emoji: "🏢",
+              value: `$${(c.profit2020 / 1e9).toFixed(1)}B profit`,
+              description: `Federal tax paid: $${c.taxPaid2020}. Effective rate: ${c.effectiveRate}%.`,
+              comparison: "Paid zero federal income tax on billions in profit",
+            }))}
+          />
+          {(() => {
+            const finance = LOBBYING_BY_INDUSTRY.find((l) => l.industry.includes("Finance"));
+            return finance ? (
+              <section className="mb-12">
+                <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+                  Finance Industry Lobbying
+                </h2>
+                <LobbyingCard industry={finance} />
+              </section>
+            ) : null;
+          })()}
+        </>
+      )}
+
+      {/* ICE: Immigration economic impact */}
+      {agency.agencyId === "ice" && (
+        <SupplementaryStatCards
+          title="Immigration Economic Impact"
+          subtitle="The people you're spending $29B/yr to keep out"
+          items={IMMIGRATION_KEY_STATISTICS.map((s) => ({
+            name: s.headline,
+            emoji: "🌍",
+            value: s.value,
+            description: s.headline,
+            source: s.source,
+            sourceUrl: s.sourceUrl,
+          }))}
+          columns={2}
+        />
+      )}
+
+      {/* EPA: Environmental cover-ups */}
+      {agency.agencyId === "epa" && (
+        <>
+          {(() => {
+            const lead = GOVERNMENT_LIES.find((l) => l.id === "leaded-gasoline");
+            return lead ? (
+              <section className="mb-12">
+                <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+                  Environmental Cover-ups
+                </h2>
+                <LieComparisonCard lie={lead} />
+              </section>
+            ) : null;
+          })()}
+          {(() => {
+            const flint = GOVERNMENT_LIES.find((l) => l.id === "flint-water");
+            return flint ? <LieComparisonCard lie={flint} /> : null;
+          })()}
+        </>
+      )}
+
+      {/* FBI: Domestic surveillance + COINTELPRO */}
+      {agency.agencyId === "fbi" && (
+        <>
+          {(() => {
+            const cointelpro = GOVERNMENT_LIES.find((l) => l.id === "cointelpro");
+            return cointelpro ? (
+              <section className="mb-12">
+                <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-4">
+                  Documented Abuses
+                </h2>
+                <LieComparisonCard lie={cointelpro} />
+              </section>
+            ) : null;
+          })()}
+          {(() => {
+            const nsa = GOVERNMENT_LIES.find((l) => l.id === "nsa-surveillance");
+            return nsa ? <LieComparisonCard lie={nsa} /> : null;
+          })()}
+          {(() => {
+            const patriot = IRONIC_LAWS.find((l) => l.id === "patriot-act");
+            return patriot ? <IronicLawCallout law={patriot} /> : null;
+          })()}
+        </>
+      )}
+
+      {/* BOP: Mass incarceration ironic laws */}
+      {agency.agencyId === "bop" && (
+        <>
+          {(() => {
+            const fair = IRONIC_LAWS.find((l) => l.id === "fair-sentencing");
+            return fair ? <IronicLawCallout law={fair} /> : null;
+          })()}
+          {(() => {
+            const bapcpa = IRONIC_LAWS.find((l) => l.id === "bapcpa");
+            return bapcpa ? <IronicLawCallout law={bapcpa} /> : null;
+          })()}
+        </>
+      )}
+
+      {/* DoEd: NCLB ironic law */}
+      {agency.agencyId === "doed" && (
+        <>
+          {(() => {
+            const nclb = IRONIC_LAWS.find((l) => l.id === "nclb");
+            return nclb ? <IronicLawCallout law={nclb} /> : null;
+          })()}
+        </>
+      )}
 
       {/* Sources */}
       {agency.sources.length > 0 && (

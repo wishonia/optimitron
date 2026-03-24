@@ -4,6 +4,7 @@ import { HowToWinSection } from "@/components/landing/HowToWinSection";
 import { HowToPlaySection } from "@/components/landing/HowToPlaySection";
 import { WhyPlaySection } from "@/components/landing/WhyPlaySection";
 import { LandingFAQSection } from "@/components/landing/LandingFAQSection";
+import { TLDRSection } from "@/components/landing/TLDRSection";
 import TreatyVoteSection from "@/components/landing/TreatyVoteSection";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { SectionContainer } from "@/components/ui/section-container";
@@ -112,7 +113,10 @@ export default function Home() {
       {/* ── 1. Hero — Game name + objective ── */}
       <HeroSection />
 
-      {/* ── 2. Vote — The core game action ── */}
+      {/* ── 2. TLDR — It's 2 buttons, tell your friends, done ── */}
+      <TLDRSection />
+
+      {/* ── 3. Vote — The core game action ── */}
       <TreatyVoteSection />
 
       {/* ── 3. How to Win — Scoreboard + win/lose conditions ── */}

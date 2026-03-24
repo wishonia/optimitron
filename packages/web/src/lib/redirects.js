@@ -23,6 +23,10 @@ const REDIRECTS = [
   { source: "/policies/:slug", destination: "/agencies/dcbo/:slug", permanent: true },
   { source: "/transparency", destination: "/agencies/dgao", permanent: true },
   { source: "/discoveries", destination: "/agencies/dih/discoveries", permanent: true },
+  // Deduplicated agency pages → canonical locations under dTreasury
+  { source: "/agencies/dirs", destination: "/agencies/dtreasury/dirs", permanent: true },
+  { source: "/agencies/dfed", destination: "/agencies/dtreasury/dfed", permanent: true },
+  { source: "/agencies/dssa", destination: "/agencies/dtreasury/dssa", permanent: true },
   // Legacy aliases
   { source: "/federal-reserve", destination: "/agencies/dtreasury/dfed", permanent: true },
   { source: "/department-of-war", destination: "/agencies/ddod", permanent: true },
