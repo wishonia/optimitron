@@ -2,12 +2,14 @@ import { slugify } from "@/lib/slugify";
 import { fmtParam } from "@/lib/format-parameter";
 import {
   IAB_VS_DEFENSE_LOBBY_RATIO_AT_1PCT,
+  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
   PRIZE_POOL_HORIZON_MULTIPLE,
   VICTORY_BOND_ANNUAL_RETURN_PCT,
 } from "@/lib/parameters-calculations-citations";
 
 // Precompute for descriptions (same pattern as demo-script.ts)
 const iabLobbyRatio = Math.round(IAB_VS_DEFENSE_LOBBY_RATIO_AT_1PCT.value);
+const milToTrialRatio = Math.round(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value);
 const bondReturn = fmtParam(VICTORY_BOND_ANNUAL_RETURN_PCT);
 const poolMultiple = `${Math.round(PRIZE_POOL_HORIZON_MULTIPLE.value)}x`;
 
@@ -47,8 +49,9 @@ export const ROUTES = {
   profile: "/profile",
   dashboard: "/dashboard",
   transmit: "/transmit",
-  // Wishonia
+  // Futures
   wishonia: "/wishonia",
+  moronia: "/moronia",
   // Meta
   about: "/about",
   demo: "/demo",
@@ -234,6 +237,13 @@ export const wishoniaWorldLink: NavItem = {
   label: "Wishonia",
   emoji: "🌍",
   description: "A planet that ended war in year 12 and disease in year 340. This is what 4,297 years of not being idiots looks like.",
+};
+
+export const moroniaLink: NavItem = {
+  href: ROUTES.moronia,
+  label: "Moronia",
+  emoji: "💀",
+  description: `A planet with a 94.7% correlation to yours. It spent ${milToTrialRatio}x more on weapons than cures. It no longer exists.`,
 };
 
 /** @deprecated Use transmitLink instead */
