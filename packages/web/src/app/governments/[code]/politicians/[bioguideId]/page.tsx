@@ -8,6 +8,7 @@ import Image from "next/image";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { GameCTA } from "@/components/ui/game-cta";
 import { MilitaryVsTrialsPie } from "@/components/shared/MilitaryVsTrialsPie";
+import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
 import { ROUTES } from "@/lib/routes";
 
 interface PageProps {
@@ -73,13 +74,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const data = loadScorecardData();
   const politician = data?.scorecards.find((s) => s.bioguideId === bioguideId);
   const gov = getGovernment(code.toUpperCase());
+
+  const title = politician
+    ? `${politician.name} — ${formatDollars(politician.militaryDollarsVotedFor)} on Explosions, ${formatDollars(politician.clinicalTrialDollarsVotedFor)} on Cures | Optimitron`
+    : `Politician | ${gov?.name ?? code}`;
+
+  const description = politician
+    ? `${politician.name}: ${formatDollars(politician.militaryDollarsVotedFor)} on explosions, ${formatDollars(politician.clinicalTrialDollarsVotedFor)} testing which medicines work. Your chance of dying from terrorism: 1 in 30 million. Your chance of dying from disease: 100%.`
+    : "Politician budget allocation data";
+
   return {
-    title: politician
-      ? `${politician.name} — Military:Trials Ratio ${formatRatio(politician.ratio)} | ${gov?.name ?? code}`
-      : `Politician | ${gov?.name ?? code}`,
-    description: politician
-      ? `${politician.name} voted for ${formatDollars(politician.militaryDollarsVotedFor)} in military spending and ${formatDollars(politician.clinicalTrialDollarsVotedFor)} in clinical trial funding. Ratio: ${formatRatio(politician.ratio)}.`
-      : "Politician scorecard",
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "profile",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 
@@ -139,19 +155,19 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
           <p className="text-base font-bold text-foreground mt-2">
             <span className="text-brutal-red font-black">
               {politician.militaryDollarsVotedFor > 0 && politician.clinicalTrialDollarsVotedFor > 0
-                ? `${(politician.militaryDollarsVotedFor / (politician.militaryDollarsVotedFor + politician.clinicalTrialDollarsVotedFor) * 100).toFixed(1)}% military`
+                ? `${(politician.militaryDollarsVotedFor / (politician.militaryDollarsVotedFor + politician.clinicalTrialDollarsVotedFor) * 100).toFixed(1)}% explosions`
                 : politician.militaryDollarsVotedFor === 0
-                  ? "0% military"
-                  : "100% military"
+                  ? "0% explosions"
+                  : "100% explosions"
               }
             </span>
             {" vs "}
             <span className="text-brutal-cyan font-black">
               {politician.militaryDollarsVotedFor > 0 && politician.clinicalTrialDollarsVotedFor > 0
-                ? `${(politician.clinicalTrialDollarsVotedFor / (politician.militaryDollarsVotedFor + politician.clinicalTrialDollarsVotedFor) * 100).toFixed(2)}% clinical trials`
+                ? `${(politician.clinicalTrialDollarsVotedFor / (politician.militaryDollarsVotedFor + politician.clinicalTrialDollarsVotedFor) * 100).toFixed(2)}% testing medicines`
                 : politician.clinicalTrialDollarsVotedFor === 0
-                  ? "0% clinical trials"
-                  : "100% clinical trials"
+                  ? "0% testing medicines"
+                  : "100% testing medicines"
               }
             </span>
           </p>
@@ -163,7 +179,7 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <BrutalCard bgColor="red" shadowSize={8} padding="lg">
             <div className="text-xs font-black uppercase text-brutal-red-foreground mb-1">
-              Military $ Voted For
+              Explosions $ Voted For
             </div>
             <div className="text-3xl sm:text-4xl font-black text-brutal-red-foreground">
               {formatDollars(politician.militaryDollarsVotedFor)}
@@ -172,19 +188,19 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
 
           <BrutalCard bgColor="cyan" shadowSize={8} padding="lg">
             <div className="text-xs font-black uppercase text-foreground mb-1">
-              Clinical Trial $ Voted For
+              Testing Medicines $ Voted For
             </div>
             <div className="text-3xl sm:text-4xl font-black text-foreground">
               {formatDollars(politician.clinicalTrialDollarsVotedFor)}
             </div>
             <p className="text-xs font-bold text-muted-foreground mt-1">
-              3.3% of NIH budget = actual clinical trials
+              3.3% of the NIH budget actually tests which medicines work
             </p>
           </BrutalCard>
 
           <BrutalCard bgColor="background" shadowSize={8} padding="lg">
             <div className="text-xs font-black uppercase text-muted-foreground mb-1">
-              Military : Trials Ratio
+              Explosions : Medicines Ratio
             </div>
             <div className={`text-3xl sm:text-4xl font-black ${
               politician.ratio >= 100 ? "text-brutal-red" : politician.ratio <= 1 ? "text-brutal-cyan" : "text-foreground"
@@ -214,6 +230,17 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
           militaryDollars={politician.militaryDollarsVotedFor}
           trialsDollars={politician.clinicalTrialDollarsVotedFor}
           size={280}
+        />
+      </section>
+
+      {/* Share buttons */}
+      <section className="mb-12 text-center">
+        <p className="text-sm font-black uppercase text-muted-foreground mb-3">
+          Share This Scorecard
+        </p>
+        <SocialShareButtons
+          url={`https://optimitron.earth/governments/${gov.code}/politicians/${politician.bioguideId}`}
+          text={`${politician.name}: ${formatDollars(politician.militaryDollarsVotedFor)} on explosions, ${formatDollars(politician.clinicalTrialDollarsVotedFor)} testing which medicines work.`}
         />
       </section>
 
@@ -311,20 +338,20 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
         )}
       </section>
 
-      {/* Context */}
+      {/* Context — Wishonia voice */}
       <section className="mb-12">
         <BrutalCard bgColor="yellow" shadowSize={8} padding="lg">
           <h3 className="text-base font-black uppercase text-foreground mb-2">
-            What This Means
+            The Maths
           </h3>
           <p className="text-base font-bold text-foreground leading-relaxed">
             {politician.militaryDollarsVotedFor === 0 && politician.clinicalTrialDollarsVotedFor === 0
-              ? `${politician.name} voted against both military spending and health funding on the bills we tracked. Their ratio is 1:1 by default.`
+              ? `${politician.name} voted against both explosions and testing which medicines work. I mention not to be rude but because you seem weirdly calm about this.`
               : politician.militaryDollarsVotedFor === 0
-                ? `${politician.name} voted for clinical trial funding without voting for any military spending. This is the best possible outcome.`
+                ? `${politician.name} voted to test which medicines work without voting for any explosions. You'd think this would be more common. You'd be adorable for thinking that.`
                 : politician.clinicalTrialDollarsVotedFor === 0
-                  ? `${politician.name} voted for ${formatDollars(politician.militaryDollarsVotedFor)} in military spending but $0 in clinical trial funding. Their ratio is effectively infinite.`
-                  : `For every $1 of clinical trial funding ${politician.name} voted for, they also voted for $${politician.ratio.toLocaleString()} in military spending. The system average is $${systemRatio.toLocaleString()}.`
+                  ? `${politician.name} voted for ${formatDollars(politician.militaryDollarsVotedFor)} in explosions and zero dollars testing which medicines work. If cancer had oil, this ratio would be different.`
+                  : `${politician.name} spent $${politician.ratio.toLocaleString()} on explosions for every $1 testing which medicines work. Your species average is ${systemRatio.toLocaleString()}:1. Your chance of dying from terrorism: 1 in 30 million. Your chance of dying from disease: 100%.`
             }
           </p>
         </BrutalCard>

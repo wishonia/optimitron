@@ -24,9 +24,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { code } = await params;
   const gov = getGovernment(code.toUpperCase());
+  const title = `${gov?.name ?? code} Politicians — Explosions vs Cures | Optimitron`;
+  const description = `Every ${gov?.name ?? code} politician ranked by explosions per dollar testing which medicines work. If cancer had oil, you would have cured it by 2003.`;
   return {
-    title: `${gov?.name ?? code} Politicians | The Earth Optimization Game`,
-    description: `How ${gov?.name ?? code}'s politicians vote: military spending vs clinical trial funding. The ratio reveals everything.`,
+    title,
+    description,
+    openGraph: { title, description, type: "website" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
@@ -105,8 +109,8 @@ export default async function GovernmentPoliticiansPage({ params }: PageProps) {
         <SectionContainer bgColor="background" borderPosition="bottom" padding="lg">
           <Container>
             <SectionHeader
-              title="Military vs Clinical Trials"
-              subtitle={`For every dollar of clinical trial funding each politician voted for, how many dollars of military spending did they also vote for? The system-wide ratio is ${scorecardData.systemWideRatio.toLocaleString()}:1.`}
+              title="Explosions vs Testing Which Medicines Work"
+              subtitle={`Your politicians spend ${scorecardData.systemWideRatio.toLocaleString()} dollars on explosions for every 1 dollar on testing which medicines work. If cancer had oil, you would have cured it by 2003.`}
               size="lg"
             />
             <PoliticianScorecardTable
@@ -123,7 +127,7 @@ export default async function GovernmentPoliticiansPage({ params }: PageProps) {
           <Container>
             <SectionHeader
               title="Presidential Scorecards"
-              subtitle="Total military spending signed into law vs clinical trial funding. Every president gets an F."
+              subtitle="Your 'red team' and 'blue team' argue about everything except this ratio, because they're both inside it. Switching parties is like changing the wallpaper in a burning building."
               size="md"
               className="text-background [&_p]:text-muted-foreground"
             />

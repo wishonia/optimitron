@@ -82,13 +82,13 @@ export function PoliticianScorecardTable({
       {/* System ratio callout */}
       <div className="border-4 border-primary bg-brutal-red p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-4 text-center">
         <span className="text-xs font-black uppercase text-brutal-red-foreground">
-          System-Wide Ratio
+          Your Species&apos; Ratio
         </span>
         <div className="text-3xl font-black text-brutal-red-foreground">
           {systemWideRatio.toLocaleString()}:1
         </div>
         <p className="text-sm font-bold text-brutal-red-foreground">
-          Military spending to clinical trial spending. This is the ratio your government chooses.
+          Dollars on explosions per dollar testing which medicines work. If cancer had oil, you would have cured it by 2003.
         </p>
       </div>
 
@@ -122,10 +122,10 @@ export function PoliticianScorecardTable({
                 Party{indicator("party")}
               </th>
               <th className={`${hdrClass} text-right`} onClick={() => handleSort("military")}>
-                Military $ Voted For{indicator("military")}
+                Explosions ${indicator("military")}
               </th>
               <th className={`${hdrClass} text-right`} onClick={() => handleSort("trials")}>
-                Trial $ Voted For{indicator("trials")}
+                Testing Medicines{indicator("trials")}
               </th>
               <th className={`${hdrClass} text-right`} onClick={() => handleSort("ratio")}>
                 Ratio{indicator("ratio")}

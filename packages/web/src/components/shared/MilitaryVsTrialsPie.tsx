@@ -127,12 +127,12 @@ export function MilitaryVsTrialsPie({
         <div className="flex items-center gap-1">
           <div className="w-3 h-3 bg-brutal-cyan border-2 border-primary" />
           <span className="text-xs font-black text-foreground">
-            Trials {formatDollars(trialsDollars)}
+            Testing Medicines {formatDollars(trialsDollars)}
           </span>
         </div>
       </div>
       <p className="text-xs font-bold text-muted-foreground mt-1">
-        {trialsPct > 0 ? `${trialsPct.toFixed(trialsPct < 1 ? 2 : 1)}% goes to clinical trials` : "0% goes to clinical trials"}
+        {trialsPct > 0 ? `${trialsPct.toFixed(trialsPct < 1 ? 2 : 1)}% goes to testing which medicines work` : "0% goes to testing which medicines work"}
       </p>
     </div>
   );
