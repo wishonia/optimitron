@@ -36,7 +36,11 @@ export * from './natural-experiments.js';
 export * from './monetary-policy-panel.js';
 export * from './government-report-cards.js';
 export * from './agency-performance.js';
+export * from './agency-historical-trends.js';
+export * from './economic-theft-series.js';
 export * from './median-income-series.js';
 export * from './us-policy-recommendations.js';
 export * from './oecd-category-mappings.js';
-
+export * from './us-preventable-deaths.js';
+export * from './us-healthcare-waste.js';
+export * from './us-inequality-detail.js';

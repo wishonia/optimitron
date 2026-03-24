@@ -21,6 +21,7 @@ const scripts = [
   { name: "Health Outcomes (WHO)", file: "generate-health-outcomes.ts" },
   { name: "Economic Indicators (World Bank)", file: "generate-economic-indicators.ts" },
   { name: "Median Income (Eurostat + PIP)", file: "generate-median-income-series.ts" },
+  { name: "Agency Performance (Gemini)", file: "generate-agency-data.ts" },
 ];
 
 async function main() {

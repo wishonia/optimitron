@@ -12,7 +12,8 @@
     "generate:median-income": "tsx ./scripts/generate-median-income-series.ts",
     "data:refresh": "tsx ./scripts/refresh-all.ts",
     "data:refresh:health": "tsx ./scripts/generate-health-outcomes.ts",
-    "data:refresh:economic": "tsx ./scripts/generate-economic-indicators.ts"
+    "data:refresh:economic": "tsx ./scripts/generate-economic-indicators.ts",
+    "data:refresh:agencies": "tsx ./scripts/generate-agency-data.ts"
   },
   "keywords": [
     "data",
