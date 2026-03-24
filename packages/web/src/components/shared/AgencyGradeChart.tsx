@@ -38,7 +38,8 @@ export function AgencyGradeChart({ agency, compact = false }: AgencyGradeChartPr
   const isInView = useInView(ref, { once: true, margin: "-40px" });
   const reduced = useReducedMotion();
 
-  const { spendingTimeSeries: spend, outcomeTimeSeries: outcome } = agency;
+  const spend = agency.spendingTimeSeries;
+  const outcome = agency.outcomes[0]?.data ?? [];
   if (spend.length < 2 || outcome.length < 2) return null;
 
   // SVG dimensions

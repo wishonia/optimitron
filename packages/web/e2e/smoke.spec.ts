@@ -24,7 +24,6 @@ const pages = [
   "/transparency",
   "/referendum",
   "/wishocracy",
-  "/civic",
 ];
 
 for (const path of pages) {

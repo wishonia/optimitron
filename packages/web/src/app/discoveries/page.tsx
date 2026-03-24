@@ -1,10 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { discoveriesLink } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata = {
-  title: "Discoveries | Optimitron",
-  description:
-    "Health patterns your species discovered by accident, aggregated from people who bothered to track their data.",
-};
+export const metadata = getRouteMetadata(discoveriesLink);
 
 interface AggregateRow {
   predictorName: string;

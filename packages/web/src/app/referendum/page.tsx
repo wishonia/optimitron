@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { referendumLink } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Referendums | Optimitron",
-  description:
-    "Active referendums. Vote on proposals. Prove you're human. Get credit for caring.",
-};
+export const metadata = getRouteMetadata(referendumLink);
 
 export default async function ReferendumsIndexPage() {
   const referendums = await prisma.referendum.findMany({

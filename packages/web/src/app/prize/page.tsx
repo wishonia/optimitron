@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { fmtParam } from "@/lib/format-parameter";
@@ -14,7 +13,9 @@ import {
 } from "@/lib/parameters-calculations-citations";
 import {
   contractsSourceLink,
+  prizeLink,
 } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 import { VoterPrizeTreasuryDeposit } from "@/components/prize/VoterPrizeTreasuryDeposit";
 import { CitizenDashboardWrapper } from "@/components/prize/CitizenDashboardWrapper";
 import {
@@ -40,11 +41,7 @@ async function getPoolStats() {
 }
 import { GameCTA } from "@/components/ui/game-cta";
 
-export const metadata: Metadata = {
-  title: "The Earth Optimization Game | Optimitron",
-  description:
-    "The only arcade game where you get your coins back 11x if you lose. Insert coin. Play the game. Redirect Earth's resources from what makes you deadest to what makes you healthiest.",
-};
+export const metadata = getRouteMetadata(prizeLink);
 
 const poolMultiple = fmtParam(PRIZE_POOL_HORIZON_MULTIPLE);
 const poolReturn = fmtParam(PRIZE_POOL_ANNUAL_RETURN);

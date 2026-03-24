@@ -1,16 +1,12 @@
-import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { getDashboardData, getTopReferrers } from "@/lib/dashboard.server";
 import { DashboardClient } from "@/components/dashboard/DashboardClient";
-import { getSignInPath, ROUTES } from "@/lib/routes";
+import { dashboardLink, getSignInPath, ROUTES } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Dashboard | Optimitron",
-  description:
-    "Your contribution record. Budget preferences, alignment reports, referrals, and evidence that you tried.",
-};
+export const metadata = getRouteMetadata(dashboardLink);
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);

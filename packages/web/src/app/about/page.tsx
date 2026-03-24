@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { ImplementationPlanSection } from "@/components/landing/ImplementationPlanSection";
 import { DecentralizedFDASection } from "@/components/landing/DecentralizedFDASection";
@@ -9,6 +8,7 @@ import {
   US_FEDERAL_SPENDING_2024,
 } from "@/lib/parameters-calculations-citations";
 import {
+  aboutLink,
   alignmentLink,
   communityLinks,
   iabLink,
@@ -20,6 +20,7 @@ import {
   transparencyLink,
   wishocracyLink,
 } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 import { GameCTA } from "@/components/ui/game-cta";
 
 const productSurfaces = [
@@ -115,11 +116,7 @@ const steps = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "About The Evidence-Based Earth Optimization Machine | Optimitron",
-  description:
-    "What Optimitron is, how the Earth Optimization Machine works, and why planetary debugging software might be useful on this planet.",
-};
+export const metadata = getRouteMetadata(aboutLink);
 
 export default function AboutPage() {
   return (

@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
 import { GOVERNMENTS, getGovernmentsByBodyCount, type GovernmentMetrics } from "@optimitron/data";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { GameCTA } from "@/components/ui/game-cta";
 import { GovernmentLeaderboard } from "@/components/shared/GovernmentLeaderboard";
-import { ROUTES } from "@/lib/routes";
+import { governmentsLink, ROUTES } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Government Report Cards | The Earth Optimization Game",
-  description:
-    "Every government ranked by body count. Nuclear warheads, military spending, civilian casualties, drug war prisoners, and unsolved murders. The data your government hopes you never see.",
-};
+export const metadata = getRouteMetadata(governmentsLink);
 
 function formatUSD(value: number): string {
   if (value >= 1_000_000_000_000) {

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { fmtParam } from "@/lib/format-parameter";
@@ -14,16 +13,14 @@ import {
 } from "@/lib/parameters-calculations-citations";
 import {
   contractsSourceLink,
+  iabLink,
   prizeLink,
 } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 import { IABCalculator } from "@/components/landing/IABCalculator";
 import { GameCTA } from "@/components/ui/game-cta";
 
-export const metadata: Metadata = {
-  title: "Incentive Alignment Bonds | Optimitron",
-  description:
-    "Phase 2: After the referendum proves demand, raise ~$1B to lobby for the 1% Treaty. 80% funds pragmatic clinical trials, 10% returns to bondholders, 10% funds aligned politicians. Dominant assurance return if treaty fails.",
-};
+export const metadata = getRouteMetadata(iabLink);
 
 const poolMultiple = fmtParam(PRIZE_POOL_HORIZON_MULTIPLE);
 const poolReturn = fmtParam(PRIZE_POOL_ANNUAL_RETURN);

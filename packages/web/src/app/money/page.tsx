@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
 import { TreasuryDashboard } from "@/app/treasury/TreasuryDashboard";
 import { GameCTA } from "@/components/ui/game-cta";
+import { moneyLink } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "How Money Should Work | Optimitron",
-  description:
-    "A programmable currency with governance built into the protocol. Transaction tax replaces the IRS. Universal Basic Income replaces welfare. Wishocratic allocation replaces politicians.",
-};
+export const metadata = getRouteMetadata(moneyLink);
 
 const problemStats = [
   {

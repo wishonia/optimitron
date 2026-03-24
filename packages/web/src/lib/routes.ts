@@ -1,4 +1,15 @@
 import { slugify } from "@/lib/slugify";
+import { fmtParam } from "@/lib/format-parameter";
+import {
+  IAB_VS_DEFENSE_LOBBY_RATIO_AT_1PCT,
+  PRIZE_POOL_HORIZON_MULTIPLE,
+  VICTORY_BOND_ANNUAL_RETURN_PCT,
+} from "@/lib/parameters-calculations-citations";
+
+// Precompute for descriptions (same pattern as demo-script.ts)
+const iabLobbyRatio = Math.round(IAB_VS_DEFENSE_LOBBY_RATIO_AT_1PCT.value);
+const bondReturn = fmtParam(VICTORY_BOND_ANNUAL_RETURN_PCT);
+const poolMultiple = `${Math.round(PRIZE_POOL_HORIZON_MULTIPLE.value)}x`;
 
 export const ROUTES = {
   home: "/",
@@ -16,7 +27,6 @@ export const ROUTES = {
   misconceptions: "/misconceptions",
   discoveries: "/discoveries",
   studies: "/studies",
-  civic: "/civic",
   money: "/money",
   federalReserve: "/federal-reserve",
   departmentOfWar: "/department-of-war",
@@ -80,7 +90,7 @@ export const studiesLink: NavItem = {
   href: ROUTES.outcomes,
   label: "Studies",
   emoji: "🧪",
-  description: "Outcome hubs, pair studies, and jurisdiction drilldowns",
+  description: "What actually causes what. Your species has the data — you just never bothered to look at it properly.",
   matchPrefixes: [ROUTES.outcomes, ROUTES.studies],
 };
 
@@ -88,42 +98,42 @@ export const compareLink: NavItem = {
   href: ROUTES.compare,
   label: "Compare",
   emoji: "🌍",
-  description: "Side-by-side country and system comparisons",
+  description: "Same species, different settings. See which countries figured out the obvious bits.",
 };
 
 export const policiesLink: NavItem = {
   href: ROUTES.policies,
   label: "Policies",
   emoji: "📋",
-  description: "Evidence-ranked policy recommendations",
+  description: "Every policy ranked by whether it actually works. Most don't. You'll be unsurprised which ones.",
 };
 
 export const budgetLink: NavItem = {
   href: ROUTES.budget,
   label: "Optimal Budget",
   emoji: "💰",
-  description: "Budget size and composition analysis",
+  description: "Your government's shopping receipt, annotated by someone who can do maths.",
 };
 
 export const misconceptionsLink: NavItem = {
   href: ROUTES.misconceptions,
   label: "Myth vs Data",
   emoji: "🔍",
-  description: "Popular beliefs tested against empirical data",
+  description: "Things your species confidently believes vs what the spreadsheet says. The spreadsheet wins.",
 };
 
 export const discoveriesLink: NavItem = {
   href: ROUTES.discoveries,
   label: "Discoveries",
   emoji: "🔬",
-  description: "Population-level health discoveries from contributor data",
+  description: "Health patterns discovered by people who tracked their data. Your doctor doesn't know these yet.",
 };
 
 export const moneyLink: NavItem = {
   href: ROUTES.money,
   label: "How Money Should Work",
   emoji: "💸",
-  description: "Programmable currency with built-in governance — transaction tax, UBI, wishocratic allocation",
+  description: "A currency that replaces the IRS, welfare, and inflation in one line of code. Your seventy-four-thousand-page tax code is not invited.",
 };
 
 export const federalReserveLink: NavItem = {
@@ -144,7 +154,7 @@ export const referendumLink: NavItem = {
   href: ROUTES.referendum,
   label: "Referendums",
   emoji: "🗳️",
-  description: "Vote on proposals, verify with World ID, earn referral rewards",
+  description: "Vote on things that matter. Prove you're human. Skip the middleman who was going to ignore you anyway.",
   matchPrefixes: [ROUTES.referendum],
 };
 
@@ -174,35 +184,35 @@ export const wishocracyLink: NavItem = {
   href: ROUTES.wishocracy,
   label: "Wishocracy",
   emoji: "🗳️",
-  description: "Build and save your ideal public budget",
+  description: "Pick between two things. Do it ten times. Congratulations, you've just outperformed Congress.",
 };
 
 export const alignmentLink: NavItem = {
   href: ROUTES.alignment,
   label: "Alignment",
   emoji: "🏛️",
-  description: "See which benchmark politicians match your priorities",
+  description: "Find out which politicians accidentally agree with you. Spoiler: fewer than you'd hope.",
 };
 
 export const trackLink: NavItem = {
   href: ROUTES.wishonia,
   label: "Wishonia",
   emoji: "👽",
-  description: "Planetary debugging for your health, habits, and everyday tradeoffs",
+  description: "Track your health with an alien systems engineer. She'll tell you what's working. You won't like it.",
 };
 
 export const dashboardLink: NavItem = {
   href: ROUTES.dashboard,
   label: "Dashboard",
   emoji: "📊",
-  description: "Track your impact, manage preferences, and coordinate with organisations",
+  description: "Your contribution receipt. Proof you played, in case anyone asks.",
 };
 
 export const profileLink: NavItem = {
   href: ROUTES.profile,
   label: "Profile",
   emoji: "🧭",
-  description: "Save demographics, daily check-ins, and shared reports",
+  description: "Your permanent record of giving a damn. Check-ins, reports, and evidence you tried.",
 };
 
 export const appLinks: NavItem[] = [
@@ -216,14 +226,14 @@ export const transparencyLink: NavItem = {
   href: ROUTES.transparency,
   label: "Transparency",
   emoji: "🔍",
-  description: "Verifiable attestations, IPFS storage, and the full governance pipeline",
+  description: "Every decision, content-addressed and impossible to quietly delete. Unlike your government's version.",
 };
 
 export const toolsLink: NavItem = {
   href: ROUTES.tools,
   label: "Tools",
   emoji: "🧰",
-  description: "Every tool available to help win the Earth Optimization Game",
+  description: "Eighteen weapons for fixing civilisation. All free. Your move.",
   matchPrefixes: [ROUTES.tools],
 };
 
@@ -240,7 +250,7 @@ export const politicianLeaderboardLink: NavItem = {
   href: ROUTES.politicians,
   label: "Politician Leaderboard",
   emoji: "🏛️",
-  description: "How your representatives actually vote vs what citizens want",
+  description: "A public receipt of every vote your representatives cast vs what you actually wanted.",
   matchPrefixes: [ROUTES.politicians],
 };
 
@@ -248,7 +258,7 @@ export const scoreboardLink: NavItem = {
   href: ROUTES.scoreboard,
   label: "Scoreboard",
   emoji: "📊",
-  description: "Humanity's Scoreboard — live game metrics: health, income, pool size, participants",
+  description: "Two numbers. Healthy lifespan and median income. Everything else is a distraction.",
   matchPrefixes: [ROUTES.scoreboard],
 };
 
@@ -256,14 +266,14 @@ export const iabLink: NavItem = {
   href: ROUTES.iab,
   label: "Incentive Alignment Bonds",
   emoji: "🤝",
-  description: "Phase 2 lobbying bonds — fund the treaty campaign, earn 10% of treaty revenue",
+  description: `Invest in the campaign that outguns the defence lobby ${iabLobbyRatio}x. Bondholders earn ${bondReturn}/year when the treaty passes. Lobbying, but it cures diseases instead of causing them.`,
 };
 
 export const prizeLink: NavItem = {
   href: ROUTES.prize,
   label: "Prize",
   emoji: "🏆",
-  description: "Earth Optimization Prize — outcome-based pool for governance reform",
+  description: `The only prize where losing means you get richer. Deposit, recruit, and either save civilisation or collect ${poolMultiple}.`,
 };
 
 export const earthOptimizationPrizePaperLink: NavItem = {
@@ -278,30 +288,22 @@ export const aboutLink: NavItem = {
   href: ROUTES.about,
   label: "About",
   emoji: "ℹ️",
-  description: "How the Earth Optimization Game works and why it exists",
+  description: "What this is, why it exists, and why an alien had to build it because your species wouldn't.",
 };
 
 export const demoLink: NavItem = {
   href: ROUTES.demo,
   label: "Demo",
   emoji: "🎬",
-  description: "Narrated tour of the Earth Optimization Game — modular playlists for every audience",
+  description: "A guided tour by an alien who's been running a planet for 4,237 years. She has notes.",
   matchPrefixes: [ROUTES.demo],
-};
-
-export const civicLink: NavItem = {
-  href: ROUTES.civic,
-  label: "Civic",
-  emoji: "📜",
-  description: "Active bills, voting records, and legislative tracking",
-  matchPrefixes: [ROUTES.civic],
 };
 
 export const treasuryLink: NavItem = {
   href: ROUTES.treasury,
   label: "Treasury",
   emoji: "🪙",
-  description: "The $WISH token — 0.5% transaction tax, UBI, and wishocratic allocation",
+  description: "The $WISH token — 0.5% transaction tax replaces your entire tax code. UBI and wishocratic allocation included.",
   matchPrefixes: [ROUTES.treasury],
 };
 
@@ -309,7 +311,7 @@ export const contributeLink: NavItem = {
   href: ROUTES.contribute,
   label: "Contribute",
   emoji: "🤝",
-  description: "How to contribute to the Earth Optimization Game",
+  description: "How to help. The bar is on the floor and your species still trips over it.",
 };
 
 /** Top-level nav items (not in dropdown) */
@@ -331,7 +333,7 @@ export interface NavSection {
 
 export const navSections: NavSection[] = [
   { id: "participate", label: "Participate", items: [wishocracyLink, alignmentLink, referendumLink, demoLink] },
-  { id: "explore", label: "Explore", items: [studiesLink, compareLink, policiesLink, budgetLink, governmentsLink, misconceptionsLink, discoveriesLink, civicLink] },
+  { id: "explore", label: "Explore", items: [studiesLink, compareLink, policiesLink, budgetLink, governmentsLink, misconceptionsLink, discoveriesLink] },
   { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink, moneyLink, treasuryLink] },
   { id: "system", label: "System", items: [politicianLeaderboardLink, transparencyLink, agenciesLink, departmentOfWarLink, aboutLink, contributeLink] },
 ];

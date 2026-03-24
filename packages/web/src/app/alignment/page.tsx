@@ -4,14 +4,11 @@ import { AlignmentReport } from "@/components/alignment/AlignmentReport";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { authOptions } from "@/lib/auth";
 import { getPersonalAlignmentState } from "@/lib/alignment-report.server";
-import { getSignInPath, ROUTES } from "@/lib/routes";
+import { alignmentLink, getSignInPath, ROUTES } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 import { buildUserAlignmentUrl, getBaseUrl } from "@/lib/url";
 
-export const metadata = {
-  title: "Alignment Report | Optimitron",
-  description:
-    "Find out which politicians actually vote the way you'd want. Most people are surprised. Not pleasantly.",
-};
+export const metadata = getRouteMetadata(alignmentLink);
 
 export default async function AlignmentPage() {
   const session = await getServerSession(authOptions);

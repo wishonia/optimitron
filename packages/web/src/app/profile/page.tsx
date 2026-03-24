@@ -1,17 +1,13 @@
-import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ProfileHub } from "@/components/profile/ProfileHub";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { authOptions } from "@/lib/auth";
 import { getProfilePageData } from "@/lib/profile.server";
-import { getSignInPath, ROUTES } from "@/lib/routes";
+import { getSignInPath, profileLink, ROUTES } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Profile | Optimitron",
-  description:
-    "Your saved budgets, alignment reports, and daily check-ins. A permanent record that you cared.",
-};
+export const metadata = getRouteMetadata(profileLink);
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);

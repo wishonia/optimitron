@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ProvenanceBlock } from "@/components/analysis/provenance-block";
@@ -14,12 +13,10 @@ import {
   listExplorerPairSummaries,
 } from "@/lib/analysis-explorer-data";
 import { getOutcomeHubPath, getPairStudyPath } from "@/lib/analysis-explorer-routes";
+import { studiesLink } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Studies | Optimitron",
-  description:
-    "Every outcome your species measures, ranked by what actually causes it to move. No opinions. Just maths.",
-};
+export const metadata = getRouteMetadata(studiesLink);
 
 export default function OutcomesIndexPage() {
   const outcomes = listExplorerOutcomes();

@@ -1,13 +1,10 @@
-import type { Metadata } from "next";
 import { DemoPlayer } from "@/components/demo/DemoPlayer";
 import { PlaylistSelector } from "@/components/demo/PlaylistSelector";
 import { PLAYLISTS, DEFAULT_PLAYLIST_ID, estimatePlaylistDuration } from "@/lib/demo-script";
+import { demoLink } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Demo | The Earth Optimization Game",
-  description:
-    "Narrated tour of the Earth Optimization Game. Wishonia walks you through the problem, the solution, and how to play.",
-};
+export const metadata = getRouteMetadata(demoLink);
 
 interface PageProps {
   searchParams: Promise<{ playlist?: string }>;
