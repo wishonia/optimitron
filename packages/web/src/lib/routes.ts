@@ -48,6 +48,8 @@ export const ROUTES = {
   // Player
   profile: "/profile",
   dashboard: "/dashboard",
+  transmit: "/transmit",
+  // Wishonia
   wishonia: "/wishonia",
   // Meta
   about: "/about",
@@ -222,12 +224,22 @@ export const alignmentLink: NavItem = {
   description: "Find out which politicians accidentally agree with you. Spoiler: fewer than you'd hope.",
 };
 
-export const trackLink: NavItem = {
+export const transmitLink: NavItem = {
+  href: ROUTES.transmit,
+  label: "Transmit",
+  emoji: "📡",
+  description: "Send data to an alien intelligence. Health, meals, mood, questions — every transmission helps optimise your planet.",
+};
+
+export const wishoniaWorldLink: NavItem = {
   href: ROUTES.wishonia,
   label: "Wishonia",
-  emoji: "👽",
-  description: "Track your health with an alien systems engineer. She'll tell you what's working. You won't like it.",
+  emoji: "🌍",
+  description: "A planet that ended war in year 12 and disease in year 340. This is what 4,297 years of not being idiots looks like.",
 };
+
+/** @deprecated Use transmitLink instead */
+export const trackLink = transmitLink;
 
 export const dashboardLink: NavItem = {
   href: ROUTES.dashboard,

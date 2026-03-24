@@ -211,6 +211,10 @@ See `AGENTS.md` for full architectural rules.
 ### Prisma Version
 We use **Prisma 7** (`prisma@^7.0.0`, `@prisma/client@^7.0.0`) with `@prisma/adapter-pg` for PostgreSQL. The `datasource` block in `schema.prisma` intentionally omits `url` — the connection is configured at runtime via the adapter. Do NOT add `url = env("DATABASE_URL")` to the datasource block.
 
+## Page Metadata
+
+`packages/web/src/lib/routes.ts` is the single source of truth for page titles and descriptions. Each `NavItem` has a `label`, `description`, and `emoji`. Pages use `getRouteMetadata(link)` from `packages/web/src/lib/metadata.ts` instead of hardcoding metadata. All descriptions are in Wishonia's voice.
+
 ## Hard Rules
 
 1. **No code without tests.** Every function gets a test. No exceptions.
