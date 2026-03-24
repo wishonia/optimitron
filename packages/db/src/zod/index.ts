@@ -151,6 +151,20 @@ export const BadgeTypeSchema = z.enum([
 ]);
 export type BadgeType = z.infer<typeof BadgeTypeSchema>;
 
+export const WishReasonSchema = z.enum([
+  'WORLD_ID_VERIFICATION',
+  'KYC_COMPLETION',
+  'CENSUS_SNAPSHOT',
+  'DAILY_CHECKIN',
+  'WISHOCRATIC_ALLOCATION',
+  'REFERENDUM_VOTE',
+  'ALIGNMENT_CHECK',
+  'REFERRAL',
+  'PRIZE_DEPOSIT',
+  'SHARE_REPORT',
+]);
+export type WishReason = z.infer<typeof WishReasonSchema>;
+
 export const QuestionTypeSchema = z.enum([
   'MULTIPLE_CHOICE',
   'FREE_TEXT',

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ActivityType } from "@optimitron/db";
+import { getWishBalance } from "@/lib/wishes.server";
 import {
   getActivityDescription,
   getActivityEmoji,
@@ -105,6 +106,7 @@ export async function getDashboardData(
       newsletterSubscribed: user.newsletterSubscribed,
     },
     stats: {
+      wishes: await getWishBalance(userId),
       referrals: referralCount,
       wishocraticAllocations: allocationCount,
       badges: user.badges.length,

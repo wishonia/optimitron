@@ -262,6 +262,20 @@ enum BadgeType {
   DEPOSITOR
 }
 
+/// Reason a wish was granted — maps to a specific user action
+enum WishReason {
+  WORLD_ID_VERIFICATION
+  KYC_COMPLETION
+  CENSUS_SNAPSHOT
+  DAILY_CHECKIN
+  WISHOCRATIC_ALLOCATION
+  REFERENDUM_VOTE
+  ALIGNMENT_CHECK
+  REFERRAL
+  PRIZE_DEPOSIT
+  SHARE_REPORT
+}
+
 /// Type of survey question
 enum QuestionType {
   MULTIPLE_CHOICE
@@ -416,6 +430,7 @@ model User {
   createdOrganizations      Organization[]                  @relation("OrgCreator")
   organizationMemberships   OrganizationMember[]            @relation("UserOrgMemberships")
   badges                    Badge[]                         @relation("UserBadges")
+  wishPoints                WishPoint[]                     @relation("UserWishPoints")
   socialAccounts            SocialAccount[]                 @relation("UserSocialAccounts")
   emailLogs                 EmailLog[]                      @relation("UserEmailLogs")
   surveyResponses           SurveyResponse[]                @relation("UserSurveyResponses")
@@ -2678,7 +2693,8 @@ model Activity {
   createdAt DateTime @default(now())
 
   // -- Relations --
-  user User @relation("UserActivities", fields: [userId], references: [id], onDelete: Cascade)
+  user       User        @relation("UserActivities", fields: [userId], references: [id], onDelete: Cascade)
+  wishPoints WishPoint[] @relation("WishPointActivity")
 
   @@index([userId, createdAt])
   @@index([type])
@@ -3062,6 +3078,39 @@ model Badge {
   @@unique([userId, type])
   @@index([userId])
   @@index([type])
+}
+
+/// A wish reward granted for a specific user action.
+/// Balance = SUM(amount) per user. No cached balance field — always computed.
+model WishPoint {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// The user who earned these wishes
+  userId String
+
+  /// Number of wishes granted (always positive)
+  amount Int
+
+  /// What action earned these wishes
+  reason WishReason
+
+  /// Optional link to the Activity that triggered this grant
+  activityId String?
+
+  /// JSON-encoded context (e.g. referendumId, depositAmount)
+  metadata String?
+
+  /// When this grant was created
+  createdAt DateTime @default(now())
+
+  // -- Relations --
+  user     User      @relation("UserWishPoints", fields: [userId], references: [id], onDelete: Cascade)
+  activity Activity? @relation("WishPointActivity", fields: [activityId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([userId, createdAt])
+  @@index([reason])
 }
 
 /// Linked social/wallet account for a user

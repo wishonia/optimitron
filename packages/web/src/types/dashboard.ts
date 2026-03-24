@@ -16,6 +16,7 @@ export interface DashboardUser {
 }
 
 export interface DashboardStats {
+  wishes: number;
   referrals: number;
   wishocraticAllocations: number;
   badges: number;
