@@ -414,6 +414,8 @@ export const US_AGENCY_PERFORMANCE: AgencyPerformance[] = [
       { year: 2020, label: "COVID-19 — US has highest per-capita death rate of any wealthy nation despite highest spending", url: "https://covid.cdc.gov/covid-data-tracker/" },
       { year: 2000, label: "US is the ONLY developed country without universal healthcare", url: "https://www.kff.org/global-health-policy/issue-brief/how-does-the-u-s-healthcare-system-compare-to-other-countries/" },
       { year: 2018, label: "US maternal mortality rate reaches 17.4/100K — Japan is 3.3/100K. Only developed country where it's RISING.", url: "https://www.cdc.gov/nchs/data/hestat/maternal-mortality/2021/maternal-mortality-rates-2021.htm" },
+      { year: 2010, label: "'Affordable' Care Act signed. Premiums increase 105% over next 7 years. Average family premium reaches $22,463/yr by 2023.", url: "https://www.kff.org/health-costs/report/employer-health-benefits-annual-survey/" },
+      { year: 2005, label: "Bankruptcy Abuse Prevention Act — credit card lobby writes law making medical debt harder to discharge. Medical bills are #1 cause of bankruptcy.", url: "https://www.congress.gov/bill/109th-congress/senate-bill/256" },
     ],
     grade: "F",
     gradeRationale: "Health spending per capita tripled ($4,845 → $14,570) while life expectancy is LOWER than in 2014. The US spends more per person than any country and gets middling outcomes.",

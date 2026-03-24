@@ -50,3 +50,5 @@ export * from './us-insurance-denials.js';
 export * from './us-corporate-tax.js';
 export * from './us-revolving-door.js';
 export * from './us-pharma-patents.js';
+export * from './us-government-lies.js';
+export * from './us-ironic-laws.js';
