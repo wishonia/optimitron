@@ -45,7 +45,7 @@ export function TLDRSection() {
             </p>
             <p className="text-lg font-bold text-background mt-3">
               The rest of this site is the instruction manual. Read it if
-              you&apos;re into that sort of thing. But for the love of your
+              you&apos;re into ending war and disease. But for the love of your
               species, click the buttons first.
             </p>
           </div>

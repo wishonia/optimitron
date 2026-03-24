@@ -37,6 +37,7 @@ export * from './natural-experiments.js';
 export * from './monetary-policy-panel.js';
 export * from './government-report-cards.js';
 export * from './agency-performance.js';
+export * from './agency-supplementary.js';
 export * from './agency-historical-trends.js';
 export * from './economic-theft-series.js';
 export * from './median-income-series.js';
