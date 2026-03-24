@@ -12,9 +12,10 @@ import {
   alignmentLink,
   communityLinks,
   iabLink,
-  moneyLink,
+  dtreasuryLink,
   paperLinks,
   prizeLink,
+  ROUTES,
   studiesLink,
   trackLink,
   transparencyLink,
@@ -149,8 +150,8 @@ export default function AboutPage() {
           </p>
         </div>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-          <GameCTA href="/wishocracy" variant="primary">Start With Wishocracy</GameCTA>
-          <GameCTA href="/alignment" variant="yellow">See Alignment Reports</GameCTA>
+          <GameCTA href={ROUTES.wishocracy} variant="primary">Start With Wishocracy</GameCTA>
+          <GameCTA href={ROUTES.alignment} variant="yellow">See Alignment Reports</GameCTA>
           <GameCTA href="/studies" variant="outline">Browse Studies</GameCTA>
         </div>
       </section>
@@ -257,7 +258,7 @@ export default function AboutPage() {
               wishocratic public goods allocation.
             </p>
             <NavItemLink
-              item={moneyLink}
+              item={dtreasuryLink}
               variant="custom"
               className="mt-4 inline-flex items-center text-sm font-black uppercase text-foreground hover:text-brutal-pink transition-colors"
             >

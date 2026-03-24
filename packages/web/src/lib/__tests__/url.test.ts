@@ -4,27 +4,45 @@ import {
   buildReferralUrl,
   buildUserAlignmentUrl,
   buildUserReferralUrl,
+  buildPrizeReferralUrl,
+  buildReferendumReferralUrl,
 } from "@/lib/url";
+import { ROUTES } from "@/lib/routes";
 
 describe("url helpers", () => {
-  it("builds public referral links for a user identifier", () => {
+  it("builds referral links with ?ref= query param", () => {
     expect(
       buildUserReferralUrl({ username: "jane", referralCode: "REF123" }, "https://example.com"),
-    ).toBe("https://example.com/wishocracy/jane");
+    ).toBe(`https://example.com${ROUTES.wishocracy}?ref=jane`);
     expect(buildReferralUrl("REF123", "https://example.com")).toBe(
-      "https://example.com/wishocracy/REF123",
+      `https://example.com${ROUTES.wishocracy}?ref=REF123`,
+    );
+    expect(buildReferralUrl(null, "https://example.com")).toBe(
+      `https://example.com${ROUTES.wishocracy}`,
     );
   });
 
-  it("builds public alignment links for a user identifier", () => {
+  it("builds alignment sharing links with path segment", () => {
     expect(
       buildUserAlignmentUrl(
         { username: "jane", referralCode: "REF123" },
         "https://example.com",
       ),
-    ).toBe("https://example.com/alignment/jane");
+    ).toBe(`https://example.com${ROUTES.alignment}/jane`);
     expect(buildAlignmentUrl("REF123", "https://example.com")).toBe(
-      "https://example.com/alignment/REF123",
+      `https://example.com${ROUTES.alignment}/REF123`,
     );
+  });
+
+  it("builds prize referral links with ?ref=", () => {
+    expect(buildPrizeReferralUrl("friend-123", "https://example.com")).toBe(
+      `https://example.com${ROUTES.prize}?ref=friend-123`,
+    );
+  });
+
+  it("builds referendum referral links with ?ref=", () => {
+    expect(
+      buildReferendumReferralUrl("one-percent-treaty", "friend-123", "https://example.com"),
+    ).toBe(`https://example.com${ROUTES.referendum}/one-percent-treaty?ref=friend-123`);
   });
 });

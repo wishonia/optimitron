@@ -1,5 +1,6 @@
 import { CTASection } from "@/components/ui/cta-section";
 import { GameCTA } from "@/components/ui/game-cta";
+import { ROUTES } from "@/lib/routes";
 
 export function DeprecateCTA() {
   return (
@@ -12,7 +13,7 @@ export function DeprecateCTA() {
         <GameCTA href="/prize" variant="secondary">
           Fund the Referendum
         </GameCTA>
-        <GameCTA href="/money" variant="outline">
+        <GameCTA href={ROUTES.dtreasury} variant="outline">
           See the Full System
         </GameCTA>
         <GameCTA href="/agencies" variant="outline">

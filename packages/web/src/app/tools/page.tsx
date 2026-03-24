@@ -9,7 +9,7 @@ import {
   studiesLink,
   referendumLink,
   iabLink,
-  moneyLink,
+  dtreasuryLink,
   scoreboardLink,
   trackLink,
   budgetLink,
@@ -254,7 +254,7 @@ const shelves: Shelf[] = [
           { label: "SPEED", value: 3 },
         ],
         cost: "FREE",
-        link: { item: moneyLink, label: "Equip" },
+        link: { item: dtreasuryLink, label: "Equip" },
         bgColor: "pink",
       },
       {

@@ -6,6 +6,7 @@ import { GameCTA } from "@/components/ui/game-cta";
 import { Stat } from "@/components/ui/stat";
 import { fmtParam } from "@/lib/format-parameter";
 import { CTA, TAGLINES } from "@/lib/messaging";
+import { ROUTES } from "@/lib/routes";
 import {
   VOTE_TOKEN_POTENTIAL_VALUE,
   PRIZE_POOL_HORIZON_MULTIPLE,
@@ -21,7 +22,7 @@ const steps = [
     color: "pink" as const,
     ctas: [
       { label: CTA.answerTheQuestion, href: "#vote" },
-      { label: CTA.makeAllocation, href: "/wishocracy" },
+      { label: CTA.makeAllocation, href: ROUTES.wishocracy },
     ],
   },
   {

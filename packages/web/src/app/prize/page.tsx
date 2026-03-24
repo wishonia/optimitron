@@ -14,6 +14,7 @@ import {
 import {
   contractsSourceLink,
   prizeLink,
+  ROUTES,
 } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
 import { VoterPrizeTreasuryDeposit } from "@/components/prize/VoterPrizeTreasuryDeposit";
@@ -257,8 +258,8 @@ export default async function PrizePage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
           <GameCTA href="/scoreboard" variant="cyan" size="sm">High Scores</GameCTA>
-          <GameCTA href="/wishocracy" variant="yellow" size="sm">Level 3</GameCTA>
-          <GameCTA href="/referendum" variant="primary" size="sm">Level 4</GameCTA>
+          <GameCTA href={ROUTES.wishocracy} variant="yellow" size="sm">Level 3</GameCTA>
+          <GameCTA href={ROUTES.referendum} variant="primary" size="sm">Level 4</GameCTA>
         </div>
       </section>
 

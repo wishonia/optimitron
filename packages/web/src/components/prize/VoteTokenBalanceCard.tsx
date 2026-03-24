@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 
 interface VoteTokenMint {
   id: string;
@@ -133,7 +134,7 @@ export function VoteTokenBalanceCard() {
             <p className="text-xs font-bold text-muted-foreground">
               You don&apos;t have any VOTE points yet. Vote on a{" "}
               <Link
-                href="/referendum"
+                href={ROUTES.referendum}
                 className="font-black text-brutal-pink underline hover:text-foreground"
               >
                 referendum

@@ -334,7 +334,7 @@ export default function DTreasuryPage() {
           almost like treating people like humans works better. Weird.
         </p>
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <GameCTA href="/wishocracy" variant="secondary">Express Your Preferences</GameCTA>
+          <GameCTA href={ROUTES.wishocracy} variant="secondary">Express Your Preferences</GameCTA>
           <GameCTA href="/prize" variant="outline">Play the Game</GameCTA>
           <GameCTA href="/about" variant="outline">Learn More</GameCTA>
         </div>

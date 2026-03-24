@@ -4,6 +4,7 @@ import { SectionContainer } from "@/components/ui/section-container"
 import Link from "next/link"
 import { PRIZE_POOL_HORIZON_MULTIPLE } from "@/lib/parameters-calculations-citations"
 import { fmtParam } from "@/lib/format-parameter"
+import { ROUTES } from "@/lib/routes"
 
 export default function ActionOptionsSection() {
   const options = [
@@ -23,7 +24,7 @@ export default function ActionOptionsSection() {
       color: "bg-brutal-cyan",
       textColor: "text-brutal-cyan-foreground",
       accentColor: "text-brutal-pink",
-      href: "/wishocracy" as string | null,
+      href: ROUTES.wishocracy as string | null,
     },
     {
       option: "OPTION 3: FUND",

@@ -1,5 +1,6 @@
 import { getUsernameOrReferralCode } from "@/lib/referral.client";
 import { clientEnv } from "@/lib/env";
+import { ROUTES } from "@/lib/routes";
 
 export function getBaseUrl(): string {
   if (typeof window !== "undefined" && window.location?.origin) {
@@ -13,8 +14,10 @@ export function getBaseUrl(): string {
   return "http://localhost:3001";
 }
 
+/** Build a wishocracy referral link: /agencies/dcongress/wishocracy?ref=identifier */
 export function buildReferralUrl(identifier?: string | null, baseUrl: string = getBaseUrl()): string {
-  return identifier ? `${baseUrl}/wishocracy/${identifier}` : `${baseUrl}/wishocracy`;
+  const base = `${baseUrl}${ROUTES.wishocracy}`;
+  return identifier ? `${base}?ref=${identifier}` : base;
 }
 
 export function buildUserReferralUrl(
@@ -24,11 +27,13 @@ export function buildUserReferralUrl(
   return buildReferralUrl(getUsernameOrReferralCode(user), baseUrl);
 }
 
+/** Build an alignment sharing link: /agencies/dfec/alignment/identifier */
 export function buildAlignmentUrl(
   identifier?: string | null,
   baseUrl: string = getBaseUrl(),
 ): string {
-  return identifier ? `${baseUrl}/alignment/${identifier}` : `${baseUrl}/alignment`;
+  const base = `${baseUrl}${ROUTES.alignment}`;
+  return identifier ? `${base}/${identifier}` : base;
 }
 
 export function buildUserAlignmentUrl(
@@ -38,27 +43,31 @@ export function buildUserAlignmentUrl(
   return buildAlignmentUrl(getUsernameOrReferralCode(user), baseUrl);
 }
 
+/** Build a civic vote sharing link */
 export function buildCivicVoteUrl(
   shareIdentifier?: string | null,
   baseUrl: string = getBaseUrl(),
 ): string {
   return shareIdentifier
-    ? `${baseUrl}/civic/wishocracys/${shareIdentifier}`
-    : `${baseUrl}/civic/wishocracys`;
+    ? `${baseUrl}/civic/votes/${shareIdentifier}`
+    : `${baseUrl}/civic/votes`;
 }
 
+/** Build a referendum referral link: /agencies/dcongress/referendums/slug?ref=identifier */
 export function buildReferendumReferralUrl(
   slug: string,
   identifier?: string | null,
   baseUrl: string = getBaseUrl(),
 ): string {
-  const base = `${baseUrl}/referendum/${slug}`;
+  const base = `${baseUrl}${ROUTES.referendum}/${slug}`;
   return identifier ? `${base}?ref=${identifier}` : base;
 }
 
+/** Build a prize referral link: /prize?ref=identifier */
 export function buildPrizeReferralUrl(
   identifier?: string | null,
   baseUrl: string = getBaseUrl(),
 ): string {
-  return identifier ? `${baseUrl}/prize?ref=${identifier}` : `${baseUrl}/prize`;
+  const base = `${baseUrl}${ROUTES.prize}`;
+  return identifier ? `${base}?ref=${identifier}` : base;
 }

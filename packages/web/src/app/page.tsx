@@ -13,6 +13,7 @@ import { CTASection } from "@/components/ui/cta-section";
 import {
   alignmentLink,
   prizeLink,
+  ROUTES,
   studiesLink,
   trackLink,
   wishocracyLink,
@@ -185,7 +186,7 @@ export default function Home() {
           <GameCTA href="/prize" variant="secondary">
             {CTA.seeTheMath}
           </GameCTA>
-          <GameCTA href="/wishocracy" variant="cyan">
+          <GameCTA href={ROUTES.wishocracy} variant="cyan">
             {CTA.expressPreferences}
           </GameCTA>
         </div>

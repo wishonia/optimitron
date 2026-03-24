@@ -9,7 +9,7 @@ import { CollapseCountdownTimer } from "@/components/animations/CollapseCountdow
 import { GdpTrajectoryChart } from "@/components/animations/GdpTrajectoryChart";
 import { getGlobalVerifiedVoteCount } from "@/lib/verified-votes.server";
 import { prisma } from "@/lib/prisma";
-import { scoreboardLink } from "@/lib/routes";
+import { ROUTES, scoreboardLink } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
 
 async function getGameStats() {
@@ -202,7 +202,7 @@ export default async function ScoreboardPage() {
       <section className="text-center">
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <GameCTA href="/prize">Play the Game</GameCTA>
-          <GameCTA href="/wishocracy" variant="yellow">Make Your Allocation</GameCTA>
+          <GameCTA href={ROUTES.wishocracy} variant="yellow">Make Your Allocation</GameCTA>
           <GameCTA href="/politicians" variant="outline">Politician Leaderboard</GameCTA>
         </div>
       </section>

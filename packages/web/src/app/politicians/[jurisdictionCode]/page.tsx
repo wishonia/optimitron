@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getLatestAggregateScores } from "@/lib/aggregate-alignment.server";
 import { ScoreboardDashboard } from "@/components/scoreboard/ScoreboardDashboard";
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = {
   title: "Alignment Scoreboard | Optimitron",
@@ -31,7 +32,7 @@ export default async function ScoreboardJurisdictionPage({
             <span className="font-black text-foreground">{jurisdictionCode}</span>.
             Run pairwise comparisons on{" "}
             <Link
-              href="/wishocracy"
+              href={ROUTES.wishocracy}
               className="font-black text-brutal-pink underline hover:text-foreground"
             >
               /wishocracy
