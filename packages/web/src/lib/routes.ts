@@ -13,34 +13,45 @@ const poolMultiple = `${Math.round(PRIZE_POOL_HORIZON_MULTIPLE.value)}x`;
 
 export const ROUTES = {
   home: "/",
-  wishocracy: "/wishocracy",
-  alignment: "/alignment",
-  profile: "/profile",
-  wishonia: "/wishonia",
-  about: "/about",
-  transparency: "/transparency",
-  prize: "/prize",
-  outcomes: "/outcomes",
-  compare: "/compare",
-  policies: "/policies",
-  budget: "/budget",
-  misconceptions: "/misconceptions",
-  discoveries: "/discoveries",
-  studies: "/studies",
-  money: "/money",
-  federalReserve: "/federal-reserve",
-  departmentOfWar: "/department-of-war",
-  treasury: "/treasury",
-  iab: "/iab",
-  contribute: "/contribute",
-  referendum: "/referendum",
-  politicians: "/politicians",
-  scoreboard: "/scoreboard",
-  governments: "/governments",
+  // Wishonia's Government
   agencies: "/agencies",
-  tools: "/tools",
+  dcongress: "/agencies/dcongress",
+  wishocracy: "/agencies/dcongress/wishocracy",
+  referendum: "/agencies/dcongress/referendums",
+  dtreasury: "/agencies/dtreasury",
+  dtreasuryDirs: "/agencies/dtreasury/dirs",
+  dtreasuryDfed: "/agencies/dtreasury/dfed",
+  dtreasuryDssa: "/agencies/dtreasury/dssa",
+  dfec: "/agencies/dfec",
+  alignment: "/agencies/dfec/alignment",
+  dcbo: "/agencies/dcbo",
+  domb: "/agencies/domb",
+  dgao: "/agencies/dgao",
+  dih: "/agencies/dih",
+  ddod: "/agencies/ddod",
+  dcensus: "/agencies/dcensus",
+  discoveries: "/agencies/dih/discoveries",
+  // Earth's Governments
+  governments: "/governments",
+  politicians: "/politicians",
+  // The Game
+  prize: "/prize",
+  scoreboard: "/scoreboard",
+  iab: "/iab",
+  // Analysis
+  compare: "/compare",
+  misconceptions: "/misconceptions",
+  outcomes: "/outcomes",
+  studies: "/studies",
+  // Player
+  profile: "/profile",
   dashboard: "/dashboard",
+  wishonia: "/wishonia",
+  // Meta
+  about: "/about",
   demo: "/demo",
+  tools: "/tools",
+  contribute: "/contribute",
   signIn: "/auth/signin",
 } as const;
 
@@ -54,11 +65,11 @@ export interface NavItem {
 }
 
 export function getBudgetCategoryPath(name: string): string {
-  return `${ROUTES.budget}/${slugify(name)}`;
+  return `${ROUTES.domb}/${slugify(name)}`;
 }
 
 export function getPolicyPath(name: string): string {
-  return `${ROUTES.policies}/${slugify(name)}`;
+  return `${ROUTES.dcbo}/${slugify(name)}`;
 }
 
 export function getSignInPath(
@@ -102,15 +113,15 @@ export const compareLink: NavItem = {
 };
 
 export const policiesLink: NavItem = {
-  href: ROUTES.policies,
-  label: "Policies",
+  href: ROUTES.dcbo,
+  label: "dCBO — Policy Scoring",
   emoji: "📋",
   description: "Every policy ranked by whether it actually works. Most don't. You'll be unsurprised which ones.",
 };
 
 export const budgetLink: NavItem = {
-  href: ROUTES.budget,
-  label: "Optimal Budget",
+  href: ROUTES.domb,
+  label: "dOMB — Budget Optimization",
   emoji: "💰",
   description: "Your government's shopping receipt, annotated by someone who can do maths.",
 };
@@ -129,23 +140,38 @@ export const discoveriesLink: NavItem = {
   description: "Health patterns discovered by people who tracked their data. Your doctor doesn't know these yet.",
 };
 
-export const moneyLink: NavItem = {
-  href: ROUTES.money,
-  label: "How Money Should Work",
+export const dtreasuryLink: NavItem = {
+  href: ROUTES.dtreasury,
+  label: "dTreasury — The $WISH System",
   emoji: "💸",
   description: "0.5% transaction tax, UBI, and wishocratic allocation — in one currency. Your seventy-four-thousand-page tax code is not invited.",
+  matchPrefixes: [ROUTES.dtreasury],
 };
 
 export const federalReserveLink: NavItem = {
-  href: "/agencies/dfed",
-  label: "Deprecated Fed",
+  href: ROUTES.dtreasuryDfed,
+  label: "dFED — Monetary Policy",
   emoji: "🏦",
   description: "Why a transparent algorithm beats 12 people guessing about interest rates",
 };
 
+export const dirsLink: NavItem = {
+  href: ROUTES.dtreasuryDirs,
+  label: "dIRS — Transaction Tax",
+  emoji: "🏦",
+  description: "74,000 pages of tax code replaced by 6 lines of Solidity. 0.5% on every transaction. No filing. No audits. No accountants.",
+};
+
+export const dssaLink: NavItem = {
+  href: ROUTES.dtreasuryDssa,
+  label: "dSSA — Universal Basic Income",
+  emoji: "🍞",
+  description: "80+ welfare programs replaced by one for-loop. Every verified citizen gets an equal share. No means testing. No case workers.",
+};
+
 export const departmentOfWarLink: NavItem = {
-  href: "/agencies/ddod",
-  label: "Deprecated DoD",
+  href: ROUTES.ddod,
+  label: "dDoD — Defense",
   emoji: "💀",
   description: "We don't have one. War is a negative-sum game and the spreadsheet agrees.",
 };
@@ -160,9 +186,9 @@ export const referendumLink: NavItem = {
 
 export const agenciesLink: NavItem = {
   href: ROUTES.agencies,
-  label: "Deprecated Agencies",
-  emoji: "🏚️",
-  description: "Government agencies replaced by smart contract functions — the code that makes them obsolete",
+  label: "Wishonia's Government",
+  emoji: "🏛️",
+  description: "Ten agencies running a civilisation. No bureaucracy, no corruption, no seventy-four-thousand-page tax code. Just code.",
   matchPrefixes: [ROUTES.agencies],
 };
 
@@ -175,7 +201,7 @@ export const exploreLinks: NavItem[] = [
   budgetLink,
   misconceptionsLink,
   discoveriesLink,
-  moneyLink,
+  dtreasuryLink,
   agenciesLink,
   departmentOfWarLink,
 ];
@@ -223,10 +249,11 @@ export const appLinks: NavItem[] = [
 ];
 
 export const transparencyLink: NavItem = {
-  href: ROUTES.transparency,
-  label: "Transparency",
+  href: ROUTES.dgao,
+  label: "dGAO — Transparency & Audit",
   emoji: "🔍",
   description: "Every attestation, every fund distribution — on IPFS, impossible to quietly delete. Unlike your government's version.",
+  matchPrefixes: [ROUTES.dgao],
 };
 
 export const toolsLink: NavItem = {
@@ -299,13 +326,10 @@ export const demoLink: NavItem = {
   matchPrefixes: [ROUTES.demo],
 };
 
-export const treasuryLink: NavItem = {
-  href: ROUTES.treasury,
-  label: "Treasury",
-  emoji: "🪙",
-  description: "The $WISH token — 0.5% transaction tax replaces your entire tax code. UBI and wishocratic allocation included.",
-  matchPrefixes: [ROUTES.treasury],
-};
+/** @deprecated Use dtreasuryLink instead */
+export const treasuryLink = dtreasuryLink;
+/** @deprecated Use dtreasuryLink instead */
+export const moneyLink = dtreasuryLink;
 
 export const contributeLink: NavItem = {
   href: ROUTES.contribute,
@@ -332,10 +356,10 @@ export interface NavSection {
 }
 
 export const navSections: NavSection[] = [
-  { id: "participate", label: "Participate", items: [wishocracyLink, alignmentLink, referendumLink, demoLink] },
-  { id: "explore", label: "Explore", items: [studiesLink, compareLink, policiesLink, budgetLink, governmentsLink, misconceptionsLink, discoveriesLink] },
-  { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink, moneyLink, treasuryLink] },
-  { id: "system", label: "System", items: [politicianLeaderboardLink, transparencyLink, agenciesLink, departmentOfWarLink, aboutLink, contributeLink] },
+  { id: "play", label: "Play", items: [wishocracyLink, alignmentLink, referendumLink, prizeLink, demoLink] },
+  { id: "wishonia-gov", label: "Wishonia's Government", items: [dtreasuryLink, policiesLink, budgetLink, transparencyLink, discoveriesLink, agenciesLink, departmentOfWarLink] },
+  { id: "earth", label: "Earth", items: [governmentsLink, politicianLeaderboardLink, compareLink, misconceptionsLink, studiesLink] },
+  { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink] },
 ];
 
 /** Footer-only internal links */

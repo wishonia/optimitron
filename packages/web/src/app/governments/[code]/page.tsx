@@ -7,11 +7,13 @@ import {
   getGovernmentsByHALE,
   getMilitaryToHealthRatio,
   getAgencyPerformanceByCountry,
+  ALL_HISTORICAL_TRENDS,
 } from "@optimitron/data";
 import { GameCTA } from "@/components/ui/game-cta";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { HumanityScoreboard } from "@/components/shared/HumanityScoreboard";
 import { AgencyGradeChart } from "@/components/shared/AgencyGradeChart";
+import { HistoricalTrendChart } from "@/components/shared/HistoricalTrendChart";
 import {
   GLOBAL_HALE_CURRENT,
   TREATY_PROJECTED_HALE_YEAR_15,
@@ -419,6 +421,29 @@ export default async function GovernmentDetailPage({ params }: PageProps) {
           </section>
         );
       })()}
+
+      {/* Historical Trends — Before vs After Agency Creation */}
+      {gov.code === "US" && ALL_HISTORICAL_TRENDS.length > 0 && (
+        <section className="mb-12">
+          <h2 className="text-xl sm:text-2xl font-black uppercase text-foreground mb-2">
+            Before vs After: Did the Agency Change the Trend?
+          </h2>
+          <p className="text-base font-bold text-muted-foreground mb-6">
+            The red dashed line shows when each agency was created. If the trend
+            was already improving before the agency existed and didn&apos;t
+            accelerate after — the agency didn&apos;t help.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {ALL_HISTORICAL_TRENDS.map((trend) => (
+              <HistoricalTrendChart
+                key={trend.agencyId}
+                trend={trend}
+                seriesIndices={[0]}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="border-4 border-primary bg-brutal-cyan p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">

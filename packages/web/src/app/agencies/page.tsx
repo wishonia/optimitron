@@ -1,13 +1,126 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { BrutalCard } from "@/components/ui/brutal-card";
-import { DEPRECATED_AGENCIES } from "@/lib/deprecated-agencies-data";
+import { ArcadeTag } from "@/components/ui/arcade-tag";
+import { GameCTA } from "@/components/ui/game-cta";
+import { agenciesLink, ROUTES } from "@/lib/routes";
+import { getRouteMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Deprecated Agencies | Optimitron",
-  description:
-    "Government agencies replaced by smart contract functions. The bloated status quo vs the code that makes it obsolete.",
-};
+export const metadata = getRouteMetadata(agenciesLink);
+
+interface AgencyCard {
+  emoji: string;
+  name: string;
+  description: string;
+  href: string;
+  earthEquivalent: string;
+  color: "pink" | "cyan" | "yellow" | "background";
+}
+
+const departments: { label: string; agencies: AgencyCard[] }[] = [
+  {
+    label: "Democracy",
+    agencies: [
+      {
+        emoji: "🏛️",
+        name: "dCongress",
+        description:
+          "Direct democracy via pairwise comparisons and referendums. Budget allocation in two minutes. Legislation by direct vote.",
+        href: ROUTES.dcongress,
+        earthEquivalent: "Congress",
+        color: "yellow",
+      },
+    ],
+  },
+  {
+    label: "Finance",
+    agencies: [
+      {
+        emoji: "💸",
+        name: "dTreasury",
+        description:
+          "0.5% transaction tax, UBI, and wishocratic allocation — in one currency. The seventy-four-thousand-page tax code is not invited.",
+        href: ROUTES.dtreasury,
+        earthEquivalent: "Treasury + IRS + Federal Reserve + Social Security",
+        color: "pink",
+      },
+      {
+        emoji: "🤝",
+        name: "dFEC",
+        description:
+          "Smart contracts fund politicians by alignment score. No PACs. No lobbying. No bribery with extra steps.",
+        href: ROUTES.dfec,
+        earthEquivalent: "Federal Election Commission",
+        color: "cyan",
+      },
+    ],
+  },
+  {
+    label: "Analysis",
+    agencies: [
+      {
+        emoji: "📋",
+        name: "dCBO",
+        description:
+          "Every policy ranked by whether it actually works. Scores in 200 milliseconds. Shows its work.",
+        href: ROUTES.dcbo,
+        earthEquivalent: "Congressional Budget Office",
+        color: "cyan",
+      },
+      {
+        emoji: "💰",
+        name: "dOMB",
+        description:
+          "Optimal budget allocation using diminishing-returns modelling. The eigenvector asks everyone.",
+        href: ROUTES.domb,
+        earthEquivalent: "Office of Management and Budget",
+        color: "yellow",
+      },
+      {
+        emoji: "🔍",
+        name: "dGAO",
+        description:
+          "Every attestation on IPFS. Every fund distribution verifiable. The audit is the ledger.",
+        href: ROUTES.dgao,
+        earthEquivalent: "Government Accountability Office",
+        color: "background",
+      },
+    ],
+  },
+  {
+    label: "Services",
+    agencies: [
+      {
+        emoji: "🧬",
+        name: "dIH",
+        description:
+          "Pragmatic trials at 2% of the cost. 44x the speed. Real patients, real conditions, real data.",
+        href: ROUTES.dih,
+        earthEquivalent: "National Institutes of Health + FDA",
+        color: "pink",
+      },
+      {
+        emoji: "💀",
+        name: "dDoD",
+        description:
+          "We don't have one. War is a negative-sum game and the spreadsheet agrees.",
+        href: ROUTES.ddod,
+        earthEquivalent: "Department of Defense",
+        color: "background",
+      },
+      {
+        emoji: "🌐",
+        name: "dCensus",
+        description:
+          "citizenCount() returns in fifty milliseconds. No fourteen-billion-dollar survey required.",
+        href: ROUTES.dcensus,
+        earthEquivalent: "Census Bureau",
+        color: "cyan",
+      },
+    ],
+  },
+];
+
+const totalAgencies = departments.reduce((sum, d) => sum + d.agencies.length, 0);
 
 export default function AgenciesIndexPage() {
   return (
@@ -15,105 +128,79 @@ export default function AgenciesIndexPage() {
       {/* Hero */}
       <section className="mb-16">
         <div className="max-w-3xl space-y-5">
-          <div className="flex items-center gap-4">
-            <span className="inline-block border-4 border-brutal-red bg-brutal-red px-4 py-1 text-sm font-black uppercase tracking-[0.15em] text-foreground -rotate-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              Deprecated
-            </span>
-          </div>
+          <ArcadeTag>{totalAgencies} Agencies</ArcadeTag>
           <h1 className="text-3xl font-black uppercase tracking-tight text-foreground md:text-5xl">
-            Agencies We&apos;re Deprecating
+            Wishonia&apos;s Government
           </h1>
           <p className="text-lg font-bold leading-relaxed text-foreground">
-            Each of these agencies exists because your species didn&apos;t have
-            smart contracts in the 20th century. Now you do. Here&apos;s the
-            code that replaces them.
+            On my planet, governance takes about four minutes a week. Nine
+            agencies run everything. No bureaucracy, no lobbying, no
+            seventy-four-thousand-page tax code. Just code that does what it
+            says.
           </p>
           <p className="text-muted-foreground font-bold leading-relaxed">
-            On my planet, we deprecated our last government agency in year
-            twelve. You lot seem to keep adding them. There are currently 440
-            federal agencies. Most of them exist to manage the failures of other
-            agencies.
+            Your species has 440 federal agencies. Most of them exist to manage
+            the failures of other agencies. Here is what a working government
+            looks like.
           </p>
         </div>
       </section>
 
-      {/* Total Savings Banner */}
-      <section className="mb-16">
-        <div className="border-4 border-primary bg-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:p-10">
-          <div className="grid grid-cols-1 gap-6 text-center sm:grid-cols-3">
-            <div>
-              <div className="text-4xl font-black text-brutal-pink sm:text-5xl">
-                $1.37T
-              </div>
-              <div className="mt-2 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground">
-                Saved Per Year
-              </div>
-            </div>
-            <div>
-              <div className="text-4xl font-black text-brutal-cyan sm:text-5xl">
-                $4,150
-              </div>
-              <div className="mt-2 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground">
-                Per Citizen Per Year
-              </div>
-            </div>
-            <div>
-              <div className="text-4xl font-black text-brutal-yellow sm:text-5xl">
-                9
-              </div>
-              <div className="mt-2 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground">
-                Functions Replace Them All
-              </div>
-            </div>
+      {/* Departments */}
+      {departments.map((dept) => (
+        <section key={dept.label} className="mb-12">
+          <h2 className="text-xl font-black uppercase tracking-tight text-foreground mb-6">
+            {dept.label}
+          </h2>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {dept.agencies.map((agency) => (
+              <Link key={agency.name} href={agency.href} className="block">
+                <BrutalCard
+                  bgColor={agency.color}
+                  hover
+                  padding="lg"
+                  className="h-full"
+                >
+                  <div className="flex items-start justify-between">
+                    <span className="text-3xl">{agency.emoji}</span>
+                    <span className="inline-block border-2 border-primary bg-background px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.1em] text-foreground">
+                      Active
+                    </span>
+                  </div>
+                  <h3 className="mt-2 text-xl font-black uppercase text-foreground">
+                    {agency.name}
+                  </h3>
+                  <p className="mt-2 text-sm font-bold leading-relaxed text-foreground">
+                    {agency.description}
+                  </p>
+                  <p className="mt-3 text-xs font-black uppercase text-muted-foreground">
+                    On Earth: {agency.earthEquivalent}
+                  </p>
+                </BrutalCard>
+              </Link>
+            ))}
           </div>
-          <p className="mt-6 text-center text-sm font-bold italic leading-relaxed text-muted-foreground">
-            &ldquo;You spend $1.37 trillion a year on agencies that could be
-            replaced by nine functions and a blockchain. That&apos;s $4,150 per
-            citizen per year in pure bureaucratic overhead. On my planet, we call
-            that a memory leak.&rdquo;
-          </p>
-          <p className="mt-2 text-center text-xs font-black uppercase tracking-[0.1em] text-brutal-pink">
-            — Wishonia
-          </p>
+        </section>
+      ))}
+
+      {/* CTA */}
+      <section className="border-4 border-primary bg-foreground p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <h2 className="mb-3 text-2xl font-black uppercase text-background">
+          See How Earth Does It
+        </h2>
+        <p className="mx-auto mb-6 max-w-2xl text-lg font-bold text-muted-foreground">
+          Every Earth government graded on spending vs outcomes. Spoiler: most
+          agencies get an F.
+        </p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+          <GameCTA href="/governments" variant="primary" size="lg">
+            Government Report Cards
+          </GameCTA>
+          <GameCTA href={ROUTES.wishocracy} variant="yellow" size="lg">
+            Play the Game
+          </GameCTA>
         </div>
       </section>
-
-      {/* Agency Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {DEPRECATED_AGENCIES.map((agency) => (
-          <Link key={agency.id} href={agency.href} className="block">
-            <BrutalCard
-              bgColor={agency.cardColor === "green" ? "green" : agency.cardColor}
-              hover
-              padding="lg"
-              className="h-full"
-            >
-              <div className="flex items-start justify-between">
-                <span className="text-xs font-black uppercase tracking-[0.15em] text-muted-foreground">
-                  {agency.dName}
-                </span>
-                <span className="inline-block border-2 border-brutal-red bg-brutal-red px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.1em] text-foreground -rotate-2">
-                  Deprecated
-                </span>
-              </div>
-              <h2 className="mt-2 text-xl font-black uppercase text-foreground">
-                {agency.agencyName}
-              </h2>
-              <p className="mt-3 text-sm font-bold italic leading-relaxed text-muted-foreground">
-                &ldquo;{agency.tagline}&rdquo;
-              </p>
-              <div className="mt-4 flex items-center justify-between">
-                <span className="text-lg font-black text-foreground">
-                  {agency.annualSavings}
-                </span>
-                <span className="text-xs font-black uppercase text-muted-foreground">
-                  saved/yr
-                </span>
-              </div>
-            </BrutalCard>
-          </Link>
-        ))}
-      </div>
     </div>
   );
 }

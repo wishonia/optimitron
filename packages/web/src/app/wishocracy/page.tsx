@@ -1,16 +1,5 @@
-"use client"
+import { redirect } from "next/navigation";
 
-import dynamic from "next/dynamic"
-
-const WishocracySection = dynamic(
-  () => import("@/components/wishocracy/wishocracy-section"),
-  { ssr: false }
-)
-
-export default function VotePage() {
-  return (
-    <main>
-      <WishocracySection />
-    </main>
-  )
+export default function Page() {
+  redirect("/agencies/dcongress/wishocracy");
 }
