@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface PoliticianScore {
@@ -141,11 +142,19 @@ export function PoliticianScorecardTable({
                 <td className="p-2">
                   <Link
                     href={`/governments/${countryCode}/politicians/${s.bioguideId}`}
-                    className="font-black text-foreground text-sm hover:text-brutal-pink transition-colors"
+                    className="flex items-center gap-2 hover:text-brutal-pink transition-colors"
                   >
-                    {s.name}
+                    <Image
+                      src={`https://bioguide.congress.gov/bioguide/photo/${s.bioguideId[0]?.toUpperCase() ?? "X"}/${s.bioguideId}.jpg`}
+                      alt={s.name}
+                      width={28}
+                      height={34}
+                      className="w-7 h-[34px] object-cover border-2 border-primary shrink-0"
+                      unoptimized
+                    />
+                    <span className="font-black text-foreground text-sm">{s.name}</span>
+                    <span className="text-xs font-bold text-muted-foreground">{s.state}</span>
                   </Link>
-                  <span className="text-xs font-bold text-muted-foreground ml-2">{s.state}</span>
                 </td>
                 <td className="p-2 text-xs font-bold text-muted-foreground">{s.party}</td>
                 <td className={`p-2 text-right text-sm font-black ${
