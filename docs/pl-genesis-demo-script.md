@@ -121,7 +121,7 @@ dFDA · IABs · OPG · OBG · Storacha · Hypercerts · $WISH    $15.7M (Act II 
 - Personal upside ($15.7M) is the LAST thing before Act III — it's the gut punch that sends us into the close
 
 **Act III — The Endgame (~1.5 min)**
-Score approaching max. Architecture (credibility) → 10.7B lives (emotional scale) → Close → Title → Easter egg.
+Score approaching max. Architecture (credibility) → 10.7B lives (emotional scale) → Close → Title 
 
 **Sound design:**
 - Act I: Minor-key chiptune. Ticking clock undertone. Death ticker has a faint heartbeat pulse.
@@ -1166,17 +1166,6 @@ Music resolves to a single held chord. "PLAY NOW" pulses. Silence.
 
 ---
 
-### Post-Credits Easter Egg (5s)
-
-*Segment*: `script-easter-egg` · *Component*: `easter-egg` · *BG*: foreground
-
-**[2 seconds of black. UI chrome disappears. Total darkness. Then just the narrator box fades in:]**
-
-> "Oh, and if you're wondering — yes, this is the actual game. You're playing it right now. The demo was level one."
-
-*Visual*: Narrator text box on pure black. Wishonia's portrait: faintest smirk — one pixel of mouth moved upward. Cursor blinks. Nothing else. Hold 3 seconds, then fade.
-
----
 
 ## Sections Available in Other Playlists
 
@@ -1225,6 +1214,5 @@ Each act has a distinct transition style:
 - **Narrative ordering**: Never introduce a value before its mechanism. Prize pool → VOTE point value.
 - **One concept per slide**: If a slide explains two things, split it.
 - **Act II climax**: $15.7M personal upside is the LAST slide before Act III — it's the gut punch.
-- **Post-credits**: Easter Egg plays after 2s black gap
 - TTS narration via `packages/web/src/lib/demo-tts.ts`
 - Politician leaderboard uses real data — the numbers are the joke
