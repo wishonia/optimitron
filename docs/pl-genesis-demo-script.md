@@ -579,17 +579,18 @@ New dialog slides in from right:
 
 > "Step three: get all your friends to play. Send them your link. When they play through your link, you earn one VOTE point. They get their own link and do the same. The target is 4 billion players. Sounds ambitious? 4 billion people already drive to a polling station, wait in line, and vote for free — in elections where their individual vote is worth 1 in 30 million and the winner ignores them anyway. You are asking those same people to click some buttons on a website to get 10× richer. The participation barrier is not the hard part. And every new player who deposits grows the prize pool — which makes everyone more incentivized to make sure humanity actually wins."
 
-*Visual*: Split into two halves.
+*Visual*: Pixel art — split into two halves.
 
 **LEFT — The Concrete Action:**
-Pixel-art phone screen. Player's message: "Play this → optimitron.com/r/player1". Friends "Sarah" and "Mike" reply: "🎮 I'm playing! My link: .../r/sarah" and "🎮 I'm playing! My link: .../r/mike." Notifications: "+1 VOTE POINT" "+1 VOTE POINT." Three platform icons below (text, WhatsApp, Twitter).
+Pixel-art phone screen showing a text message thread. Player's message: "Play this → optimitron.com/r/player1". Friends "Sarah" and "Mike" reply: "🎮 I'm playing! My link: .../r/sarah" and "🎮 I'm playing! My link: .../r/mike." Notifications pop: "+1 VOTE POINT" "+1 VOTE POINT." Three platform icons below (text, WhatsApp, Twitter). A prize pool counter ticks up as each friend joins.
 
-**RIGHT — The Exponential Effect:**
-Doubling tree grows from the phone. 1→2→4→8→16. Accelerates. "Round 5: 32... Round 10: 1,024... Round 20: 1,048,576..." A horizontal threshold line labeled "4 BILLION — people who already vote for free" flashes when the tree hits it. Below the threshold: a comparison box:
+**RIGHT — The Comparison That Kills the Objection:**
+A Sierra side-by-side comparison — the kind you'd see when comparing two items in your inventory:
 
 ```
 ┌──────────────────────────┐  ┌──────────────────────────┐
-│  REGULAR VOTING          │  │  PLAYING THIS GAME       │
+│  🗳 REGULAR VOTING        │  │  🎮 PLAYING THIS GAME    │
+│                          │  │                          │
 │  Drive to polling station│  │  Click buttons on website│
 │  Wait in line            │  │  30 seconds              │
 │  1 in 30M chance of      │  │  Each point worth $194K  │
@@ -597,10 +598,12 @@ Doubling tree grows from the phone. 1→2→4→8→16. Accelerates. "Round 5: 3
 │  Winner ignores you      │  │  Winner = you            │
 │  Cost: free              │  │  Cost: free              │
 │  Reward: nothing         │  │  Reward: $15.7M          │
+│                          │  │                          │
+│  People who do this: 4B  │  │  People needed: 4B       │
 └──────────────────────────┘  └──────────────────────────┘
 ```
 
-Prize pool counter grows in lockstep: "$10K... $1M... $100M... $10B..." Text: "The more people play, the bigger the prize pool, the more everyone has at stake."
+The left card is greyed out and dull. The right card glows green. The bottom line — "People who do this: 4B" vs "People needed: 4B" — is the punchline. The target audience already exists. They already proved they'll participate in collective action for nothing. You're offering them something better.
 
 Chain-link drops into inventory slot 4.
 
