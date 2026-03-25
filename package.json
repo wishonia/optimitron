@@ -2,7 +2,7 @@
   "name": "optimitron",
   "version": "0.1.0",
   "private": true,
-  "description": "AI governance platform: causal inference, preference aggregation, health tracking, optimal policy & budget generation",
+  "description": "The Earth Optimization Game: causal inference, preference aggregation, health tracking, optimal policy & budget generation",
   "repository": {
     "type": "git",
     "url": "https://github.com/mikepsinn/optimitron.git"

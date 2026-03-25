@@ -99,23 +99,28 @@ Dark pixel art scenes. EGA 16-color palette. Ominous chiptune. Score stays at 0.
 **GAME OVER / RESTORE (slides 9–10)**
 Moronia = death screen. Wishonia = restore from alternate save. EGA→VGA palette shift. Quest meters appear.
 
-**Act II — The Quest (slides 11–25, ~150s)**
-VGA palette. Upbeat chiptune. Score climbs. Inventory fills. Narrative arc:
+**Act II — The Quest (~7 min)**
+VGA palette. Upbeat chiptune. Score climbs. Inventory fills. Six sections:
 
 ```
-THE SOLUTION     THE GAME           THE MONEY              THE ACCOUNTABILITY  THE CLIMAX
-Fix              Allocate           Prize Investment (17%)  Leaderboard         $15.7M
-→ Acceleration   → Vote             → Prize Mechanism       → Changed Metric    (Act II peak)
-→ Plur.Ignorance → $0.06 asymmetry  → $194K/point
-→ Scoreboard     → Get Friends      → Can't Lose
+THE SOLUTION     THE GAME           THE MONEY              THE ACCOUNTABILITY
+Fix              Allocate           Prize Investment (17%)  Leaderboard
+→ Acceleration   → Vote             → Prize Mechanism       → Changed Metric
+→ Compounding    → $0.06 asymmetry  → $194K/point
+→ Plur.Ignorance → Get Friends      → Can't Lose
+→ Scoreboard
+
+THE ARMORY                                                  THE CLIMAX
+dFDA · IABs · OPG · OBG · Storacha · Hypercerts · $WISH    $15.7M (Act II peak)
 ```
 
 **Key rules:**
 - Never introduce a *value* before the *mechanism that creates it* (Prize pool → VOTE point value)
 - One concept per slide — if a slide explains two things, split it
+- The Armory shows every piece of tech built for the hackathon — judges need to see these
 - Personal upside ($15.7M) is the LAST thing before Act III — it's the gut punch that sends us into the close
 
-**Act III — The Endgame (slides 26–29, ~35s)**
+**Act III — The Endgame (~1.5 min)**
 Score approaching max. Architecture (credibility) → 10.7B lives (emotional scale) → Close → Title → Easter egg.
 
 **Sound design:**
@@ -807,7 +812,212 @@ Single devastating line in narrator box. Maximum whitespace. Typewriter slower t
 
 ---
 
-### Part 5: The Climax
+### Part 5: The Armory
+
+> *"Those are the quest objectives and the accountability system. Now here is every weapon you have to win."*
+
+### The Decentralized FDA (12s)
+
+*Segment*: `script-armory-dfda` · *Component*: `dfda` · *BG*: cyan
+
+> "Your FDA makes treatments wait 8.2 years after they have already been proven safe. Just sitting there. Being safe. While 102 million people died waiting. The decentralized FDA runs pragmatic trials at $929 per patient instead of $41,000. Same patients. Real-world conditions instead of artificial ones. 44 times cheaper. 12.3 times more trial capacity. The drugs that did pass the FDA's review? Vioxx killed 55,000. OxyContin killed 500,000. Total executives jailed: zero. We can do better. We are doing better."
+
+*Visual*: Pixel art — Sierra side-by-side comparison. Two pixel-art hospitals:
+
+```
+┌────────────────────────────┐  ┌────────────────────────────┐
+│  🏥 TRADITIONAL FDA         │  │  🧪 DECENTRALIZED FDA       │
+│                            │  │                            │
+│  Cost: $41,000 / patient   │  │  Cost: $929 / patient      │
+│  Time: 8.2 years after     │  │  Time: real-time           │
+│         proven safe        │  │                            │
+│  Capacity: 1.9M slots/yr   │  │  Capacity: 23.4M slots/yr  │
+│  Diseases cured: 15/yr     │  │  Diseases cured: all of    │
+│                            │  │  them in 36 years          │
+│  Deaths from delay:        │  │  Deaths from delay:        │
+│  102 million               │  │  zero                      │
+│  Executives jailed: 0      │  │  Code is auditable.        │
+└────────────────────────────┘  └────────────────────────────┘
+```
+
+Left hospital is crumbling, pixel bureaucrats visible through windows stamping papers. Right hospital is gleaming, pixel patients walking in one door and walking out healthy from another. Storacha logo visible on the data storage rack inside.
+
+*Sierra verb*: `> LOOK AT queue` → "8.2 years. The drugs are sitting on a shelf. They work. The FDA knows they work. The patients are dying in the waiting room. This is not caution. It is manslaughter by committee."
+`> USE decentralized FDA` → "Same patients, real conditions, real data, no eight-year queue. The technology exists. The only thing missing was the funding. That is what the 1% Treaty provides."
+
+**Score**: `4,200,000,000`
+
+---
+
+### Incentive Alignment Bonds (12s)
+
+*Segment*: `script-armory-iab` · *Component*: `iab` · *BG*: pink
+
+> "Incentive Alignment Bonds. Sell one billion dollars of these. Use the proceeds to fund the 1% Treaty campaign. When the treaty passes, it generates $27 billion per year. That revenue splits: 80% to clinical trials — the actual public good. 10% back to bond holders — your return on investment. 10% to a SuperPAC that funds politicians algorithmically based on their Alignment Score. Not based on who they had dinner with."
+
+*Visual*: Pixel art — Sierra merchant/crafting screen. An NPC "IAB TRADER" behind a counter. A flow diagram rendered as a crafting recipe:
+
+```
+┌─────────────────────────────────────────────────────┐
+│  ⚗️ INCENTIVE ALIGNMENT BONDS — CRAFTING RECIPE      │
+│                                                     │
+│  INPUT:                                             │
+│  ┌──────────────────┐                               │
+│  │ BONDS: $1 BILLION │                              │
+│  └────────┬─────────┘                               │
+│           ▼                                         │
+│  ┌──────────────────┐                               │
+│  │ TREATY PASSES    │                               │
+│  │ → $27B/yr inflow │                               │
+│  └────────┬─────────┘                               │
+│           ▼                                         │
+│  OUTPUT (annual):                                   │
+│  ┌──────────┐ ┌──────────┐ ┌──────────────────┐    │
+│  │ 80%      │ │ 10%      │ │ 10%              │    │
+│  │ TRIALS   │ │ BOND     │ │ ALIGNMENT        │    │
+│  │ $21.6B   │ │ HOLDERS  │ │ SUPERPAC         │    │
+│  │          │ │ $2.7B    │ │ $2.7B            │    │
+│  └──────────┘ └──────────┘ └──────────────────┘    │
+│                                                     │
+│  Campaign cost: $1B. Annual return: $27B. Forever.  │
+└─────────────────────────────────────────────────────┘
+```
+
+The three output slots glow as they fill. Solidity contract icon visible on the bond. Hypercert badge on the trials output.
+
+*Sierra verb*: `> BUY bonds` → "The campaign costs one billion. The treaty generates twenty-seven billion per year. Indefinitely. Your financial advisor would call this a good deal. If your financial advisor understood anything other than index funds."
+`> LOOK AT superpac` → "Politicians funded by algorithm, not by dinner. The algorithm only has one input: did you vote to help people or did you vote to kill them? Simple."
+
+**Score**: `4,500,000,000`
+
+---
+
+### The Optimal Policy Generator (10s)
+
+*Segment*: `script-armory-opg` · *Component*: `opg` · *BG*: yellow
+
+> "For the politicians who actually want to align: the Optimal Policy Generator. Feed it time-series data from hundreds of jurisdictions. It uses domain-agnostic causal inference — Bradford Hill criteria, temporal alignment, predictor impact scores — to answer one question: which policies actually increased median income and healthy life years? Not which policies were popular. Not which policies had good branding. Which ones worked. The data exists. Nobody bothered to run it through a causal inference engine until now."
+
+*Visual*: Pixel art — King's Quest VI puzzle room / Wishonia's workshop. A machine labeled "OPTIMAL POLICY GENERATOR" with:
+- Input slot: "INSERT JURISDICTION" — a pixel scroll labeled "UNITED STATES" feeds in
+- Processing display: Bradford Hill scoring bars animate, temporal alignment charts cross-correlate
+- Output slot: A pixel scroll emerges labeled "POLICY RECOMMENDATIONS — RANKED BY CAUSAL IMPACT"
+
+Below the machine, a before/after: "PORTUGAL: Decriminalized all drugs, 2001. Overdose deaths: -80%." vs "USA: War on Drugs, $47B/yr. Overdose deaths: +1,700%." The machine found this. Your politicians ignored it.
+
+*Sierra verb*: `> USE policy generator` → "It analyses what actually worked. Across every jurisdiction with data. No ideology. No party. Just outcomes. A novel concept for your species."
+`> INSERT united states` → "Generating recommendations. Warning: results may conflict with current policy on approximately everything."
+
+**Score**: `4,700,000,000`
+
+---
+
+### The Optimal Budget Generator (10s)
+
+*Segment*: `script-armory-obg` · *Component*: `obg` · *BG*: cyan
+
+> "The Optimal Budget Generator does the same thing for spending. Every budget category. Every jurisdiction. How much should you spend on education to maximise outcomes? The answer is not 'more.' It is a specific number derived from diminishing returns analysis across comparable jurisdictions. Singapore spends a quarter of what America spends on healthcare and their people live six years longer. The optimal budget is not the biggest budget. It is the smartest one."
+
+*Visual*: Pixel art — a Sierra control panel with budget dials. Each dial is a budget category (HEALTH, EDUCATION, DEFENSE, INFRASTRUCTURE). The machine auto-adjusts the dials to optimal positions based on outcome data. A before/after comparison shows:
+
+```
+┌─────────────────────────┐  ┌─────────────────────────┐
+│  🇺🇸 USA (CURRENT)       │  │  🇺🇸 USA (OPTIMIZED)     │
+│                         │  │                         │
+│  Healthcare: $4.5T      │  │  Healthcare: $1.1T      │
+│  Outcomes: ranked 37th  │  │  Outcomes: ranked 1st   │
+│                         │  │                         │
+│  Defense: $886B         │  │  Defense: $200B         │
+│  Wars since 1945: 13    │  │  Wars needed: 0         │
+│                         │  │                         │
+│  Education: $800B       │  │  Education: $600B       │
+│  Test scores: declining │  │  Test scores: +40%      │
+└─────────────────────────┘  └─────────────────────────┘
+```
+
+The optimized column uses less money and gets better outcomes on every line. The difference is highlighted in green.
+
+*Sierra verb*: `> OPTIMIZE budget` → "Less money, better outcomes. On every single line item. Your species has been doing this backwards for approximately a century."
+`> COMPARE singapore` → "A quarter of the spending. Six more years of life. It is like watching someone pay four times more for a worse sandwich and then insist sandwiches are impossible."
+
+**Score**: `5,000,000,000`
+
+---
+
+### Storacha: Immutable Evidence (8s)
+
+*Segment*: `script-armory-storacha` · *Component*: `storacha` · *BG*: background
+
+> "Every data point, every policy outcome, every budget analysis is stored on Storacha — content-addressed, immutable, permanent. No government can delete it. No lobbyist can edit it. No administration can classify it. The data is public because the data is the point. If your government could delete the evidence, they would. They cannot. It is on IPFS."
+
+*Visual*: Pixel art — a Sierra vault/archive room. Pixel-art filing cabinets, but instead of drawers they have glowing IPFS content-addressed blocks. Each block has a CID hash visible. A pixel government official tries to reach for a block — a force field repels them. A "CONTENT-ADDRESSED" badge pulses. Storacha and IPFS/Filecoin logos visible. A pixel document labeled "FDA DELAY: 102M DEATHS" sits in a block — immutable, permanent, unfalsifiable.
+
+*Sierra verb*: `> DELETE evidence` → "ACCESS DENIED. Content-addressed storage cannot be altered. That is the point. Your government's legal team has been notified and is reportedly quite upset."
+`> LOOK AT vault` → "Every outcome. Every budget. Every vote. Every death. Permanent. Public. Immutable. On my planet, this is called a filing cabinet. On yours, it is called radical transparency."
+
+**Score**: `5,200,000,000`
+
+---
+
+### Hypercerts: Verifiable Impact (8s)
+
+*Segment*: `script-armory-hypercerts` · *Component*: `hypercerts` · *BG*: pink
+
+> "Every claim of impact gets a Hypercert — a verifiable, on-chain attestation that says exactly what was done, by whom, with what result. No more 'we spent the money on healthcare' with no proof it worked. Every clinical trial funded by the treaty gets a Hypercert. Every life saved is attested. Every dollar tracked from deposit to outcome. If a charity tells you they saved ten thousand lives, you ask for the Hypercert. If they do not have one, they did not save ten thousand lives."
+
+*Visual*: Pixel art — Sierra achievement/badge screen. A grid of Hypercert badges, each one a pixel-art certificate with: trial name, patients treated, outcome measured, CID hash linking to Storacha data. One badge animates being minted: "TRIAL #4,847: Malaria vaccine pragmatic trial. 12,000 patients. 94% efficacy. Verified on-chain." A pixel stamp of approval lands on it. The badge links visually to a Storacha block from the previous slide — the data backing the claim.
+
+*Sierra verb*: `> VERIFY claim` → "Verifiable. Auditable. On-chain. The opposite of 'trust me, we spent it wisely.'"
+`> LOOK AT badge` → "This Hypercert says 12,000 people received a malaria vaccine. The clinical data is content-addressed on Storacha. The funding trail is on-chain in Solidity. Every link is auditable. Your current system's equivalent is a PDF that says 'trust us.'"
+
+**Score**: `5,400,000,000`
+
+---
+
+### The $WISH Token (10s)
+
+*Segment*: `script-armory-wish` · *Component*: `wish-token` · *BG*: yellow
+
+> "The $WISH token replaces three things your government does badly. One: taxation. A flat 0.5% transaction tax replaces your entire IRS. No 74,000-page tax code. No 83,000 employees. Revenue collection as a protocol feature. Two: welfare. Universal Basic Income distributed automatically via World ID. Everyone at the poverty line, no bureaucracy. Three: monetary policy. Algorithmic zero-percent inflation — captured productivity gains prevent the inflationary theft that destroyed 97% of your dollar. Your central bank's job, done by a smart contract, in four lines of code."
+
+*Visual*: Pixel art — Sierra "three items" comparison. Three pixel government buildings on the left, crumbling and overcrowded. Three corresponding smart contract icons on the right, clean and glowing:
+
+```
+┌─────────────────────────────────────────────────────┐
+│  💰 $WISH TOKEN — THREE REPLACEMENTS                 │
+│                                                     │
+│  ┌───────────────┐         ┌───────────────────┐    │
+│  │ 🏛 THE IRS     │   →    │ 📜 0.5% TX TAX    │    │
+│  │ 74,000 pages  │         │ 4 lines of code   │    │
+│  │ 83,000 people │         │ 0 employees       │    │
+│  └───────────────┘         └───────────────────┘    │
+│  ┌───────────────┐         ┌───────────────────┐    │
+│  │ 🏛 WELFARE     │   →    │ 📜 UBI via         │    │
+│  │ 83 programs   │         │ World ID          │    │
+│  │ 6 agencies    │         │ automatic         │    │
+│  └───────────────┘         └───────────────────┘    │
+│  ┌───────────────┐         ┌───────────────────┐    │
+│  │ 🏛 FED RESERVE │   →    │ 📜 0% INFLATION    │    │
+│  │ -97% since    │         │ algorithmic       │    │
+│  │ 1913          │         │ productivity-     │    │
+│  │               │         │ anchored          │    │
+│  └───────────────┘         └───────────────────┘    │
+│                                                     │
+│  Tax + Welfare + Money = 3 smart contracts.         │
+│  Your government uses 200,000 employees for this.   │
+└─────────────────────────────────────────────────────┘
+```
+
+Each left building crumbles as the right contract glows brighter. Solidity logo visible on all three contracts.
+
+*Sierra verb*: `> LOOK AT IRS` → "74,000 pages of tax code. 83,000 employees. All replaceable by a flat 0.5% transaction tax in four lines of Solidity. The four lines are auditable. The 74,000 pages are not."
+`> COMPARE inflation` → "Your central bank destroyed 97% of the dollar since 1913. This smart contract maintains zero percent inflation by anchoring to productivity growth. It cannot print money to fund wars because it does not have a print function."
+
+**Score**: `5,600,000,000`
+
+---
+
+### Part 6: The Climax
 
 ### Your $15.7 Million (10s)
 
@@ -941,82 +1151,15 @@ Music resolves to a single held chord. "PLAY NOW" pulses. Silence.
 
 ---
 
-## Extended Slides (5-min version)
+## Sections Available in Other Playlists
 
-Slot in after We Changed the Metric for a longer cut.
-
-### 50,300× More Cost-Effective (10s)
-
-*Segment*: `ext-cost-effectiveness` · *BG*: background
-
-> "The cost per disability-adjusted life year for this campaign is $0.00177. Bed nets — the gold standard — cost $89 per DALY. This is 50,300 times more cost-effective. Even risk-adjusted at 1% success probability, it is still 503 times more cost-effective. The maths is not ambiguous."
-
-*Visual*: Sierra shop comparison:
-
-```
-┌────────────────────────────────────────────────┐
-│  COST-EFFECTIVENESS SHOP                       │
-│                                                │
-│  ┌──────────────────┐  ┌────────────────────┐  │
-│  │ 🪰 BED NETS      │  │ 📜 1% TREATY       │  │
-│  │ $89 / DALY       │  │ $0.00177 / DALY    │  │
-│  │ ★★★★★ (gold std) │  │ ★ × 50,300         │  │
-│  └──────────────────┘  └────────────────────┘  │
-│                                                │
-│  Risk-adjusted (1% prob): still 503×.          │
-└────────────────────────────────────────────────┘
-```
-
-*Sierra verb*: `> BUY bed nets` → "Excellent choice. Now buy 50,300 of them. Or just fund one treaty campaign."
-
----
-
-### Incentive Alignment Bonds (15s)
-
-*Segment*: `ext-iab` · *BG*: cyan
-
-> "Incentive Alignment Bonds. Sell one billion dollars of these. Use the proceeds to fund the 1% Treaty campaign. Treaty inflows — $27 billion annually — split 80/10/10: clinical trials, bond holders, SuperPAC."
-
-*Visual*: Sierra merchant. "IAB TRADER" NPC. Crafting recipe: `BONDS ($1B)` + `TREATY PASSED` → `80% TRIALS ($21.6B)` + `10% RETURNS ($2.7B)` + `10% SUPERPAC ($2.7B)`.
-
-*Sierra verb*: `> BUY bonds` → "The campaign costs one billion. The treaty generates twenty-seven billion per year. Indefinitely."
-
----
-
-### The SuperPAC (10s)
-
-*Segment*: `ext-superpac` · *BG*: pink
-
-> "The SuperPAC funds politicians algorithmically — based on their Citizen Alignment Score. Politicians earn campaign funding by voting for the treaty. Not by attending donor dinners."
-
-*Visual*: Leaderboard from The Leaderboard slide, but gold coins rain to highest-ranked politicians. Lowest get nothing. Pixel gear/brain icon "SMART CONTRACT" replaces lobbyist. Crossed-out lobbyist in corner holding empty dinner invitation.
-
-*Sierra verb*: `> TALK TO lobbyist` → "The lobbyist has been replaced by a smart contract. It does not accept dinner invitations. Or bribes. Or phone calls."
-
----
-
-### Optimal Policy Tools (12s)
-
-*Segment*: `ext-policy-tools` · *BG*: yellow
-
-> "For the politicians who want to align: the Optimal Budget Generator and Optimal Policy Generator. Time-series data across hundreds of jurisdictions — which policies actually increased median income and healthy life years. Not which were popular. Which worked. All free. All open."
-
-*Visual*: KQ6 puzzle room. Three machines: "POLICY GENERATOR", "BUDGET OPTIMIZER", "OUTCOME COMPARATOR." Wishonia with wrench.
-
-*Sierra verb*: `> USE policy generator` → "It analyses what actually worked. A novel concept for your species."
-
----
-
-## Sections Cut from All Versions
-
-| Section | Why Cut | Available In |
-|---------|---------|--------------|
-| Agency report cards | YouTube series | `youtube-agency-grades` |
-| Historical waste (War on Terror, War on Drugs) | Too detailed for pitch | `full-demo` |
-| Viral doubling model (detailed) | Own video | `youtube-prize` |
-| $WISH token / UBI mechanics | Separate instrument | `youtube-treasury` |
-| FDA invisible graveyard | Too heavy for pitch | `full-demo` |
-| Government lies (Tuskegee, MK-Ultra, etc.) | Off-topic for hackathon | `youtube-government-lies` |
+| Section | Available In |
+|---------|--------------|
+| Agency report cards (every US agency graded) | `youtube-agency-grades` |
+| Historical waste (War on Terror, War on Drugs) | `full-demo` |
+| Government lies (Tuskegee, MK-Ultra, Gulf of Tonkin, WMDs) | `youtube-government-lies` |
+| 50,300× cost-effectiveness vs bed nets | `investor` |
+| Country comparisons (Singapore, Japan, body count) | `youtube-governments` |
 
 ---
 
