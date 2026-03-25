@@ -316,7 +316,7 @@ Score reappears. Inventory is empty. The quest begins.
 
 *Segment*: `script-4a-fix` · *Component*: `one-percent-shift` · *BG*: yellow
 
-> "The fix is not complicated. Redirect 1% of global military spending — $27 billion a year — to clinical trials. That is going from spending 99% on bombs to 98% on bombs. Radical, I know."
+> "The fix is not complicated. Redirect 1% of global military spending — $27 billion a year — to clinical trials. That is going from spending 99% on bombs to 98% on bombs. Radical, I know. The defence industry keeps 99% of their budget. The lobbyists keep their salaries — they just lobby for health instead of weapons. Nobody loses anything. You do not have to defeat the military-industrial complex. You just have to redirect 1% of it. They will not even notice."
 
 *Visual*: Pixel art — Wishonia's control room. Massive wall-mounted lever with display: "MILITARY: 99%" / "CURES: 1%". Animated pixel hand nudges it one notch. Display updates: "MILITARY: 98%" / "CURES: 2%." The slot is one pixel different. Comic "that's it?" pause. Pixel-art scroll "1% TREATY" drops into inventory slot 1 with "cha-ching." Quest meter for INCOME nudges slightly.
 
@@ -386,18 +386,31 @@ The loop animates continuously — pixel arrows circling, each cycle faster than
 
 ---
 
-### Pluralistic Ignorance (10s)
+### Pluralistic Ignorance (8s)
 
 *Segment*: `script-4c-ignorance` · *Component*: `pluralistic-ignorance` · *BG*: background
 
-> "The problem is not that nobody wants this. The problem is that everybody wants it but thinks nobody else will agree to it. This is called pluralistic ignorance, and it is your civilisation's most expensive bug. How expensive? Health innovation delays: $34 trillion a year. Migration restrictions: $57 trillion. Lead poisoning: $6 trillion. Underfunded science: $4 trillion. Total: $101 trillion per year in unrealised potential. That is 88% of global GDP wasted because your governments cannot coordinate."
+> "The problem is not that nobody wants this. The problem is that everybody wants it but thinks nobody else will agree to it. This is called pluralistic ignorance. The public holds $454 trillion in wealth. The defence industry holds $5 trillion. You outnumber them ninety to one. You are not outgunned. You are uncoordinated. This game fixes that."
 
-*Visual*: Pixel art — town square (King's Quest village). Thirty pixel villagers, each with a green ✓ thought bubble. But each is turned away, arms crossed, looking at the ground — can't see anyone else's bubble. One villager in center has yellow `!` quest marker (the player). Sierra info box shows the breakdown:
+*Visual*: Pixel art — town square (King's Quest village). Thirty pixel villagers, each with a green ✓ thought bubble. But each is turned away, arms crossed, looking at the ground — can't see anyone else's bubble. One villager in center has yellow `!` quest marker (the player). The thought bubbles are visible to the viewer but not to the villagers.
+
+*Sierra verb*: `> TALK TO crowd` → "They all want the same thing. They just don't know they all want the same thing. Your job is to make the demand visible."
+
+---
+
+### The $101 Trillion Bug (10s)
+
+*Segment*: `script-4c2-dysfunction-tax` · *Component*: `dysfunction-tax` · *BG*: foreground
+
+> "How expensive is that bug? Health innovation delays: $34 trillion a year. Migration restrictions: $57 trillion. Lead poisoning: $6 trillion. Underfunded science: $4 trillion. Total: $101 trillion per year in unrealised potential. That is 88% of global GDP — wasted because your governments cannot coordinate on things literally everyone agrees on."
+
+*Visual*: Pixel art — a Sierra bug report / system error screen. The screen flickers like a CRT crash:
 
 ```
 ┌──────────────────────────────────────────┐
 │  🐛 BUG REPORT: pluralistic_ignorance.exe │
 │  Status: ACTIVE                          │
+│  Severity: CRITICAL                      │
 │                                          │
 │  Health innovation delays:  $34T         │
 │  Migration restrictions:    $57T         │
@@ -406,10 +419,16 @@ The loop animates continuously — pixel arrows circling, each cycle faster than
 │  ─────────────────────────────           │
 │  TOTAL ANNUAL COST:        $101T         │
 │  (88% of global GDP)                     │
+│                                          │
+│  This bug has been open for 113 years.   │
+│  No one has assigned it.                 │
 └──────────────────────────────────────────┘
 ```
 
-*Sierra verb*: `> TALK TO crowd` → "They all want the same thing. They just don't know they all want the same thing. Your job is to make the demand visible."
+Each line item animates in one at a time, the total building as each appears. The "88% of global GDP" line flashes red. "This bug has been open for 113 years. No one has assigned it." typewriters in last — the punchline.
+
+*Sierra verb*: `> FIX bug` → "That is what the game is for."
+`> ASSIGN bug` → "You just did. You are player #4,847."
 
 ---
 
@@ -785,7 +804,7 @@ First ✅ box glows brightest — BEST outcome. "+$15.7 MILLION" overwhelms "dep
 
 *Segment*: `script-8-leaderboard` · *Component*: `government-leaderboard` · *BG*: background
 
-> "Every politician ranked by the ratio of spending they have voted for: mass murder capacity versus clinical trial funding. A single number. Public. Immutable. On-chain."
+> "Every politician ranked by the ratio of spending they have voted for: mass murder capacity versus clinical trial funding. A single number. Public. Immutable. On-chain. Your species spent $8 trillion on the War on Terror and terrorism increased seventeen-fold. You spent $90 billion a year on the War on Drugs and overdose deaths increased sixteen-fold. When a policy fails, the responsible agency gets a bigger budget — because a growing problem justifies a growing response. This leaderboard closes that loop. For the first time, failure is visible and defundable."
 
 *Visual*: Pixel art — Sierra high-score table on ornate wooden frame (inn's notice board, King's Quest). Title: "ALIGNMENT HIGH SCORES." Each row: pixel country flag, politician name, alignment score as pixel bar graph. Top rows green (high alignment). Bottom rows red (low). Table scrolls upward. Column headers: "RANK / NATION / LEADER / ALIGNMENT SCORE / MILITARY:TRIALS RATIO."
 
@@ -813,8 +832,6 @@ Single devastating line in narrator box. Maximum whitespace. Typewriter slower t
 ---
 
 ### Part 5: The Armory
-
-> *"Those are the quest objectives and the accountability system. Now here is every weapon you have to win."*
 
 ### The Decentralized FDA (12s)
 
@@ -849,13 +866,13 @@ Left hospital is crumbling, pixel bureaucrats visible through windows stamping p
 
 ---
 
-### Incentive Alignment Bonds (12s)
+### Incentive Alignment Bonds (10s)
 
 *Segment*: `script-armory-iab` · *Component*: `iab` · *BG*: pink
 
-> "Incentive Alignment Bonds. Sell one billion dollars of these. Use the proceeds to fund the 1% Treaty campaign. When the treaty passes, it generates $27 billion per year. That revenue splits: 80% to clinical trials — the actual public good. 10% back to bond holders — your return on investment. 10% to a SuperPAC that funds politicians algorithmically based on their Alignment Score. Not based on who they had dinner with."
+> "Incentive Alignment Bonds. Sell one billion dollars of these on-chain. Use the proceeds to fund the 1% Treaty campaign. When the treaty passes, it generates $27 billion per year. 80% goes to clinical trials. 10% back to bond holders. Campaign cost: one billion. Annual return: twenty-seven billion. Forever. The Solidity contract enforces the split. No human intermediary. No one can redirect the funds."
 
-*Visual*: Pixel art — Sierra merchant/crafting screen. An NPC "IAB TRADER" behind a counter. A flow diagram rendered as a crafting recipe:
+*Visual*: Pixel art — Sierra merchant/crafting screen. An NPC "IAB TRADER" behind a counter. A flow diagram:
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -863,7 +880,7 @@ Left hospital is crumbling, pixel bureaucrats visible through windows stamping p
 │                                                     │
 │  INPUT:                                             │
 │  ┌──────────────────┐                               │
-│  │ BONDS: $1 BILLION │                              │
+│  │ BONDS: $1 BILLION │ (Solidity smart contract)    │
 │  └────────┬─────────┘                               │
 │           ▼                                         │
 │  ┌──────────────────┐                               │
@@ -871,7 +888,7 @@ Left hospital is crumbling, pixel bureaucrats visible through windows stamping p
 │  │ → $27B/yr inflow │                               │
 │  └────────┬─────────┘                               │
 │           ▼                                         │
-│  OUTPUT (annual):                                   │
+│  OUTPUT (annual, enforced on-chain):                │
 │  ┌──────────┐ ┌──────────┐ ┌──────────────────┐    │
 │  │ 80%      │ │ 10%      │ │ 10%              │    │
 │  │ TRIALS   │ │ BOND     │ │ ALIGNMENT        │    │
@@ -883,42 +900,48 @@ Left hospital is crumbling, pixel bureaucrats visible through windows stamping p
 └─────────────────────────────────────────────────────┘
 ```
 
-The three output slots glow as they fill. Solidity contract icon visible on the bond. Hypercert badge on the trials output.
+Solidity contract icon visible on the bond. Hypercert badge on the trials output. The output slots glow as they fill.
 
 *Sierra verb*: `> BUY bonds` → "The campaign costs one billion. The treaty generates twenty-seven billion per year. Indefinitely. Your financial advisor would call this a good deal. If your financial advisor understood anything other than index funds."
-`> LOOK AT superpac` → "Politicians funded by algorithm, not by dinner. The algorithm only has one input: did you vote to help people or did you vote to kill them? Simple."
 
 **Score**: `4,500,000,000`
 
 ---
 
-### The Optimal Policy Generator (10s)
+### The Alignment SuperPAC (8s)
 
-*Segment*: `script-armory-opg` · *Component*: `opg` · *BG*: yellow
+*Segment*: `script-armory-superpac` · *Component*: `superpac` · *BG*: cyan
 
-> "For the politicians who actually want to align: the Optimal Policy Generator. Feed it time-series data from hundreds of jurisdictions. It uses domain-agnostic causal inference — Bradford Hill criteria, temporal alignment, predictor impact scores — to answer one question: which policies actually increased median income and healthy life years? Not which policies were popular. Not which policies had good branding. Which ones worked. The data exists. Nobody bothered to run it through a causal inference engine until now."
+> "The remaining 10% funds a SuperPAC — but not the kind your species is used to. This one funds politicians algorithmically, based on their Citizen Alignment Score. Vote for the treaty? Campaign funding flows to you automatically. Vote against it? Nothing. No dinners. No lobbyists. No phone calls. Just a smart contract that reads your voting record and pays accordingly."
 
-*Visual*: Pixel art — King's Quest VI puzzle room / Wishonia's workshop. A machine labeled "OPTIMAL POLICY GENERATOR" with:
-- Input slot: "INSERT JURISDICTION" — a pixel scroll labeled "UNITED STATES" feeds in
-- Processing display: Bradford Hill scoring bars animate, temporal alignment charts cross-correlate
-- Output slot: A pixel scroll emerges labeled "POLICY RECOMMENDATIONS — RANKED BY CAUSAL IMPACT"
+*Visual*: Pixel art — the Leaderboard from the earlier slide, but now gold coins rain from the top of the screen. They flow to the highest-ranked politicians — more coins for higher alignment scores. The lowest-ranked get nothing; their rows dim. Where a lobbyist NPC would normally stand, a pixel gear/brain icon labeled "SMART CONTRACT" has replaced them. In the corner, a crossed-out pixel lobbyist sits holding an empty dinner invitation, looking confused.
 
-Below the machine, a before/after: "PORTUGAL: Decriminalized all drugs, 2001. Overdose deaths: -80%." vs "USA: War on Drugs, $47B/yr. Overdose deaths: +1,700%." The machine found this. Your politicians ignored it.
+A Solidity logo pulses on the smart contract. The PoliticalIncentiveAllocator contract name is visible.
 
-*Sierra verb*: `> USE policy generator` → "It analyses what actually worked. Across every jurisdiction with data. No ideology. No party. Just outcomes. A novel concept for your species."
-`> INSERT united states` → "Generating recommendations. Warning: results may conflict with current policy on approximately everything."
+*Sierra verb*: `> TALK TO lobbyist` → "The lobbyist has been replaced by a smart contract. It does not accept dinner invitations. Or bribes. Or phone calls. It reads voting records and allocates funds. Automatically."
+`> LOOK AT algorithm` → "One input: did you vote to help people or did you vote to kill them? One output: campaign funding or nothing. Your species made this complicated. It is not."
 
 **Score**: `4,700,000,000`
 
 ---
 
-### The Optimal Budget Generator (10s)
+### The Optimizer: Policies and Budgets (12s)
 
-*Segment*: `script-armory-obg` · *Component*: `obg` · *BG*: cyan
+*Segment*: `script-armory-optimizer` · *Component*: `optimizer` · *BG*: yellow
 
-> "The Optimal Budget Generator does the same thing for spending. Every budget category. Every jurisdiction. How much should you spend on education to maximise outcomes? The answer is not 'more.' It is a specific number derived from diminishing returns analysis across comparable jurisdictions. Singapore spends a quarter of what America spends on healthcare and their people live six years longer. The optimal budget is not the biggest budget. It is the smartest one."
+> "For the politicians who actually want to align: the Optimal Policy Generator and Optimal Budget Generator. Feed them time-series data from hundreds of jurisdictions. Domain-agnostic causal inference — Bradford Hill criteria, temporal alignment, predictor impact scores. Two questions: which policies actually worked, and how much should you spend on each category? Not which policies were popular. Which ones increased median income and healthy life years. Portugal decriminalised all drugs in 2001. Overdose deaths dropped 80%. America spent $47 billion per year on the War on Drugs. Overdose deaths rose 1,700%. The machine found this. Your politicians ignored it. Singapore spends a quarter of what America spends on healthcare and their people live six years longer. The optimal budget is not the biggest budget. It is the smartest one."
 
-*Visual*: Pixel art — a Sierra control panel with budget dials. Each dial is a budget category (HEALTH, EDUCATION, DEFENSE, INFRASTRUCTURE). The machine auto-adjusts the dials to optimal positions based on outcome data. A before/after comparison shows:
+*Visual*: Pixel art — King's Quest VI puzzle room / Wishonia's workshop. Two machines side by side:
+
+**LEFT — POLICY GENERATOR:**
+- Input slot: "INSERT JURISDICTION" — a pixel scroll labeled "UNITED STATES" feeds in
+- Processing display: Bradford Hill scoring bars animate
+- Output: "POLICY RECOMMENDATIONS — RANKED BY CAUSAL IMPACT"
+- Below: "PORTUGAL: -80% overdose deaths" vs "USA: +1,700%"
+
+**RIGHT — BUDGET OPTIMIZER:**
+- Control panel with budget dials (HEALTH, EDUCATION, DEFENSE)
+- Machine auto-adjusts dials to optimal positions
 
 ```
 ┌─────────────────────────┐  ┌─────────────────────────┐
@@ -935,10 +958,10 @@ Below the machine, a before/after: "PORTUGAL: Decriminalized all drugs, 2001. Ov
 └─────────────────────────┘  └─────────────────────────┘
 ```
 
-The optimized column uses less money and gets better outcomes on every line. The difference is highlighted in green.
+Both machines use the same causal inference engine — the `@optimitron/optimizer` package. The optimized column uses less money and gets better outcomes on every line.
 
-*Sierra verb*: `> OPTIMIZE budget` → "Less money, better outcomes. On every single line item. Your species has been doing this backwards for approximately a century."
-`> COMPARE singapore` → "A quarter of the spending. Six more years of life. It is like watching someone pay four times more for a worse sandwich and then insist sandwiches are impossible."
+*Sierra verb*: `> USE policy generator` → "It analyses what actually worked. No ideology. No party. Just outcomes. A novel concept for your species."
+`> OPTIMIZE budget` → "Less money, better outcomes. On every single line item. Singapore figured this out. Your species can too."
 
 **Score**: `5,000,000,000`
 
@@ -1021,7 +1044,7 @@ Each left building crumbles as the right contract glows brighter. Solidity logo 
 
 *Segment*: `script-armory-brains` · *Component*: `i-pencil` · *BG*: foreground
 
-> "You are looking at this and thinking: this is impossibly complicated. Decentralized clinical trials, smart contracts, causal inference engines, immutable storage, algorithmic governance — who is going to build all of this? The answer: you do not need to know. Nobody knows how to make a pencil. Not one person on Earth. The wood comes from one country, the graphite from another, the rubber from a third, the paint from a fourth. Millions of people each doing one tiny step. No one coordinates them. The price system does. That is what the prize pool is. Four billion people, each with VOTE points worth $194,000, will figure out how to build a decentralized FDA the same way they figured out how to build a pencil. You do not need a plan. You need an incentive. The incentive is $774 trillion."
+> "You are looking at this and thinking: this is impossibly complicated. Decentralized clinical trials, smart contracts, causal inference engines, immutable storage, algorithmic governance — who is going to build all of this? The answer: you do not need to know. Nobody knows how to make a pencil. Not one person on Earth. The wood comes from one country, the graphite from another, the rubber from a third, the paint from a fourth. Millions of people each doing one tiny step. No one coordinates them. The price system does. That is what the prize pool is. Four billion people, each with VOTE points worth $194,000, will figure out how to build a decentralized FDA the same way they figured out how to build a pencil. You do not need a plan. You need an incentive. The incentive is $774 trillion. And the game does not pick which solution wins. Researcher discovers cheaper trials? Gets paid. Lobbyist passes legislation? Gets paid. Nonprofit gets a million people to play? Gets paid. Every approach competes. The best ones get funded. That is not central planning. That is a market for saving civilisation."
 
 *Visual*: Pixel art — a Sierra "I, Pencil" sequence. A pixel pencil sits in the center of the screen. Zoom lines expand outward from it showing the supply chain: a pixel lumberjack, a pixel miner, a pixel factory worker, a pixel painter — each in a different pixel country. None of them know each other. Lines connect them all to the pencil. Then the pencil morphs into a pixel test tube (clinical trial), and the supply chain morphs too: a pixel developer writing Solidity, a pixel doctor running a trial, a pixel data scientist on Storacha, a pixel patient getting treated, a pixel auditor minting a Hypercert. Same structure. Same principle. Nobody coordinates them. The prize pool does.
 
@@ -1086,19 +1109,6 @@ Each slot has pixel-art scene matching its trajectory. Glowing deed drops into i
 ---
 
 ## ACT III — THE ENDGAME
-
-### Under the Hood (8s)
-
-*Segment*: `script-10-architecture` · *Component*: `architecture-stats` · *BG*: background
-
-> "Under the hood: 15 packages, 2,600+ tests, domain-agnostic causal inference, full TypeScript monorepo. Storacha for immutable content-addressed storage. Hypercerts for verifiable attestations. Solidity for enforceable incentives. Everything is auditable. Nothing relies on trusting us."
-
-*Visual*: Pixel art — Wishonia's engineering bay / space station engine room. Five pixel monitors: (1) code scrolling — "15 PACKAGES", (2) green checkmarks cascading — "2,600+ TESTS", (3) blockchain viz — "SOLIDITY", (4) content-addressed blocks — "STORACHA", (5) hypercert badges — "HYPERCERTS." Wishonia in center with clipboard.
-
-*Sierra verb*: `> LOOK AT source code` → "Open source. Auditable. Unlike your government's budget. Or their promises."
-`> LOOK AT tests` → "2,600 tests. All passing. On my planet this is the bare minimum. Here it appears to be remarkable."
-
----
 
 ### 10.7 Billion Lives (10s)
 
