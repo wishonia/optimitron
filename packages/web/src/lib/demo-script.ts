@@ -67,6 +67,17 @@ const newQueue = Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value);
 const drugWarCostB = Math.round(US_GOV_WASTE_DRUG_WAR.value / 1e9);
 const treatyGainM = (TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value / 1e6).toFixed(1);
 
+export type SierraAct =
+  | "I"
+  | "turn"
+  | "II-solution"
+  | "II-game"
+  | "II-money"
+  | "II-accountability"
+  | "II-armory"
+  | "II-climax"
+  | "III";
+
 export interface DemoSegment {
   id: string;
   title: string;
@@ -76,6 +87,10 @@ export interface DemoSegment {
   bgColor?: BrutalCardBgColor;
   /** Tags for auto-composition */
   tags: ("hook" | "problem" | "solution" | "mechanism" | "feature" | "evidence" | "cta" | "financial")[];
+  /** Sierra game metadata (optional — used by hackathon playlist) */
+  act?: SierraAct;
+  scoreAdd?: number;
+  inventoryAdd?: { id: string; name: string; icon: string };
 }
 
 export interface DemoPlaylist {

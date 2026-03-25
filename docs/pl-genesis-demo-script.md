@@ -182,7 +182,7 @@ Below the slider: "A Point-and-Click Adventure in Civilisational Reallocation." 
 
 > "Your governments currently spend $604 on the capacity for mass murder for every $1 they spend testing which medicines work. Your chance of dying from terrorism: 1 in 30 million. Your chance of dying from disease: 100%."
 
-*Visual*: Pixel art — a Sierra-style scale/balance. Left pan: overflowing with pixel missiles, tanks, jets, bombs — crashed to the floor, bending the scale. Right pan: a single tiny pixel test tube floating near the ceiling. Above the scale: "$2,720,000,000,000" (left) vs "$4,500,000,000" (right). Below, a pixel-art pie chart where the clinical trials slice is literally one pixel wide. Legend: "MILITARY: 99.83%" / "CLINICAL TRIALS: 0.17%."
+*Visual*: Pixel art — animated zoom sequence. Start: a towering stack of pixel coins fills the entire screen top to bottom, labeled "$2,720,000,000,000 — MILITARY." The camera zooms in on the bottom-right corner — deeper, deeper — until a single pixel coin becomes visible at 64× magnification, labeled "$4,500,000,000 — CLINICAL TRIALS." Pause. Then snap-zoom back out to full scale. The single coin disappears into the mass. The viewer's spatial memory of "I had to zoom in to even SEE it" is the data visualization. The `CountUp` component animates the ratio from 1:1 racing to 604:1. Below, `MilitaryVsTrialsPie` renders — the clinical trials slice is literally one pixel wide.
 
 *Sierra verb*: `> LOOK AT tiny pile` → "That is the entire global clinical trials budget. Try not to blink or you'll miss it."
 `> USE test tube` → "You cannot. It is being crushed by $2.72 trillion of military hardware."
@@ -347,37 +347,28 @@ Score reappears. Inventory is empty. The quest begins.
 
 > "Here is how that turns into wealth. Disease currently drags down 13% of global GDP — fifteen trillion dollars a year in lost productivity and medical costs. Every disease you cure unlocks a permanent slice of that. Freed workers produce more. More production generates more tax revenue. More revenue funds more trials. More trials cure more diseases. It compounds. Healthcare spending returns three times more economic activity per dollar than military spending. At current trajectory, your economy grows at 2.5%. Redirect the spending, cure the diseases, and it compounds at 17.9%. Over twenty years, that is the difference between $12,500 per person and $339,000 per person. That is not a fantasy. That is compound interest applied to not killing people."
 
-*Visual*: Pixel art — a Sierra "machine schematic" diagram. A positive feedback loop rendered as a pixel-art cycle with animated arrows flowing clockwise:
+*Visual*: Two-part animated display.
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  ⚙️ THE COMPOUNDING LOOP                                │
-│                                                         │
-│        ┌──────────────┐                                 │
-│    ┌──→│ REDIRECT $27B │──→ CURE DISEASES ──┐           │
-│    │   │ TO TRIALS     │    (44× cheaper)    │           │
-│    │   └──────────────┘                      ▼           │
-│    │                              ┌─────────────────┐   │
-│    │                              │ UNLOCK 13% GDP  │   │
-│    │                              │ ($15T/yr freed) │   │
-│    │                              └────────┬────────┘   │
-│    │                                       ▼            │
-│    │   ┌──────────────┐         MORE PRODUCTIVITY       │
-│    └───│ BIGGER BUDGET │◄──── MORE TAX REVENUE ◄────┘   │
-│        └──────────────┘                                 │
-│                                                         │
-│  💥 Military:  $1 in → $0.60 out  (0.6× multiplier)    │
-│  🧪 Healthcare: $1 in → $1.80 out (1.8× multiplier)    │
-│                                                         │
-│  Status quo growth:  2.5% / year → $12.5K per person    │
-│  Treaty growth:     17.9% / year → $339K per person     │
-│  Wishonia growth:   25.4% / year → $1.16M per person    │
-│                                                         │
-│  Timeline: 20 years. Same species. Different allocation. │
-└─────────────────────────────────────────────────────────┘
-```
+**TOP HALF — The Marble Run (animated feedback loop):**
+A pixel-art circular track with four stations. A glowing pixel marble enters at "REDIRECT $27B TO TRIALS." It rolls clockwise through:
+1. "CURE DISEASES (44× cheaper)" — the marble passes through a pixel hospital, a tiny disease icon disappears
+2. "UNLOCK 13% GDP ($15T/yr freed)" — the marble grows slightly larger as GDP unlocks
+3. "MORE PRODUCTIVITY → MORE TAX REVENUE" — the marble picks up speed, gold sparkles trail behind it
+4. "BIGGER BUDGET" — the marble completes the loop and re-enters at station 1, visibly larger than before
 
-The loop animates continuously — pixel arrows circling, each cycle faster than the last (visually representing compounding). Below the loop, three pixel-art GDP trajectory lines diverge upward: grey (status quo, barely rising), green (Treaty, steep), gold (Wishonia, exponential). The GdpTrajectoryChart component renders in Sierra pixel style. The divergence between the lines gets dramatically wider with each year — by year 20 they're not even on the same scale.
+Each cycle the marble gets bigger and moves faster. By cycle 3 it's a boulder. By cycle 5 it's a boulder trailing a comet tail of gold. The acceleration IS the compounding — the viewer sees exponential growth as motion, not as a number.
+
+Below the loop, two comparison bars pulse:
+- 💥 Military: $1 in → $0.60 out (bar shrinks, red)
+- 🧪 Healthcare: $1 in → $1.80 out (bar grows, green)
+
+**BOTTOM HALF — Live GDP Trajectory Chart:**
+The `GdpTrajectoryChart` component renders with animated playback. A year counter ticks from 2025 to 2045. Three lines draw in real-time:
+- Grey (Status Quo, 2.5%): barely rising, per-capita `CountUp` ticks: $12.5K... $13K... $14K...
+- Green (Treaty, 17.9%): steep climb, `CountUp` races: $12.5K... $28K... $64K... $149K... $339K
+- Gold (Wishonia, 25.4%): exponential rocket, `CountUp` blurs: $12.5K... $53K... $225K... $1.16M
+
+By year 20, the green and gold lines are so far above grey that the chart has to rescale — the grey line flattens to a hair at the bottom. The rescale animation is the punchline: the status quo literally disappears when you see it next to the alternatives. All numbers pull live from `parameters-calculations-citations.ts` via the `<Stat>` component.
 
 *Sierra verb*: `> LOOK AT loop` → "Every disease cured makes the economy bigger. A bigger economy funds more cures. More cures make it bigger still. Your species calls this a virtuous cycle. You have mostly been running the vicious version."
 `> COMPARE trajectories` → "Same planet. Same people. Same twenty years. The only difference is where you point the money. $12,500 versus $339,000. Compound interest does not care about your politics. It only cares about your allocation."
@@ -425,7 +416,7 @@ The loop animates continuously — pixel arrows circling, each cycle faster than
 └──────────────────────────────────────────┘
 ```
 
-Each line item animates in one at a time, the total building as each appears. The "88% of global GDP" line flashes red. "This bug has been open for 113 years. No one has assigned it." typewriters in last — the punchline.
+Each line item animates in one at a time with `CountUp` — the dollar amounts tick from $0 to their final value over ~1 second each. A running total at the bottom counts up in lockstep: $0... $34T... $91T... $97T... $101T. The final total pulses. "88% of global GDP" flashes red. "This bug has been open for 113 years. No one has assigned it." typewriters in last — the punchline. All values pull live from `POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL` and its sub-parameters.
 
 *Sierra verb*: `> FIX bug` → "That is what the game is for."
 `> ASSIGN bug` → "You just did. You are player #4,847."
@@ -466,7 +457,7 @@ Each line item animates in one at a time, the total building as each appears. Th
 └──────────────────────────────────────────────┘
 ```
 
-Quest meters in HUD pulse and glow — the viewer now understands what they're tracking.
+Quest meters in HUD pulse and glow — the viewer now understands what they're tracking. Current values pull live from WHO (HALE) and World Bank (median income) via the `@optimitron/data` fetchers — not hardcoded. The progress bars animate from empty to their current % of target. The deadline `CountUp`s the remaining days in real-time. If a judge hovers any number, the `<Stat>` component shows the source, last-updated date, and confidence level.
 
 *Sierra verb*: `> READ quest log` → "Two numbers. That is all. Your species has made this extraordinarily complicated. It is not."
 
@@ -475,6 +466,8 @@ Quest meters in HUD pulse and glow — the viewer now understands what they're t
 ---
 
 ### Part 2: The Game
+
+**INTERACTION NOTE:** For the live hackathon demo, this section should switch from auto-play to **live interaction**. The presenter actually drags the allocation slider, clicks YES on the treaty vote, copies the referral link, and deposits into the prize pool — using the real site running at optimitron.com. The Sierra chrome stays visible but the content area becomes a live embed. Auto-play mode animates a simulated interaction for the video version.
 
 ### Level 1: Allocate (15s)
 
@@ -1098,7 +1091,12 @@ Below, a counter: "BRAINS INCENTIVIZED: 4,000,000,000. VOTE POINT VALUE: $194,00
 └────────────────────────────────────────────────────┘
 ```
 
-Each slot has pixel-art scene matching its trajectory. Glowing deed drops into inventory slot 7.
+Each slot has an **animated** pixel-art scene that changes in real-time:
+- **Slot 1** actively desaturates — the pixel city gets smoggier, buildings crumble slightly, pixel people hunch over. The numbers `CountUp` to their depressing values. The "[LOADED]" tag blinks accusingly.
+- **Slot 2** actively brightens — parks bloom with green pixels, hospital lights turn on, pixel people stand taller. The $15.7M `CountUp`s from $0 in golden text. The "◄◄◄" arrow pulses.
+- **Slot 3** gleams impossibly — the Wishonia paradise from the Restore slide rendered in miniature, every pixel radiating. $54.3M in white-gold.
+
+The visual hierarchy makes Slot 1 feel like a mistake and Slot 2 feel like an obvious upgrade without reading a single number. Glowing deed drops into inventory slot 7.
 
 *Sierra verb*: `> LOOK AT slot 1` → "Status quo. $1.34 million lifetime income. You are losing $12,600 a year to a system bug."
 `> LOOK AT slot 3` → "$54.3 million. My planet chose this 4,297 years ago. We have not regretted it."
@@ -1116,7 +1114,9 @@ Each slot has pixel-art scene matching its trajectory. Glowing deed drops into i
 
 > "150,000 deaths per day. 212 years of treatment acceleration from the combined trial capacity increase and efficacy lag elimination. A third of those deaths are avoidable with earlier cures. Multiply it out: 10.7 billion lives. More than the total number of humans who have ever lived in a single century. Every share, every vote, every conversation moves the probability. The question is not whether your effort matters. It is how many hundred million lives it is worth."
 
-*Visual*: Pixel art — planet from the Cold Open returns, but transforming. Cemetery crosses being replaced one by one — each morphs into a tiny pixel person standing up, grey to green. Counter ticks: "LIVES SAVED: 10,700,000,000." Planet's palette shifts from EGA dark to VGA bright. Quest meters nearly full. Death ticker slowing.
+*Visual*: Pixel art — planet from the Cold Open returns, but transforming. Cemetery crosses being replaced one by one — each cross morphs into a tiny pixel person standing up, grey to green. The replacement accelerates as the narration builds — slow at first, then hundreds at once.
+
+Center of screen: a massive `CountUp` ticks from 0 to 10,700,000,000 over the full duration of the narration. The number starts small and the font size GROWS as the count increases — by 1 billion it's large, by 10 billion it fills the screen. The planet's palette shifts from EGA dark to VGA bright in sync with the counter. Quest meters approach full. The death ticker in the HUD visibly slows — the gap between ticks widening as the count climbs. By the end, the planet is the Wishonia paradise from the Restore slide.
 
 *Sierra verb*: `> COUNT lives` → "More than the total number of humans who have ever lived. That is what is at stake. No pressure."
 
@@ -1201,6 +1201,20 @@ Music resolves to a single held chord. "PLAY NOW" pulses. Silence.
 - **Sound**: Chiptune soundtrack. Death jingle for Game Over. "Cha-ching" for items. Rising pitch on quest meters.
 - **Portrait**: Wishonia 48×48 pixel art, slightly animated (blinking, eyebrow, one smirk in post-credits)
 - **Quest meters**: HALE + Income progress bars. Hidden Act I. Appear at Wishonia. Fill through Act II. 100% at completion.
+
+### Transitions Between Slides
+Each act has a distinct transition style:
+- **Act I**: Glitch/static cuts — CRT channel switching with scan line interference. Fast, jarring, unsettling.
+- **The Turn (GAME OVER → RESTORE)**: Save-game restore animation — the entire screen dissolves into pixels, rebuilds from a different save file. Palette shifts from EGA to VGA mid-rebuild.
+- **Act II (The Solution/Game/Money)**: Smooth Sierra room-to-room walks — the scene slides left as the new scene slides in from right, as if the camera is walking through connected rooms.
+- **Act II (The Armory)**: Inventory equip animations — each tool slides in from the bottom like equipping a new item, with a "cha-ching" sound.
+- **Act III**: Slow dissolves with rising brightness — emotional weight, giving each beat time to breathe.
+
+### Data & Animation
+- **`CountUp` on every number**: No number appears statically. All dollar amounts, ratios, and counts animate from 0 to their final value. Use the existing `CountUp` component.
+- **`<Stat>` on every parameter**: All numbers pull live from `parameters-calculations-citations.ts`. Hover any number to see source, derivation, confidence, and last-updated date. Nothing is hardcoded text.
+- **Live data feeds**: Scoreboard pulls real HALE (WHO) and median income (World Bank) via `@optimitron/data` fetchers. Leaderboard shows real politician voting records. Prize pool shows real on-chain balance (Base Sepolia testnet). Death ticker uses real mortality data.
+- **Interactive mode**: For live hackathon presentation, Part 2 (The Game) switches from auto-play to live interaction — presenter actually uses the site. Sierra chrome stays visible as an overlay.
 
 ### General
 - Each slide is a full-viewport component — no scrolling, no page navigation
