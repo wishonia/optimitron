@@ -37,6 +37,8 @@ export interface SlideConfig {
   sierraVerbs?: SierraVerb[];
   chapter?: string;
   showQuestMeters?: boolean;
+  ctaUrl?: string; // Link to live web app feature, e.g. "https://optimitron.com/agencies/domb"
+  ctaLabel?: string; // Button label, e.g. "TRY IT" (defaults to "TRY IT →")
 }
 
 // Helper to get inventory item by acquiredAt
@@ -400,7 +402,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     duration: 10,
     chapter: "Part 1: The Solution",
     narration:
-      "Redirect 1% of the global murder budget to clinical trials. That is $27 billion a year. That is going from 99% bombs to 98% bombs. The explosion manufacturers keep 99% of their budget and do not even notice.",
+      "Redirect 1% of the global murder budget to clinical trials. That is $27 billion a year. Going from 99% bombs to 98% bombs. The explosion manufacturers keep 98% of their budget and do not even notice.",
     visual:
       'Pixel art — Wishonia\'s control room. Massive wall-mounted lever with display: "MILITARY: 99%" / "CURES: 1%". Animated pixel hand nudges it one notch. Display updates: "MILITARY: 98%" / "CURES: 2%." The slot is one pixel different. Comic "that\'s it?" pause. Pixel-art scroll "1% TREATY" drops into inventory slot 1 with "cha-ching." Quest meter for INCOME nudges slightly.',
     score: 100_000,
@@ -754,6 +756,8 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 10,
     chapter: "Part 2: The Game",
+    ctaUrl: "/agencies/dcongress/wishocracy",
+    ctaLabel: "PLAY →",
     narration:
       "You see two budget categories. Drag the slider toward the one you prefer. Explosions or curing disease. Ten comparisons. Two minutes.",
     stageDirection:
@@ -797,6 +801,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "your-budget",
     act: "act2",
     duration: 8,
+    ctaUrl: "/agencies/domb",
     narration:
       "Your choices build a complete national budget using the same mathematics your species invented in 1977 and mostly uses to rank football teams.",
     visual:
@@ -835,6 +840,8 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "referendum",
     act: "act2",
     duration: 10,
+    ctaUrl: "/prize",
+    ctaLabel: "VOTE →",
     narration:
       "The 1% Treaty Referendum. Should all governments redirect 1% of the murder budget to clinical trials? That is going from 99% bombs to 98% bombs. One click. Thirty seconds. Your species has held elections about less.",
     visual:
@@ -1195,6 +1202,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "arsonist-board",
     act: "act2",
     duration: 10,
+    ctaUrl: "/agencies/dfec/alignment",
     narration:
       "This leaderboard shows which of your leaders are arsonists. Your leaders are not evil. They are just optimising for the wrong metric. We changed the metric.",
     visual:
@@ -1242,6 +1250,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 8,
     chapter: "Part 5: The Armory",
+    ctaUrl: "/agencies/dih/discoveries",
     narration:
       "Your FDA makes treatments wait 8.2 years after they have already been proven safe. Just sitting there. Being safe. While 102 million of you died in the queue. The drugs that DID pass? Vioxx killed 55,000. OxyContin killed 500,000. Your safety system's main product is dead patients.",
     visual:
@@ -1285,6 +1294,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "dfda-fix",
     act: "act2",
     duration: 8,
+    ctaUrl: "/agencies/dih/discoveries",
     narration:
       "The decentralised version runs pragmatic trials in real-world conditions. $929 per patient instead of $41,000. Forty-four times cheaper. 12.3 times more trial capacity. Same patients. No eight-year queue. The technology exists. It just did not have a lobbying firm.",
     visual:
@@ -1387,6 +1397,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "storacha",
     act: "act2",
     duration: 8,
+    ctaUrl: "/agencies/dgao",
     narration:
       "Every data point. Every budget. Every vote. Every death. Stored where no government can delete it, no lobbyist can edit it, and no administration can classify it. Your species has a long history of losing inconvenient evidence. This evidence has no address. It has a hash. Try deleting mathematics.",
     visual:
@@ -1410,6 +1421,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "hypercerts",
     act: "act2",
     duration: 8,
+    ctaUrl: "/agencies/dgao",
     narration:
       "On your planet, proving you saved lives works on the honour system. 'We spent the money on healthcare.' Did it work? 'Trust us.' On Wishonia, every claim of impact gets a receipt. If a charity tells you they saved ten thousand lives, you ask for the Hypercert. If they do not have one, they did not save ten thousand lives. Your species calls this 'radical accountability.' We call it 'a receipt.'",
     visual:
@@ -1433,6 +1445,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "replace-irs",
     act: "act2",
     duration: 8,
+    ctaUrl: "/agencies/dtreasury/dirs",
     narration:
       "Your tax code is 74,000 pages. It employs 83,000 people to enforce it. A 0.5% transaction tax does the same job in four lines of Solidity. The four lines are auditable. The 74,000 pages are not.",
     visual:
@@ -1479,6 +1492,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "replace-welfare",
     act: "act2",
     duration: 8,
+    ctaUrl: "/agencies/dtreasury/dssa",
     narration:
       "Your species runs 83 welfare programs across 6 agencies. The overhead is extraordinary. Universal basic income, distributed automatically via World ID: one program. Zero agencies. No application form. No waiting list. No one deciding whether you deserve to eat.",
     visual:
@@ -1520,6 +1534,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "replace-fed",
     act: "act2",
     duration: 8,
+    ctaUrl: "/agencies/dtreasury/dfed",
     narration:
       "Your central bank destroyed 97% of the dollar since 1913. This smart contract maintains zero percent inflation by anchoring to productivity growth. It cannot print money to fund wars because it does not have a print function.",
     visual:
@@ -1562,6 +1577,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "policy-engine",
     act: "act2",
     duration: 8,
+    ctaUrl: "/agencies/dcbo",
     narration:
       "The Optimal Policy Generator. It looks at what every country tried and what actually happened. Not which policies were popular. Which ones moved the numbers. It does not have a favourite party. It does not have donors. It has arithmetic.",
     visual:
@@ -1642,6 +1658,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "budget-optimizer",
     act: "act2",
     duration: 10,
+    ctaUrl: "/agencies/domb",
     narration:
       "The Optimal Budget Generator. Feed it spending data and outcomes for 34 categories. It finds the point of diminishing returns for each one. Singapore spends a quarter of what America spends on healthcare. Their people live six years longer. Less money. Better outcomes. On every single line item.",
     visual:
@@ -1784,6 +1801,8 @@ RECURSIVE EXPONENTIAL THEFT`,
     id: "close",
     act: "act3",
     duration: 15,
+    ctaUrl: "/prize",
+    ctaLabel: "PLAY NOW →",
     narration:
       "The most powerful AI on your planet is not in a data centre. It is in a building with a dome. It has been misaligned for two centuries. This game is its alignment software. And unlike the version made of silicon — this one you can fix with a vote.",
     visual:
