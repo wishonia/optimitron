@@ -5,6 +5,16 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./parameters": {
+      "types": "./dist/parameters/index.d.ts",
+      "default": "./dist/parameters/index.js"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "test": "vitest run",

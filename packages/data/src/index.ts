@@ -78,6 +78,10 @@ export * from './inflation-adjustment.js';
 // Misc utilities
 export * from './utils/index.js';
 
+// Economic model parameters, citations, and formatters (use @optimitron/data/parameters for full access)
+export type { Parameter, Citation, SourceType, Confidence, ParameterName } from './parameters/index.js';
+export type { FormatParameterOptions } from './parameters/index.js';
+
 // Version
 export const VERSION = '0.1.0';
 export * from './pipelines/fetch-country-timeseries.js';
