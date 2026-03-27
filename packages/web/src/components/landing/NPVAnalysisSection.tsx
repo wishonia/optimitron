@@ -12,6 +12,7 @@ import {
   DFDA_ROI_RD_ONLY,
   NPV_TIME_HORIZON_YEARS,
   DFDA_NPV_ADOPTION_RAMP_YEARS,
+  NPV_DISCOUNT_RATE_STANDARD,
   formatParameter,
   getParameterValue,
 } from "@optimitron/data/parameters";
@@ -25,7 +26,7 @@ const adoptionRampYearsValue = DFDA_NPV_ADOPTION_RAMP_YEARS.value
 export default function NPVAnalysisSection() {
   const [showTable, setShowTable] = useState(false)
 
-  const discountRate = 0.08
+  const discountRate = NPV_DISCOUNT_RATE_STANDARD.value
   const years = timeHorizonYears
   const upfrontCost = DFDA_NPV_UPFRONT_COST_TOTAL.value / 1e9
   const annualOpex = DFDA_ANNUAL_OPEX.value / 1e9

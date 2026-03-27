@@ -6,39 +6,32 @@ const ARCADE = "font-[family-name:var(--font-arcade)]";
 
 const CERTS = [
   {
-    trial: "TRIAL #4,847",
-    name: "Malaria vaccine",
-    patients: "12,000 patients",
-    outcome: "94% efficacy",
+    type: "REFERRAL",
+    name: "Voter Recruitment",
+    detail: "7 verified voters, 58.3% rate",
+    method: "World ID verification",
   },
   {
-    trial: "TRIAL #2,193",
-    name: "TB rapid diagnostic",
-    patients: "8,400 patients",
-    outcome: "89% accuracy",
+    type: "ALIGNMENT",
+    name: "Sen. Jane Smith — 87%",
+    detail: "14 votes compared, 412 participants",
+    method: "Wishocracy scoring",
   },
   {
-    trial: "TRIAL #6,011",
-    name: "Depression CBT protocol",
-    patients: "31,000 patients",
-    outcome: "67% remission",
+    type: "DEPOSIT",
+    name: "PRIZE Pool: $500 USDC",
+    detail: "Funded campaign prize pool",
+    method: "On-chain deposit",
   },
 ] as const;
 
 /** The minting cert — fields appear one at a time */
-const MINTING_CERT = {
-  trial: "TRIAL #9,204",
-  name: "Cancer immunotherapy",
-  patients: "5,600 patients",
-  outcome: "71% response",
-};
-
 const MINTING_FIELDS = [
-  MINTING_CERT.trial,
-  MINTING_CERT.name,
-  MINTING_CERT.patients,
-  MINTING_CERT.outcome,
-  "\u2713 VERIFIED ON-CHAIN",
+  "REFERRAL HYPERCERT",
+  "Recruited 3 verified voters",
+  "Total referrals: 5 — Rate: 60%",
+  "Published to AT Protocol",
+  "\u2713 VERIFIED ON BLUESKY",
 ] as const;
 
 /** Hypercerts slide — verifiable impact attestations */
@@ -59,26 +52,26 @@ export default function HypercertsSlide() {
 
       {/* Badge grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl w-full mb-6">
-        {/* Pre-verified certs */}
+        {/* Published certs */}
         {CERTS.map((cert, i) => (
           <motion.div
-            key={cert.trial}
+            key={cert.type}
             initial={reduced ? false : { scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 + i * 0.15, duration: 0.3, type: "spring" }}
             className="border-4 border-primary bg-brutal-pink p-3 sm:p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-left"
           >
             <p className={`${ARCADE} text-[10px] sm:text-xs text-foreground uppercase mb-1`}>
-              {cert.trial}
+              {cert.type}
             </p>
             <p className={`${ARCADE} text-xs sm:text-sm text-foreground font-bold mb-1`}>
               {cert.name}
             </p>
             <p className={`${ARCADE} text-[10px] text-foreground`}>
-              {cert.patients} &middot; {cert.outcome}
+              {cert.detail}
             </p>
             <p className={`${ARCADE} text-[10px] text-brutal-cyan mt-2 uppercase`}>
-              &#x2713; VERIFIED ON-CHAIN
+              &#x2713; ON AT PROTOCOL
             </p>
           </motion.div>
         ))}
@@ -98,7 +91,7 @@ export default function HypercertsSlide() {
             className="absolute top-2 right-2"
           >
             <span className={`${ARCADE} text-[8px] text-brutal-yellow uppercase`}>
-              MINTING...
+              PUBLISHING...
             </span>
           </motion.div>
 
@@ -131,7 +124,7 @@ export default function HypercertsSlide() {
       >
         If they don&apos;t have a Hypercert,
         <br />
-        they didn&apos;t save those lives.
+        they didn&apos;t recruit those voters.
       </motion.p>
     </div>
   );

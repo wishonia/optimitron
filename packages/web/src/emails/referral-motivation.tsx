@@ -13,6 +13,7 @@ import { SocialShareButtons } from "./components/SocialShareButtons"
 import { ReferralLinkBox } from "./components/ReferralLinkBox"
 import { CTAButton } from "./components/CTAButton"
 import { getEmailUrls } from "@/lib/email-urls"
+import { VOTER_LIVES_SAVED } from "@optimitron/data/parameters"
 
 interface ReferralMotivationEmailProps {
   userName: string
@@ -32,8 +33,8 @@ export const ReferralMotivationEmail = ({
   topReferrers,
 }: ReferralMotivationEmailProps) => {
   const { dashboardLink } = getEmailUrls()
-  // Impact calculations — from VOTER_LIVES_SAVED (38.4 per voter)
-  const livesSavedPerReferral = 38.4
+  // Impact calculations — from VOTER_LIVES_SAVED parameter
+  const livesSavedPerReferral = VOTER_LIVES_SAVED.value
   const potentialLivesWith10 = Math.round(livesSavedPerReferral * 10)
   const currentLivesSaved = Math.round(livesSavedPerReferral * currentReferrals)
 

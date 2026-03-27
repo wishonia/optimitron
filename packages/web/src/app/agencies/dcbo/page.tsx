@@ -5,6 +5,7 @@ import Link from "next/link";
 import policyData from "@/data/us-policy-analysis.json";
 import { getPolicyPath } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
+import { GLOBAL_AVG_INCOME_2025, GLOBAL_HALE_CURRENT } from "@optimitron/data/parameters";
 
 interface BradfordHillScores {
   strength: number;
@@ -47,12 +48,12 @@ interface PolicyData {
 
 const data = policyData as unknown as PolicyData;
 
-const US_MEDIAN_INCOME = 59_540; // 2023 real median household income
-const US_HALE_YEARS = 66.1; // 2023 WHO HALE estimate for US
+const MEDIAN_INCOME = GLOBAL_AVG_INCOME_2025.value;
+const HALE_YEARS = GLOBAL_HALE_CURRENT.value;
 
 /** Translate abstract effect percentages into dollar/year amounts per person */
 function incomePerYear(effect: number): number {
-  return Math.round(effect * US_MEDIAN_INCOME);
+  return Math.round(effect * MEDIAN_INCOME);
 }
 function haleMonths(effect: number): number {
   return Math.round(effect * 12 * 10); // effect is fraction, ×10 years scale ×12 months

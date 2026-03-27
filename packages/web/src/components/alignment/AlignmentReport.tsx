@@ -35,10 +35,10 @@ function HypercertBadge({ politicianId }: { politicianId: string }) {
       target="_blank"
       rel="noopener noreferrer"
       className="mt-2 inline-flex items-center gap-1.5 border-4 border-primary bg-brutal-cyan px-2 py-1 text-xs font-black uppercase tracking-[0.1em] text-foreground transition-all hover:bg-brutal-cyan/80 hover:translate-x-[1px] hover:translate-y-[1px]"
-      title="This alignment score is published as a verifiable Hypercert on IPFS via Storacha"
+      title="This alignment score is published as a Hypercert on AT Protocol, with data stored on Storacha (IPFS)"
     >
       <Shield className="h-3 w-3" />
-      Verified on IPFS
+      Data on Storacha
       <ExternalLink className="h-3 w-3" />
     </a>
   );

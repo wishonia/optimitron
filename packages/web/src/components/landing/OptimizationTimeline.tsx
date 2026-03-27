@@ -9,6 +9,7 @@ import {
   EVENTUALLY_AVOIDABLE_DALY_PCT,
   GLOBAL_YLD_PROPORTION_OF_DALYS,
   GLOBAL_DISEASE_DEATHS_DAILY,
+  GLOBAL_LIFE_EXPECTANCY_2024,
   getParameterValue,
 } from "@optimitron/data/parameters";
 import { HeartCrack, Skull } from "lucide-react"
@@ -21,7 +22,7 @@ interface Milestone {
 }
 
 function calculateYearsUntilDeath(age: number): number | null {
-  const lifeExpectancy = 76
+  const lifeExpectancy = GLOBAL_LIFE_EXPECTANCY_2024.value
   const yearsRemaining = Math.max(0, lifeExpectancy - age)
   return yearsRemaining > 0 ? yearsRemaining : null
 }

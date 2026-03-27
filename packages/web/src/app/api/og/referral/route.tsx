@@ -1,9 +1,13 @@
 import { ImageResponse } from '@vercel/og'
+import {
+  VOTER_LIVES_SAVED,
+  VOTER_SUFFERING_HOURS_PREVENTED,
+} from "@optimitron/data/parameters"
 
 export const runtime = 'edge'
 
-const LIVES_PER_VOTE = 38.4
-const SUFFERING_YEARS_PER_VOTE = Math.round(6_896_780 / 8_760) // ~787 years
+const LIVES_PER_VOTE = VOTER_LIVES_SAVED.value
+const SUFFERING_YEARS_PER_VOTE = Math.round(VOTER_SUFFERING_HOURS_PREVENTED.value / 8_760) // hours → years
 
 export async function GET() {
   try {

@@ -288,7 +288,7 @@ const shelves: Shelf[] = [
         icon: "🛡️",
         rarity: "rare",
         description:
-          "Verifiable impact attestations on IPFS and AT Protocol. Every claim, every score — cryptographically signed and permanently stored.",
+          "Verifiable impact attestations on AT Protocol. Referral recruitment, alignment scores, prize pool deposits — permanently published and auditable on Bluesky.",
         stats: [
           { label: "TRUST", value: 10 },
           { label: "PERM", value: 10 },

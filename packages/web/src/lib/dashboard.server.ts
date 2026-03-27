@@ -9,6 +9,7 @@ import {
 } from "@/lib/activity-descriptions";
 import {
   GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT,
+  GLOBAL_POPULATION_2024,
 } from "@optimitron/data/parameters";
 import type { DashboardData, LeaderboardEntry } from "@/types/dashboard";
 
@@ -84,9 +85,8 @@ export async function getDashboardData(
 
   // Global progress: total referendum votes as % of global population
   const totalReferendumVotes = await prisma.referendumVote.count();
-  const WORLD_POPULATION = 8_000_000_000;
   const globalProgressPct =
-    (totalReferendumVotes / WORLD_POPULATION) * 100;
+    (totalReferendumVotes / GLOBAL_POPULATION_2024.value) * 100;
   const targetPct =
     GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT.value * 100;
 

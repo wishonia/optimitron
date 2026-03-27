@@ -17,6 +17,10 @@ import { ReferralLinkBox } from "./components/ReferralLinkBox"
 import { CTAButton } from "./components/CTAButton"
 import { ResourcePromoSection } from "./components/ResourcePromoSection"
 import { getEmailUrls } from "@/lib/email-urls"
+import {
+  VOTER_LIVES_SAVED,
+  VOTER_SUFFERING_HOURS_PREVENTED,
+} from "@optimitron/data/parameters"
 
 interface WelcomeImpactEmailProps {
   userName: string
@@ -31,8 +35,8 @@ export const WelcomeImpactEmail = ({
 }: WelcomeImpactEmailProps) => {
   const { dashboardLink } = getEmailUrls()
   // Impact calculations (per vote — from parameters-calculations-citations.ts)
-  const livesSaved = 38.4
-  const sufferingYearsPrevented = 787
+  const livesSaved = VOTER_LIVES_SAVED.value
+  const sufferingYearsPrevented = Math.round(VOTER_SUFFERING_HOURS_PREVENTED.value / 8_760) // hours → years
   const economicValue = "$5.8M"
 
   return (

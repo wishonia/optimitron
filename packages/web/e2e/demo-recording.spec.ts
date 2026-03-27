@@ -12,7 +12,7 @@
  *   5. Alignment — politician report cards
  *   6. Misconceptions — myth vs data
  *   7. Compare — country outcomes
- *   8. Transparency — Hypercerts / IPFS attestations
+ *   8. Transparency — Hypercerts / AT Protocol attestations
  *   9. Prize Pool — dominant assurance contract
  *  10. IAB — Incentive Alignment Bonds
  *  11. Close — homepage hero
@@ -285,9 +285,9 @@ test("full demo walkthrough", async ({ page }) => {
     await pause(1_000);
   }
 
-  // Highlight an IPFS verification badge
+  // Highlight a Storacha verification badge
   const verifiedBadge = page
-    .locator('text="Verified on IPFS"')
+    .locator('text="Data on Storacha"')
     .or(page.locator('text="Citizen Alignment Score"'))
     .first();
   await scrollToLocator(page, verifiedBadge);

@@ -2,6 +2,7 @@ import {
   TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
   VOTER_LIVES_SAVED,
   VOTER_SUFFERING_HOURS_PREVENTED,
+  STANDARD_ECONOMIC_QALY_VALUE_USD,
 } from "@optimitron/data/parameters";
 
 export const VOTING_BLOC_TARGET = TREATY_CAMPAIGN_VOTING_BLOC_TARGET.value;
@@ -11,7 +12,7 @@ export const HOURS_PER_YEAR = 8_760;
 export const IMPACT_PER_VOTE = {
   lives: VOTER_LIVES_SAVED.value,
   sufferingHours: VOTER_SUFFERING_HOURS_PREVENTED.value,
-  economicValue: VOTER_LIVES_SAVED.value * 150_000, // QALY standard
+  economicValue: VOTER_LIVES_SAVED.value * STANDARD_ECONOMIC_QALY_VALUE_USD.value,
 };
 
 export const VOTES_PER_HOUR = 60 / MINUTES_PER_PERSUASION;
