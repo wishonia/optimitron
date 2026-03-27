@@ -3,7 +3,7 @@
 import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
 import { AnimatedLineChart } from "../../animations/animated-line-chart";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import { GAME_PARAMS } from "@/lib/demo/parameters";
 import { useEffect, useState } from "react";
 
 export function SlidePrizePool() {
@@ -96,7 +96,7 @@ export function SlidePrizePool() {
         <div className="text-center bg-black/40 border border-amber-500/30 p-4 rounded">
           <div className="font-pixel text-xs text-zinc-500 mb-2">VALUE PER VOTE POINT</div>
           <div className="font-pixel text-3xl text-amber-400">
-            ${PARAMETERS.game.valuePerVotePoint.toLocaleString()}
+            ${GAME_PARAMS.valuePerVotePoint.toLocaleString()}
           </div>
           <div className="font-terminal text-xs text-zinc-500 mt-2">
             Expected lifetime value of each VOTE token

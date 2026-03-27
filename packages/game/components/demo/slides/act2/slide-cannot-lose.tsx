@@ -1,8 +1,15 @@
 "use client";
 
 import { SlideBase } from "../slide-base";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  GAME_PARAMS,
+  TREATY_PERSONAL_UPSIDE_BLEND,
+  POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
+} from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
+
+const personalLifetimeLoss = Math.round(TREATY_PERSONAL_UPSIDE_BLEND.value / 100_000) * 100_000;
+const annualDysfunctionTax = Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value / 100) * 100;
 
 export function SlideCannotLose() {
   return (
@@ -24,15 +31,15 @@ export function SlideCannotLose() {
               <div>Deposit goes to VOTE holders</div>
               <div>
                 Your VOTE points: 2 ×{" "}
-                {formatCurrency(PARAMETERS.game.valuePerVotePoint)}
+                {formatCurrency(GAME_PARAMS.valuePerVotePoint)}
               </div>
               <div className="text-emerald-400 text-xs">
-                = {formatCurrency(PARAMETERS.game.valuePerVotePoint * 2)}
+                = {formatCurrency(GAME_PARAMS.valuePerVotePoint * 2)}
               </div>
               <div className="border-t border-emerald-500/20 pt-2">
                 Lifetime income:{" "}
                 <span className="text-emerald-400">
-                  +{formatCurrency(PARAMETERS.economic.personalLifetimeLoss)}
+                  +{formatCurrency(personalLifetimeLoss)}
                 </span>
               </div>
             </div>
@@ -68,16 +75,16 @@ export function SlideCannotLose() {
               <div>$0 earned</div>
               <div>
                 Still paying{" "}
-                {formatCurrency(PARAMETERS.economic.annualDysfunctionTax)}/yr
+                {formatCurrency(annualDysfunctionTax)}/yr
                 dysfunction tax
               </div>
               <div>
                 Missed{" "}
-                {formatCurrency(PARAMETERS.economic.personalLifetimeLoss)}
+                {formatCurrency(personalLifetimeLoss)}
               </div>
             </div>
             <div className="font-pixel text-sm text-red-400/70 text-center pt-1 border-t border-red-500/10">
-              NET: -{formatCurrency(PARAMETERS.economic.personalLifetimeLoss)}
+              NET: -{formatCurrency(personalLifetimeLoss)}
             </div>
             <div className="font-pixel text-xs text-zinc-600 text-center">
               (opportunity cost)

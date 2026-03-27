@@ -5,10 +5,16 @@ import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
 import { ParticleEmitter } from "../../animations/particle-emitter";
 import { ProgressRing } from "../../animations/progress-ring";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED,
+  GLOBAL_DISEASE_DEATHS_DAILY,
+} from "@/lib/demo/parameters";
 import { formatNumber } from "@/lib/demo/formatters";
 import { useDemoStore } from "@/lib/demo/store";
 import { PALETTE_SEMANTIC } from "@/lib/demo/palette";
+
+const livesSaved = Math.round(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e8) * 1e8;
+const deathsPerYear = GLOBAL_DISEASE_DEATHS_DAILY.value * 365;
 
 export function SlideLivesSaved() {
   const [showConfetti, setShowConfetti] = useState(false);
@@ -78,14 +84,14 @@ export function SlideLivesSaved() {
             style={{ color: palette.success }}
           >
             <AnimatedCounter
-              end={PARAMETERS.population.livesSaved}
+              end={livesSaved}
               duration={4000}
               format="compact"
             />
           </div>
           
           <div className="text-lg md:text-xl mt-4 opacity-80">
-            {formatNumber(PARAMETERS.population.livesSaved)} human lives
+            {formatNumber(livesSaved)} human lives
           </div>
         </div>
 
@@ -108,7 +114,7 @@ export function SlideLivesSaved() {
               <div className="text-2xl mb-1">☠️</div>
               <div className="text-xs uppercase tracking-wider opacity-70">Before</div>
               <div className="text-lg font-bold" style={{ color: palette.danger }}>
-                {formatNumber(PARAMETERS.deaths.perYear, 'compact')}/yr
+                {formatNumber(deathsPerYear, 'compact')}/yr
               </div>
             </div>
             <div className="p-4 rounded" style={{ backgroundColor: `${palette.success}20` }}>

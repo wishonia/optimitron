@@ -2,7 +2,7 @@
 
 import { SlideBase } from "../slide-base";
 import { GlitchText } from "../../animations/glitch-text";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import { GAME_PARAMS, MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO } from "@/lib/demo/parameters";
 import { useEffect, useState } from "react";
 
 export function SlideGameOver() {
@@ -71,8 +71,8 @@ export function SlideGameOver() {
           </div>
 
           <div className="mt-4 font-pixel text-xs text-zinc-400 max-w-md text-center space-y-1">
-            <div>Moronia allocated {PARAMETERS.spending.ratio}&times; more to weapons than curing disease.</div>
-            <div>Correlation with Earth: {PARAMETERS.moronia.correlationPercent}%.</div>
+            <div>Moronia allocated {Math.round(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value)}&times; more to weapons than curing disease.</div>
+            <div>Correlation with Earth: {GAME_PARAMS.moroniaCorrelation}%.</div>
           </div>
 
           {/* Restore game option */}

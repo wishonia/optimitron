@@ -1,105 +1,92 @@
-// All statistics and data from the demo script
-// Source: PL Genesis Hackathon Demo Video Script
+// Re-exports sourced parameters from @optimitron/data and defines game-specific constants.
+// Slide components import Parameter objects directly from "@optimitron/data/parameters".
 
-export const PARAMETERS = {
-  // Death statistics
-  deaths: {
-    perDay: 150_000,
-    perYear: 54_750_000, // 150,000 * 365
-    totalPreventable10yr: 10_700_000_000,
-    warDeathsFundedByPrinting: 97_000_000, // 97 million killed in wars funded by money printing
-    september11Equivalent: 59, // deaths per day = 59 September 11ths
-  },
+// Re-export the Parameter type and formatting utilities so components can import from one place
+export type { Parameter } from "@optimitron/data/parameters";
+export { fmtParam, fmtRaw, formatParameter } from "@optimitron/data/parameters";
 
-  // Spending data
-  spending: {
-    militaryGlobal: 2_720_000_000_000, // $2.72T
-    clinicalTrialsGlobal: 4_500_000_000, // $4.5B
-    ratio: 604, // 604:1
-    onePercentMilitary: 27_200_000_000, // $27.2B (1% reallocation)
-    cumulativeMilitarySinceFed: 170_000_000_000_000, // $170T since 1913
-    militaryPercent: 99.83,
-    trialsPercent: 0.17,
-  },
+// Re-export every data parameter used by slide components (single import point)
+export {
+  CUMULATIVE_MILITARY_SPENDING_FED_ERA,
+  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15,
+  DFDA_QUEUE_CLEARANCE_YEARS,
+  DFDA_TRIAL_CAPACITY_MULTIPLIER,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED,
+  DISEASE_BURDEN_GDP_DRAG_PCT,
+  ECONOMIC_MULTIPLIER_HEALTHCARE_INVESTMENT,
+  ECONOMIC_MULTIPLIER_MILITARY_SPENDING,
+  EFFICACY_LAG_YEARS,
+  EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
+  GDP_BASELINE_GROWTH_RATE,
+  GLOBAL_CYBERCRIME_CAGR,
+  GLOBAL_CYBERCRIME_COST_ANNUAL_2025,
+  GLOBAL_DESTRUCTIVE_ECONOMY_ANNUAL_2025,
+  GLOBAL_DESTRUCTIVE_ECONOMY_PCT_GDP,
+  GLOBAL_DISEASE_DEATHS_DAILY,
+  GLOBAL_GDP_2025,
+  GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+  GLOBAL_HALE_CURRENT,
+  GLOBAL_HOUSEHOLD_WEALTH_USD,
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  GLOBAL_POPULATION_2024,
+  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
+  MONEY_PRINTER_WAR_DEATHS,
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
+  POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
+  STATUS_QUO_QUEUE_CLEARANCE_YEARS,
+  TRADITIONAL_PHASE3_COST_PER_PATIENT,
+  TREATY_ANNUAL_FUNDING,
+  TREATY_PERSONAL_UPSIDE_BLEND,
+  TREATY_PROJECTED_HALE_YEAR_15,
+  TREATY_TRAJECTORY_AVG_INCOME_YEAR_20,
+  TREATY_TRAJECTORY_CAGR_YEAR_20,
+  TYPE_II_ERROR_COST_RATIO,
+} from "@optimitron/data/parameters";
 
-  // Risk comparison
-  risk: {
-    terrorismChance: "1 in 30 million",
-    diseaseChance: "100%",
-  },
+/**
+ * Game-specific constants that have no matching parameter in @optimitron/data.
+ * These are fictional (Moronia), game-economics, US-specific, or derived values.
+ */
+export const GAME_PARAMS = {
+  // Derived death stats
+  september11Equivalent: 59, // 150K / ~2,977 per 9/11
 
-  // Economic projections
-  economic: {
-    currentMedianIncome: 77_500,
-    wageKeptPaceIncome: 528_000, // If wages kept pace with productivity
-    currentGDPperCapita: 18_700,
-    projectedGDPperCapita: 149_000,
-    projectedGDPperCapita_treaty: 339_000, // with 17.9% growth over 20yrs
-    projectedGDPperCapita_wishonia: 1_160_000, // with 25.4% growth
-    personalLifetimeLoss: 15_700_000,
-    statusQuoLifetimeIncome: 1_340_000, // $1.34M lifetime
-    wishoniaLifetimeIncome: 54_300_000, // $54.3M Wishonia trajectory
-    annualDysfunctionTax: 12_600, // $12,600/yr per person
-    globalDysfunctionCost: 101_000_000_000_000, // $101T
-    dollarPurchasingPowerLost: 97, // 97% since 1913
-  },
+  // US-specific wage/income (not in global data params)
+  currentMedianIncome: 77_500,
+  wageKeptPaceIncome: 528_000, // If wages kept pace with productivity
+  projectedGDPperCapita: 149_000, // Treaty target
+  statusQuoLifetimeIncome: 1_340_000,
+  wishoniaLifetimeIncome: 54_300_000,
+  dollarPurchasingPowerLost: 97, // % since 1913
 
-  // Economic growth rates (from The Clock)
-  growth: {
-    parasiticRate: 15, // 15% per year
-    productiveRate: 3, // 3% per year
-    yearsToCollapse: 15, // When stealing > producing
-    collapseYear: 2040,
-    statusQuoRate: 2.5, // % per year status quo GDP growth
-    treatyRate: 17.9, // % per year with treaty
-    wishoniaRate: 25.4, // % per year Wishonia trajectory
-  },
+  // Growth rates without direct parameter matches
+  productiveRate: 3, // % per year
+  yearsToCollapse: 15, // When stealing > producing
+  collapseYear: 2040,
+  wishoniaRate: 25.4, // % per year Wishonia trajectory
 
-  // Trial acceleration
-  trials: {
-    currentDuration: 10, // years per treatment
-    acceleratedDuration: 0.81, // years per treatment (12.3x faster)
-    accelerationFactor: 12.3,
-    currentDurationAllDiseases: 443, // years to cure ALL diseases at current pace
-    acceleratedDurationAllDiseases: 36, // years with treaty
-  },
+  // Trial durations (approximations)
+  currentTrialDuration: 10, // years per treatment
+  acceleratedTrialDuration: 0.81, // years per treatment (12.3x faster)
 
-  // Game economics
-  game: {
-    costPerVote: 0.06,
-    valuePerVotePoint: 194_000,
-    prizePoolMultiple: 10, // 10x investment
-    prizePoolROI: 17, // 17% per year
-    prizePoolFallbackMultiple: 11, // 11x back if targets missed
-    minimumDeposit: 100,
-    prizePoolTotal: 774_000_000_000_000, // $774T
-    exchangeRatio: 245_000_000, // 245 million to one (vote cost vs upside)
-  },
+  // Game economics (prize pool, voting)
+  costPerVote: 0.06,
+  valuePerVotePoint: 194_000,
+  prizePoolMultiple: 10,
+  prizePoolROI: 17, // % per year
+  prizePoolFallbackMultiple: 11, // 11x back if targets missed
+  minimumDeposit: 100,
+  prizePoolTotal: 774_000_000_000_000,
+  exchangeRatio: 245_000_000, // 245 million to one
 
-  // Health metrics
-  health: {
-    currentHALE: 63.3, // Healthy life expectancy
-    projectedHALE: 69.8,
-    haleGain: 6.5, // years gained
-  },
-
-  // Population
-  population: {
-    world: 8_000_000_000,
-    livesSaved: 10_700_000_000,
-  },
-
-  // Moronia correlation
-  moronia: {
-    correlationPercent: 94.7,
-  },
-
-  // Pluralistic ignorance
-  pluralistic: {
-    secretSupportPercent: 78, // 78% secretly support
-    publicWealth: 454_000_000_000_000, // $454T
-    defenceWealth: 5_000_000_000_000, // $5T
-  },
+  // Fictional / game-specific
+  moroniaCorrelation: 94.7,
+  secretSupportPercent: 78,
+  defenceWealth: 5_000_000_000_000,
+  terrorismChance: "1 in 30 million",
+  diseaseChance: "100%",
+  militaryPercent: 99.83,
+  trialsPercent: 0.17,
 } as const;
 
 // Score progression throughout the demo
@@ -130,7 +117,7 @@ export const INVENTORY_ITEMS = [
     slot: 1,
     acquiredAt: "the-fix",
     icon: "scroll",
-    emoji: "📜",
+    emoji: "\u{1F4DC}",
     name: "1% TREATY",
     tooltip: "Redirect 1% of military spending to clinical trials.",
   },
@@ -138,7 +125,7 @@ export const INVENTORY_ITEMS = [
     slot: 2,
     acquiredAt: "allocate",
     icon: "ballot",
-    emoji: "🗳",
+    emoji: "\u{1F5F3}",
     name: "ALLOCATION",
     tooltip: "Your preferred budget split.",
   },
@@ -146,7 +133,7 @@ export const INVENTORY_ITEMS = [
     slot: 3,
     acquiredAt: "vote",
     icon: "fist",
-    emoji: "✊",
+    emoji: "\u270A",
     name: "VOTE",
     tooltip: "Yes on the 1% Treaty.",
   },
@@ -154,7 +141,7 @@ export const INVENTORY_ITEMS = [
     slot: 4,
     acquiredAt: "get-friends",
     icon: "chain",
-    emoji: "🔗",
+    emoji: "\u{1F517}",
     name: "REFERRAL LINK",
     tooltip: "Share with 2 friends. They share with 2 more.",
   },
@@ -162,24 +149,24 @@ export const INVENTORY_ITEMS = [
     slot: 5,
     acquiredAt: "prize-mechanism",
     icon: "gold-coin",
-    emoji: "🪙",
+    emoji: "\u{1FA99}",
     name: "PRIZE DEPOSIT",
     tooltip:
-      "$100 deposited. Earning 17%/yr. Grows 11× even if targets missed.",
+      "$100 deposited. Earning 17%/yr. Grows 11\u00D7 even if targets missed.",
   },
   {
     slot: 6,
     acquiredAt: "vote-point-value",
     icon: "silver-pair",
-    emoji: "🥈",
-    name: "VOTE POINTS ×2",
+    emoji: "\u{1F948}",
+    name: "VOTE POINTS \u00D72",
     tooltip: "$194K each if targets are hit. Earned by getting friends to play.",
   },
   {
     slot: 7,
     acquiredAt: "personal-upside",
     icon: "deed",
-    emoji: "📋",
+    emoji: "\u{1F4CB}",
     name: "$15.7M CLAIM",
     tooltip: "Your lifetime income gain if the Treaty passes.",
   },
@@ -187,7 +174,7 @@ export const INVENTORY_ITEMS = [
     slot: 8,
     acquiredAt: "leaderboard",
     icon: "magnifier",
-    emoji: "🔍",
+    emoji: "\u{1F50D}",
     name: "ALIGNMENT SCORE",
     tooltip: "See how your leaders rank vs your preferences.",
   },

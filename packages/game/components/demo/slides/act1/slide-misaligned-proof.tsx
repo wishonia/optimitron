@@ -4,7 +4,7 @@ import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
 import { GlitchText } from "../../animations/glitch-text";
 import { ParticleEmitter } from "../../animations/particle-emitter";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import { CUMULATIVE_MILITARY_SPENDING_FED_ERA, GAME_PARAMS, MONEY_PRINTER_WAR_DEATHS } from "@/lib/demo/parameters";
 import { useEffect, useState } from "react";
 
 /** A single CRT monitor frame with scanlines */
@@ -136,7 +136,7 @@ export function SlideMisalignedProof() {
             <div className="text-center">
               <div className="font-pixel text-xl md:text-2xl text-amber-400">
                 <AnimatedCounter
-                  end={PARAMETERS.spending.cumulativeMilitarySinceFed}
+                  end={CUMULATIVE_MILITARY_SPENDING_FED_ERA.value}
                   duration={3000}
                   format="currency"
                   decimals={0}
@@ -175,7 +175,7 @@ export function SlideMisalignedProof() {
                 />
               </div>
               <div className="font-pixel text-xs text-red-300/60 mt-2">
-                {PARAMETERS.economic.dollarPurchasingPowerLost}% DESTROYED
+                {GAME_PARAMS.dollarPurchasingPowerLost}% DESTROYED
               </div>
             </div>
           </CRTMonitor>
@@ -190,7 +190,7 @@ export function SlideMisalignedProof() {
             <div className="text-center relative">
               <div className="font-pixel text-xl md:text-2xl text-red-500">
                 <AnimatedCounter
-                  end={PARAMETERS.deaths.warDeathsFundedByPrinting}
+                  end={MONEY_PRINTER_WAR_DEATHS.value}
                   duration={3000}
                   format="number"
                 />

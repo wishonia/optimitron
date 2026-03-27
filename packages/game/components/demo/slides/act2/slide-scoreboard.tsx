@@ -1,8 +1,19 @@
 "use client";
 
 import { SlideBase } from "../slide-base";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  GLOBAL_HALE_CURRENT,
+  TREATY_PROJECTED_HALE_YEAR_15,
+  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15,
+  GAME_PARAMS,
+} from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
+
+const currentHALE = GLOBAL_HALE_CURRENT.value;
+const projectedHALE = Math.round(TREATY_PROJECTED_HALE_YEAR_15.value * 10) / 10;
+const haleGain = Math.round((TREATY_PROJECTED_HALE_YEAR_15.value - GLOBAL_HALE_CURRENT.value) * 10) / 10;
+const currentGDPperCapita = Math.round(CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value / 100) * 100;
+const projectedGDPperCapita = GAME_PARAMS.projectedGDPperCapita;
 
 export function SlideScoreboard() {
   return (
@@ -23,16 +34,16 @@ export function SlideScoreboard() {
               <span>
                 Current:{" "}
                 <span className="text-zinc-300">
-                  {PARAMETERS.health.currentHALE} years
+                  {currentHALE} years
                 </span>
               </span>
               <span>
                 Target:{" "}
                 <span className="text-emerald-400">
-                  {PARAMETERS.health.projectedHALE} years
+                  {projectedHALE} years
                 </span>
                 <span className="text-emerald-500 ml-1">
-                  (+{PARAMETERS.health.haleGain})
+                  (+{haleGain})
                 </span>
               </span>
             </div>
@@ -54,13 +65,13 @@ export function SlideScoreboard() {
               <span>
                 Current:{" "}
                 <span className="text-zinc-300">
-                  {formatCurrency(PARAMETERS.economic.currentGDPperCapita)}/year
+                  {formatCurrency(currentGDPperCapita)}/year
                 </span>
               </span>
               <span>
                 Target:{" "}
                 <span className="text-emerald-400">
-                  {formatCurrency(PARAMETERS.economic.projectedGDPperCapita)}
+                  {formatCurrency(projectedGDPperCapita)}
                   /year
                 </span>
                 <span className="text-emerald-500 ml-1">(8×)</span>

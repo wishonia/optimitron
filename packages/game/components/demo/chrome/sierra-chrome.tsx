@@ -41,60 +41,67 @@ export function SierraChrome({
       "bg-[var(--sierra-bg)]"
     )}>
       {/* Top HUD - Score, Death Ticker, Quest Meters */}
-      <SierraHUD />
+      {!isRecordingMode && <SierraHUD />}
 
       {/* Main Scene Area */}
       <main className={cn(
         "absolute inset-0",
-        "pt-16 md:pt-20", // Space for HUD
-        "pb-32 md:pb-40", // Space for narrator + verb bar
+        !isRecordingMode && "pt-16 md:pt-20", // Space for HUD
+        !isRecordingMode && "pb-32 md:pb-40", // Space for narrator + verb bar
         "flex items-center justify-center",
         "overflow-hidden"
       )}>
-        <div className="relative w-full h-full max-w-[1600px] mx-auto px-4">
+        <div className={cn(
+          "relative w-full h-full mx-auto",
+          !isRecordingMode && "max-w-[1600px] px-4"
+        )}>
           {children}
           {/* CTA button — positioned above narrator */}
-          <div className="absolute bottom-2 right-4 z-20">
-            <SlideCTA />
-          </div>
+          {!isRecordingMode && (
+            <div className="absolute bottom-2 right-4 z-20">
+              <SlideCTA />
+            </div>
+          )}
         </div>
       </main>
 
       {/* Bottom Section - Narrator, Verb Bar, Inventory */}
-      <div className={cn(
-        "fixed bottom-0 left-0 right-0 z-30",
-        `palette-${palette}`
-      )}>
-        {/* Narrator Box */}
-        <NarratorBox
-          text={narrationText}
-          slideId={slideId}
-          onComplete={onNarrationComplete}
-        />
+      {!isRecordingMode && (
+        <div className={cn(
+          "fixed bottom-0 left-0 right-0 z-30",
+          `palette-${palette}`
+        )}>
+          {/* Narrator Box */}
+          <NarratorBox
+            text={narrationText}
+            slideId={slideId}
+            onComplete={onNarrationComplete}
+          />
 
-        {/* Verb Bar + Inventory */}
-        {showVerbBar && !isRecordingMode && (
-          <div className={cn(
-            "flex items-center justify-between",
-            "px-2 pb-2 md:px-4 md:pb-4"
-          )}>
-            <VerbBar 
-              onVerbSelect={onVerbSelect}
-              activeVerb={activeVerb}
-            />
-            
-            {/* Desktop Inventory */}
-            <div className="hidden md:block">
-              <Inventory />
+          {/* Verb Bar + Inventory */}
+          {showVerbBar && (
+            <div className={cn(
+              "flex items-center justify-between",
+              "px-2 pb-2 md:px-4 md:pb-4"
+            )}>
+              <VerbBar
+                onVerbSelect={onVerbSelect}
+                activeVerb={activeVerb}
+              />
+
+              {/* Desktop Inventory */}
+              <div className="hidden md:block">
+                <Inventory />
+              </div>
+
+              {/* Mobile Inventory */}
+              <div className="md:hidden">
+                <InventoryCompact />
+              </div>
             </div>
-            
-            {/* Mobile Inventory */}
-            <div className="md:hidden">
-              <InventoryCompact />
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       {/* CRT Glow Effect */}
       <div className={cn(

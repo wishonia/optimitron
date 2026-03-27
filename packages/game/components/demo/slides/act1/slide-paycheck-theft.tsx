@@ -3,7 +3,7 @@
 import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
 import { ParticleEmitter } from "../../animations/particle-emitter";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import { GAME_PARAMS, TREATY_PERSONAL_UPSIDE_BLEND } from "@/lib/demo/parameters";
 import { useEffect, useState } from "react";
 
 export function SlidePaycheckTheft() {
@@ -119,7 +119,7 @@ export function SlidePaycheckTheft() {
           </div>
           <div className="font-pixel text-4xl md:text-6xl text-red-500">
             <AnimatedCounter
-              end={PARAMETERS.economic.personalLifetimeLoss}
+              end={Math.round(TREATY_PERSONAL_UPSIDE_BLEND.value / 100_000) * 100_000}
               duration={2500}
               format="currency"
               decimals={1}
@@ -135,14 +135,14 @@ export function SlidePaycheckTheft() {
           <div className="text-center p-4 bg-red-500/10 border border-red-500/30 rounded">
             <div className="font-pixel text-xs text-red-400 mb-1">YOUR PAYCHECK</div>
             <div className="font-pixel text-xl text-red-500">
-              ${PARAMETERS.economic.currentMedianIncome.toLocaleString()}
+              ${GAME_PARAMS.currentMedianIncome.toLocaleString()}
             </div>
             <div className="font-pixel text-xs text-zinc-500">per year</div>
           </div>
           <div className="text-center p-4 bg-green-500/10 border border-green-500/30 rounded">
             <div className="font-pixel text-xs text-green-400 mb-1">IF WAGES KEPT PACE</div>
             <div className="font-pixel text-xl text-green-500">
-              ${PARAMETERS.economic.wageKeptPaceIncome.toLocaleString()}
+              ${GAME_PARAMS.wageKeptPaceIncome.toLocaleString()}
             </div>
             <div className="font-pixel text-xs text-zinc-500">per year</div>
           </div>

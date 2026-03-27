@@ -21,14 +21,21 @@ import { SlideWishoniaRestore } from "./slides/turn/slide-wishonia-restore";
 // Act II slides - Part 1: The Solution
 import { SlideOnePercent } from "./slides/act2/slide-one-percent";
 import { SlideAcceleration } from "./slides/act2/slide-acceleration";
+import { SlideRoiComparison } from "./slides/act2/slide-roi-comparison";
+import { SlideVirtuousLoop } from "./slides/act2/slide-virtuous-loop";
 import { SlideGDPTrajectory } from "./slides/act2/slide-gdp-trajectory";
+import { SlideCompoundPunchline } from "./slides/act2/slide-compound-punchline";
+import { SlideTheBug } from "./slides/act2/slide-the-bug";
+import { SlideTheMismatch } from "./slides/act2/slide-the-mismatch";
 import { SlidePluristicIgnorance } from "./slides/act2/slide-pluralistic-ignorance";
 import { SlideDysfunctionTax } from "./slides/act2/slide-dysfunction-tax";
 import { SlideScoreboard } from "./slides/act2/slide-scoreboard";
 
 // Act II slides - Part 2: The Game
 import { SlideLevelAllocate } from "./slides/act2/slide-level-allocate";
+import { SlideYourBudget } from "./slides/act2/slide-your-budget";
 import { SlideLevelVote } from "./slides/act2/slide-level-vote";
+import { SlideYoureIn } from "./slides/act2/slide-youre-in";
 import { SlideAsymmetry } from "./slides/act2/slide-asymmetry";
 import { SlideLevelShare } from "./slides/act2/slide-level-share";
 
@@ -43,14 +50,21 @@ import { SlideLeaderboard } from "./slides/act2/slide-leaderboard";
 import { SlideChangedMetric } from "./slides/act2/slide-changed-metric";
 
 // Act II slides - Part 5: The Armory
+import { SlideFdaQueue } from "./slides/act2/slide-fda-queue";
 import { SlideDfda } from "./slides/act2/slide-dfda";
 import { SlideIabs } from "./slides/act2/slide-iabs";
 import { SlideSuperpac } from "./slides/act2/slide-superpac";
 import { SlideStoracha } from "./slides/act2/slide-storacha";
 import { SlideHypercerts } from "./slides/act2/slide-hypercerts";
 import { SlideWishToken } from "./slides/act2/slide-wish-token";
+import { SlideReplaceWelfare } from "./slides/act2/slide-replace-welfare";
+import { SlideReplaceFed } from "./slides/act2/slide-replace-fed";
+import { SlidePolicyEngine } from "./slides/act2/slide-policy-engine";
 import { SlideOptimizer } from "./slides/act2/slide-optimizer";
+import { SlideBudgetOptimizer } from "./slides/act2/slide-budget-optimizer";
 import { SlideIPencil } from "./slides/act2/slide-i-pencil";
+import { SlideCuredDisease } from "./slides/act2/slide-cured-disease";
+import { SlideTheSwitch } from "./slides/act2/slide-the-switch";
 
 // Act III slides
 import { SlidePersonalUpside } from "./slides/act3/slide-personal-upside";
@@ -80,14 +94,21 @@ const slideComponents: Record<string, React.ComponentType> = {
   // Act II - Part 1: The Solution
   "the-fix": SlideOnePercent,
   "acceleration": SlideAcceleration,
+  "roi-comparison": SlideRoiComparison,
+  "virtuous-loop": SlideVirtuousLoop,
   "twenty-year-gap": SlideGDPTrajectory,
+  "compound-punchline": SlideCompoundPunchline,
+  "the-bug": SlideTheBug,
+  "the-mismatch": SlideTheMismatch,
   "pluralistic-ignorance": SlidePluristicIgnorance,
   "dysfunction-tax": SlideDysfunctionTax,
   "scoreboard": SlideScoreboard,
 
   // Act II - Part 2: The Game
   "allocate": SlideLevelAllocate,
+  "your-budget": SlideYourBudget,
   "referendum": SlideLevelVote,
+  "youre-in": SlideYoureIn,
   "asymmetry": SlideAsymmetry,
   "get-friends": SlideLevelShare,
 
@@ -102,14 +123,21 @@ const slideComponents: Record<string, React.ComponentType> = {
   "track-record": SlideChangedMetric,
 
   // Act II - Part 5: The Armory
+  "fda-queue": SlideFdaQueue,
   "dfda-fix": SlideDfda,
   "iabs": SlideIabs,
   "superpac": SlideSuperpac,
   "storacha": SlideStoracha,
   "hypercerts": SlideHypercerts,
   "replace-irs": SlideWishToken,
+  "replace-welfare": SlideReplaceWelfare,
+  "replace-fed": SlideReplaceFed,
+  "policy-engine": SlidePolicyEngine,
   "optimizer": SlideOptimizer,
+  "budget-optimizer": SlideBudgetOptimizer,
   "i-pencil": SlideIPencil,
+  "cured-disease": SlideCuredDisease,
+  "the-switch": SlideTheSwitch,
 
   // Act III - The Endgame
   "personal-upside": SlidePersonalUpside,

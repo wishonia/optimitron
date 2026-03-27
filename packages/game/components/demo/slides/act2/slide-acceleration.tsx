@@ -2,8 +2,16 @@
 
 import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  DFDA_TRIAL_CAPACITY_MULTIPLIER,
+  STATUS_QUO_QUEUE_CLEARANCE_YEARS,
+  DFDA_QUEUE_CLEARANCE_YEARS,
+} from "@/lib/demo/parameters";
 import { useEffect, useState } from "react";
+
+const accelerationFactor = Math.round(DFDA_TRIAL_CAPACITY_MULTIPLIER.value * 10) / 10;
+const currentDurationAllDiseases = Math.round(STATUS_QUO_QUEUE_CLEARANCE_YEARS.value);
+const acceleratedDurationAllDiseases = Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value);
 
 export function SlideAcceleration() {
   const [showRace, setShowRace] = useState(false);
@@ -43,7 +51,7 @@ export function SlideAcceleration() {
     <SlideBase act={2} className="text-cyan-400">
       {/* Title */}
       <h1 className="font-pixel text-lg md:text-2xl text-cyan-400 text-center mb-8">
-        {PARAMETERS.trials.accelerationFactor}x FASTER TRIALS
+        {accelerationFactor}x FASTER TRIALS
       </h1>
 
       <div className="w-full max-w-7xl mx-auto space-y-8">
@@ -54,7 +62,7 @@ export function SlideAcceleration() {
             <div className="text-5xl md:text-7xl mb-4 opacity-50">⏳</div>
             <div className="font-pixel text-sm text-zinc-400">STATUS QUO</div>
             <div className="font-pixel text-2xl text-red-400 mt-2">
-              {PARAMETERS.trials.currentDurationAllDiseases} years
+              {currentDurationAllDiseases} years
             </div>
             <div className="font-pixel text-xs text-zinc-500 mt-1">
               to cure ALL diseases
@@ -66,7 +74,7 @@ export function SlideAcceleration() {
             <div className="text-5xl md:text-7xl mb-4 animate-spin-slow">⌛</div>
             <div className="font-pixel text-sm text-emerald-400">1% TREATY</div>
             <div className="font-pixel text-2xl text-emerald-400 mt-2">
-              {PARAMETERS.trials.acceleratedDurationAllDiseases} years
+              {acceleratedDurationAllDiseases} years
             </div>
             <div className="font-pixel text-xs text-zinc-500 mt-1">
               to cure ALL diseases

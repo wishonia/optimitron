@@ -2,10 +2,10 @@
 
 import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import { GAME_PARAMS, GLOBAL_DISEASE_DEATHS_DAILY } from "@/lib/demo/parameters";
 import { useEffect, useState } from "react";
 
-const TOTAL_TOWERS = PARAMETERS.deaths.september11Equivalent; // 59
+const TOTAL_TOWERS = GAME_PARAMS.september11Equivalent; // 59
 
 export function SlideDeathCounter() {
   const [phase, setPhase] = useState(0);
@@ -69,7 +69,7 @@ export function SlideDeathCounter() {
             }`}
           >
             <AnimatedCounter
-              end={PARAMETERS.deaths.perDay}
+              end={GLOBAL_DISEASE_DEATHS_DAILY.value}
               duration={3000}
               format="number"
               easing="easeOut"

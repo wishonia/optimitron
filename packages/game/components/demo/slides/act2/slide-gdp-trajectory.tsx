@@ -3,8 +3,22 @@
 import { SlideBase } from "../slide-base";
 import { AnimatedLineChart } from "../../animations/animated-line-chart";
 import { AnimatedCounter } from "../../animations/animated-counter";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  GAME_PARAMS,
+  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15,
+  GDP_BASELINE_GROWTH_RATE,
+  TREATY_TRAJECTORY_CAGR_YEAR_20,
+  TREATY_TRAJECTORY_AVG_INCOME_YEAR_20,
+} from "@/lib/demo/parameters";
 import { useEffect, useState } from "react";
+
+const currentGDPperCapita = Math.round(CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value / 100) * 100;
+const statusQuoRate = GDP_BASELINE_GROWTH_RATE.value * 100;
+const treatyRate = Math.round(TREATY_TRAJECTORY_CAGR_YEAR_20.value * 1000) / 10;
+const wishoniaRate = GAME_PARAMS.wishoniaRate;
+const projectedGDPperCapita_treaty = Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_20.value / 1000) * 1000;
+// Wishonia best-case trajectory GDP per capita (game constant, not in @optimitron/data)
+const wishoniaGDPperCapita = 1_160_000;
 
 export function SlideGDPTrajectory() {
   const [showLoop, setShowLoop] = useState(false);
@@ -16,17 +30,17 @@ export function SlideGDPTrajectory() {
   // Generate GDP trajectory data
   const baselineData = Array.from({ length: 30 }, (_, i) => ({
     x: 2025 + i,
-    y: PARAMETERS.economic.currentGDPperCapita * Math.pow(1 + PARAMETERS.growth.statusQuoRate / 100, i),
+    y: currentGDPperCapita * Math.pow(1 + statusQuoRate / 100, i),
   }));
 
   const optimizedData = Array.from({ length: 30 }, (_, i) => ({
     x: 2025 + i,
-    y: PARAMETERS.economic.currentGDPperCapita * Math.pow(1 + PARAMETERS.growth.treatyRate / 100, i),
+    y: currentGDPperCapita * Math.pow(1 + treatyRate / 100, i),
   }));
 
   const wishoniaData = Array.from({ length: 30 }, (_, i) => ({
     x: 2025 + i,
-    y: PARAMETERS.economic.currentGDPperCapita * Math.pow(1 + PARAMETERS.growth.wishoniaRate / 100, i),
+    y: currentGDPperCapita * Math.pow(1 + wishoniaRate / 100, i),
   }));
 
   return (
@@ -62,7 +76,7 @@ export function SlideGDPTrajectory() {
             <div className="font-pixel text-sm text-red-400 mb-2">2055: STATUS QUO</div>
             <div className="font-pixel text-xl md:text-2xl text-red-400">
               <AnimatedCounter
-                end={PARAMETERS.economic.currentGDPperCapita * Math.pow(1 + PARAMETERS.growth.statusQuoRate / 100, 30)}
+                end={currentGDPperCapita * Math.pow(1 + statusQuoRate / 100, 30)}
                 duration={2000}
                 format="currency"
                 decimals={0}
@@ -75,7 +89,7 @@ export function SlideGDPTrajectory() {
             <div className="font-pixel text-sm text-emerald-400 mb-2">2055: 1% TREATY</div>
             <div className="font-pixel text-xl md:text-2xl text-emerald-400">
               <AnimatedCounter
-                end={PARAMETERS.economic.projectedGDPperCapita_treaty}
+                end={projectedGDPperCapita_treaty}
                 duration={2000}
                 format="currency"
                 decimals={0}
@@ -88,7 +102,7 @@ export function SlideGDPTrajectory() {
             <div className="font-pixel text-sm text-yellow-400 mb-2">2055: WISHONIA</div>
             <div className="font-pixel text-xl md:text-2xl text-yellow-400">
               <AnimatedCounter
-                end={PARAMETERS.economic.projectedGDPperCapita_wishonia}
+                end={wishoniaGDPperCapita}
                 duration={2000}
                 format="currency"
                 decimals={0}
@@ -146,7 +160,7 @@ export function SlideGDPTrajectory() {
 
               {/* Center */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="font-pixel text-lg text-amber-400">{PARAMETERS.growth.treatyRate}%</div>
+                <div className="font-pixel text-lg text-amber-400">{treatyRate}%</div>
               </div>
             </div>
 

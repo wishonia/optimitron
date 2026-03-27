@@ -1,7 +1,7 @@
 "use client";
 
 import { SlideBase } from "../slide-base";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import { GAME_PARAMS } from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
 
 const FRIENDS_TABLE = [
@@ -12,7 +12,7 @@ const FRIENDS_TABLE = [
 ];
 
 export function SlideVotePointValue() {
-  const valuePerPoint = PARAMETERS.game.valuePerVotePoint;
+  const valuePerPoint = GAME_PARAMS.valuePerVotePoint;
 
   return (
     <SlideBase act={2} className="text-purple-400">

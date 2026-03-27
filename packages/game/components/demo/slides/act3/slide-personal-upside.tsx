@@ -1,8 +1,20 @@
 "use client";
 
 import { SlideBase } from "../slide-base";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
+  TREATY_PERSONAL_UPSIDE_BLEND,
+  TREATY_PROJECTED_HALE_YEAR_15,
+  GLOBAL_HALE_CURRENT,
+  GAME_PARAMS,
+} from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
+
+const statusQuoLifetimeIncome = GAME_PARAMS.statusQuoLifetimeIncome;
+const annualDysfunctionTax = Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value / 100) * 100;
+const personalLifetimeLoss = Math.round(TREATY_PERSONAL_UPSIDE_BLEND.value / 100_000) * 100_000;
+const haleGain = Math.round((TREATY_PROJECTED_HALE_YEAR_15.value - GLOBAL_HALE_CURRENT.value) * 10) / 10;
+const wishoniaLifetimeIncome = GAME_PARAMS.wishoniaLifetimeIncome;
 
 interface SaveSlot {
   title: string;
@@ -25,10 +37,10 @@ const SAVE_SLOTS: SaveSlot[] = [
     bgColor: "bg-zinc-800/50",
     textColor: "text-zinc-400",
     tagColor: "text-zinc-500",
-    lifetimeIncome: PARAMETERS.economic.statusQuoLifetimeIncome,
+    lifetimeIncome: statusQuoLifetimeIncome,
     lifetimeLabel: "",
     haleGain: "+0 years",
-    dysfunctionTax: `-${formatCurrency(PARAMETERS.economic.annualDysfunctionTax)}/yr`,
+    dysfunctionTax: `-${formatCurrency(annualDysfunctionTax)}/yr`,
   },
   {
     title: "1% TREATY",
@@ -37,9 +49,9 @@ const SAVE_SLOTS: SaveSlot[] = [
     bgColor: "bg-emerald-500/10",
     textColor: "text-emerald-400",
     tagColor: "text-emerald-400",
-    lifetimeIncome: PARAMETERS.economic.personalLifetimeLoss,
+    lifetimeIncome: personalLifetimeLoss,
     lifetimeLabel: "(12×)",
-    haleGain: `+${PARAMETERS.health.haleGain} years`,
+    haleGain: `+${haleGain} years`,
     dysfunctionTax: "eliminated",
   },
   {
@@ -49,7 +61,7 @@ const SAVE_SLOTS: SaveSlot[] = [
     bgColor: "bg-amber-500/10",
     textColor: "text-amber-400",
     tagColor: "text-amber-400",
-    lifetimeIncome: PARAMETERS.economic.wishoniaLifetimeIncome,
+    lifetimeIncome: wishoniaLifetimeIncome,
     lifetimeLabel: "(40×)",
     haleGain: "+15.7 years",
     dysfunctionTax: "what is that",

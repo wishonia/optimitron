@@ -2,9 +2,23 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useDemoStore } from "@/lib/demo/store";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  GLOBAL_POPULATION_2024,
+  GLOBAL_DISEASE_DEATHS_DAILY,
+  GLOBAL_HALE_CURRENT,
+  TREATY_PROJECTED_HALE_YEAR_15,
+  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15,
+  GAME_PARAMS,
+} from "@/lib/demo/parameters";
 import { formatNumber } from "@/lib/demo/formatters";
 import { cn } from "@/lib/utils";
+
+const populationWorld = GLOBAL_POPULATION_2024.value;
+const deathsPerDay = GLOBAL_DISEASE_DEATHS_DAILY.value;
+const currentHALE = GLOBAL_HALE_CURRENT.value;
+const projectedHALE = Math.round(TREATY_PROJECTED_HALE_YEAR_15.value * 10) / 10;
+const currentGDPperCapita = Math.round(CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value / 100) * 100;
+const projectedGDPperCapita = GAME_PARAMS.projectedGDPperCapita;
 
 /**
  * Score Counter - Animated odometer-style display
@@ -61,7 +75,7 @@ function ScoreCounter() {
         {formatNumber(displayScore)}
       </span>
       <span className="text-pixel-xs md:text-pixel-sm opacity-50">
-        of {formatNumber(PARAMETERS.population.world)}
+        of {formatNumber(populationWorld)}
       </span>
     </div>
   );
@@ -73,7 +87,7 @@ function ScoreCounter() {
  */
 function DeathTicker() {
   const [count, setCount] = useState(0);
-  const deathsPerSecond = PARAMETERS.deaths.perDay / 86400; // ~1.74 deaths per second
+  const deathsPerSecond = deathsPerDay / 86400; // ~1.74 deaths per second
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -87,7 +101,7 @@ function DeathTicker() {
     <div className="death-ticker flex items-center gap-2">
       <span className="text-lg animate-sierra-pulse">&#9760;</span>
       <span className="text-pixel-xs md:text-pixel-sm">
-        {formatNumber(PARAMETERS.deaths.perDay)}/day
+        {formatNumber(deathsPerDay)}/day
       </span>
     </div>
   );
@@ -118,7 +132,7 @@ function QuestMeters() {
           />
         </div>
         <span className="text-pixel-xs text-[var(--sierra-fg)] w-28 text-right">
-          {PARAMETERS.health.currentHALE} → {PARAMETERS.health.projectedHALE} yrs
+          {currentHALE} → {projectedHALE} yrs
         </span>
       </div>
 
@@ -132,7 +146,7 @@ function QuestMeters() {
           />
         </div>
         <span className="text-pixel-xs text-[var(--sierra-fg)] w-28 text-right">
-          ${formatNumber(PARAMETERS.economic.currentGDPperCapita / 1000, "compact")}K → ${formatNumber(PARAMETERS.economic.projectedGDPperCapita / 1000, "compact")}K
+          ${formatNumber(currentGDPperCapita / 1000, "compact")}K → ${formatNumber(projectedGDPperCapita / 1000, "compact")}K
         </span>
       </div>
     </div>

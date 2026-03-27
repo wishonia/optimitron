@@ -3,7 +3,11 @@
 import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
 import { AnimatedBarChart } from "../../animations/animated-bar-chart";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
+} from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
 import { useEffect, useState } from "react";
 
@@ -23,13 +27,13 @@ export function SlideRatio() {
   const barData = [
     {
       label: "Military",
-      value: PARAMETERS.spending.militaryGlobal,
+      value: GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value,
       color: "#ef4444", // red
       icon: "⚔️",
     },
     {
       label: "Trials",
-      value: PARAMETERS.spending.clinicalTrialsGlobal,
+      value: GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value,
       color: "#22c55e", // green
       icon: "🧪",
     },
@@ -53,7 +57,7 @@ export function SlideRatio() {
             </div>
             <div className="font-pixel text-2xl md:text-4xl text-red-500">
               <AnimatedCounter
-                end={PARAMETERS.spending.militaryGlobal}
+                end={GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value}
                 duration={2500}
                 format="currency"
                 decimals={2}
@@ -69,7 +73,7 @@ export function SlideRatio() {
             </div>
             <div className="font-pixel text-2xl md:text-4xl text-green-500">
               <AnimatedCounter
-                end={PARAMETERS.spending.clinicalTrialsGlobal}
+                end={GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value}
                 duration={2500}
                 format="currency"
                 decimals={1}
@@ -90,7 +94,7 @@ export function SlideRatio() {
             <div>
               <div className="flex justify-between text-xs font-pixel mb-1">
                 <span className="text-red-400">⚔️ Military</span>
-                <span className="text-red-400">{formatCurrency(PARAMETERS.spending.militaryGlobal)}</span>
+                <span className="text-red-400">{formatCurrency(GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value)}</span>
               </div>
               <div className="h-8 md:h-12 bg-zinc-900 border border-zinc-700 relative overflow-hidden">
                 <div
@@ -104,14 +108,14 @@ export function SlideRatio() {
             <div>
               <div className="flex justify-between text-xs font-pixel mb-1">
                 <span className="text-green-400">🧪 Clinical Trials</span>
-                <span className="text-green-400">{formatCurrency(PARAMETERS.spending.clinicalTrialsGlobal)}</span>
+                <span className="text-green-400">{formatCurrency(GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value)}</span>
               </div>
               <div className="h-8 md:h-12 bg-zinc-900 border border-zinc-700 relative overflow-hidden">
                 <div
                   className="h-full bg-gradient-to-r from-green-600 to-green-500 transition-all duration-2000"
                   style={{ 
-                    width: showComparison 
-                      ? `${(PARAMETERS.spending.clinicalTrialsGlobal / PARAMETERS.spending.militaryGlobal) * 100}%` 
+                    width: showComparison
+                      ? `${(GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value / GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value) * 100}%`
                       : "0%",
                     minWidth: showComparison ? "4px" : "0px",
                   }}
@@ -137,11 +141,11 @@ export function SlideRatio() {
             THE RATIO
           </div>
           <div className="font-pixel text-6xl md:text-9xl text-red-500 animate-pulse">
-            {PARAMETERS.spending.ratio}:1
+            {Math.round(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value)}:1
           </div>
           <div className="font-pixel text-sm md:text-lg text-zinc-500 mt-4">
             For every $1 spent on clinical trials,<br />
-            ${PARAMETERS.spending.ratio} goes to military
+            ${Math.round(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value)} goes to military
           </div>
         </div>
       </div>

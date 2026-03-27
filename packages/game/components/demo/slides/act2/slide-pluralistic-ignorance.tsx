@@ -1,7 +1,7 @@
 "use client";
 
 import { SlideBase } from "../slide-base";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import { GLOBAL_HOUSEHOLD_WEALTH_USD, GAME_PARAMS } from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
 
 const GRID_ROWS = 5;
@@ -22,9 +22,9 @@ export function SlidePluristicIgnorance() {
     }
   }
 
-  const ratio = Math.round(
-    PARAMETERS.pluralistic.publicWealth / PARAMETERS.pluralistic.defenceWealth
-  );
+  const publicWealth = GLOBAL_HOUSEHOLD_WEALTH_USD.value;
+  const defenceWealth = GAME_PARAMS.defenceWealth;
+  const ratio = Math.round(publicWealth / defenceWealth);
 
   return (
     <SlideBase act={2} className="text-cyan-400">
@@ -72,7 +72,7 @@ export function SlidePluristicIgnorance() {
               PUBLIC WEALTH
             </div>
             <div className="font-pixel text-base md:text-lg text-cyan-400">
-              {formatCurrency(PARAMETERS.pluralistic.publicWealth)}
+              {formatCurrency(publicWealth)}
             </div>
           </div>
           <div className="text-center p-3 bg-red-500/10 border border-red-500/30 rounded">
@@ -80,7 +80,7 @@ export function SlidePluristicIgnorance() {
               DEFENCE INDUSTRY
             </div>
             <div className="font-pixel text-base md:text-lg text-red-400">
-              {formatCurrency(PARAMETERS.pluralistic.defenceWealth)}
+              {formatCurrency(defenceWealth)}
             </div>
           </div>
         </div>

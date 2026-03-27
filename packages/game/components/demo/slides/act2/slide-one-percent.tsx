@@ -2,9 +2,15 @@
 
 import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  TREATY_ANNUAL_FUNDING,
+} from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
 import { useEffect, useState } from "react";
+
+const militaryGlobal = GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value;
+const onePercentMilitary = TREATY_ANNUAL_FUNDING.value;
 
 export function SlideOnePercent() {
   const [sliderValue, setSliderValue] = useState(0);
@@ -26,7 +32,7 @@ export function SlideOnePercent() {
     return () => clearInterval(interval);
   }, []);
 
-  const redirectedAmount = (sliderValue / 100) * PARAMETERS.spending.militaryGlobal;
+  const redirectedAmount = (sliderValue / 100) * militaryGlobal;
 
   return (
     <SlideBase act={2} className="text-emerald-400">
@@ -43,7 +49,7 @@ export function SlideOnePercent() {
             <div className="font-pixel text-xs text-red-400 mb-2">CURRENT</div>
             <div className="text-3xl mb-2">⚔️</div>
             <div className="font-pixel text-sm text-red-400">
-              {formatCurrency(PARAMETERS.spending.militaryGlobal)}
+              {formatCurrency(militaryGlobal)}
             </div>
             <div className="font-pixel text-xs text-zinc-500 mt-1">
               100% to military
@@ -111,7 +117,7 @@ export function SlideOnePercent() {
           </div>
           <div className="font-pixel text-3xl md:text-5xl text-emerald-400">
             <AnimatedCounter
-              end={PARAMETERS.spending.onePercentMilitary}
+              end={onePercentMilitary}
               duration={2000}
               format="currency"
               decimals={1}

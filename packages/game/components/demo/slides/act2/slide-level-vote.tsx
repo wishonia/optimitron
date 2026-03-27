@@ -4,7 +4,7 @@ import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
 import { ProgressRing } from "../../animations/progress-ring";
 import { useDemoStore } from "@/lib/demo/store";
-import { PARAMETERS, INVENTORY_ITEMS } from "@/lib/demo/parameters";
+import { GAME_PARAMS, INVENTORY_ITEMS } from "@/lib/demo/parameters";
 import { useEffect, useState } from "react";
 
 export function SlideLevelVote() {
@@ -91,7 +91,7 @@ export function SlideLevelVote() {
               <div className="text-center">
                 <div className="text-4xl mb-2">☕</div>
                 <div className="font-pixel text-lg text-amber-400">
-                  ${PARAMETERS.game.costPerVote.toFixed(2)}
+                  ${GAME_PARAMS.costPerVote.toFixed(2)}
                 </div>
                 <div className="font-pixel text-xs text-zinc-500">per vote</div>
               </div>

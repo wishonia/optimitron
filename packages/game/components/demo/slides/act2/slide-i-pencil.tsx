@@ -1,7 +1,7 @@
 "use client";
 
 import { SlideBase } from "../slide-base";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import { GAME_PARAMS } from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
 
 export function SlideIPencil() {
@@ -44,7 +44,7 @@ export function SlideIPencil() {
               VOTE POINT VALUE
             </div>
             <div className="font-pixel text-xl md:text-2xl text-emerald-400">
-              {formatCurrency(PARAMETERS.game.valuePerVotePoint)}
+              {formatCurrency(GAME_PARAMS.valuePerVotePoint)}
             </div>
           </div>
 
@@ -53,7 +53,7 @@ export function SlideIPencil() {
               PRIZE POOL
             </div>
             <div className="font-pixel text-xl md:text-2xl text-yellow-400">
-              {formatCurrency(PARAMETERS.game.prizePoolTotal)}
+              {formatCurrency(GAME_PARAMS.prizePoolTotal)}
             </div>
           </div>
         </div>

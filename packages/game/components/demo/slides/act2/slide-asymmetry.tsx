@@ -1,9 +1,14 @@
 "use client";
 
 import { SlideBase } from "../slide-base";
-import { PARAMETERS } from "@/lib/demo/parameters";
+import {
+  GAME_PARAMS,
+  TREATY_PERSONAL_UPSIDE_BLEND,
+} from "@/lib/demo/parameters";
 import { formatCurrency } from "@/lib/demo/formatters";
 import { useEffect, useState } from "react";
+
+const personalLifetimeLoss = Math.round(TREATY_PERSONAL_UPSIDE_BLEND.value / 100_000) * 100_000;
 
 export function SlideAsymmetry() {
   const [flashVisible, setFlashVisible] = useState(true);
@@ -27,7 +32,7 @@ export function SlideAsymmetry() {
             </div>
             <div className="text-center space-y-1">
               <div className="font-pixel text-sm md:text-base text-zinc-300">
-                ${PARAMETERS.game.costPerVote.toFixed(2)}
+                ${GAME_PARAMS.costPerVote.toFixed(2)}
               </div>
               <div className="font-pixel text-xs text-zinc-500">
                 30 seconds of your time
@@ -52,7 +57,7 @@ export function SlideAsymmetry() {
             </div>
             <div className="text-center space-y-1">
               <div className="font-pixel text-sm md:text-base text-amber-400">
-                {formatCurrency(PARAMETERS.economic.personalLifetimeLoss)}
+                {formatCurrency(personalLifetimeLoss)}
               </div>
               <div className="font-pixel text-xs text-zinc-500">
                 lifetime income gain
@@ -68,7 +73,7 @@ export function SlideAsymmetry() {
         >
           <span className="text-amber-400">EXCHANGE RATE: </span>
           <span className="text-amber-300">
-            {PARAMETERS.game.exchangeRatio.toLocaleString()} : 1
+            {GAME_PARAMS.exchangeRatio.toLocaleString()} : 1
           </span>
         </div>
       </div>
