@@ -120,11 +120,11 @@ export function SlideBudgetOptimizer() {
         }
       `}</style>
 
-      <div className="flex flex-col items-center justify-center gap-5 max-w-2xl mx-auto w-full">
+      <div className="flex flex-col items-center justify-center gap-5 max-w-5xl mx-auto w-full">
         {/* Phase 1: Title */}
         {phase >= 1 && (
           <div className="text-center fade-in">
-            <h1 className="font-pixel text-lg md:text-2xl text-amber-400">
+            <h1 className="font-pixel text-xl md:text-3xl text-amber-400">
               💰 OPTIMAL BUDGET GENERATOR
             </h1>
           </div>
@@ -136,10 +136,10 @@ export function SlideBudgetOptimizer() {
             {/* Column headers */}
             <div className="grid grid-cols-3 gap-2 px-3 pt-3 pb-2 border-b border-zinc-800">
               <div />
-              <div className="font-pixel text-xs md:text-sm text-red-400 text-center">
+              <div className="font-pixel text-sm md:text-base text-red-400 text-center">
                 🇺🇸 USA (CURRENT)
               </div>
-              <div className="font-pixel text-xs md:text-sm text-emerald-400 text-center">
+              <div className="font-pixel text-sm md:text-base text-emerald-400 text-center">
                 🇺🇸 USA (OPTIMIZED)
               </div>
             </div>
@@ -156,17 +156,17 @@ export function SlideBudgetOptimizer() {
                     key={row.label}
                     className="grid grid-cols-3 gap-2 px-3 py-2 items-center fade-in"
                   >
-                    <div className="font-pixel text-xs md:text-sm text-zinc-400">
+                    <div className="font-pixel text-sm md:text-base text-zinc-400">
                       {row.label}
                     </div>
 
                     <div
                       className={`text-center rounded px-1 py-1 ${isFlashingCurrent ? "flash-red" : ""}`}
                     >
-                      <div className="font-pixel text-xs md:text-sm text-red-400">
+                      <div className="font-pixel text-sm md:text-base text-red-400">
                         {row.currentSpend}
                       </div>
-                      <div className="font-pixel text-xs text-zinc-600">
+                      <div className="font-pixel text-sm md:text-base text-zinc-600">
                         {row.currentOutcome}
                       </div>
                     </div>
@@ -174,10 +174,10 @@ export function SlideBudgetOptimizer() {
                     <div
                       className={`text-center rounded px-1 py-1 ${isFlashingOptimized ? "flash-green" : ""}`}
                     >
-                      <div className="font-pixel text-xs md:text-sm text-emerald-400">
+                      <div className="font-pixel text-sm md:text-base text-emerald-400">
                         {row.optimizedSpend}
                       </div>
-                      <div className="font-pixel text-xs text-emerald-500/60">
+                      <div className="font-pixel text-sm md:text-base text-emerald-500/60">
                         {row.optimizedOutcome}
                       </div>
                     </div>
@@ -190,31 +190,31 @@ export function SlideBudgetOptimizer() {
             {phase >= 3 && (
               <div className="border-t-2 border-amber-500/50 px-3 pt-3 pb-3 mt-1 fade-in space-y-2">
                 <div className="grid grid-cols-3 gap-2 items-center">
-                  <div className="font-pixel text-xs md:text-sm text-zinc-400">
+                  <div className="font-pixel text-sm md:text-base text-zinc-400">
                     TOTAL SPENT:
                   </div>
                   <div className="text-center">
-                    <span className="font-pixel text-sm md:text-lg text-red-400">
+                    <span className="font-pixel text-base md:text-xl text-red-400">
                       more
                     </span>
                   </div>
                   <div className="text-center">
-                    <span className="font-pixel text-sm md:text-lg text-emerald-400 gentle-pulse">
+                    <span className="font-pixel text-base md:text-xl text-emerald-400 gentle-pulse">
                       less
                     </span>
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-2 items-center">
-                  <div className="font-pixel text-xs md:text-sm text-zinc-400">
+                  <div className="font-pixel text-sm md:text-base text-zinc-400">
                     OUTCOMES:
                   </div>
                   <div className="text-center">
-                    <span className="font-pixel text-sm md:text-lg text-red-400">
+                    <span className="font-pixel text-base md:text-xl text-red-400">
                       worse
                     </span>
                   </div>
                   <div className="text-center">
-                    <span className="font-pixel text-sm md:text-lg text-emerald-400 gentle-pulse">
+                    <span className="font-pixel text-base md:text-xl text-emerald-400 gentle-pulse">
                       better
                     </span>
                   </div>
