@@ -53,6 +53,12 @@ export function ShareTemplatesCard({ referralLink }: ShareTemplatesCardProps) {
       await navigator.clipboard.writeText(text)
       setCopiedIndex(index)
       setTimeout(() => setCopiedIndex(null), 2000)
+      // Track share for wish points (fire-and-forget, one-time per user)
+      fetch("/api/share/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ templateLabel: templates[index]?.label }),
+      }).catch(() => {})
     } catch {
       // Clipboard API not available
     }

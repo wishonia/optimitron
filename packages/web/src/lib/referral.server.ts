@@ -1,5 +1,7 @@
 import { ReferralAnswer } from "@optimitron/db";
 import { prisma } from "@/lib/prisma";
+import { grantWishes } from "@/lib/wishes.server";
+import { checkBadgesAfterWish } from "@/lib/badges.server";
 
 export async function findUserByUsernameOrReferralCode(identifier: string | null | undefined) {
   const value = identifier?.trim();
@@ -57,6 +59,19 @@ export async function recordReferralAttributionForUser(
       referredByUserId: referrer.id,
     },
   });
+
+  // Grant wish to the referrer (not the referred user)
+  try {
+    await grantWishes({
+      userId: referrer.id,
+      reason: "REFERRAL",
+      amount: 1,
+      dedupeKey: "referral-" + userId,
+    });
+    void checkBadgesAfterWish(referrer.id, "REFERRAL");
+  } catch (wishError) {
+    console.error("[REFERRAL] Wish grant error:", wishError);
+  }
 
   return true;
 }

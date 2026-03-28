@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDemoStore } from "@/lib/demo/store";
 import { useNarrationAudio } from "@/hooks/use-narration-audio";
 import { cn } from "@/lib/utils";
@@ -34,7 +34,7 @@ function usePresenterSize() {
 
 /**
  * Picture-in-picture Wishonia character in the lower-right corner.
- * Owns audio playback (live TTS or MP3 fallback).
+ * Attempts live TTS first; falls back to MP3 narration if connection fails.
  */
 export function WishoniaPresenter({
   text,
@@ -50,15 +50,23 @@ export function WishoniaPresenter({
     liveTtsEnabled,
   } = useDemoStore();
 
+  // Track whether live TTS has failed so we can fall back to MP3
+  const [liveTtsFailed, setLiveTtsFailed] = useState(false);
+
   const size = usePresenterSize();
 
-  // MP3 fallback: only active when live TTS is disabled
-  useNarrationAudio(slideId, !liveTtsEnabled);
+  // Use MP3 fallback when live TTS is disabled OR when it has failed
+  const useMp3 = !liveTtsEnabled || liveTtsFailed;
+  useNarrationAudio(slideId, useMp3);
 
   const safeText = text ?? "";
 
-  // In recording mode, narrator box is hidden so character sits lower
-  const bottomOffset = isRecordingMode ? 32 : 120;
+  const handleConnectionChange = useCallback((connected: boolean) => {
+    if (!connected && liveTtsEnabled) {
+      // Live TTS connection failed — silently switch to MP3
+      setLiveTtsFailed(true);
+    }
+  }, [liveTtsEnabled]);
 
   return (
     <div
@@ -67,12 +75,12 @@ export function WishoniaPresenter({
         "transition-all duration-500 ease-out"
       )}
       style={{
-        bottom: bottomOffset,
+        bottom: 0,
         right: 16,
       }}
     >
       <div className="pointer-events-auto">
-        {liveTtsEnabled ? (
+        {liveTtsEnabled && !liveTtsFailed ? (
           <WishoniaNarrator
             tokenEndpoint="/api/gemini-live-token"
             text={safeText}
@@ -90,6 +98,7 @@ export function WishoniaPresenter({
             onNarrationEnd={() => {
               useDemoStore.getState().setNarrationEnded(true);
             }}
+            onConnectionChange={handleConnectionChange}
           />
         ) : (
           <WishoniaNarrator

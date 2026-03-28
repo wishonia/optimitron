@@ -67,6 +67,17 @@ export interface DashboardProgress {
   target: number;
 }
 
+export interface QuestItem {
+  reason: string;
+  label: string;
+  emoji: string;
+  wishesLabel: string;
+  completed: boolean;
+  href: string | null;
+  anchor: string | null;
+  comingSoon: boolean;
+}
+
 export interface DashboardData {
   user: DashboardUser;
   stats: DashboardStats;
@@ -76,6 +87,7 @@ export interface DashboardData {
     created: DashboardOrganization[];
   };
   globalProgress: DashboardProgress;
+  questChecklist: QuestItem[];
 }
 
 export interface LeaderboardEntry {

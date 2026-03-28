@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { HelpCircle } from "lucide-react";
 import {
@@ -144,6 +144,25 @@ interface GovernmentLeaderboardProps {
   compact?: boolean;
 }
 
+function GovernmentRowLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`block -m-3 p-3 transition-colors hover:text-brutal-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${className ?? ""}`}
+    >
+      {children}
+    </Link>
+  );
+}
+
 export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLeaderboardProps) {
   const [sortKey, setSortKey] = useState<SortKey>(
     GOVERNMENT_LEADERBOARD_DEFAULT_SORT_KEY,
@@ -266,53 +285,69 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                 getMilitaryToGovernmentClinicalTrialRatio(gov);
               const medicalResearchRatio =
                 getMilitaryToGovernmentMedicalResearchRatio(gov);
+              const detailHref = `/governments/${gov.code}`;
               return (
                 <tr
                   key={gov.code}
-                  className="group border-b-2 border-primary last:border-b-0 hover:bg-muted transition-colors"
+                  className="group border-b-2 border-primary last:border-b-0 hover:bg-muted transition-colors cursor-pointer"
                 >
                   <td className={`p-3 ${countryColumnWidthClass} ${stickyCountryCellClass}`}>
-                    <Link
-                      href={`/governments/${gov.code}`}
-                      className="hover:text-brutal-pink transition-colors"
-                    >
+                    <GovernmentRowLink href={detailHref}>
                       <span className="font-black text-foreground">{gov.name}</span>
-                    </Link>
+                    </GovernmentRowLink>
                   </td>
                   <td className={`p-3 text-right font-black ${ratioColor(clinicalTrialRatio, "trials")}`}>
-                    {clinicalTrialRatio !== null ? formatRatio(clinicalTrialRatio) : "—"}
+                    <GovernmentRowLink href={detailHref} className="text-right">
+                      {clinicalTrialRatio !== null ? formatRatio(clinicalTrialRatio) : "—"}
+                    </GovernmentRowLink>
                   </td>
                   <td
                     className={`p-3 text-right font-black text-muted-foreground ${rankColumnWidthClass} ${stickyRankCellClass}`}
                   >
-                    {i + 1}
+                    <GovernmentRowLink href={detailHref} className="text-right">
+                      {i + 1}
+                    </GovernmentRowLink>
                   </td>
                   <td className="p-3 text-right font-black text-foreground">
-                    {gov.militaryDeathsCaused.value.toLocaleString()}
+                    <GovernmentRowLink href={detailHref} className="text-right">
+                      {gov.militaryDeathsCaused.value.toLocaleString()}
+                    </GovernmentRowLink>
                   </td>
                   <td className="p-3 text-right font-black text-foreground">
-                    {gov.hale?.value.toFixed(1) ?? "—"}
+                    <GovernmentRowLink href={detailHref} className="text-right">
+                      {gov.hale?.value.toFixed(1) ?? "—"}
+                    </GovernmentRowLink>
                   </td>
                   {!compact && (
                     <td className="p-3 text-right font-bold text-foreground">
-                      {gov.lifeExpectancy.value.toFixed(1)}
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        {gov.lifeExpectancy.value.toFixed(1)}
+                      </GovernmentRowLink>
                     </td>
                   )}
                   <td className="p-3 text-right font-black text-foreground">
-                    {formatUSD(gov.gdpPerCapita.value)}
+                    <GovernmentRowLink href={detailHref} className="text-right">
+                      {formatUSD(gov.gdpPerCapita.value)}
+                    </GovernmentRowLink>
                   </td>
                   {!compact && (
                     <>
                       <td className="p-3 text-right font-bold text-foreground">
-                        {formatUSD(gov.militarySpendingAnnual.value)}
+                        <GovernmentRowLink href={detailHref} className="text-right">
+                          {formatUSD(gov.militarySpendingAnnual.value)}
+                        </GovernmentRowLink>
                       </td>
                       <td className="p-3 text-right font-bold text-foreground">
-                        {formatUSD(gov.healthSpendingPerCapita.value)}
+                        <GovernmentRowLink href={detailHref} className="text-right">
+                          {formatUSD(gov.healthSpendingPerCapita.value)}
+                        </GovernmentRowLink>
                       </td>
                     </>
                   )}
                   <td className={`p-3 text-right font-black ${ratioColor(medicalResearchRatio, "research")}`}>
-                    {medicalResearchRatio !== null ? formatRatio(medicalResearchRatio) : "—"}
+                    <GovernmentRowLink href={detailHref} className="text-right">
+                      {medicalResearchRatio !== null ? formatRatio(medicalResearchRatio) : "—"}
+                    </GovernmentRowLink>
                   </td>
                 </tr>
               );

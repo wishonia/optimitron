@@ -16,6 +16,7 @@ import { OrganizationsCard } from "@/components/dashboard/OrganizationsCard"
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed"
 import { ShareTemplatesCard } from "@/components/dashboard/ShareTemplatesCard"
 import { StickyShareFooter } from "@/components/dashboard/StickyShareFooter"
+import { QuestChecklistCard } from "@/components/dashboard/QuestChecklistCard"
 import type { DashboardData, LeaderboardEntry } from "@/types/dashboard"
 
 export function DashboardClient({
@@ -50,6 +51,9 @@ export function DashboardClient({
               </Button>
             </div>
           </div>
+
+          {/* Quest Checklist */}
+          <QuestChecklistCard quests={initialData.questChecklist} />
 
           {/* Impact Ledger */}
           <div className="mb-8" id="impact-ledger">
@@ -89,7 +93,9 @@ export function DashboardClient({
           <ActivityFeed activities={initialData.activities} />
 
           {/* Share Templates */}
-          <ShareTemplatesCard referralLink={referralLink} />
+          <div id="share-templates">
+            <ShareTemplatesCard referralLink={referralLink} />
+          </div>
         </div>
       </div>
       <StickyShareFooter referrals={initialData.stats.referrals} referralLink={referralLink} />
