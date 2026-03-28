@@ -118,6 +118,8 @@ export function SlideAlignmentSwitch() {
                   showArea
                   showGrid
                   formatY={(v) => `$${Math.round(v / 1000)}K`}
+                  xAxisLabel="Year"
+                  yAxisLabel="Income"
                 />
               </div>
 
@@ -155,6 +157,8 @@ export function SlideAlignmentSwitch() {
                   showArea
                   showGrid
                   formatY={(v) => `${v.toFixed(0)} yrs`}
+                  xAxisLabel="Year"
+                  yAxisLabel="HALE"
                 />
               </div>
             </div>

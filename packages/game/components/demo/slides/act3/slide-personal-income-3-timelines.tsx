@@ -11,6 +11,7 @@ import {
   GLOBAL_HALE_CURRENT,
   GDP_BASELINE_GROWTH_RATE,
   POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
+  TREATY_ANNUAL_FUNDING,
   TREATY_HALE_GAIN_YEAR_15,
   TREATY_TRAJECTORY_CAGR_YEAR_20,
   TREATY_TRAJECTORY_CUMULATIVE_LIFETIME_INCOME,
@@ -38,6 +39,7 @@ const treatyHaleGain = Math.round(TREATY_HALE_GAIN_YEAR_15.value * 10) / 10;
 const wishoniaHaleGain = Math.round(WISHONIA_HALE_GAIN_YEAR_15.value * 10) / 10;
 
 const annualDysfunctionTax = Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value / 100) * 100;
+const treatyRedirect = formatCurrency(Math.round(TREATY_ANNUAL_FUNDING.value));
 const destructivePctGdp = Math.round(GLOBAL_DESTRUCTIVE_ECONOMY_PCT_GDP.value * 100);
 const collapseYear = Math.round(DESTRUCTIVE_ECONOMY_35PCT_YEAR.value);
 const instabilityYear = Math.round(DESTRUCTIVE_ECONOMY_25PCT_YEAR.value);
@@ -105,7 +107,7 @@ const EARTHS: EarthOption[] = [
     haleGain: `+${treatyHaleGain} yrs`,
     gdp2045: treatyGdp2045,
     growth: treatyGrowth,
-    dysfunctionTax: "eliminated",
+    dysfunctionTax: `${treatyRedirect}/yr redirected`,
   },
   {
     label: "EARTH A",

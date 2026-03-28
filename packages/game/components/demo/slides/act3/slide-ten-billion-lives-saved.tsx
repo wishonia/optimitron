@@ -4,17 +4,24 @@ import { useEffect, useState } from "react";
 import { SlideBase } from "../slide-base";
 import { AnimatedCounter } from "../../animations/animated-counter";
 import { ParticleEmitter } from "../../animations/particle-emitter";
-import { ProgressRing } from "../../animations/progress-ring";
 import {
   DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED,
-  GLOBAL_DISEASE_DEATHS_DAILY,
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  TREATY_HALE_GAIN_YEAR_15,
+  TREATY_TRAJECTORY_LIFETIME_INCOME_MULTIPLIER,
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
 } from "@optimitron/data/parameters";
-import { formatNumber } from "@/lib/demo/formatters";
 import { useDemoStore } from "@/lib/demo/store";
 import { PALETTE_SEMANTIC } from "@/lib/demo/palette";
 
 const livesSaved = Math.round(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e8) * 1e8;
-const deathsPerYear = GLOBAL_DISEASE_DEATHS_DAILY.value * 365;
+const militarySpending = GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value;
+const onePercent = militarySpending * 0.01;
+const incomeGain = TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value;
+const haleGain = TREATY_HALE_GAIN_YEAR_15.value;
+const incomeMultiplier = TREATY_TRAJECTORY_LIFETIME_INCOME_MULTIPLIER.value;
+const dysfunctionCost = POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value;
 
 // Border emoji positions — evenly around all 4 edges, inset so they don't clip
 const BORDER_COUNT = 80;
@@ -39,15 +46,11 @@ const borderPositions = Array.from({ length: BORDER_COUNT }, (_, i) => {
 
 export function SlideTenBillionLivesSaved() {
   const [showConfetti, setShowConfetti] = useState(false);
-  const [ringProgress, setRingProgress] = useState(0);
   const [skullsTransformed, setSkullsTransformed] = useState(0);
   const { palette: paletteMode } = useDemoStore();
   const palette = PALETTE_SEMANTIC[paletteMode];
 
   useEffect(() => {
-    // Animate ring progress smoothly
-    const ringTimer = setTimeout(() => setRingProgress(100), 500);
-
     // Start confetti after counter reaches halfway
     const confettiTimer = setTimeout(() => setShowConfetti(true), 2000);
 
@@ -64,7 +67,6 @@ export function SlideTenBillionLivesSaved() {
 
     return () => {
       clearTimeout(confettiTimer);
-      clearTimeout(ringTimer);
       clearInterval(skullInterval);
     };
   }, []);
@@ -150,52 +152,66 @@ export function SlideTenBillionLivesSaved() {
           </div>
         </div>
 
-        {/* Progress ring + Before/After */}
-        <div className="flex items-center gap-8 md:gap-12">
-          <div className="text-center">
-            <ProgressRing
-              progress={ringProgress}
-              size={160}
-              strokeWidth={10}
-              color={palette.success}
-              backgroundColor={palette.background}
-            />
-            <div className="mt-2 text-xl md:text-2xl opacity-70">Mission Progress</div>
-          </div>
-
-          {/* Before/After comparison */}
-          <div className="grid grid-cols-2 gap-6 text-center">
-            <div className="p-5 rounded" style={{ backgroundColor: `${palette.danger}20` }}>
-              <div className="text-4xl mb-2">💀</div>
-              <div className="text-xl md:text-2xl uppercase tracking-wider opacity-70">Before</div>
-              <div className="text-2xl md:text-3xl font-bold" style={{ color: palette.danger }}>
-                {formatNumber(deathsPerYear, "compact")}/yr
+        {/* Optimized world stats */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-[1400px] w-full">
+          {[
+            {
+              emoji: "💣",
+              label: "MURDER BUDGET",
+              value: `$${(militarySpending / 1e12).toFixed(1)}T/yr`,
+              color: palette.danger,
+            },
+            {
+              emoji: "💊",
+              label: "1% REDIRECT",
+              value: `$${(onePercent / 1e9).toFixed(1)}B/yr`,
+              color: palette.accent,
+            },
+            {
+              emoji: "❤️",
+              label: "LIVES SAVED",
+              value: `${(livesSaved / 1e9).toFixed(1)}B`,
+              color: palette.success,
+            },
+            {
+              emoji: "🏥",
+              label: "HALE GAIN",
+              value: `+${haleGain.toFixed(1)} yrs`,
+              color: palette.success,
+            },
+            {
+              emoji: "💰",
+              label: "INCOME GAIN",
+              value: `+$${(incomeGain / 1e6).toFixed(1)}M`,
+              color: palette.success,
+            },
+            {
+              emoji: "📈",
+              label: "INCOME MULTIPLIER",
+              value: `${Math.round(incomeMultiplier)}× richer`,
+              color: palette.success,
+            },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              className="p-4 md:p-5 rounded-lg border-2 text-center"
+              style={{
+                borderColor: `${stat.color}40`,
+                backgroundColor: `${stat.color}10`,
+              }}
+            >
+              <div className="text-3xl md:text-4xl mb-1">{stat.emoji}</div>
+              <div className="text-sm md:text-base uppercase tracking-wider opacity-70 mb-1">
+                {stat.label}
+              </div>
+              <div
+                className="text-2xl md:text-3xl font-bold font-terminal"
+                style={{ color: stat.color }}
+              >
+                {stat.value}
               </div>
             </div>
-            <div className="p-5 rounded" style={{ backgroundColor: `${palette.success}20` }}>
-              <div className="text-4xl mb-2">😊</div>
-              <div className="text-xl md:text-2xl uppercase tracking-wider opacity-70">After</div>
-              <div className="text-2xl md:text-3xl font-bold" style={{ color: palette.success }}>
-                Optimized
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Impact statement */}
-        <div
-          className="text-center max-w-[1700px] px-6 py-6 rounded-lg border-2"
-          style={{
-            borderColor: palette.success,
-            backgroundColor: `${palette.success}10`,
-          }}
-        >
-          <div className="text-2xl md:text-4xl font-medium">
-            That&apos;s more lives than were lost in all wars of the 20th century. Combined.
-          </div>
-          <div className="text-xl md:text-2xl mt-2 opacity-70">
-            From redirecting 1% of the military budget to clinical trials.
-          </div>
+          ))}
         </div>
       </div>
     </SlideBase>
