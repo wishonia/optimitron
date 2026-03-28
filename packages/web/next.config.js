@@ -28,6 +28,22 @@ const nextConfig = {
       "@react-native-async-storage/async-storage": false,
     };
 
+    // @storacha/client needs multiformats@13 (exports ./link), but
+    // @atproto/* hoists multiformats@9 (doesn't). unshift so our function
+    // runs BEFORE Next.js's handleExternals decides to bundle these.
+    if (isServer) {
+      config.externals.unshift(({ request }, callback) => {
+        if (
+          /^@optimitron\/storage(\/|$)/.test(request) ||
+          /^@storacha\//.test(request) ||
+          /^multiformats(\/|$)/.test(request)
+        ) {
+          return callback(null, "node-commonjs " + request);
+        }
+        callback();
+      });
+    }
+
     // @optimitron/data barrel re-exports csv-loader which uses node:fs/path/url.
     // These are server-only but webpack tries to bundle them for the client.
     if (!isServer) {

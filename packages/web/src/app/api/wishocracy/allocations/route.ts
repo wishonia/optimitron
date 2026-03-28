@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
     const jurisdictionKey = serverEnv.WISHOCRACY_JURISDICTION_KEY;
     if (jurisdictionKey) {
       try {
-        const { importKey, encryptJson } = await import("@optimitron/storage");
+        const { importKey, encryptJson } = await import("@optimitron/storage/crypto");
         const allAllocations = await prisma.wishocraticAllocation.findMany({
           where: { userId, deletedAt: null },
           select: { itemAId: true, itemBId: true, allocationA: true, allocationB: true },
