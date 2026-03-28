@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { WishoniaNarrator } from "@optimitron/wishonia-widget/narration";
-import { EXPRESSIONS, BODY_POSES, WISHONIA_EXAMPLE_QUOTES } from "@optimitron/wishonia-widget";
-import type { Expression, BodyPose } from "@optimitron/wishonia-widget";
+import { WishoniaNarrator } from "@/lib/widget/components/WishoniaNarrator";
+import { EXPRESSIONS, BODY_POSES } from "@/lib/widget/types";
+import { WISHONIA_EXAMPLE_QUOTES } from "@/lib/widget/core/voice-config";
+import type { Expression, BodyPose } from "@/lib/widget/types";
 
 export default function DemoPage() {
   const [text, setText] = useState("");

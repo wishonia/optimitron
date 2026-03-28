@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { WishoniaNarrator } from "@optimitron/wishonia-widget/narration";
-import type { Expression, BodyPose } from "@optimitron/wishonia-widget";
+import { WishoniaNarrator } from "@/lib/widget/components/WishoniaNarrator";
+import type { Expression, BodyPose } from "@/lib/widget/types";
 
 /**
  * Embeddable iframe client — renders Wishonia on a transparent background.
