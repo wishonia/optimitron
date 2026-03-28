@@ -7,13 +7,11 @@
  */
 
 import { GoogleGenAI } from "@google/genai";
-
-// Flash: 200ms first-byte latency (vs 450ms for Pro). Best for real-time chat.
-const TTS_MODEL_ID = "gemini-2.5-flash-preview-tts";
-const DEFAULT_VOICE = "Kore";
-const DEFAULT_SPEAKING_INSTRUCTIONS =
-  "Generate a patient, warm voice explaining something counterintuitive to someone smart. " +
-  "Not condescending. Respects the listener's intelligence. Slightly quick.";
+import {
+  WISHONIA_VOICE,
+  WISHONIA_SPEAKING_INSTRUCTIONS,
+  WISHONIA_TTS_MODEL,
+} from "@optimitron/wishonia-widget";
 
 function parseAudioMimeType(mimeType: string): {
   bitsPerSample: number;
@@ -86,8 +84,8 @@ function convertToWav(audioData: Uint8Array, mimeType: string): Uint8Array {
 export async function generateSpeech(
   text: string,
   apiKey: string,
-  voice: string = DEFAULT_VOICE,
-  speakingInstructions: string = DEFAULT_SPEAKING_INSTRUCTIONS
+  voice: string = WISHONIA_VOICE,
+  speakingInstructions: string = WISHONIA_SPEAKING_INSTRUCTIONS
 ): Promise<Uint8Array> {
   const client = new GoogleGenAI({ apiKey });
 
@@ -95,7 +93,7 @@ export async function generateSpeech(
 
   // Use non-streaming API (more reliable than streaming for short TTS)
   const result = await client.models.generateContent({
-    model: TTS_MODEL_ID,
+    model: WISHONIA_TTS_MODEL,
     contents: [{ role: "user", parts: [{ text: promptText }] }],
     config: {
       responseModalities: ["AUDIO"],

@@ -936,8 +936,8 @@ for (const gov of GOVERNMENTS) {
     });
   }
 
-  if (records.length > 0) {
-    const best = records[0];
+  const best = records[0];
+  if (best) {
     gov.medianIncome = {
       value: Math.round(best.value),
       source: `${best.source} ${best.year}${best.isAfterTax ? " (after-tax)" : ""} PPP`,

@@ -6,10 +6,6 @@ import { SFX } from "@/lib/demo/audio";
 import { cn } from "@/lib/utils";
 import { WishoniaNarrator } from "@optimitron/wishonia-widget/narration";
 
-const SPEAKING_INSTRUCTIONS =
-  "Generate a patient, warm voice explaining something counterintuitive to someone smart. " +
-  "Not condescending. Respects the listener's intelligence. Slightly quick.";
-
 interface NarratorBoxProps {
   text?: string;
   slideId?: string;
@@ -217,8 +213,6 @@ export function NarratorBox({
             <WishoniaNarrator
               tokenEndpoint="/api/gemini-live-token"
               text={safeText}
-              voice="Kore"
-              speakingInstructions={SPEAKING_INSTRUCTIONS}
               expression={expression as Parameters<typeof WishoniaNarrator>[0]["expression"]}
               bodyPose={bodyPose as Parameters<typeof WishoniaNarrator>[0]["bodyPose"]}
               size={40}
