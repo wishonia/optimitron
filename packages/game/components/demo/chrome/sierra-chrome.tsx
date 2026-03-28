@@ -7,6 +7,7 @@ import { NarratorBox } from "./narrator-box";
 import { VerbBar, type VerbType } from "./verb-bar";
 import { Inventory, InventoryCompact } from "./inventory";
 import { SlideCTA } from "./slide-cta";
+import { WishoniaPresenter } from "./wishonia-presenter";
 
 interface SierraChromeProps {
   narrationText: string;
@@ -60,28 +61,33 @@ export function SierraChrome({
           !isRecordingMode && "max-w-[1600px] px-4"
         )}>
           {children}
-          {/* CTA button — positioned above narrator */}
+          {/* CTA button — shifted left to clear Wishonia presenter */}
           {!isRecordingMode && (
-            <div className="absolute bottom-2 right-4 z-20">
+            <div className="absolute bottom-2 left-4 md:left-auto md:right-[280px] z-20">
               <SlideCTA />
             </div>
           )}
         </div>
       </main>
 
-      {/* Bottom Section - Narrator, Verb Bar, Inventory */}
+      {/* Wishonia presenter — PiP character in lower-right corner */}
+      <WishoniaPresenter
+        text={narrationText}
+        slideId={slideId}
+        expression={expression}
+        bodyPose={bodyPose}
+      />
+
+      {/* Bottom Section - Narrator text, Verb Bar, Inventory */}
       {!isRecordingMode && (
         <div className={cn(
           "fixed bottom-0 left-0 right-0 z-30",
           `palette-${palette}`
         )}>
-          {/* Narrator Box */}
+          {/* Narrator Box (text only — character is in WishoniaPresenter) */}
           <NarratorBox
             text={narrationText}
-            slideId={slideId}
             onComplete={onNarrationComplete}
-            expression={expression}
-            bodyPose={bodyPose}
           />
 
           {/* Verb Bar + Inventory */}
