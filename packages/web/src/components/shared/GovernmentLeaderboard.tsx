@@ -5,10 +5,18 @@ import Link from "next/link";
 import {
   type GovernmentMetrics,
   getGovernmentsByHALE,
-  getMilitaryToHealthRatio,
+  getMilitaryToGovernmentClinicalTrialRatio,
+  getMilitaryToGovernmentMedicalResearchRatio,
 } from "@optimitron/data";
 
-type SortKey = "hale" | "lifeExpectancy" | "gdpPerCapita" | "militarySpending" | "healthSpending" | "ratio";
+type SortKey =
+  | "hale"
+  | "lifeExpectancy"
+  | "gdpPerCapita"
+  | "militarySpending"
+  | "healthSpending"
+  | "trialRatio"
+  | "researchRatio";
 
 function formatUSD(value: number): string {
   if (value >= 1e12) return `$${(value / 1e12).toFixed(1)}T`;
@@ -18,11 +26,25 @@ function formatUSD(value: number): string {
   return `$${value.toLocaleString()}`;
 }
 
-function ratioColor(ratio: number | null): string {
+function ratioColor(
+  ratio: number | null,
+  denominator: "trials" | "research",
+): string {
   if (ratio === null) return "text-muted-foreground";
-  if (ratio < 0.5) return "text-brutal-cyan";
-  if (ratio < 1) return "text-foreground";
+  if (denominator === "trials") {
+    if (ratio < 250) return "text-brutal-cyan";
+    if (ratio < 1000) return "text-foreground";
+    return "text-brutal-red";
+  }
+  if (ratio < 20) return "text-brutal-cyan";
+  if (ratio < 100) return "text-foreground";
   return "text-brutal-red";
+}
+
+function formatRatio(ratio: number): string {
+  if (ratio >= 1000) return `${Math.round(ratio).toLocaleString()}:1`;
+  if (ratio >= 100) return `${ratio.toFixed(0)}:1`;
+  return `${ratio.toFixed(1)}:1`;
 }
 
 function getSortValue(gov: GovernmentMetrics, key: SortKey): number {
@@ -32,7 +54,10 @@ function getSortValue(gov: GovernmentMetrics, key: SortKey): number {
     case "gdpPerCapita": return gov.gdpPerCapita.value;
     case "militarySpending": return gov.militarySpendingAnnual.value;
     case "healthSpending": return gov.healthSpendingPerCapita.value;
-    case "ratio": return getMilitaryToHealthRatio(gov) ?? 999;
+    case "trialRatio":
+      return getMilitaryToGovernmentClinicalTrialRatio(gov) ?? 999_999_999;
+    case "researchRatio":
+      return getMilitaryToGovernmentMedicalResearchRatio(gov) ?? 999_999_999;
   }
 }
 
@@ -97,14 +122,20 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                 </th>
               </>
             )}
-            <th className={`p-3 text-right ${headerClass}`} onClick={() => handleSort("ratio")}>
-              Mil/Health{sortIndicator("ratio")}
+            <th className={`p-3 text-right ${headerClass}`} onClick={() => handleSort("trialRatio")}>
+              Mil/Trials{sortIndicator("trialRatio")}
+            </th>
+            <th className={`p-3 text-right ${headerClass}`} onClick={() => handleSort("researchRatio")}>
+              Mil/Research{sortIndicator("researchRatio")}
             </th>
           </tr>
         </thead>
         <tbody>
           {govs.map((gov, i) => {
-            const ratio = getMilitaryToHealthRatio(gov);
+            const clinicalTrialRatio =
+              getMilitaryToGovernmentClinicalTrialRatio(gov);
+            const medicalResearchRatio =
+              getMilitaryToGovernmentMedicalResearchRatio(gov);
             return (
               <tr
                 key={gov.code}
@@ -141,8 +172,11 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                     </td>
                   </>
                 )}
-                <td className={`p-3 text-right font-black ${ratioColor(ratio)}`}>
-                  {ratio !== null ? `${ratio.toFixed(1)}:1` : "—"}
+                <td className={`p-3 text-right font-black ${ratioColor(clinicalTrialRatio, "trials")}`}>
+                  {clinicalTrialRatio !== null ? formatRatio(clinicalTrialRatio) : "—"}
+                </td>
+                <td className={`p-3 text-right font-black ${ratioColor(medicalResearchRatio, "research")}`}>
+                  {medicalResearchRatio !== null ? formatRatio(medicalResearchRatio) : "—"}
                 </td>
               </tr>
             );

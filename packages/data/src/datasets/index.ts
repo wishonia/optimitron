@@ -36,6 +36,7 @@ export * from './natural-experiments';
 // import from '@optimitron/data/datasets/aggregated-nof1-drug-enforcement'
 export * from './monetary-policy-panel';
 export * from './government-report-cards';
+export * from './government-spending-ratios';
 export * from './agency-performance';
 export * from './agency-supplementary';
 export * from './agency-historical-trends';

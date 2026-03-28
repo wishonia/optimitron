@@ -5,7 +5,8 @@ import {
   GOVERNMENTS,
   getGovernment,
   getGovernmentsByHALE,
-  getMilitaryToHealthRatio,
+  getMilitaryToGovernmentClinicalTrialRatio,
+  getMilitaryToGovernmentMedicalResearchRatio,
   getAgencyPerformanceByCountry,
   ALL_HISTORICAL_TRENDS,
 } from "@optimitron/data";
@@ -48,6 +49,12 @@ function formatUSD(value: number): string {
 
 function formatNumber(value: number): string {
   return value.toLocaleString();
+}
+
+function formatRatio(value: number): string {
+  if (value >= 1000) return `${Math.round(value).toLocaleString()}:1`;
+  if (value >= 100) return `${value.toFixed(0)}:1`;
+  return `${value.toFixed(1)}:1`;
 }
 
 interface StatCardProps {
@@ -98,7 +105,8 @@ export default async function GovernmentDetailPage({ params }: PageProps) {
   const gov = getGovernment(code.toUpperCase());
   if (!gov) notFound();
 
-  const ratio = getMilitaryToHealthRatio(gov);
+  const clinicalTrialRatio = getMilitaryToGovernmentClinicalTrialRatio(gov);
+  const medicalResearchRatio = getMilitaryToGovernmentMedicalResearchRatio(gov);
   const haleRanked = getGovernmentsByHALE();
   const haleRank = haleRanked.findIndex((g) => g.code === gov.code) + 1;
 
@@ -195,12 +203,20 @@ export default async function GovernmentDetailPage({ params }: PageProps) {
             url={gov.healthSpendingPerCapita.url}
             color="cyan"
           />
-          {ratio !== null && (
+          {clinicalTrialRatio !== null && (
             <StatCard
-              label="Military : Health Ratio"
-              value={`${ratio.toFixed(1)}:1`}
-              subtitle={ratio > 1 ? "Spending more on weapons than health" : "Spending more on health than weapons"}
-              color={ratio > 1 ? "red" : "cyan"}
+              label="Military : Trials Ratio"
+              value={formatRatio(clinicalTrialRatio)}
+              subtitle="Weapons per $1 of government clinical trials"
+              color={clinicalTrialRatio > 1 ? "red" : "cyan"}
+            />
+          )}
+          {medicalResearchRatio !== null && (
+            <StatCard
+              label="Military : Research Ratio"
+              value={formatRatio(medicalResearchRatio)}
+              subtitle="Weapons per $1 of total government medical research"
+              color={medicalResearchRatio > 1 ? "red" : "cyan"}
             />
           )}
           {gov.govMedicalResearchSpending && (
@@ -214,9 +230,9 @@ export default async function GovernmentDetailPage({ params }: PageProps) {
           )}
           {gov.clinicalTrialSpending && (
             <StatCard
-              label="Clinical Trial Spending/yr"
+              label="Gov Clinical Trials/yr"
               value={formatUSD(gov.clinicalTrialSpending.value)}
-              subtitle={`Mil:Trials = ${Math.round(gov.militarySpendingAnnual.value / gov.clinicalTrialSpending.value).toLocaleString()}:1`}
+              subtitle="Actual interventional trials, not total research overhead"
               source={gov.clinicalTrialSpending.source}
               url={gov.clinicalTrialSpending.url}
               color="red"
