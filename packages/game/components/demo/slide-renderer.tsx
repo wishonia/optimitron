@@ -4,148 +4,132 @@ import { useDemoStore } from "@/lib/demo/store";
 import { SLIDES } from "@/lib/demo/demo-config";
 
 // Act I slides
-import { SlideDeathCounter } from "./slides/act1/slide-death-counter";
-import { SlideGovernmentsAreAI } from "./slides/act1/slide-governments-are-ai";
-import { SlideMisalignedProof } from "./slides/act1/slide-misaligned-proof";
-import { SlideGameTitle } from "./slides/act1/slide-game-title";
-import { SlideRatio } from "./slides/act1/slide-ratio";
-import { SlideCollapseClock } from "./slides/act1/slide-collapse-clock";
-import { SlideFailedState } from "./slides/act1/slide-failed-state";
-import { SlideAIHackers } from "./slides/act1/slide-ai-hackers";
-import { SlidePaycheckTheft } from "./slides/act1/slide-paycheck-theft";
-import { SlideGameOver } from "./slides/act1/slide-game-over";
-import { SlideBodyCount } from "./slides/act1/slide-body-count";
+import { SlideDailyDeathToll } from "./slides/act1/slide-daily-death-toll";
+import { SlideMisalignedSuperintelligence } from "./slides/act1/slide-misaligned-superintelligence";
+import { SlideMilitaryWaste170t } from "./slides/act1/slide-military-waste-170t";
+import { SlideGovernmentBodyCount } from "./slides/act1/slide-government-body-count";
+import { SlideInflationWageTheft } from "./slides/act1/slide-inflation-wage-theft";
+import { SlideEarthOptimizationGame } from "./slides/act1/slide-earth-optimization-game";
+import { SlideMilitaryHealthRatio } from "./slides/act1/slide-military-health-ratio";
+import { SlideEconomicCollapseClock } from "./slides/act1/slide-economic-collapse-clock";
+import { SlideGlobalFailedState } from "./slides/act1/slide-global-failed-state";
+import { SlideAiHackerSpiral } from "./slides/act1/slide-ai-hacker-spiral";
+import { SlideGameOverMoronia } from "./slides/act1/slide-game-over-moronia";
 
 // Turn
-import { SlideWishoniaRestore } from "./slides/turn/slide-wishonia-restore";
+import { SlideRestoreFromWishonia } from "./slides/turn/slide-restore-from-wishonia";
 
-// Act II slides - Part 1: The Solution
-import { SlideOnePercent } from "./slides/act2/slide-one-percent";
-import { SlideAcceleration } from "./slides/act2/slide-acceleration";
-import { SlideRoiComparison } from "./slides/act2/slide-roi-comparison";
-import { SlideVirtuousLoop } from "./slides/act2/slide-virtuous-loop";
-import { SlideGDPTrajectory } from "./slides/act2/slide-gdp-trajectory";
-import { SlideCompoundPunchline } from "./slides/act2/slide-compound-punchline";
-import { SlideTheBug } from "./slides/act2/slide-the-bug";
-import { SlideTheMismatch } from "./slides/act2/slide-the-mismatch";
-import { SlideDysfunctionTax } from "./slides/act2/slide-dysfunction-tax";
-import { SlideScoreboard } from "./slides/act2/slide-scoreboard";
-
-// Act II slides - Part 2: The Game
-import { SlideLevelAllocate } from "./slides/act2/slide-level-allocate";
-import { SlideYourBudget } from "./slides/act2/slide-your-budget";
-import { SlideLevelVote } from "./slides/act2/slide-level-vote";
-import { SlideYoureIn } from "./slides/act2/slide-youre-in";
-import { SlideAsymmetry } from "./slides/act2/slide-asymmetry";
-import { SlideLevelShare } from "./slides/act2/slide-level-share";
-
-// Act II slides - Part 3: The Money
-import { SlidePrizePool } from "./slides/act2/slide-prize-pool";
-import { SlidePrizeMechanism } from "./slides/act2/slide-prize-mechanism";
-import { SlideVotePointValue } from "./slides/act2/slide-vote-point-value";
-import { SlideCannotLose } from "./slides/act2/slide-cannot-lose";
-
-// Act II slides - Part 4: Accountability
-import { SlideLeaderboard } from "./slides/act2/slide-leaderboard";
-import { SlideChangedMetric } from "./slides/act2/slide-changed-metric";
-import { SlideUsReportCard } from "./slides/act2/slide-us-report-card";
-
-// Act II slides - Part 5: The Armory
-import { SlideFdaQueue } from "./slides/act2/slide-fda-queue";
-import { SlideDfda } from "./slides/act2/slide-dfda";
-import { SlideIabs } from "./slides/act2/slide-iabs";
-import { SlideSuperpac } from "./slides/act2/slide-superpac";
-import { SlideStoracha } from "./slides/act2/slide-storacha";
-import { SlideHypercerts } from "./slides/act2/slide-hypercerts";
-import { SlideWishToken } from "./slides/act2/slide-wish-token";
-import { SlideReplaceWelfare } from "./slides/act2/slide-replace-welfare";
-import { SlideReplaceFed } from "./slides/act2/slide-replace-fed";
-import { SlidePolicyEngine } from "./slides/act2/slide-policy-engine";
-import { SlideOptimizer } from "./slides/act2/slide-optimizer";
-import { SlideBudgetOptimizer } from "./slides/act2/slide-budget-optimizer";
-import { SlideIPencil } from "./slides/act2/slide-i-pencil";
-import { SlideCuredDisease } from "./slides/act2/slide-cured-disease";
-import { SlideTheSwitch } from "./slides/act2/slide-the-switch";
+// Act II slides
+import { SlideOnePercentTreaty } from "./slides/act2/slide-one-percent-treaty";
+import { SlideTrialAcceleration12x } from "./slides/act2/slide-trial-acceleration-12x";
+import { SlideHealthcareVsMilitaryRoi } from "./slides/act2/slide-healthcare-vs-military-roi";
+import { SlideEconomicVirtuousLoop } from "./slides/act2/slide-economic-virtuous-loop";
+import { SlideGdp20YearForecast } from "./slides/act2/slide-gdp-20-year-forecast";
+import { SlideCompoundGrowthScenarios } from "./slides/act2/slide-compound-growth-scenarios";
+import { SlidePluralisticIgnoranceBug } from "./slides/act2/slide-pluralistic-ignorance-bug";
+import { SlidePublicVsLobbyist90to1 } from "./slides/act2/slide-public-vs-lobbyist-90to1";
+import { SlideDysfunctionTax101t } from "./slides/act2/slide-dysfunction-tax-101t";
+import { SlideWinConditionsHaleIncome } from "./slides/act2/slide-win-conditions-hale-income";
+import { SlidePairwiseBudgetAllocation } from "./slides/act2/slide-pairwise-budget-allocation";
+import { SlideEigenvectorBudgetResult } from "./slides/act2/slide-eigenvector-budget-result";
+import { SlideOnePercentReferendumVote } from "./slides/act2/slide-one-percent-referendum-vote";
+import { SlideViralDoublingTo4b } from "./slides/act2/slide-viral-doubling-to-4b";
+import { SlideVoteValueAsymmetry } from "./slides/act2/slide-vote-value-asymmetry";
+import { SlideRecruitNetworkEffect } from "./slides/act2/slide-recruit-network-effect";
+import { SlidePrizePoolVsIndexFund } from "./slides/act2/slide-prize-pool-vs-index-fund";
+import { SlideDominantAssuranceContract } from "./slides/act2/slide-dominant-assurance-contract";
+import { SlideVotePointDollarValue } from "./slides/act2/slide-vote-point-dollar-value";
+import { SlideThreeScenariosAllWin } from "./slides/act2/slide-three-scenarios-all-win";
+import { SlideGovernmentTrackRecord } from "./slides/act2/slide-government-track-record";
+import { SlideCongressMilitaryTrialsRatio } from "./slides/act2/slide-congress-military-trials-ratio";
+import { SlideHaleLeaderboardByCountry } from "./slides/act2/slide-hale-leaderboard-by-country";
+import { SlideFdaApprovalDelay8yr } from "./slides/act2/slide-fda-approval-delay-8yr";
+import { SlideDecentralizedFda } from "./slides/act2/slide-decentralized-fda";
+import { SlideIncentiveAlignmentBonds } from "./slides/act2/slide-incentive-alignment-bonds";
+import { SlideSmartContractSuperpac } from "./slides/act2/slide-smart-contract-superpac";
+import { SlideIpfsImmutableStorage } from "./slides/act2/slide-ipfs-immutable-storage";
+import { SlideImpactCertificates } from "./slides/act2/slide-impact-certificates";
+import { SlideDecentralizedIrs } from "./slides/act2/slide-decentralized-irs";
+import { SlideDecentralizedWelfare } from "./slides/act2/slide-decentralized-welfare";
+import { SlideDecentralizedFederalReserve } from "./slides/act2/slide-decentralized-federal-reserve";
+import { SlideOptimalPolicyGenerator } from "./slides/act2/slide-optimal-policy-generator";
+import { SlideDrugPolicyNaturalExperiment } from "./slides/act2/slide-drug-policy-natural-experiment";
+import { SlideOptimalBudgetGenerator } from "./slides/act2/slide-optimal-budget-generator";
+import { SlidePencilSupplyChain } from "./slides/act2/slide-pencil-supply-chain";
+import { SlideDiseaseCureSupplyChain } from "./slides/act2/slide-disease-cure-supply-chain";
+import { SlideAlignmentSwitch } from "./slides/act2/slide-alignment-switch";
 
 // Act III slides
-import { SlidePersonalUpside } from "./slides/act3/slide-personal-upside";
-import { SlideLivesSaved } from "./slides/act3/slide-lives-saved";
-import { SlideFinal } from "./slides/act3/slide-final";
-import { SlideEasterEgg } from "./slides/act3/slide-easter-egg";
+import { SlidePersonalIncome3Timelines } from "./slides/act3/slide-personal-income-3-timelines";
+import { SlideTenBillionLivesSaved } from "./slides/act3/slide-ten-billion-lives-saved";
+import { SlideFinalCallToAction } from "./slides/act3/slide-final-call-to-action";
+import { SlidePostCreditsAliens } from "./slides/act3/slide-post-credits-aliens";
 
 import { DataSlide } from "./slides/data-slide";
 
 // Map slide IDs to components (IDs from demo-config.ts)
 const slideComponents: Record<string, React.ComponentType> = {
-  // Act I - The Horror
-  "daily-death-toll": SlideDeathCounter,
-  "misaligned-superintelligence": SlideGovernmentsAreAI,
-  "military-waste-170t": SlideMisalignedProof,
-  "government-body-count": SlideBodyCount,
-  "inflation-wage-theft": SlidePaycheckTheft,
-  "earth-optimization-game": SlideGameTitle,
-  "military-health-ratio": SlideRatio,
-  "economic-collapse-clock": SlideCollapseClock,
-  "global-failed-state": SlideFailedState,
-  "ai-hacker-spiral": SlideAIHackers,
-  "game-over-moronia": SlideGameOver,
+  // Act I slides
+  "daily-death-toll": SlideDailyDeathToll,
+  "misaligned-superintelligence": SlideMisalignedSuperintelligence,
+  "military-waste-170t": SlideMilitaryWaste170t,
+  "government-body-count": SlideGovernmentBodyCount,
+  "inflation-wage-theft": SlideInflationWageTheft,
+  "earth-optimization-game": SlideEarthOptimizationGame,
+  "military-health-ratio": SlideMilitaryHealthRatio,
+  "economic-collapse-clock": SlideEconomicCollapseClock,
+  "global-failed-state": SlideGlobalFailedState,
+  "ai-hacker-spiral": SlideAiHackerSpiral,
+  "game-over-moronia": SlideGameOverMoronia,
 
-  // The Turn
-  "restore-from-wishonia": SlideWishoniaRestore,
+  // Turn
+  "restore-from-wishonia": SlideRestoreFromWishonia,
 
-  // Act II - Part 1: The Solution
-  "one-percent-treaty": SlideOnePercent,
-  "trial-acceleration-12x": SlideAcceleration,
-  "healthcare-vs-military-roi": SlideRoiComparison,
-  "economic-virtuous-loop": SlideVirtuousLoop,
-  "gdp-20-year-forecast": SlideGDPTrajectory,
-  "compound-growth-scenarios": SlideCompoundPunchline,
-  "pluralistic-ignorance-bug": SlideTheBug,
-  "public-vs-lobbyist-90to1": SlideTheMismatch,
-  "dysfunction-tax-101t": SlideDysfunctionTax,
-  "win-conditions-hale-income": SlideScoreboard,
+  // Act II slides
+  "one-percent-treaty": SlideOnePercentTreaty,
+  "trial-acceleration-12x": SlideTrialAcceleration12x,
+  "healthcare-vs-military-roi": SlideHealthcareVsMilitaryRoi,
+  "economic-virtuous-loop": SlideEconomicVirtuousLoop,
+  "gdp-20-year-forecast": SlideGdp20YearForecast,
+  "compound-growth-scenarios": SlideCompoundGrowthScenarios,
+  "pluralistic-ignorance-bug": SlidePluralisticIgnoranceBug,
+  "public-vs-lobbyist-90to1": SlidePublicVsLobbyist90to1,
+  "dysfunction-tax-101t": SlideDysfunctionTax101t,
+  "win-conditions-hale-income": SlideWinConditionsHaleIncome,
+  "pairwise-budget-allocation": SlidePairwiseBudgetAllocation,
+  "eigenvector-budget-result": SlideEigenvectorBudgetResult,
+  "one-percent-referendum-vote": SlideOnePercentReferendumVote,
+  "viral-doubling-to-4b": SlideViralDoublingTo4b,
+  "vote-value-asymmetry": SlideVoteValueAsymmetry,
+  "recruit-network-effect": SlideRecruitNetworkEffect,
+  "prize-pool-vs-index-fund": SlidePrizePoolVsIndexFund,
+  "dominant-assurance-contract": SlideDominantAssuranceContract,
+  "vote-point-dollar-value": SlideVotePointDollarValue,
+  "three-scenarios-all-win": SlideThreeScenariosAllWin,
+  "government-track-record": SlideGovernmentTrackRecord,
+  "congress-military-trials-ratio": SlideCongressMilitaryTrialsRatio,
+  "hale-leaderboard-by-country": SlideHaleLeaderboardByCountry,
+  "fda-approval-delay-8yr": SlideFdaApprovalDelay8yr,
+  "decentralized-fda": SlideDecentralizedFda,
+  "incentive-alignment-bonds": SlideIncentiveAlignmentBonds,
+  "smart-contract-superpac": SlideSmartContractSuperpac,
+  "ipfs-immutable-storage": SlideIpfsImmutableStorage,
+  "impact-certificates": SlideImpactCertificates,
+  "decentralized-irs": SlideDecentralizedIrs,
+  "decentralized-welfare": SlideDecentralizedWelfare,
+  "decentralized-federal-reserve": SlideDecentralizedFederalReserve,
+  "optimal-policy-generator": SlideOptimalPolicyGenerator,
+  "drug-policy-natural-experiment": SlideDrugPolicyNaturalExperiment,
+  "optimal-budget-generator": SlideOptimalBudgetGenerator,
+  "pencil-supply-chain": SlidePencilSupplyChain,
+  "disease-cure-supply-chain": SlideDiseaseCureSupplyChain,
+  "alignment-switch": SlideAlignmentSwitch,
 
-  // Act II - Part 2: The Game
-  "pairwise-budget-allocation": SlideLevelAllocate,
-  "eigenvector-budget-result": SlideYourBudget,
-  "one-percent-referendum-vote": SlideLevelVote,
-  "viral-doubling-to-4b": SlideYoureIn,
-  "vote-value-asymmetry": SlideAsymmetry,
-  "recruit-network-effect": SlideLevelShare,
-
-  // Act II - Part 3: The Money
-  "prize-pool-vs-index-fund": SlidePrizePool,
-  "dominant-assurance-contract": SlidePrizeMechanism,
-  "vote-point-dollar-value": SlideVotePointValue,
-  "three-scenarios-all-win": SlideCannotLose,
-
-  // Act II - Part 4: Accountability
-  "government-track-record": SlideChangedMetric,
-  "congress-military-trials-ratio": SlideUsReportCard,
-  "hale-leaderboard-by-country": SlideLeaderboard,
-
-  // Act II - Part 5: The Armory
-  "fda-approval-delay-8yr": SlideFdaQueue,
-  "decentralized-fda": SlideDfda,
-  "incentive-alignment-bonds": SlideIabs,
-  "smart-contract-superpac": SlideSuperpac,
-  "ipfs-immutable-storage": SlideStoracha,
-  "impact-certificates": SlideHypercerts,
-  "decentralized-irs": SlideWishToken,
-  "decentralized-welfare": SlideReplaceWelfare,
-  "decentralized-federal-reserve": SlideReplaceFed,
-  "optimal-policy-generator": SlidePolicyEngine,
-  "drug-policy-natural-experiment": SlideOptimizer,
-  "optimal-budget-generator": SlideBudgetOptimizer,
-  "pencil-supply-chain": SlideIPencil,
-  "disease-cure-supply-chain": SlideCuredDisease,
-  "alignment-switch": SlideTheSwitch,
-
-  // Act III - The Endgame
-  "personal-income-3-timelines": SlidePersonalUpside,
-  "ten-billion-lives-saved": SlideLivesSaved,
-  "final-call-to-action": SlideFinal,
-  "post-credits-aliens": SlideEasterEgg,
+  // Act III slides
+  "personal-income-3-timelines": SlidePersonalIncome3Timelines,
+  "ten-billion-lives-saved": SlideTenBillionLivesSaved,
+  "final-call-to-action": SlideFinalCallToAction,
+  "post-credits-aliens": SlidePostCreditsAliens,
 };
 
 export function SlideRenderer() {
