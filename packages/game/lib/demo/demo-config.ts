@@ -349,32 +349,27 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act1",
     duration: 10,
     narration:
-      "Moronia was a planet that spent 604 times more on weapons than on curing disease. Year 2033: destructive economy hit 25 percent of GDP. Year 2040: parasitic economy hit 50 percent. Year 2043: water wars went nuclear. Year 2045: cockroaches evolved intelligence. Year 2050: cockroaches found this manual. Very confused. Moronia no longer exists. Their allocation ratio correlated with yours at 94.7%.",
+      "Your civilisation spent 604 times more on weapons than on curing disease. Year 2033: destructive economy hit 25 percent of GDP. Year 2040: parasitic economy hit 50 percent. Year 2043: water wars went nuclear. The math was not on your side.",
     visual:
-      'Pixel art — barren, cracked planet surface. Red-black sky. Shattered buildings. Leafless pixel trees. Craters. Ash drifting. After narration, screen FREEZES. Sierra death jingle plays. Image desaturates to greyscale. Death dialog drops in with GAME OVER, three buttons: RESTORE / RESTART / QUIT. Score resets to 0. Death counter keeps ticking.',
+      'Pixel art — barren, cracked planet surface. Red-black sky. Shattered buildings. Ash drifting. Screen FREEZES. Desaturates to greyscale. GAME OVER. YOUR CIVILIZATION HAS COLLAPSED. Save file detected — RESTORE / RESTART / QUIT.',
     asciiArt: `
 ┌─────────────────────────────────────┐
 │          G A M E   O V E R          │
 │                                     │
-│  Moronia allocated 604× more to     │
+│  YOUR CIVILIZATION HAS COLLAPSED    │
+│                                     │
+│  You allocated 604× more to         │
 │  weapons than curing disease.       │
-│                                     │
-│  Correlation with Earth: 94.7%.     │
-│                                     │
-│  CONTINUE?  INSERT 604 COINS        │
+│  The math was not on your side.     │
 │                                     │
 │  ┌─────────┐ ┌─────────┐ ┌──────┐  │
 │  │ RESTORE │ │ RESTART │ │ QUIT │  │
-│  │ [LOCKED]│ │ [LOCKED]│ │  ◄◄  │  │
 │  └─────────┘ └─────────┘ └──────┘  │
-│                                     │
-│  There is no restart for an         │
-│  extinct civilisation.              │
 └─────────────────────────────────────┘`,
     onScreen: [
       { text: "G A M E   O V E R", size: "giant", animation: "fadeIn", color: "red" },
-      { text: "Moronia allocated 604\u00D7 more to weapons than curing disease.", size: "medium", animation: "fadeIn" },
-      { text: "Correlation with Earth: 94.7%.", size: "medium", animation: "fadeIn", color: "red" },
+      { text: "You allocated 604\u00D7 more to weapons than curing disease.", size: "medium", animation: "fadeIn" },
+      { text: "The math was not on your side.", size: "medium", animation: "fadeIn", color: "red" },
       { text: "RESTORE", size: "medium", animation: "fadeIn" },
       { text: "RESTART", size: "medium", animation: "fadeIn" },
       { text: "QUIT", size: "medium", animation: "fadeIn" },
@@ -396,7 +391,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     stageDirection:
       '[Cursor moves to "RESTORE" and clicks. Death dialog dissolves. Save-game file browser slides in. Clicks "wishonia_year_0.sav". "Bwoing" restore sound.]',
     visual:
-      "INSTANTANEOUS hard cut. Palette explodes from EGA 16-color to VGA 256. Bright cyan sky, fluffy pixel clouds, green rolling hills, gleaming pixel cities with parks and hospitals (no military bases). Pixel birds fly. Rivers flow. Health/happiness meters maxed. Quest meters (HALE / Income) appear for the FIRST TIME, empty, pulsing gently. Score reappears. Inventory is empty. The quest begins.",
+      "INSTANTANEOUS hard cut. Palette explodes from EGA 16-color to VGA 256. Earth restored title. Quest meters (Healthy Life Years / Income) appear for the FIRST TIME, pulsing gently. CTA button: INITIATE EARTH OPTIMIZATION PROTOCOL.",
     asciiArt: `
 ┌─────────────────────────────────────┐
 │  R E S T O R E   G A M E           │
