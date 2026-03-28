@@ -67,6 +67,8 @@ function DemoPlayerInner({
   sierraMode: boolean;
 }) {
   const reduced = useReducedMotion();
+  const slides = getPlaylistSegments(playlistId);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -77,7 +79,6 @@ function DemoPlayerInner({
   const containerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const slides = getPlaylistSegments(playlistId);
   const slide = slides[currentIndex]!;
 
   // Sync narration to Sierra chrome
