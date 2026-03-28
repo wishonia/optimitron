@@ -6,7 +6,7 @@ import { GoogleGenAI, Modality } from "@google/genai";
  * CORS enabled via next.config.mjs headers.
  */
 export async function GET() {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  const apiKey = process.env["GOOGLE_GENERATIVE_AI_API_KEY"];
   if (!apiKey) {
     return Response.json(
       { error: "GOOGLE_GENERATIVE_AI_API_KEY not configured" },
