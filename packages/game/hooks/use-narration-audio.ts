@@ -3,32 +3,25 @@
 import { useEffect, useRef } from "react";
 import { useDemoStore } from "@/lib/demo/store";
 
-/** Cached manifest — fetched once */
-let manifestCache: Record<string, { hash: string; file: string }> | null = null;
-let manifestLoading = false;
+/** Cached manifest — fetched once, concurrent callers wait on the same promise */
+let manifestPromise: Promise<Record<string, { hash: string; file: string }> | null> | null = null;
 
-async function getManifest() {
-  if (manifestCache) return manifestCache;
-  if (manifestLoading) return null;
-  manifestLoading = true;
-  try {
-    const res = await fetch("/audio/narration/manifest.json");
-    if (res.ok) {
-      manifestCache = await res.json();
-    }
-  } catch {
-    // No manifest = no audio files generated yet
+function getManifest() {
+  if (!manifestPromise) {
+    manifestPromise = fetch("/audio/narration/manifest.json")
+      .then((res) => (res.ok ? res.json() : null))
+      .catch(() => null);
   }
-  manifestLoading = false;
-  return manifestCache;
+  return manifestPromise;
 }
 
 /**
- * Hook to play narration audio for the current slide (MP3 fallback)
+ * Hook to play narration audio for the current slide (MP3 fallback).
+ * Plays audio on slide change and signals narration end for auto-advance.
  */
 export function useNarrationAudio(slideId?: string, enabled = true) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const { isMuted, voiceVolume, masterVolume, isPlaying } = useDemoStore();
+  const { isMuted, voiceVolume, masterVolume } = useDemoStore();
 
   // Update volume when it changes
   useEffect(() => {
@@ -36,16 +29,6 @@ export function useNarrationAudio(slideId?: string, enabled = true) {
       audioRef.current.volume = isMuted ? 0 : masterVolume * voiceVolume;
     }
   }, [isMuted, voiceVolume, masterVolume]);
-
-  // Pause/resume with play state
-  useEffect(() => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.play().catch(() => {});
-    } else {
-      audioRef.current.pause();
-    }
-  }, [isPlaying]);
 
   // Load and play audio when slide changes
   useEffect(() => {
@@ -62,19 +45,25 @@ export function useNarrationAudio(slideId?: string, enabled = true) {
 
     (async () => {
       const manifest = await getManifest();
-      if (cancelled || !manifest || !manifest[slideId]) return;
+      if (cancelled) return;
+      if (!manifest || !manifest[slideId]) {
+        console.warn(`[narration] No audio for slide "${slideId}"`);
+        return;
+      }
 
-      const audio = new Audio(`/audio/narration/${manifest[slideId].file}`);
+      const url = `/audio/narration/${manifest[slideId].file}`;
+      console.log(`[narration] Playing ${url}`);
+      const audio = new Audio(url);
       audio.volume = isMuted ? 0 : masterVolume * voiceVolume;
       audioRef.current = audio;
 
-      // Signal auto-advance when narration finishes
       audio.addEventListener("ended", () => {
         useDemoStore.getState().setNarrationEnded(true);
       });
 
-      // Auto-play (may be blocked by browser policy until user interaction)
-      audio.play().catch(() => {});
+      audio.play().catch((err) => {
+        console.warn(`[narration] Autoplay blocked:`, err.message);
+      });
     })();
 
     return () => {
