@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { AuthForm } from "@/components/auth/AuthForm";
-import { ROUTES } from "@/lib/routes";
+import { DEFAULT_POST_LOGIN_ROUTE } from "@/lib/routes";
 
 function getAuthErrorMessage(error: string | null) {
   switch (error) {
@@ -20,7 +20,7 @@ function getAuthErrorMessage(error: string | null) {
 
 function SignInContent() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? ROUTES.dashboard;
+  const callbackUrl = searchParams.get("callbackUrl") ?? DEFAULT_POST_LOGIN_ROUTE;
   const referralCode = searchParams.get("ref");
   const initialError = getAuthErrorMessage(searchParams.get("error"));
 

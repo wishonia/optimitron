@@ -38,7 +38,7 @@ function AvatarButton({
   isAuthenticated: boolean;
 }) {
   const initial = user?.name?.charAt(0) ?? user?.email?.charAt(0) ?? null;
-  const href = isAuthenticated ? ROUTES.profile : getSignInPath(ROUTES.wishocracy);
+  const href = isAuthenticated ? ROUTES.dashboard : getSignInPath();
 
   return (
     <Link

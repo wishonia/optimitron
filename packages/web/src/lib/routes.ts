@@ -59,6 +59,9 @@ export const ROUTES = {
   signIn: "/auth/signin",
 } as const;
 
+/** Where users land after signing in (unless a specific callbackUrl overrides it) */
+export const DEFAULT_POST_LOGIN_ROUTE = ROUTES.dashboard;
+
 export interface NavItem {
   href: string;
   label: string;
@@ -77,7 +80,7 @@ export function getPolicyPath(name: string): string {
 }
 
 export function getSignInPath(
-  callbackUrl: string = ROUTES.dashboard,
+  callbackUrl: string = DEFAULT_POST_LOGIN_ROUTE,
   options?: { referralCode?: string | null },
 ): string {
   const searchParams = new URLSearchParams({ callbackUrl });

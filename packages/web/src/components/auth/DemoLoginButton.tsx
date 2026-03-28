@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/retroui/Button";
-import { ROUTES } from "@/lib/routes";
+import { DEFAULT_POST_LOGIN_ROUTE, ROUTES } from "@/lib/routes";
 
 interface DemoLoginButtonProps {
   callbackUrl?: string;
@@ -11,7 +11,7 @@ interface DemoLoginButtonProps {
 }
 
 export function DemoLoginButton({
-  callbackUrl = ROUTES.dashboard,
+  callbackUrl = DEFAULT_POST_LOGIN_ROUTE,
   className,
 }: DemoLoginButtonProps) {
   const [loading, setLoading] = useState(false);

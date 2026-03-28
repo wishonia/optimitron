@@ -8,7 +8,7 @@ import { Button } from "@/components/retroui/Button";
 import { Input } from "@/components/retroui/Input";
 import { Label } from "@/components/retroui/Label";
 import { createLogger } from "@/lib/logger";
-import { ROUTES } from "@/lib/routes";
+import { DEFAULT_POST_LOGIN_ROUTE, ROUTES } from "@/lib/routes";
 import { storage } from "@/lib/storage";
 
 const logger = createLogger("auth-form");
@@ -23,7 +23,7 @@ interface AuthFormProps {
 }
 
 export function AuthForm({
-  callbackUrl = ROUTES.dashboard,
+  callbackUrl = DEFAULT_POST_LOGIN_ROUTE,
   referralCode,
   initialError = null,
   compact = false,
