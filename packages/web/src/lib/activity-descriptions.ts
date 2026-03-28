@@ -11,6 +11,7 @@ const BADGE_NAMES: Record<string, string> = {
 };
 
 const PLATFORM_NAMES: Record<string, string> = {
+  GOOGLE: "Google",
   TWITTER: "Twitter/X",
   GITHUB: "GitHub",
   ETHEREUM: "Ethereum",

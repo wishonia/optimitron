@@ -3,6 +3,9 @@ import { requireAuth } from "@/lib/auth-utils";
 import { prisma } from "@/lib/prisma";
 import { ActivityType, SocialPlatform } from "@optimitron/db";
 
+const AUTH_ACCOUNT_PROVIDERS = new Set<string>(["google"]);
+const SOCIAL_PLATFORMS = new Set<string>(Object.values(SocialPlatform));
+
 export async function POST(req: NextRequest) {
   try {
     const { userId } = await requireAuth();
@@ -15,33 +18,41 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate platform is a valid SocialPlatform enum value
-    const upperPlatform = platform.toUpperCase() as SocialPlatform;
+    const normalizedPlatform = String(platform).trim();
+    const upperPlatform = normalizedPlatform.toUpperCase();
+    const providerId = normalizedPlatform.toLowerCase();
+    const isSocialPlatform = SOCIAL_PLATFORMS.has(upperPlatform);
+    const isAuthAccountProvider = AUTH_ACCOUNT_PROVIDERS.has(providerId);
 
-    await prisma.socialAccount.delete({
-      where: {
-        userId_platform: {
+    if (!isSocialPlatform && !isAuthAccountProvider) {
+      return NextResponse.json(
+        { error: "Invalid platform" },
+        { status: 400 },
+      );
+    }
+
+    if (isSocialPlatform) {
+      await prisma.socialAccount.deleteMany({
+        where: {
           userId,
-          platform: upperPlatform,
+          platform: upperPlatform as SocialPlatform,
         },
-      },
-    });
+      });
+    }
 
-    // Also delete the NextAuth Account record
     await prisma.account.deleteMany({
       where: {
         userId,
-        provider: platform.toLowerCase(),
+        provider: providerId,
       },
     });
 
-    // Create activity record
     await prisma.activity.create({
       data: {
         userId,
         type: ActivityType.UPDATED_PROFILE,
         description: "",
-        metadata: JSON.stringify({ platform: upperPlatform }),
+        metadata: JSON.stringify({ platform: upperPlatform || providerId.toUpperCase() }),
       },
     });
 

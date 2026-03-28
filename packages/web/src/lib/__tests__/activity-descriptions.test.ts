@@ -37,6 +37,13 @@ describe("getActivityDescription", () => {
     expect(desc).toContain("GitHub");
   });
 
+  it("returns description for UPDATED_PROFILE with Google disconnect", () => {
+    const desc = getActivityDescription(ActivityType.UPDATED_PROFILE, {
+      platform: "GOOGLE",
+    });
+    expect(desc).toContain("Google");
+  });
+
   it("returns description for EARNED_BADGE with badgeType", () => {
     const desc = getActivityDescription(ActivityType.EARNED_BADGE, {
       badgeType: BadgeType.FIRST_RECRUIT,

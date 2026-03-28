@@ -14,43 +14,89 @@ interface StatProps {
   format?: (param: Parameter) => string;
   /** Significant figures (default 3). */
   figures?: number;
+  /** Show the unit from fmtParam (default false — surrounding text usually provides context). */
+  showUnit?: boolean;
   /** Extra CSS classes on the outer <span>. */
   className?: string;
+}
+
+/** Format a parameter value as a plain number (no unit suffix/prefix). */
+function fmtValueOnly(param: Parameter, figures = 3): string {
+  const unit = (param.unit ?? "").toLowerCase();
+
+  // Percentages: value is 0-1, display as 0-100
+  if (unit === "percentage" || unit === "rate" || unit === "percent") {
+    return fmtParam(param, figures); // keep the % since it's integral to the number
+  }
+
+  // For everything else, strip unit decorations by formatting without unit
+  const full = fmtParam(param, figures);
+
+  // Strip trailing unit suffixes like "x", " deaths", " years", etc.
+  // but keep "$" prefix and "%" suffix since they're integral
+  if (unit === "ratio" || unit === "x" || unit === "multiplier") {
+    return full.replace(/x$/, "").trim();
+  }
+
+  // Strip trailing unit words (e.g., " deaths", " years", " deaths/year")
+  if (unit && !unit.startsWith("usd")) {
+    const unitWord = unit.split("/")[0]!;
+    const regex = new RegExp(`\\s+${unitWord}.*$`, "i");
+    return full.replace(regex, "").trim();
+  }
+
+  return full;
 }
 
 /**
  * Inline sourced statistic. Renders the formatted value with a dotted underline.
  * Hover/tap shows a tooltip with the description, source, confidence, and citation link.
+ * Click opens the calculations URL in a new tab (if available).
+ *
+ * Units are hidden by default since surrounding text usually provides context.
+ * Pass `showUnit` to include the unit from fmtParam.
  *
  * Usage:
  *   <Stat param={GLOBAL_MILITARY_SPENDING_ANNUAL_2024} />
  *   → renders "$2.72 trillion" with a tooltip citing SIPRI
  */
-export function Stat({ param, format, figures = 3, className = "" }: StatProps) {
+export function Stat({ param, format, figures = 3, showUnit = false, className = "" }: StatProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
-  const text = format ? format(param) : fmtParam(param, figures);
+  const text = format
+    ? format(param)
+    : showUnit
+      ? fmtParam(param, figures)
+      : fmtValueOnly(param, figures);
   const citation: Citation | undefined = param.sourceRef
     ? citations[param.sourceRef]
     : undefined;
 
+  const handleClick = () => {
+    if (param.calculationsUrl) {
+      window.open(param.calculationsUrl, "_blank", "noopener,noreferrer");
+    } else {
+      setOpen((v) => !v);
+    }
+  };
+
   // Close on outside click
   useEffect(() => {
     if (!open) return;
-    function handleClick(e: MouseEvent) {
+    function handleOutsideClick(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [open]);
 
   return (
     <span ref={ref} className={`relative inline ${className}`}>
       <span
         className="cursor-help border-b border-dotted border-current"
-        onClick={() => setOpen((v) => !v)}
+        onClick={handleClick}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         title={param.description}
@@ -97,6 +143,17 @@ export function Stat({ param, format, figures = 3, className = "" }: StatProps) 
               onClick={(e) => e.stopPropagation()}
             >
               {citation.title || citation.URL}
+            </a>
+          )}
+          {param.calculationsUrl && (
+            <a
+              href={param.calculationsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 block truncate font-bold text-brutal-cyan hover:underline"
+              onClick={(e) => e.stopPropagation()}
+            >
+              View calculations
             </a>
           )}
         </span>

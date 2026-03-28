@@ -1,4 +1,5 @@
 import { BrutalCard } from "@/components/ui/brutal-card";
+import { Stat } from "@/components/ui/stat";
 import { ParameterValue } from "@/components/shared/ParameterValue";
 import {
   GLOBAL_HALE_CURRENT,
@@ -66,12 +67,12 @@ export function HumanityScoreboard() {
         </div>
         <div className="text-center">
           <div className="text-2xl sm:text-3xl md:text-4xl font-black text-muted-foreground line-through">
-            {GLOBAL_HALE_CURRENT.value}
+            <Stat param={GLOBAL_HALE_CURRENT} />
           </div>
         </div>
         <div className="text-center">
           <div className="text-2xl sm:text-3xl md:text-4xl font-black text-brutal-cyan">
-            {TREATY_PROJECTED_HALE_YEAR_15.value.toFixed(1)}
+            <Stat param={TREATY_PROJECTED_HALE_YEAR_15} />
           </div>
           <p className="text-sm font-bold text-muted-foreground">
             +{haleGain} yrs
@@ -79,7 +80,7 @@ export function HumanityScoreboard() {
         </div>
         <div className="text-center">
           <div className="text-2xl sm:text-3xl md:text-4xl font-black text-brutal-pink">
-            {WISHONIA_PROJECTED_HALE_YEAR_15.value.toFixed(1)}
+            <Stat param={WISHONIA_PROJECTED_HALE_YEAR_15} />
           </div>
           <p className="text-sm font-bold text-muted-foreground">
             +{wishoniaHaleGain} yrs

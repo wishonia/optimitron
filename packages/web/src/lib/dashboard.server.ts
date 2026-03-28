@@ -29,6 +29,10 @@ export async function getDashboardData(
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: {
+      accounts: {
+        where: { deletedAt: null },
+        select: { provider: true },
+      },
       badges: true,
       socialAccounts: true,
       activities: {
@@ -118,6 +122,9 @@ export async function getDashboardData(
       description: getBadgeDescription(badge.type),
       earned: true,
     })),
+    linkedAuthProviderIds: Array.from(
+      new Set(user.accounts.map((account) => account.provider.toLowerCase())),
+    ),
     socialAccounts: user.socialAccounts.map((sa) => ({
       platform: sa.platform,
       username: sa.username,

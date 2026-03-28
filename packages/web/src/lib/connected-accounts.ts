@@ -1,5 +1,7 @@
 import type { DashboardSocialAccount } from "@/types/dashboard";
 
+const SUPPORTED_IDENTITY_AUTH_PROVIDER_IDS = ["google"] as const;
+
 const SOCIAL_PLATFORM_PROVIDER_IDS = {
   GITHUB: "github",
   TWITTER: "twitter",
@@ -10,6 +12,25 @@ const SOCIAL_PLATFORM_PROVIDER_IDS = {
 interface ConnectedAccountPlatform {
   key: string;
   isWallet: boolean;
+}
+
+export type IdentityAuthProviderId = (typeof SUPPORTED_IDENTITY_AUTH_PROVIDER_IDS)[number];
+
+export function getVisibleIdentityAuthProviderIds(
+  availableAuthProviderIds: string[],
+  linkedAuthProviderIds: string[],
+): IdentityAuthProviderId[] {
+  const availableProviderIdSet = new Set(
+    availableAuthProviderIds.map((providerId) => providerId.toLowerCase()),
+  );
+  const linkedProviderIdSet = new Set(
+    linkedAuthProviderIds.map((providerId) => providerId.toLowerCase()),
+  );
+
+  return SUPPORTED_IDENTITY_AUTH_PROVIDER_IDS.filter(
+    (providerId) =>
+      availableProviderIdSet.has(providerId) || linkedProviderIdSet.has(providerId),
+  );
 }
 
 export function getVisibleConnectedAccountPlatforms<T extends ConnectedAccountPlatform>(

@@ -71,6 +71,7 @@ export interface DashboardData {
   user: DashboardUser;
   stats: DashboardStats;
   badges: DashboardBadge[];
+  linkedAuthProviderIds: string[];
   socialAccounts: DashboardSocialAccount[];
   activities: DashboardActivity[];
   organizations: {

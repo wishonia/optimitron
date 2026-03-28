@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { getVisibleConnectedAccountPlatforms } from "@/lib/connected-accounts";
+import {
+  getVisibleConnectedAccountPlatforms,
+  getVisibleIdentityAuthProviderIds,
+} from "@/lib/connected-accounts";
 import type { DashboardSocialAccount } from "@/types/dashboard";
 
 const platforms = [
@@ -63,5 +66,25 @@ describe("getVisibleConnectedAccountPlatforms", () => {
       "ETHEREUM",
       "BASE",
     ]);
+  });
+});
+
+describe("getVisibleIdentityAuthProviderIds", () => {
+  it("shows supported auth providers when configured", () => {
+    expect(
+      getVisibleIdentityAuthProviderIds(["email", "google"], []),
+    ).toEqual(["google"]);
+  });
+
+  it("keeps linked auth providers visible even when no longer configured", () => {
+    expect(
+      getVisibleIdentityAuthProviderIds(["email"], ["google"]),
+    ).toEqual(["google"]);
+  });
+
+  it("hides unsupported auth providers", () => {
+    expect(
+      getVisibleIdentityAuthProviderIds(["email", "github"], []),
+    ).toEqual([]);
   });
 });

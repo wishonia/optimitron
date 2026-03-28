@@ -90,7 +90,7 @@ export function OnePercentTreatySection() {
 
         <div className="p-8 border-4 border-primary bg-brutal-cyan shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
           <div className="text-4xl sm:text-5xl font-black text-foreground mb-2">
-            {(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1)}B Lives Saved
+            <Stat param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED} /> Lives Saved
           </div>
           <p className="text-foreground font-bold max-w-xl mx-auto">
             <Stat param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED} /> deaths prevented. ROI: essentially infinite. The only

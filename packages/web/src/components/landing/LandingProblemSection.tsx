@@ -8,6 +8,7 @@ import {
   EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL,
   EFFICACY_LAG_YEARS,
 } from "@optimitron/data/parameters";
+import { Stat } from "@/components/ui/stat";
 const milToTrialsRatio = Math.round(
   GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value /
     GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value,
@@ -89,8 +90,7 @@ export function LandingProblemSection() {
             <div className="space-y-6">
               <div>
                 <div className="text-3xl font-black text-brutal-yellow">
-                  {Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value).toLocaleString()}{" "}
-                  deaths/day
+                  <Stat param={GLOBAL_DISEASE_DEATHS_DAILY} /> deaths/day
                 </div>
                 <p className="mt-1 text-sm font-bold text-muted-foreground">
                   Preventable. Treatable. Ignored. Every day your regulatory

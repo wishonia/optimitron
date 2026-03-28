@@ -133,6 +133,7 @@ export function DashboardClient({
           {/* Connected Accounts */}
           <ConnectedAccountsCard
             availableAuthProviderIds={availableAuthProviderIds}
+            linkedAuthProviderIds={initialData.linkedAuthProviderIds}
             socialAccounts={initialData.socialAccounts}
             onRefresh={refreshDashboard}
           />
