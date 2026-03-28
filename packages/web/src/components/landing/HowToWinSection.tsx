@@ -22,7 +22,7 @@ export function HowToWinSection() {
       <Container>
         <SectionHeader
           title="How to Win"
-          subtitle="Live longer. Earn more. Two numbers on a Scoreboard. That's the whole game."
+          subtitle="Make humanity healthier and wealthier. Increase 2 numbers That's the whole game!"
           size="lg"
         />
 

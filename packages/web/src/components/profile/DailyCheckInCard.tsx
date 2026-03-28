@@ -107,6 +107,7 @@ export function DailyCheckInCard({ currentCheckIn, onSaved }: DailyCheckInCardPr
               amounts={[1, 2, 3, 4, 5]}
               columns={5}
               formatPrefix=""
+              labels={{ 1: "🤒 1", 2: "😕 2", 3: "😐 3", 4: "😊 4", 5: "💪 5" }}
               value={healthRating}
               onChange={setHealthRating}
             />
@@ -122,6 +123,7 @@ export function DailyCheckInCard({ currentCheckIn, onSaved }: DailyCheckInCardPr
               amounts={[1, 2, 3, 4, 5]}
               columns={5}
               formatPrefix=""
+              labels={{ 1: "😢 1", 2: "😟 2", 3: "😐 3", 4: "😄 4", 5: "🤩 5" }}
               value={happinessRating}
               onChange={setHappinessRating}
             />

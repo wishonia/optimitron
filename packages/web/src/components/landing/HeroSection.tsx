@@ -59,13 +59,13 @@ export function HeroSection() {
             variants={wordVariants}
             className="text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-none tracking-tighter"
           >
-            THE EARTH
+            PLAY THE
           </motion.h1>
           <motion.h1
             variants={wordVariants}
             className="text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-none tracking-tighter"
           >
-            OPTIMIZATION
+             EARTH OPTIMIZATION
           </motion.h1>
           <motion.h1
             variants={gameVariants}
@@ -77,7 +77,7 @@ export function HeroSection() {
             whileTap={{ scale: 0.9, rotate: -10 }}
             className="text-center text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-none tracking-tighter text-brutal-pink cursor-pointer"
           >
-            GAME.
+            GAME!
           </motion.h1>
 
           <motion.p
@@ -95,7 +95,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mt-3 text-center text-base sm:text-lg md:text-xl font-bold text-muted-foreground max-w-3xl leading-tight"
           >
-            {TAGLINES.alignTheSuperintelligence} Vote. Share. Win.
+            {TAGLINES.alignTheSuperintelligence}
           </motion.p>
 
           <motion.div
@@ -118,7 +118,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.9 }}
             className="mt-4 text-lg sm:text-xl font-black text-muted-foreground uppercase"
           >
-            Free. 30 seconds. No catch.
+            Free! Takes 30 seconds!
           </motion.p>
         </motion.div>
       </Container>

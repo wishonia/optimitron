@@ -15,6 +15,8 @@ export interface AmountSelectorProps {
   formatPrefix?: string
   /** Suffix for display (e.g., "/mo") */
   formatSuffix?: string
+  /** Custom labels per amount (overrides prefix/suffix formatting) */
+  labels?: Record<number, string>
   activeColor?: AmountSelectorColor
   className?: string
 }
@@ -39,6 +41,7 @@ export function AmountSelector({
   columns = 3,
   formatPrefix = "$",
   formatSuffix = "",
+  labels,
   activeColor = "yellow",
   className,
 }: AmountSelectorProps) {
@@ -56,7 +59,7 @@ export function AmountSelector({
               : "bg-background text-foreground"
           )}
         >
-          {formatPrefix}{amount}{formatSuffix}
+          {labels?.[amount] ?? `${formatPrefix}${amount}${formatSuffix}`}
         </Button>
       ))}
     </div>

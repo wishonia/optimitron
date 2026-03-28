@@ -51,7 +51,7 @@ export const TAGLINES = {
   pluralisticIgnorance:
     `4 billion people would rather be healthy and rich than funding ${fmtParam(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO)} more weapons than cures. They just can't see each other yet.`,
   alignTheSuperintelligence:
-    "Your governments are misaligned superintelligences. This is the alignment software.",
+    `Your governments spend ${fmtParam(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO)} more on weapons than clinical trials. Let's fix that!`,
   theObjective:
     "Reallocate humanity's resources from things making you poorer and deader to things that make you healthier and wealthier.",
   rewardFunction:
