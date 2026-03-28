@@ -122,7 +122,7 @@ export async function syncPendingWishocracy(
 
     const pending = storage.getPendingWishocracy();
     if (!pending) {
-      logger.warn("No wishocracy data to sync");
+      logger.info("No wishocracy data to sync");
       return false;
     }
 
@@ -131,7 +131,7 @@ export async function syncPendingWishocracy(
       (pending.includedItemIds && pending.includedItemIds.length > 0);
 
     if (!hasData) {
-      logger.warn("No wishocracy data to sync");
+      logger.info("No wishocracy data to sync");
       return false;
     }
 

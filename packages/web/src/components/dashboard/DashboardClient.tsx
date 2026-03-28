@@ -26,9 +26,11 @@ import { PlayerNameBanner } from "@/components/dashboard/PlayerNameBanner"
 import type { DashboardData, LeaderboardEntry } from "@/types/dashboard"
 
 export function DashboardClient({
+  availableAuthProviderIds,
   initialData,
   leaderboard,
 }: {
+  availableAuthProviderIds: string[]
   initialData: DashboardData
   leaderboard: LeaderboardEntry[]
 }) {
@@ -130,6 +132,7 @@ export function DashboardClient({
 
           {/* Connected Accounts */}
           <ConnectedAccountsCard
+            availableAuthProviderIds={availableAuthProviderIds}
             socialAccounts={initialData.socialAccounts}
             onRefresh={refreshDashboard}
           />

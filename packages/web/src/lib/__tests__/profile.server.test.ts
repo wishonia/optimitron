@@ -311,8 +311,8 @@ describe("profile server", () => {
         value: 120_000,
       }),
     });
-    expect(result.profile.annualHouseholdIncomeUsd).toBe(120_000);
-    expect(result.profile.lastIncomeReportedAt).toBe("2026-03-12T10:00:00.000Z");
+    expect(result!.profile.annualHouseholdIncomeUsd).toBe(120_000);
+    expect(result!.profile.lastIncomeReportedAt).toBe("2026-03-12T10:00:00.000Z");
   });
 
   it("updates same-day health and happiness measurements instead of duplicating them", async () => {
@@ -399,7 +399,7 @@ describe("profile server", () => {
         value: 5,
       }),
     });
-    expect(result.currentCheckIn).toEqual({
+    expect(result!.currentCheckIn).toEqual({
       date: "2026-03-12",
       happinessRating: 5,
       healthRating: 4,

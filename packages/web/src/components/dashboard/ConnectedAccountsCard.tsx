@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/retroui/Button"
 import { Card } from "@/components/retroui/Card"
+import { getVisibleConnectedAccountPlatforms } from "@/lib/connected-accounts"
 import type { DashboardSocialAccount } from "@/types/dashboard"
 import { FaGithub, FaXTwitter, FaDiscord, FaTelegram, FaEthereum } from "react-icons/fa6"
 import { signIn } from "next-auth/react"
@@ -9,6 +10,7 @@ import { useAccount, useConnect, useDisconnect } from "wagmi"
 import type { ReactNode } from "react"
 
 interface ConnectedAccountsCardProps {
+  availableAuthProviderIds: string[]
   socialAccounts: DashboardSocialAccount[]
   onRefresh: () => void
 }
@@ -59,10 +61,19 @@ const PLATFORMS: PlatformRow[] = [
   },
 ]
 
-export function ConnectedAccountsCard({ socialAccounts, onRefresh }: ConnectedAccountsCardProps) {
+export function ConnectedAccountsCard({
+  availableAuthProviderIds,
+  socialAccounts,
+  onRefresh,
+}: ConnectedAccountsCardProps) {
   const { address, isConnected } = useAccount()
   const { connect, connectors } = useConnect()
   const { disconnect } = useDisconnect()
+  const visiblePlatforms = getVisibleConnectedAccountPlatforms(
+    PLATFORMS,
+    socialAccounts,
+    availableAuthProviderIds,
+  )
 
   const getAccount = (platform: string) =>
     socialAccounts.find((sa) => sa.platform === platform)
@@ -139,7 +150,7 @@ export function ConnectedAccountsCard({ socialAccounts, onRefresh }: ConnectedAc
       </Card.Header>
       <Card.Content>
         <div className="space-y-3">
-          {PLATFORMS.map((row) => {
+          {visiblePlatforms.map((row) => {
             const account = getAccount(row.key)
             const isWalletConnected = row.isWallet && (!!account || (isConnected && !!address))
             const isSocialConnected = !row.isWallet && !!account

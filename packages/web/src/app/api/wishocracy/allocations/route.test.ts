@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+  getServerSession: vi.fn(),
   requireAuth: vi.fn(),
   getCurrentUser: vi.fn(),
   ensureWishocraticItemsExist: vi.fn(),
@@ -10,6 +11,14 @@ const mocks = vi.hoisted(() => ({
   create: vi.fn(),
   deleteMany: vi.fn(),
   createMany: vi.fn(),
+}));
+
+vi.mock("next-auth", () => ({
+  getServerSession: mocks.getServerSession,
+}));
+
+vi.mock("@/lib/auth", () => ({
+  authOptions: {},
 }));
 
 vi.mock("@/lib/auth-utils", () => ({
@@ -60,6 +69,7 @@ import { GET, POST, PATCH } from "./route";
 
 describe("wishocracy allocations route", () => {
   beforeEach(() => {
+    mocks.getServerSession.mockReset();
     mocks.requireAuth.mockReset();
     mocks.getCurrentUser.mockReset();
     mocks.ensureWishocraticItemsExist.mockReset();
@@ -73,7 +83,7 @@ describe("wishocracy allocations route", () => {
   });
 
   it("dedupes by pair and normalizes the latest saved orientation on GET", async () => {
-    mocks.getCurrentUser.mockResolvedValue({ id: "user_1" });
+    mocks.getServerSession.mockResolvedValue({ user: { id: "user_1" } });
     mocks.findMany.mockResolvedValue([
       {
         itemAId: "ADDICTION_TREATMENT",

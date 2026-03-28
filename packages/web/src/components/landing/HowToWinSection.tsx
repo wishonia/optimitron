@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/container";
 import { SectionHeader } from "@/components/ui/section-header";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { ParameterValue } from "@/components/shared/ParameterValue";
+import { Stat } from "@/components/ui/stat";
 import { HumanityScoreboard } from "@/components/shared/HumanityScoreboard";
 import { GovernmentLeaderboard } from "@/components/shared/GovernmentLeaderboard";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
@@ -79,7 +80,7 @@ export function HowToWinSection() {
             <p className="text-lg sm:text-xl font-bold text-foreground">
               Depositors split the pool.{" "}
               <span className="text-brutal-pink font-black">
-                {PRIZE_POOL_HORIZON_MULTIPLE.value.toFixed(1)}x
+                <Stat param={PRIZE_POOL_HORIZON_MULTIPLE} />x
               </span>{" "}
               return. Still beats a retirement account.
             </p>

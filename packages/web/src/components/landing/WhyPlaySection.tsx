@@ -29,7 +29,7 @@ export function WhyPlaySection() {
           {/* Card 1: Global Failed State */}
           <BrutalCard bgColor="red" shadowSize={8} padding="lg">
             <div className="text-4xl sm:text-5xl md:text-6xl font-black text-brutal-red-foreground mb-2">
-              {Math.round(DESTRUCTIVE_ECONOMY_35PCT_YEAR.value)}
+              <Stat param={DESTRUCTIVE_ECONOMY_35PCT_YEAR} />
             </div>
             <h3 className="text-2xl sm:text-3xl font-black uppercase text-brutal-red-foreground mb-3">
               Global Failed State

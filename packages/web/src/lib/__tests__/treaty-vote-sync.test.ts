@@ -125,7 +125,7 @@ describe("treaty vote sync", () => {
     });
     expect(fetchMock).toHaveBeenNthCalledWith(
       2,
-      "/api/referendums/one-percent-treaty/vote",
+      "/api/referendums/1-percent-treaty/vote",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

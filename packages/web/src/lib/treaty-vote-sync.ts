@@ -6,7 +6,7 @@ import { getUsernameOrReferralCode } from "./referral.client";
 import { API_ROUTES } from "./api-routes";
 import { getTreatyWishocraticAllocation } from "./treaty-vote";
 
-const DEFAULT_REFERENDUM_SLUG = "one-percent-treaty";
+const DEFAULT_REFERENDUM_SLUG = "1-percent-treaty";
 
 async function syncTreatyWishocraticAllocation(): Promise<boolean> {
   const pendingAllocation = getTreatyWishocraticAllocation(storage.getPendingTreatyVote());

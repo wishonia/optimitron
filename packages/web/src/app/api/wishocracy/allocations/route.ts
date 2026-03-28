@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
+import { authOptions } from "@/lib/auth";
 import { getCurrentUser, requireAuth } from "@/lib/auth-utils";
 import { createLogger } from "@/lib/logger";
 import {
@@ -15,13 +17,14 @@ const logger = createLogger("api/wishocracy/allocations");
 
 export async function GET() {
   try {
-    const user = await getCurrentUser();
-    if (!user) {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id;
+    if (!userId) {
       return NextResponse.json({ allocations: [] });
     }
 
     const dbAllocations = await prisma.wishocraticAllocation.findMany({
-      where: { userId: user.id },
+      where: { userId },
       orderBy: { updatedAt: "asc" },
       select: {
         itemAId: true,
