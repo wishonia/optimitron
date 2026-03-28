@@ -1,46 +1,7 @@
 import { test, expect } from "@playwright/test";
+import { SLIDES } from "../lib/demo/demo-config";
 
-const SLIDE_IDS = [
-  "cold-open",
-  "governments-are-ai",
-  "misaligned",
-  "game-title",
-  "ratio-604",
-  "clock",
-  "failed-state",
-  "ai-spiral",
-  "paycheck-theft",
-  "moronia",
-  "wishonia",
-  "the-fix",
-  "acceleration",
-  "compounding",
-  "pluralistic-ignorance",
-  "dysfunction-tax",
-  "scoreboard",
-  "allocate",
-  "vote",
-  "asymmetry",
-  "get-friends",
-  "prize-investment",
-  "prize-mechanism",
-  "vote-point-value",
-  "cannot-lose",
-  "leaderboard",
-  "changed-metric",
-  "dfda",
-  "iabs",
-  "superpac",
-  "storacha",
-  "hypercerts",
-  "wish-token",
-  "optimizer",
-  "i-pencil",
-  "personal-upside",
-  "lives-saved",
-  "close",
-  "easter-egg",
-];
+const SLIDE_IDS = SLIDES.map((s) => s.id);
 
 test.describe("Presentation Slide Review", () => {
   test("screenshot every slide and check for render issues", async ({

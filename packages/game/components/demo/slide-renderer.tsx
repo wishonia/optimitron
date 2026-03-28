@@ -28,7 +28,6 @@ import { SlideGDPTrajectory } from "./slides/act2/slide-gdp-trajectory";
 import { SlideCompoundPunchline } from "./slides/act2/slide-compound-punchline";
 import { SlideTheBug } from "./slides/act2/slide-the-bug";
 import { SlideTheMismatch } from "./slides/act2/slide-the-mismatch";
-import { SlidePluristicIgnorance } from "./slides/act2/slide-pluralistic-ignorance";
 import { SlideDysfunctionTax } from "./slides/act2/slide-dysfunction-tax";
 import { SlideScoreboard } from "./slides/act2/slide-scoreboard";
 
@@ -79,95 +78,83 @@ import { DataSlide } from "./slides/data-slide";
 // Map slide IDs to components (IDs from demo-config.ts)
 const slideComponents: Record<string, React.ComponentType> = {
   // Act I - The Horror
-  "cold-open": SlideDeathCounter,
-  "governments-are-ai": SlideGovernmentsAreAI,
-  "war-spending": SlideMisalignedProof,
-  "body-count": SlideBodyCount,
-  "paycheck-heist": SlidePaycheckTheft,
-  "game-title": SlideGameTitle,
-  "ratio-604": SlideRatio,
-  "clock": SlideCollapseClock,
-  "failed-state": SlideFailedState,
-  "ai-spiral": SlideAIHackers,
-  "moronia": SlideGameOver,
+  "daily-death-toll": SlideDeathCounter,
+  "misaligned-superintelligence": SlideGovernmentsAreAI,
+  "military-waste-170t": SlideMisalignedProof,
+  "government-body-count": SlideBodyCount,
+  "inflation-wage-theft": SlidePaycheckTheft,
+  "earth-optimization-game": SlideGameTitle,
+  "military-health-ratio": SlideRatio,
+  "economic-collapse-clock": SlideCollapseClock,
+  "global-failed-state": SlideFailedState,
+  "ai-hacker-spiral": SlideAIHackers,
+  "game-over-moronia": SlideGameOver,
 
   // The Turn
-  "wishonia": SlideWishoniaRestore,
+  "restore-from-wishonia": SlideWishoniaRestore,
 
   // Act II - Part 1: The Solution
-  "the-fix": SlideOnePercent,
-  "acceleration": SlideAcceleration,
-  "roi-comparison": SlideRoiComparison,
-  "virtuous-loop": SlideVirtuousLoop,
-  "twenty-year-gap": SlideGDPTrajectory,
-  "compound-punchline": SlideCompoundPunchline,
-  "the-bug": SlideTheBug,
-  "the-mismatch": SlideTheMismatch,
-  "pluralistic-ignorance": SlidePluristicIgnorance,
-  "dysfunction-tax": SlideDysfunctionTax,
-  "scoreboard": SlideScoreboard,
+  "one-percent-treaty": SlideOnePercent,
+  "trial-acceleration-12x": SlideAcceleration,
+  "healthcare-vs-military-roi": SlideRoiComparison,
+  "economic-virtuous-loop": SlideVirtuousLoop,
+  "gdp-20-year-forecast": SlideGDPTrajectory,
+  "compound-growth-scenarios": SlideCompoundPunchline,
+  "pluralistic-ignorance-bug": SlideTheBug,
+  "public-vs-lobbyist-90to1": SlideTheMismatch,
+  "dysfunction-tax-101t": SlideDysfunctionTax,
+  "win-conditions-hale-income": SlideScoreboard,
 
   // Act II - Part 2: The Game
-  "allocate": SlideLevelAllocate,
-  "your-budget": SlideYourBudget,
-  "referendum": SlideLevelVote,
-  "youre-in": SlideYoureIn,
-  "asymmetry": SlideAsymmetry,
-  "get-friends": SlideLevelShare,
+  "pairwise-budget-allocation": SlideLevelAllocate,
+  "eigenvector-budget-result": SlideYourBudget,
+  "one-percent-referendum-vote": SlideLevelVote,
+  "viral-doubling-to-4b": SlideYoureIn,
+  "vote-value-asymmetry": SlideAsymmetry,
+  "recruit-network-effect": SlideLevelShare,
 
   // Act II - Part 3: The Money
-  "prize-investment": SlidePrizePool,
-  "prize-mechanism": SlidePrizeMechanism,
-  "vote-point-value": SlideVotePointValue,
-  "cannot-lose": SlideCannotLose,
+  "prize-pool-vs-index-fund": SlidePrizePool,
+  "dominant-assurance-contract": SlidePrizeMechanism,
+  "vote-point-dollar-value": SlideVotePointValue,
+  "three-scenarios-all-win": SlideCannotLose,
 
   // Act II - Part 4: Accountability
-  "arsonist-board": SlideLeaderboard,
-  "track-record": SlideChangedMetric,
-  "us-report-card": SlideUsReportCard,
+  "government-track-record": SlideChangedMetric,
+  "congress-military-trials-ratio": SlideUsReportCard,
+  "hale-leaderboard-by-country": SlideLeaderboard,
 
   // Act II - Part 5: The Armory
-  "fda-queue": SlideFdaQueue,
-  "dfda-fix": SlideDfda,
-  "iabs": SlideIabs,
-  "superpac": SlideSuperpac,
-  "storacha": SlideStoracha,
-  "hypercerts": SlideHypercerts,
-  "replace-irs": SlideWishToken,
-  "replace-welfare": SlideReplaceWelfare,
-  "replace-fed": SlideReplaceFed,
-  "policy-engine": SlidePolicyEngine,
-  "optimizer": SlideOptimizer,
-  "budget-optimizer": SlideBudgetOptimizer,
-  "i-pencil": SlideIPencil,
-  "cured-disease": SlideCuredDisease,
-  "the-switch": SlideTheSwitch,
+  "fda-approval-delay-8yr": SlideFdaQueue,
+  "decentralized-fda": SlideDfda,
+  "incentive-alignment-bonds": SlideIabs,
+  "smart-contract-superpac": SlideSuperpac,
+  "ipfs-immutable-storage": SlideStoracha,
+  "impact-certificates": SlideHypercerts,
+  "decentralized-irs": SlideWishToken,
+  "decentralized-welfare": SlideReplaceWelfare,
+  "decentralized-federal-reserve": SlideReplaceFed,
+  "optimal-policy-generator": SlidePolicyEngine,
+  "drug-policy-natural-experiment": SlideOptimizer,
+  "optimal-budget-generator": SlideBudgetOptimizer,
+  "pencil-supply-chain": SlideIPencil,
+  "disease-cure-supply-chain": SlideCuredDisease,
+  "alignment-switch": SlideTheSwitch,
 
   // Act III - The Endgame
-  "personal-upside": SlidePersonalUpside,
-  "lives-saved": SlideLivesSaved,
-  "close": SlideFinal,
-  "easter-egg": SlideEasterEgg,
+  "personal-income-3-timelines": SlidePersonalUpside,
+  "ten-billion-lives-saved": SlideLivesSaved,
+  "final-call-to-action": SlideFinal,
+  "post-credits-aliens": SlideEasterEgg,
 };
 
 export function SlideRenderer() {
   const currentSlide = useDemoStore((s) => s.currentSlide);
   const slideConfig = SLIDES[currentSlide];
 
-  if (!slideConfig) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-black">
-        <div className="font-pixel text-red-500">ERROR: Invalid slide index</div>
-      </div>
-    );
-  }
+  if (!slideConfig) return null;
 
-  const SlideComponent = slideComponents[slideConfig.id];
+  const Component = slideComponents[slideConfig.id] || DataSlide;
 
-  if (SlideComponent) {
-    return <SlideComponent key={slideConfig.id} />;
-  }
-
-  // Generic data-driven fallback for slides without dedicated components
-  return <DataSlide key={slideConfig.id} config={slideConfig} />;
+  return <Component />;
 }

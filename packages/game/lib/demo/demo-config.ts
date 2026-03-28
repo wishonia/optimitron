@@ -52,7 +52,7 @@ export const SLIDES: SlideConfig[] = [
   // EGA palette, dark, ominous, score stays at 0
   // ============================================
   {
-    id: "cold-open",
+    id: "daily-death-toll",
     act: "act1",
     duration: 10,
     chapter: "Act I: The Horror",
@@ -81,7 +81,7 @@ export const SLIDES: SlideConfig[] = [
     ],
   },
   {
-    id: "governments-are-ai",
+    id: "misaligned-superintelligence",
     act: "act1",
     duration: 12,
     narration:
@@ -102,7 +102,7 @@ export const SLIDES: SlideConfig[] = [
     ],
   },
   {
-    id: "war-spending",
+    id: "military-waste-170t",
     act: "act1",
     duration: 10,
     narration:
@@ -141,7 +141,7 @@ export const SLIDES: SlideConfig[] = [
     ],
   },
   {
-    id: "body-count",
+    id: "government-body-count",
     act: "act1",
     duration: 10,
     narration:
@@ -151,7 +151,7 @@ export const SLIDES: SlideConfig[] = [
     score: 0,
   },
   {
-    id: "paycheck-heist",
+    id: "inflation-wage-theft",
     act: "act1",
     duration: 10,
     narration:
@@ -195,7 +195,7 @@ export const SLIDES: SlideConfig[] = [
     ],
   },
   {
-    id: "game-title",
+    id: "earth-optimization-game",
     act: "act1",
     duration: 12,
     narration:
@@ -222,7 +222,7 @@ export const SLIDES: SlideConfig[] = [
     ],
   },
   {
-    id: "ratio-604",
+    id: "military-health-ratio",
     act: "act1",
     duration: 8,
     narration:
@@ -251,7 +251,7 @@ export const SLIDES: SlideConfig[] = [
     ],
   },
   {
-    id: "clock",
+    id: "economic-collapse-clock",
     act: "act1",
     duration: 10,
     narration:
@@ -277,7 +277,7 @@ export const SLIDES: SlideConfig[] = [
     ],
   },
   {
-    id: "failed-state",
+    id: "global-failed-state",
     act: "act1",
     duration: 10,
     narration:
@@ -302,7 +302,7 @@ export const SLIDES: SlideConfig[] = [
     ],
   },
   {
-    id: "ai-spiral",
+    id: "ai-hacker-spiral",
     act: "act1",
     duration: 10,
     narration:
@@ -333,7 +333,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "moronia",
+    id: "game-over-moronia",
     act: "act1",
     duration: 10,
     narration:
@@ -375,7 +375,7 @@ RECURSIVE EXPONENTIAL THEFT`,
   // Palette shift from EGA to VGA
   // ============================================
   {
-    id: "wishonia",
+    id: "restore-from-wishonia",
     act: "turn",
     duration: 10,
     chapter: "The Turn",
@@ -408,7 +408,7 @@ RECURSIVE EXPONENTIAL THEFT`,
 
   // Part 1: The Solution
   {
-    id: "the-fix",
+    id: "one-percent-treaty",
     act: "act2",
     duration: 10,
     chapter: "Part 1: The Solution",
@@ -428,7 +428,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "acceleration",
+    id: "trial-acceleration-12x",
     act: "act2",
     duration: 10,
     narration:
@@ -450,7 +450,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "roi-comparison",
+    id: "healthcare-vs-military-roi",
     act: "act2",
     duration: 8,
     narration:
@@ -489,7 +489,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "virtuous-loop",
+    id: "economic-virtuous-loop",
     act: "act2",
     duration: 10,
     narration:
@@ -534,7 +534,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "twenty-year-gap",
+    id: "gdp-20-year-forecast",
     act: "act2",
     duration: 10,
     narration:
@@ -570,7 +570,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "compound-punchline",
+    id: "compound-growth-scenarios",
     act: "act2",
     duration: 8,
     narration:
@@ -606,7 +606,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "the-bug",
+    id: "pluralistic-ignorance-bug",
     act: "act2",
     duration: 8,
     narration:
@@ -642,7 +642,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "the-mismatch",
+    id: "public-vs-lobbyist-90to1",
     act: "act2",
     duration: 8,
     narration:
@@ -678,7 +678,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "dysfunction-tax",
+    id: "dysfunction-tax-101t",
     act: "act2",
     duration: 10,
     narration:
@@ -720,7 +720,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "scoreboard",
+    id: "win-conditions-hale-income",
     act: "act2",
     duration: 10,
     narration:
@@ -763,7 +763,7 @@ RECURSIVE EXPONENTIAL THEFT`,
 
   // Part 2: The Game
   {
-    id: "allocate",
+    id: "pairwise-budget-allocation",
     act: "act2",
     duration: 10,
     chapter: "Part 2: The Game",
@@ -809,7 +809,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "your-budget",
+    id: "eigenvector-budget-result",
     act: "act2",
     duration: 8,
     ctaUrl: "/agencies/domb",
@@ -848,7 +848,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "referendum",
+    id: "one-percent-referendum-vote",
     act: "act2",
     duration: 10,
     ctaUrl: "/prize",
@@ -895,7 +895,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "youre-in",
+    id: "viral-doubling-to-4b",
     act: "act2",
     duration: 8,
     narration:
@@ -936,7 +936,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "asymmetry",
+    id: "vote-value-asymmetry",
     act: "act2",
     duration: 8,
     narration:
@@ -959,7 +959,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "get-friends",
+    id: "recruit-network-effect",
     act: "act2",
     duration: 10,
     narration:
@@ -1001,7 +1001,7 @@ RECURSIVE EXPONENTIAL THEFT`,
 
   // Part 3: The Money
   {
-    id: "prize-investment",
+    id: "prize-pool-vs-index-fund",
     act: "act2",
     duration: 10,
     chapter: "Part 3: The Money",
@@ -1045,7 +1045,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "prize-mechanism",
+    id: "dominant-assurance-contract",
     act: "act2",
     duration: 12,
     narration:
@@ -1077,7 +1077,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "vote-point-value",
+    id: "vote-point-dollar-value",
     act: "act2",
     duration: 10,
     narration:
@@ -1129,7 +1129,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "cannot-lose",
+    id: "three-scenarios-all-win",
     act: "act2",
     duration: 10,
     narration:
@@ -1173,7 +1173,7 @@ RECURSIVE EXPONENTIAL THEFT`,
 
   // Part 4: The Accountability
   {
-    id: "track-record",
+    id: "government-track-record",
     act: "act2",
     duration: 10,
     chapter: "Part 4: Accountability",
@@ -1209,7 +1209,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "us-report-card",
+    id: "congress-military-trials-ratio",
     act: "act2",
     duration: 10,
     narration:
@@ -1221,7 +1221,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ctaUrl: "/governments/US/politicians",
   },
   {
-    id: "arsonist-board",
+    id: "hale-leaderboard-by-country",
     act: "act2",
     duration: 10,
     ctaUrl: "/agencies/dfec/alignment",
@@ -1268,7 +1268,7 @@ RECURSIVE EXPONENTIAL THEFT`,
 
   // Part 5: The Armory (tech built for hackathon)
   {
-    id: "fda-queue",
+    id: "fda-approval-delay-8yr",
     act: "act2",
     duration: 8,
     chapter: "Part 5: The Armory",
@@ -1313,7 +1313,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "dfda-fix",
+    id: "decentralized-fda",
     act: "act2",
     duration: 8,
     ctaUrl: "/agencies/dih/discoveries",
@@ -1351,7 +1351,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "iabs",
+    id: "incentive-alignment-bonds",
     act: "act2",
     duration: 8,
     narration:
@@ -1393,7 +1393,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "superpac",
+    id: "smart-contract-superpac",
     act: "act2",
     duration: 8,
     narration:
@@ -1416,7 +1416,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "storacha",
+    id: "ipfs-immutable-storage",
     act: "act2",
     duration: 8,
     ctaUrl: "/agencies/dgao",
@@ -1445,7 +1445,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "hypercerts",
+    id: "impact-certificates",
     act: "act2",
     duration: 8,
     ctaUrl: "/agencies/dgao",
@@ -1469,7 +1469,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "replace-irs",
+    id: "decentralized-irs",
     act: "act2",
     duration: 8,
     ctaUrl: "/agencies/dtreasury/dirs",
@@ -1516,7 +1516,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "replace-welfare",
+    id: "decentralized-welfare",
     act: "act2",
     duration: 8,
     ctaUrl: "/agencies/dtreasury/dssa",
@@ -1558,7 +1558,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "replace-fed",
+    id: "decentralized-federal-reserve",
     act: "act2",
     duration: 8,
     ctaUrl: "/agencies/dtreasury/dfed",
@@ -1601,7 +1601,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "policy-engine",
+    id: "optimal-policy-generator",
     act: "act2",
     duration: 8,
     ctaUrl: "/agencies/dcbo",
@@ -1644,7 +1644,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "optimizer",
+    id: "drug-policy-natural-experiment",
     act: "act2",
     duration: 10,
     narration:
@@ -1682,7 +1682,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "budget-optimizer",
+    id: "optimal-budget-generator",
     act: "act2",
     duration: 10,
     ctaUrl: "/agencies/domb",
@@ -1721,7 +1721,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "i-pencil",
+    id: "pencil-supply-chain",
     act: "act2",
     duration: 12,
     narration:
@@ -1763,7 +1763,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "cured-disease",
+    id: "disease-cure-supply-chain",
     act: "act2",
     duration: 14,
     narration:
@@ -1806,7 +1806,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "the-switch",
+    id: "alignment-switch",
     act: "act2",
     duration: 10,
     narration:
@@ -1855,7 +1855,7 @@ RECURSIVE EXPONENTIAL THEFT`,
   // ACT III - THE ENDGAME (slides ~35+)
   // ============================================
   {
-    id: "personal-upside",
+    id: "personal-income-3-timelines",
     act: "act3",
     duration: 12,
     chapter: "Act III: The Endgame",
@@ -1914,7 +1914,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "lives-saved",
+    id: "ten-billion-lives-saved",
     act: "act3",
     duration: 12,
     narration:
@@ -1932,7 +1932,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     ],
   },
   {
-    id: "close",
+    id: "final-call-to-action",
     act: "act3",
     duration: 15,
     ctaUrl: "/prize",
@@ -1970,7 +1970,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     showQuestMeters: true,
   },
   {
-    id: "easter-egg",
+    id: "post-credits-aliens",
     act: "act3",
     duration: 0, // Manual advance / end screen
     narration:
@@ -2009,35 +2009,36 @@ export const ACT_NAMES: Record<string, string> = {
 
 export const SCORE_DESCRIPTIONS: Record<string, string> = {
   "act1-all": "Nothing has been done yet. Counter mocks the viewer.",
-  moronia: "Score resets to 0. Death screen.",
-  wishonia: "Score reappears. Quest meters appear.",
-  "the-fix": "First hint of progress.",
-  acceleration: "Momentum building.",
-  "roi-comparison": "The ROI contrast lands.",
-  "virtuous-loop": "The feedback loop clicks.",
-  "twenty-year-gap": "The 20-year gap is visible.",
-  "compound-punchline": "Math doesn't care about politics.",
-  scoreboard: "Win conditions defined. Quest meters pulse.",
-  allocate: "Player engagement starts.",
-  "your-budget": "Budget designed in 2 minutes.",
-  referendum: "Critical mass approaching.",
-  "youre-in": "Viral loop begins.",
-  asymmetry: "The asymmetry clicks.",
-  "get-friends": "Network effect.",
-  "prize-investment": "Better than your retirement fund.",
-  "prize-mechanism": "Two paths, both green.",
-  "vote-point-value": "NOW the value makes sense.",
-  "cannot-lose": "All three scenarios laid out.",
-  "track-record": "Government performance review: 1 star.",
-  "arsonist-board": "Accountability layer active. Metric changed.",
-  "fda-queue": "The queue is the killer.",
-  "dfda-fix": "Same trials, no waiting room.",
-  "budget-optimizer": "Less money, better outcomes. Every line.",
-  "replace-irs": "74,000 pages → 4 lines of code.",
-  "replace-welfare": "83 programs → 1 smart contract.",
-  "replace-fed": "print(money): FUNCTION REMOVED.",
-  "personal-upside": "Act II climax. Personal upside lands.",
-  close: 'Full alignment. "YOU HAVE WON."',
+  "game-over-moronia": "Score resets to 0. Death screen.",
+  "restore-from-wishonia": "Score reappears. Quest meters appear.",
+  "one-percent-treaty": "First hint of progress.",
+  "trial-acceleration-12x": "Momentum building.",
+  "healthcare-vs-military-roi": "The ROI contrast lands.",
+  "economic-virtuous-loop": "The feedback loop clicks.",
+  "gdp-20-year-forecast": "The 20-year gap is visible.",
+  "compound-growth-scenarios": "Math doesn't care about politics.",
+  "win-conditions-hale-income": "Win conditions defined. Quest meters pulse.",
+  "pairwise-budget-allocation": "Player engagement starts.",
+  "eigenvector-budget-result": "Budget designed in 2 minutes.",
+  "one-percent-referendum-vote": "Critical mass approaching.",
+  "viral-doubling-to-4b": "Viral loop begins.",
+  "vote-value-asymmetry": "The asymmetry clicks.",
+  "recruit-network-effect": "Network effect.",
+  "prize-pool-vs-index-fund": "Better than your retirement fund.",
+  "dominant-assurance-contract": "Two paths, both green.",
+  "vote-point-dollar-value": "NOW the value makes sense.",
+  "three-scenarios-all-win": "All three scenarios laid out.",
+  "government-track-record": "Government performance review: 1 star.",
+  "congress-military-trials-ratio": "1,094:1. Both parties voted for this.",
+  "hale-leaderboard-by-country": "Accountability layer active. Real HALE data.",
+  "fda-approval-delay-8yr": "The queue is the killer.",
+  "decentralized-fda": "Same trials, no waiting room.",
+  "optimal-budget-generator": "Less money, better outcomes. Every line.",
+  "decentralized-irs": "74,000 pages → 4 lines of code.",
+  "decentralized-welfare": "83 programs → 1 smart contract.",
+  "decentralized-federal-reserve": "print(money): FUNCTION REMOVED.",
+  "personal-income-3-timelines": "Act II climax. Personal upside lands.",
+  "final-call-to-action": 'Full alignment. "YOU HAVE WON."',
 };
 
 export const SIERRA_FRAMING = {
