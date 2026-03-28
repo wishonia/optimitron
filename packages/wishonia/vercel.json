@@ -1,0 +1,5 @@
+{
+  "installCommand": "cd ../.. && pnpm install",
+  "buildCommand": "cd ../.. && pnpm --filter @optimitron/wishonia-widget build && pnpm --filter @optimitron/wishonia build",
+  "framework": "nextjs"
+}
