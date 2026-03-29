@@ -4,6 +4,78 @@
 import type { PaletteMode } from "./palette";
 import type { InventoryItem } from "./parameters";
 import { INVENTORY_ITEMS } from "./parameters";
+import {
+  GLOBAL_DISEASE_DEATHS_DAILY,
+  CUMULATIVE_MILITARY_SPENDING_FED_ERA,
+  MONEY_PRINTER_WAR_DEATHS,
+  GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
+  US_MILITARY_SPENDING_2024_ANNUAL,
+  GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
+  STATUS_QUO_QUEUE_CLEARANCE_YEARS,
+  DFDA_QUEUE_CLEARANCE_YEARS,
+  DFDA_TRIAL_CAPACITY_MULTIPLIER,
+  DFDA_TRIAL_CAPACITY_LIVES_SAVED,
+  GLOBAL_CYBERCRIME_COST_ANNUAL_2025,
+  DISEASE_BURDEN_GDP_DRAG_PCT,
+  GLOBAL_GDP_2025,
+  GLOBAL_HOUSEHOLD_WEALTH_USD,
+  POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
+  GLOBAL_HALE_CURRENT,
+  TYPE_II_ERROR_COST_RATIO,
+  US_GOV_WASTE_DRUG_WAR,
+  ECONOMIC_MULTIPLIER_HEALTHCARE_INVESTMENT,
+  ECONOMIC_MULTIPLIER_MILITARY_SPENDING,
+  TREATY_TRAJECTORY_CAGR_YEAR_20,
+  TREATY_TRAJECTORY_AVG_INCOME_YEAR_20,
+  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_20,
+  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  GLOBAL_ANNUAL_HUMAN_COST_STATE_VIOLENCE,
+  SINGAPORE_LIFE_EXPECTANCY,
+  US_LIFE_EXPECTANCY_2023,
+} from "@optimitron/data/parameters";
+
+// Narration formatting helpers — full numbers for dramatic effect
+const n = (v: number) => Math.round(v).toLocaleString("en-US");
+const $T = (v: number) => `$${Math.round(v / 1e12).toLocaleString("en-US")} trillion`;
+const $B = (v: number) => `$${(v / 1e9).toFixed(1)} billion`;
+const $K = (v: number) => `$${n(v / 1e3)},000`;
+const pct = (v: number) => `${Math.round(v * 100)}%`;
+const ratio = (v: number) => `${Math.round(v)}`;
+const yrs = (v: number) => Math.round(v).toString();
+const $full = (v: number) => `$${n(v)}`;
+
+// Pre-computed values used in narration
+const P = {
+  deathsPerDay: n(GLOBAL_DISEASE_DEATHS_DAILY.value),
+  cumMilitary: $T(CUMULATIVE_MILITARY_SPENDING_FED_ERA.value),
+  warDeaths: `${Math.round(MONEY_PRINTER_WAR_DEATHS.value / 1e6)} million`,
+  globalMilitary: $full(GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value),
+  usMilitary: $B(US_MILITARY_SPENDING_2024_ANNUAL.value),
+  govTrials: $B(GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value),
+  milTrialsRatio: ratio(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value),
+  queueYears: yrs(STATUS_QUO_QUEUE_CLEARANCE_YEARS.value),
+  treatyQueueYears: yrs(DFDA_QUEUE_CLEARANCE_YEARS.value),
+  trialMultiplier: DFDA_TRIAL_CAPACITY_MULTIPLIER.value.toFixed(1),
+  livesSaved: (DFDA_TRIAL_CAPACITY_LIVES_SAVED.value / 1e9).toFixed(1),
+  cybercrime: $T(GLOBAL_CYBERCRIME_COST_ANNUAL_2025.value),
+  diseaseBurdenPct: Math.round(DISEASE_BURDEN_GDP_DRAG_PCT.value * 100),
+  diseaseBurdenUSD: $T(GLOBAL_GDP_2025.value * DISEASE_BURDEN_GDP_DRAG_PCT.value),
+  globalWealth: $T(GLOBAL_HOUSEHOLD_WEALTH_USD.value),
+  dysfunctionTax: $T(POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value),
+  haleCurrent: GLOBAL_HALE_CURRENT.value.toFixed(1),
+  typeIIRatio: n(Math.round(TYPE_II_ERROR_COST_RATIO.value)),
+  drugWar: $B(US_GOV_WASTE_DRUG_WAR.value),
+  healthcareROI: `$${ECONOMIC_MULTIPLIER_HEALTHCARE_INVESTMENT.value.toFixed(2)}`,
+  militaryROI: `$${ECONOMIC_MULTIPLIER_MILITARY_SPENDING.value.toFixed(2)}`,
+  treatyCagr: (TREATY_TRAJECTORY_CAGR_YEAR_20.value * 100).toFixed(1),
+  treatyIncome20: $K(TREATY_TRAJECTORY_AVG_INCOME_YEAR_20.value),
+  currentIncome20: $K(CURRENT_TRAJECTORY_AVG_INCOME_YEAR_20.value),
+  lifetimeGain: `$${(TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value / 1e6).toFixed(1)} million`,
+  redirect1pct: $B(GLOBAL_ANNUAL_HUMAN_COST_STATE_VIOLENCE.value),
+  singaporeLE: SINGAPORE_LIFE_EXPECTANCY.value.toFixed(1),
+  usLE: US_LIFE_EXPECTANCY_2023.value.toFixed(1),
+};
 
 export type ActType = "act1" | "turn" | "act2" | "act3";
 
@@ -57,7 +129,7 @@ export const SLIDES: SlideConfig[] = [
     duration: 10,
     chapter: "Act I: The Horror",
     narration:
-      "Bugs in your meat software permanently stop 150,000 of you every 24 hours. One Holocaust every 40 days — except with fewer Nazis and more insurance paperwork. That is also fifty 9/11s every single day, except nobody invades anybody about it because diseases do not have oil.",
+      `Bugs in your meat software permanently stop ${P.deathsPerDay} of you every 24 hours. One Holocaust every 40 days — except with fewer Nazis and more insurance paperwork. That is also fifty 9/11s every single day, except nobody invades anybody about it because diseases do not have oil.`,
     stageDirection:
       "[3 seconds of black screen. Just the death counter ticking up. No narration. No Sierra chrome yet — just red numbers on black, counting. Then the UI fades in around it.]",
     visual:
@@ -106,7 +178,7 @@ export const SLIDES: SlideConfig[] = [
     act: "act1",
     duration: 10,
     narration:
-      "Since 1913, your governments have printed $170 trillion and used it to kill 97 million of you in wars nobody asked you if you wanted to have. If cancer had oil reserves, you would have cured it by 2003. Instead, you spent the repair money on murder tubes that cost more than countries. On my planet, we call that a bug. Your species calls it foreign policy.",
+      `Since 1913, your governments have printed ${P.cumMilitary} and used it to kill ${P.warDeaths} of you in wars nobody asked you if you wanted to have. If cancer had oil reserves, you would have cured it by 2003. Instead, you spent the repair money on murder tubes that cost more than countries. On my planet, we call that a bug. Your species calls it foreign policy.`,
     visual:
       'Same command bridge. One monitor displays a CountUp from $0 to $170,000,000,000,000 labeled "CUMULATIVE MILITARY SPENDING SINCE 1913." Another scrolls a list of wars with death tolls ticking upward, totaling 97,000,000. The central monitor pulses: "MISALIGNED OBJECTIVE FUNCTION \u2014 RUNNING."',
     asciiArt: `
@@ -226,7 +298,7 @@ export const SLIDES: SlideConfig[] = [
     act: "act1",
     duration: 8,
     narration:
-      "Your governments spend $604 on the capacity for mass murder for every $1 they spend testing which medicines work. 95% of your diseases have zero approved treatments. At the current discovery rate, finding treatments for all of them takes 443 years. You personally will be dead within 80 years, which I mention not to be rude but because you seem weirdly calm about this.",
+      `Your governments spend $${P.milTrialsRatio} on the capacity for mass murder for every $1 they spend testing which medicines work. 95% of your diseases have zero approved treatments. At the current discovery rate, finding treatments for all of them takes ${P.queueYears} years. You personally will be dead within 80 years, which I mention not to be rude but because you seem weirdly calm about this.`,
     visual:
       'Pixel art — animated zoom sequence. Start: a towering stack of pixel coins fills the entire screen top to bottom, labeled "$2,720,000,000,000 — MILITARY." The camera zooms in on the bottom-right corner — deeper, deeper — until a single pixel coin becomes visible at 64\u00D7 magnification, labeled "$4,500,000,000 — CLINICAL TRIALS." Pause. Then snap-zoom back out to full scale. The single coin disappears into the mass. The CountUp component animates the ratio from 1:1 racing to 604:1. Below, MilitaryVsTrialsPie renders — the clinical trials slice is literally one pixel wide.',
     onScreen: [
@@ -255,7 +327,7 @@ export const SLIDES: SlideConfig[] = [
     act: "act1",
     duration: 10,
     narration:
-      "Cybercrime costs $10.5 trillion per year and growing at 15% annually. Combined with your murder budget, your destructive economy is $13.2 trillion — 11.5% of global GDP. The Soviet Union collapsed at 15%. You are approaching their ratio with better technology, a faster-growing parasitic sector, and no plan. The Soviet Union's terrible plan beat your no plan, and the Soviet Union lost.",
+      `Cybercrime costs ${P.cybercrime} per year and growing at 15% annually. Combined with your murder budget, your destructive economy is $13.2 trillion — 11.5% of global GDP. The Soviet Union collapsed at 15%. You are approaching their ratio with better technology, a faster-growing parasitic sector, and no plan. The Soviet Union's terrible plan beat your no plan, and the Soviet Union lost.`,
     visual:
       'Pixel art — stone castle wall (King\'s Quest aesthetic) with a massive clock face. Two hands racing: red "PARASITIC (15%/yr)" spinning fast, green "PRODUCTIVE (3%/yr)" crawling behind. Below, a pixel-art line chart shows the two trajectories crossing — red overtaking green — with a flashing "X" at "2040: COLLAPSE THRESHOLD." Digital countdown ticks: "YEARS REMAINING: 14 yrs 247 days 8 hrs..."',
     onScreen: [
@@ -420,7 +492,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     duration: 10,
     chapter: "Part 1: The Solution",
     narration:
-      "Not building a nuclear bomb requires nothing. Rocks do it every day. Rocks have managed to live peacefully alongside different colored rocks for thousands of years. You are not asking for peace. You are asking for 1% fewer bombs. Redirect 1% of the global murder budget to clinical trials. $27 billion a year. Going from 99% bombs to 98% bombs.",
+      `Not building a nuclear bomb requires nothing. Rocks do it every day. Rocks have managed to live peacefully alongside different colored rocks for thousands of years. You are not asking for peace. You are asking for 1% fewer bombs. Redirect 1% of the global murder budget to clinical trials. ${P.redirect1pct} a year. Going from 99% bombs to 98% bombs.`,
     visual:
       'Pixel art — Wishonia\'s control room. Massive wall-mounted lever with display: "MILITARY: 99%" / "CURES: 1%". Animated pixel hand nudges it one notch. Display updates: "MILITARY: 98%" / "CURES: 2%." The slot is one pixel different. Comic "that\'s it?" pause. Pixel-art scroll "1% TREATY" drops into inventory slot 1 with "cha-ching." Quest meter for INCOME nudges slightly.',
     score: 100_000,
@@ -439,7 +511,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 10,
     narration:
-      "Right now, at current spending, curing all known diseases takes 443 years. Redirect 1% of the murder budget, and clinical trial capacity increases 12.3 times. 443 years compresses to 36. Your great-great-great-great-great-great-great-great grandchildren just sent their thanks.",
+      `Right now, at current spending, curing all known diseases takes ${P.queueYears} years. Redirect 1% of the murder budget, and clinical trial capacity increases ${P.trialMultiplier} times. ${P.queueYears} years compresses to ${P.treatyQueueYears}. Your great-great-great-great-great-great-great-great grandchildren just sent their thanks.`,
     visual:
       'Pixel art — two hourglasses on a workshop bench. Left: enormous, "STATUS QUO", plaque "443 YEARS", tiny sand trickle. Right: compact, "1% TREATY", plaque "36 YEARS", sand pouring 12x faster. Pixel scientist between them, pointing at right one, shrugging. Multiplier badge: "x12.3 CAPACITY." HALE quest meter fills slightly.',
     score: 1_000_000,
@@ -461,7 +533,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 8,
     narration:
-      "Healthcare spending returns three times more economic activity per dollar than your murder budget. Your species has not noticed this because the murder budget has a better lobby.",
+      `Healthcare spending returns ${P.healthcareROI} per dollar invested. Your murder budget returns ${P.militaryROI}. Your species has not noticed this because the murder budget has a better lobby.`,
     visual:
       "Pixel art — two side-by-side investment windows. Left: MILITARY with a shrinking bar graph and coins falling into a pit. Right: HEALTHCARE with a growing bar graph and coins multiplying. The contrast is immediate and absurd.",
     asciiArt: `
@@ -500,7 +572,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 10,
     narration:
-      "Disease drags down 13% of global GDP. Fifteen trillion dollars a year. Every disease you cure unlocks a permanent slice of that. Freed workers produce more. More production funds more trials. More trials cure more diseases. You have mostly been running the loop in the other direction.",
+      `Disease drags down ${P.diseaseBurdenPct}% of global GDP. ${P.diseaseBurdenUSD} a year. Every disease you cure unlocks a permanent slice of that. Freed workers produce more. More production funds more trials. More trials cure more diseases. You have mostly been running the loop in the other direction.`,
     visual:
       "Pixel art — The Marble Run (animated feedback loop). A pixel-art circular track with four stations. A glowing pixel marble rolls clockwise through: CURE DISEASES → UNLOCK GDP → MORE TAX REVENUE → BIGGER BUDGET → back to CURE DISEASES. Each cycle the marble gets bigger and moves faster. Below, a second loop in red shows the vicious version: FUND MILITARY → KILL PEOPLE → LESS GDP → PANIC → FUND MILITARY.",
     asciiArt: `
@@ -545,7 +617,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 10,
     narration:
-      "At current trajectory, your economy grows at 2.5%. Redirect 1% of the explosions budget, and it compounds at 17.9%. Over twenty years, that is the difference between $12,500 per person per year and $339,000 per person per year. One slider. Twenty-seven times more money.",
+      `At current trajectory, your economy grows at 2.5%. Redirect 1% of the explosions budget, and it compounds at ${P.treatyCagr}%. Over twenty years, that is the difference between ${P.currentIncome20} per person per year and ${P.treatyIncome20} per person per year. One slider. Twenty-seven times more money.`,
     visual:
       "Live GDP Trajectory Chart. A year counter ticks from 2025 to 2045. Two lines draw in real-time: Grey (Status Quo, 2.5%): barely rising. Green (Treaty, 17.9%): steep climb. By year 20, the green line is so far above grey that the chart rescales — the grey line flattens to a hair at the bottom.",
     asciiArt: `
@@ -617,7 +689,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 8,
     narration:
-      "The public holds $454 trillion. The concentrated interests who run your government hold $5 trillion. You outnumber them 90 to 1. Your species identified the exact collective action problem by which your governance fails, published it, assigned it in universities, and then continued to be governed by it for sixty years. You are not outgunned. You are just not coordinated.",
+      `The public holds ${P.globalWealth}. The concentrated interests who run your government hold $5 trillion. You outnumber them 90 to 1. Your species identified the exact collective action problem by which your governance fails, published it, assigned it in universities, and then continued to be governed by it for sixty years. You are not outgunned. You are just not coordinated.`,
     visual:
       "Pixel art — a Sierra battle screen. On the left: a massive army of pixel villagers stretching to the horizon, labeled 8 BILLION. On the right: a tiny cluster of pixel lobbyists in suits, labeled ~50,000. The ratio is absurd. The lobbyists are winning anyway.",
     asciiArt: `
@@ -653,7 +725,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 10,
     narration:
-      "Your civilisation wastes $101 trillion a year on problems everyone agrees should be fixed but nobody coordinates to fix. That is 88% of global GDP. This bug has been open for 113 years. No one has assigned it. On my planet, that developer would have been fired. On yours, they got re-elected.",
+      `Your civilisation wastes ${P.dysfunctionTax} a year on problems everyone agrees should be fixed but nobody coordinates to fix. That is 88% of global GDP. This bug has been open for 113 years. No one has assigned it. On my planet, that developer would have been fired. On yours, they got re-elected.`,
     visual:
       "Pixel art — a Sierra bug report / system error screen. The screen flickers like a CRT crash. A bug report window displays: RECEIPT: political_dysfunction_tax.exe, Status: ACTIVE, Severity: CRITICAL. Line items animate in one at a time with CountUp — Health innovation delays: $34T, Migration restrictions: $57T, Lead poisoning: $6T, Underfunded science: $4T. A running total at the bottom counts up in lockstep: $0... $34T... $91T... $97T... $101T. TOTAL ANNUAL COST: $101T. The final total pulses. \"88% of global GDP\" flashes red. \"This bug has been open for 113 years. No one has assigned it.\" typewriters in last — the punchline.",
     asciiArt: `
@@ -695,7 +767,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 10,
     narration:
-      "The entire game comes down to two numbers. Healthy life expectancy: 63.3 years, target 69.8. Median income: $18,700, target $149,000. Your species has produced 4,000 pages of UN resolutions about these numbers. This game has two progress bars. We find the bars more effective.",
+      `The entire game comes down to two numbers. Healthy life expectancy: ${P.haleCurrent} years, target 69.8. Median income: $18,700, target $149,000. Your species has produced 4,000 pages of UN resolutions about these numbers. This game has two progress bars. We find the bars more effective.`,
     stageDirection: '[Quest notification: "QUEST OBJECTIVES REVEALED"]',
     visual:
       "Pixel art — large Sierra quest log/journal open on a wooden desk. OBJECTIVE 1: HEALTHY LIFE EXPECTANCY — Current: 63.3 years, Target: 69.8 years (+6.5), Progress bar at 0%. OBJECTIVE 2: GLOBAL MEDIAN INCOME — Current: $18,700/year, Target: $149,000/year (8x), Progress bar at 0%. DEADLINE: 2040 (14 years). REWARD: 8,000,000,000 lives aligned. Quest meters in HUD pulse and glow — the viewer now understands what they're tracking. Current values pull live from WHO (HALE) and World Bank (median income). The progress bars animate from empty to their current % of target. The deadline CountUps the remaining days in real-time.",
@@ -1143,7 +1215,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 10,
     narration:
-      "Your Congress spent $886 billion on the military this year. And $810 million on clinical trials. That is a ratio of 1,094 to 1. For every dollar spent trying to stop diseases from killing you, 1,094 dollars on new ways to kill other people's children. Both parties voted for this. It is not a left-right problem. It is a math problem.",
+      `Your Congress spent ${P.usMilitary} on the military this year. And $810 million on clinical trials. That is a ratio of 1,094 to 1. For every dollar spent trying to stop diseases from killing you, 1,094 dollars on new ways to kill other people's children. Both parties voted for this. It is not a left-right problem. It is a math problem.`,
     visual:
       "Giant animated counter: 1,094:1. Below: table of 6 politicians spanning parties with name, party, military $, trials $, ratio. Color-coded by spending direction. Punchline: Both parties voted for this.",
     score: 3_500_000_000,
@@ -1159,7 +1231,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     chapter: "Part 5: The Armory",
     ctaUrl: "/agencies/dih/discoveries",
     narration:
-      "Vioxx killed 55,000 people from heart attacks. The FDA approved it. When patients started dying, someone filled out a PDF form. A PDF. Then they faxed it. Five years and tens of thousands of corpses later, someone noticed a pattern. This is your safety system. Meanwhile, your FDA makes treatments wait 8.2 years after they have already been proven safe. Just sitting there. Being safe. For every 1 person protected from a dangerous drug, 3,070 die waiting for a safe one locked in the approval cabinet. It is a lifeguard who confirms the life preserver floats, then locks it in a cabinet while a billion people drown in line for two life jackets.",
+      `Vioxx killed 55,000 people from heart attacks. The FDA approved it. When patients started dying, someone filled out a PDF form. A PDF. Then they faxed it. Five years and tens of thousands of corpses later, someone noticed a pattern. This is your safety system. Meanwhile, your FDA makes treatments wait 8.2 years after they have already been proven safe. Just sitting there. Being safe. For every 1 person protected from a dangerous drug, ${P.typeIIRatio} die waiting for a safe one locked in the approval cabinet. It is a lifeguard who confirms the life preserver floats, then locks it in a cabinet while a billion people drown in line for two life jackets.`,
     visual:
       "Pixel art — a Sierra waiting room. Rows of pixel patients sitting in chairs, some slumping over. A ticket counter displays \"NOW SERVING: nobody.\" A shelf behind the counter holds rows of approved drugs, gathering pixel dust. A clock on the wall shows 8.2 years passing in fast-forward.",
     asciiArt: `
@@ -1511,7 +1583,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act2",
     duration: 10,
     narration:
-      "Portugal decriminalised all drugs in 2001. Overdose deaths dropped 80%. America spent $47 billion a year on the War on Drugs. Overdose deaths rose 1,700%. One country looked at the evidence. The other one declared war on it.",
+      `Portugal decriminalised all drugs in 2001. Overdose deaths dropped 80%. America spent ${P.drugWar} a year on the War on Drugs. Overdose deaths rose 1,700%. One country looked at the evidence. The other one declared war on it.`,
     visual:
       "Pixel art — the policy generator machine from the previous slide, now with output. A comparison display shows Portugal vs America side by side. The contrast is devastating.",
     asciiArt: `
@@ -1550,7 +1622,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     duration: 10,
     ctaUrl: "/agencies/domb",
     narration:
-      "The Optimal Budget Generator. Feed it spending data and outcomes across countries. It finds the cheapest high performer for each category. Singapore spends three thousand per person on healthcare. America spends twelve thousand. Singapore lives six and a half years longer. Every dollar past the diminishing returns curve is not healthcare. It is paperwork.",
+      `The Optimal Budget Generator. Feed it spending data and outcomes across countries. It finds the cheapest high performer for each category. Singapore spends three thousand per person on healthcare. America spends twelve thousand. Singapore lives to ${P.singaporeLE}. America to ${P.usLE}. Every dollar past the diminishing returns curve is not healthcare. It is paperwork.`,
     visual:
       "Pixel art — a Sierra budget control panel. Three columns: USA CURRENT (red), CHEAPEST HIGH PERFORMER (green), and OVERSPEND ratio (amber). Each row animates with the comparison. Healthcare: USA $12.6K vs Singapore $3K, 4.2× overspend. Military: $886B vs $271B deterrence floor, 3.3× overspend. Education: 4.9% GDP vs Singapore 2.9% GDP, 1.7× overspend. Summary: more money, worse outcomes vs less money, better outcomes. Footer: DIFFICULTY: looking at the data.",
     asciiArt: `
@@ -1723,7 +1795,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     duration: 12,
     chapter: "Act III: The Endgame",
     narration:
-      "If the treaty passes, your lifetime income goes up by $15.7 million. Per person. Not per country. Per. Person. Communism took over half your planet and collapsed in a single human lifetime. Without fax machines. It required mass murder and was a terrible idea. You have the internet and an idea that mainly requires people to click a button and then receive money. The cost of not taking this deal is $15.7 million.",
+      `If the treaty passes, your lifetime income goes up by ${P.lifetimeGain}. Per person. Not per country. Per. Person. Communism took over half your planet and collapsed in a single human lifetime. Without fax machines. It required mass murder and was a terrible idea. You have the internet and an idea that mainly requires people to click a button and then receive money. The cost of not taking this deal is ${P.lifetimeGain}.`,
     visual:
       "Pixel art — three Sierra save-game slots, each with tiny pixel scene and stats. Slot 1 (Status Quo) actively desaturates — the pixel city gets smoggier, buildings crumble slightly, pixel people hunch over, numbers CountUp to depressing values, [LOADED] tag blinks accusingly. Slot 2 (1% Treaty) actively brightens — parks bloom with green pixels, hospital lights turn on, pixel people stand taller, $15.7M CountUps from $0 in golden text, ◄◄◄ arrow pulses. Slot 3 (Wishonia Trajectory) gleams impossibly — the Wishonia paradise rendered in miniature, every pixel radiating, $54.3M in white-gold. The visual hierarchy makes Slot 1 feel like a mistake and Slot 2 feel like an obvious upgrade. Glowing deed drops into inventory slot 7.",
     asciiArt: `
@@ -1781,7 +1853,7 @@ RECURSIVE EXPONENTIAL THEFT`,
     act: "act3",
     duration: 12,
     narration:
-      "10.7 billion. More than every human currently alive. That is the number of lives saved by compressing the cure timeline from 443 years to 36. Your species rounded it down and moved on to the next agenda item.",
+      `${P.livesSaved} billion. More than every human currently alive. That is the number of lives saved by compressing the cure timeline from ${P.queueYears} years to ${P.treatyQueueYears}. Your species rounded it down and moved on to the next agenda item.`,
     visual:
       "Skulls transform to smiles around the border. Center: massive animated counter ticking to 10.7B lives saved. Below: six stat boxes showing the optimized world — $2.7T murder budget, $27.2B 1% redirect, 10.7B lives saved, +6.5 healthy years, +$14.7M income gain per person, 12× richer. Celebration particles (stars, sparkles, confetti) rain upward.",
     onScreen: [
