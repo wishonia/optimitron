@@ -28,10 +28,14 @@ export async function POST(request: Request) {
     );
   }
 
+  const sampleRate = 24000;
+  const bitsPerSample = 16;
+  const channels = 1;
+
   try {
     const client = new GoogleGenAI({ apiKey });
 
-    const response = await client.models.generateContent({
+    const stream = await client.models.generateContentStream({
       model: "gemini-2.5-flash-preview-tts",
       contents: [
         {
@@ -49,57 +53,54 @@ export async function POST(request: Request) {
           },
         },
       },
-    } as Parameters<typeof client.models.generateContent>[0]);
+    } as Parameters<typeof client.models.generateContentStream>[0]);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Gemini TTS response shape not fully typed
-    const raw = response as any;
-    const candidate = raw.candidates?.[0];
-    const audioPart = candidate?.content?.parts?.find(
-      (p: any) => p.inlineData?.mimeType?.startsWith("audio/"),
-    );
+    // Collect PCM chunks as they arrive
+    const pcmChunks: Buffer[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Gemini TTS stream chunks not fully typed
+    for await (const chunk of stream as any) {
+      const candidate = chunk.candidates?.[0];
+      const parts = candidate?.content?.parts;
+      if (!parts) continue;
+      for (const part of parts) {
+        if (part.inlineData?.data) {
+          pcmChunks.push(Buffer.from(part.inlineData.data, "base64"));
+        }
+      }
+    }
 
-    if (!audioPart?.inlineData?.data) {
+    if (pcmChunks.length === 0) {
       return NextResponse.json(
         { error: "No audio in Gemini response" },
         { status: 502 },
       );
     }
 
-    const audioBuffer = Buffer.from(audioPart.inlineData.data, "base64");
-    const mimeType = audioPart.inlineData.mimeType ?? "audio/wav";
+    const pcmData = Buffer.concat(pcmChunks);
 
-    // If raw PCM, wrap in WAV header (24kHz, 16-bit, mono)
-    let finalBuffer = audioBuffer;
-    let finalMime = mimeType;
-
-    if (mimeType.includes("L16") || mimeType.includes("pcm")) {
-      const sampleRate = 24000;
-      const bitsPerSample = 16;
-      const channels = 1;
-      const byteRate = sampleRate * channels * (bitsPerSample / 8);
-      const blockAlign = channels * (bitsPerSample / 8);
-      const dataSize = audioBuffer.length;
-      const header = Buffer.alloc(44);
-      header.write("RIFF", 0);
-      header.writeUInt32LE(36 + dataSize, 4);
-      header.write("WAVE", 8);
-      header.write("fmt ", 12);
-      header.writeUInt32LE(16, 16);
-      header.writeUInt16LE(1, 20);
-      header.writeUInt16LE(channels, 22);
-      header.writeUInt32LE(sampleRate, 24);
-      header.writeUInt32LE(byteRate, 28);
-      header.writeUInt16LE(blockAlign, 32);
-      header.writeUInt16LE(bitsPerSample, 34);
-      header.write("data", 36);
-      header.writeUInt32LE(dataSize, 40);
-      finalBuffer = Buffer.concat([header, audioBuffer]);
-      finalMime = "audio/wav";
-    }
+    // Wrap in WAV header
+    const byteRate = sampleRate * channels * (bitsPerSample / 8);
+    const blockAlign = channels * (bitsPerSample / 8);
+    const dataSize = pcmData.length;
+    const header = Buffer.alloc(44);
+    header.write("RIFF", 0);
+    header.writeUInt32LE(36 + dataSize, 4);
+    header.write("WAVE", 8);
+    header.write("fmt ", 12);
+    header.writeUInt32LE(16, 16);
+    header.writeUInt16LE(1, 20);
+    header.writeUInt16LE(channels, 22);
+    header.writeUInt32LE(sampleRate, 24);
+    header.writeUInt32LE(byteRate, 28);
+    header.writeUInt16LE(blockAlign, 32);
+    header.writeUInt16LE(bitsPerSample, 34);
+    header.write("data", 36);
+    header.writeUInt32LE(dataSize, 40);
+    const finalBuffer = Buffer.concat([header, pcmData]);
 
     return new NextResponse(finalBuffer, {
       headers: {
-        "Content-Type": finalMime,
+        "Content-Type": "audio/wav",
         "Content-Length": String(finalBuffer.length),
         "Cache-Control": "public, max-age=86400",
       },

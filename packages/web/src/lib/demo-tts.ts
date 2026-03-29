@@ -16,6 +16,16 @@ export interface DemoAudioResult {
 }
 
 const audioCache = new Map<string, DemoAudioResult>();
+/** Track which text hash was cached per key, so hot-reload text changes bust the cache */
+const cacheTextHash = new Map<string, number>();
+
+function simpleHash(str: string): number {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+  }
+  return h;
+}
 
 // Shared AudioContext — reused across slides (browsers limit creation)
 let sharedCtx: AudioContext | null = null;
@@ -125,7 +135,7 @@ async function tryPreGenerated(slideId: string): Promise<HTMLAudioElement | null
 }
 
 // ---------------------------------------------------------------------------
-// Real-time TTS
+// Real-time TTS (non-streaming fallback)
 // ---------------------------------------------------------------------------
 
 async function generateRealTime(text: string): Promise<HTMLAudioElement | null> {
@@ -144,6 +154,21 @@ async function generateRealTime(text: string): Promise<HTMLAudioElement | null> 
   } catch {
     return null;
   }
+}
+
+// ---------------------------------------------------------------------------
+// Streaming TTS — browser starts playback as chunks arrive
+// ---------------------------------------------------------------------------
+
+function generateStreaming(text: string): Promise<HTMLAudioElement | null> {
+  return new Promise((resolve) => {
+    const url = `/api/demo/tts/stream?text=${encodeURIComponent(text)}`;
+    const audio = new Audio(url);
+    audio.crossOrigin = "anonymous";
+    // Resolve on canplay (enough data to start) instead of canplaythrough
+    audio.addEventListener("canplay", () => resolve(audio), { once: true });
+    audio.addEventListener("error", () => resolve(null), { once: true });
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -189,23 +214,31 @@ function wireAnalyser(audio: HTMLAudioElement): AnalyserNode {
 export async function getDemoAudio(
   slideId: string,
   narrationText: string,
+  forceLive = false,
 ): Promise<DemoAudioResult | null> {
-  if (audioCache.has(slideId)) {
-    const cached = audioCache.get(slideId)!;
+  const cacheKey = forceLive ? `${slideId}__live` : slideId;
+  const textHash = simpleHash(narrationText);
+
+  // Return cached if same key AND same text (bust cache on hot-reload text changes)
+  if (audioCache.has(cacheKey) && cacheTextHash.get(cacheKey) === textHash) {
+    const cached = audioCache.get(cacheKey)!;
     cached.audio.currentTime = 0;
     return cached;
   }
 
-  // Try manifest MP3 → legacy WAV → real-time TTS
-  const audio =
-    (await tryManifest(slideId)) ??
-    (await tryPreGenerated(slideId)) ??
-    (await generateRealTime(narrationText));
+  // Force live: use streaming endpoint for instant playback start
+  // Fallback chain: manifest MP3 → legacy WAV → non-streaming TTS
+  const audio = forceLive
+    ? await generateStreaming(narrationText) ?? await generateRealTime(narrationText)
+    : (await tryManifest(slideId)) ??
+      (await tryPreGenerated(slideId)) ??
+      (await generateRealTime(narrationText));
 
   if (audio) {
     const analyser = wireAnalyser(audio);
     const result = { audio, analyser };
-    audioCache.set(slideId, result);
+    audioCache.set(cacheKey, result);
+    cacheTextHash.set(cacheKey, textHash);
     return result;
   }
   return null;

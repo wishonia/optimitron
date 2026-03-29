@@ -17,7 +17,7 @@ import { getUsernameOrReferralCode } from "@/lib/referral.client";
 import { buildUserReferralUrl, getBaseUrl } from "@/lib/url";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
-import { MILITARY_VS_MEDICAL_RESEARCH_RATIO } from "@optimitron/data/parameters";
+import { MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO } from "@optimitron/data/parameters";
 import { trackSliderSubmitted, trackVoteSubmitted } from "@/lib/analytics";
 import { VOTE_SECTION } from "@/lib/messaging";
 import {
@@ -27,8 +27,8 @@ import {
 } from "@/lib/treaty-vote";
 
 const militarySpendingPct = Math.round(
-  (MILITARY_VS_MEDICAL_RESEARCH_RATIO.value /
-    (MILITARY_VS_MEDICAL_RESEARCH_RATIO.value + 1)) *
+  (MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value /
+    (MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value + 1)) *
     100,
 );
 const clinicalTrialsSpendingPct = 100 - militarySpendingPct;
@@ -386,10 +386,10 @@ export default function TreatyVoteSection() {
             >
               <Card className="bg-background border-4 border-primary p-8 md:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-3xl mx-auto mb-12">
                 <p className="font-bold text-lg sm:text-xl md:text-2xl leading-snug text-center mb-2">
-                  Humanity spends{" "}
+                  Your governments spend{" "}
                   <br className="hidden sm:block" />
                   <span className="text-brutal-pink">
-                    $<ParameterValue param={MILITARY_VS_MEDICAL_RESEARCH_RATIO} />
+                    $<ParameterValue param={MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO} />
                   </span>{" "}
                   {VOTE_SECTION.realityCheck}
                 </p>

@@ -20,7 +20,7 @@ import type { BrutalCardBgColor } from "@/components/ui/brutal-card";
 import {
   fmtParam,
   GLOBAL_DISEASE_DEATHS_DAILY,
-  MILITARY_VS_MEDICAL_RESEARCH_RATIO,
+  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
   POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
   POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
   VOTE_TOKEN_VALUE,
@@ -42,10 +42,12 @@ import {
   DFDA_QUEUE_CLEARANCE_YEARS,
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   TREATY_PERSONAL_UPSIDE_BLEND,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_SUFFERING_HOURS,
 } from "@optimitron/data/parameters";
 // Precompute for narration strings (spoken-word, so use full words not abbreviations)
 const deathsDaily = Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value).toLocaleString();
-const milToTrialRatio = Math.round(MILITARY_VS_MEDICAL_RESEARCH_RATIO.value);
+const milToTrialRatio = Math.round(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value);
 const dysfunctionCostT = Math.round(POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value / 1e12);
 const dysfunctionPerPerson = fmtParam(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL);
 const votePointValue = fmtParam(VOTE_TOKEN_VALUE);
@@ -67,6 +69,8 @@ const newQueue = Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value);
 const drugWarCostB = Math.round(US_GOV_WASTE_DRUG_WAR.value / 1e9);
 const treatyGainM = (TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value / 1e6).toFixed(1);
 const personalUpsideM = (TREATY_PERSONAL_UPSIDE_BLEND.value / 1e6).toFixed(1);
+const totalLivesSavedB = (DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1);
+const totalSufferingQuad = (DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_SUFFERING_HOURS.value / 1e15).toFixed(1);
 
 export type SierraAct =
   | "I"
@@ -909,25 +913,25 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "foreground",
     tags: ["hook", "problem"],
     act: "I",
-    narration: `${milToTrialRatio} dollars spent on the capacity for mass murder for every one dollar testing which medicines work. 95 percent of diseases have zero approved treatments. Curing them all at current spending takes ${oldQueue} years. You will be dead in 80.`,
+    narration: `These governments spend ${milToTrialRatio} dollars on the capacity for mass murder for every one dollar testing which medicines work. 95 percent of diseases have zero approved treatments. Curing them all at current spending takes ${oldQueue} years. You will be dead in 80.`,
   },
   {
     id: "pl-moronia",
     title: "Game Over",
-    componentId: "sierra-game-over-moronia",
+    componentId: "sierra-economic-collapse-clock",
     bgColor: "foreground",
     tags: ["problem"],
     act: "turn",
-    narration: "604 to 1. The civilisation collapsed. But there is a save file.",
+    narration: `The parasitic economy — cybercrime plus military spending — grows at 15 percent per year. The productive economy grows at 3. By ${collapseYear}, it becomes more rational to steal than to produce. Every civilisation that reached this threshold collapsed. But there is a save file.`,
   },
   {
     id: "pl-wishonia",
     title: "Wishonia",
     componentId: "sierra-restore-from-wishonia",
-    bgColor: "cyan",
+    bgColor: "foreground",
     tags: ["solution"],
     act: "turn",
-    narration: "Wishonia redirected 1 percent of its murder budget to clinical trials 4,297 years ago.",
+    narration: "When we did this on Wishonia, within 15 years healthy life expectancy increased by 6.5 years and average income went from 14 thousand to 149 thousand dollars per year. Reallocate resources. Save the world.",
   },
   {
     id: "pl-treaty",
@@ -954,7 +958,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "pink",
     tags: ["mechanism", "financial"],
     act: "II-money",
-    narration: "The fund produces 17 percent annual returns. If health and income targets are hit, the prize pool — now 11 times larger — splits among players based on verified voters recruited. If targets are missed, you get your money back plus the compound returns.",
+    narration: "The fund produces 17 percent annual returns. If health and income targets are hit, the prize pool — now 11 times larger — splits among players based on how many voters they recruited with their referral link. If targets are missed, you get your money back plus the compound returns.",
   },
   {
     id: "pl-dfda",
@@ -963,7 +967,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "cyan",
     tags: ["feature"],
     act: "II-armory",
-    narration: "The Decentralized FDA replaces 8-year approval queues with real-time Outcome Labels and Treatment Rankings. 44 times cheaper. 12 times more capacity. Zero queue. For every one person your current FDA protects, 3,068 die waiting.",
+    narration: "9,500 compounds are proven safe but 99.7 percent of their potential uses have never been tested. Your FDA makes patients wait 8.2 years after a drug is proven safe before they can take it. The Decentralized FDA produces real-time Outcome Labels and Treatment Rankings. 44 times cheaper. 12 times more capacity. Zero queue.",
   },
   {
     id: "pl-opg",
@@ -972,7 +976,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "yellow",
     tags: ["feature"],
     act: "II-armory",
-    narration: "The Optimal Policy Generator grades every policy A through F by what actually happened. Portugal decriminalised drugs: overdoses dropped 80 percent. America declared war on drugs: overdoses rose 1,700 percent.",
+    narration: `The Optimal Policy Generator grades every policy A through F by what actually happened. America spent ${drugWarCostB} billion dollars a year on the War on Drugs. Overdoses rose 1,700 percent. Portugal decriminalised drugs for almost nothing. Overdoses dropped 80 percent.`,
   },
   {
     id: "pl-obg",
@@ -999,7 +1003,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "background",
     tags: ["feature"],
     act: "II-armory",
-    narration: "All citizen data — priorities, health outcomes, policy grades — encrypted on Storacha and pinned to IPFS. No government can delete it. No lobbyist can edit it. Content-addressed, immutable, decentralized.",
+    narration: "Budget preferences, treaty votes, health outcomes, and impact metrics — all stored on Storacha and pinned to IPFS. No government can delete it. No lobbyist can edit it. Content-addressed, immutable, decentralized.",
   },
   {
     id: "pl-hypercerts",
@@ -1017,7 +1021,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "cyan",
     tags: ["cta"],
     act: "III",
-    narration: "10.7 billion lives. That is what 1 percent buys you.",
+    narration: `27 billion dollars a year funding pragmatic trials increases clinical trial capacity ${trialCapacityX} times. The disease queue compresses from ${oldQueue} years to ${newQueue}. ${totalLivesSavedB} billion lives saved. ${totalSufferingQuad} quadrillion hours of suffering prevented. That is what 1 percent buys you.`,
   },
   {
     id: "pl-close",
@@ -1026,13 +1030,13 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "pink",
     tags: ["cta"],
     act: "III",
-    narration: "A compound that would save a life sits on a shelf untested because the money bought a missile sitting on another shelf unused. This game aligns the most powerful superintelligence on your planet. Unlike the silicon version, this one you fix with a vote.",
+    narration: "Somewhere inside you right now, cells are copying themselves wrong. The treatment that would fix it exists as an untested compound on a shelf, because the money bought a missile instead. That missile is currently incinerating a child who would have grown up to discover the cure. You lose the treatment. You lose the scientist. You get the invoice. One percent fixes this. One vote starts it. Go to optimitron dot com and play now.",
   },
   {
     id: "pl-cta",
     title: "Vote Now",
     componentId: "sierra-post-credits-aliens",
-    bgColor: "pink",
+    bgColor: "foreground",
     tags: ["cta"],
     act: "III",
     narration: "The Earth Optimization Game is brought to you by the good humans at Protocol Labs funding the Commons, Gitcoin, Hypercerts, Storacha, Worldcoin, and Base.",
@@ -1066,8 +1070,8 @@ export const PLAYLISTS: DemoPlaylist[] = [
       // Intro + Problem (~35s)
       "pl-intro",
       "pl-cta",
-      "pl-170t",
       "pl-misaligned",
+      "pl-170t",
       "pl-ratio",
       // Game Over + Turn (~10s)
       "pl-moronia",

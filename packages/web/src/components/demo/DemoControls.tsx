@@ -1,16 +1,18 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Pause, Volume2, VolumeX, Circle, Save } from "lucide-react";
 
 interface DemoControlsProps {
   current: number;
   total: number;
   isPlaying: boolean;
   isMuted: boolean;
+  forceLive: boolean;
   onPrev: () => void;
   onNext: () => void;
   onTogglePlay: () => void;
   onToggleMute: () => void;
+  onToggleForceLive: () => void;
   onGoTo: (index: number) => void;
 }
 
@@ -19,10 +21,12 @@ export function DemoControls({
   total,
   isPlaying,
   isMuted,
+  forceLive,
   onPrev,
   onNext,
   onTogglePlay,
   onToggleMute,
+  onToggleForceLive,
 }: DemoControlsProps) {
   return (
     <div className="bg-transparent px-4 py-3">
@@ -50,6 +54,23 @@ export function DemoControls({
             ) : (
               <Volume2 className="w-5 h-5 text-foreground" />
             )}
+          </button>
+          <button
+            onClick={onToggleForceLive}
+            className={`p-2 rounded transition-all flex items-center gap-1.5 ${
+              forceLive ? "bg-brutal-red text-brutal-red-foreground" : "bg-white/10 hover:bg-white/20"
+            }`}
+            aria-label={forceLive ? "Switch to cached audio" : "Switch to live TTS"}
+            title={forceLive ? "LIVE TTS (Gemini)" : "Cached audio"}
+          >
+            {forceLive ? (
+              <Circle className="w-4 h-4 fill-current animate-pulse" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+            <span className="font-pixel text-[10px]">
+              {forceLive ? "LIVE" : "SAVED"}
+            </span>
           </button>
         </div>
 

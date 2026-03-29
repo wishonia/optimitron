@@ -95,6 +95,9 @@ function DemoPlayerInner({
   }, []);
   const [isPlaying, setIsPlaying] = useState(sierraMode);
   const [isMuted, setIsMuted] = useState(false);
+  const [forceLive, setForceLive] = useState(false);
+  const forceLiveRef = useRef(forceLive);
+  useEffect(() => { forceLiveRef.current = forceLive; }, [forceLive]);
   const [subtitle, setSubtitle] = useState(
     () => slides[0]?.narration ?? "",
   );
@@ -135,7 +138,7 @@ function DemoPlayerInner({
 
       setIsLoadingAudio(true);
       try {
-        const result = await getDemoAudio(s.id, s.narration);
+        const result = await getDemoAudio(s.id, s.narration, forceLiveRef.current);
         // Bail if user navigated away while we were loading
         if (generationRef.current !== generation) return;
         if (result) {
@@ -303,10 +306,12 @@ function DemoPlayerInner({
           total={slides.length}
           isPlaying={isPlaying}
           isMuted={isMuted}
+          forceLive={forceLive}
           onPrev={() => goTo(Math.max(0, currentIndex - 1))}
           onNext={() => goTo(Math.min(slides.length - 1, currentIndex + 1))}
           onTogglePlay={() => setIsPlaying((p) => !p)}
           onToggleMute={() => setIsMuted((m) => !m)}
+          onToggleForceLive={() => setForceLive((f) => !f)}
           onGoTo={goTo}
         />
       </div>

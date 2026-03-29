@@ -21,8 +21,9 @@ export default async function DemoPage({ searchParams }: PageProps) {
       <style>{`
         nav, footer { display: none !important; }
         main { min-height: 100vh !important; padding: 0 !important; margin: 0 !important; }
+        html, body { overflow: hidden !important; background: #000 !important; }
       `}</style>
-      <div className="h-screen dark">
+      <div className="h-screen dark bg-black">
         <DemoPlayer playlistId={resolvedId} />
       </div>
     </>

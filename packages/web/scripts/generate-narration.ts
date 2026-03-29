@@ -1,239 +1,317 @@
 /**
- * Generate narration audio for the PL Genesis demo video using Gemini TTS.
- *
- * Uses the Gemini API's multimodal generation to produce speech audio
- * from the demo script narration text.
+ * Offline narration generator — creates MP3 files from demo-script narration.
  *
  * Usage:
- *   GOOGLE_API_KEY=... tsx scripts/generate-narration.ts
+ *   npx tsx scripts/generate-narration.ts                    # all segments
+ *   npx tsx scripts/generate-narration.ts --playlist=protocol-labs  # one playlist
  *
- * Output: packages/web/demo-assets/narration/ (WAV files per section)
+ * - Reads segments from src/lib/demo-script.ts
+ * - Hashes each narration text (SHA-256, first 16 hex chars)
+ * - Only regenerates when narration changes (compares against manifest)
+ * - Generates WAV via Gemini TTS, converts to MP3 via ffmpeg
+ * - Saves to public/audio/narration/{slideId}.mp3
  */
-import "./load-env";
+import { config } from "dotenv";
+import { resolve } from "path";
+config({ path: resolve(__dirname, "../../../.env") });
+config({ path: resolve(__dirname, "../.env"), override: true });
+import { createHash } from "crypto";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  unlinkSync,
+} from "fs";
+import { join } from "path";
+import { execSync } from "child_process";
+import { SEGMENTS, getPlaylistSegments } from "../src/lib/demo-script";
+
+// ---------------------------------------------------------------------------
+// Gemini TTS — inline to avoid cross-package dependency
+// ---------------------------------------------------------------------------
+
 import { GoogleGenAI } from "@google/genai";
-import { writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { join } from "node:path";
 
-const OUTPUT_DIR = join(__dirname, "..", "demo-assets", "narration");
+// Try to import Wishonia voice config; fall back to defaults
+let VOICE = "Kore";
+let INSTRUCTIONS =
+  "Speak in a patient, warm, slightly quick tone. You are an alien governance AI narrating a presentation.";
+let MODEL = "gemini-2.5-flash-preview-tts";
 
-// Narration segments from the demo script — each becomes a separate audio file
-const narrationSegments = [
-  {
-    id: "01-hook",
-    text: `Your governments are misaligned superintelligences — collective intelligence systems controlling billions of lives, optimising for re-election instead of welfare. I built alignment software. It works on my planet. Let's see if your species can handle it.`,
-  },
-  {
-    id: "02-wishocracy-intro",
-    text: `Step one: actually ask people what they want. Radical concept, I know.`,
-  },
-  {
-    id: "02-wishocracy-detail",
-    text: `Citizens compare budget priorities head-to-head. Eigenvector decomposition produces stable preference weights from as few as ten comparisons. Your species invented this maths in 1977 and then mostly used it to rank sports teams. Every preference snapshot is stored on Storacha — content-addressed, immutable, linked to its predecessor. No server can alter it after the fact.`,
-  },
-  {
-    id: "03-alignment",
-    text: `Step two: find out which of your elected officials actually agrees with you. Voting records are compared against citizen preferences. Each politician gets a Citizen Alignment Score — a single number that answers "how much do they actually represent you?"`,
-  },
-  {
-    id: "04-hypercerts",
-    text: `Every alignment score is published as a Hypercert on the AT Protocol and stored on Storacha. Click any CID. You'll see the raw JSON — the Activity claim, the Measurements, the Evaluation. Tamper-proof. Auditable by anyone. This is what accountability looks like when you take it seriously.`,
-  },
-  {
-    id: "05-prize",
-    text: `Traditional philanthropy: give money, hope it works, never check. My approach: outcome-based escrow. Depositors put USDC into the Prize Pool smart contract and receive PRIZE claim tokens — their receipt for a share of the pool. The funds earn Aave V3 yield while locked. If health and income metrics cross verifiable thresholds, the funds flow to verified implementers. If they don't, PRIZE holders get their principal back plus roughly 4.2x in accrued yield. You either fix civilisation or you quadruple your money. Implementers register with Storacha CIDs linking to their Hypercert evidence. Challengers can post a bond to dispute allocations. Lose, you forfeit the bond. Win, the fraudster gets deactivated. Accountability with teeth.`,
-  },
-  {
-    id: "06-wish-token",
-    text: `Now for the part your campaign finance lobbyists won't enjoy. Two separate instruments. First: Incentive Alignment Bonds. Investors buy bonds. The proceeds fund campaigns for politicians who vote to reallocate from low to high net social value activities — ranked by their Hypercert-verified Alignment Scores. Treaty passes, bondholders earn perpetual returns from treaty revenue. Politicians earn funding by aligning with citizens, not donors. Second: the WISH token. A 0.5% transaction tax replaces your IRS. No 74,000-page tax code. No 83,000 employees. Revenue collection as a protocol feature. The tax funds Universal Basic Income, distributed automatically to verified citizens via World ID, and wishocratic budget allocation. No PACs. No lobbyists. Just maths.`,
-  },
-  {
-    id: "07-architecture",
-    text: `Under the hood: 15 packages, 2,600 tests, a domain-agnostic causal inference engine, and a fully typed TypeScript monorepo. Storacha for content-addressed storage. Hypercerts for verifiable attestations. Solidity for enforceable incentives. All open source.`,
-  },
-  {
-    id: "08-close",
-    text: `Storacha makes governance data immutable. Hypercerts make it auditable. Smart contracts make it enforceable. Your species has had these tools for years. You just keep not using them. Optimitron. Alignment software for the most powerful AIs on your planet — the ones made of people.`,
-  },
-];
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const w = require("@optimitron/wishonia-widget");
+  VOICE = w.WISHONIA_VOICE ?? VOICE;
+  INSTRUCTIONS = w.WISHONIA_SPEAKING_INSTRUCTIONS ?? INSTRUCTIONS;
+  MODEL = w.WISHONIA_TTS_MODEL ?? MODEL;
+} catch {
+  // wishonia-widget not available; defaults are fine
+}
 
-async function generateNarration() {
-  const apiKey =
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY ??
-    process.env.GOOGLE_API_KEY;
+function convertToWav(audioData: Uint8Array, mimeType: string): Uint8Array {
+  let bitsPerSample = 16;
+  let rate = 24000;
+  for (const param of mimeType.split(";")) {
+    const t = param.trim();
+    if (t.toLowerCase().startsWith("rate=")) {
+      const v = parseInt(t.split("=")[1], 10);
+      if (!isNaN(v)) rate = v;
+    } else if (t.startsWith("audio/L")) {
+      const v = parseInt(t.split("L")[1], 10);
+      if (!isNaN(v)) bitsPerSample = v;
+    }
+  }
+  const numChannels = 1;
+  const bytesPerSample = bitsPerSample / 8;
+  const blockAlign = numChannels * bytesPerSample;
+  const byteRate = rate * blockAlign;
+  const dataSize = audioData.length;
+  const header = new ArrayBuffer(44);
+  const dv = new DataView(header);
+  const w = (off: number, s: string) => {
+    for (let i = 0; i < s.length; i++) dv.setUint8(off + i, s.charCodeAt(i));
+  };
+  w(0, "RIFF");
+  dv.setUint32(4, 36 + dataSize, true);
+  w(8, "WAVE");
+  w(12, "fmt ");
+  dv.setUint32(16, 16, true);
+  dv.setUint16(20, 1, true);
+  dv.setUint16(22, numChannels, true);
+  dv.setUint32(24, rate, true);
+  dv.setUint32(28, byteRate, true);
+  dv.setUint16(32, blockAlign, true);
+  dv.setUint16(34, bitsPerSample, true);
+  w(36, "data");
+  dv.setUint32(40, dataSize, true);
+  const result = new Uint8Array(44 + dataSize);
+  result.set(new Uint8Array(header), 0);
+  result.set(audioData, 44);
+  return result;
+}
 
+async function generateSpeech(text: string, apiKey: string): Promise<Uint8Array> {
+  const client = new GoogleGenAI({ apiKey });
+  const result = await client.models.generateContent({
+    model: MODEL,
+    contents: [{ role: "user", parts: [{ text: `${INSTRUCTIONS}\n\n${text}` }] }],
+    config: {
+      responseModalities: ["AUDIO"],
+      speechConfig: {
+        voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } },
+      },
+    },
+  });
+  const part = result.candidates?.[0]?.content?.parts?.[0];
+  if (!part?.inlineData?.data) {
+    throw new Error("No audio data received from Gemini TTS");
+  }
+  const audioData = new Uint8Array(Buffer.from(part.inlineData.data, "base64"));
+  const mime = part.inlineData.mimeType || "audio/L16;rate=24000";
+  return convertToWav(audioData, mime);
+}
+
+// ---------------------------------------------------------------------------
+// Manifest helpers
+// ---------------------------------------------------------------------------
+
+const OUTPUT_DIR = join(__dirname, "..", "public", "audio", "narration");
+const MANIFEST_PATH = join(OUTPUT_DIR, "manifest.json");
+const TEMP_WAV = join(OUTPUT_DIR, "_temp.wav");
+
+interface ManifestEntry {
+  hash: string;
+  file: string;
+  generatedAt: string;
+}
+type Manifest = Record<string, ManifestEntry>;
+
+function hashText(text: string): string {
+  return createHash("sha256").update(text).digest("hex").slice(0, 16);
+}
+
+function loadManifest(): Manifest {
+  if (existsSync(MANIFEST_PATH)) {
+    return JSON.parse(readFileSync(MANIFEST_PATH, "utf-8"));
+  }
+  return {};
+}
+
+function saveManifest(manifest: Manifest) {
+  writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
+}
+
+function wavToMp3(wavPath: string, mp3Path: string) {
+  execSync(
+    `ffmpeg -y -i "${wavPath}" -codec:a libmp3lame -b:a 128k -ar 24000 "${mp3Path}"`,
+    { stdio: "pipe" },
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Segment-to-manifest-key mapping (matches demo-tts.ts lookup)
+// ---------------------------------------------------------------------------
+
+const segmentToSlideId: Record<string, string> = {
+  "pl-intro": "earth-optimization-game",
+  "pl-170t": "military-waste-170t",
+  "pl-misaligned": "misaligned-superintelligence",
+  "pl-ratio": "military-health-ratio",
+  "pl-moronia": "game-over-moronia",
+  "pl-wishonia": "restore-from-wishonia",
+  "pl-treaty": "one-percent-treaty",
+  "pl-game": "one-percent-referendum-vote",
+  "pl-prize": "dominant-assurance-contract",
+  "pl-dfda": "decentralized-fda",
+  "pl-opg": "optimal-policy-generator",
+  "pl-obg": "optimal-budget-generator",
+  "pl-iab": "incentive-alignment-bonds",
+  "pl-storacha": "ipfs-immutable-storage",
+  "pl-hypercerts": "impact-certificates",
+  "pl-lives": "ten-billion-lives-saved",
+  "pl-close": "final-call-to-action",
+  "pl-cta": "post-credits-aliens",
+};
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+
+async function main() {
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY ?? process.env.GOOGLE_API_KEY;
   if (!apiKey) {
-    console.error(
-      "Error: No Gemini API key found.\n" +
-      "  Set GOOGLE_GENERATIVE_AI_API_KEY in .env (project root) or as an environment variable.",
-    );
+    console.error("ERROR: GOOGLE_GENERATIVE_AI_API_KEY not set. Add it to .env or export it.");
     process.exit(1);
   }
 
-  console.log("Using GOOGLE_GENERATIVE_AI_API_KEY from .env\n");
-
-  if (!existsSync(OUTPUT_DIR)) {
-    mkdirSync(OUTPUT_DIR, { recursive: true });
+  try {
+    execSync("ffmpeg -version", { stdio: "pipe" });
+  } catch {
+    console.error("ERROR: ffmpeg not found. Install it: choco install ffmpeg");
+    process.exit(1);
   }
 
-  const client = new GoogleGenAI({ apiKey });
+  mkdirSync(OUTPUT_DIR, { recursive: true });
 
-  console.log(`Generating ${narrationSegments.length} narration segments...\n`);
+  // Parse --playlist flag
+  const playlistArg = process.argv.find((a) => a.startsWith("--playlist="));
+  const playlistId = playlistArg?.split("=")[1] || null;
 
-  for (const segment of narrationSegments) {
-    const outputPath = join(OUTPUT_DIR, `${segment.id}.wav`);
+  const segments = playlistId ? getPlaylistSegments(playlistId) : SEGMENTS;
 
-    if (existsSync(outputPath)) {
-      console.log(`  [skip] ${segment.id} — already exists`);
+  const manifest = loadManifest();
+  let generated = 0;
+  let cached = 0;
+  let skipped = 0;
+  let errors = 0;
+
+  console.log(
+    `\n🎙️  Narration Generator — ${segments.length} segments${playlistId ? ` (playlist: ${playlistId})` : ""}\n`,
+  );
+
+  // Pre-scan: classify each segment before generating
+  const toGenerate: typeof segments = [];
+  const preCached: string[] = [];
+  const preSkipped: string[] = [];
+
+  for (const seg of segments) {
+    if (!seg.narration?.trim()) {
+      preSkipped.push(seg.id);
+      continue;
+    }
+    const hash = hashText(seg.narration);
+    const manifestKey = segmentToSlideId[seg.id] ?? seg.id;
+    const mp3Path = join(OUTPUT_DIR, `${manifestKey}.mp3`);
+    if (manifest[manifestKey]?.hash === hash && existsSync(mp3Path)) {
+      preCached.push(seg.id);
+    } else {
+      toGenerate.push(seg);
+    }
+  }
+
+  console.log(`  ✓  ${preCached.length} cached (up to date)`);
+  if (preSkipped.length > 0) {
+    console.log(`  ⏭  ${preSkipped.length} skipped (no narration)`);
+  }
+  console.log(`  🔄 ${toGenerate.length} need regeneration`);
+
+  if (toGenerate.length > 0) {
+    const est = toGenerate.length * 15;
+    console.log(`  ⏱️  Estimated time: ~${Math.ceil(est / 60)} min ${est % 60}s\n`);
+    for (const id of toGenerate.map((s) => s.id)) {
+      console.log(`     → ${id}`);
+    }
+  }
+  console.log("");
+
+  if (toGenerate.length === 0) {
+    console.log("  Nothing to do — all audio is up to date!\n");
+    return;
+  }
+
+  for (const seg of segments) {
+    if (!seg.narration?.trim()) {
+      skipped++;
       continue;
     }
 
-    console.log(`  [gen]  ${segment.id} (${segment.text.length} chars)...`);
+    const hash = hashText(seg.narration);
+    // Use the slide-level key that demo-tts.ts looks up in the manifest
+    const manifestKey = segmentToSlideId[seg.id] ?? seg.id;
+    const mp3File = `${manifestKey}.mp3`;
+    const mp3Path = join(OUTPUT_DIR, mp3File);
 
-    try {
-      const response = await client.models.generateContent({
-        model: "gemini-2.5-flash-preview-tts",
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: segment.text }],
-          },
-        ],
-        config: {
-          responseModalities: ["AUDIO"],
-          speechConfig: {
-            voiceConfig: {
-              prebuiltVoiceConfig: {
-                // Kore = authoritative female voice — closest to Wishonia's deadpan British-ish style
-                voiceName: "Kore",
-              },
-            },
-          },
-        },
-      } as any);
-
-      // Extract audio data from response
-      const candidate = (response as any).candidates?.[0];
-      const audioPart = candidate?.content?.parts?.find(
-        (p: any) => p.inlineData?.mimeType?.startsWith("audio/"),
-      );
-
-      if (!audioPart?.inlineData?.data) {
-        console.error(`  [err]  ${segment.id} — no audio in response`);
-        // Write the raw response for debugging
-        writeFileSync(
-          join(OUTPUT_DIR, `${segment.id}.debug.json`),
-          JSON.stringify(response, null, 2),
-        );
-        continue;
-      }
-
-      const mimeType: string = audioPart.inlineData.mimeType ?? "audio/wav";
-      // Determine file extension from mime type
-      const extMap: Record<string, string> = {
-        "audio/wav": ".wav",
-        "audio/mp3": ".mp3",
-        "audio/mpeg": ".mp3",
-        "audio/ogg": ".ogg",
-        "audio/L16": ".pcm",
-        "audio/pcm": ".pcm",
-      };
-      const ext = extMap[mimeType] ?? ".wav";
-
-      // If Gemini returns raw PCM (audio/L16), wrap in WAV header
-      const audioBuffer = Buffer.from(audioPart.inlineData.data, "base64");
-      let finalBuffer = audioBuffer;
-      const actualPath = outputPath.replace(/\.wav$/, ext === ".pcm" ? ".wav" : ext);
-
-      if (mimeType.includes("L16") || mimeType.includes("pcm")) {
-        // Raw PCM: wrap in WAV container (24kHz, 16-bit, mono — Gemini default)
-        const sampleRate = 24000;
-        const bitsPerSample = 16;
-        const channels = 1;
-        const byteRate = sampleRate * channels * (bitsPerSample / 8);
-        const blockAlign = channels * (bitsPerSample / 8);
-        const dataSize = audioBuffer.length;
-        const header = Buffer.alloc(44);
-        header.write("RIFF", 0);
-        header.writeUInt32LE(36 + dataSize, 4);
-        header.write("WAVE", 8);
-        header.write("fmt ", 12);
-        header.writeUInt32LE(16, 16); // subchunk1 size
-        header.writeUInt16LE(1, 20); // PCM format
-        header.writeUInt16LE(channels, 22);
-        header.writeUInt32LE(sampleRate, 24);
-        header.writeUInt32LE(byteRate, 28);
-        header.writeUInt16LE(blockAlign, 32);
-        header.writeUInt16LE(bitsPerSample, 34);
-        header.write("data", 36);
-        header.writeUInt32LE(dataSize, 40);
-        finalBuffer = Buffer.concat([header, audioBuffer]);
-        writeFileSync(outputPath, finalBuffer); // keep .wav extension
-      } else {
-        writeFileSync(actualPath, audioBuffer);
-      }
-
-      console.log(
-        `  [ok]   ${segment.id} — ${(finalBuffer.length / 1024).toFixed(0)} KB (${mimeType})`,
-      );
-    } catch (error: any) {
-      console.error(`  [err]  ${segment.id} — ${error.message}`);
-
-      // If TTS model not available, fall back to generating a timing guide
-      if (
-        error.message?.includes("not found") ||
-        error.message?.includes("not supported")
-      ) {
-        console.log(
-          "\n  Note: Gemini TTS model may not be available in your region.",
-        );
-        console.log(
-          "  Falling back to generating timing guide for manual recording.\n",
-        );
-        await generateTimingGuide();
-        return;
-      }
+    if (manifest[manifestKey]?.hash === hash && existsSync(mp3Path)) {
+      cached++;
+      console.log(`  ✓  ${seg.id} → ${manifestKey} — cached`);
+      continue;
     }
 
-    // Rate limit courtesy
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (manifest[manifestKey]) {
+      console.log(`  🔄 ${seg.id} → ${manifestKey} — narration changed, regenerating...`);
+    } else {
+      console.log(`  🆕 ${seg.id} → ${manifestKey} — generating...`);
+    }
+
+    try {
+      const wavBytes = await generateSpeech(seg.narration, apiKey);
+      writeFileSync(TEMP_WAV, wavBytes);
+      wavToMp3(TEMP_WAV, mp3Path);
+      if (existsSync(TEMP_WAV)) unlinkSync(TEMP_WAV);
+
+      manifest[manifestKey] = {
+        hash,
+        file: mp3File,
+        generatedAt: new Date().toISOString(),
+      };
+      generated++;
+      console.log(`  ✅ ${seg.id} → ${manifestKey} — done`);
+    } catch (err: any) {
+      errors++;
+      console.error(`  ❌ ${seg.id} — ${err.message}`);
+    }
+
+    // Rate-limit: pause every 5 generations
+    if (generated > 0 && generated % 5 === 0) {
+      await new Promise((r) => setTimeout(r, 1000));
+    }
   }
 
-  console.log(`\nDone! Audio files saved to: ${OUTPUT_DIR}`);
+  saveManifest(manifest);
+  if (existsSync(TEMP_WAV)) unlinkSync(TEMP_WAV);
+
   console.log(
-    "\nTo combine with video, use ffmpeg:",
+    `\n📊 Summary: ${generated} generated, ${cached} cached, ${skipped} skipped, ${errors} errors`,
   );
-  console.log(
-    "  ffmpeg -i demo-video.webm -i narration/01-hook.wav -c:v copy -c:a aac output.mp4",
-  );
-}
+  console.log(`📁 Output: ${OUTPUT_DIR}\n`);
 
-async function generateTimingGuide() {
-  const guidePath = join(OUTPUT_DIR, "timing-guide.txt");
-  const lines: string[] = [
-    "NARRATION TIMING GUIDE",
-    "=====================",
-    "Read each segment aloud at a deadpan, measured pace.",
-    "Wishonia voice: British-ish, dry, slightly disappointed.",
-    "",
-  ];
-
-  // Estimate ~150 words per minute for deadpan delivery
-  const WPM = 140;
-
-  let totalSeconds = 0;
-  for (const segment of narrationSegments) {
-    const words = segment.text.split(/\s+/).length;
-    const seconds = Math.ceil((words / WPM) * 60);
-    totalSeconds += seconds;
-    lines.push(`[${segment.id}] ~${seconds}s (${words} words)`);
-    lines.push(`  "${segment.text}"`);
-    lines.push("");
+  if (generated > 0) {
+    console.log(`💡 ${generated} audio file(s) updated. Commit public/audio/narration/ to persist.\n`);
   }
-
-  lines.push(`TOTAL: ~${Math.ceil(totalSeconds / 60)}m ${totalSeconds % 60}s`);
-
-  writeFileSync(guidePath, lines.join("\n"));
-  console.log(`  Timing guide written to: ${guidePath}`);
 }
 
-generateNarration().catch(console.error);
+main().catch((err) => {
+  console.error("Fatal error:", err);
+  process.exit(1);
+});
