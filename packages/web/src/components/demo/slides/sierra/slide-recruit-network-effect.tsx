@@ -55,7 +55,7 @@ export function SlideRecruitNetworkEffect() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [addInventoryItem]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- run once on mount
 
   return (
     <SierraSlideWrapper act={2} className="text-purple-400">

@@ -73,7 +73,7 @@ export function SlideArmory() {
     setTimeout(() => {
       addInventoryItem({ id: "tech", name: "Tech Stack", icon: "🔧" } as unknown as Parameters<typeof addInventoryItem>[0]);
     }, 2500);
-  }, [addInventoryItem]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- run once on mount
 
   return (
     <SierraSlideWrapper act={2} className="text-purple-400">

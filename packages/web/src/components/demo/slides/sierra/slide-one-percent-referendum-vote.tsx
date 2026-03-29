@@ -32,7 +32,8 @@ export function SlideOnePercentReferendumVote() {
     }, 3000));
 
     return () => timers.forEach(clearTimeout);
-  }, [addInventoryItem]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount
+  }, []);
 
   // Animate the slider movement
   useEffect(() => {

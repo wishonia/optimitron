@@ -60,7 +60,7 @@ export function SlidePairwiseBudgetAllocation() {
     }, 10500));
 
     return () => timers.forEach(clearTimeout);
-  }, [addInventoryItem]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- run once on mount
 
   // Animate slider to target allocation
   useEffect(() => {
