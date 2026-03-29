@@ -19,3 +19,9 @@ export function hasVisualContent(data: Partial<VisualsResult> | null | undefined
     (data.sourceLinks && data.sourceLinks.length > 0)
   );
 }
+
+export function getVisualImageAlt(src: string): string {
+  const filename = src.split("/").pop()?.replace(/\.[^.]+$/u, "") ?? "";
+  const readable = filename.replace(/[-_]+/gu, " ").trim();
+  return readable || "Reference image";
+}

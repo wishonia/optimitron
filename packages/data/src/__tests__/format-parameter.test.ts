@@ -10,8 +10,7 @@ function makeParam(overrides: Partial<Parameter> & { value: number }): Parameter
   return {
     displayName: "Test",
     description: "test param",
-    value: overrides.value,
-    unit: overrides.unit ?? "",
+    unit: "",
     ...overrides,
   } as Parameter;
 }

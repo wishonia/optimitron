@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { hasVisualContent, trimVisualsContext } from "../visuals-utils";
+import {
+  getVisualImageAlt,
+  hasVisualContent,
+  trimVisualsContext,
+} from "../visuals-utils";
 
 describe("visuals-utils", () => {
   it("trims oversized visuals context", () => {
@@ -18,5 +22,12 @@ describe("visuals-utils", () => {
     expect(hasVisualContent({ sourceLinks: [] })).toBe(false);
     expect(hasVisualContent({ keyFigure: { value: "10x", label: "ROI", context: null } })).toBe(true);
     expect(hasVisualContent({ image: "assets/example.png" })).toBe(true);
+  });
+
+  it("derives a readable alt label from the image path", () => {
+    expect(getVisualImageAlt("assets/solution/1-percent-treaty-overview.png")).toBe(
+      "1 percent treaty overview"
+    );
+    expect(getVisualImageAlt("")).toBe("Reference image");
   });
 });
