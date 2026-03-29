@@ -13,7 +13,11 @@ import { SocialShareButtons } from "./components/SocialShareButtons"
 import { ReferralLinkBox } from "./components/ReferralLinkBox"
 import { CTAButton } from "./components/CTAButton"
 import { getEmailUrls } from "@/lib/email-urls"
-import { VOTER_LIVES_SAVED } from "@optimitron/data/parameters"
+import {
+  VOTER_LIVES_SAVED,
+  TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
+  fmtRaw,
+} from "@optimitron/data/parameters"
 
 interface ReferralMotivationEmailProps {
   userName: string
@@ -33,16 +37,14 @@ export const ReferralMotivationEmail = ({
   topReferrers,
 }: ReferralMotivationEmailProps) => {
   const { dashboardLink } = getEmailUrls()
-  // Impact calculations — from VOTER_LIVES_SAVED parameter
   const livesSavedPerReferral = VOTER_LIVES_SAVED.value
-  const potentialLivesWith10 = Math.round(livesSavedPerReferral * 10)
   const currentLivesSaved = Math.round(livesSavedPerReferral * currentReferrals)
 
   return (
     <Html>
       <Head />
       <Preview>
-        {`Your referrals could save hundreds of lives — ${currentReferrals > 0 ? `You've already saved ${currentLivesSaved}!` : "Start today"}`}
+        {`The Earth Optimization Game is growing. ${currentReferrals > 0 ? `Your crew: ${currentReferrals} players, ~${currentLivesSaved} lives saved.` : "Your crew: 0. That's fixable."}`}
       </Preview>
       <Body
         style={{
@@ -74,7 +76,7 @@ export const ReferralMotivationEmail = ({
               lineHeight: "1.1",
             }}
           >
-            EACH REFERRAL SAVES {livesSavedPerReferral} LIVES
+            YOUR FRIENDS ARE PLAYING. ARE YOU?
           </Heading>
 
           <Text
@@ -87,7 +89,7 @@ export const ReferralMotivationEmail = ({
               lineHeight: "1.6",
             }}
           >
-            (Here's the math, {userName}.)
+            Hello {userName}. I have a progress report. Try not to make that face.
           </Text>
 
           {/* Current Impact */}
@@ -131,7 +133,7 @@ export const ReferralMotivationEmail = ({
                   margin: "0",
                 }}
               >
-                Lives saved through your {currentReferrals} referral{currentReferrals !== 1 ? "s" : ""}
+                Estimated lives saved because you talked to {currentReferrals} of your friends like a normal person
               </Text>
             </Section>
           ) : (
@@ -153,7 +155,7 @@ export const ReferralMotivationEmail = ({
                   margin: "0 0 15px 0",
                 }}
               >
-                START YOUR IMPACT TODAY
+                YOU HAVEN'T TOLD ANYONE YET
               </Text>
               <Text
                 style={{
@@ -164,13 +166,13 @@ export const ReferralMotivationEmail = ({
                   lineHeight: "1.6",
                 }}
               >
-                You haven't made any referrals yet. Each person you recruit saves ~{livesSavedPerReferral} lives.
-                Ready to start?
+                Each friend who votes adds roughly {livesSavedPerReferral} lives to the ledger. Two text messages.
+                That's the whole game. On my planet, toddlers manage this level of social coordination.
               </Text>
             </Section>
           )}
 
-          {/* Potential Impact */}
+          {/* How the chain works */}
           <Section
             style={{
               backgroundColor: "#FF6B9D",
@@ -189,7 +191,7 @@ export const ReferralMotivationEmail = ({
                 margin: "0 0 20px 0",
               }}
             >
-              YOUR POTENTIAL
+              HOW THE CHAIN WORKS
             </Text>
 
             <div
@@ -207,20 +209,22 @@ export const ReferralMotivationEmail = ({
                   fontSize: "16px",
                   fontWeight: "bold",
                   margin: "0 0 10px 0",
+                  lineHeight: "1.6",
                 }}
               >
-                With just 10 referrals you could save
+                You tell 2. They tell 2.
               </Text>
               <Text
                 style={{
                   color: "#FF6B9D",
-                  fontSize: "48px",
+                  fontSize: "36px",
                   fontWeight: "900",
                   lineHeight: "1",
                   margin: "0 0 5px 0",
                 }}
               >
-                ~{potentialLivesWith10}
+                {fmtRaw(TREATY_CAMPAIGN_VOTING_BLOC_TARGET.value).toUpperCase()}
+
               </Text>
               <Text
                 style={{
@@ -230,7 +234,7 @@ export const ReferralMotivationEmail = ({
                   margin: "0",
                 }}
               >
-                lives
+                players = tipping point
               </Text>
             </div>
 
@@ -244,12 +248,14 @@ export const ReferralMotivationEmail = ({
                 lineHeight: "1.6",
               }}
             >
-              Each recruit adds {livesSavedPerReferral} lives to the ledger.
-              If they each recruit 2 more? Over 1,000 lives from your network alone.
+              After 10 rounds: 1,024 players. After 28 rounds: {fmtRaw(TREATY_CAMPAIGN_VOTING_BLOC_TARGET.value)}. Your species already
+              turns out at 50-65% for elections that pay nothing. This one takes 30 seconds on a phone
+              and the outcome is "less death." The participation barrier is not motivation. It's that
+              nobody's told them yet. That's your job.
             </Text>
           </Section>
 
-          {/* Global Leaderboard */}
+          {/* Top Players */}
           <Section
             style={{
               backgroundColor: "#FFE66D",
@@ -268,7 +274,7 @@ export const ReferralMotivationEmail = ({
                 margin: "0 0 20px 0",
               }}
             >
-              GLOBAL LEADERBOARD
+              TOP PLAYERS
             </Text>
 
             {topReferrers.map((referrer) => (
@@ -329,11 +335,11 @@ export const ReferralMotivationEmail = ({
                 margin: "20px 0 0 0",
               }}
             >
-              These recruiters are leading the charge. Can you join them?
+              These players have brought the most friends into the game. On my planet we call them "slightly less oblivious than average."
             </Text>
           </Section>
 
-          {/* Referral Link */}
+          {/* Share Link */}
           <Section
             style={{
               backgroundColor: "#00D4FF",
@@ -352,7 +358,7 @@ export const ReferralMotivationEmail = ({
                 margin: "0 0 20px 0",
               }}
             >
-              YOUR REFERRAL LINK
+              YOUR LINK
             </Text>
 
             <ReferralLinkBox referralLink={referralLink} />
@@ -365,12 +371,12 @@ export const ReferralMotivationEmail = ({
                 margin: "0 0 20px 0",
               }}
             >
-              Share this everywhere. Every verified voter earns you a VOTE point.
+              Share with two people who'd prefer being alive. That's a low bar but I've learned not to assume with your species.
             </Text>
 
             <SocialShareButtons
               referralLink={referralLink}
-              tweetText={`Each person who votes for the 1% Treaty referendum saves ~${livesSavedPerReferral} lives. Join me:`}
+              tweetText={`Each vote for the 1% Treaty saves ~${livesSavedPerReferral} lives. 30 seconds on a phone:`}
             />
           </Section>
 
@@ -393,7 +399,7 @@ export const ReferralMotivationEmail = ({
                 margin: "0 0 10px 0",
               }}
             >
-              Why your referrals matter
+              Why this matters
             </Text>
             <Text
               style={{
@@ -404,9 +410,8 @@ export const ReferralMotivationEmail = ({
                 lineHeight: "1.6",
               }}
             >
-              We need enough votes to trigger democratic change. Every person you recruit brings
-              us closer to optimizing governance with evidence-based policy — redirecting resources
-              from waste to what actually works. Your network is your superpower.
+              Every friend who votes makes the democratic signal louder. Your governments will notice
+              eventually. They're slow but not technically plants. — Wishonia
             </Text>
           </Section>
         </Container>

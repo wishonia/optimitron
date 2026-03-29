@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildReferralSequenceEmail,
   getReferralSequenceAction,
+  REFERRAL_EMAIL_SEQUENCE_LENGTH,
 } from "../referral-email-sequence";
 
 describe("referral email sequence", () => {
@@ -56,7 +57,7 @@ describe("referral email sequence", () => {
     expect(action).toEqual({ type: "complete", reason: "goal_met" });
   });
 
-  it("builds urgency copy once referrals exist", () => {
+  it("builds game progress copy when friends have joined", () => {
     const email = buildReferralSequenceEmail({
       step: 1,
       referralCount: 2,
@@ -65,12 +66,13 @@ describe("referral email sequence", () => {
     });
 
     expect(email.subject).toContain("2");
+    expect(email.subject).toContain("friends joined");
     expect(email.text).toContain("https://example.com/wishocracy/jane");
     expect(email.html).toContain("Copy-and-send message");
-    expect(email.html).toContain("VOTE point");
+    expect(email.html).toContain("TELL TWO FRIENDS");
   });
 
-  it("welcome email emphasizes VOTE point value", () => {
+  it("welcome email leads with game framing, not financial value", () => {
     const email = buildReferralSequenceEmail({
       step: 0,
       referralCount: 0,
@@ -78,12 +80,13 @@ describe("referral email sequence", () => {
       shareUrl: "https://example.com/?ref=alex",
     });
 
-    expect(email.subject).toContain("VOTE point");
-    expect(email.text).toContain("VOTE point");
-    expect(email.html).toContain("EARN POINTS");
+    expect(email.subject).toBe("You did a thing. Now do one more thing");
+    expect(email.text).toContain("Earth Optimization Game");
+    expect(email.text).toContain("tell two friends");
+    expect(email.html).toContain("TELL TWO FRIENDS");
   });
 
-  it("step 2 email includes deadline urgency for zero referrals", () => {
+  it("step 2 email uses mission framing for zero referrals", () => {
     const email = buildReferralSequenceEmail({
       step: 2,
       referralCount: 0,
@@ -91,7 +94,75 @@ describe("referral email sequence", () => {
       shareUrl: "https://example.com/?ref=bo",
     });
 
-    expect(email.subject).toContain("parasitic economy");
-    expect(email.text).toContain("people die daily");
+    expect(email.subject).toContain("604x");
+    expect(email.text).toContain("people have died from treatable diseases");
+  });
+
+  it("signs off as Wishonia", () => {
+    const email = buildReferralSequenceEmail({
+      step: 0,
+      referralCount: 0,
+      name: "Test",
+      shareUrl: "https://example.com/?ref=test",
+    });
+
+    expect(email.text).toContain("Wishonia");
+    expect(email.html).toContain("Wishonia");
+  });
+
+  it("no subject line contains dollar amounts", () => {
+    const steps = [
+      { step: 0, referralCount: 0 },
+      { step: 1, referralCount: 0 },
+      { step: 1, referralCount: 2 },
+      { step: 2, referralCount: 0 },
+      { step: 2, referralCount: 2 },
+    ];
+
+    for (const { step, referralCount } of steps) {
+      const email = buildReferralSequenceEmail({
+        step,
+        referralCount,
+        name: "Test",
+        shareUrl: "https://example.com/?ref=test",
+      });
+      expect(email.subject).not.toMatch(
+        /\$\d/,
+      );
+    }
+  });
+
+  it("share message does not mention VOTE points", () => {
+    const email = buildReferralSequenceEmail({
+      step: 0,
+      referralCount: 0,
+      name: "Test",
+      shareUrl: "https://example.com/?ref=test",
+    });
+
+    const shareMessageLine = email.text
+      .split("\n")
+      .find((line) => line.startsWith("Suggested message:"));
+    const shareMessage = email.text
+      .split("\n")
+      .slice(
+        email.text.split("\n").indexOf(shareMessageLine!) + 1,
+        email.text.split("\n").indexOf(shareMessageLine!) + 2,
+      )
+      .join("");
+
+    expect(shareMessage).not.toContain("VOTE point");
+  });
+
+  it("completes sequence when all steps are exhausted", () => {
+    const action = getReferralSequenceAction({
+      createdAt: new Date("2026-03-10T00:00:00.000Z"),
+      newsletterSubscribed: true,
+      referralCount: 0,
+      referralEmailSequenceLastSentAt: new Date("2026-03-14T00:00:00.000Z"),
+      referralEmailSequenceStep: REFERRAL_EMAIL_SEQUENCE_LENGTH,
+    });
+
+    expect(action).toBeNull();
   });
 });

@@ -20,6 +20,8 @@ import { getEmailUrls } from "@/lib/email-urls"
 import {
   VOTER_LIVES_SAVED,
   VOTER_SUFFERING_HOURS_PREVENTED,
+  TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
+  fmtRaw,
 } from "@optimitron/data/parameters"
 
 interface WelcomeImpactEmailProps {
@@ -43,7 +45,7 @@ export const WelcomeImpactEmail = ({
     <Html>
       <Head />
       <Preview>
-        {`Your vote is confirmed — here's your impact: ${livesSaved} lives saved, ${sufferingYearsPrevented} years of suffering prevented!`}
+        {`You just joined the Earth Optimization Game. One vote = ${livesSaved} lives saved. Now tell two friends.`}
       </Preview>
       <Body
         style={{
@@ -67,26 +69,26 @@ export const WelcomeImpactEmail = ({
           <Heading
             style={{
               color: "#000000",
-              fontSize: "32px",
+              fontSize: "28px",
               fontWeight: "900",
               textAlign: "center",
               textTransform: "uppercase",
               margin: "0 0 10px 0",
             }}
           >
-            WELCOME TO
+            WELCOME TO THE
           </Heading>
           <Heading
             style={{
               color: primaryColor,
-              fontSize: "42px",
+              fontSize: "36px",
               fontWeight: "900",
               textAlign: "center",
               textTransform: "uppercase",
               margin: "0 0 30px 0",
             }}
           >
-            OPTIMITRON
+            EARTH OPTIMIZATION GAME
           </Heading>
 
           <Text
@@ -99,7 +101,7 @@ export const WelcomeImpactEmail = ({
               lineHeight: "1.6",
             }}
           >
-            Hey {userName}! Your vote for the 1% Treaty referendum is confirmed. Here's the impact you just made:
+            Hello {userName}. You just voted for the 1% Treaty, which means you've done more for your species in 30 seconds than most of your governments do in a fiscal quarter. Here's what one vote does:
           </Text>
 
           {/* Impact Stats */}
@@ -253,7 +255,7 @@ export const WelcomeImpactEmail = ({
                 margin: "0 0 15px 0",
               }}
             >
-              MULTIPLY YOUR IMPACT
+              NOW TELL TWO FRIENDS
             </Text>
             <Text
               style={{
@@ -265,7 +267,7 @@ export const WelcomeImpactEmail = ({
                 lineHeight: "1.6",
               }}
             >
-              Each verified voter you recruit earns you a VOTE point and multiplies your impact.
+              The game is simple. You tell two friends. They tell two friends. On my planet this is called "talking to people" and is not considered revolutionary, but here we are.
             </Text>
             <Text
               style={{
@@ -277,7 +279,7 @@ export const WelcomeImpactEmail = ({
                 lineHeight: "1.6",
               }}
             >
-              Share your unique referral link to recruit more voters for the referendum:
+              Share your link with two people who'd prefer being alive:
             </Text>
 
             <ReferralLinkBox referralLink={referralLink} />
@@ -308,9 +310,9 @@ export const WelcomeImpactEmail = ({
                 lineHeight: "1.6",
               }}
             >
-              Your vote is now counted toward the global tipping point. When enough people vote,
-              we'll have the democratic mandate to reallocate 1% of military spending to pragmatic
-              clinical trials — optimizing governance with data instead of ideology.
+              Your vote is counted toward the tipping point — {fmtRaw(TREATY_CAMPAIGN_VOTING_BLOC_TARGET.value)} verified humans who'd
+              prefer living to exploding. When you get there, the 1% Treaty passes and your
+              governments redirect 1% of bomb money to medicine money.
             </Text>
             <Text
               style={{
@@ -319,9 +321,10 @@ export const WelcomeImpactEmail = ({
                 textAlign: "center",
                 margin: "0",
                 lineHeight: "1.6",
+                fontStyle: "italic",
               }}
             >
-              Every person you recruit brings us closer. Let's optimize Earth together.
+              On my planet this took about four minutes. You lot are making it harder than it needs to be. — Wishonia
             </Text>
           </Section>
 

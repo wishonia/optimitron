@@ -48,7 +48,7 @@ export const WeeklyUpdateEmail = ({
     <Html>
       <Head />
       <Preview>
-        Your Weekly Optimitron Update - {stats.newReferrals > 0 ? `+${stats.newReferrals} new recruits!` : "Keep recruiting!"}
+        Your Weekly Game Update - {stats.newReferrals > 0 ? `+${stats.newReferrals} new players this week!` : "Keep playing!"}
       </Preview>
       <Body
         style={{
@@ -91,7 +91,7 @@ export const WeeklyUpdateEmail = ({
               margin: "0 0 30px 0",
             }}
           >
-            IMPACT REPORT
+            GAME UPDATE
           </Heading>
 
           <Text
@@ -103,7 +103,7 @@ export const WeeklyUpdateEmail = ({
               margin: "0 0 30px 0",
             }}
           >
-            Hey {userName}! Here's your governance optimization impact this week.
+            Hello {userName}. I've been watching your progress. Here's your game update, which I'm told is more engaging than your species' other weekly reports.
           </Text>
 
           {/* Stats Grid */}
@@ -131,7 +131,7 @@ export const WeeklyUpdateEmail = ({
                     margin: "0 0 10px 0",
                   }}
                 >
-                  Total Referrals
+                  Friends Playing
                 </Text>
                 <Text
                   style={{
@@ -153,7 +153,7 @@ export const WeeklyUpdateEmail = ({
                       margin: "10px 0 0 0",
                     }}
                   >
-                    +{stats.newReferrals} this week!
+                    +{stats.newReferrals} new players this week!
                   </Text>
                 )}
               </Section>
@@ -181,7 +181,7 @@ export const WeeklyUpdateEmail = ({
                     margin: "0 0 10px 0",
                   }}
                 >
-                  Global Rank
+                  Player Rank
                 </Text>
                 <Text
                   style={{
@@ -222,7 +222,7 @@ export const WeeklyUpdateEmail = ({
                     margin: "0 0 10px 0",
                   }}
                 >
-                  Total Reach
+                  Chain Reach
                 </Text>
                 <Text
                   style={{
@@ -260,7 +260,7 @@ export const WeeklyUpdateEmail = ({
                     margin: "0 0 10px 0",
                   }}
                 >
-                  Total Shares
+                  Times Shared
                 </Text>
                 <Text
                   style={{
@@ -357,9 +357,9 @@ export const WeeklyUpdateEmail = ({
                 margin: "0 0 20px 0",
               }}
             >
-              Share this link to recruit more voters for the referendum!
+              Tell two more friends. Every player brings the tipping point closer. On my planet, this process took four minutes total. I'm trying not to judge.
             </Text>
-            <SocialShareButtons referralLink={referralLink} tweetText="Join the movement to optimize governance with evidence-based policy!" />
+            <SocialShareButtons referralLink={referralLink} />
           </Section>
 
           <CTAButton href={dashboardLink} margin="40px 0">VIEW FULL DASHBOARD</CTAButton>

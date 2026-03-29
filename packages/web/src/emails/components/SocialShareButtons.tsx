@@ -1,11 +1,19 @@
 import { Row, Column, Link } from "@react-email/components"
 import * as React from "react"
+import {
+  GLOBAL_DISEASE_DEATHS_DAILY,
+  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
+  fmtParam,
+  fmtRaw,
+} from "@optimitron/data/parameters"
 
 interface SocialShareButtonsProps {
   referralLink: string
-  /** Tweet text — defaults to a generic governance call-to-action */
+  /** Tweet text — defaults to a mission-focused call-to-action */
   tweetText?: string
 }
+
+const defaultTweetText = `${fmtRaw(GLOBAL_DISEASE_DEATHS_DAILY.value)} people die daily from treatable diseases. Governments spend ${fmtParam(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO)} more on weapons than finding new treatments. 30 seconds to vote for the 1% Treaty:`
 
 const buttonBase: React.CSSProperties = {
   display: "block",
@@ -21,7 +29,7 @@ const buttonBase: React.CSSProperties = {
 
 export function SocialShareButtons({
   referralLink,
-  tweetText = "Help optimize Earth's governance. Every vote counts toward the tipping point. Join me:",
+  tweetText = defaultTweetText,
 }: SocialShareButtonsProps) {
   return (
     <Row>
