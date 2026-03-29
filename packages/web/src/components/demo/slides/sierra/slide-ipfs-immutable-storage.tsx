@@ -16,31 +16,31 @@ interface DataCard {
 
 const DATA_TYPES: DataCard[] = [
   {
-    icon: "🗳️",
-    label: "CITIZEN PRIORITIES",
-    description: "What 8B people actually want",
-    detail: "Pairwise rankings, consistency-checked",
+    icon: "⚖️",
+    label: "BUDGET PREFERENCES",
+    description: "8B pairwise comparisons",
+    detail: "Explosions vs cures, ranked by everyone",
     colorKey: "primary",
   },
   {
-    icon: "📊",
-    label: "POLICY GRADES",
-    description: "Every policy scored A-F",
-    detail: "Welfare impact, evidence, recommendation",
+    icon: "🗳️",
+    label: "TREATY VOTES",
+    description: "1% referendum results",
+    detail: "Verified, immutable, uncensorable",
     colorKey: "success",
   },
   {
     icon: "🏥",
-    label: "HEALTH EVIDENCE",
-    description: "N-of-1 treatment results",
-    detail: "Variable relationships, evidence grades",
+    label: "HEALTH OUTCOMES",
+    description: "What treatments actually work",
+    detail: "Real patients, real results, real-time",
     colorKey: "secondary",
   },
   {
-    icon: "🔐",
-    label: "ENCRYPTED SUBMISSIONS",
-    description: "Individual preferences",
-    detail: "AES-GCM-256 — only the owner decrypts",
+    icon: "📈",
+    label: "IMPACT METRICS",
+    description: "Healthy life years + median income",
+    detail: "The two numbers that determine if we win",
     colorKey: "accent",
   },
 ];
@@ -110,7 +110,7 @@ export function SlideIpfsImmutableStorage() {
             className="font-pixel text-3xl md:text-5xl"
             style={{ color: palette.accent }}
           >
-            THE DECENTRALIZED CENSUS
+            DECENTRALIZED CENSUS
           </h1>
         </div>
 
@@ -130,10 +130,10 @@ export function SlideIpfsImmutableStorage() {
               👤 8 BILLION CITIZENS
             </div>
             <div
-              className="font-terminal text-lg md:text-xl mt-1"
+              className="font-terminal text-base md:text-lg mt-1"
               style={{ color: palette.muted }}
             >
-              🔒 AES-GCM-256 encrypted — only you hold the key
+              🌐 Verified via World ID
             </div>
           </div>
         )}
@@ -202,39 +202,17 @@ export function SlideIpfsImmutableStorage() {
               backgroundColor: "rgba(0,0,0,0.4)",
             }}
           >
-            <div className="flex items-center justify-center gap-6">
-              <span
-                className="font-pixel text-xl md:text-2xl px-3 py-1 rounded"
-                style={{ color: palette.accent, backgroundColor: `${palette.accent}15` }}
-              >
-                STORACHA
-              </span>
+            <div className="flex items-center justify-center gap-8">
+              <img src="/images/logos/storacha.svg" alt="Storacha" className="h-8 md:h-10 brightness-0 invert" />
               <span className="font-pixel text-xl" style={{ color: palette.muted }}>+</span>
-              <span
-                className="font-pixel text-xl md:text-2xl px-3 py-1 rounded"
-                style={{ color: palette.secondary, backgroundColor: `${palette.secondary}15` }}
-              >
-                IPFS
-              </span>
-            </div>
-            <div
-              className="font-terminal text-lg md:text-xl text-center mt-2"
-              style={{ color: palette.muted }}
-            >
-              Decentralized. Immutable. No login to verify.
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">🌐</span>
+                <span className="font-pixel text-xl md:text-2xl" style={{ color: palette.secondary }}>IPFS</span>
+              </div>
             </div>
           </div>
         )}
 
-        {/* Phase 5 — Punchline */}
-        {phase >= 5 && (
-          <p
-            className="font-terminal text-xl md:text-3xl text-center fade-in gentle-pulse max-w-[1200px]"
-            style={{ color: palette.foreground }}
-          >
-            Your species stores its census data on servers controlled by the people being graded.
-          </p>
-        )}
 
       </div>
     </SierraSlideWrapper>

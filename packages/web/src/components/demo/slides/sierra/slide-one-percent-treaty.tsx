@@ -6,101 +6,90 @@ import {
   GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
   GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
   TREATY_ANNUAL_FUNDING,
-  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
+  DFDA_TRIAL_CAPACITY_MULTIPLIER,
+  STATUS_QUO_QUEUE_CLEARANCE_YEARS,
+  DFDA_QUEUE_CLEARANCE_YEARS,
 } from "@optimitron/data/parameters";
-import { formatCurrency } from "@/lib/demo/formatters";
 import { useEffect, useState } from "react";
 
-const militaryGlobal = GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value;
-const trialsGlobal = GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value;
-const ratio = MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value;
-const currentMilitaryPct = (ratio / (ratio + 1)) * 100; // ~99.83%
-const currentTrialsPct = (1 / (ratio + 1)) * 100; // ~0.17%
-const onePercentMilitary = TREATY_ANNUAL_FUNDING.value;
+const military = GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value;
+const trials = GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value;
+const treatyFunding = TREATY_ANNUAL_FUNDING.value;
+const total = military + trials;
+const currentTrialsPct = (trials / total) * 100; // ~0.17%
+const treatyTrialsPct = ((trials + treatyFunding) / total) * 100; // ~1.16%
+const trialMultiplier = DFDA_TRIAL_CAPACITY_MULTIPLIER.value;
+const oldQueue = Math.round(STATUS_QUO_QUEUE_CLEARANCE_YEARS.value);
+const newQueue = Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value);
 
 export function SlideOnePercentTreaty() {
-  const [sliderValue, setSliderValue] = useState(0);
+  const [sliderValue, setSliderValue] = useState(currentTrialsPct); // start at real ~0.2%
   const [showImpact, setShowImpact] = useState(false);
   const [fingerPhase, setFingerPhase] = useState<"waiting" | "dragging" | "done">("waiting");
 
   useEffect(() => {
-    // Phase 1: finger appears, pauses, then drags
-    const startDrag = setTimeout(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    // Phase 1: finger appears, pauses, then starts dragging
+    timers.push(setTimeout(() => {
       setFingerPhase("dragging");
 
-      // Animate slider from 0 to 1%
-      const interval = setInterval(() => {
-        setSliderValue((prev) => {
-          if (prev >= 1) {
-            clearInterval(interval);
-            setFingerPhase("done");
-            setTimeout(() => setShowImpact(true), 500);
-            return 1;
-          }
-          return prev + 0.02;
-        });
-      }, 40);
+      // Sweep: explore around then settle on treaty target (~1.2%)
+      const keyframes = [
+        { target: 3, speed: 0.04 },
+        { target: 0.5, speed: 0.03 },
+        { target: 2.5, speed: 0.03 },
+        { target: treatyTrialsPct, speed: 0.02 },
+      ];
+      let step = 0;
 
-      return () => clearInterval(interval);
-    }, 800);
+      function animateToTarget() {
+        const kf = keyframes[step];
+        if (!kf) {
+          setFingerPhase("done");
+          setTimeout(() => setShowImpact(true), 500);
+          return;
+        }
+        const interval = setInterval(() => {
+          setSliderValue((prev) => {
+            const diff = kf.target - prev;
+            if (Math.abs(diff) < 0.03) {
+              clearInterval(interval);
+              step++;
+              setTimeout(animateToTarget, 200);
+              return kf.target;
+            }
+            return prev + Math.sign(diff) * kf.speed;
+          });
+        }, 30);
+      }
 
-    return () => clearTimeout(startDrag);
+      animateToTarget();
+    }, 800));
+
+    return () => timers.forEach(clearTimeout);
   }, []);
 
-  const redirectedAmount = (sliderValue / 100) * militaryGlobal;
+  const redirectedAmount = (sliderValue / 100) * military;
 
   return (
-    <SierraSlideWrapper act={2} className="text-emerald-400">
+    <SierraSlideWrapper act={2} className="text-brutal-cyan">
       {/* Title */}
-      <h1 className="font-pixel text-xl md:text-2xl text-emerald-400 text-center mb-8">
+      <h1 className="font-pixel text-2xl md:text-4xl text-brutal-cyan text-center mb-8">
         THE 1% TREATY
       </h1>
 
       <div className="w-full max-w-[1700px] mx-auto space-y-8">
-        {/* Before/After comparison */}
-        <div className="grid grid-cols-2 gap-4 md:gap-8">
-          {/* Before */}
-          <div className="text-center p-4 bg-muted border-2 border-brutal-red rounded">
-            <div className="font-pixel text-xl text-red-400 mb-2">CURRENT</div>
-            <div className="text-3xl mb-2">⚔️</div>
-            <div className="font-pixel text-xl text-red-400">
-              {formatCurrency(militaryGlobal)}
-            </div>
-            <div className="font-pixel text-2xl text-zinc-200 mt-1">
-              {currentMilitaryPct.toFixed(1)}% to military
-            </div>
-          </div>
-
-          {/* After */}
-          <div className="text-center p-4 bg-muted border-2 border-brutal-cyan rounded">
-            <div className="font-pixel text-xl text-emerald-400 mb-2">PROPOSED</div>
-            <div className="flex justify-center gap-2 mb-2">
-              <span className="text-2xl">⚔️</span>
-              <span className="text-2xl">🧪</span>
-            </div>
-            <div className="font-pixel text-xl text-emerald-400">
-              99% + 1%
-            </div>
-            <div className="font-pixel text-2xl text-zinc-200 mt-1">
-              Tiny shift, massive impact
-            </div>
-          </div>
-        </div>
-
         {/* Animated slider */}
         <div className="space-y-4">
-          <div className="font-pixel text-2xl text-center text-zinc-200">
-            REALLOCATION SLIDER
-          </div>
-          
-          <div className="relative h-12 bg-zinc-900 border-2 border-primary rounded flex">
+          <div className="relative h-14 bg-zinc-900 border-2 border-primary rounded flex">
             {/* Military portion */}
             <div
               className="relative bg-brutal-red transition-all duration-100 flex items-center justify-center overflow-hidden rounded-l"
               style={{ width: `${100 - sliderValue}%` }}
             >
               <span className="font-pixel text-xl text-brutal-red-foreground whitespace-nowrap">
-                Military: {(100 - sliderValue).toFixed(1)}%
+                💣 Military: {(100 - sliderValue).toFixed(1)}%
               </span>
             </div>
 
@@ -111,70 +100,64 @@ export function SlideOnePercentTreaty() {
             >
               {sliderValue > 0.3 && (
                 <span className="font-pixel text-xl text-brutal-cyan-foreground whitespace-nowrap pl-2">
-                  Trials: {sliderValue.toFixed(1)}%
+                  🧪 {sliderValue.toFixed(1)}%
                 </span>
               )}
             </div>
 
-            {/* Animated finger */}
-            {fingerPhase !== "done" && (
-              <div
-                className="absolute -top-10 z-10 pointer-events-none transition-all duration-100"
-                style={{
-                  left: `${100 - sliderValue}%`,
-                  transform: "translateX(-50%)",
-                  opacity: fingerPhase === "waiting" ? 0.6 : 1,
-                }}
-              >
-                <span className={`text-4xl ${fingerPhase === "waiting" ? "animate-bounce" : ""}`}>
-                  👆
-                </span>
-              </div>
-            )}
+            {/* Animated finger — below the bar */}
+            <div
+              className="absolute top-full mt-1 z-10 pointer-events-none transition-all duration-100"
+              style={{
+                left: `${100 - sliderValue}%`,
+                transform: "translateX(-50%)",
+                opacity: fingerPhase === "waiting" ? 0.6 : 1,
+              }}
+            >
+              <span className={`text-4xl ${fingerPhase === "waiting" ? "animate-bounce" : fingerPhase === "done" ? "animate-pulse" : ""}`}>
+                ☝️
+              </span>
+            </div>
           </div>
 
-          {/* Slider track visualization */}
+          {/* Labels */}
           <div className="flex justify-between font-pixel text-2xl">
             <span className="text-brutal-red">{(100 - sliderValue).toFixed(1)}% Military</span>
             <span className="text-brutal-cyan">{sliderValue.toFixed(1)}% Clinical Trials</span>
           </div>
         </div>
 
-        {/* Amount being redirected */}
-        <div className="text-center">
-          <div className="font-pixel text-2xl text-zinc-200 mb-2">
-            FUNDS REDIRECTED TO CLINICAL TRIALS
-          </div>
-          <div className="font-pixel text-3xl md:text-5xl text-emerald-400">
-            <AnimatedCounter
-              end={onePercentMilitary}
-              duration={2000}
-              format="currency"
-              decimals={1}
-            />
-          </div>
-          <div className="font-pixel text-2xl text-zinc-200 mt-2">
-            per year
-          </div>
-        </div>
-
-        {/* Impact reveal */}
+        {/* Impact reveal — $27B + timeline compression */}
         {showImpact && (
-          <div className="grid grid-cols-3 gap-4 animate-fade-in">
-            <div className="text-center p-3 bg-muted border-2 border-brutal-cyan rounded">
-              <div className="text-2xl mb-1">🧬</div>
-              <div className="font-pixel text-2xl text-emerald-400">12.3x</div>
-              <div className="font-pixel text-2xl text-zinc-200">Faster trials</div>
+          <div className="space-y-6 animate-fade-in">
+            {/* Redirected amount */}
+            <div className="text-center">
+              <div className="font-pixel text-3xl md:text-6xl text-brutal-cyan">
+                <AnimatedCounter
+                  end={treatyFunding}
+                  duration={2000}
+                  format="currency"
+                  decimals={1}
+                />
+                <span className="text-2xl md:text-3xl text-muted-foreground"> / year</span>
+              </div>
             </div>
-            <div className="text-center p-3 bg-muted border-2 border-brutal-cyan rounded">
-              <div className="text-2xl mb-1">💊</div>
-              <div className="font-pixel text-2xl text-cyan-400">1000+</div>
-              <div className="font-pixel text-2xl text-zinc-200">New treatments</div>
-            </div>
-            <div className="text-center p-3 bg-muted border-2 border-brutal-yellow rounded">
-              <div className="text-2xl mb-1">🌍</div>
-              <div className="font-pixel text-2xl text-amber-400">10.7B</div>
-              <div className="font-pixel text-2xl text-zinc-200">Lives saved</div>
+
+            {/* Two key stats */}
+            <div className="grid grid-cols-2 gap-6">
+              <div className="text-center p-4 bg-muted border-2 border-brutal-cyan rounded">
+                <div className="font-pixel text-xl text-muted-foreground mb-1">TRIAL CAPACITY</div>
+                <div className="font-pixel text-4xl md:text-6xl text-brutal-cyan">
+                  {trialMultiplier.toFixed(1)}×
+                </div>
+              </div>
+              <div className="text-center p-4 bg-muted border-2 border-brutal-yellow rounded">
+                <div className="font-pixel text-xl text-muted-foreground mb-1">TIME TO CURE ALL DISEASES</div>
+                <div className="font-pixel text-4xl md:text-6xl">
+                  <span className="text-brutal-red line-through">{oldQueue} yrs</span>
+                  <span className="text-brutal-cyan ml-3">{newQueue} yrs</span>
+                </div>
+              </div>
             </div>
           </div>
         )}

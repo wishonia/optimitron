@@ -3,36 +3,29 @@
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { ParticleEmitter } from "../../animations/sierra/particle-emitter";
 import { useEffect, useState } from "react";
+import {
+  TREATY_HALE_GAIN_YEAR_15,
+  TREATY_PROJECTED_HALE_YEAR_15,
+  GLOBAL_AVG_INCOME_2025,
+} from "@optimitron/data/parameters";
+import { GAME_PARAMS } from "@/lib/demo/parameters";
+import { formatCurrency } from "@/lib/demo/formatters";
+
+const haleGain = Math.round(TREATY_HALE_GAIN_YEAR_15.value * 10) / 10;
+const haleTo = Math.round(TREATY_PROJECTED_HALE_YEAR_15.value * 10) / 10;
+const incomeNow = formatCurrency(GLOBAL_AVG_INCOME_2025.value);
+const incomeTo = formatCurrency(GAME_PARAMS.projectedGDPperCapita);
 
 export function SlideRestoreFromWishonia() {
   const [phase, setPhase] = useState(0);
-  const setPalette = (_p: any) => {};
-  const setScore = (_s: any) => {};
-  const showQuestMeters = () => {};
 
   useEffect(() => {
-    // Phase 0: Loading
-    // Phase 1: Palette burst
-    setTimeout(() => {
-      setPhase(1);
-      setPalette("vga"); // INSTANT palette shift!
-      setScore(0);
-    }, 1000);
-
-    // Phase 2: Quest meters appear
-    setTimeout(() => {
-      setPhase(2);
-      showQuestMeters();
-    }, 2500);
-
-    // Phase 3: CTA
-    setTimeout(() => setPhase(3), 3500);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setTimeout(() => setPhase(1), 800);
+    setTimeout(() => setPhase(2), 2000);
   }, []);
 
   return (
     <SierraSlideWrapper act="turn" className="text-cyan-400">
-      {/* Color burst particles on palette shift */}
       {phase >= 1 && (
         <ParticleEmitter
           emoji={["✨", "🌟", "💫", "⭐"]}
@@ -44,11 +37,10 @@ export function SlideRestoreFromWishonia() {
         />
       )}
 
-      {/* Main content */}
-      <div className="text-center space-y-8">
-        {/* Loading bar (phase 0) */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full gap-8">
+        {/* Phase 0: Loading */}
         {phase === 0 && (
-          <div className="space-y-4">
+          <div className="space-y-4 text-center">
             <div className="font-pixel text-2xl text-amber-400">
               RESTORING SAVE FILE...
             </div>
@@ -61,71 +53,76 @@ export function SlideRestoreFromWishonia() {
           </div>
         )}
 
-        {/* Palette burst reveal (phase 1+) */}
+        {/* Phase 1+: The pitch — globe + two big stats */}
         {phase >= 1 && (
-          <div className="space-y-6 animate-fade-scale-in">
-            {/* World restored */}
-            <div className="text-7xl md:text-9xl animate-bounce-slow">
-              🌍
+          <div className="flex flex-col items-center gap-6 animate-fade-scale-in">
+            <div className="font-pixel text-2xl md:text-3xl text-cyan-400 tracking-wider">
+              WITHIN 15 YEARS
             </div>
 
-            <h1 className="font-pixel text-3xl md:text-6xl text-cyan-400">
-              EARTH RESTORED
-            </h1>
+            <div className="flex items-center gap-8 md:gap-16">
+              {/* HALE stat */}
+              <div className="text-center">
+                <div className="text-5xl md:text-6xl mb-2">❤️</div>
+                <div className="font-pixel text-5xl md:text-7xl text-emerald-400">
+                  +{haleGain}
+                </div>
+                <div className="font-pixel text-xl md:text-2xl text-emerald-400 mt-1">
+                  HEALTHY YEARS
+                </div>
+                <div className="font-terminal text-lg md:text-xl text-zinc-200 mt-1">
+                  63.3 → {haleTo} HALE
+                </div>
+              </div>
 
-            <div className="font-pixel text-2xl md:text-4xl text-emerald-400">
-              Welcome to Wishonia
-            </div>
-          </div>
-        )}
+              {/* Globe */}
+              <div className="text-8xl md:text-[10rem] animate-bounce-slow">
+                🌍
+              </div>
 
-        {/* Quest meters preview (phase 2+) */}
-        {phase >= 2 && (
-          <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto animate-slide-up">
-            <div className="bg-black/60 border border-emerald-500/30 p-5 text-left">
-              <div className="font-pixel text-2xl md:text-3xl text-emerald-400">QUEST: HEALTHY LIFE YEARS</div>
-              <div className="font-pixel text-3xl md:text-4xl text-emerald-400">63.3 yrs</div>
-              <div className="font-pixel text-xl md:text-2xl text-emerald-400">Target: 69.8 yrs</div>
+              {/* Income stat */}
+              <div className="text-center">
+                <div className="text-5xl md:text-6xl mb-2">💰</div>
+                <div className="font-pixel text-5xl md:text-7xl text-amber-400">
+                  {incomeTo}
+                </div>
+                <div className="font-pixel text-xl md:text-2xl text-amber-400 mt-1">
+                  INCOME / YEAR
+                </div>
+                <div className="font-terminal text-lg md:text-xl text-zinc-200 mt-1">
+                  up from {incomeNow}
+                </div>
+              </div>
             </div>
-            <div className="bg-black/60 border border-amber-500/30 p-5 text-left">
-              <div className="font-pixel text-2xl md:text-3xl text-amber-400">QUEST: INCOME</div>
-              <div className="font-pixel text-3xl md:text-4xl text-amber-400">$18.7K</div>
-              <div className="font-pixel text-xl md:text-2xl text-amber-400">Target: $149K</div>
-            </div>
-          </div>
-        )}
 
-        {/* CTA (phase 3+) */}
-        {phase >= 3 && (
-          <div className="animate-fade-in space-y-4">
-            <div className="font-terminal text-2xl md:text-3xl text-cyan-400">
-              A different timeline is possible.
-            </div>
-            <button className="font-pixel text-xl md:text-3xl text-black bg-cyan-400 hover:bg-cyan-300 px-8 py-4 border-4 border-cyan-300 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all">
-              INITIATE EARTH OPTIMIZATION PROTOCOL
-            </button>
+            {/* Tagline (phase 2) */}
+            {phase >= 2 && (
+              <div className="font-pixel text-2xl md:text-4xl text-cyan-400 mt-4 animate-fade-in">
+                REALLOCATE RESOURCES. SAVE THE WORLD.
+              </div>
+            )}
           </div>
         )}
       </div>
 
-      {/* Radial gradient burst effect */}
+      {/* Radial burst */}
       {phase >= 1 && (
-        <div 
-          className="absolute inset-0 pointer-events-none animate-burst"
-          style={{
-            background: "radial-gradient(circle at center, rgba(34, 211, 238, 0.3) 0%, transparent 70%)",
-          }}
-        />
+        <div
+          className="absolute inset-0 pointer-events-none overflow-hidden"
+        >
+          <div
+            className="absolute inset-0 animate-burst"
+            style={{
+              background: "radial-gradient(circle at center, rgba(34, 211, 238, 0.3) 0%, transparent 70%)",
+            }}
+          />
+        </div>
       )}
 
       <style jsx>{`
         @keyframes fade-scale-in {
           from { opacity: 0; transform: scale(0.8); }
           to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes slide-up {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
         }
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }
@@ -137,9 +134,6 @@ export function SlideRestoreFromWishonia() {
         }
         .animate-fade-scale-in {
           animation: fade-scale-in 0.5s ease-out forwards;
-        }
-        .animate-slide-up {
-          animation: slide-up 0.5s ease-out forwards;
         }
         .animate-bounce-slow {
           animation: bounce-slow 2s ease-in-out infinite;

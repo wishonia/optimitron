@@ -48,7 +48,7 @@ export function SlideFinalCallToAction() {
           className="text-5xl md:text-7xl lg:text-8xl font-pixel"
           style={{ color: palette.accent }}
         >
-          PLAY NOW
+          PLAY NOW!
         </div>
 
         {/* Left stats | QR Code | Right stats */}
@@ -72,10 +72,10 @@ export function SlideFinalCallToAction() {
             >
               <div className="text-3xl md:text-4xl mb-1">🏥</div>
               <div className="font-pixel text-3xl md:text-4xl" style={{ color: palette.success }}>
-                {hale} yrs
+                +{haleGain.toFixed(1)} yrs
               </div>
               <div className="font-terminal text-xl md:text-2xl text-zinc-200 mt-1">
-                HALE (+{haleGain.toFixed(1)} yrs)
+                extra healthy life
               </div>
             </div>
           </div>
@@ -116,10 +116,10 @@ export function SlideFinalCallToAction() {
             >
               <div className="text-3xl md:text-4xl mb-1">💰</div>
               <div className="font-pixel text-3xl md:text-4xl" style={{ color: palette.success }}>
-                {formatCurrency(income)}/yr
+                {formatCurrency(incomeGain)}
               </div>
               <div className="font-terminal text-xl md:text-2xl text-zinc-200 mt-1">
-                income (+{formatCurrency(incomeGain)})
+                lifetime income
               </div>
             </div>
 

@@ -3,145 +3,71 @@
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { useEffect, useState } from "react";
 
-const YOUR_ACTIONS = [
-  {
-    action: "RECRUITED 7 verified voters",
-    emoji: "✊",
-    hypercert: "Voter Recruitment: 7 verified, 12 total, 58.3% verification rate",
-    impact: "Published to AT Protocol — permanent, auditable",
-    color: "emerald",
-  },
-  {
-    action: "DEPOSITED $500 to Prize Pool",
-    emoji: "💰",
-    hypercert: "PRIZE Pool Contribution: $500 USDC — funding the campaign",
-    impact: "On-chain deposit + AT Protocol attestation",
-    color: "amber",
-  },
-  {
-    action: "COMPLETED 142 PREFERENCE COMPARISONS",
-    emoji: "⚖️",
-    hypercert: "Citizen Preferences: 142 pairwise comparisons, 8 budget categories ranked",
-    impact: "Policy signal contributed — published to AT Protocol",
-    color: "purple",
-  },
+const ACTIONS = [
+  { emoji: "✊", action: "Recruit voters", result: "→ Hypercert", color: "text-brutal-cyan" },
+  { emoji: "💰", action: "Deposit to fund", result: "→ Hypercert", color: "text-brutal-yellow" },
+  { emoji: "⚖️", action: "Allocate budget", result: "→ Hypercert", color: "text-brutal-pink" },
 ];
-
-const colorMap: Record<string, { bg: string; border: string; text: string }> = {
-  emerald: { bg: "bg-brutal-cyan/10", border: "border-brutal-cyan/40", text: "text-brutal-cyan" },
-  amber: { bg: "bg-brutal-yellow/10", border: "border-brutal-yellow/40", text: "text-brutal-yellow" },
-  purple: { bg: "bg-brutal-pink/10", border: "border-brutal-pink/40", text: "text-brutal-pink" },
-};
 
 export function SlideImpactCertificates() {
   const [phase, setPhase] = useState(0);
-  const [visibleCards, setVisibleCards] = useState(0);
 
   useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = [];
-
-    timers.push(setTimeout(() => setPhase(1), 500));
-    timers.push(setTimeout(() => setPhase(2), 1500));
-    YOUR_ACTIONS.forEach((_, i) => {
-      timers.push(setTimeout(() => setVisibleCards(i + 1), 2000 + i * 800));
-    });
-    timers.push(setTimeout(() => setPhase(3), 5000));
-    timers.push(setTimeout(() => setPhase(4), 7000));
-
+    const timers = [
+      setTimeout(() => setPhase(1), 500),
+      setTimeout(() => setPhase(2), 1500),
+      setTimeout(() => setPhase(3), 2500),
+      setTimeout(() => setPhase(4), 3500),
+      setTimeout(() => setPhase(5), 4500),
+    ];
     return () => timers.forEach(clearTimeout);
   }, []);
 
   return (
     <SierraSlideWrapper act={2} className="text-purple-400">
-      <div className="flex flex-col items-center justify-center gap-5 max-w-[1700px] mx-auto w-full">
+      <div className="flex flex-col items-center justify-center gap-8 max-w-[1200px] mx-auto w-full">
         {/* Title */}
         <h1
           className="font-pixel text-3xl md:text-5xl text-purple-400 text-center transition-opacity duration-500"
           style={{ opacity: phase >= 1 ? 1 : 0 }}
         >
-          🏆 YOUR IMPACT, ON-CHAIN
+          🏆 HYPERCERTS
         </h1>
 
-        {/* Subtitle */}
         <div
-          className="font-terminal text-xl md:text-2xl text-zinc-200 text-center transition-opacity duration-500"
+          className="font-terminal text-2xl md:text-3xl text-zinc-200 text-center transition-opacity duration-500"
           style={{ opacity: phase >= 2 ? 1 : 0 }}
         >
-          Every action you take mints a <span className="text-purple-400 font-pixel">Hypercert</span> —
-          permanent, verifiable proof of your contribution
+          Every action mints an on-chain impact receipt
         </div>
 
-        {/* Action → Hypercert cards */}
+        {/* Three actions */}
         <div className="w-full space-y-4">
-          {YOUR_ACTIONS.slice(0, visibleCards).map((item, i) => {
-            const colors = colorMap[item.color];
-            return (
-              <div
-                key={i}
-                className={`${colors.bg} border-2 ${colors.border} rounded-lg p-5 flex items-start gap-5 card-in`}
-              >
-                {/* Emoji */}
-                <div className="text-4xl md:text-5xl shrink-0">{item.emoji}</div>
-
-                {/* Content */}
-                <div className="flex-1 space-y-1">
-                  <div className="font-pixel text-2xl md:text-3xl text-zinc-200">
-                    YOU {item.action.toUpperCase()}
-                  </div>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="font-pixel text-xl md:text-2xl text-purple-400">HYPERCERT:</span>
-                    <span className={`font-terminal text-xl md:text-2xl ${colors.text}`}>
-                      {item.hypercert}
-                    </span>
-                  </div>
-                  <div className="font-terminal text-xl md:text-2xl text-zinc-300">
-                    Verified impact: {item.impact}
-                  </div>
-                </div>
-
-                {/* On-chain badge */}
-                <div className="shrink-0 text-center">
-                  <div className="text-3xl">⛓️</div>
-                  <div className="font-pixel text-xl text-emerald-400">ON-CHAIN</div>
-                </div>
-              </div>
-            );
-          })}
+          {ACTIONS.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-4 transition-opacity duration-500"
+              style={{ opacity: phase >= i + 3 ? 1 : 0 }}
+            >
+              <span className="text-4xl">{item.emoji}</span>
+              <span className="font-pixel text-xl md:text-2xl text-zinc-200 flex-1">{item.action}</span>
+              <span className={`font-pixel text-xl md:text-2xl ${item.color}`}>{item.result}</span>
+            </div>
+          ))}
         </div>
 
-        {/* Properties */}
-        {phase >= 3 && (
-          <div className="flex justify-center gap-6 md:gap-10 card-in">
-            <div className="text-center">
-              <div className="text-3xl">🔒</div>
-              <div className="font-pixel text-xl text-zinc-200">PERMANENT</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl">🔍</div>
-              <div className="font-pixel text-xl text-zinc-200">VERIFIABLE</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl">🦋</div>
-              <div className="font-pixel text-xl text-zinc-200">ON BLUESKY</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl">📊</div>
-              <div className="font-pixel text-xl text-zinc-200">AUDITABLE</div>
-            </div>
-          </div>
-        )}
-
+        {/* Bottom line */}
+        <div
+          className="flex justify-center gap-8 font-pixel text-lg text-zinc-400 transition-opacity duration-500"
+          style={{ opacity: phase >= 5 ? 1 : 0 }}
+        >
+          <span>Verified via World ID</span>
+          <span>·</span>
+          <span>Published to Bluesky</span>
+          <span>·</span>
+          <span>Permanent</span>
+        </div>
       </div>
-
-      <style jsx>{`
-        @keyframes card-in {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .card-in {
-          animation: card-in 0.4s ease-out forwards;
-        }
-      `}</style>
     </SierraSlideWrapper>
   );
 }
