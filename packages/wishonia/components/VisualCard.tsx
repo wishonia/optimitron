@@ -225,9 +225,10 @@ export function VisualCard({ data }: { data: VisualsResult }) {
 
   return (
     <div style={{
-      marginTop: 8, padding: 12,
-      background: "rgba(255,255,255,0.02)", border: "1px solid rgba(54,226,248,0.1)",
+      marginTop: 8, padding: 12, borderRadius: 12,
+      background: "#0d0d1a", border: "1px solid rgba(54,226,248,0.15)",
       display: "flex", flexDirection: "column", gap: 12,
+      animation: "chatSlideIn 0.3s ease-out",
     }}>
       {data.keyFigure && <KeyFigure data={data.keyFigure} />}
       {data.latex && <LatexBlock tex={data.latex} />}

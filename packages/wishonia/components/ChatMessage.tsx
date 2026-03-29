@@ -47,20 +47,21 @@ export function ChatMessage({
       display: "flex",
       justifyContent: isUser ? "flex-end" : "flex-start",
       marginBottom: 12,
+      animation: "chatSlideIn 0.25s ease-out",
     }}>
-      <div style={{ maxWidth: "75%", display: "flex", flexDirection: "column" }}>
+      <div style={{ maxWidth: "80%", display: "flex", flexDirection: "column" }}>
         <div style={{
-          padding: "10px 14px", borderRadius: 0, fontSize: 14, lineHeight: 1.6,
+          padding: "14px 16px", borderRadius: 12, fontSize: 15, lineHeight: 1.7,
           ...(isUser
             ? {
-                background: "rgba(209,0,177,0.12)",
-                border: "1px solid rgba(209,0,177,0.25)",
-                color: "#e0d0e8",
+                background: "rgba(54,226,248,0.08)",
+                border: "1px solid rgba(54,226,248,0.15)",
+                color: "#ececec",
               }
             : {
-                background: "#1a1a2e",
-                border: "1px solid rgba(54,226,248,0.15)",
-                color: "#C6CBF5",
+                background: "rgba(209,0,177,0.07)",
+                border: "1px solid rgba(209,0,177,0.15)",
+                color: "#d1d1d1",
               }),
         }}>
           {isUser || isStreaming ? (
