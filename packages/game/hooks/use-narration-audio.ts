@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDemoStore } from "@/lib/demo/store";
 
 /** Cached manifest — fetched once, concurrent callers wait on the same promise */
@@ -15,13 +15,36 @@ function getManifest() {
   return manifestPromise;
 }
 
+/** Shared AudioContext — reused across slide changes (browsers limit how many you can create) */
+let sharedCtx: AudioContext | null = null;
+
+function getAudioContext() {
+  if (!sharedCtx) {
+    sharedCtx = new AudioContext();
+  }
+  // Resume if suspended (happens before user gesture on some browsers)
+  if (sharedCtx.state === "suspended") {
+    sharedCtx.resume().catch(() => {});
+  }
+  return sharedCtx;
+}
+
+export interface NarrationAudioState {
+  hasMp3: boolean | null;
+  analyserNode: AnalyserNode | null;
+}
+
 /**
- * Hook to play narration audio for the current slide (MP3 fallback).
- * Plays audio on slide change and signals narration end for auto-advance.
+ * Hook to play narration audio for the current slide (MP3).
+ * Returns hasMp3 status and an AnalyserNode for real-time lip-sync.
  */
-export function useNarrationAudio(slideId?: string, enabled = true) {
+export function useNarrationAudio(slideId?: string, enabled = true): NarrationAudioState {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
   const { isMuted, voiceVolume, masterVolume } = useDemoStore();
+  const [hasMp3, setHasMp3] = useState<boolean | null>(null);
+  const [analyserNode, setAnalyserNode] = useState<AnalyserNode | null>(null);
 
   // Update volume when it changes
   useEffect(() => {
@@ -38,8 +61,19 @@ export function useNarrationAudio(slideId?: string, enabled = true) {
       audioRef.current.src = "";
       audioRef.current = null;
     }
+    // Disconnect previous source (but keep analyser alive for reuse)
+    if (sourceRef.current) {
+      sourceRef.current.disconnect();
+      sourceRef.current = null;
+    }
 
-    if (!slideId || !enabled) return;
+    setHasMp3(null);
+    setAnalyserNode(null);
+
+    if (!slideId || !enabled) {
+      setHasMp3(false);
+      return;
+    }
 
     let cancelled = false;
 
@@ -47,15 +81,33 @@ export function useNarrationAudio(slideId?: string, enabled = true) {
       const manifest = await getManifest();
       if (cancelled) return;
       if (!manifest || !manifest[slideId]) {
-        console.warn(`[narration] No audio for slide "${slideId}"`);
+        console.warn(`[narration] No MP3 for slide "${slideId}" — will use live TTS`);
+        setHasMp3(false);
         return;
       }
 
+      setHasMp3(true);
+
       const url = `/audio/narration/${manifest[slideId].file}`;
-      console.log(`[narration] Playing ${url}`);
       const audio = new Audio(url);
+      audio.crossOrigin = "anonymous";
       audio.volume = isMuted ? 0 : masterVolume * voiceVolume;
       audioRef.current = audio;
+
+      // Wire up Web Audio for lip-sync analyser
+      try {
+        const ctx = getAudioContext();
+        const source = ctx.createMediaElementSource(audio);
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 256;
+        source.connect(analyser);
+        analyser.connect(ctx.destination);
+        sourceRef.current = source;
+        analyserRef.current = analyser;
+        if (!cancelled) setAnalyserNode(analyser);
+      } catch {
+        // Web Audio not available — lip-sync won't work but audio still plays
+      }
 
       audio.addEventListener("ended", () => {
         useDemoStore.getState().setNarrationEnded(true);
@@ -73,6 +125,12 @@ export function useNarrationAudio(slideId?: string, enabled = true) {
         audioRef.current.src = "";
         audioRef.current = null;
       }
+      if (sourceRef.current) {
+        sourceRef.current.disconnect();
+        sourceRef.current = null;
+      }
     };
   }, [slideId, enabled]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return { hasMp3, analyserNode };
 }

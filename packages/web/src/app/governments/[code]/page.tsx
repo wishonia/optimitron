@@ -215,6 +215,67 @@ export default async function GovernmentDetailPage({ params }: PageProps) {
             </p>
           </div>
         )}
+        {gov.deathLedgerEntries && gov.deathLedgerEntries.length > 0 && (
+          <div className="mt-6 border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+            <div className="border-b-4 border-primary px-4 py-3">
+              <h3 className="text-sm font-black uppercase text-foreground">
+                Death Ledger
+              </h3>
+              <p className="mt-1 text-sm font-bold text-muted-foreground">
+                Sourced regime and conflict entries summed into the body-count total.
+              </p>
+            </div>
+            <div className="divide-y-2 divide-primary">
+              {gov.deathLedgerEntries.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="grid gap-3 px-4 py-4 md:grid-cols-[minmax(0,1fr)_10rem_9rem]"
+                >
+                  <div>
+                    <div className="text-base font-black text-foreground">
+                      {entry.label}
+                    </div>
+                    <div className="mt-1 text-sm font-bold text-muted-foreground">
+                      {entry.notes}
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {entry.sourceLinks.map((source) => (
+                        <a
+                          key={source.url}
+                          href={source.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-black text-brutal-pink hover:text-foreground transition-colors"
+                        >
+                          {source.label} ↗
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-left md:text-right">
+                    <div className="text-xs font-black uppercase text-muted-foreground">
+                      Period
+                    </div>
+                    <div className="text-sm font-black text-foreground">
+                      {entry.startYear}–{entry.endYear}
+                    </div>
+                  </div>
+                  <div className="text-left md:text-right">
+                    <div className="text-xs font-black uppercase text-muted-foreground">
+                      Deaths
+                    </div>
+                    <div className="text-lg font-black text-foreground">
+                      {entry.deaths.toLocaleString()}
+                    </div>
+                    <div className="text-[10px] font-black uppercase text-muted-foreground">
+                      {entry.method}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Justice & Domestic */}

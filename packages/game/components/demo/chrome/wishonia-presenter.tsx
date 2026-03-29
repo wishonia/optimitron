@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useDemoStore } from "@/lib/demo/store";
 import { useNarrationAudio } from "@/hooks/use-narration-audio";
 import { cn } from "@/lib/utils";
 import {
   WishoniaCharacter,
   useWishoniaAnimator,
+  preloadTier0,
 } from "@optimitron/wishonia-widget";
 import type { Expression } from "@optimitron/wishonia-widget";
 
@@ -37,32 +38,9 @@ function usePresenterSize() {
 }
 
 /**
- * Probes the Gemini Live token endpoint once.
- * Returns true if live TTS is available, false otherwise.
- */
-function useLiveTtsProbe() {
-  const [available, setAvailable] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/gemini-live-token")
-      .then((res) => {
-        if (!cancelled) setAvailable(res.ok);
-      })
-      .catch(() => {
-        if (!cancelled) setAvailable(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return available;
-}
-
-/**
  * Picture-in-picture Wishonia character in the lower-right corner.
- * Probes live TTS availability on mount; falls back to MP3 + text-driven lip-sync.
+ * Tries MP3 narration first (with audio-driven lip-sync via AnalyserNode).
+ * Falls back to Gemini Live TTS when no MP3 exists.
  */
 export function WishoniaPresenter({
   text,
@@ -70,18 +48,14 @@ export function WishoniaPresenter({
   expression,
   bodyPose,
 }: WishoniaPresenterProps) {
-  const { liveTtsEnabled } = useDemoStore();
-
-  // Probe once — null = pending, true = available, false = unavailable
-  const liveTtsAvailable = useLiveTtsProbe();
-  const useLiveTts = liveTtsEnabled && liveTtsAvailable === true;
-
   const size = usePresenterSize();
-
-  // MP3 fallback: active when live TTS is disabled or probe failed
-  useNarrationAudio(slideId, !useLiveTts);
-
   const safeText = text ?? "";
+
+  // Try MP3 first — returns hasMp3 status + AnalyserNode for lip-sync
+  const { hasMp3, analyserNode } = useNarrationAudio(slideId, true);
+
+  // When hasMp3 === false (no MP3 for this slide), use live TTS
+  const needsLiveTts = hasMp3 === false && safeText.length > 0;
 
   return (
     <div
@@ -92,7 +66,7 @@ export function WishoniaPresenter({
       style={{ bottom: -16, right: 16 }}
     >
       <div className="pointer-events-auto">
-        {useLiveTts ? (
+        {needsLiveTts ? (
           <LiveTtsPresenter
             text={safeText}
             expression={expression}
@@ -100,8 +74,8 @@ export function WishoniaPresenter({
             size={size}
           />
         ) : (
-          <StaticPresenter
-            text={safeText}
+          <AudioSyncPresenter
+            analyserNode={analyserNode}
             expression={expression}
             bodyPose={bodyPose}
             size={size}
@@ -113,8 +87,8 @@ export function WishoniaPresenter({
 }
 
 /**
- * Live TTS mode — uses WishoniaNarrator with Gemini Live streaming.
- * Only rendered after probe confirms the token endpoint works.
+ * Live TTS mode — lazy-loads WishoniaNarrator only when needed.
+ * Used when no pre-generated MP3 exists for the current slide.
  */
 function LiveTtsPresenter({
   text,
@@ -127,8 +101,9 @@ function LiveTtsPresenter({
   bodyPose?: string;
   size: number;
 }) {
-  // Lazy-import WishoniaNarrator to avoid loading Gemini Live code in fallback mode
-  const [Narrator, setNarrator] = useState<typeof import("@optimitron/wishonia-widget/narration").WishoniaNarrator | null>(null);
+  const [Narrator, setNarrator] = useState<
+    typeof import("@optimitron/wishonia-widget/narration").WishoniaNarrator | null
+  >(null);
   const { isMuted, masterVolume, voiceVolume } = useDemoStore();
 
   useEffect(() => {
@@ -137,7 +112,15 @@ function LiveTtsPresenter({
     });
   }, []);
 
-  if (!Narrator) return null;
+  if (!Narrator) {
+    return (
+      <WishoniaCharacter
+        size={size}
+        expression={expression as Expression}
+        bodyPose={bodyPose}
+      />
+    );
+  }
 
   return (
     <Narrator
@@ -158,41 +141,72 @@ function LiveTtsPresenter({
 }
 
 /**
- * Static mode — WishoniaCharacter with text-driven lip-sync + MP3 audio.
- * No Gemini Live connection, no token fetch.
+ * MP3 mode — uses AnalyserNode from the audio element for real-time
+ * amplitude-driven lip-sync. Mouth opens/closes based on actual audio
+ * amplitude, not text timing.
  */
-function StaticPresenter({
-  text,
+function AudioSyncPresenter({
+  analyserNode,
   expression,
   bodyPose,
   size,
 }: {
-  text: string;
+  analyserNode: AnalyserNode | null;
   expression?: string;
   bodyPose?: string;
   size: number;
 }) {
-  const { speakText, stopSpeaking } = useWishoniaAnimator({
+  const { headSrc, bodySrc } = useWishoniaAnimator({
+    analyserNode,
     expression: expression as Expression,
     bodyPose: bodyPose ?? "idle",
   });
 
-  const prevTextRef = useRef("");
-
-  // Trigger text-driven lip-sync when narration text changes
+  // Preload sprites on mount
   useEffect(() => {
-    if (text && text !== prevTextRef.current) {
-      prevTextRef.current = text;
-      stopSpeaking();
-      speakText(text, expression as Expression);
-    }
-  }, [text, expression, speakText, stopSpeaking]);
+    preloadTier0("/sprites/wishonia/", "png");
+  }, []);
+
+  const bodyHeight = Math.round(size * 0.57);
 
   return (
-    <WishoniaCharacter
-      size={size}
-      expression={expression as Expression}
-      bodyPose={bodyPose}
-    />
+    <div style={{ position: "relative", width: size, height: size * 1.57 }}>
+      {/* Head — bobs gently */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          width: "95%",
+          margin: "0 auto",
+          animation: "wishonia-bob 7s ease-in-out alternate infinite",
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={headSrc}
+          alt=""
+          style={{ display: "block", width: "100%" }}
+          draggable={false}
+        />
+      </div>
+      {/* Body */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          marginTop: -12,
+          maxHeight: bodyHeight,
+          overflow: "hidden",
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={bodySrc}
+          alt=""
+          style={{ display: "block", width: "100%" }}
+          draggable={false}
+        />
+      </div>
+    </div>
   );
 }

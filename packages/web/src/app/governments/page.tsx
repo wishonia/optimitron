@@ -42,11 +42,12 @@ export default function GovernmentsPage() {
             publish restaurant hygiene ratings. Except you actually read those.
           </p>
           <p className="font-bold leading-relaxed text-muted-foreground">
-            Below is every major government ranked by how many people they have
-            killed since 1945. Nuclear warheads stockpiled, military spending
-            burned, civilians bombed, drug war prisoners caged, and murders they
-            could not be bothered to solve. The data is public. Your governments
-            just hope you never look at it all in one place.
+            Below is every major government ranked by sourced killings in the
+            ledger, starting in 1913 where the historical record supports it and
+            later where the state itself comes later. Nuclear warheads stockpiled,
+            military spending burned, civilians bombed, drug war prisoners caged,
+            and murders they could not be bothered to solve. The data is public.
+            Your governments just hope you never look at it all in one place.
           </p>
         </div>
       </section>
@@ -129,7 +130,7 @@ export default function GovernmentsPage() {
             clearance rate. Meanwhile, the countries at the top of the body count
             leaderboard can barely solve half their murders.
           </p>
-          <p className="mt-4 font-bold leading-relaxed text-muted-foreground">
+          <p className="mt-4 font-bold leading-relaxed text-background">
             It is almost as if killing people is not actually a prerequisite for
             running a successful country. Weird.
           </p>
