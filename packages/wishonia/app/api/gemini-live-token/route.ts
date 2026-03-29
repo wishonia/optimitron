@@ -1,11 +1,9 @@
-import { GoogleGenAI, Modality } from "@google/genai";
 import { WISHONIA_VOICE_PROMPT } from "@/lib/wishonia-chat";
 
 /**
  * Centralized ephemeral token endpoint for Gemini Live API.
- * Any site embedding Wishonia can call this to get a short-lived token.
- * Also returns the voice system prompt for the live session.
- * CORS enabled via next.config.mjs headers.
+ * Uses the raw REST API (proven approach from transmit) rather than
+ * the @google/genai SDK which hits a 404 on authTokens.create.
  */
 export async function GET() {
   const apiKey = process.env["GOOGLE_GENERATIVE_AI_API_KEY"];
@@ -17,24 +15,36 @@ export async function GET() {
   }
 
   try {
-    const client = new GoogleGenAI({ apiKey });
-    const expireTime = new Date(Date.now() + 30 * 60 * 1000).toISOString();
-
-    const token = await client.authTokens.create({
-      config: {
-        uses: 1,
-        expireTime,
-        liveConnectConstraints: {
-          model: "gemini-3.1-flash-live-preview",
-          config: {
-            responseModalities: [Modality.AUDIO],
-          },
+    const now = Date.now();
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1alpha/auth_tokens",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey,
         },
-      },
-    });
+        body: JSON.stringify({
+          uses: 1,
+          expire_time: new Date(now + 30 * 60 * 1000).toISOString(),
+          new_session_expire_time: new Date(now + 2 * 60 * 1000).toISOString(),
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const err = await response.text();
+      console.error("[gemini-live-token] API error:", err);
+      return Response.json(
+        { error: "Token creation failed", detail: err },
+        { status: 502 },
+      );
+    }
+
+    const data = await response.json();
 
     return Response.json({
-      token: token.name,
+      token: data.name,
       systemPrompt: WISHONIA_VOICE_PROMPT,
     });
   } catch (err) {

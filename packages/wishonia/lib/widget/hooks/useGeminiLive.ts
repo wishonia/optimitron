@@ -130,7 +130,10 @@ export function useGeminiLive(
       // 2. Dynamic import — only loads @google/genai when actually needed
       const { GoogleGenAI, Modality } = await import("@google/genai");
 
-      const ai = new GoogleGenAI({ apiKey: tokenData.token });
+      const ai = new GoogleGenAI({
+        apiKey: tokenData.token,
+        httpOptions: { apiVersion: "v1alpha" },
+      });
       const queue = ensureQueue();
 
       // Build config
