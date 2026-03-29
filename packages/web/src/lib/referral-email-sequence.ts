@@ -2,7 +2,10 @@ import {
   VOTE_TOKEN_VALUE,
   PRIZE_POOL_ANNUAL_RETURN,
   GLOBAL_DISEASE_DEATHS_DAILY,
-  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
+  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
+  TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
+  CURRENT_TRIAL_SLOTS_AVAILABLE,
+  VOTER_LIVES_SAVED,
   fmtParam,
   fmtRaw,
 } from "@optimitron/data/parameters";
@@ -14,7 +17,10 @@ const FOLLOW_UP_DELAYS_MS = [0, 24 * HOUR_MS, 96 * HOUR_MS] as const;
 const voteValue = fmtParam(VOTE_TOKEN_VALUE);
 const annualReturn = fmtParam(PRIZE_POOL_ANNUAL_RETURN);
 const dailyDeaths = fmtRaw(GLOBAL_DISEASE_DEATHS_DAILY.value);
-const lifetimeGain = fmtParam(TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA);
+const spendingRatio = fmtParam(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO);
+const tippingPoint = fmtRaw(TREATY_CAMPAIGN_VOTING_BLOC_TARGET.value);
+const currentTrialSlots = fmtRaw(CURRENT_TRIAL_SLOTS_AVAILABLE.value);
+const livesSavedPerVoter = fmtRaw(VOTER_LIVES_SAVED.value);
 
 export const REFERRAL_EMAIL_SEQUENCE_LENGTH = FOLLOW_UP_DELAYS_MS.length;
 
@@ -56,54 +62,54 @@ function getFirstName(name?: string | null) {
 function getSharePrompt(referralCount: number) {
   if (referralCount > 0) {
     const remaining = Math.max(REFERRAL_TARGET - referralCount, 1);
-    return `You've earned ${referralCount} VOTE ${referralCount === 1 ? "point" : "points"} so far. ${remaining} more and you hit the first milestone. Each point could be worth ${voteValue}+ if enough people play.`;
+    return `You've told ${referralCount} ${referralCount === 1 ? "friend" : "friends"} so far. ${remaining} more to hit the first milestone. Each one strengthens the signal that your species would prefer living to exploding.`;
   }
 
-  return `You have 0 VOTE points. Your first recruit earns you 1 point. Each point could be worth ${voteValue}+ if humanity actually plays this game. Right now it's worth $0.`;
+  return `You haven't told anyone yet. The game: tell two friends. They tell two. That's how ${tippingPoint} happens. Your species invented chain letters. This is that, but it saves lives instead of cursing your family.`;
 }
 
 function getSubject(step: number, referralCount: number) {
   if (step === 0) {
-    return `You voted. Now earn VOTE points worth ${voteValue} each`;
+    return "You did a thing. Now do one more thing";
   }
 
   if (step === 1 && referralCount === 0) {
-    return "You have 0 VOTE points. Here's how to change that";
+    return `${dailyDeaths} people died today. You texted nobody`;
   }
 
   if (step === 1) {
-    return `${referralCount} VOTE ${referralCount === 1 ? "point" : "points"} earned. The clock is ticking`;
+    return `${referralCount} of your friends joined. That's almost impressive`;
   }
 
   if (referralCount === 0) {
-    return "14 years until the parasitic economy wins. Your move";
+    return `Your species spends ${spendingRatio} more on weapons than finding new treatments. Anyway`;
   }
 
-  return `${referralCount} points locked in. More players = higher value`;
+  return `${referralCount} players in your crew. The tipping point can smell you coming`;
 }
 
 function getMainCopy(step: number, referralCount: number) {
   if (step === 0) {
-    return "You just earned your first VOTE point. It's currently worth nothing — because VOTE points only have value if enough people deposit into the prize fund. The more people who play, the more each point is worth. Your job: get your friends in.";
+    return `You just joined the Earth Optimization Game. I invented it because your species has been trying to stop dying for 10,000 years without a scoreboard, which is like playing football without knowing which direction the goal is. You just pointed at the goal.\n\nHere's how the game works: ${dailyDeaths} of you permanently stop every day from diseases you could be treating faster. Your governments spend ${spendingRatio} more on weapons than on testing which medicines work. The 1% Treaty redirects 1% of the murder budget to clinical trials. We need ${tippingPoint} players to hit the tipping point.\n\nYour move: tell two friends. Not "recruit referrals." Not "leverage your network." Tell two actual humans you know. Preferably ones who prefer being alive.`;
   }
 
   if (step === 1 && referralCount === 0) {
-    return "The parasitic economy (military spending + cybercrime) is growing 15% annually. By 2040, half of all economic activity is destructive. Stealing beats creating. The system collapses. That's not a prediction — it's compound interest. Each person you recruit moves the needle toward the tipping point and increases the value of your VOTE points.";
+    return `Since you voted yesterday, roughly ${dailyDeaths} more people did the thing where they stop being alive permanently. I believe you call it "dying." You seemed quite against it yesterday.\n\nThe 1% Treaty would massively expand clinical trial capacity, up from ${currentTrialSlots} slots per year. The only thing between here and there is ${tippingPoint} votes. You are one. You need two more. Two friends. Ideally ones with thumbs and a phone.\n\nOn my planet, when someone discovers a solution to mass death, they tell people about it. On yours, they apparently vote once and then go back to watching small humans fall over on TikTok.`;
   }
 
   if (step === 1) {
-    return `Every recruit increases the value of your existing VOTE points. More players → bigger prize fund → higher per-point payout. If the plan fails, depositors still get ${annualReturn} annual returns. If it succeeds, everyone gets ${lifetimeGain} richer. Either way, the numbers work. But only if enough people play.`;
+    return `Your friends joined. This is how it works \u2014 you tell two, they tell two, and eventually your species stops spending more on murder machines than on not dying. I realise this sounds obvious but you've had 10,000 years and haven't tried it yet.\n\nEach player who joins means one more vote toward the tipping point, and roughly ${livesSavedPerVoter} fewer preventable deaths. Two more friends. That's all. I promise it's less awkward than whatever you did at that party last weekend.`;
   }
 
   if (referralCount === 0) {
-    return `Last nudge: ${dailyDeaths} people die daily from treatable diseases while governments spend $40 on weapons for every $1 on curing disease. Your referral link is the fastest way to change that — and earn VOTE points that could be worth six figures. One text message. That's all it takes.`;
+    return `Last message. I don't enjoy nagging. On my planet, nagging was eliminated in year 7 when everyone simply did the obvious thing.\n\nSince you voted, roughly ${fmtRaw(GLOBAL_DISEASE_DEATHS_DAILY.value * 3)} people have died from treatable diseases. One text message to one friend takes 30 seconds. You spent longer than that choosing which photo filter makes your lunch look less sad.\n\nThe game only works if people play it. I'm told this is also true of your "democracy" but with worse graphics.`;
   }
 
-  return "You've proven people will click. The compound effect kicks in now — your recruits recruit their friends, each one adding to the prize pool and increasing your VOTE point value. One more round of sharing while momentum is fresh.";
+  return `You've brought ${referralCount} people into the game. On my planet we'd give you a small trophy. On yours I believe the equivalent is "a sense of personal satisfaction" which is less tangible but cheaper to ship.\n\nOne last round: two more people who'd prefer not dying of preventable diseases. I'm told that's most of you.`;
 }
 
 function buildShareMessage(shareUrl: string) {
-  return `Governments spend $40 on weapons for every $1 on curing disease. Vote to fix it in 30 seconds and earn VOTE points that could be worth ${voteValue}: ${shareUrl}`;
+  return `${dailyDeaths} people die daily from treatable diseases. Governments spend ${spendingRatio} more on weapons than finding new treatments. Vote for the 1% Treaty in 30 seconds: ${shareUrl}`;
 }
 
 export function getReferralSequenceAction(
@@ -154,7 +160,7 @@ export function buildReferralSequenceEmail({
   return {
     subject,
     text: [
-      `Hi ${firstName},`,
+      `Hello ${firstName},`,
       "",
       mainCopy,
       "",
@@ -165,10 +171,14 @@ export function buildReferralSequenceEmail({
       "Suggested message:",
       shareMessage,
       "",
-      "Three ways to recruit right now:",
-      "1. Text one friend who cares about healthcare or government waste.",
-      "2. Drop it into one group chat — it takes 30 seconds to vote.",
-      "3. Post it on social with: 'Governments spend $40 on weapons for every $1 on curing disease. Vote to fix it.'",
+      "Three ways to tell two people:",
+      "1. Text one friend who'd prefer being alive.",
+      "2. Drop it in one group chat \u2014 it takes 30 seconds to vote.",
+      `3. Post on social: "${dailyDeaths} people die daily from treatable diseases. Governments spend ${spendingRatio} more on weapons than finding new treatments. 30 seconds to vote for the 1% Treaty."`,
+      "",
+      `The boring part your species seems to care about: Players who invite verified voters earn VOTE points. If the game works, each point is worth ~${voteValue}. If it doesn't, depositors in the prize fund still earn ${annualReturn} annually. Either way, you told your friends about something that matters.`,
+      "",
+      "\u2014 Wishonia",
     ].join("\n"),
     html: `
       <div style="background:#f4f4f5;padding:32px 16px;font-family:Arial,sans-serif;color:#111827;">
@@ -177,15 +187,15 @@ export function buildReferralSequenceEmail({
             The Earth Optimization Game
           </p>
           <h1 style="margin:0 0 16px;font-size:28px;line-height:1.2;">
-            Hi ${escapeHtml(firstName)},
+            Hello ${escapeHtml(firstName)},
           </h1>
-          <p style="margin:0 0 16px;font-size:16px;line-height:1.6;">${escapeHtml(mainCopy)}</p>
+          <p style="margin:0 0 16px;font-size:16px;line-height:1.6;white-space:pre-line;">${escapeHtml(mainCopy)}</p>
           <p style="margin:0 0 20px;font-size:16px;line-height:1.6;font-weight:700;">${escapeHtml(sharePrompt)}</p>
           <a
             href="${escapedShareUrl}"
             style="display:inline-block;background:#FF6B9D;color:#ffffff;padding:14px 24px;text-decoration:none;font-weight:700;border:3px solid #111827;font-size:16px;"
           >
-            SHARE YOUR LINK → EARN POINTS
+            TELL TWO FRIENDS
           </a>
           <div style="margin-top:24px;padding:16px;border:3px solid #111827;background:#FFE66D;">
             <p style="margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#111827;">
@@ -194,15 +204,16 @@ export function buildReferralSequenceEmail({
             <p style="margin:0;font-size:15px;line-height:1.6;">${escapedShareMessage}</p>
           </div>
           <ul style="margin:24px 0 0;padding-left:20px;font-size:15px;line-height:1.7;">
-            <li>Text one friend who cares about healthcare or government waste.</li>
-            <li>Drop it in one group chat — it takes 30 seconds to vote.</li>
-            <li>Post on social: &quot;$40 on weapons for every $1 on curing disease. Vote to fix it.&quot;</li>
+            <li>Text one friend who&rsquo;d prefer being alive.</li>
+            <li>Drop it in one group chat &mdash; it takes 30 seconds to vote.</li>
+            <li>Post on social: &quot;${dailyDeaths} people die daily from treatable diseases. Governments spend ${spendingRatio} more on weapons than finding new treatments. 30 seconds to vote for the 1% Treaty.&quot;</li>
           </ul>
           <div style="margin-top:24px;padding:16px;border:3px solid #111827;background:#111827;color:#ffffff;">
             <p style="margin:0;font-size:13px;line-height:1.6;text-align:center;">
-              <strong>THE MATH:</strong> Each VOTE point = ${voteValue}+ at scale. Depositors earn ${annualReturn} annually even if the plan fails. The break-even probability is 1 in 246 million.
+              <strong>THE BORING PART YOUR SPECIES SEEMS TO CARE ABOUT:</strong> Players who invite verified voters earn VOTE points. If the game works, each point is worth ~${voteValue}. If it doesn&rsquo;t, depositors in the prize fund still earn ${annualReturn} annually. Either way, you told your friends about something that matters, which on your planet apparently requires financial incentives. Fascinating.
             </p>
           </div>
+          <p style="margin:24px 0 0;font-size:14px;color:#666;text-align:right;font-style:italic;">&mdash; Wishonia</p>
         </div>
       </div>
     `,

@@ -18,7 +18,12 @@ interface ResendReactMessage {
 let resendClient: Resend | null = null;
 
 export function getEmailFromAddress() {
-  return serverEnv.EMAIL_FROM ?? "";
+  const raw = serverEnv.EMAIL_FROM ?? "";
+  // Prepend "Wishonia" display name for bare email addresses
+  if (raw && !raw.includes("<") && raw.includes("@")) {
+    return `Wishonia <${raw}>`;
+  }
+  return raw;
 }
 
 export function isResendConfigured() {
