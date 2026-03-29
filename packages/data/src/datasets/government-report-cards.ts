@@ -5,6 +5,12 @@
  * This is the raw data that makes governments' body counts undeniable.
  */
 
+import {
+  type GovernmentDeathLedgerEntry,
+  getGovernmentDeathLedgerEntries,
+  getGovernmentDeathLedgerSummary,
+} from './government-death-ledger';
+
 export interface SourcedValue {
   value: number;
   source: string;
@@ -17,8 +23,9 @@ export interface GovernmentMetrics {
   flag: string;
 
   // === THE BODY COUNT ===
-  /** Estimated total deaths caused by government military actions (post-WWII or founding) */
+  /** Estimated total deaths attributed to government violence / democide in the ledger */
   militaryDeathsCaused: { value: number; period: string; source: string; url?: string };
+  deathLedgerEntries?: GovernmentDeathLedgerEntry[];
   /** Estimated civilian deaths caused */
   civilianDeathsCaused: SourcedValue | null;
   /** Number of countries bombed (post-WWII) */
@@ -931,6 +938,23 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     debtPctGDP: { value: 54, source: "IMF 2024" },
   },
 ];
+
+for (const gov of GOVERNMENTS) {
+  const deathLedgerEntries = getGovernmentDeathLedgerEntries(gov.code);
+  const deathLedgerSummary = getGovernmentDeathLedgerSummary(gov.code);
+
+  if (!deathLedgerSummary) {
+    continue;
+  }
+
+  gov.deathLedgerEntries = deathLedgerEntries;
+  gov.militaryDeathsCaused = {
+    value: deathLedgerSummary.totalDeaths,
+    period: `${deathLedgerSummary.startYear}–${deathLedgerSummary.endYear}`,
+    source: deathLedgerSummary.source,
+    url: deathLedgerSummary.url,
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Hydrate medianIncome from the canonical generated median income series,
