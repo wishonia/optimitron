@@ -5,6 +5,7 @@ export type GovernmentLeaderboardSortKey =
   | "hale"
   | "lifeExpectancy"
   | "gdpPerCapita"
+  | "militaryPerCapitaPPP"
   | "militarySpending"
   | "healthSpending"
   | "trialRatio"
@@ -47,6 +48,10 @@ export const GOVERNMENT_LEADERBOARD_COLUMN_META: Record<
   gdpPerCapita: {
     label: "Income",
     description: "GDP per capita. This table uses it as a rough income proxy, not median income.",
+  },
+  militaryPerCapitaPPP: {
+    label: "Mil/cap PPP",
+    description: "Military spending per person in PPP terms, derived as military share of GDP times GDP per capita PPP.",
   },
   militarySpending: {
     label: "Military",

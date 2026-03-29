@@ -6,6 +6,7 @@ import { HelpCircle } from "lucide-react";
 import {
   type GovernmentMetrics,
   getGovernmentsByHALE,
+  getMilitarySpendingPerCapitaPPP,
   getMilitaryToGovernmentClinicalTrialRatio,
   getMilitaryToGovernmentMedicalResearchRatio,
 } from "@optimitron/data";
@@ -68,6 +69,8 @@ function getSortValue(gov: GovernmentMetrics, key: SortKey): number {
     case "hale": return gov.hale?.value ?? 0;
     case "lifeExpectancy": return gov.lifeExpectancy.value;
     case "gdpPerCapita": return gov.gdpPerCapita.value;
+    case "militaryPerCapitaPPP":
+      return getMilitarySpendingPerCapitaPPP(gov) ?? 0;
     case "militarySpending": return gov.militarySpendingAnnual.value;
     case "healthSpending": return gov.healthSpendingPerCapita.value;
     case "trialRatio":
@@ -255,6 +258,13 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
               {!compact && (
                 <>
                   <SortableHeader
+                    sortKey="militaryPerCapitaPPP"
+                    activeSortKey={sortKey}
+                    sortAsc={sortAsc}
+                    headerClass={headerClass}
+                    onSort={handleSort}
+                  />
+                  <SortableHeader
                     sortKey="militarySpending"
                     activeSortKey={sortKey}
                     sortAsc={sortAsc}
@@ -285,6 +295,8 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                 getMilitaryToGovernmentClinicalTrialRatio(gov);
               const medicalResearchRatio =
                 getMilitaryToGovernmentMedicalResearchRatio(gov);
+              const militaryPerCapitaPPP =
+                getMilitarySpendingPerCapitaPPP(gov);
               const detailHref = `/governments/${gov.code}`;
               return (
                 <tr
@@ -332,6 +344,13 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                   </td>
                   {!compact && (
                     <>
+                      <td className="p-3 text-right font-bold text-foreground">
+                        <GovernmentRowLink href={detailHref} className="text-right">
+                          {militaryPerCapitaPPP !== null
+                            ? formatUSD(militaryPerCapitaPPP)
+                            : "—"}
+                        </GovernmentRowLink>
+                      </td>
                       <td className="p-3 text-right font-bold text-foreground">
                         <GovernmentRowLink href={detailHref} className="text-right">
                           {formatUSD(gov.militarySpendingAnnual.value)}

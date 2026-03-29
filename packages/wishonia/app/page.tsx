@@ -59,14 +59,17 @@ export default function ChatPage(): React.JSX.Element {
   const chat = useStreamingChat();
   const tts = useTTS();
 
-  // Voice input — mic button in input bar toggles voice mode
+  // Use refs to break circular dependency between voiceMode ↔ voiceInput
+  const voiceModeRef = useRef<{ isActive: boolean; handleVoiceResult: (t: string) => void }>({
+    isActive: false, handleVoiceResult: () => {},
+  });
+
   const voiceResultHandler = useCallback((transcript: string) => {
-    if (voiceMode.isActive) {
-      voiceMode.handleVoiceResult(transcript);
+    if (voiceModeRef.current.isActive) {
+      voiceModeRef.current.handleVoiceResult(transcript);
     } else {
       setInput(transcript);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const voiceInput = useVoiceInput(voiceResultHandler);
@@ -79,6 +82,11 @@ export default function ChatPage(): React.JSX.Element {
     stopTTS: tts.stop,
     isStreaming: chat.isStreaming,
   });
+
+  // Keep ref in sync so the callback always sees current state
+  useEffect(() => {
+    voiceModeRef.current = { isActive: voiceMode.isActive, handleVoiceResult: voiceMode.handleVoiceResult };
+  }, [voiceMode.isActive, voiceMode.handleVoiceResult]);
 
   useEffect(() => { chat.initChats(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
 
@@ -263,7 +271,19 @@ export default function ChatPage(): React.JSX.Element {
           }}>
             ARGUE WITH WISHONIA
           </h1>
-          <a href="/embed" style={{ position: "absolute", right: 16, fontSize: 12, color: "#555", textDecoration: "none" }}>Embed &rarr;</a>
+          <div style={{ position: "absolute", right: 16, display: "flex", gap: 12, alignItems: "center" }}>
+            <button
+              onClick={handleNewChat}
+              title="New Chat"
+              style={{
+                background: "none", border: "none", color: "#C6CBF5",
+                cursor: "pointer", fontSize: 16, opacity: 0.7, padding: 0,
+              }}
+            >
+              +
+            </button>
+            <a href="/embed" style={{ fontSize: 12, color: "#555", textDecoration: "none" }}>Embed &rarr;</a>
+          </div>
         </header>
 
         {/* Chat area (messages + floating character) */}
@@ -355,6 +375,24 @@ export default function ChatPage(): React.JSX.Element {
             >
               ↓
             </button>
+          )}
+
+          {/* Listening indicator — red pulsing ring */}
+          {voiceInput.isListening && (
+            <div className="listening-ring" style={{
+              position: "absolute", bottom: 70, left: "50%", transform: "translateX(-50%)",
+              zIndex: 5, display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+            }}>
+              <div style={{
+                width: 48, height: 48, borderRadius: "50%",
+                border: "3px solid #d9534f",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                animation: "listenPulse 1.5s ease-in-out infinite",
+              }}>
+                <span style={{ fontSize: 20 }}>🎤</span>
+              </div>
+              <span style={{ fontSize: 12, color: "#d9534f", fontWeight: 600 }}>Listening...</span>
+            </div>
           )}
 
           {/* Floating character — bottom right, above input */}
@@ -492,6 +530,12 @@ export default function ChatPage(): React.JSX.Element {
         @keyframes voicePulse {
           0%, 100% { box-shadow: 0 0 0 3px rgba(40,167,69,0.3); }
           50% { box-shadow: 0 0 0 8px rgba(40,167,69,0.1); }
+        }
+
+        /* Listening indicator pulse */
+        @keyframes listenPulse {
+          0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217,83,79,0.4); }
+          50% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(217,83,79,0.1); }
         }
 
         /* Speech bubble bob */

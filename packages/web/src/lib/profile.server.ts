@@ -8,6 +8,7 @@ import {
 } from "@optimitron/db";
 import {
   ANNUAL_HOUSEHOLD_INCOME_VARIABLE_NAME,
+  ANNUAL_PERSONAL_INCOME_VARIABLE_NAME,
   HEALTH_VARIABLE_NAME,
   HAPPINESS_VARIABLE_NAME,
   buildDailyCheckInHistory,
@@ -15,6 +16,7 @@ import {
   getUtcDayBounds,
   profileSnapshotInputSchema,
   summarizeNumericValues,
+  type CheckInPageData,
   type ProfilePageData,
 } from "@/lib/profile";
 import { prisma } from "@/lib/prisma";
@@ -26,24 +28,50 @@ const USD_UNIT_NAME = "US Dollars";
 const WELLBEING_CATEGORY_NAME = "Wellbeing";
 
 const profileUserSelect = {
-  annualHouseholdIncomeUsd: true,
-  birthYear: true,
-  censusNotes: true,
-  censusUpdatedAt: true,
-  city: true,
+  // Location
+  timeZone: true,
   countryCode: true,
-  educationLevel: true,
-  email: true,
-  employmentStatus: true,
-  genderIdentity: true,
-  householdSize: true,
-  id: true,
+  regionCode: true,
+  city: true,
+  postalCode: true,
   latitude: true,
   longitude: true,
+  // Income & economic
+  annualPersonalIncomeUsd: true,
+  annualHouseholdIncomeUsd: true,
+  annualTaxesPaidUsd: true,
+  monthlyHousingCostUsd: true,
+  householdSize: true,
+  housingStatus: true,
+  hoursWorkedPerWeek: true,
+  industryOrSector: true,
+  // Demographics
+  birthYear: true,
+  biologicalSex: true,
+  ethnicityOrRace: true,
+  maritalStatus: true,
+  numberOfDependents: true,
+  primaryLanguage: true,
+  educationLevel: true,
+  employmentStatus: true,
+  genderIdentity: true,
+  citizenshipStatus: true,
+  // Health / HALE
+  healthInsuranceType: true,
+  chronicConditionCount: true,
+  disabilityStatus: true,
+  smokingStatus: true,
+  alcoholFrequency: true,
+  heightCm: true,
+  // Access
+  internetAccessType: true,
+  // Notes & meta
+  censusNotes: true,
+  censusUpdatedAt: true,
+  // Identity (needed for display/subjects)
+  id: true,
+  email: true,
   name: true,
-  postalCode: true,
-  regionCode: true,
-  timeZone: true,
 } satisfies Prisma.UserSelect;
 
 type ProfileUser = Prisma.UserGetPayload<{ select: typeof profileUserSelect }>;
@@ -52,6 +80,7 @@ interface ProfileCatalog {
   happinessGlobalVariableId: string;
   healthGlobalVariableId: string;
   incomeGlobalVariableId: string;
+  personalIncomeGlobalVariableId: string;
   ratingUnitId: string;
   usdUnitId: string;
 }
@@ -136,6 +165,58 @@ export async function getProfilePageData(userId: string): Promise<ProfilePageDat
   };
 }
 
+export async function getCheckInPageData(userId: string): Promise<CheckInPageData | null> {
+  const [user, measurements] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: { latitude: true, longitude: true },
+    }),
+    prisma.measurement.findMany({
+      where: {
+        deletedAt: null,
+        userId,
+        globalVariable: {
+          name: { in: [HEALTH_VARIABLE_NAME, HAPPINESS_VARIABLE_NAME] },
+        },
+      },
+      orderBy: [{ startTime: "desc" }],
+      select: {
+        globalVariable: { select: { name: true } },
+        note: true,
+        startTime: true,
+        value: true,
+      },
+      take: 40,
+    }),
+  ]);
+
+  if (!user) return null;
+
+  const history = buildDailyCheckInHistory(
+    measurements.map((m) => ({
+      globalVariableName: m.globalVariable.name,
+      note: m.note,
+      startTime: m.startTime,
+      value: m.value,
+    })),
+  ).slice(0, 14);
+
+  const todayKey = getUtcDayBounds(new Date()).start.toISOString().slice(0, 10);
+  const todayCheckIn =
+    history.find((entry) => entry.date === todayKey) ?? {
+      date: todayKey,
+      happinessRating: null,
+      healthRating: null,
+      note: null,
+    };
+
+  return {
+    currentCheckIn: todayCheckIn,
+    history,
+    userLocation: { latitude: user.latitude, longitude: user.longitude },
+  };
+}
+
 export async function saveProfileSnapshot(userId: string, input: unknown) {
   const profile = profileSnapshotInputSchema.parse(input);
 
@@ -157,21 +238,40 @@ export async function saveProfileSnapshot(userId: string, input: unknown) {
       },
     });
 
-    if (profile.annualHouseholdIncomeUsd !== null && profile.annualHouseholdIncomeUsd !== undefined) {
+    const hasHouseholdIncome = profile.annualHouseholdIncomeUsd !== null && profile.annualHouseholdIncomeUsd !== undefined;
+    const hasPersonalIncome = profile.annualPersonalIncomeUsd !== null && profile.annualPersonalIncomeUsd !== undefined;
+
+    if (hasHouseholdIncome || hasPersonalIncome) {
       const catalog = await ensureProfileCatalog(tx);
       const subject = await ensureSubject(tx, user);
 
-      await upsertDailyMeasurement(tx, {
-        globalVariableId: catalog.incomeGlobalVariableId,
-        latitude: profile.latitude ?? null,
-        longitude: profile.longitude ?? null,
-        note: "Annual household income snapshot.",
-        sourceName: PROFILE_SOURCE_NAME,
-        subjectId: subject.id,
-        unitId: catalog.usdUnitId,
-        userId,
-        value: profile.annualHouseholdIncomeUsd,
-      });
+      if (hasHouseholdIncome) {
+        await upsertDailyMeasurement(tx, {
+          globalVariableId: catalog.incomeGlobalVariableId,
+          latitude: profile.latitude ?? null,
+          longitude: profile.longitude ?? null,
+          note: "Annual household income snapshot.",
+          sourceName: PROFILE_SOURCE_NAME,
+          subjectId: subject.id,
+          unitId: catalog.usdUnitId,
+          userId,
+          value: profile.annualHouseholdIncomeUsd!,
+        });
+      }
+
+      if (hasPersonalIncome) {
+        await upsertDailyMeasurement(tx, {
+          globalVariableId: catalog.personalIncomeGlobalVariableId,
+          latitude: profile.latitude ?? null,
+          longitude: profile.longitude ?? null,
+          note: "Annual personal income snapshot.",
+          sourceName: PROFILE_SOURCE_NAME,
+          subjectId: subject.id,
+          unitId: catalog.usdUnitId,
+          userId,
+          value: profile.annualPersonalIncomeUsd!,
+        });
+      }
     }
   });
 
@@ -249,22 +349,47 @@ export async function saveDailyCheckIn(userId: string, input: unknown) {
 
 function serializeProfileUser(user: ProfileUser, lastIncomeReportedAt: Date | null) {
   return {
-    annualHouseholdIncomeUsd: user.annualHouseholdIncomeUsd,
-    birthYear: user.birthYear,
-    censusNotes: user.censusNotes,
-    censusUpdatedAt: user.censusUpdatedAt ? user.censusUpdatedAt.toISOString() : null,
-    city: user.city,
+    // Location
+    timeZone: user.timeZone,
     countryCode: user.countryCode,
+    regionCode: user.regionCode,
+    city: user.city,
+    postalCode: user.postalCode,
+    latitude: user.latitude,
+    longitude: user.longitude,
+    // Income & economic
+    annualPersonalIncomeUsd: user.annualPersonalIncomeUsd,
+    annualHouseholdIncomeUsd: user.annualHouseholdIncomeUsd,
+    annualTaxesPaidUsd: user.annualTaxesPaidUsd,
+    monthlyHousingCostUsd: user.monthlyHousingCostUsd,
+    householdSize: user.householdSize,
+    housingStatus: user.housingStatus,
+    hoursWorkedPerWeek: user.hoursWorkedPerWeek,
+    industryOrSector: user.industryOrSector,
+    // Demographics
+    birthYear: user.birthYear,
+    biologicalSex: user.biologicalSex,
+    ethnicityOrRace: user.ethnicityOrRace,
+    maritalStatus: user.maritalStatus,
+    numberOfDependents: user.numberOfDependents,
+    primaryLanguage: user.primaryLanguage,
     educationLevel: user.educationLevel,
     employmentStatus: user.employmentStatus,
     genderIdentity: user.genderIdentity,
-    householdSize: user.householdSize,
+    citizenshipStatus: user.citizenshipStatus,
+    // Health / HALE
+    healthInsuranceType: user.healthInsuranceType,
+    chronicConditionCount: user.chronicConditionCount,
+    disabilityStatus: user.disabilityStatus,
+    smokingStatus: user.smokingStatus,
+    alcoholFrequency: user.alcoholFrequency,
+    heightCm: user.heightCm,
+    // Access
+    internetAccessType: user.internetAccessType,
+    // Notes & meta
+    censusNotes: user.censusNotes,
+    censusUpdatedAt: user.censusUpdatedAt ? user.censusUpdatedAt.toISOString() : null,
     lastIncomeReportedAt: lastIncomeReportedAt ? lastIncomeReportedAt.toISOString() : null,
-    latitude: user.latitude,
-    longitude: user.longitude,
-    postalCode: user.postalCode,
-    regionCode: user.regionCode,
-    timeZone: user.timeZone,
   };
 }
 
@@ -359,7 +484,7 @@ async function ensureProfileCatalog(tx: Prisma.TransactionClient): Promise<Profi
     }),
   ]);
 
-  const [healthVariable, happinessVariable, incomeVariable] = await Promise.all([
+  const [healthVariable, happinessVariable, incomeVariable, personalIncomeVariable] = await Promise.all([
     tx.globalVariable.upsert({
       where: { name: HEALTH_VARIABLE_NAME },
       update: {
@@ -434,12 +559,39 @@ async function ensureProfileCatalog(tx: Prisma.TransactionClient): Promise<Profi
         variableCategoryId: economicCategory.id,
       },
     }),
+    tx.globalVariable.upsert({
+      where: { name: ANNUAL_PERSONAL_INCOME_VARIABLE_NAME },
+      update: {
+        combinationOperation: CombinationOperation.MEAN,
+        defaultUnitId: usdUnit.id,
+        description: "Self-reported annual personal income in USD. Primary scoreboard metric.",
+        fillingType: FillingType.NONE,
+        minimumAllowedValue: 0,
+        outcome: true,
+        predictorOnly: false,
+        valence: Valence.POSITIVE,
+        variableCategoryId: economicCategory.id,
+      },
+      create: {
+        combinationOperation: CombinationOperation.MEAN,
+        defaultUnitId: usdUnit.id,
+        description: "Self-reported annual personal income in USD. Primary scoreboard metric.",
+        fillingType: FillingType.NONE,
+        minimumAllowedValue: 0,
+        name: ANNUAL_PERSONAL_INCOME_VARIABLE_NAME,
+        outcome: true,
+        predictorOnly: false,
+        valence: Valence.POSITIVE,
+        variableCategoryId: economicCategory.id,
+      },
+    }),
   ]);
 
   return {
     happinessGlobalVariableId: happinessVariable.id,
     healthGlobalVariableId: healthVariable.id,
     incomeGlobalVariableId: incomeVariable.id,
+    personalIncomeGlobalVariableId: personalIncomeVariable.id,
     ratingUnitId: ratingUnit.id,
     usdUnitId: usdUnit.id,
   };

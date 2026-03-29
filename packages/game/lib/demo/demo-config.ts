@@ -145,7 +145,7 @@ export const SLIDES: SlideConfig[] = [
     act: "act1",
     duration: 10,
     narration:
-      "Here is the body count. Since World War II, the United States has killed 4.5 million people. China: 2 million. Russia: 1.5 million. Nobody held a referendum on any of it. The data comes from their own military records. They wrote it down. Then they filed it. Then they increased the budget.",
+      "Here is the body count. China: 80 million. Russia: 62 million. Germany: 21 million. Japan: 6 million. United States: 4.5 million. Nobody held a referendum on any of it. They wrote it down. Then they filed it. Then they increased the budget.",
     visual:
       "Ranked list of governments by post-WWII military deaths caused. Rows stagger in one by one. Death counts animate up. US highlighted at #1. Skull particle drizzle. Footer: COMBINED: X,XXX,XXX dead. 0 referendums held.",
     score: 0,

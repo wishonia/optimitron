@@ -351,6 +351,9 @@ model User {
   /// Self-reported annual household income in USD
   annualHouseholdIncomeUsd Float?
 
+  /// Self-reported annual personal income in USD (primary scoreboard metric)
+  annualPersonalIncomeUsd Float?
+
   /// Number of people supported by the household income
   householdSize Int?
 
@@ -368,6 +371,50 @@ model User {
 
   /// Free-form census notes for additional demographic context
   censusNotes String?
+
+  // ── Demographics ──────────────────────────────────────────
+  /// Biological sex for actuarial life-expectancy tables (separate from genderIdentity)
+  biologicalSex      String?
+  /// Self-described ethnicity or race (freeform — categories vary by country)
+  ethnicityOrRace    String?
+  /// Marital or partnership status
+  maritalStatus      String?
+  /// Number of dependents (children or others financially supported)
+  numberOfDependents Int?
+  /// Primary spoken language (ISO 639-1 code or freeform)
+  primaryLanguage    String?
+
+  // ── Health / HALE ─────────────────────────────────────────
+  /// Type of health insurance coverage
+  healthInsuranceType   String?
+  /// Number of chronic conditions (0, 1, 2, 3 = "3 or more")
+  chronicConditionCount Int?
+  /// Disability status
+  disabilityStatus      String?
+  /// Smoking status (never, former, current)
+  smokingStatus         String?
+  /// Alcohol consumption frequency
+  alcoholFrequency      String?
+  /// Height in centimeters (for BMI calculation with periodic weight check-ins)
+  heightCm              Float?
+
+  // ── Economic (after-tax income derivation) ────────────────
+  /// Self-reported annual taxes paid in USD
+  annualTaxesPaidUsd    Float?
+  /// Monthly housing cost in USD (rent or mortgage payment)
+  monthlyHousingCostUsd Float?
+  /// Housing status (own, rent, other, homeless)
+  housingStatus         String?
+  /// Typical hours worked per week
+  hoursWorkedPerWeek    Int?
+  /// Industry or employment sector (freeform)
+  industryOrSector      String?
+
+  // ── Access ────────────────────────────────────────────────
+  /// Citizenship or immigration status
+  citizenshipStatus  String?
+  /// Type of internet access
+  internetAccessType String?
 
   /// When the census/location snapshot was last updated
   censusUpdatedAt DateTime?
@@ -440,6 +487,7 @@ model User {
   @@index([referralCode])
   @@index([countryCode, regionCode])
   @@index([annualHouseholdIncomeUsd])
+  @@index([annualPersonalIncomeUsd])
   @@index([censusUpdatedAt])
   @@index([createdAt])
   @@index([referralEmailSequenceStep, referralEmailSequenceLastSentAt])

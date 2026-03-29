@@ -36,6 +36,7 @@ vi.mock("@/lib/prisma", () => ({
       updateMany: mocks.prisma.userPreferenceUpdateMany,
     },
     user: {
+      findUnique: mocks.prisma.userFindUniqueOrThrow,
       findUniqueOrThrow: mocks.prisma.userFindUniqueOrThrow,
       update: mocks.prisma.userUpdate,
     },
@@ -47,6 +48,28 @@ import {
   saveDailyCheckIn,
   saveProfileSnapshot,
 } from "../profile.server";
+
+/** Default null values for all 18 new census fields — spread into mock user objects */
+const NULL_NEW_CENSUS_FIELDS = {
+  annualTaxesPaidUsd: null,
+  monthlyHousingCostUsd: null,
+  housingStatus: null,
+  hoursWorkedPerWeek: null,
+  industryOrSector: null,
+  biologicalSex: null,
+  ethnicityOrRace: null,
+  maritalStatus: null,
+  numberOfDependents: null,
+  primaryLanguage: null,
+  citizenshipStatus: null,
+  healthInsuranceType: null,
+  chronicConditionCount: null,
+  disabilityStatus: null,
+  smokingStatus: null,
+  alcoholFrequency: null,
+  heightCm: null,
+  internetAccessType: null,
+};
 
 function createTransactionClient() {
   return {
@@ -156,6 +179,8 @@ describe("profile server", () => {
   it("builds profile page data from user and measurement history", async () => {
     mockProfilePageLoad({
       user: {
+        ...NULL_NEW_CENSUS_FIELDS,
+        annualPersonalIncomeUsd: null,
         annualHouseholdIncomeUsd: 92_000,
         birthYear: 1990,
         censusNotes: "Household of three.",
@@ -167,6 +192,7 @@ describe("profile server", () => {
         employmentStatus: "employed_full_time",
         genderIdentity: "woman",
         householdSize: 3,
+        id: "user_1",
         latitude: 41.8781,
         longitude: -87.6298,
         name: "Jane",
@@ -224,6 +250,8 @@ describe("profile server", () => {
         },
       ],
       profile: {
+        ...NULL_NEW_CENSUS_FIELDS,
+        annualPersonalIncomeUsd: null,
         annualHouseholdIncomeUsd: 92_000,
         birthYear: 1990,
         censusNotes: "Household of three.",
@@ -253,6 +281,8 @@ describe("profile server", () => {
     mocks.tx.measurementFindFirst.mockResolvedValue(null);
     mockProfilePageLoad({
       user: {
+        ...NULL_NEW_CENSUS_FIELDS,
+        annualPersonalIncomeUsd: null,
         annualHouseholdIncomeUsd: 120_000,
         birthYear: null,
         censusNotes: null,
@@ -264,6 +294,7 @@ describe("profile server", () => {
         employmentStatus: null,
         genderIdentity: null,
         householdSize: null,
+        id: "user_1",
         latitude: 41.8781,
         longitude: -87.6298,
         name: "Jane",
@@ -328,6 +359,8 @@ describe("profile server", () => {
       .mockResolvedValueOnce({ id: "measurement_happiness" });
     mockProfilePageLoad({
       user: {
+        ...NULL_NEW_CENSUS_FIELDS,
+        annualPersonalIncomeUsd: null,
         annualHouseholdIncomeUsd: null,
         birthYear: null,
         censusNotes: null,
@@ -339,6 +372,7 @@ describe("profile server", () => {
         employmentStatus: null,
         genderIdentity: null,
         householdSize: null,
+        id: "user_1",
         latitude: 41.0,
         longitude: -87.0,
         name: "Jane",

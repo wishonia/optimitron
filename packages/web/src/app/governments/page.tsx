@@ -2,6 +2,7 @@ import { GOVERNMENTS } from "@optimitron/data";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { GameCTA } from "@/components/ui/game-cta";
 import { GovernmentLeaderboard } from "@/components/shared/GovernmentLeaderboard";
+import { GovernmentScatterplot } from "@/components/shared/GovernmentScatterplot";
 import { governmentsLink, ROUTES } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
 
@@ -63,6 +64,17 @@ export default function GovernmentsPage() {
           different metric.
         </p>
         <GovernmentLeaderboard />
+      </section>
+
+      <section className="mb-16">
+        <h2 className="font-[family-name:var(--font-arcade)] text-xl font-black uppercase tracking-tight text-foreground mb-2 sm:text-2xl">
+          CORRELATION MAP
+        </h2>
+        <p className="text-lg font-bold text-muted-foreground mb-6">
+          Start with military spending versus clinical trials against HALE, then
+          swap either axis to compare any tracked metric pair.
+        </p>
+        <GovernmentScatterplot governments={GOVERNMENTS} />
       </section>
 
       {/* Summary Stats */}

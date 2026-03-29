@@ -4,6 +4,11 @@ import {
   type GovernmentMetrics,
 } from "../../datasets/government-report-cards";
 import {
+  getAnnualDollarFlowPerCapitaPPP,
+  getArmsExportsPerCapitaPPP,
+  getGovernmentClinicalTrialSpendingPerCapitaPPP,
+  getGovernmentMedicalResearchSpendingPerCapitaPPP,
+  getMilitarySpendingPerCapitaPPP,
   getMilitaryToGovernmentClinicalTrialRatio,
   getMilitaryToGovernmentMedicalResearchRatio,
 } from "../../datasets/government-spending-ratios";
@@ -53,5 +58,47 @@ describe("government spending ratios", () => {
     });
 
     expect(getMilitaryToGovernmentMedicalResearchRatio(gov)).toBeNull();
+  });
+
+  it("computes military spending per capita in PPP terms", () => {
+    const us = getGovernment("US")!;
+
+    expect(getMilitarySpendingPerCapitaPPP(us)).toBeCloseTo(
+      (3.4 / 100) * 80_035,
+      4,
+    );
+  });
+
+  it("converts annual dollar flows into per-capita PPP values", () => {
+    const us = getGovernment("US")!;
+
+    expect(
+      getAnnualDollarFlowPerCapitaPPP(us, us.govMedicalResearchSpending?.value),
+    ).toBeCloseTo(
+      ((47_100_000_000 / 886_000_000_000) * (3.4 / 100) * 80_035),
+      4,
+    );
+  });
+
+  it("computes government medical research and clinical trials per capita PPP", () => {
+    const us = getGovernment("US")!;
+
+    expect(getGovernmentMedicalResearchSpendingPerCapitaPPP(us)).toBeCloseTo(
+      ((47_100_000_000 / 886_000_000_000) * (3.4 / 100) * 80_035),
+      4,
+    );
+    expect(getGovernmentClinicalTrialSpendingPerCapitaPPP(us)).toBeCloseTo(
+      ((810_000_000 / 886_000_000_000) * (3.4 / 100) * 80_035),
+      4,
+    );
+  });
+
+  it("computes arms exports per capita PPP", () => {
+    const us = getGovernment("US")!;
+
+    expect(getArmsExportsPerCapitaPPP(us)).toBeCloseTo(
+      ((23_800_000_000 / 886_000_000_000) * (3.4 / 100) * 80_035),
+      4,
+    );
   });
 });

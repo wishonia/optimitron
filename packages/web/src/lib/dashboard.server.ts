@@ -148,7 +148,7 @@ export async function getDashboardData(
       emoji: getWishReasonEmoji("DAILY_CHECKIN"),
       wishesLabel: "1/day",
       completed: todayCheckin !== null,
-      href: ROUTES.census,
+      href: ROUTES.checkIn,
       anchor: null,
       comingSoon: false,
     },

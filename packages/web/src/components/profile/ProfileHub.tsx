@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CheckInHistoryCard } from "@/components/profile/CheckInHistoryCard";
-import { DailyCheckInCard } from "@/components/profile/DailyCheckInCard";
 import { PushNotificationPrompt } from "@/components/notifications/PushNotificationPrompt";
 import { ProfileSnapshotForm } from "@/components/profile/ProfileSnapshotForm";
 import { VoteTokenBalanceCard } from "@/components/prize/VoteTokenBalanceCard";
@@ -24,16 +22,22 @@ export function ProfileHub({ initialData }: ProfileHubProps) {
           Your Data
         </p>
         <h1 className="text-4xl font-black uppercase tracking-tight text-foreground">
-          Census + Daily Check-In
+          CENSUS DATA
         </h1>
         <p className="max-w-3xl text-base font-bold text-foreground">
-          Save your location and census snapshot, then rate your health and happiness over
-          time.
+          Income, location, demographics. The data that turns you from
+          a rounding error into a data point worth optimizing for.
         </p>
       </section>
 
-      {/* Get Started CTAs */}
+      {/* CTAs */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ProfileCTA
+          href={ROUTES.checkIn}
+          label="Daily Check-In"
+          description="Rate your health and happiness. Thirty seconds. Every day."
+          color="bg-brutal-pink"
+        />
         <ProfileCTA
           href={ROUTES.wishocracy}
           label="Wishocracy"
@@ -44,28 +48,17 @@ export function ProfileHub({ initialData }: ProfileHubProps) {
           href={ROUTES.alignment}
           label="Alignment"
           description="See which politicians match your priorities"
-          color="bg-brutal-pink"
+          color="bg-brutal-yellow"
         />
         <ProfileCTA
           href={ROUTES.referendum}
           label="Referendums"
           description="Vote on active proposals and earn referral rewards"
-          color="bg-brutal-yellow"
-        />
-        <ProfileCTA
-          href={ROUTES.contribute}
-          label="Earth Prize"
-          description="Contribute to the Earth Optimization Prize"
-          color="bg-green-200"
+          color="bg-background"
         />
       </div>
 
-      <div className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
-        <ProfileSnapshotForm profile={data.profile} onSaved={setData} />
-        <DailyCheckInCard currentCheckIn={data.currentCheckIn} onSaved={setData} />
-      </div>
-
-      <CheckInHistoryCard history={data.history} />
+      <ProfileSnapshotForm profile={data.profile} onSaved={setData} />
 
       <VoteTokenBalanceCard />
 

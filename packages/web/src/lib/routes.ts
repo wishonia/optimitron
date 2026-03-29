@@ -48,6 +48,7 @@ export const ROUTES = {
   profile: "/profile",
   dashboard: "/dashboard",
   census: "/census",
+  checkIn: "/check-in",
   settings: "/settings",
   transmit: "/transmit",
   // Futures
@@ -271,7 +272,14 @@ export const censusLink: NavItem = {
   href: ROUTES.census,
   label: "Census",
   emoji: "📋",
-  description: "Your permanent record of giving a damn. Check-ins, location, demographics, and evidence you tried.",
+  description: "Location, income, demographics. The data that turns you from a rounding error into a data point.",
+};
+
+export const checkInLink: NavItem = {
+  href: ROUTES.checkIn,
+  label: "Check-In",
+  emoji: "☀️",
+  description: "Thirty seconds a day to tell me if you're alive and thriving. On my planet we call this 'minimum viable self-awareness.'",
 };
 
 export const settingsLink: NavItem = {
@@ -397,7 +405,7 @@ export interface NavSection {
 }
 
 export const navSections: NavSection[] = [
-  { id: "play", label: "Play", items: [dashboardLink, profileLink, censusLink, settingsLink, wishocracyLink, alignmentLink, referendumLink, prizeLink, demoLink] },
+  { id: "play", label: "Play", items: [dashboardLink, profileLink, censusLink, checkInLink, settingsLink, wishocracyLink, alignmentLink, referendumLink, prizeLink, demoLink] },
   { id: "optimized-gov", label: "Optimized Governance", items: [dtreasuryLink, policiesLink, budgetLink, transparencyLink, discoveriesLink, agenciesLink, departmentOfWarLink] },
   { id: "earth", label: "Earth", items: [governmentsLink, politicianLeaderboardLink, compareLink, misconceptionsLink, studiesLink] },
   { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink] },

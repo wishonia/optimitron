@@ -20,6 +20,7 @@ describe("government leaderboard column metadata", () => {
       "healthSpending",
       "killed",
       "lifeExpectancy",
+      "militaryPerCapitaPPP",
       "militarySpending",
       "rank",
       "researchRatio",
@@ -48,5 +49,14 @@ describe("government leaderboard column metadata", () => {
   it("defaults to sorting by clinical trial misalignment descending", () => {
     expect(GOVERNMENT_LEADERBOARD_DEFAULT_SORT_KEY).toBe("trialRatio");
     expect(GOVERNMENT_LEADERBOARD_DEFAULT_SORT_ASC).toBe(false);
+  });
+
+  it("explains military spending per person in PPP terms", () => {
+    expect(
+      GOVERNMENT_LEADERBOARD_COLUMN_META.militaryPerCapitaPPP.description,
+    ).toContain("PPP");
+    expect(
+      GOVERNMENT_LEADERBOARD_COLUMN_META.militaryPerCapitaPPP.description,
+    ).toContain("military share of GDP");
   });
 });

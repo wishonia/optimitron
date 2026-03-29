@@ -3,6 +3,7 @@ import { z } from "zod";
 export const HEALTH_VARIABLE_NAME = "Overall Health";
 export const HAPPINESS_VARIABLE_NAME = "Happiness";
 export const ANNUAL_HOUSEHOLD_INCOME_VARIABLE_NAME = "Annual Household Income";
+export const ANNUAL_PERSONAL_INCOME_VARIABLE_NAME = "Annual Personal Income";
 
 const currentYear = new Date().getUTCFullYear();
 
@@ -77,6 +78,7 @@ function requireLatLngTogether(
 
 export const profileSnapshotInputSchema = z
   .object({
+    // Location
     timeZone: nullableString(100),
     countryCode: nullableString(32),
     regionCode: nullableString(64),
@@ -84,12 +86,36 @@ export const profileSnapshotInputSchema = z
     postalCode: nullableString(32),
     latitude: nullableNumber(-90, 90),
     longitude: nullableNumber(-180, 180),
+    // Income & economic
+    annualPersonalIncomeUsd: nullableNumber(0, 1_000_000_000),
     annualHouseholdIncomeUsd: nullableNumber(0, 1_000_000_000),
+    annualTaxesPaidUsd: nullableNumber(0, 1_000_000_000),
+    monthlyHousingCostUsd: nullableNumber(0, 1_000_000),
     householdSize: nullableInt(1, 100),
+    housingStatus: nullableString(32),
+    hoursWorkedPerWeek: nullableInt(0, 168),
+    industryOrSector: nullableString(120),
+    // Demographics
     birthYear: nullableInt(1900, currentYear),
+    biologicalSex: nullableString(32),
+    ethnicityOrRace: nullableString(120),
+    maritalStatus: nullableString(32),
+    numberOfDependents: nullableInt(0, 100),
+    primaryLanguage: nullableString(32),
     educationLevel: nullableString(64),
     employmentStatus: nullableString(64),
     genderIdentity: nullableString(64),
+    citizenshipStatus: nullableString(32),
+    // Health / HALE
+    healthInsuranceType: nullableString(32),
+    chronicConditionCount: nullableInt(0, 3),
+    disabilityStatus: nullableString(32),
+    smokingStatus: nullableString(32),
+    alcoholFrequency: nullableString(32),
+    heightCm: nullableNumber(30, 300),
+    // Access
+    internetAccessType: nullableString(32),
+    // Notes
     censusNotes: nullableString(1000),
   })
   .superRefine(requireLatLngTogether);
@@ -131,22 +157,48 @@ export interface DailyCheckInHistoryEntry {
 }
 
 export interface ProfileSnapshotData {
-  annualHouseholdIncomeUsd: number | null;
-  birthYear: number | null;
-  censusNotes: string | null;
-  censusUpdatedAt: string | null;
-  city: string | null;
+  // Location
+  timeZone: string | null;
   countryCode: string | null;
+  regionCode: string | null;
+  city: string | null;
+  postalCode: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  // Income & economic
+  annualPersonalIncomeUsd: number | null;
+  annualHouseholdIncomeUsd: number | null;
+  annualTaxesPaidUsd: number | null;
+  monthlyHousingCostUsd: number | null;
+  householdSize: number | null;
+  housingStatus: string | null;
+  hoursWorkedPerWeek: number | null;
+  industryOrSector: string | null;
+  // Demographics
+  birthYear: number | null;
+  biologicalSex: string | null;
+  ethnicityOrRace: string | null;
+  maritalStatus: string | null;
+  numberOfDependents: number | null;
+  primaryLanguage: string | null;
   educationLevel: string | null;
   employmentStatus: string | null;
   genderIdentity: string | null;
-  householdSize: number | null;
+  citizenshipStatus: string | null;
+  // Health / HALE
+  healthInsuranceType: string | null;
+  chronicConditionCount: number | null;
+  disabilityStatus: string | null;
+  smokingStatus: string | null;
+  alcoholFrequency: string | null;
+  heightCm: number | null;
+  // Access
+  internetAccessType: string | null;
+  // Notes
+  censusNotes: string | null;
+  // Metadata
+  censusUpdatedAt: string | null;
   lastIncomeReportedAt: string | null;
-  latitude: number | null;
-  longitude: number | null;
-  postalCode: string | null;
-  regionCode: string | null;
-  timeZone: string | null;
 }
 
 export interface CurrentCheckInData {
@@ -160,6 +212,12 @@ export interface ProfilePageData {
   currentCheckIn: CurrentCheckInData;
   history: DailyCheckInHistoryEntry[];
   profile: ProfileSnapshotData;
+}
+
+export interface CheckInPageData {
+  currentCheckIn: CurrentCheckInData;
+  history: DailyCheckInHistoryEntry[];
+  userLocation: { latitude: number | null; longitude: number | null };
 }
 
 export const EDUCATION_LEVEL_OPTIONS = [
@@ -178,6 +236,79 @@ export const EMPLOYMENT_STATUS_OPTIONS = [
   { label: "Unemployed", value: "unemployed" },
   { label: "Retired", value: "retired" },
   { label: "Unable to work", value: "unable_to_work" },
+] as const;
+
+export const BIOLOGICAL_SEX_OPTIONS = [
+  { label: "Male", value: "male" },
+  { label: "Female", value: "female" },
+  { label: "Intersex", value: "intersex" },
+] as const;
+
+export const MARITAL_STATUS_OPTIONS = [
+  { label: "Single", value: "single" },
+  { label: "Married", value: "married" },
+  { label: "Domestic partnership", value: "domestic_partnership" },
+  { label: "Divorced", value: "divorced" },
+  { label: "Widowed", value: "widowed" },
+  { label: "Separated", value: "separated" },
+] as const;
+
+export const HEALTH_INSURANCE_OPTIONS = [
+  { label: "Employer-provided", value: "employer" },
+  { label: "Marketplace / private", value: "marketplace" },
+  { label: "Government (Medicare, Medicaid, NHS, etc.)", value: "government" },
+  { label: "Military (VA, Tricare, etc.)", value: "military" },
+  { label: "None", value: "none" },
+  { label: "Other", value: "other" },
+] as const;
+
+export const DISABILITY_STATUS_OPTIONS = [
+  { label: "None", value: "none" },
+  { label: "Physical", value: "physical" },
+  { label: "Cognitive", value: "cognitive" },
+  { label: "Sensory (vision, hearing)", value: "sensory" },
+  { label: "Multiple", value: "multiple" },
+] as const;
+
+export const SMOKING_STATUS_OPTIONS = [
+  { label: "Never smoked", value: "never" },
+  { label: "Former smoker", value: "former" },
+  { label: "Current smoker", value: "current" },
+] as const;
+
+export const ALCOHOL_FREQUENCY_OPTIONS = [
+  { label: "Never", value: "never" },
+  { label: "Monthly or less", value: "monthly_or_less" },
+  { label: "Weekly", value: "weekly" },
+  { label: "Daily", value: "daily" },
+] as const;
+
+export const HOUSING_STATUS_OPTIONS = [
+  { label: "Own", value: "own" },
+  { label: "Rent", value: "rent" },
+  { label: "Other arrangement", value: "other" },
+  { label: "Homeless / unhoused", value: "homeless" },
+] as const;
+
+export const CITIZENSHIP_STATUS_OPTIONS = [
+  { label: "Citizen", value: "citizen" },
+  { label: "Permanent resident", value: "permanent_resident" },
+  { label: "Visa holder", value: "visa_holder" },
+  { label: "Undocumented", value: "undocumented" },
+  { label: "Other", value: "other" },
+] as const;
+
+export const INTERNET_ACCESS_OPTIONS = [
+  { label: "Broadband (home internet)", value: "broadband" },
+  { label: "Mobile only", value: "mobile_only" },
+  { label: "No internet access", value: "none" },
+] as const;
+
+export const CHRONIC_CONDITION_OPTIONS = [
+  { label: "None", value: "0" },
+  { label: "1 condition", value: "1" },
+  { label: "2 conditions", value: "2" },
+  { label: "3 or more", value: "3" },
 ] as const;
 
 export function getUtcDayBounds(date: Date) {
