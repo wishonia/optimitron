@@ -13,7 +13,7 @@ export const WISHONIA_VOICE = "Kore";
 /** Speaking instructions that define Wishonia's vocal personality */
 export const WISHONIA_SPEAKING_INSTRUCTIONS =
   "Generate a patient, warm voice explaining something counterintuitive to someone smart. " +
-  "Not condescending. Respects the listener's intelligence. Speak quickly.";
+  "Not condescending. Respects the listener's intelligence. Speak very quickly.";
 
 /** Gemini model for batch TTS generation */
 export const WISHONIA_TTS_MODEL = "gemini-2.5-flash-preview-tts";

@@ -14,14 +14,19 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "
 import { execSync } from "child_process";
 import { join } from "path";
 
-import { SLIDES } from "../lib/demo/demo-config";
+import { SLIDES, resolvePlaylist, type SlideConfig } from "../lib/demo/demo-config";
+
+// Parse --playlist flag (e.g., --playlist=protocol-labs)
+const playlistArg = process.argv.find((a) => a.startsWith("--playlist="));
+const playlistId = playlistArg?.split("=")[1] || "full";
+const activeSlides: SlideConfig[] = resolvePlaylist(playlistId);
 
 const NARRATION_DIR = join(process.cwd(), "public", "audio", "narration");
 const MANIFEST_PATH = join(NARRATION_DIR, "manifest.json");
 const RECORDING_DIR = join(process.cwd(), "presentation-recording");
-const VIDEO_PATH = join(RECORDING_DIR, "presentation.mp4");
+const VIDEO_PATH = join(RECORDING_DIR, `presentation-${playlistId}.mp4`);
 const CONCAT_AUDIO = join(RECORDING_DIR, "_concat_audio.mp3");
-const FINAL_PATH = join(RECORDING_DIR, "presentation-final.mp4");
+const FINAL_PATH = join(RECORDING_DIR, `presentation-${playlistId}-final.mp4`);
 
 /** Get audio duration in seconds via ffprobe */
 function getAudioDuration(path: string): number {
@@ -68,13 +73,13 @@ async function main() {
   mkdirSync(tempDir, { recursive: true });
 
   const concatEntries: string[] = [];
-  const silencePath = join(tempDir, "silence_2s.mp3");
-  generateSilence(silencePath, 2);
+  const silencePath = join(tempDir, "silence_0.5s.mp3");
+  generateSilence(silencePath, 0.5);
 
   let totalAudioDuration = 0;
 
-  for (let i = 0; i < SLIDES.length; i++) {
-    const slide = SLIDES[i];
+  for (let i = 0; i < activeSlides.length; i++) {
+    const slide = activeSlides[i];
     const entry = manifest[slide.id];
 
     if (entry) {
@@ -86,9 +91,9 @@ async function main() {
         totalAudioDuration += dur;
 
         // Add silence gap between slides (not after last)
-        if (i < SLIDES.length - 1) {
+        if (i < activeSlides.length - 1) {
           concatEntries.push(`file '${silencePath.replace(/\\/g, "/")}'`);
-          totalAudioDuration += 2;
+          totalAudioDuration += 0.5;
         }
 
         console.log(`  [${String(i + 1).padStart(2, "0")}] ${slide.id} (${dur.toFixed(1)}s)`);

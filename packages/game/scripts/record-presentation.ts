@@ -14,7 +14,12 @@ import { existsSync, mkdirSync, readFileSync } from "fs";
 import { execSync } from "child_process";
 import { join } from "path";
 
-import { SLIDES } from "../lib/demo/demo-config";
+import { SLIDES, resolvePlaylist, type SlideConfig } from "../lib/demo/demo-config";
+
+// Parse --playlist flag (e.g., --playlist=protocol-labs)
+const playlistArg = process.argv.find((a) => a.startsWith("--playlist="));
+const playlistId = playlistArg?.split("=")[1] || "full";
+const activeSlides: SlideConfig[] = resolvePlaylist(playlistId);
 
 const OUTPUT_DIR = join(process.cwd(), "presentation-recording");
 const NARRATION_DIR = join(process.cwd(), "public", "audio", "narration");
@@ -46,7 +51,7 @@ function computeWaitTimes(): Map<string, number> {
     } catch {}
   }
 
-  for (const slide of SLIDES) {
+  for (const slide of activeSlides) {
     const configDuration = Math.max(slide.duration || 8, 5);
     let waitMs = configDuration * 1000;
 
@@ -55,8 +60,8 @@ function computeWaitTimes(): Map<string, number> {
       if (existsSync(mp3Path)) {
         const audioDuration = getAudioDuration(mp3Path);
         if (audioDuration !== null) {
-          // Use audio duration + 2s buffer, but at least the config duration
-          waitMs = Math.max(audioDuration + 2, configDuration) * 1000;
+          // Use audio duration + 1s buffer, but at least the config duration
+          waitMs = Math.max(audioDuration + 1, configDuration) * 1000;
         }
       }
     }
@@ -94,8 +99,9 @@ async function main() {
 
   const page = await context.newPage();
 
-  // Skip boot screen, enable recording mode
-  await page.goto(`${BASE_URL}/?skipBoot`, { waitUntil: "networkidle" });
+  // Skip boot screen, set playlist, enable recording mode
+  const urlParams = playlistId !== "full" ? `?skipBoot&playlist=${playlistId}` : "?skipBoot";
+  await page.goto(`${BASE_URL}/${urlParams}`, { waitUntil: "networkidle" });
   await page.waitForTimeout(2000);
 
   // Enable recording mode (hides controls)
@@ -104,15 +110,16 @@ async function main() {
     if (store) store.setState({ isRecordingMode: true });
   });
 
-  console.log(`  Total slides: ${SLIDES.length}`);
+  console.log(`  Playlist: ${playlistId}`);
+  console.log(`  Total slides: ${activeSlides.length}`);
   console.log(`  Resolution: 1920x1080`);
   console.log("");
 
   let totalWait = 0;
 
   // Navigate through each slide using store
-  for (let i = 0; i < SLIDES.length; i++) {
-    const slide = SLIDES[i];
+  for (let i = 0; i < activeSlides.length; i++) {
+    const slide = activeSlides[i];
     const waitMs = waitTimes.get(slide.id) || 8000;
 
     // Set slide directly via store
@@ -122,7 +129,7 @@ async function main() {
     }, i);
 
     const slideNum = String(i + 1).padStart(2, "0");
-    console.log(`  [${slideNum}/${SLIDES.length}] ${slide.id} (${(waitMs / 1000).toFixed(1)}s)`);
+    console.log(`  [${slideNum}/${activeSlides.length}] ${slide.id} (${(waitMs / 1000).toFixed(1)}s)`);
 
     await page.waitForTimeout(waitMs);
     totalWait += waitMs;
@@ -146,7 +153,7 @@ async function main() {
   console.log(`\n  Raw recording: ${webmPath}`);
 
   // Convert to MP4 with ffmpeg
-  const mp4Path = join(OUTPUT_DIR, "presentation.mp4");
+  const mp4Path = join(OUTPUT_DIR, `presentation-${playlistId}.mp4`);
   console.log(`  Converting to MP4...`);
 
   try {
