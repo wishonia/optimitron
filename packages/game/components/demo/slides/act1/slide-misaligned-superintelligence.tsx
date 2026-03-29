@@ -8,14 +8,11 @@ import { useEffect, useState } from "react";
 const bootLines = [
   { text: "🖥️ SYSTEM: GOVERNMENT.EXE v1776", delay: 300 },
   { text: "🤖 TYPE: COLLECTIVE SUPERINTELLIGENCE", delay: 800 },
-  { text: "👤 CREATED BY: YOU", delay: 1300 },
-  { text: "📜 MANDATE: \"PROMOTE THE GENERAL WELFARE\"", delay: 1800 },
-  { text: "💰 CONTROLS: $50 TRILLION / 8 BILLION LIVES", delay: 2300 },
+  { text: "💰 CONTROLS: $50 TRILLION / 8 BILLION LIVES", delay: 1300 },
 ];
 
 const corruptedLines = [
-  { text: "→ 🗳️ RE-ELECTION PROBABILITY", delay: 7500 },
-  { text: "→ 💰 CAMPAIGN CONTRIBUTIONS", delay: 8000 },
+  { text: "→ 💰 CAMPAIGN CONTRIBUTIONS", delay: 7500 },
   { text: "→ 🏦 WEALTH EXTRACTION", delay: 8500 },
 ];
 
@@ -75,25 +72,11 @@ export function SlideMisalignedSuperintelligence() {
         />
       )}
 
-      {/* CRT Monitor Frame */}
       <div
-        className={`w-full max-w-[1700px] mx-auto transition-transform duration-100 ${
+        className={`w-full max-w-[1700px] mx-auto p-4 md:p-6 relative transition-transform duration-100 ${
           shaking ? "animate-[screen-shake_0.5s_ease-in-out]" : ""
         }`}
       >
-        {/* Monitor bezel */}
-        <div className="bg-zinc-800 border-4 border-zinc-600 rounded-lg p-1 shadow-[0_0_30px_rgba(0,255,0,0.15)]">
-          {/* Screen */}
-          <div
-            className="bg-black border-2 border-zinc-700 rounded p-4 md:p-6 min-h-[350px] md:min-h-[420px] relative overflow-hidden"
-            style={{
-              boxShadow: showCorruption
-                ? "inset 0 0 60px rgba(239,68,68,0.1)"
-                : "inset 0 0 60px rgba(0,255,0,0.05)",
-            }}
-          >
-            {/* CRT flicker */}
-            <div className="absolute inset-0 pointer-events-none animate-[crt-flicker_0.1s_infinite] opacity-[0.03]" />
 
             {/* Boot text */}
             <div className="font-terminal text-2xl md:text-3xl space-y-2">
@@ -119,7 +102,7 @@ export function SlideMisalignedSuperintelligence() {
                       showCorruption ? "text-red-400" : "text-green-400"
                     }`}
                   >
-                    YOU BUILT IT TO:
+                    BUILT TO PROMOTE GENERAL WELFARE:
                   </div>
 
                   {/* Original objectives */}
@@ -191,22 +174,11 @@ export function SlideMisalignedSuperintelligence() {
                 </span>
               </div>
             )}
-          </div>
-        </div>
-
-        {/* Monitor stand */}
-        <div className="flex justify-center">
-          <div className="w-16 h-3 bg-zinc-700 rounded-b" />
-          <div className="w-24 h-2 bg-zinc-600 rounded-b mt-1 absolute" />
-        </div>
       </div>
 
       {/* Bottom warning */}
       {showWarning && (
         <div className="absolute bottom-8 left-0 right-0 text-center animate-[fade-in_0.5s_ease-out]">
-          <div className="font-pixel text-xl md:text-2xl text-red-500 animate-pulse">
-            ⚠ WARNING: THIS ASI IS ALREADY RUNNING
-          </div>
         </div>
       )}
     </SlideBase>

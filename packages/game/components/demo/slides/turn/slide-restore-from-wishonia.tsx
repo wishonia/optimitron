@@ -28,7 +28,8 @@ export function SlideRestoreFromWishonia() {
 
     // Phase 3: CTA
     setTimeout(() => setPhase(3), 3500);
-  }, [setPalette, setScore, showQuestMeters]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SlideBase act="turn" className="text-cyan-400">

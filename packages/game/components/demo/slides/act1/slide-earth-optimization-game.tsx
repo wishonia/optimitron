@@ -113,16 +113,16 @@ export function SlideEarthOptimizationGame() {
             <div className="relative h-14 bg-zinc-900 border-2 border-zinc-600 rounded">
               {/* Explosions portion */}
               <div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-red-700 to-red-600 transition-all duration-1000 ease-out flex items-center justify-center overflow-hidden rounded-l"
+                className="absolute inset-y-0 left-0 bg-brutal-red transition-all duration-1000 ease-out flex items-center justify-center overflow-hidden rounded-l"
                 style={{ width: phase >= 2 ? "99%" : "100%" }}
               >
-                <span className="font-pixel text-xl md:text-2xl text-white/90">
+                <span className="font-pixel text-xl md:text-2xl text-brutal-red-foreground">
                   💥 99% EXPLOSIONS 💥
                 </span>
               </div>
               {/* Cures portion */}
               <div
-                className="absolute inset-y-0 right-0 bg-gradient-to-r from-emerald-600 to-emerald-500 transition-all duration-1000 ease-out overflow-hidden rounded-r"
+                className="absolute inset-y-0 right-0 bg-brutal-cyan transition-all duration-1000 ease-out overflow-hidden rounded-r"
                 style={{ width: phase >= 2 ? "1%" : "0%" }}
               />
               {/* Dragging finger */}
@@ -137,13 +137,13 @@ export function SlideEarthOptimizationGame() {
             </div>
             <div className="flex justify-between font-pixel text-lg md:text-xl">
               <span className="text-red-400">💣 EXPLOSIONS</span>
-              <span className="text-emerald-400">CURES 🧬</span>
+              <span className="text-brutal-cyan">CURES 🧬</span>
             </div>
 
             {/* +$27B popup */}
             <div className="h-12 flex items-center justify-center">
               {phase >= 3 && (
-                <div className="font-pixel text-xl md:text-2xl text-emerald-400 animate-bounce bg-emerald-500/10 border border-emerald-500/40 rounded px-6 py-2">
+                <div className="font-pixel text-xl md:text-2xl text-brutal-cyan animate-bounce bg-muted border-2 border-brutal-cyan rounded px-6 py-2">
                   🧪 +$27B → CURES 🧪
                 </div>
               )}
