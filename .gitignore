@@ -17,6 +17,7 @@ next-env.d.ts
 # OS
 .DS_Store
 Thumbs.db
+NUL
 
 # Environment / Secrets — NEVER COMMIT THESE
 .env

@@ -680,6 +680,9 @@ importers:
       '@optimitron/wishocracy':
         specifier: workspace:^
         version: link:../wishocracy
+      '@optimitron/wishonia-widget':
+        specifier: workspace:^
+        version: link:../wishonia-widget
       '@prisma/adapter-pg':
         specifier: ^7.0.0
         version: 7.5.0
@@ -818,6 +821,9 @@ importers:
       porto:
         specifier: ^0.2.37
         version: 0.2.37(@tanstack/react-query@5.95.2)(@types/react@18.3.28)(@wagmi/core@3.4.1)(react@18.3.1)(typescript@5.7.3)(viem@2.47.6)(wagmi@3.6.0)
+      qrcode.react:
+        specifier: ^4.0.1
+        version: 4.2.0(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -17970,6 +17976,14 @@ packages:
 
   /qrcode-generator@1.5.2:
     resolution: {integrity: sha512-pItrW0Z9HnDBnFmgiNrY1uxRdri32Uh9EjNYLPVC2zZ3ZRIIEqBoDgm4DkvDwNNDHTK7FNkmr8zAa77BYc9xNw==}
+    dev: false
+
+  /qrcode.react@4.2.0(react@18.3.1):
+    resolution: {integrity: sha512-QpgqWi8rD9DsS9EP3z7BT+5lY5SFhsqGjpgW5DY/i3mK4M9DTBNz3ErMi8BWYEfI3L0d8GIbGmcdFAS1uIRGjA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    dependencies:
+      react: 18.3.1
     dev: false
 
   /qrcode.react@4.2.0(react@19.2.4):
