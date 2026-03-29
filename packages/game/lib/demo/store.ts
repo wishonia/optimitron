@@ -5,11 +5,14 @@ import { subscribeWithSelector } from "zustand/middleware";
 import type { InventoryItem } from "./parameters";
 import { SCORE_PROGRESSION, INVENTORY_ITEMS } from "./parameters";
 import type { PaletteMode } from "./palette";
-import { SLIDES } from "./demo-config";
+import type { SlideConfig } from "./demo-config";
+import { SLIDES, resolvePlaylist, DEFAULT_PLAYLIST_ID } from "./demo-config";
 
 // Demo playback state
 export interface DemoState {
-  // Slide navigation
+  // Playlist & slide navigation
+  playlistId: string;
+  activeSlides: SlideConfig[];
   currentSlide: number;
   totalSlides: number;
   isPlaying: boolean;
@@ -54,6 +57,9 @@ export interface DemoState {
 }
 
 export interface DemoActions {
+  // Playlist
+  setPlaylist: (playlistId: string) => void;
+
   // Navigation
   nextSlide: () => void;
   prevSlide: () => void;
@@ -104,16 +110,13 @@ export interface DemoActions {
   reset: () => void;
 }
 
-const CHAPTER_STARTS = {
-  act1: 0,
-  turn: 10, // Moronia + Wishonia (shifted +1 for body-count)
-  act2: 12,
-  act3: 50, // After i-pencil + cured-disease + the-switch (shifted +2 for body-count + us-report-card)
-};
+const initialActiveSlides = resolvePlaylist(DEFAULT_PLAYLIST_ID);
 
 const initialState: DemoState = {
+  playlistId: DEFAULT_PLAYLIST_ID,
+  activeSlides: initialActiveSlides,
   currentSlide: 0,
-  totalSlides: SLIDES.length,
+  totalSlides: initialActiveSlides.length,
   isPlaying: false,
   playbackSpeed: 1,
   score: 0,
@@ -143,6 +146,19 @@ export const useDemoStore = create<DemoState & DemoActions>()(
   subscribeWithSelector((set, get) => ({
     ...initialState,
 
+    // Playlist
+    setPlaylist: (playlistId: string) => {
+      const activeSlides = resolvePlaylist(playlistId);
+      set({
+        playlistId,
+        activeSlides,
+        currentSlide: 0,
+        totalSlides: activeSlides.length,
+        typewriterComplete: false,
+        narrationEnded: false,
+      });
+    },
+
     // Navigation
     nextSlide: () => {
       const { currentSlide, totalSlides } = get();
@@ -166,8 +182,13 @@ export const useDemoStore = create<DemoState & DemoActions>()(
     },
 
     goToChapter: (chapter) => {
-      const slideIndex = CHAPTER_STARTS[chapter];
-      set({ currentSlide: slideIndex, typewriterComplete: false, narrationEnded: false });
+      const { activeSlides } = get();
+      const actMap: Record<string, string> = { act1: "act1", turn: "turn", act2: "act2", act3: "act3" };
+      const act = actMap[chapter];
+      const slideIndex = activeSlides.findIndex((s) => s.act === act);
+      if (slideIndex >= 0) {
+        set({ currentSlide: slideIndex, typewriterComplete: false, narrationEnded: false });
+      }
     },
 
     // Playback

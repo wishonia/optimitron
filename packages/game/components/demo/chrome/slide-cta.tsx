@@ -1,7 +1,6 @@
 "use client";
 
 import { useDemoStore } from "@/lib/demo/store";
-import { SLIDES } from "@/lib/demo/demo-config";
 import { cn } from "@/lib/utils";
 
 const CTA_BASE_URL =
@@ -13,11 +12,12 @@ const CTA_BASE_URL =
  */
 export function SlideCTA() {
   const currentSlide = useDemoStore((s) => s.currentSlide);
+  const activeSlides = useDemoStore((s) => s.activeSlides);
   const typewriterComplete = useDemoStore((s) => s.typewriterComplete);
   const isRecordingMode = useDemoStore((s) => s.isRecordingMode);
   const palette = useDemoStore((s) => s.palette);
 
-  const slideConfig = SLIDES[currentSlide];
+  const slideConfig = activeSlides[currentSlide];
   if (!slideConfig?.ctaUrl) return null;
 
   const label = slideConfig.ctaLabel || "TRY IT →";

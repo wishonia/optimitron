@@ -9,7 +9,6 @@ import { ProgressBar } from "./controls/progress-bar";
 import { ControlPanel } from "./controls/control-panel";
 
 import { BootScreen } from "./boot-screen";
-import { SLIDES } from "@/lib/demo/demo-config";
 import { getExpressionForSlide } from "@/lib/demo/wishonia-expressions";
 import { cn } from "@/lib/utils";
 
@@ -44,10 +43,11 @@ function DeathCounter() {
 
 export function EarthOptimizationDemo() {
   const [booted, setBooted] = useState(false);
-  const { 
-    palette, 
+  const {
+    palette,
     isRecordingMode,
     currentSlide,
+    activeSlides,
     nextSlide,
     prevSlide,
   } = useDemoStore();
@@ -55,7 +55,7 @@ export function EarthOptimizationDemo() {
   const goToSlide = useDemoStore((s) => s.goToSlide);
 
   // Get current slide narration and expression
-  const currentSlideConfig = SLIDES[currentSlide];
+  const currentSlideConfig = activeSlides[currentSlide];
   const narrationText = currentSlideConfig?.narration || "";
   const { expression: wishoniaExpression, bodyPose: wishoniaBodyPose } = currentSlideConfig
     ? getExpressionForSlide(currentSlideConfig)
@@ -70,18 +70,30 @@ export function EarthOptimizationDemo() {
     // On mount, restore slide from hash
     const hash = window.location.hash.slice(1);
     if (hash) {
-      const index = SLIDES.findIndex((s) => s.id === hash);
+      const index = activeSlides.findIndex((s) => s.id === hash);
       if (index >= 0) goToSlide(index);
     }
-  }, [goToSlide]);
+  }, [goToSlide, activeSlides]);
 
   useEffect(() => {
     // Update hash when slide changes
-    const id = SLIDES[currentSlide]?.id;
+    const id = activeSlides[currentSlide]?.id;
     if (id) {
       window.history.replaceState(null, "", `#${id}`);
     }
   }, [currentSlide]);
+
+  const setPlaylist = useDemoStore((s) => s.setPlaylist);
+
+  // Initialize playlist from URL param (?playlist=protocol-labs)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const playlistParam = params.get("playlist");
+    if (playlistParam) {
+      setPlaylist(playlistParam);
+    }
+  }, [setPlaylist]);
 
   // Skip boot screen in recording mode or test mode (?skipBoot=true)
   useEffect(() => {

@@ -6,10 +6,12 @@
 
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScript, useStylesheet } from "@/hooks/useScript";
 import type { VisualsResult } from "@/lib/visuals-prompt";
 import { normalizeManualUrl } from "@/lib/source-links";
+import { getVisualImageAlt } from "@/lib/visuals-utils";
+import { Lightbox } from "./Lightbox";
 
 const KATEX_CSS = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css";
 const KATEX_JS = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js";
@@ -205,14 +207,37 @@ function SourceLinks({ links }: { links: NonNullable<VisualsResult["sourceLinks"
 
 function ImageBlock({ src }: { src: string }) {
   const url = normalizeManualUrl(src);
+  const alt = getVisualImageAlt(src);
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div style={{ textAlign: "center", marginTop: 8 }}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={url}
-        alt=""
-        style={{ maxWidth: "100%", maxHeight: 300, borderRadius: 0, border: "1px solid rgba(54,226,248,0.15)" }}
-      />
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        style={{
+          background: "none",
+          border: "none",
+          padding: 0,
+          cursor: "zoom-in",
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={url}
+          alt={alt}
+          style={{
+            maxWidth: "100%",
+            maxHeight: 300,
+            borderRadius: 0,
+            border: "1px solid rgba(54,226,248,0.15)",
+          }}
+        />
+      </button>
+      <div style={{ fontSize: 11, color: "#666", marginTop: 6 }}>
+        Click image to expand
+      </div>
+      {isOpen && <Lightbox src={url} alt={alt} onClose={() => setIsOpen(false)} />}
     </div>
   );
 }

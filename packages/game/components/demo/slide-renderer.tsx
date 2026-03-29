@@ -1,7 +1,6 @@
 "use client";
 
 import { useDemoStore } from "@/lib/demo/store";
-import { SLIDES } from "@/lib/demo/demo-config";
 
 // Act I slides
 import { SlideDailyDeathToll } from "./slides/act1/slide-daily-death-toll";
@@ -136,7 +135,8 @@ const slideComponents: Record<string, React.ComponentType> = {
 
 export function SlideRenderer() {
   const currentSlide = useDemoStore((s) => s.currentSlide);
-  const slideConfig = SLIDES[currentSlide];
+  const activeSlides = useDemoStore((s) => s.activeSlides);
+  const slideConfig = activeSlides[currentSlide];
 
   if (!slideConfig) return null;
 

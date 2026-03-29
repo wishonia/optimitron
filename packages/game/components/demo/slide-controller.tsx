@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { useDemoStore } from "@/lib/demo/store";
-import { SLIDES } from "@/lib/demo/demo-config";
 
 interface SlideControllerProps {
   children: React.ReactNode;
@@ -11,6 +10,7 @@ interface SlideControllerProps {
 export function SlideController({ children }: SlideControllerProps) {
   const {
     currentSlide,
+    activeSlides,
     isPlaying,
     narrationEnded,
     typewriterComplete,
@@ -23,7 +23,7 @@ export function SlideController({ children }: SlideControllerProps) {
   const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Get current slide config
-  const currentSlideConfig = SLIDES[currentSlide];
+  const currentSlideConfig = activeSlides[currentSlide];
 
   // Update palette based on current slide's act
   useEffect(() => {

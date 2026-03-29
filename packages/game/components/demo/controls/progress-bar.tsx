@@ -1,34 +1,33 @@
 "use client";
 
 import { useDemoStore } from "@/lib/demo/store";
-import { SLIDES, getChapterForSlide } from "@/lib/demo/demo-config";
+import { getChapterForSlide } from "@/lib/demo/demo-config";
 import { cn } from "@/lib/utils";
 
 export function ProgressBar() {
-  const { currentSlide, goToSlide, isRecordingMode } = useDemoStore();
+  const { currentSlide, activeSlides, totalSlides, goToSlide, isRecordingMode } = useDemoStore();
 
   if (isRecordingMode) return null;
 
-  const totalSlides = SLIDES.length;
   const progress = ((currentSlide + 1) / totalSlides) * 100;
 
-  // Calculate chapter positions
+  // Calculate chapter positions from active slides
   const chapters = [
     { name: "Act I", position: 0, slideIndex: 0 },
-    { 
-      name: "The Turn", 
-      position: (SLIDES.findIndex((s) => s.act === "turn") / totalSlides) * 100,
-      slideIndex: SLIDES.findIndex((s) => s.act === "turn"),
+    {
+      name: "The Turn",
+      position: (activeSlides.findIndex((s) => s.act === "turn") / totalSlides) * 100,
+      slideIndex: activeSlides.findIndex((s) => s.act === "turn"),
     },
-    { 
-      name: "Act II", 
-      position: (SLIDES.findIndex((s) => s.act === "act2") / totalSlides) * 100,
-      slideIndex: SLIDES.findIndex((s) => s.act === "act2"),
+    {
+      name: "Act II",
+      position: (activeSlides.findIndex((s) => s.act === "act2") / totalSlides) * 100,
+      slideIndex: activeSlides.findIndex((s) => s.act === "act2"),
     },
-    { 
-      name: "Act III", 
-      position: (SLIDES.findIndex((s) => s.act === "act3") / totalSlides) * 100,
-      slideIndex: SLIDES.findIndex((s) => s.act === "act3"),
+    {
+      name: "Act III",
+      position: (activeSlides.findIndex((s) => s.act === "act3") / totalSlides) * 100,
+      slideIndex: activeSlides.findIndex((s) => s.act === "act3"),
     },
   ].filter((c) => c.slideIndex >= 0);
 

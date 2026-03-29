@@ -1925,6 +1925,90 @@ RECURSIVE EXPONENTIAL THEFT`,
   },
 ];
 
+// ============================================
+// PLAYLISTS
+// Different cuts for different audiences
+// ============================================
+
+export interface Playlist {
+  id: string;
+  name: string;
+  description: string;
+  targetDuration: number; // seconds
+  slideIds: string[];
+}
+
+export const PLAYLISTS: Playlist[] = [
+  {
+    id: "full",
+    name: "Full Demo",
+    description: "All slides",
+    targetDuration: 520,
+    slideIds: SLIDES.map((s) => s.id),
+  },
+  {
+    id: "protocol-labs",
+    name: "Protocol Labs Hackathon",
+    description: "IPFS, Storacha, Hypercerts, decentralized infrastructure",
+    targetDuration: 180,
+    slideIds: [
+      "daily-death-toll",
+      "misaligned-superintelligence",
+      "military-health-ratio",
+      "game-over-moronia",
+      "restore-from-wishonia",
+      "one-percent-treaty",
+      "trial-acceleration-12x",
+      "fda-approval-delay-8yr",
+      "decentralized-fda",
+      "ipfs-immutable-storage",
+      "impact-certificates",
+      "optimal-policy-generator",
+      "drug-policy-natural-experiment",
+      "disease-cure-supply-chain",
+      "alignment-switch",
+      "ten-billion-lives-saved",
+      "final-call-to-action",
+      "post-credits-aliens",
+    ],
+  },
+  {
+    id: "general-3min",
+    name: "General Promotion (3 min)",
+    description: "Problem, solution, personal upside, CTA",
+    targetDuration: 180,
+    slideIds: [
+      "daily-death-toll",
+      "misaligned-superintelligence",
+      "military-health-ratio",
+      "economic-collapse-clock",
+      "game-over-moronia",
+      "restore-from-wishonia",
+      "one-percent-treaty",
+      "healthcare-vs-military-roi",
+      "gdp-20-year-forecast",
+      "pluralistic-ignorance-bug",
+      "one-percent-referendum-vote",
+      "dominant-assurance-contract",
+      "recruit-network-effect",
+      "personal-income-3-timelines",
+      "final-call-to-action",
+      "post-credits-aliens",
+    ],
+  },
+];
+
+export const DEFAULT_PLAYLIST_ID = "full";
+
+/** Resolve a playlist to an ordered array of SlideConfigs */
+export function resolvePlaylist(playlistId: string): SlideConfig[] {
+  const playlist = PLAYLISTS.find((p) => p.id === playlistId);
+  if (!playlist || playlist.id === "full") return SLIDES;
+  return playlist.slideIds
+    .map((id) => SLIDES.find((s) => s.id === id))
+    .filter((s): s is SlideConfig => s != null);
+}
+
 // Chapter markers for navigation
 export const CHAPTERS = [
   { id: "act1", name: "Act I: The Horror", slideIndex: 0 },
