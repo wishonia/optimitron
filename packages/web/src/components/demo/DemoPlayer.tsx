@@ -13,6 +13,19 @@ import { SierraGameProvider, useSierraGame } from "./SierraGameContext";
 import { SierraChrome } from "./SierraChrome";
 import { getSlideComponent } from "./slides";
 import { useSierraTransition } from "./SierraTransition";
+// Wishonia character with lip-sync support
+import { WishoniaCharacter } from "@optimitron/wishonia-widget";
+
+function WishoniaPresenter({ analyserNode }: { analyserNode: AnalyserNode | null }) {
+  return (
+    <WishoniaCharacter
+      size={140}
+      spritePath="/sprites/wishonia/"
+      spriteFormat="png"
+      analyserNode={analyserNode}
+    />
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Background color map
@@ -70,14 +83,31 @@ function DemoPlayerInner({
   const slides = getPlaylistSegments(playlistId);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Sync initial slide from URL hash after hydration
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const idx = slides.findIndex((s) => s.id === hash);
+      if (idx >= 0) setCurrentIndex(idx);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only on mount
+  }, []);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [subtitle, setSubtitle] = useState(
     () => slides[0]?.narration ?? "",
   );
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
+  const [analyserNode, setAnalyserNode] = useState<AnalyserNode | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Refs to read current values inside stable callbacks without adding deps
+  const isPlayingRef = useRef(isPlaying);
+  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
+  const isMutedRef = useRef(isMuted);
+  useEffect(() => { isMutedRef.current = isMuted; }, [isMuted]);
 
   const slide = slides[currentIndex]!;
 
@@ -92,20 +122,23 @@ function DemoPlayerInner({
     }
   }, []);
 
+  // Stable callback — only recreated when slides change (playlist switch)
   const playSlideAudio = useCallback(
     async (index: number) => {
       const s = slides[index]!;
       setSubtitle(s.narration);
 
-      if (isMuted) return;
+      if (isMutedRef.current) return;
 
       setIsLoadingAudio(true);
       try {
-        const audio = await getDemoAudio(s.id, s.narration);
-        if (audio) {
+        const result = await getDemoAudio(s.id, s.narration);
+        if (result) {
+          const { audio, analyser } = result;
           audioRef.current = audio;
+          setAnalyserNode(analyser);
           audio.onended = () => {
-            if (isPlaying && index < slides.length - 1) {
+            if (isPlayingRef.current && index < slides.length - 1) {
               setCurrentIndex(index + 1);
             } else {
               setIsPlaying(false);
@@ -116,7 +149,7 @@ function DemoPlayerInner({
           // No audio — auto-advance after estimated duration
           const words = s.narration.split(/\s+/).length;
           const ms = (words / 150) * 60 * 1000;
-          if (isPlaying && index < slides.length - 1) {
+          if (isPlayingRef.current && index < slides.length - 1) {
             setTimeout(() => setCurrentIndex(index + 1), ms);
           }
         }
@@ -126,7 +159,8 @@ function DemoPlayerInner({
         setIsLoadingAudio(false);
       }
     },
-    [isMuted, isPlaying, slides],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- isMuted/isPlaying read via refs
+    [slides],
   );
 
   useEffect(() => {
@@ -136,7 +170,20 @@ function DemoPlayerInner({
     } else {
       setSubtitle(slides[currentIndex]!.narration);
     }
-  }, [currentIndex, isPlaying, stopAudio, playSlideAudio, slides]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- playSlideAudio is stable via refs
+  }, [currentIndex, isPlaying]);
+
+  // Sync slide ID to URL hash for sharing
+  useEffect(() => {
+    const id = slides[currentIndex]?.id;
+    if (id && typeof window !== "undefined") {
+      const newHash = `#${id}`;
+      if (window.location.hash !== newHash) {
+        // Pass existing history.state to avoid Next.js App Router re-render
+        window.history.replaceState(window.history.state, "", newHash);
+      }
+    }
+  }, [currentIndex, slides]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -211,6 +258,20 @@ function DemoPlayerInner({
         slideContent
       )}
 
+      {/* Wishonia character — bottom right, click to play */}
+      {sierraMode && (
+        <div
+          className="absolute -bottom-4 right-4 z-20 cursor-pointer"
+          onClick={() => {
+            if (!isPlaying) {
+              setIsPlaying(true);
+            }
+          }}
+        >
+          <WishoniaPresenter analyserNode={analyserNode} />
+        </div>
+      )}
+
       {/* Overlay controls — visible on hover/tap */}
       <div className="absolute bottom-0 left-0 right-0 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-300 z-40">
         {/* Subtitle (only in non-sierra mode — sierra uses narrator box) */}
@@ -232,7 +293,6 @@ function DemoPlayerInner({
           onTogglePlay={() => setIsPlaying((p) => !p)}
           onToggleMute={() => setIsMuted((m) => !m)}
           onGoTo={goTo}
-          onFullscreen={() => containerRef.current?.requestFullscreen?.()}
         />
       </div>
 
@@ -257,15 +317,24 @@ interface DemoPlayerProps {
   playlistId?: string;
 }
 
-const SIERRA_PLAYLISTS = new Set(["hackathon"]);
+const SIERRA_PLAYLISTS = new Set(["hackathon", "protocol-labs"]);
 
 export function DemoPlayer({
   playlistId = DEFAULT_PLAYLIST_ID,
 }: DemoPlayerProps) {
-  const sierraMode =
-    SIERRA_PLAYLISTS.has(playlistId) ||
-    (typeof window !== "undefined" &&
-      new URLSearchParams(window.location.search).get("sierra") === "true");
+  const [sierraMode, setSierraMode] = useState(
+    SIERRA_PLAYLISTS.has(playlistId),
+  );
+
+  // Check query param after hydration to avoid server/client mismatch
+  useEffect(() => {
+    if (
+      !SIERRA_PLAYLISTS.has(playlistId) &&
+      new URLSearchParams(window.location.search).get("sierra") === "true"
+    ) {
+      setSierraMode(true);
+    }
+  }, [playlistId]);
 
   return (
     <SierraGameProvider enabled={sierraMode}>

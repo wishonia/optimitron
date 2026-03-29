@@ -148,6 +148,72 @@ const slideRegistry: Record<string, ComponentType> = {
 };
 
 // ---------------------------------------------------------------------------
+// Sierra slides (lazy-loaded from game package port)
+// ---------------------------------------------------------------------------
+
+import { lazy } from "react";
+
+const sierraSlide = (file: string) =>
+  lazy(() => import(/* webpackInclude: /\.tsx$/ */ `./sierra/${file}.tsx`)) as unknown as ComponentType;
+
+const sierraRegistry: Record<string, ComponentType> = {
+  "sierra-earth-optimization-game": sierraSlide("slide-earth-optimization-game"),
+  "sierra-military-waste-170t": sierraSlide("slide-military-waste-170t"),
+  "sierra-misaligned-superintelligence": sierraSlide("slide-misaligned-superintelligence"),
+  "sierra-military-health-ratio": sierraSlide("slide-military-health-ratio"),
+  "sierra-game-over-moronia": sierraSlide("slide-game-over-moronia"),
+  "sierra-restore-from-wishonia": sierraSlide("slide-restore-from-wishonia"),
+  "sierra-one-percent-treaty": sierraSlide("slide-one-percent-treaty"),
+  "sierra-one-percent-referendum-vote": sierraSlide("slide-one-percent-referendum-vote"),
+  "sierra-dominant-assurance-contract": sierraSlide("slide-dominant-assurance-contract"),
+  "sierra-decentralized-fda": sierraSlide("slide-decentralized-fda"),
+  "sierra-optimal-policy-generator": sierraSlide("slide-optimal-policy-generator"),
+  "sierra-optimal-budget-generator": sierraSlide("slide-optimal-budget-generator"),
+  "sierra-incentive-alignment-bonds": sierraSlide("slide-incentive-alignment-bonds"),
+  "sierra-ipfs-immutable-storage": sierraSlide("slide-ipfs-immutable-storage"),
+  "sierra-impact-certificates": sierraSlide("slide-impact-certificates"),
+  "sierra-ten-billion-lives-saved": sierraSlide("slide-ten-billion-lives-saved"),
+  "sierra-final-call-to-action": sierraSlide("slide-final-call-to-action"),
+  "sierra-post-credits-aliens": sierraSlide("slide-post-credits-aliens"),
+  // Additional Sierra slides (available for other playlists)
+  "sierra-daily-death-toll": sierraSlide("slide-daily-death-toll"),
+  "sierra-ai-hacker-spiral": sierraSlide("slide-ai-hacker-spiral"),
+  "sierra-ai-hacker-breach": sierraSlide("slide-ai-hacker-breach"),
+  "sierra-economic-collapse-clock": sierraSlide("slide-economic-collapse-clock"),
+  "sierra-global-failed-state": sierraSlide("slide-global-failed-state"),
+  "sierra-inflation-wage-theft": sierraSlide("slide-inflation-wage-theft"),
+  "sierra-trial-acceleration-12x": sierraSlide("slide-trial-acceleration-12x"),
+  "sierra-healthcare-vs-military-roi": sierraSlide("slide-healthcare-vs-military-roi"),
+  "sierra-economic-virtuous-loop": sierraSlide("slide-economic-virtuous-loop"),
+  "sierra-gdp-20-year-forecast": sierraSlide("slide-gdp-20-year-forecast"),
+  "sierra-pluralistic-ignorance-bug": sierraSlide("slide-pluralistic-ignorance-bug"),
+  "sierra-public-vs-lobbyist-90to1": sierraSlide("slide-public-vs-lobbyist-90to1"),
+  "sierra-dysfunction-tax-101t": sierraSlide("slide-dysfunction-tax-101t"),
+  "sierra-win-conditions-hale-income": sierraSlide("slide-win-conditions-hale-income"),
+  "sierra-pairwise-budget-allocation": sierraSlide("slide-pairwise-budget-allocation"),
+  "sierra-eigenvector-budget-result": sierraSlide("slide-eigenvector-budget-result"),
+  "sierra-vote-value-asymmetry": sierraSlide("slide-vote-value-asymmetry"),
+  "sierra-recruit-network-effect": sierraSlide("slide-recruit-network-effect"),
+  "sierra-prize-pool-vs-index-fund": sierraSlide("slide-prize-pool-vs-index-fund"),
+  "sierra-vote-point-dollar-value": sierraSlide("slide-vote-point-dollar-value"),
+  "sierra-three-scenarios-all-win": sierraSlide("slide-three-scenarios-all-win"),
+  "sierra-government-track-record": sierraSlide("slide-government-track-record"),
+  "sierra-congress-military-trials-ratio": sierraSlide("slide-congress-military-trials-ratio"),
+  "sierra-smart-contract-superpac": sierraSlide("slide-smart-contract-superpac"),
+  "sierra-decentralized-irs": sierraSlide("slide-decentralized-irs"),
+  "sierra-decentralized-welfare": sierraSlide("slide-decentralized-welfare"),
+  "sierra-decentralized-federal-reserve": sierraSlide("slide-decentralized-federal-reserve"),
+  "sierra-drug-policy-natural-experiment": sierraSlide("slide-drug-policy-natural-experiment"),
+  "sierra-pencil-supply-chain": sierraSlide("slide-pencil-supply-chain"),
+  "sierra-disease-cure-supply-chain": sierraSlide("slide-disease-cure-supply-chain"),
+  "sierra-alignment-switch": sierraSlide("slide-alignment-switch"),
+  "sierra-personal-income-3-timelines": sierraSlide("slide-personal-income-3-timelines"),
+};
+
+// Merge registries
+Object.assign(slideRegistry, sierraRegistry);
+
+// ---------------------------------------------------------------------------
 // Lookup
 // ---------------------------------------------------------------------------
 

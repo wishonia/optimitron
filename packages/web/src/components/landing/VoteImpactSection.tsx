@@ -53,10 +53,10 @@ export default function VoteImpactSection() {
 
           <div className="max-w-3xl mx-auto space-y-4">
             <p className="text-lg sm:text-xl font-bold">
-              <ParameterValue param={TREATY_ANNUAL_FUNDING} className="text-brutal-pink font-black" />/year scales trial capacity <span className="text-brutal-pink font-black"><ParameterValue param={DFDA_TRIAL_CAPACITY_MULTIPLIER} format={(p) => `${Math.round(p.value)}`} />X</span>, achieving <span className="text-brutal-pink font-black"><ParameterValue param={TRIAL_CAPACITY_CUMULATIVE_YEARS_20YR} format={(p) => `${Math.round(p.value)}`} /> years</span> of progress in <span className="text-brutal-pink font-black"><ParameterValue param={LIFE_EXTENSION_YEARS} format={(p) => `${Math.round(p.value)}`} /></span>
+              <ParameterValue param={TREATY_ANNUAL_FUNDING} className="text-brutal-pink font-black" />/year scales trial capacity <span className="text-brutal-pink font-black"><ParameterValue param={DFDA_TRIAL_CAPACITY_MULTIPLIER} display="integer" />X</span>, achieving <span className="text-brutal-pink font-black"><ParameterValue param={TRIAL_CAPACITY_CUMULATIVE_YEARS_20YR} display="integer" /> years</span> of progress in <span className="text-brutal-pink font-black"><ParameterValue param={LIFE_EXTENSION_YEARS} display="integer" /></span>
             </p>
             <p className="text-base sm:text-lg font-bold opacity-80">
-              Through a <ParameterValue param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_YEARS} format={(p) => `${Math.round(p.value)}`} />-year average timeline shift: <ParameterValue param={DFDA_TRIAL_CAPACITY_MULTIPLIER} format={(p) => `${Math.round(p.value)}`} />x trial capacity + eliminating <ParameterValue param={EFFICACY_LAG_YEARS} format={(p) => p.value.toFixed(1)} />-year regulatory delays
+              Through a <ParameterValue param={DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_YEARS} display="integer" />-year average timeline shift: <ParameterValue param={DFDA_TRIAL_CAPACITY_MULTIPLIER} display="integer" />x trial capacity + eliminating <ParameterValue param={EFFICACY_LAG_YEARS} figures={2} />-year regulatory delays
             </p>
           </div>
         </BrutalCard>

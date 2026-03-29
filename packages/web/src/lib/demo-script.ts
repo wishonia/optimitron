@@ -878,7 +878,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-intro",
     title: "The Earth Optimization Game",
-    componentId: "game-title",
+    componentId: "sierra-earth-optimization-game",
     bgColor: "foreground",
     tags: ["hook"],
     act: "I",
@@ -887,7 +887,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-170t",
     title: "$170 Trillion",
-    componentId: "terminal",
+    componentId: "sierra-military-waste-170t",
     bgColor: "foreground",
     tags: ["hook", "problem"],
     act: "I",
@@ -896,7 +896,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-misaligned",
     title: "Misaligned Superintelligence",
-    componentId: "terminal",
+    componentId: "sierra-misaligned-superintelligence",
     bgColor: "foreground",
     tags: ["hook", "problem"],
     act: "I",
@@ -905,7 +905,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-ratio",
     title: "604:1",
-    componentId: "military-pie",
+    componentId: "sierra-military-health-ratio",
     bgColor: "foreground",
     tags: ["hook", "problem"],
     act: "I",
@@ -914,7 +914,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-moronia",
     title: "Game Over",
-    componentId: "moronia",
+    componentId: "sierra-game-over-moronia",
     bgColor: "foreground",
     tags: ["problem"],
     act: "turn",
@@ -923,7 +923,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-wishonia",
     title: "Wishonia",
-    componentId: "wishonia-slide",
+    componentId: "sierra-restore-from-wishonia",
     bgColor: "cyan",
     tags: ["solution"],
     act: "turn",
@@ -932,7 +932,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-treaty",
     title: "The 1% Treaty",
-    componentId: "one-percent-shift",
+    componentId: "sierra-one-percent-treaty",
     bgColor: "yellow",
     tags: ["solution"],
     act: "II-solution",
@@ -941,7 +941,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-game",
     title: "The Game",
-    componentId: "level-vote",
+    componentId: "sierra-one-percent-referendum-vote",
     bgColor: "pink",
     tags: ["mechanism"],
     act: "II-game",
@@ -950,7 +950,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-prize",
     title: "The Prize",
-    componentId: "prize-mechanism",
+    componentId: "sierra-dominant-assurance-contract",
     bgColor: "pink",
     tags: ["mechanism", "financial"],
     act: "II-money",
@@ -959,7 +959,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-dfda",
     title: "Decentralized FDA",
-    componentId: "dfda",
+    componentId: "sierra-decentralized-fda",
     bgColor: "cyan",
     tags: ["feature"],
     act: "II-armory",
@@ -968,7 +968,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-opg",
     title: "Optimal Policy Generator",
-    componentId: "optimizer",
+    componentId: "sierra-optimal-policy-generator",
     bgColor: "yellow",
     tags: ["feature"],
     act: "II-armory",
@@ -977,7 +977,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-obg",
     title: "Optimal Budget Generator",
-    componentId: "optimizer",
+    componentId: "sierra-optimal-budget-generator",
     bgColor: "yellow",
     tags: ["feature"],
     act: "II-armory",
@@ -986,7 +986,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-iab",
     title: "Incentive Alignment Bonds",
-    componentId: "iab",
+    componentId: "sierra-incentive-alignment-bonds",
     bgColor: "pink",
     tags: ["feature", "financial"],
     act: "II-armory",
@@ -995,7 +995,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-storacha",
     title: "Storacha + IPFS",
-    componentId: "storacha",
+    componentId: "sierra-ipfs-immutable-storage",
     bgColor: "background",
     tags: ["feature"],
     act: "II-armory",
@@ -1004,7 +1004,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-hypercerts",
     title: "Hypercerts",
-    componentId: "hypercerts",
+    componentId: "sierra-impact-certificates",
     bgColor: "pink",
     tags: ["feature"],
     act: "II-armory",
@@ -1013,7 +1013,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-lives",
     title: "10.7 Billion Lives",
-    componentId: "lives-saved",
+    componentId: "sierra-ten-billion-lives-saved",
     bgColor: "cyan",
     tags: ["cta"],
     act: "III",
@@ -1022,7 +1022,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-close",
     title: "Play Now",
-    componentId: "close",
+    componentId: "sierra-final-call-to-action",
     bgColor: "pink",
     tags: ["cta"],
     act: "III",
@@ -1031,7 +1031,7 @@ export const SEGMENTS: DemoSegment[] = [
   {
     id: "pl-cta",
     title: "Vote Now",
-    componentId: "close",
+    componentId: "sierra-post-credits-aliens",
     bgColor: "pink",
     tags: ["cta"],
     act: "III",

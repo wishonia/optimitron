@@ -159,7 +159,7 @@ export function IABCalculator() {
           </div>
           <div className="text-xs text-muted-foreground font-bold space-y-1">
             <p>
-              Base <ParameterValue param={VICTORY_BOND_ANNUAL_RETURN_PCT} format={(p) => `${(p.value * 100).toFixed(0)}%`} /> revenue share
+              Base <ParameterValue param={VICTORY_BOND_ANNUAL_RETURN_PCT} /> revenue share
               of treaty flows — multiplied by your verified referral votes.
               Plus your personal lifetime income increases by{" "}
               <span className="font-bold text-muted-foreground">

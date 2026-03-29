@@ -23,7 +23,7 @@ export function GlobalProgressCard({ progress }: GlobalProgressCardProps) {
       <Card.Header>
         <Card.Title className="text-2xl font-black uppercase flex items-center gap-2">
           <Target className="h-6 w-6" />
-          PROGRESS TOWARD <ParameterValue param={GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT} showUnit /> TIPPING POINT
+          PROGRESS TOWARD <ParameterValue param={GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT} display="withUnit" /> TIPPING POINT
           <Tooltip.Provider>
             <Tooltip>
               <Tooltip.Trigger asChild>
@@ -33,9 +33,9 @@ export function GlobalProgressCard({ progress }: GlobalProgressCardProps) {
               </Tooltip.Trigger>
               <Tooltip.Content className="max-w-sm bg-background border-4 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                 <p className="font-bold text-sm">
-                  <span className="text-brutal-pink">The <ParameterValue param={GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT} showUnit /> Rule:</span> Harvard research by Erica Chenoweth found
-                  that nonviolent campaigns were twice as likely to succeed as violent ones. Once <ParameterValue param={GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT} showUnit /> of the population
-                  actively participates, they have never failed to bring about change. This is our target — <ParameterValue param={TREATY_CAMPAIGN_VOTING_BLOC_TARGET} format={(p) => `${Math.round(p.value / 1e6)}`} /> million
+                  <span className="text-brutal-pink">The <ParameterValue param={GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT} display="withUnit" /> Rule:</span> Harvard research by Erica Chenoweth found
+                  that nonviolent campaigns were twice as likely to succeed as violent ones. Once <ParameterValue param={GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT} display="withUnit" /> of the population
+                  actively participates, they have never failed to bring about change. This is our target — <ParameterValue param={{...TREATY_CAMPAIGN_VOTING_BLOC_TARGET, value: Math.round(TREATY_CAMPAIGN_VOTING_BLOC_TARGET.value / 1e6), unit: ""}} display="integer" /> million
                   people globally united to optimize Earth.
                 </p>
               </Tooltip.Content>
@@ -43,7 +43,7 @@ export function GlobalProgressCard({ progress }: GlobalProgressCardProps) {
           </Tooltip.Provider>
         </Card.Title>
         <Card.Description className="text-foreground font-bold">
-          We need <ParameterValue param={GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT} showUnit /> of the global population to create unstoppable change
+          We need <ParameterValue param={GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT} display="withUnit" /> of the global population to create unstoppable change
         </Card.Description>
       </Card.Header>
       <Card.Content>

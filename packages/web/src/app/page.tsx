@@ -179,7 +179,7 @@ export default function Home() {
       {/* ── 8. Final CTA ── */}
       <CTASection
         heading="The Clock Is Running"
-        description={<>The parasitic economy hits 35% of GDP by <ParameterValue param={DESTRUCTIVE_ECONOMY_35PCT_YEAR} format={(p) => String(Math.round(p.value))} />. Your VOTE points are worth <ParameterValue param={VOTE_TOKEN_VALUE} showUnit /> if <ParameterValue param={GLOBAL_COORDINATION_TARGET_SUPPORTERS} format={(p) => `${(p.value / 1e9).toFixed(0)} billion`} /> people play. Worth nothing if they don&apos;t.</>}
+        description={<>The parasitic economy hits 35% of GDP by <ParameterValue param={DESTRUCTIVE_ECONOMY_35PCT_YEAR} display="integer" />. Your VOTE points are worth <ParameterValue param={VOTE_TOKEN_VALUE} display="withUnit" /> if <ParameterValue param={GLOBAL_COORDINATION_TARGET_SUPPORTERS} figures={1} /> people play. Worth nothing if they don&apos;t.</>}
         bgColor="yellow"
       >
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

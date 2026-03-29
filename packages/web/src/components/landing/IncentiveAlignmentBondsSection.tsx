@@ -48,7 +48,7 @@ export function IncentiveAlignmentBondsSection() {
                 Your Downside (Plan Fails)
               </div>
               <h3 className="text-2xl font-black text-foreground mb-2">
-                ~<ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} showUnit /> Your Money Back
+                ~<ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} display="withUnit" /> Your Money Back
               </h3>
               <p className="text-sm text-foreground leading-relaxed font-bold mb-3">
                 Dominant assurance contract. If outcome thresholds aren&apos;t met,
@@ -78,7 +78,7 @@ export function IncentiveAlignmentBondsSection() {
               <div className="p-3 bg-muted border border-primary">
                 <p className="text-xs font-bold text-muted-foreground">
                   Buy bonds → proceeds fund aligned politicians → treaty passes →
-                  bondholders earn <ParameterValue param={VICTORY_BOND_ANNUAL_RETURN_PCT} format={(p) => `${(p.value * 100).toFixed(0)}%`} /> annual returns from treaty revenue. Perpetually.
+                  bondholders earn <ParameterValue param={VICTORY_BOND_ANNUAL_RETURN_PCT} /> annual returns from treaty revenue. Perpetually.
                 </p>
               </div>
             </div>
@@ -110,7 +110,7 @@ export function IncentiveAlignmentBondsSection() {
                 className="h-full bg-brutal-yellow border-4 border-primary flex items-center justify-center px-3 w-1/4"
               >
                 <span className="text-xs font-black text-foreground whitespace-nowrap">
-                  Fails → ~<ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} showUnit />
+                  Fails → ~<ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} display="withUnit" />
                 </span>
               </motion.div>
 
@@ -166,7 +166,7 @@ export function IncentiveAlignmentBondsSection() {
               80% of treaty inflows fund pragmatic trials. Diseases get cured.
               Everyone&apos;s income rises. Bondholders earn 10% in returns.
               Politicians earn 10% for alignment. But the real payout is
-              population-wide: the $<ParameterValue param={POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL} format={(p) => Math.round(p.value).toLocaleString("en-US")} />/year dysfunction tax starts
+              population-wide: the <ParameterValue param={{...POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL, unit: "USD"}} display="withUnit" />/year dysfunction tax starts
               disappearing for every human on Earth. As GDP rises, everyone
               lobbies for more treaty funding. 1% → 2% → 5%. The loop is
               self-reinforcing.

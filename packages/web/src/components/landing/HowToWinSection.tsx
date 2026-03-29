@@ -49,7 +49,7 @@ export function HowToWinSection() {
         {/* The awareness insight */}
         <div className="text-center mb-8 max-w-3xl mx-auto">
           <p className="text-xl sm:text-2xl font-black text-foreground">
-            {TAGLINES.pluralisticIgnorance} Get <ParameterValue param={GLOBAL_COORDINATION_TARGET_SUPPORTERS} format={(p) => `${(p.value / 1e9).toFixed(0)} billion`} /> to show they want
+            {TAGLINES.pluralisticIgnorance} Get <ParameterValue param={GLOBAL_COORDINATION_TARGET_SUPPORTERS} figures={1} /> to show they want
             this and it becomes unstoppable.
           </p>
         </div>

@@ -22,12 +22,12 @@ const objections: { id: string; question: string; answer: ReactNode }[] = [
   {
     id: "politicians",
     question: "Can politicians just ignore this?",
-    answer: <>Chenoweth&apos;s research shows that 3.5% of a population is the tipping point for political change — no campaign in history has failed after reaching it. That&apos;s <ParameterValue param={TREATY_CAMPAIGN_VOTING_BLOC_TARGET} showUnit /> verified supporters globally. The referendum doesn&apos;t ask permission. It proves demand. Once demand is undeniable, ignoring it becomes more expensive than acting on it.</>,
+    answer: <>Chenoweth&apos;s research shows that 3.5% of a population is the tipping point for political change — no campaign in history has failed after reaching it. That&apos;s <ParameterValue param={TREATY_CAMPAIGN_VOTING_BLOC_TARGET} display="withUnit" /> verified supporters globally. The referendum doesn&apos;t ask permission. It proves demand. Once demand is undeniable, ignoring it becomes more expensive than acting on it.</>,
   },
   {
     id: "fails",
     question: "What if the plan fails?",
-    answer: <>That&apos;s the entire point of dominant assurance. If the plan fails after 15 years, depositors claim their principal plus ~<ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} showUnit /> in Wishocratic fund growth. You&apos;re not donating. You&apos;re making a bet where the worst case is multiplying your money. The plan failing is the scenario designed to make you rich.</>,
+    answer: <>That&apos;s the entire point of dominant assurance. If the plan fails after 15 years, depositors claim their principal plus ~<ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} display="withUnit" /> in Wishocratic fund growth. You&apos;re not donating. You&apos;re making a bet where the worst case is multiplying your money. The plan failing is the scenario designed to make you rich.</>,
   },
   {
     id: "trust",
@@ -38,7 +38,7 @@ const objections: { id: string; question: string; answer: ReactNode }[] = [
   {
     id: "share",
     question: "Why should I share this with friends?",
-    answer: <>Everyone would be healthier and <ParameterValue param={TREATY_TRAJECTORY_AVG_INCOME_YEAR_15} format={(p) => `${Math.round(p.value / CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value)}`} />x richer if their governments weren&apos;t spending <ParameterValue param={MILITARY_VS_MEDICAL_RESEARCH_RATIO} format={(p) => `${Math.round(p.value)}`} /> times more on blowing everything up than on clinical trials. But everyone assumes nobody else would agree to a saner allocation — despite the fact that this is what literally everyone wants. That&apos;s called pluralistic ignorance and it&apos;s the only thing standing between you and a cured planet. Each friend who plays proves one more person agrees, earns you a VOTE point worth <ParameterValue param={VOTE_TOKEN_VALUE} showUnit />+, and moves closer to the tipping point. You&apos;re not asking for a favour. You&apos;re showing them the maths.</>,
+    answer: <>Everyone would be healthier and <ParameterValue param={{...TREATY_TRAJECTORY_AVG_INCOME_YEAR_15, value: Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value / CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value), unit: ""}} display="integer" />x richer if their governments weren&apos;t spending <ParameterValue param={MILITARY_VS_MEDICAL_RESEARCH_RATIO} display="integer" /> times more on blowing everything up than on clinical trials. But everyone assumes nobody else would agree to a saner allocation — despite the fact that this is what literally everyone wants. That&apos;s called pluralistic ignorance and it&apos;s the only thing standing between you and a cured planet. Each friend who plays proves one more person agrees, earns you a VOTE point worth <ParameterValue param={VOTE_TOKEN_VALUE} display="withUnit" />+, and moves closer to the tipping point. You&apos;re not asking for a favour. You&apos;re showing them the maths.</>,
   },
 ];
 

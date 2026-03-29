@@ -511,6 +511,110 @@ export const fullManualPaperLink: NavItem = {
   external: true,
 };
 
+export const dfdaImpactPaperLink: NavItem = {
+  label: "dFDA Impact Analysis",
+  href: "https://manual.warondisease.org/knowledge/appendix/dfda-impact-paper",
+  emoji: "📊",
+  description: "Cost-effectiveness of pragmatic trials at $0.842 per DALY averted. Your current system manages about $50,000. Bit of a gap.",
+  external: true,
+};
+
+export const gdpTrajectoriesPaperLink: NavItem = {
+  label: "Choose Your Own Earth",
+  href: "https://manual.warondisease.org/knowledge/economics/gdp-trajectories",
+  emoji: "📈",
+  description: "Three GDP trajectories. One where you fix things. Two where you don't. Guess which ones you're currently on.",
+  external: true,
+};
+
+export const costOfChangePaperLink: NavItem = {
+  label: "The Price of Political Change",
+  href: "https://manual.warondisease.org/knowledge/appendix/cost-of-change-analysis",
+  emoji: "💵",
+  description: "$25B to $200B to fix governance. Sounds expensive until you see the $101T you're losing annually by not bothering.",
+  external: true,
+};
+
+export const algorithmicAdminPaperLink: NavItem = {
+  label: "Algorithmic Public Administration",
+  href: "https://manual.warondisease.org/knowledge/appendix/algorithmic-public-administration.html",
+  emoji: "🤖",
+  description: "Replace bureaucrats with deterministic functions. Same outputs, fewer expense accounts.",
+  external: true,
+};
+
+export const usEfficiencyAuditPaperLink: NavItem = {
+  label: "US Efficiency Audit",
+  href: "https://manual.warondisease.org/knowledge/appendix/us-efficiency-audit",
+  emoji: "🔎",
+  description: "$4.9 trillion in annual inefficiency. That's not a rounding error. That's the error.",
+  external: true,
+};
+
+export const prizeProtocolPaperLink: NavItem = {
+  label: "Earth Optimization Prize Protocol",
+  href: "https://manual.warondisease.org/knowledge/appendix/earth-optimization-prize-protocol",
+  emoji: "🏆",
+  description: "The technical spec for a prize where losing still pays 4.2x. The maths is annoyingly sound.",
+  external: true,
+};
+
+export const rightToTrialPaperLink: NavItem = {
+  label: "Right to Trial & FDA Upgrade Act",
+  href: "https://manual.warondisease.org/knowledge/appendix/right-to-trial-fda-upgrade-act",
+  emoji: "⚖️",
+  description: "Draft legislation to let safe treatments reach patients before they die waiting. Radical concept, apparently.",
+  external: true,
+};
+
+export const planetaryConstitutionPaperLink: NavItem = {
+  label: "Planetary Constitutional Convention",
+  href: "https://manual.warondisease.org/strategy/planetary-constitutional-convention",
+  emoji: "🌐",
+  description: "A constitutional framework for 8 billion people. Your current approach of 193 competing rule books is not going well.",
+  external: true,
+};
+
+export const earthOptimizationProtocolPaperLink: NavItem = {
+  label: "Earth Optimization Protocol v1",
+  href: "https://manual.warondisease.org/strategy/earth-optimization-protocol-v1",
+  emoji: "⚡",
+  description: "Step-by-step instructions for fixing a planet. Written slowly, in case you're reading this on your little phone.",
+  external: true,
+};
+
+export const drugDevCostPaperLink: NavItem = {
+  label: "Drug Development Cost Analysis",
+  href: "https://manual.warondisease.org/knowledge/appendix/drug-development-cost-analysis",
+  emoji: "💊",
+  description: "Drug development costs increased 105x since 1970. Adjusted for inflation. Not a typo.",
+  external: true,
+};
+
+export const parametersPaperLink: NavItem = {
+  label: "Methodology & Parameters",
+  href: "https://manual.warondisease.org/knowledge/appendix/parameters-and-calculations",
+  emoji: "🔢",
+  description: "Every number cited, every source linked, every calculation shown. Transparency is not optional on my planet.",
+  external: true,
+};
+
+export const recoveryTrialPaperLink: NavItem = {
+  label: "Oxford RECOVERY Trial",
+  href: "https://manual.warondisease.org/knowledge/appendix/recovery-trial",
+  emoji: "🏥",
+  description: "One pragmatic trial saved more lives during COVID than most governments managed. Cost almost nothing. Filed under 'obvious.'",
+  external: true,
+};
+
+export const realWorldEvidencePaperLink: NavItem = {
+  label: "Real-World Evidence History",
+  href: "https://manual.warondisease.org/knowledge/appendix/real-world-evidence-historical-success",
+  emoji: "📜",
+  description: "Centuries of real-world evidence working better than controlled trials. Your regulators pretend this history doesn't exist.",
+  external: true,
+};
+
 /** External paper links for the footer */
 export const paperLinks: NavItem[] = [
   dfdaSpecPaperLink,
@@ -523,6 +627,29 @@ export const paperLinks: NavItem[] = [
   politicalDysfunctionTaxPaperLink,
   incentiveAlignmentBondsPaperLink,
   fullManualPaperLink,
+];
+
+/** Extended research papers, legislative drafts, and supporting references */
+export const researchPaperLinks: NavItem[] = [
+  dfdaImpactPaperLink,
+  gdpTrajectoriesPaperLink,
+  costOfChangePaperLink,
+  algorithmicAdminPaperLink,
+  usEfficiencyAuditPaperLink,
+  prizeProtocolPaperLink,
+  rightToTrialPaperLink,
+  planetaryConstitutionPaperLink,
+  earthOptimizationProtocolPaperLink,
+  drugDevCostPaperLink,
+  parametersPaperLink,
+  recoveryTrialPaperLink,
+  realWorldEvidencePaperLink,
+];
+
+/** All paper links — core specs + extended research */
+export const allPaperLinks: NavItem[] = [
+  ...paperLinks,
+  ...researchPaperLinks,
 ];
 
 export const githubLink: NavItem = {

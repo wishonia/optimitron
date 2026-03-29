@@ -32,6 +32,10 @@ const pressStart2P = Press_Start_2P({
 const fontVariables = `${dmSans.variable} ${spaceMono.variable} ${sourceSerif4.variable} ${pressStart2P.variable}`;
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL ??
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3001"),
+  ),
   applicationName: "Optimitron",
   title: "Optimitron — The Evidence-Based Earth Optimization Game",
   description:

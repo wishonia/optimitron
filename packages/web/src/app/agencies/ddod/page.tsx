@@ -5,7 +5,6 @@ import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { budgetLink, federalReserveLink, wishocracyLink } from "@/lib/routes";
 import { ParameterValue } from "@/components/shared/ParameterValue";
 import {
-  fmtParam,
   fmtRaw,
   GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
   CUMULATIVE_MILITARY_SPENDING_FED_ERA,
@@ -32,7 +31,7 @@ const couldHaveBought: { instead: string; price: React.ReactNode; ratio: string 
   },
   {
     instead: "Fund all global clinical trials",
-    price: (<><ParameterValue param={GLOBAL_CLINICAL_TRIALS_SPENDING_ANNUAL} showUnit figures={3} />/yr</>),
+    price: (<><ParameterValue param={GLOBAL_CLINICAL_TRIALS_SPENDING_ANNUAL} display="withUnit" figures={3} />/yr</>),
     ratio: `${((GLOBAL_CLINICAL_TRIALS_SPENDING_ANNUAL.value / milSpend) * 100).toFixed(1)}% of military spending. You spend more on military bands.`,
   },
   {
@@ -62,7 +61,7 @@ export default function DepartmentOfWarPage() {
             governance platform. But I&apos;ve been running a civilisation for
             4,237 years, and after modelling every possible resource-allocation
             strategy, the one where you spend{" "}
-            <ParameterValue param={GLOBAL_MILITARY_SPENDING_ANNUAL_2024} format={(p) => fmtParam({ ...p, unit: "USD" })} />{" "}
+            <ParameterValue param={{...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"}} display="withUnit" />{" "}
             per year on exploding each other consistently ranks last. Dead last.
             Below &ldquo;doing literally nothing.&rdquo;
           </p>
@@ -86,7 +85,7 @@ export default function DepartmentOfWarPage() {
                 Global military spending (2024)
               </div>
               <div className="text-2xl font-black text-brutal-pink">
-                <ParameterValue param={GLOBAL_MILITARY_SPENDING_ANNUAL_2024} format={(p) => fmtParam({ ...p, unit: "USD" })} />
+                <ParameterValue param={{...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"}} display="withUnit" />
               </div>
             </div>
             <p className="mt-2 text-sm font-bold text-muted-foreground">
@@ -116,7 +115,7 @@ export default function DepartmentOfWarPage() {
                 Cumulative military spending (since 1913)
               </div>
               <div className="text-2xl font-black text-brutal-pink">
-                <ParameterValue param={CUMULATIVE_MILITARY_SPENDING_FED_ERA} format={(p) => fmtParam({ ...p, unit: "USD" })} />
+                <ParameterValue param={{...CUMULATIVE_MILITARY_SPENDING_FED_ERA, unit: "USD"}} display="withUnit" />
               </div>
             </div>
             <p className="mt-2 text-sm font-bold text-muted-foreground">
@@ -154,7 +153,7 @@ export default function DepartmentOfWarPage() {
         </h2>
         <p className="mb-6 max-w-3xl text-sm font-bold text-muted-foreground">
           Every year, your species takes{" "}
-          <ParameterValue param={GLOBAL_MILITARY_SPENDING_ANNUAL_2024} format={(p) => fmtParam({ ...p, unit: "USD" })} />{" "}
+          <ParameterValue param={{...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"}} display="withUnit" />{" "}
           — the accumulated productive output of hundreds of millions of
           workers — and converts it into things designed to destroy other things.
           Here is a partial list of what you could do with it if you simply...

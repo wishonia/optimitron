@@ -29,9 +29,9 @@ export function LandingProblemSection() {
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg font-bold text-muted-foreground">
             Your governments spend{" "}
-            <ParameterValue param={{...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"}} showUnit />{" "}
+            <ParameterValue param={{...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"}} display="withUnit" />{" "}
             per year on weapons and{" "}
-            <ParameterValue param={{...GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL, unit: "USD"}} showUnit />{" "}
+            <ParameterValue param={{...GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL, unit: "USD"}} display="withUnit" />{" "}
             on testing medicines. That&apos;s a{" "}
             <span className="text-brutal-yellow font-black">
               {milToTrialsRatio.toLocaleString()}:1
@@ -51,7 +51,7 @@ export function LandingProblemSection() {
             <div className="space-y-6">
               <div>
                 <div className="text-3xl font-black text-brutal-yellow">
-                  <ParameterValue param={{...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"}} showUnit />/yr
+                  <ParameterValue param={{...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"}} display="withUnit" />/yr
                 </div>
                 <p className="mt-1 text-sm font-bold text-muted-foreground">
                   Global political dysfunction tax — what misaligned governance
@@ -61,7 +61,7 @@ export function LandingProblemSection() {
               </div>
               <div>
                 <div className="text-2xl font-black text-brutal-yellow">
-                  <ParameterValue param={{...POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL, unit: "USD"}} showUnit />/person
+                  <ParameterValue param={{...POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL, unit: "USD"}} display="withUnit" />/person
                 </div>
                 <p className="mt-1 text-sm font-bold text-muted-foreground">
                   That&apos;s your share. You are paying this whether you know
@@ -90,12 +90,12 @@ export function LandingProblemSection() {
               </div>
               <div>
                 <div className="text-2xl font-black text-brutal-yellow">
-                  <ParameterValue param={{...EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL, unit: "deaths"}} showUnit />
+                  <ParameterValue param={{...EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL, unit: "deaths"}} display="withUnit" />
                 </div>
                 <p className="mt-1 text-sm font-bold text-muted-foreground">
                   People who died waiting for treatments that were already
                   proven safe — stuck in{" "}
-                  <ParameterValue param={EFFICACY_LAG_YEARS} showUnit /> of
+                  <ParameterValue param={EFFICACY_LAG_YEARS} display="withUnit" /> of
                   efficacy testing. Just sitting there. Being safe.
                 </p>
               </div>
@@ -108,7 +108,7 @@ export function LandingProblemSection() {
             <p className="text-center text-sm font-bold text-foreground">
               On my planet, when a system kills{" "}
               <ParameterValue param={{...GLOBAL_DISEASE_DEATHS_DAILY, unit: ""}} /> people a day and costs{" "}
-              <ParameterValue param={{...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"}} showUnit />{" "}
+              <ParameterValue param={{...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"}} display="withUnit" />{" "}
               a year, we don&apos;t call it &ldquo;politics.&rdquo; We call it a
               bug. And we fix it.
             </p>

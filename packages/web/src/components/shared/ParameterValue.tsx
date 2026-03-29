@@ -18,12 +18,14 @@ import { cn } from "@/lib/utils"
 export interface ParameterValueProps {
   /** The parameter object to display */
   param: Parameter
-  /** Override the formatted string */
-  format?: (param: Parameter) => string
+  /** How to display the value (default "auto")
+   *  - "auto": value only, no unit suffix (fmtParamValueOnly)
+   *  - "integer": Math.round(value), no suffixes
+   *  - "withUnit": full formatted value with unit (fmtParam)
+   */
+  display?: "auto" | "integer" | "withUnit"
   /** Significant figures (default 3) */
   figures?: number
-  /** Show the unit from fmtParam (default false — surrounding text usually provides context) */
-  showUnit?: boolean
   /** Show popover with metadata on hover (default: true) */
   showPopover?: boolean
   /** Additional CSS classes for the value */
@@ -32,9 +34,8 @@ export interface ParameterValueProps {
 
 export function ParameterValue({
   param,
-  format,
+  display = "auto",
   figures = 3,
-  showUnit = false,
   showPopover = true,
   className,
 }: ParameterValueProps) {
@@ -50,11 +51,16 @@ export function ParameterValue({
     closeTimeout.current = setTimeout(() => setOpen(false), 150)
   }, [])
 
-  const text = format
-    ? format(param)
-    : showUnit
-      ? fmtParam(param, figures)
-      : fmtParamValueOnly(param, figures)
+  const text = (() => {
+    switch (display) {
+      case "integer":
+        return String(Math.round(param.value))
+      case "withUnit":
+        return fmtParam(param, figures)
+      default:
+        return fmtParamValueOnly(param, figures)
+    }
+  })()
 
   const confidenceInterval = formatConfidenceInterval(param)
   const hasMetadata =

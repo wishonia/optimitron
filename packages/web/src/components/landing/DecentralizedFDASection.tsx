@@ -19,22 +19,22 @@ import { ParameterValue } from "@/components/shared/ParameterValue";
 const comparisons: { label: string; current: { value: number; display: ReactNode; color: string }; optimized: { value: number; display: ReactNode; color: string }; ratio: string; ratioColor: string }[] = [
   {
     label: "Cost per Patient",
-    current: { value: TRADITIONAL_PHASE3_COST_PER_PATIENT.value, display: <ParameterValue param={TRADITIONAL_PHASE3_COST_PER_PATIENT} showUnit />, color: "bg-brutal-red" },
-    optimized: { value: DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT.value, display: <ParameterValue param={DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT} showUnit />, color: "bg-brutal-cyan" },
+    current: { value: TRADITIONAL_PHASE3_COST_PER_PATIENT.value, display: <ParameterValue param={TRADITIONAL_PHASE3_COST_PER_PATIENT} display="withUnit" />, color: "bg-brutal-red" },
+    optimized: { value: DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT.value, display: <ParameterValue param={DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT} display="withUnit" />, color: "bg-brutal-cyan" },
     ratio: "44x cheaper",
     ratioColor: "text-brutal-cyan",
   },
   {
     label: "Annual Capacity",
-    current: { value: CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6, display: <><ParameterValue param={CURRENT_TRIAL_SLOTS_AVAILABLE} format={(p) => (p.value / 1e6).toFixed(1)} />M/yr</>, color: "bg-brutal-red" },
-    optimized: { value: DFDA_PATIENTS_FUNDABLE_ANNUALLY.value / 1e6, display: <><ParameterValue param={DFDA_PATIENTS_FUNDABLE_ANNUALLY} format={(p) => (p.value / 1e6).toFixed(1)} />M/yr</>, color: "bg-brutal-cyan" },
+    current: { value: CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6, display: <><ParameterValue param={{...CURRENT_TRIAL_SLOTS_AVAILABLE, value: CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6, unit: ""}} figures={2} />M/yr</>, color: "bg-brutal-red" },
+    optimized: { value: DFDA_PATIENTS_FUNDABLE_ANNUALLY.value / 1e6, display: <><ParameterValue param={{...DFDA_PATIENTS_FUNDABLE_ANNUALLY, value: DFDA_PATIENTS_FUNDABLE_ANNUALLY.value / 1e6, unit: ""}} figures={2} />M/yr</>, color: "bg-brutal-cyan" },
     ratio: "12x more",
     ratioColor: "text-brutal-cyan",
   },
   {
     label: "Queue to Test All Treatments",
-    current: { value: Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value), display: <><ParameterValue param={DISEASES_WITHOUT_EFFECTIVE_TREATMENT} format={(p) => String(Math.round(p.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value))} /> years</>, color: "bg-brutal-red" },
-    optimized: { value: Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value), display: <><ParameterValue param={DFDA_QUEUE_CLEARANCE_YEARS} format={(p) => String(Math.round(p.value))} /> years</>, color: "bg-brutal-cyan" },
+    current: { value: Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value), display: <><ParameterValue param={{...DISEASES_WITHOUT_EFFECTIVE_TREATMENT, value: Math.round(DISEASES_WITHOUT_EFFECTIVE_TREATMENT.value / NEW_DISEASE_FIRST_TREATMENTS_PER_YEAR.value), unit: ""}} display="integer" /> years</>, color: "bg-brutal-red" },
+    optimized: { value: Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value), display: <><ParameterValue param={DFDA_QUEUE_CLEARANCE_YEARS} display="integer" /> years</>, color: "bg-brutal-cyan" },
     ratio: "12x faster",
     ratioColor: "text-brutal-cyan",
   },

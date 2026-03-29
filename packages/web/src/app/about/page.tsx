@@ -13,7 +13,7 @@ import {
   communityLinks,
   iabLink,
   dtreasuryLink,
-  paperLinks,
+  allPaperLinks,
   prizeLink,
   ROUTES,
   studiesLink,
@@ -293,7 +293,7 @@ export default function AboutPage() {
           I showed my working. All of it. In public. Your species finds this unusual for some reason.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {paperLinks.map((paper) => (
+          {allPaperLinks.map((paper) => (
             <NavItemLink
               key={paper.href}
               item={paper}

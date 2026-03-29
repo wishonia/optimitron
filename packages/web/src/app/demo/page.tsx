@@ -22,7 +22,7 @@ export default async function DemoPage({ searchParams }: PageProps) {
         nav, footer { display: none !important; }
         main { min-height: 100vh !important; padding: 0 !important; margin: 0 !important; }
       `}</style>
-      <div className="h-screen">
+      <div className="h-screen dark">
         <DemoPlayer playlistId={resolvedId} />
       </div>
     </>

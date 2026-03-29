@@ -34,7 +34,7 @@ function ScoreCounter() {
 
   return (
     <div
-      className={`${ARCADE} text-xs sm:text-sm text-brutal-cyan bg-foreground px-3 py-1.5 border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
+      className={`${ARCADE} text-xs sm:text-sm text-brutal-cyan px-3 py-1.5`}
     >
       <span className="text-muted-foreground">SCORE: </span>
       <span ref={ref}>0</span>
@@ -70,11 +70,11 @@ function DeathTicker() {
 
   return (
     <div
-      className={`${ARCADE} text-xs sm:text-sm text-brutal-red bg-foreground px-3 py-1.5 border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}
+      className={`${ARCADE} text-xs sm:text-sm text-brutal-red px-3 py-1.5`}
     >
       <span className="mr-1">☠</span>
       <span ref={ref}>0</span>
-      <span className="text-muted-foreground ml-1">THIS SESSION</span>
+      <span className="text-muted-foreground ml-1">HUMANS TERMINATED THIS SESSION</span>
     </div>
   );
 }
@@ -270,6 +270,9 @@ function InventoryBar() {
     prevLengthRef.current = state.inventory.length;
   }, [state.inventory]);
 
+  // Hide inventory bar when empty
+  if (state.inventory.length === 0) return null;
+
   return (
     <div className="flex gap-1">
       {Array.from({ length: 8 }, (_, i) => {
@@ -320,22 +323,9 @@ export function SierraChrome({ children }: SierraChromeProps) {
         </div>
       </div>
 
-      {/* Quest meters (below top bar, conditional) */}
-      <div className="absolute top-12 left-0 right-0 z-20">
-        <QuestMeters />
-      </div>
 
-      {/* Slide content area */}
-      <div className="flex-1 pt-14 pb-32 overflow-hidden">{children}</div>
-
-      {/* Bottom: Narrator box + controls */}
-      <div className="absolute bottom-0 left-0 right-0 z-30">
-        <NarratorBox />
-        <div className="flex justify-between items-center px-3 py-2 bg-foreground border-t-2 border-primary">
-          <VerbBar />
-          <InventoryBar />
-        </div>
-      </div>
+{/* Slide content area */}
+      <div className="flex-1 pt-14 overflow-hidden">{children}</div>
     </div>
   );
 }
