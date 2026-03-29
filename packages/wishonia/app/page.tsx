@@ -320,13 +320,15 @@ export default function ChatPage(): React.JSX.Element {
             )}
 
             {chat.messages.map((msg, i) => {
+              // Show persisted visuals for completed messages, or pending for the latest
               const isLastWishonia = msg.role === "wishonia" && i === chat.messages.length - 1;
+              const visuals = chat.getVisualsForMessage(i) ?? (isLastWishonia ? chat.pendingVisuals : null);
               return (
                 <ChatMessage
                   key={i}
                   role={msg.role}
                   text={msg.text}
-                  visuals={isLastWishonia ? chat.pendingVisuals : undefined}
+                  visuals={visuals}
                   onPlayTTS={tts.play}
                   isTTSPlaying={tts.isPlaying}
                 />
@@ -429,6 +431,7 @@ export default function ChatPage(): React.JSX.Element {
                 size={140}
                 position="custom"
                 style={{ position: "relative" }}
+                muted={!voiceMode.isActive}
               />
             </div>
           </div>
