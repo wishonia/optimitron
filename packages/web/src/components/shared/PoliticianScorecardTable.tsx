@@ -49,7 +49,7 @@ export function PoliticianScorecardTable({
 }: PoliticianScorecardTableProps) {
   const compact = limit != null;
   const [sortKey, setSortKey] = useState<SortKey>("ratio");
-  const [sortAsc, setSortAsc] = useState(true);
+  const [sortAsc, setSortAsc] = useState(false);
   const [chamberFilter, setChamberFilter] = useState<"all" | "Senate" | "House">("all");
 
   const filtered = compact || chamberFilter === "all"

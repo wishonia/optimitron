@@ -107,12 +107,12 @@ function toScorecard(raw: GeneratedScorecard): PoliticianScorecard {
   };
 }
 
-/** All scorecards sorted by ratio (best first) */
+/** All scorecards sorted by ratio (worst first — highest ratio at top) */
 export const POLITICIAN_SCORECARDS: PoliticianScorecard[] = scorecards
   .map(toScorecard)
-  .sort((a, b) => a.militaryToTrialsRatio - b.militaryToTrialsRatio);
+  .sort((a, b) => b.militaryToTrialsRatio - a.militaryToTrialsRatio);
 
-/** Get scorecards ranked by military:trials ratio (best first) */
+/** Get scorecards ranked by military:trials ratio (worst first) */
 export function getPoliticiansByAlignment(): PoliticianScorecard[] {
   return [...POLITICIAN_SCORECARDS];
 }
