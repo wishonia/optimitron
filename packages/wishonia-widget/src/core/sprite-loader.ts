@@ -1,3 +1,6 @@
+import type { Expression } from "../types";
+import { EXPRESSION_MOUTHS } from "./viseme-map";
+
 /** Tier-based sprite loading. Tier 0 is critical (idle + talking), others lazy. */
 
 const TIER_0_SPRITES = [
@@ -40,6 +43,31 @@ export function getSpriteUrl(
   return `${basePath}${name}.${format}`;
 }
 
+function getSpriteCacheKey(
+  name: string,
+  basePath: string,
+  format: "webp" | "png",
+): string {
+  return getSpriteUrl(name, basePath, format);
+}
+
+export function getCharacterHeadSpriteNames(
+  expression: Expression = "neutral",
+): string[] {
+  const mouths = EXPRESSION_MOUTHS[expression];
+  return Array.from(new Set([
+    "blink-smile",
+    ...mouths.map((mouth) => `${expression}-${mouth}`),
+  ]));
+}
+
+export function getCharacterSpriteNames(
+  expression: Expression = "neutral",
+  bodyPose = "idle",
+): string[] {
+  return [...getCharacterHeadSpriteNames(expression), `body-${bodyPose}`];
+}
+
 /** Preload a list of sprite URLs into the browser cache */
 export function preloadSprites(
   names: string[],
@@ -49,13 +77,14 @@ export function preloadSprites(
   if (typeof window === "undefined") return Promise.resolve();
 
   const promises = names
-    .filter((n) => !loaded.has(n))
+    .filter((name) => !loaded.has(getSpriteCacheKey(name, basePath, format)))
     .map(
       (name) =>
         new Promise<void>((resolve) => {
           const img = new Image();
+          const cacheKey = getSpriteCacheKey(name, basePath, format);
           img.onload = () => {
-            loaded.add(name);
+            loaded.add(cacheKey);
             resolve();
           };
           img.onerror = () => resolve(); // don't block on missing sprites

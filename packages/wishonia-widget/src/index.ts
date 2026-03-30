@@ -7,7 +7,14 @@ export { useWishoniaAnimator } from "./hooks/useWishoniaAnimator";
 export { useAmplitudeAnalyser } from "./hooks/useAmplitudeAnalyser";
 
 // Core utilities
-export { preloadTier0, preloadTier1, preloadSprites, getSpriteUrl } from "./core/sprite-loader";
+export {
+  preloadTier0,
+  preloadTier1,
+  preloadSprites,
+  getSpriteUrl,
+  getCharacterHeadSpriteNames,
+  getCharacterSpriteNames,
+} from "./core/sprite-loader";
 export { getHeadName, getIdleHead, amplitudeToViseme, CHAR_TO_VISEME, EXPRESSION_MOUTHS } from "./core/viseme-map";
 export { MOOD_PRESETS, getMoodPreset } from "./core/mood-presets";
 export { WISHONIA_VOICE, WISHONIA_SPEAKING_INSTRUCTIONS, WISHONIA_TTS_MODEL, WISHONIA_LIVE_MODEL, WISHONIA_EXAMPLE_QUOTES } from "./core/voice-config";

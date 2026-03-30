@@ -1,7 +1,9 @@
-import { useEffect } from "react";
 import type { Expression } from "../types";
 import { useWishoniaAnimator } from "../hooks/useWishoniaAnimator";
-import { preloadTier0 } from "../core/sprite-loader";
+import {
+  getCharacterHeadSpriteNames,
+  getSpriteUrl,
+} from "../core/sprite-loader";
 
 export interface WishoniaCharacterProps {
   /** Width in pixels (default 140) */
@@ -32,18 +34,26 @@ export function WishoniaCharacter({
   className,
   onClick,
 }: WishoniaCharacterProps) {
-  const { headSrc, bodySrc } = useWishoniaAnimator({
+  const {
+    headName,
+    bodySrc,
+  } = useWishoniaAnimator({
     analyserNode,
     expression,
     bodyPose,
     spritePath,
     spriteFormat,
   });
-
-  // Preload tier 0 sprites on mount
-  useEffect(() => {
-    preloadTier0(spritePath, spriteFormat);
-  }, [spritePath, spriteFormat]);
+  const activeExpression = expression ?? "neutral";
+  const headNames = getCharacterHeadSpriteNames(activeExpression);
+  const visibleHeadNames = headNames.includes(headName)
+    ? headNames
+    : [headName, ...headNames];
+  const anchorHeadSrc = getSpriteUrl(
+    visibleHeadNames[0] ?? headName,
+    spritePath,
+    spriteFormat,
+  );
 
   const bodyHeight = Math.round(size * 0.57); // body is ~57% of total height
 
@@ -69,13 +79,37 @@ export function WishoniaCharacter({
           animation: "wishonia-bob 7s ease-in-out alternate infinite",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={headSrc}
+          src={anchorHeadSrc}
           alt=""
-          style={{ display: "block", width: "100%" }}
+          style={{
+            display: "block",
+            width: "100%",
+            visibility: "hidden",
+            pointerEvents: "none",
+          }}
           draggable={false}
         />
+        {visibleHeadNames.map((name) => {
+          const src = getSpriteUrl(name, spritePath, spriteFormat);
+          return (
+            <img
+              key={name}
+              src={src}
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "block",
+                width: "100%",
+                opacity: name === headName ? 1 : 0,
+                pointerEvents: "none",
+              }}
+              draggable={false}
+            />
+          );
+        })}
       </div>
 
       {/* Body — static below head */}
@@ -88,7 +122,6 @@ export function WishoniaCharacter({
           overflow: "hidden",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={bodySrc}
           alt=""

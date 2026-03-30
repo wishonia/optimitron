@@ -14,21 +14,16 @@ import { SierraChrome } from "./SierraChrome";
 import { getSlideComponent } from "./slides";
 import { useSierraTransition } from "./SierraTransition";
 // Wishonia character with lip-sync support
-import { WishoniaCharacter } from "@optimitron/wishonia-widget";
+import {
+  WishoniaCharacter,
+  preloadTier0,
+} from "@optimitron/wishonia-widget";
 
-// Preload common sprites on module load to avoid cancelled request churn
+// Warm the lip-sync sprites before the Sierra demo starts auto-playing.
 const SPRITE_PATH = "/sprites/wishonia/";
-const PRELOAD_SPRITES = [
-  "neutral-small", "neutral-open", "neutral-closed", "neutral-frown",
-  "happy-small", "happy-open", "happy-closed",
-  "body-idle", "body-presenting",
-  "blink-smile",
-];
+const SPRITE_FORMAT = "png" as const;
 if (typeof window !== "undefined") {
-  PRELOAD_SPRITES.forEach((name) => {
-    const img = new Image();
-    img.src = `${SPRITE_PATH}${name}.png`;
-  });
+  void preloadTier0(SPRITE_PATH, SPRITE_FORMAT);
 }
 
 function WishoniaPresenter({ analyserNode }: { analyserNode: AnalyserNode | null }) {
@@ -36,7 +31,7 @@ function WishoniaPresenter({ analyserNode }: { analyserNode: AnalyserNode | null
     <WishoniaCharacter
       size={140}
       spritePath={SPRITE_PATH}
-      spriteFormat="png"
+      spriteFormat={SPRITE_FORMAT}
       analyserNode={analyserNode}
     />
   );

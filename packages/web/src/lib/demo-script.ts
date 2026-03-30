@@ -894,7 +894,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "foreground",
     tags: ["hook"],
     act: "I",
-    narration: "The Earth Optimization Game. Redirect humanity's resources from the things that make everyone poorer and deader to the things that make everyone healthier and wealthier.",
+    narration: "The Earth Optimization Game. Align your governments to stop making everyone poorer and deader and start making everyone healthier and wealthier!",
   },
   {
     id: "pl-170t",
@@ -984,7 +984,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "foreground",
     tags: ["problem", "mechanism"],
     act: "II-game",
-    narration: "Everyone wants to end war and disease. But everyone thinks nobody else will agree. So nobody does anything. Your economists call this pluralistic ignorance. I call this the dumbest reason a civilisation has ever continued dying and murdering each other.",
+    narration: "Everyone wants to end war and disease. But everyone thinks it's crazy because nobody else will agree to the steps to make it happen. So nobody does anything. Your economists call this pluralistic ignorance. I call this the dumbest reason a civilisation has ever continued dying and murdering each other.",
   },
   {
     id: "pl-targets",

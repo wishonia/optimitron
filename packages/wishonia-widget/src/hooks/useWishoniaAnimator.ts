@@ -24,8 +24,12 @@ export interface UseWishoniaAnimatorOptions {
 }
 
 export interface UseWishoniaAnimatorReturn {
+  /** Name for the current head sprite */
+  headName: string;
   /** URL for the current head sprite */
   headSrc: string;
+  /** Name for the current body sprite */
+  bodyName: string;
   /** URL for the current body sprite */
   bodySrc: string;
   /** Whether the character is currently speaking */
@@ -56,7 +60,6 @@ export function useWishoniaAnimator(
   } = options;
 
   const [headName, setHeadName] = useState("neutral-smile");
-  const [expression, setExpressionState] = useState<Expression>("neutral");
   const [speaking, setSpeaking] = useState(false);
   const speakTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const blinkTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -69,7 +72,6 @@ export function useWishoniaAnimator(
   useEffect(() => {
     if (externalExpression) {
       expressionRef.current = externalExpression;
-      setExpressionState(externalExpression);
       if (!speakingRef.current) {
         setHeadName(getIdleHead(externalExpression));
       }
@@ -78,7 +80,6 @@ export function useWishoniaAnimator(
 
   const setExpression = useCallback((expr: Expression) => {
     expressionRef.current = expr;
-    setExpressionState(expr);
     if (!speakingRef.current) {
       setHeadName(getIdleHead(expr));
     }
@@ -195,10 +196,13 @@ export function useWishoniaAnimator(
   }, []);
 
   const headSrc = getSpriteUrl(headName, spritePath, spriteFormat);
-  const bodySrc = getSpriteUrl(`body-${bodyPose}`, spritePath, spriteFormat);
+  const bodyName = `body-${bodyPose}`;
+  const bodySrc = getSpriteUrl(bodyName, spritePath, spriteFormat);
 
   return {
+    headName,
     headSrc,
+    bodyName,
     bodySrc,
     isSpeaking: speaking,
     setExpression,

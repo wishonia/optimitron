@@ -6,6 +6,15 @@ import { WhyPlaySection } from "@/components/landing/WhyPlaySection";
 import { LandingFAQSection } from "@/components/landing/LandingFAQSection";
 import { TLDRSection } from "@/components/landing/TLDRSection";
 import TreatyVoteSection from "@/components/landing/TreatyVoteSection";
+import { InvisibleGraveyardSection } from "@/components/landing/InvisibleGraveyardSection";
+import { DecentralizedFDASection } from "@/components/landing/DecentralizedFDASection";
+import { IncentiveAlignmentBondsSection } from "@/components/landing/IncentiveAlignmentBondsSection";
+import { TwoFuturesSection } from "@/components/landing/TwoFuturesSection";
+import { OnePercentTreatySection } from "@/components/landing/OnePercentTreatySection";
+import { PoliticalDysfunctionTaxSection } from "@/components/landing/PoliticalDysfunctionTaxSection";
+import { OptimizedGovernancePreview } from "@/components/landing/OptimizedGovernancePreview";
+import { GovernmentReportCardPreview } from "@/components/landing/GovernmentReportCardPreview";
+import { PoliticianLeaderboardPreview } from "@/components/landing/PoliticianLeaderboardPreview";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -21,6 +30,11 @@ import {
   misconceptionsLink,
   scoreboardLink,
   toolsLink,
+  governmentsLink,
+  politicianLeaderboardLink,
+  agenciesLink,
+  demoLink,
+  iabLink,
 } from "@/lib/routes";
 import { GameCTA } from "@/components/ui/game-cta";
 import { CTA, TAGLINES } from "@/lib/messaging";
@@ -104,6 +118,33 @@ const productWorkflows = [
     cta: CTA.seeTheMmyths,
     color: "bg-brutal-pink",
   },
+  {
+    item: governmentsLink,
+    label: "Report Cards",
+    title: "Government Report Cards",
+    description:
+      "Every government ranked by body count — the data they hope you never see.",
+    cta: "See Report Cards",
+    color: "bg-brutal-red",
+  },
+  {
+    item: iabLink,
+    label: "IABs",
+    title: "Incentive Alignment Bonds",
+    description:
+      "Fund politicians who vote for the treaty. Defund the ones who don't. The math does the lobbying.",
+    cta: "Learn More",
+    color: "bg-brutal-yellow",
+  },
+  {
+    item: demoLink,
+    label: "Demo",
+    title: "Watch the Full Demo",
+    description:
+      "A guided tour narrated by an alien who has been running a planet for 4,237 years. She has notes.",
+    cta: "Watch Demo",
+    color: "bg-brutal-cyan",
+  },
 ];
 
 export default function Home() {
@@ -127,7 +168,50 @@ export default function Home() {
       {/* ── 5. What Happens If Nobody Plays — Stakes ── */}
       <WhyPlaySection />
 
-      {/* ── 6. Select Mode — Other game modes ── */}
+      {/* ── 6. The Problem — Invisible Graveyard ── */}
+      <InvisibleGraveyardSection />
+
+      {/* ── 7. The $101T Dysfunction Tax ── */}
+      <PoliticalDysfunctionTaxSection />
+
+      {/* ── 8. The Solution — 1% Treaty ── */}
+      <OnePercentTreatySection />
+
+      {/* ── 9. The Tool — Decentralized FDA ── */}
+      <DecentralizedFDASection />
+
+      {/* ── 10. The Incentive — IABs ── */}
+      <IncentiveAlignmentBondsSection />
+
+      {/* ── 11. Two Futures — Wishonia vs Moronia ── */}
+      <TwoFuturesSection />
+
+      {/* ── 12. Watch the Demo ── */}
+      <SectionContainer bgColor="foreground" borderPosition="top" padding="lg">
+        <Container>
+          <SectionHeader
+            title="See It In Action"
+            subtitle="A 7-minute guided tour narrated by an alien who has been running a planet for 4,237 years."
+            size="lg"
+          />
+          <div className="flex justify-center">
+            <GameCTA href={ROUTES.demo} variant="primary" size="lg">
+              🎬 Watch the Demo
+            </GameCTA>
+          </div>
+        </Container>
+      </SectionContainer>
+
+      {/* ── 13. Government Report Cards — mini leaderboard ── */}
+      <GovernmentReportCardPreview />
+
+      {/* ── 14. Politician Leaderboard — mini table ── */}
+      <PoliticianLeaderboardPreview />
+
+      {/* ── 15. Optimized Governance — agency grid ── */}
+      <OptimizedGovernancePreview />
+
+      {/* ── 16. Select Mode — Other game modes ── */}
       <SectionContainer bgColor="background" borderPosition="none" padding="lg">
         <Container>
           <SectionHeader
