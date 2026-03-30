@@ -12,13 +12,14 @@ import {
 
 describe("government size artifact sync", () => {
   it("resolves the examples source and web target paths from the scripts directory", () => {
-    const paths = resolveGovernmentSizeSyncPaths("E:/code/obsidian/websites/optomitron/packages/web/scripts");
+    const scriptsDir = resolve("repo/packages/web/scripts");
+    const paths = resolveGovernmentSizeSyncPaths(scriptsDir);
 
     expect(paths.sourcePath).toBe(
-      "E:\\code\\obsidian\\websites\\optomitron\\packages\\examples\\output\\us-government-size-analysis.json",
+      resolve(scriptsDir, "../../examples/output/us-government-size-analysis.json"),
     );
     expect(paths.targetPath).toBe(
-      "E:\\code\\obsidian\\websites\\optomitron\\packages\\web\\src\\data\\us-government-size-analysis.json",
+      resolve(scriptsDir, "../src/data/us-government-size-analysis.json"),
     );
   });
 

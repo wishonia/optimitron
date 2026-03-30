@@ -2,17 +2,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getActualGovernmentAllocations } from "@/lib/wishocracy-data";
 
 const mocks = vi.hoisted(() => ({
-  findUnique: vi.fn(),
-  upsert: vi.fn(),
+  upsertJurisdiction: vi.fn(),
+  upsertWishocraticItem: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     jurisdiction: {
-      findUnique: mocks.findUnique,
+      upsert: mocks.upsertJurisdiction,
     },
     wishocraticItem: {
-      upsert: mocks.upsert,
+      upsert: mocks.upsertWishocraticItem,
     },
   },
 }));
@@ -24,9 +24,10 @@ import {
 
 describe("wishocracy catalog sync", () => {
   beforeEach(() => {
-    mocks.findUnique.mockReset();
-    mocks.upsert.mockReset();
-    mocks.upsert.mockResolvedValue({});
+    mocks.upsertJurisdiction.mockReset();
+    mocks.upsertWishocraticItem.mockReset();
+    mocks.upsertJurisdiction.mockResolvedValue({ id: "jurisdiction_usa" });
+    mocks.upsertWishocraticItem.mockResolvedValue({});
   });
 
   it("builds catalog records from the default wishocratic items registry", () => {
@@ -44,20 +45,24 @@ describe("wishocracy catalog sync", () => {
   });
 
   it("upserts each requested item into the default wishocracy jurisdiction", async () => {
-    mocks.findUnique.mockResolvedValue({ id: "jurisdiction_usa" });
-
     await ensureWishocraticItemsExist([
       "PRAGMATIC_CLINICAL_TRIALS",
       "MILITARY_OPERATIONS",
       "PRAGMATIC_CLINICAL_TRIALS",
     ]);
 
-    expect(mocks.findUnique).toHaveBeenCalledWith({
+    expect(mocks.upsertJurisdiction).toHaveBeenCalledWith({
       where: { code: "USA" },
+      update: {},
+      create: {
+        name: "United States",
+        type: "COUNTRY",
+        code: "USA",
+      },
       select: { id: true },
     });
-    expect(mocks.upsert).toHaveBeenCalledTimes(2);
-    expect(mocks.upsert).toHaveBeenCalledWith(
+    expect(mocks.upsertWishocraticItem).toHaveBeenCalledTimes(2);
+    expect(mocks.upsertWishocraticItem).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { id: "PRAGMATIC_CLINICAL_TRIALS" },
         create: expect.objectContaining({
@@ -73,11 +78,10 @@ describe("wishocracy catalog sync", () => {
     );
   });
 
-  it("throws when the default wishocracy jurisdiction has not been seeded", async () => {
-    mocks.findUnique.mockResolvedValue(null);
+  it("returns early when no item ids are requested", async () => {
+    await ensureWishocraticItemsExist([]);
 
-    await expect(
-      ensureWishocraticItemsExist(["PRAGMATIC_CLINICAL_TRIALS"]),
-    ).rejects.toThrow("Wishocracy jurisdiction not found: USA");
+    expect(mocks.upsertJurisdiction).not.toHaveBeenCalled();
+    expect(mocks.upsertWishocraticItem).not.toHaveBeenCalled();
   });
 });

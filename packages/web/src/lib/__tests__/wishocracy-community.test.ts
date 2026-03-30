@@ -1,12 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+  findManyVerifiedUsers: vi.fn(),
   findMany: vi.fn(),
   error: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    personhoodVerification: {
+      findMany: mocks.findManyVerifiedUsers,
+    },
     wishocraticAllocation: {
       findMany: mocks.findMany,
     },
@@ -31,7 +35,9 @@ import {
 describe("wishocracy community helpers", () => {
   beforeEach(() => {
     mocks.findMany.mockReset();
+    mocks.findManyVerifiedUsers.mockReset();
     mocks.error.mockReset();
+    mocks.findManyVerifiedUsers.mockResolvedValue([]);
   });
 
   it("normalizes reversed comparison pairs", () => {
@@ -102,6 +108,7 @@ describe("wishocracy community helpers", () => {
     await expect(getWishocracyCommunitySummary()).resolves.toEqual({
       averageAllocations: expect.any(Object),
       totalUsers: 0,
+      verifiedUsers: 0,
       totalAllocations: 0,
       topCategories: [],
     });

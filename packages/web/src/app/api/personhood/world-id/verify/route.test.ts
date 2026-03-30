@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+  checkBadgesAfterWish: vi.fn(),
+  grantWishes: vi.fn(),
   isPersonhoodExternalIdConflict: vi.fn(),
   isWorldIdConfigured: vi.fn(),
   requireAuth: vi.fn(),
@@ -20,15 +22,26 @@ vi.mock("@/lib/world-id.server", () => ({
   verifyAndSaveWorldIdResult: mocks.verifyAndSaveWorldIdResult,
 }));
 
+vi.mock("@/lib/wishes.server", () => ({
+  grantWishes: mocks.grantWishes,
+}));
+
+vi.mock("@/lib/badges.server", () => ({
+  checkBadgesAfterWish: mocks.checkBadgesAfterWish,
+}));
+
 import { POST } from "./route";
 
 describe("world id verify route", () => {
   beforeEach(() => {
+    mocks.checkBadgesAfterWish.mockReset();
+    mocks.grantWishes.mockReset();
     mocks.isPersonhoodExternalIdConflict.mockReset();
     mocks.isWorldIdConfigured.mockReset();
     mocks.requireAuth.mockReset();
     mocks.verifyAndSaveWorldIdResult.mockReset();
     mocks.isPersonhoodExternalIdConflict.mockReturnValue(false);
+    mocks.grantWishes.mockResolvedValue({ amount: 10 });
   });
 
   it("returns 401 when authentication fails", async () => {
@@ -79,12 +92,22 @@ describe("world id verify route", () => {
     expect(mocks.verifyAndSaveWorldIdResult).toHaveBeenCalledWith("user_1", {
       action: "verify-personhood",
     });
+    expect(mocks.grantWishes).toHaveBeenCalledWith({
+      userId: "user_1",
+      reason: "WORLD_ID_VERIFICATION",
+      amount: 10,
+    });
+    expect(mocks.checkBadgesAfterWish).toHaveBeenCalledWith(
+      "user_1",
+      "WORLD_ID_VERIFICATION",
+    );
     await expect(response.json()).resolves.toEqual({
       success: true,
       verification: {
         provider: "WORLD_ID",
         verificationLevel: "orb",
       },
+      wishesEarned: 10,
     });
   });
 
