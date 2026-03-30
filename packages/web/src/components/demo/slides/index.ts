@@ -210,6 +210,7 @@ const sierraRegistry: Record<string, ComponentType> = {
   "sierra-personal-income-3-timelines": sierraSlide("slide-personal-income-3-timelines"),
   "sierra-compound-growth-scenarios": sierraSlide("slide-compound-growth-scenarios"),
   "sierra-170t-opportunity-cost": sierraSlide("slide-170t-opportunity-cost"),
+  "sierra-armory": sierraSlide("slide-armory"),
 };
 
 // Merge registries

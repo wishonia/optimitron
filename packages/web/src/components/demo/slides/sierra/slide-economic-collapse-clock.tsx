@@ -254,9 +254,16 @@ export function SlideEconomicCollapseClock() {
                 </text>
               ))}
 
-              {/* Failed state collapse lines — each with its own color */}
+              {/* Failed state collapse lines — each with its own color, rendered last for z-order */}
               {FAILED_STATES.map((fs, i) => {
                 const onRight = i % 2 === 0;
+                const labelX = onRight ? W - pad.r - 2 : pad.l + 4;
+                const labelY = y(fs.pct) - 3;
+                const anchor = onRight ? "end" : "start";
+                const labelText = `${fs.name} (${fs.pct}%)`;
+                // Approximate width: ~6px per char at fontSize 8
+                const bgWidth = labelText.length * 6 + 8;
+                const bgX = onRight ? labelX - bgWidth + 4 : labelX - 4;
                 return (
                   <g key={fs.name}>
                     <line
@@ -269,18 +276,26 @@ export function SlideEconomicCollapseClock() {
                       strokeDasharray="3,3"
                       opacity={0.5}
                     />
+                    <rect
+                      x={bgX}
+                      y={labelY - 9}
+                      width={bgWidth}
+                      height={12}
+                      fill="black"
+                      opacity={0.8}
+                      rx={2}
+                    />
                     <a href={GDP_TRAJECTORIES_URL} target="_blank" rel="noopener noreferrer">
                       <text
-                        x={onRight ? W - pad.r - 2 : pad.l + 4}
-                        y={y(fs.pct) - 3}
-                        textAnchor={onRight ? "end" : "start"}
+                        x={labelX}
+                        y={labelY}
+                        textAnchor={anchor}
                         fill={fs.color}
                         fontSize={8}
                         fontFamily="monospace"
-                        opacity={0.8}
                         style={{ cursor: "pointer" }}
                       >
-                        {fs.name} ({fs.pct}%)
+                        {labelText}
                       </text>
                     </a>
                   </g>
@@ -301,15 +316,30 @@ export function SlideEconomicCollapseClock() {
 
               {/* Now marker */}
               <line x1={x(NOW_YEAR)} y1={pad.t} x2={x(NOW_YEAR)} y2={H - pad.b} stroke="rgb(161,161,170)" strokeWidth={1} strokeDasharray="2,3" />
-              <text x={x(NOW_YEAR)} y={H - pad.b + 22} textAnchor="middle" fill="rgb(161,161,170)" fontSize={10} fontFamily="monospace">
+              <text x={x(NOW_YEAR)} y={pad.t - 2} textAnchor="middle" fill="rgb(161,161,170)" fontSize={10} fontFamily="monospace">
                 NOW
               </text>
 
-              {/* Legend */}
+              {/* Legend — Productive top-left, Parasitic bottom-left, near their curves */}
+              <rect x={pad.l + 4} y={pad.t} width={120} height={14} fill="black" opacity={0.7} rx={2} />
               <rect x={pad.l + 8} y={pad.t + 4} width={10} height={3} fill="rgb(34,211,238)" />
-              <text x={pad.l + 22} y={pad.t + 9} fill="rgb(34,211,238)" fontSize={9} fontFamily="monospace">Productive</text>
-              <rect x={pad.l + 8} y={pad.t + 16} width={10} height={3} fill="rgb(239,68,68)" />
-              <text x={pad.l + 22} y={pad.t + 21} fill="rgb(239,68,68)" fontSize={9} fontFamily="monospace">Parasitic</text>
+              <text x={pad.l + 22} y={pad.t + 9} fill="rgb(34,211,238)" fontSize={9} fontFamily="monospace">Productive Economy</text>
+              <rect x={pad.l + 4} y={H - pad.b - 20} width={110} height={14} fill="black" opacity={0.7} rx={2} />
+              <rect x={pad.l + 8} y={H - pad.b - 16} width={10} height={3} fill="rgb(239,68,68)" />
+              <text x={pad.l + 22} y={H - pad.b - 11} fill="rgb(239,68,68)" fontSize={9} fontFamily="monospace">Parasitic Economy</text>
+
+              {/* Y-axis label */}
+              <text
+                x={12}
+                y={pad.t + ch / 2}
+                fill="rgb(161,161,170)"
+                fontSize={9}
+                fontFamily="monospace"
+                textAnchor="middle"
+                transform={`rotate(-90, 12, ${pad.t + ch / 2})`}
+              >
+                % of GDP
+              </text>
             </svg>
           </div>
         )}

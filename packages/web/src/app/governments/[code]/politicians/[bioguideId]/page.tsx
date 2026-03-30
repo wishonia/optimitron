@@ -348,7 +348,7 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
           </h3>
           <p className="text-base font-bold text-foreground leading-relaxed">
             {politician.militaryDollarsVotedFor === 0 && politician.clinicalTrialDollarsVotedFor === 0
-              ? `${politician.name} voted against both ${getMilitarySynonym(politician.bioguideId + "-maths-a")} and finding out which medicines work. I mention not to be rude but because you seem weirdly calm about this.`
+              ? `${politician.name} voted against both ${getMilitarySynonym(politician.bioguideId + "-maths-a")} and finding out which medicines work. I mention not to be rude but because you seem weirdly calm about it.`
               : politician.militaryDollarsVotedFor === 0
                 ? `${politician.name} voted to find out which medicines work without voting for any ${getMilitarySynonym(politician.bioguideId + "-maths-b")}. You'd think this would be more common. You'd be adorable for thinking that.`
                 : politician.clinicalTrialDollarsVotedFor === 0

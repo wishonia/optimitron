@@ -29,27 +29,27 @@ function QuestMetrics() {
   const incomeProgress = (GLOBAL_AVG_INCOME_2025.value / TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value) * 100;
 
   return (
-    <div className="flex gap-3 px-2 py-1">
+    <div className="flex gap-4 px-2 py-1">
       {/* HALE meter */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-sm">❤️</span>
+      <div className="flex items-center gap-2">
+        <span className="text-lg">❤️</span>
         <div className="flex flex-col gap-0.5">
-          <span className={`${ARCADE} text-[10px] text-brutal-cyan`}>
+          <span className={`${ARCADE} text-xs text-brutal-cyan`}>
             HALE {haleCurrent}→{haleTarget}
           </span>
-          <div className="w-24 h-2 bg-zinc-800 border border-brutal-cyan/50 rounded-sm overflow-hidden">
+          <div className="w-28 h-2.5 bg-zinc-800 border border-brutal-cyan/50 rounded-sm overflow-hidden">
             <div className="h-full bg-brutal-cyan" style={{ width: `${haleProgress}%` }} />
           </div>
         </div>
       </div>
       {/* Income meter */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-sm">💰</span>
+      <div className="flex items-center gap-2">
+        <span className="text-lg">💰</span>
         <div className="flex flex-col gap-0.5">
-          <span className={`${ARCADE} text-[10px] text-brutal-yellow`}>
+          <span className={`${ARCADE} text-xs text-brutal-yellow`}>
             INCOME {incomeCurrent}→{incomeTarget}
           </span>
-          <div className="w-24 h-2 bg-zinc-800 border border-brutal-yellow/50 rounded-sm overflow-hidden">
+          <div className="w-28 h-2.5 bg-zinc-800 border border-brutal-yellow/50 rounded-sm overflow-hidden">
             <div className="h-full bg-brutal-yellow" style={{ width: `${incomeProgress}%` }} />
           </div>
         </div>
@@ -81,15 +81,15 @@ function DeathTicker() {
   }, []);
 
   return (
-    <div className="flex items-center gap-1.5 px-2 py-1">
-      <span className="text-sm">💀</span>
+    <div className="flex items-center gap-2 px-2 py-1">
+      <span className="text-lg">💀</span>
       <div className="flex flex-col gap-0.5">
-        <span className={`${ARCADE} text-[10px] text-brutal-red`}>
+        <span className={`${ARCADE} text-xs text-brutal-red`}>
           HUMANS LOST
         </span>
         <div className="flex items-center gap-1.5">
-          <span className={`${ARCADE} text-[10px] text-brutal-red tabular-nums`} ref={ref}>0</span>
-          <span className={`${ARCADE} text-[8px] text-muted-foreground`}>THIS SESSION</span>
+          <span className={`${ARCADE} text-xs text-brutal-red tabular-nums`} ref={ref}>0</span>
+          <span className={`${ARCADE} text-[10px] text-muted-foreground`}>THIS SESSION</span>
         </div>
       </div>
     </div>
@@ -343,6 +343,7 @@ export function SierraChrome({ children }: SierraChromeProps) {
 
 {/* Slide content area */}
       <div className="flex-1 pt-14 overflow-hidden">{children}</div>
+
     </div>
   );
 }

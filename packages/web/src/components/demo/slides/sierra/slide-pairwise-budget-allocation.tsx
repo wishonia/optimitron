@@ -9,8 +9,8 @@ import { useEffect, useState } from "react";
 const PAIRS = [
   {
     a: US_WISHOCRATIC_ITEMS.PRAGMATIC_CLINICAL_TRIALS,
-    b: US_WISHOCRATIC_ITEMS.NUCLEAR_WEAPONS_MODERNIZATION,
-    allocationA: 82,
+    b: US_WISHOCRATIC_ITEMS.MILITARY_OPERATIONS,
+    allocationA: 76,
   },
   {
     a: US_WISHOCRATIC_ITEMS.EARLY_CHILDHOOD_EDUCATION,
@@ -88,6 +88,9 @@ export function SlidePairwiseBudgetAllocation() {
     <SierraSlideWrapper act={2} className="text-emerald-400">
       {/* Level header */}
       <div className="text-center mb-4">
+        <div className="font-pixel text-lg md:text-xl text-muted-foreground mb-1">
+          DECENTRALIZED APPROPRIATIONS COMMITTEE
+        </div>
         <h1 className="font-pixel text-2xl md:text-4xl text-brutal-cyan">
           MAKE YOUR WISHOCRATIC ALLOCATION
         </h1>
@@ -131,19 +134,28 @@ export function SlidePairwiseBudgetAllocation() {
             </div>
 
             {/* Visual slider bar */}
-            <div className="relative h-10 rounded overflow-hidden border-2 border-primary">
+            <div className="relative mb-10">
+              <div className="relative h-10 rounded overflow-hidden border-2 border-primary">
+                <div
+                  className="absolute inset-y-0 left-0 bg-brutal-cyan transition-all duration-100"
+                  style={{ width: `${allocationA}%` }}
+                />
+                <div
+                  className="absolute inset-y-0 right-0 bg-brutal-red transition-all duration-100"
+                  style={{ width: `${allocationB}%` }}
+                />
+                <div
+                  className="absolute inset-y-0 w-1 bg-foreground transition-all duration-100"
+                  style={{ left: `${allocationA}%`, transform: "translateX(-50%)" }}
+                />
+              </div>
+              {/* Finger below the bar */}
               <div
-                className="absolute inset-y-0 left-0 bg-brutal-cyan transition-all duration-100"
-                style={{ width: `${allocationA}%` }}
-              />
-              <div
-                className="absolute inset-y-0 right-0 bg-brutal-red transition-all duration-100"
-                style={{ width: `${allocationB}%` }}
-              />
-              <div
-                className="absolute inset-y-0 w-1 bg-foreground transition-all duration-100"
+                className="absolute top-full mt-1 text-4xl pointer-events-none z-20 transition-all duration-100"
                 style={{ left: `${allocationA}%`, transform: "translateX(-50%)" }}
-              />
+              >
+                <span className={animatingSlider ? "" : "animate-pulse"}>☝️</span>
+              </div>
             </div>
           </div>
         )}

@@ -153,7 +153,7 @@ You’d think humans would prioritize solving these problems. You’d be adorabl
 The Unexplored Therapeutic Frontier
 95% of your diseases have zero FDA-approved treatments87. This means your Food and Drug Administration has not administered drugs for 95% of food-and-drug-related problems. It’s like having a Department of Transportation that hasn’t gotten around to roads yet. Only 15 diseases get their first effective treatment each year. 6.65 thousand diseases are still waiting. There is a queue to not die, and it is longer than any queue humans have ever voluntarily stood in, which is saying something because you invented Disneyland.
 
-There are 9.5 thousand compounds (95% CI: 7 thousand compounds-12 thousand compounds) known safe compounds, and 99.7% of their potential uses have never been tested. At the current discovery rate, finding treatments for all of them will take ~443 years. You personally will be dead within 80 years, which I mention not to be rude but because you seem weirdly calm about this.
+There are 9.5 thousand compounds (95% CI: 7 thousand compounds-12 thousand compounds) known safe compounds, and 99.7% of their potential uses have never been tested. At the current discovery rate, finding treatments for all of them will take ~443 years. You personally will be dead within 80 years, which I mention not to be rude but because you seem weirdly calm about it.
 
 Everyone currently alive will be dead before we finish (current timeline)
 

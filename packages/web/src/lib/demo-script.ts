@@ -930,7 +930,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "foreground",
     tags: ["hook", "problem"],
     act: "I",
-    narration: `These governments spend ${milToTrialRatio} dollars on the capacity for mass murder for every one dollar testing which medicines work. 95 percent of diseases have zero approved treatments. Curing them all at current spending takes ${oldQueue} years. You will be dead in 80. I mention this not to be rude but because you seem weirdly calm about this.`,
+    narration: `These governments spend ${milToTrialRatio} dollars on the capacity for mass murder for every one dollar testing which medicines work. 95 percent of diseases have zero approved treatments. Curing them all at current spending takes ${oldQueue} years. You will be dead in 80. I mention this not to be rude but because you seem weirdly calm about it.`,
   },
   {
     id: "pl-moronia",
@@ -939,7 +939,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "foreground",
     tags: ["problem"],
     act: "turn",
-    narration: `The parasitic economy — cybercrime plus military spending — grows at 15 percent per year. The productive economy grows at 3. By ${collapseYear}, it becomes more rational to steal than to produce. Argentina collapsed at 38 percent. Yugoslavia at 40. The Soviet Union at 45. Every civilisation that crossed 35 percent collapsed. But there is a save file.`,
+    narration: `The parasitic economy — cybercrime plus military spending — is growing at 15 percent per year. The productive economy is growing at 3. By ${collapseYear}, it becomes more rational to steal than to produce. Argentina collapsed at 38 percent. Yugoslavia at 40. The Soviet Union at 45. Every civilisation that crossed 35 percent collapsed. But there is a save file.`,
   },
   {
     id: "pl-wishonia",
@@ -948,7 +948,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "foreground",
     tags: ["solution"],
     act: "turn",
-    narration: `Three timelines over 15 years. Status quo: parasitic economy overtakes productive. You get poorer and sicker. The 1 percent treaty: all nations redirect 1 percent of military to clinical trials simultaneously — no one loses strategic advantage. ${treatyHaleGainYears} more healthy years, ${treatyIncomeMultiplier} times richer. Optimal governance: end the ${dysfunctionCostT} trillion dollar Political Dysfunction Tax. ${optimalGovernanceIncomeMultiplier} times richer. Choose.`,
+    narration: `Three timelines over 15 years. Status quo: parasitic economy overtakes productive. You get poorer and deader. The 1 percent treaty: all nations redirect 1 percent of military to clinical trials simultaneously — no one loses strategic advantage. Healthy people work more, earn more, and spend less on healthcare. That compounds. ${treatyHaleGainYears} more healthy years, ${treatyIncomeMultiplier} times richer. Optimal governance: end the ${dysfunctionCostT} trillion dollar Political Dysfunction Tax. ${optimalGovernanceIncomeMultiplier} times richer. Choose.`,
   },
   {
     id: "pl-treaty",
@@ -966,7 +966,16 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "pink",
     tags: ["mechanism"],
     act: "II-game",
-    narration: "Each player allocates the global budget through pairwise comparisons — clinical trials versus nuclear weapons, education versus the drug war. Ten choices, two minutes. Eight billion preferences, one optimal budget.",
+    narration: "You have seen what happens when politicians allocate your money. 97 million dead and a 604 to 1 ratio of bombs to cures. The Wishocratic Allocation lets you do it instead. Each player allocates the global budget through pairwise comparisons — clinical trials versus military spending, education versus the drug war. Ten choices, two minutes. Eight billion preferences, one optimal budget.",
+  },
+  {
+    id: "pl-budget",
+    title: "The Budget",
+    componentId: "sierra-eigenvector-budget-result",
+    bgColor: "foreground",
+    tags: ["mechanism"],
+    act: "II-game",
+    narration: "When you ask people what they want, cures beat bombs. Nobody has ever asked.",
   },
   {
     id: "pl-ignorance",
@@ -978,13 +987,22 @@ export const SEGMENTS: DemoSegment[] = [
     narration: "Everyone wants to end war and disease. But everyone thinks nobody else will agree. So nobody does anything. Your economists call this pluralistic ignorance. I call this the dumbest reason a civilisation has ever continued dying and murdering each other.",
   },
   {
+    id: "pl-targets",
+    title: "Win Conditions",
+    componentId: "sierra-win-conditions-hale-income",
+    bgColor: "foreground",
+    tags: ["mechanism"],
+    act: "II-game",
+    narration: "The entire game comes down to two numbers. Healthy life expectancy: 63.3 years, target 69.8. Median income: 18 thousand 7 hundred dollars, target 149 thousand. Your species has produced 4,000 pages of U.N. resolutions about these numbers. This game has two progress bars. We find the bars more effective.",
+  },
+  {
     id: "pl-fund",
     title: "The Fund",
     componentId: "sierra-three-scenarios-all-win",
     bgColor: "pink",
     tags: ["mechanism", "financial"],
     act: "II-money",
-    narration: `Eight billion people want this but nobody will move first without small pieces of paper with presidents on them. So you create the Earth Optimization Prize Fund. The target is 1 percent of global savings, diversified across the venture capital sector, producing 17 percent annual returns. If the treaty passes, your VOTE points pay out. If it fails, your hundred dollars still becomes eleven hundred. Two out of three outcomes are wins. The third one is your fault.`,
+    narration: `Billions of people have to overcome pluralistic ignorance and work together to achieve this. Since your species requires small pieces of paper with presidents on them before you will do anything, you create the Earth Optimization Prize Fund. The target is 1 percent of global savings, diversified across the venture capital sector, producing 17 percent annual returns. If humanity hits the median income and healthy lifespan targets by 2040, your VOTE points pay out. If it misses, your hundred dollars still becomes eleven hundred. Two out of three outcomes are wins. The third one is your fault.`,
   },
   {
     id: "pl-prize",
@@ -994,6 +1012,15 @@ export const SEGMENTS: DemoSegment[] = [
     tags: ["mechanism", "financial"],
     act: "II-money",
     narration: `Vote, then share your referral link. Each friend who votes through your link earns you one VOTE point. Each point could be worth up to ${votePointValue}.`,
+  },
+  {
+    id: "pl-armory",
+    title: "The Armory",
+    componentId: "sierra-armory",
+    bgColor: "foreground",
+    tags: ["feature"],
+    act: "II-armory",
+    narration: "Now you have the incentive. Here are the tools to hit the targets.",
   },
   {
     id: "pl-dfda",
@@ -1011,7 +1038,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "yellow",
     tags: ["feature"],
     act: "II-armory",
-    narration: `The Optimal Policy Generator grades every policy A through F by what actually happened. America spent ${drugWarCostB} billion dollars a year on the War on Drugs. Overdoses rose 1,700 percent. Portugal decriminalised drugs for almost nothing. Overdoses dropped 80 percent.`,
+    narration: `The Optimal Policy Generator uses causal inference on hundreds of years of data across dozens of countries to grade every policy A through F by what actually happened. America spent ${drugWarCostB} billion dollars a year on the War on Drugs. Overdoses rose 1,700 percent. Portugal decriminalised drugs for almost nothing. Overdoses dropped 80 percent.`,
   },
   {
     id: "pl-obg",
@@ -1029,7 +1056,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "pink",
     tags: ["feature", "financial"],
     act: "II-armory",
-    narration: "Now you know what everyone wants and what the optimal budget is. How do you get your politicians to actually do it? Incentive Alignment Bonds. Fund the politicians who vote for the treaty. Defund the ones who do not. The math does the lobbying.",
+    narration: "Now you know what everyone wants and what the optimal budget is. How do you get your politicians to actually do it? Incentive Alignment Bonds. Raise 1 billion dollars from investors. Use it to fund politicians who vote for the treaty and defund the ones who do not. When the treaty passes, bondholders get perpetual returns proportional to the treaty percentage. Every investor becomes a permanent lobbyist for expanding it. The math does the lobbying.",
   },
   {
     id: "pl-storacha",
@@ -1065,7 +1092,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "pink",
     tags: ["cta"],
     act: "III",
-    narration: "Somewhere inside you right now, cells are copying themselves wrong. The treatment that would fix it exists as an untested compound on a shelf, because the money bought a missile instead. That missile is currently incinerating a child who would have grown up to discover the cure. You lose the treatment. You lose the scientist. You get the invoice. One percent fixes this. One vote starts it. Go to optimitron dot com and play now.",
+    narration: "Think about someone you love who is suffering right now. The treatment that would help them exists as an untested compound on a shelf, because the money bought a missile instead. That missile is currently incinerating a child who would have grown up to discover the cure. You lose the treatment. You lose the scientist. You get the invoice. One percent fixes this. One vote starts it. Go to optimitron dot com and play now.",
   },
   {
     id: "pl-cta",
@@ -1112,17 +1139,20 @@ export const PLAYLISTS: DemoPlaylist[] = [
       // Game Over + Turn (~10s)
       "pl-moronia",
       "pl-wishonia",
-      // Solution (~10s)
+      // Solution
       "pl-treaty",
-      // The Game (~35s)
-      "pl-game",
+      // The Incentive
       "pl-ignorance",
+      "pl-targets",
       "pl-fund",
       "pl-prize",
-      // The Tools (~40s)
+      // The Tools
+      "pl-armory",
       "pl-dfda",
       "pl-opg",
       "pl-obg",
+      "pl-game",
+      "pl-budget",
       "pl-iab",
       // Protocol Labs Tech (~20s)
       "pl-storacha",
