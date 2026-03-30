@@ -8,11 +8,14 @@ const ROWS = [
   "PERSON 3",
   "PERSON 4",
   "PERSON 5",
+  "PERSON 6",
+  "PERSON 7",
+  "PERSON 8",
   "...",
   "PERSON 8,000,000,000",
 ];
 
-const QUOTE = "I agree we should cure diseases instead of blowing everything up, but no one else would agree to this.";
+const QUOTE = "I agree we should spend more on curing diseases than bombs, but no one would agree.";
 
 export function SlidePluralisticIgnoranceBug() {
   return (

@@ -1083,7 +1083,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "foreground",
     tags: ["feature"],
     act: "II-armory",
-    narration: "Twelve unelected humans meet eight times a year to decide how much your money is worth. Since 1913 they have destroyed 97 percent of the dollar's value. This smart contract replaces them with an algorithm. Zero percent inflation anchored to productivity growth. New money distributed equally to every human via UBI. No meetings. No favourites. No 97 percent.",
+    narration: "Twelve unelected humans meet eight times a year to decide how much your money is worth. When they print new money, it goes to banks and asset holders first. In 2020 they printed 4 trillion dollars. The wealth of the top 1 percent increased by exactly 4 trillion dollars that year. This smart contract replaces them. Zero percent inflation anchored to productivity growth. New money distributed equally to every human via UBI.",
   },
   {
     id: "pl-storacha",
