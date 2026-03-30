@@ -142,7 +142,7 @@ export function SlideEarthOptimizationGame() {
                   style={{ width: `${100 - curesPct}%` }}
                 >
                   <span className="font-pixel text-xl md:text-2xl text-brutal-red-foreground whitespace-nowrap">
-                    💥 {(100 - curesPct).toFixed(0)}% EXPLOSIONS 💥
+                    💣 {(100 - curesPct).toFixed(0)}% MILITARY SPENDING 💣
                   </span>
                 </div>
                 {/* Cures portion */}
@@ -165,7 +165,7 @@ export function SlideEarthOptimizationGame() {
               )}
             </div>
             <div className="flex justify-between font-pixel text-lg md:text-xl">
-              <span className="text-brutal-red">💣 {(100 - curesPct).toFixed(0)}% EXPLOSIONS</span>
+              <span className="text-brutal-red">💣 {(100 - curesPct).toFixed(0)}% MILITARY</span>
               <span className="text-brutal-cyan">CURES {curesPct.toFixed(1)}% 🧬</span>
             </div>
 

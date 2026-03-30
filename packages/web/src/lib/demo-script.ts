@@ -1056,7 +1056,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "pink",
     tags: ["feature", "financial"],
     act: "II-armory",
-    narration: "Now you know what everyone wants and what the optimal budget is. How do you get your politicians to actually do it? Incentive Alignment Bonds. Raise 1 billion dollars from investors. Use it to fund politicians who vote for the treaty and defund the ones who do not. When the treaty passes, bondholders get perpetual returns proportional to the treaty percentage. Every investor becomes a permanent lobbyist for expanding it. The math does the lobbying.",
+    narration: "Now you know what everyone wants and what the optimal budget is. How do you get your politicians to actually do it? Incentive Alignment Bonds. Raise 1 billion dollars from investors. Use it to fund politicians who vote for the treaty and defund the ones who do not. When the treaty passes, bondholders get perpetual returns proportional to the treaty percentage. Politicians get electoral support proportional to it. Every investor and every politician becomes a permanent lobbyist for expanding it. The math does the lobbying.",
   },
   {
     id: "pl-storacha",

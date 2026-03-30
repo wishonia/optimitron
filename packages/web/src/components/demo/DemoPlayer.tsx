@@ -350,7 +350,7 @@ function DemoPlayerInner({
 
   // Build slide content
   const slideContent = (
-    <div className="absolute inset-0 bg-foreground">
+    <div className="absolute inset-0 bg-black">
       <AnimatePresence mode="wait">
         <motion.div
           key={slide.id}

@@ -273,15 +273,6 @@ export function SlideOptimalPolicyGenerator() {
           </div>
         )}
 
-        {/* Phase 4 — Punchline */}
-        {phase >= 4 && (
-          <p
-            className="font-terminal text-2xl md:text-4xl text-center fade-in gentle-pulse"
-            style={{ color: palette.foreground }}
-          >
-            Ranked by what actually happened. Not by who donated.
-          </p>
-        )}
 
       </div>
     </SierraSlideWrapper>
