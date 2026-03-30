@@ -298,7 +298,7 @@ export const SLIDES: SlideConfig[] = [
     act: "act1",
     duration: 8,
     narration:
-      `Your governments spend $${P.milTrialsRatio} on the capacity for mass murder for every $1 they spend testing which medicines work. 95% of your diseases have zero approved treatments. At the current discovery rate, finding treatments for all of them takes ${P.queueYears} years. You personally will be dead within 80 years, which I mention not to be rude but because you seem weirdly calm about this.`,
+      `Your governments spend $${P.milTrialsRatio} on the capacity for mass murder for every $1 they spend testing which medicines work. 95% of your diseases have zero approved treatments. At the current discovery rate, finding treatments for all of them takes ${P.queueYears} years. You personally will be dead within 80 years, which I mention not to be rude but because you seem weirdly calm about it.`,
     visual:
       'Pixel art — animated zoom sequence. Start: a towering stack of pixel coins fills the entire screen top to bottom, labeled "$2,720,000,000,000 — MILITARY." The camera zooms in on the bottom-right corner — deeper, deeper — until a single pixel coin becomes visible at 64\u00D7 magnification, labeled "$4,500,000,000 — CLINICAL TRIALS." Pause. Then snap-zoom back out to full scale. The single coin disappears into the mass. The CountUp component animates the ratio from 1:1 racing to 604:1. Below, MilitaryVsTrialsPie renders — the clinical trials slice is literally one pixel wide.',
     onScreen: [
