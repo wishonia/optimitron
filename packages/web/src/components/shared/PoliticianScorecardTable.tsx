@@ -161,7 +161,7 @@ export function PoliticianScorecardTable({
                     />
                     <span className="font-black text-foreground text-sm">{s.name}</span>
                     <span className="text-xs font-bold text-muted-foreground">
-                      {s.party?.[0] ?? ""}-{s.state}
+                      {s.state}
                     </span>
                   </Link>
                 </td>
