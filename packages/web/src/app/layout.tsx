@@ -86,7 +86,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`font-sans antialiased ${fontVariables}`}>
+      <body className={`font-sans antialiased ${fontVariables}`} suppressHydrationWarning>
         <Providers initialState={initialState}>
           <Navbar />
           <main className="min-h-screen">{children}</main>

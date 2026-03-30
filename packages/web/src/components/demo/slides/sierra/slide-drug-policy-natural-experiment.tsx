@@ -2,14 +2,11 @@
 
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { useEffect, useState } from "react";
+import { buildDrugPolicyEmojiPositions } from "@/lib/demo/deterministic";
 
 // Floating emojis: syringes appear then turn into skulls (USA), or skulls disappear (Portugal)
 const EMOJI_COUNT = 30;
-const emojiPositions = Array.from({ length: EMOJI_COUNT }, (_, i) => ({
-  x: Math.random() * 100,
-  y: Math.random() * 100,
-  delay: i * 120,
-}));
+const emojiPositions = buildDrugPolicyEmojiPositions(EMOJI_COUNT);
 
 export function SlideDrugPolicyNaturalExperiment() {
   const [emojisVisible, setEmojisVisible] = useState(0);
@@ -34,18 +31,18 @@ export function SlideDrugPolicyNaturalExperiment() {
         {emojiPositions.slice(0, emojisVisible).map((pos, i) => {
           // Left half: skulls fading out (Portugal effect)
           // Right half: syringes turning to skulls (USA effect)
-          const isLeft = pos.x < 50;
+          const isLeft = pos.xPct < 50;
           return (
             <span
               key={i}
               className="absolute text-xl md:text-2xl"
               style={{
-                left: `${pos.x}%`,
-                top: `${pos.y}%`,
+                left: `${pos.xPct}%`,
+                top: `${pos.yPct}%`,
                 transform: "translate(-50%, -50%)",
                 opacity: isLeft ? 0.15 + (i % 3) * 0.1 : 0.3 + (i % 3) * 0.1,
                 animation: isLeft
-                  ? `fadeOut ${2 + (i % 3)}s ease-out ${pos.delay}ms forwards`
+                  ? `fadeOut ${2 + (i % 3)}s ease-out ${pos.delayMs}ms forwards`
                   : undefined,
               }}
             >

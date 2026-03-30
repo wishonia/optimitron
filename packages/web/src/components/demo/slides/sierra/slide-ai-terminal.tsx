@@ -3,6 +3,7 @@
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { GlitchText } from "../../animations/sierra/glitch-text";
 import { useEffect, useState } from "react";
+import { buildTerminalMatrixColumns } from "@/lib/demo/deterministic";
 
 const terminalLines = [
   { text: "> ANALYZING GOVERNMENT PRIORITIES...", delay: 0 },
@@ -17,6 +18,8 @@ const terminalLines = [
   { text: "", delay: 4000 },
   { text: "> DIAGNOSIS: MISALIGNED SUPERINTELLIGENCE", delay: 4200, warning: true },
 ];
+
+const MATRIX_COLUMNS = buildTerminalMatrixColumns(20, 30);
 
 export function SlideAITerminal() {
   const [visibleLines, setVisibleLines] = useState<number>(0);
@@ -41,18 +44,18 @@ export function SlideAITerminal() {
     <SierraSlideWrapper act={1} className="text-green-500">
       {/* Matrix-style falling code background */}
       <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {MATRIX_COLUMNS.map((column, i) => (
           <div
             key={i}
             className="absolute text-green-400 font-mono text-xs animate-fall"
             style={{
-              left: `${i * 5}%`,
-              animationDuration: `${3 + Math.random() * 4}s`,
-              animationDelay: `${Math.random() * 2}s`,
+              left: `${column.leftPct}%`,
+              animationDuration: `${column.durationSeconds}s`,
+              animationDelay: `${column.delaySeconds}s`,
             }}
           >
-            {Array.from({ length: 30 }).map((_, j) => (
-              <div key={j}>{String.fromCharCode(0x30a0 + Math.random() * 96)}</div>
+            {column.glyphs.map((glyph, j) => (
+              <div key={j}>{glyph}</div>
             ))}
           </div>
         ))}

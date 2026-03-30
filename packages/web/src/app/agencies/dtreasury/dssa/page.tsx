@@ -62,7 +62,7 @@ const howItWorks = [
 const comparisonData = {
   current: [
     { label: "Welfare programs", value: "80+ overlapping" },
-    { label: "Annual admin overhead", value: "$1.1 trillion" },
+    { label: "Annual admin overhead", value: "~$400–675 billion" },
     { label: "Application processing", value: "~45 days" },
     { label: "People who fall through cracks", value: "Millions" },
     { label: "Poverty trap", value: "Earn more, lose benefits" },

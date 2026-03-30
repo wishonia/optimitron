@@ -84,13 +84,8 @@ async function tryManifest(slideId: string): Promise<HTMLAudioElement | null> {
  * Maps segment IDs to game slide IDs for manifest lookup.
  */
 export const segmentToSlideId: Record<string, string> = {
-  "pl-intro": "earth-optimization-game",
+  // pl-* segments that have unique manifest keys (no script-* collision)
   "pl-170t": "military-waste-170t",
-  "pl-misaligned": "misaligned-superintelligence",
-  "pl-ratio": "military-health-ratio",
-  "pl-moronia": "game-over-moronia",
-  "pl-wishonia": "restore-from-wishonia",
-  "pl-treaty": "one-percent-treaty",
   "pl-game": "one-percent-referendum-vote",
   "pl-prize": "dominant-assurance-contract",
   "pl-fund": "three-scenarios-all-win",
@@ -102,15 +97,10 @@ export const segmentToSlideId: Record<string, string> = {
   "pl-targets": "win-conditions-hale-income",
   "pl-ignorance": "pluralistic-ignorance-bug",
   "pl-170t-cost": "170t-opportunity-cost",
-  "pl-dfda": "decentralized-fda",
   "pl-opg": "optimal-policy-generator",
   "pl-obg": "optimal-budget-generator",
-  "pl-iab": "incentive-alignment-bonds",
-  "pl-storacha": "ipfs-immutable-storage",
-  "pl-hypercerts": "impact-certificates",
-  "pl-lives": "ten-billion-lives-saved",
-  "pl-close": "final-call-to-action",
   "pl-cta": "post-credits-aliens",
+  // script-* segments
   "script-1a-misaligned": "misaligned-superintelligence",
   "script-1b-objective": "earth-optimization-game",
   "script-2a-deaths": "daily-death-toll",
@@ -127,21 +117,6 @@ export const segmentToSlideId: Record<string, string> = {
   "script-10b-lives": "ten-billion-lives-saved",
   "script-11-close": "final-call-to-action",
 };
-
-// ---------------------------------------------------------------------------
-// Legacy WAV lookup
-// ---------------------------------------------------------------------------
-
-async function tryPreGenerated(slideId: string): Promise<HTMLAudioElement | null> {
-  const url = `/demo-audio/${slideId}.wav`;
-  try {
-    const resp = await fetch(url, { method: "HEAD" });
-    if (resp.ok) return loadAudio(url);
-  } catch {
-    // Pre-generated file doesn't exist
-  }
-  return null;
-}
 
 // ---------------------------------------------------------------------------
 // Real-time TTS (non-streaming fallback)
@@ -236,11 +211,10 @@ export async function getDemoAudio(
   }
 
   // Force live: use streaming endpoint for instant playback start
-  // Fallback chain: manifest MP3 → legacy WAV → non-streaming TTS
+  // Fallback chain: manifest MP3 → real-time TTS
   const audio = forceLive
     ? await generateStreaming(narrationText) ?? await generateRealTime(narrationText)
     : (await tryManifest(slideId)) ??
-      (await tryPreGenerated(slideId)) ??
       (await generateRealTime(narrationText));
 
   if (audio) {

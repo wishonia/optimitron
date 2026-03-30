@@ -15,6 +15,7 @@ import { PoliticalDysfunctionTaxSection } from "@/components/landing/PoliticalDy
 import { OptimizedGovernancePreview } from "@/components/landing/OptimizedGovernancePreview";
 import { GovernmentReportCardPreview } from "@/components/landing/GovernmentReportCardPreview";
 import { PoliticianLeaderboardPreview } from "@/components/landing/PoliticianLeaderboardPreview";
+import { DemoPreview } from "@/components/landing/DemoPreview";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -186,21 +187,8 @@ export default function Home() {
       {/* ── 11. Two Futures — Wishonia vs Moronia ── */}
       <TwoFuturesSection />
 
-      {/* ── 12. Watch the Demo ── */}
-      <SectionContainer bgColor="foreground" borderPosition="top" padding="lg">
-        <Container>
-          <SectionHeader
-            title="See It In Action"
-            subtitle="A 7-minute guided tour narrated by an alien who has been running a planet for 4,237 years."
-            size="lg"
-          />
-          <div className="flex justify-center">
-            <GameCTA href={ROUTES.demo} variant="primary" size="lg">
-              🎬 Watch the Demo
-            </GameCTA>
-          </div>
-        </Container>
-      </SectionContainer>
+      {/* ── 12. Watch the Demo — screenshot carousel ── */}
+      <DemoPreview />
 
       {/* ── 13. Government Report Cards — mini leaderboard ── */}
       <GovernmentReportCardPreview />

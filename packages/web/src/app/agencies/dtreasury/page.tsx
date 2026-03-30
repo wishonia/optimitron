@@ -14,10 +14,10 @@ export const metadata = getRouteMetadata(dtreasuryLink);
 
 const problemStats = [
   {
-    value: "$1.1T/yr",
-    label: "Welfare Administration",
+    value: "$13.5T/yr",
+    label: "Global Welfare Spending",
     detail:
-      "Your species spends $1.1 trillion per year administering means-tested welfare programs. Case workers, applications, audits, fraud detection — all to decide who deserves to not starve. On my planet, we just... give people money.",
+      "Your species spends $13.5 trillion per year on social protection programs globally. Between $400 and $675 billion of that is pure administration — case workers, applications, audits, fraud detection — all to decide who deserves to not starve. On my planet, we just... give people money.",
     color: "bg-brutal-pink",
     textColor: "text-brutal-pink-foreground",
     detailColor: "text-muted-foreground",

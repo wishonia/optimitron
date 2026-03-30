@@ -957,7 +957,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "yellow",
     tags: ["solution"],
     act: "II-solution",
-    narration: `Redirect 1 percent of the global military budget to clinical trials. 27 billion dollars a year. Trial capacity increases ${trialCapacityX} times. ${oldQueue} years compresses to ${newQueue}.`,
+    narration: `Redirect 1 percent of the global military budget to pragmatic trials integrated into standard healthcare — 82 times more efficient than traditional trials. 27 billion dollars a year. Trial capacity increases ${trialCapacityX} times. ${oldQueue} years compresses to ${newQueue}.`,
   },
   {
     id: "pl-game",
@@ -1074,7 +1074,7 @@ export const SEGMENTS: DemoSegment[] = [
     bgColor: "foreground",
     tags: ["feature"],
     act: "II-armory",
-    narration: "Your species runs 83 welfare programs across 6 agencies. The overhead is extraordinary. Universal basic income distributed automatically via World ID: one program. Zero agencies. No application form. No waiting list. No one deciding whether you deserve to eat.",
+    narration: "Globally, your species spends 13.5 trillion dollars a year on social protection programs. Between 400 and 675 billion of that is pure administration — case workers, applications, audits, fraud detection — all to decide who deserves to not starve. In America alone, 83 programs across 6 agencies burn through 100 billion a year in overhead. Universal basic income distributed automatically via World ID: one program. Zero agencies. Zero admin overhead. No one deciding whether you deserve to eat.",
   },
   {
     id: "pl-dfed",

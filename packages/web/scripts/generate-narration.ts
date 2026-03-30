@@ -191,18 +191,7 @@ async function main() {
     }
   }
 
-  // Check segments used in the target playlist have manifest keys
-  for (const seg of segments) {
-    if (!seg.narration?.trim()) continue;
-    const manifestKey = segmentToSlideId[seg.id] ?? seg.id;
-    // Warn if using segment ID as manifest key (no explicit mapping)
-    if (!segmentToSlideId[seg.id]) {
-      console.warn(
-        `  ⚠️  Segment "${seg.id}" has no entry in segmentToSlideId (demo-tts.ts). ` +
-        `Using "${seg.id}" as manifest key. Add it to segmentToSlideId to fix TTS lookup.`,
-      );
-    }
-  }
+
 
   if (validationErrors.length > 0) {
     console.error("\n❌ Validation errors:\n");

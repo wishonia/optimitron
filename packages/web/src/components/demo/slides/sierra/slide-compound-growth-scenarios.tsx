@@ -2,6 +2,7 @@
 
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { formatCurrency } from "@/lib/demo/formatters";
+import { getCollapseYearsLeft } from "@/lib/demo/deterministic";
 import {
   GLOBAL_AVG_INCOME_2025,
   TREATY_TRAJECTORY_AVG_INCOME_YEAR_15,
@@ -19,7 +20,7 @@ const statusQuoIncome = Math.round(GLOBAL_AVG_INCOME_2025.value);
 const treatyIncome = Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value);
 const optimalIncome = Math.round(WISHONIA_TRAJECTORY_AVG_INCOME_YEAR_15.value);
 const globalDysfunctionCostT = Math.round(POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value / 1e12);
-const collapseYearsLeft = Math.round(DESTRUCTIVE_ECONOMY_50PCT_YEAR.value) - new Date().getFullYear();
+const collapseYearsLeft = getCollapseYearsLeft(Math.round(DESTRUCTIVE_ECONOMY_50PCT_YEAR.value));
 const treatyHaleGain = Math.round(TREATY_HALE_GAIN_YEAR_15.value * 10) / 10;
 const wishoniaHaleGain = Math.round(WISHONIA_HALE_GAIN_YEAR_15.value * 10) / 10;
 const trialCapacityX = DFDA_TRIAL_CAPACITY_MULTIPLIER.value.toFixed(1);
