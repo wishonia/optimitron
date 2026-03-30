@@ -4,6 +4,10 @@ import {
   getCharacterHeadSpriteNames,
   getSpriteUrl,
 } from "../core/sprite-loader";
+import {
+  getWishoniaBodyHeight,
+  getWishoniaBodyOffsetX,
+} from "../core/layout";
 
 export interface WishoniaCharacterProps {
   /** Width in pixels (default 140) */
@@ -55,7 +59,8 @@ export function WishoniaCharacter({
     spriteFormat,
   );
 
-  const bodyHeight = Math.round(size * 0.57); // body is ~57% of total height
+  const bodyHeight = getWishoniaBodyHeight(size);
+  const bodyOffsetX = getWishoniaBodyOffsetX(size);
 
   return (
     <div
@@ -120,6 +125,8 @@ export function WishoniaCharacter({
           marginTop: -12,
           maxHeight: bodyHeight,
           overflow: "hidden",
+          // The container is mirrored with scaleX(-1), so positive X moves the body left on screen.
+          transform: `translateX(${bodyOffsetX}px)`,
         }}
       >
         <img

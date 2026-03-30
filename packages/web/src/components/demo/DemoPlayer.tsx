@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef, Suspense } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   type DemoSegment,
   getPlaylistSegments,
@@ -12,7 +12,12 @@ import { DemoControls } from "./DemoControls";
 import { SierraGameProvider, useSierraGame } from "./SierraGameContext";
 import { SierraChrome } from "./SierraChrome";
 import { getSlideComponent } from "./slides";
-import { useSierraTransition } from "./SierraTransition";
+// Simple fast crossfade — replaces per-act transition variants
+const crossfadeVariants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.15 } },
+};
 // Wishonia character with lip-sync support
 import {
   WishoniaCharacter,
@@ -89,7 +94,6 @@ function DemoPlayerInner({
   playlistId: string;
   sierraMode: boolean;
 }) {
-  const reduced = useReducedMotion();
   const slides = getPlaylistSegments(playlistId);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -339,20 +343,19 @@ function DemoPlayerInner({
   const bgClass =
     bgColorMap[slide.bgColor ?? "background"] ?? "bg-background";
 
-  // Resolve slide component and transition
+  // Resolve slide component
   const SlideComponent = getSlideComponent(slide.componentId);
-  const transitionVariants = useSierraTransition();
 
   // Build slide content
   const slideContent = (
     <div className="absolute inset-0 bg-black">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="sync">
         <motion.div
           key={slide.id}
-          variants={reduced ? undefined : transitionVariants}
-          initial={reduced ? false : "initial"}
-          animate={reduced ? { opacity: 1 } : "animate"}
-          exit={reduced ? { opacity: 1 } : "exit"}
+          variants={crossfadeVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           className={`absolute inset-0 overflow-y-auto ${bgClass}`}
         >
           <Suspense fallback={<div className={`absolute inset-0 ${bgClass}`} />}>
