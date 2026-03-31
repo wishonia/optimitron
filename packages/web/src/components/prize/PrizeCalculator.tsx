@@ -19,7 +19,7 @@ import {
 const FAIL_MULTIPLIER = PRIZE_POOL_HORIZON_MULTIPLE.value;
 const VOTE_VALUE = VOTE_TOKEN_VALUE.value;
 
-const PRESET_AMOUNTS = [100, 1_000, 10_000, 100_000];
+const PRESET_AMOUNTS = [1];
 const PRESET_VOTES = [1, 2, 5, 10];
 
 function formatUSD(n: number): string {
@@ -33,7 +33,7 @@ function formatUSD(n: number): string {
 }
 
 export function PrizeCalculator() {
-  const [depositAmount, setDepositAmount] = useState(1000);
+  const [depositAmount, setDepositAmount] = useState(1);
   const [voteCount, setVoteCount] = useState(2);
   const reduced = useReducedMotion();
 

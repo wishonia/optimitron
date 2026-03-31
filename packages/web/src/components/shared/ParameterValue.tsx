@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback } from "react"
 import { Popover } from "@/components/retroui/Popover"
 import { Badge } from "@/components/retroui/Badge"
-import { ExternalLink, Info, FlaskConical } from "lucide-react"
+import { ExternalLink, Info, FlaskConical, BookOpen } from "lucide-react"
 import {
   fmtParam,
   fmtParamValueOnly,
@@ -71,6 +71,7 @@ export function ParameterValue({
     param.sourceRef ||
     param.confidence ||
     param.calculationsUrl ||
+    param.manualPageUrl ||
     param.peerReviewed ||
     confidenceInterval
 
@@ -193,6 +194,18 @@ function ParameterPopoverContent({
             >
               <FlaskConical className="h-3 w-3" />
               Calculations
+            </a>
+          )}
+          {param.manualPageUrl && (
+            <a
+              href={param.manualPageUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] font-bold text-brutal-yellow hover:underline flex items-center gap-1"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <BookOpen className="h-3 w-3" />
+              {param.manualPageTitle || "Manual"}
             </a>
           )}
         </div>
