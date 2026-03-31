@@ -6,6 +6,7 @@ import { createLogger } from "@/lib/logger";
 import { getPersonhoodProviderLabel } from "@/lib/personhood";
 import { getPersonhoodSummary } from "@/lib/personhood.server";
 import { prisma } from "@/lib/prisma";
+import { getPublishedPrizeDepositActivity } from "@/lib/prize-deposit-hypercert.server";
 import { ROUTES } from "@/lib/routes";
 import { getVerifiedVoteStats } from "@/lib/verified-votes.server";
 import type {
@@ -23,6 +24,7 @@ interface CachedPrizeDepositReceipt {
   href: string | null;
   id: string;
   occurredAtIso: string;
+  txHash: string;
   title: string;
 }
 
@@ -168,6 +170,7 @@ async function scanPrizeDepositsForWallets(
         amount: BigInt(log.args[1]).toString(),
         href: getTransactionExplorerUrl(chainId, log.transactionHash),
         occurredAtIso: occurredAt.toISOString(),
+        txHash: log.transactionHash,
         title: `PRIZE deposit ${formatUsdcAmount(BigInt(log.args[1]).toString())}`,
       };
 
@@ -282,19 +285,34 @@ export async function getImpactReceipts(
         createWalletKey(walletAddresses),
       );
 
-      items.push(
-        ...depositReceipts.slice(0, 5).map((receipt) => ({
+      const publishedRefs = await Promise.all(
+        depositReceipts.slice(0, 5).map(async (receipt) => {
+          try {
+            return await getPublishedPrizeDepositActivity(receipt.txHash);
+          } catch (error) {
+            logger.warn("Failed to resolve published prize deposit hypercert", error);
+            return null;
+          }
+        }),
+      );
+
+      items.push(...depositReceipts.slice(0, 5).map((receipt, index) => {
+        const publishedRef = publishedRefs[index];
+
+        return {
           id: receipt.id,
           title: receipt.title,
-          description: `${formatWalletAddress(receipt.depositorAddress)} funded the Earth Optimization Prize on ${getChainLabel(receipt.chainId)}.`,
-          statusLabel: "ON-CHAIN",
-          statusTone: "accent" as const,
+          description: publishedRef
+            ? `${formatWalletAddress(receipt.depositorAddress)} funded the Earth Optimization Prize on ${getChainLabel(receipt.chainId)}. Published as an AT Protocol hypercert receipt.`
+            : `${formatWalletAddress(receipt.depositorAddress)} funded the Earth Optimization Prize on ${getChainLabel(receipt.chainId)}.`,
+          statusLabel: publishedRef ? "PUBLISHED" : "ON-CHAIN",
+          statusTone: publishedRef ? ("success" as const) : ("accent" as const),
           icon: "🏆",
           timeLabel: formatTimeAgo(new Date(receipt.occurredAtIso)),
-          href: receipt.href,
-          external: receipt.href !== null,
-        })),
-      );
+          href: publishedRef?.href ?? receipt.href,
+          external: (publishedRef?.href ?? receipt.href) !== null,
+        };
+      }));
     } catch (error) {
       logger.warn("Failed to scan on-chain prize deposits", error);
     }

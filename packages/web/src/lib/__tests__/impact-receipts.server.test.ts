@@ -27,6 +27,10 @@ vi.mock("@/lib/verified-votes.server", () => ({
   getVerifiedVoteStats: vi.fn(),
 }));
 
+vi.mock("@/lib/prize-deposit-hypercert.server", () => ({
+  getPublishedPrizeDepositActivity: vi.fn(),
+}));
+
 vi.mock("@/lib/contracts/server-client", () => ({
   getProvider: vi.fn(() => ({
     getBlock: mockGetBlock,
@@ -41,6 +45,7 @@ vi.mock("@/lib/contracts/server-client", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { getPersonhoodSummary } from "@/lib/personhood.server";
+import { getPublishedPrizeDepositActivity } from "@/lib/prize-deposit-hypercert.server";
 import { getVerifiedVoteStats } from "@/lib/verified-votes.server";
 import { getImpactReceipts } from "../impact-receipts.server";
 
@@ -49,6 +54,7 @@ describe("getImpactReceipts", () => {
     vi.clearAllMocks();
     vi.spyOn(console, "warn").mockImplementation(() => {});
     process.env.TREASURY_CHAIN_ID = "84532";
+    vi.mocked(getPublishedPrizeDepositActivity).mockResolvedValue(null);
   });
 
   it("combines personhood, referral, and on-chain prize deposit receipts", async () => {
@@ -87,6 +93,12 @@ describe("getImpactReceipts", () => {
     mockGetBlock.mockResolvedValueOnce({
       timestamp: Math.floor(new Date("2026-03-29T12:00:00.000Z").getTime() / 1000),
     });
+    vi.mocked(getPublishedPrizeDepositActivity).mockResolvedValueOnce({
+      uri: "at://did:plc:optimitron/org.hypercerts.claim.activity/prize-deposit-aaa",
+      cid: "cid-activity",
+      href: "https://www.hyperscan.dev/data?did=did%3Aplc%3Aoptimitron&collection=org.hypercerts.claim.activity&rkey=prize-deposit-aaa",
+      rkey: "prize-deposit-aaa",
+    });
 
     const result = await getImpactReceipts("user_1");
 
@@ -104,10 +116,10 @@ describe("getImpactReceipts", () => {
     });
     expect(result.items[2]?.title).toContain("$250");
     expect(result.items[2]).toMatchObject({
-      statusLabel: "ON-CHAIN",
+      statusLabel: "PUBLISHED",
       external: true,
       href:
-        "https://sepolia.basescan.org/tx/0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "https://www.hyperscan.dev/data?did=did%3Aplc%3Aoptimitron&collection=org.hypercerts.claim.activity&rkey=prize-deposit-aaa",
     });
     expect(mockQueryFilter).toHaveBeenCalledTimes(1);
   });
