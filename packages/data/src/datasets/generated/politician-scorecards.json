@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-30T23:37:29.265Z",
+  "generatedAt": "2026-03-30T23:58:36.517Z",
   "congress": 118,
   "memberCount": 250,
   "systemWideRatio": 1094,
@@ -22,7 +22,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -50,7 +50,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -90,7 +90,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -118,7 +118,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -158,7 +158,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -186,7 +186,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -226,7 +226,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -254,7 +254,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -294,7 +294,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -322,7 +322,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -362,7 +362,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -390,7 +390,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -430,7 +430,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -458,7 +458,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -498,7 +498,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -526,7 +526,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -566,7 +566,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -594,7 +594,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -634,7 +634,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -676,7 +676,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -716,7 +716,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -758,7 +758,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -798,7 +798,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -840,7 +840,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -880,7 +880,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -922,7 +922,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -962,7 +962,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -1004,7 +1004,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -1044,7 +1044,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -1086,7 +1086,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -1126,7 +1126,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1154,7 +1154,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -1194,7 +1194,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1222,7 +1222,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1262,7 +1262,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -1290,7 +1290,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1330,7 +1330,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1372,7 +1372,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1412,7 +1412,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1454,7 +1454,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1494,7 +1494,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1536,7 +1536,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1576,7 +1576,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1618,7 +1618,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1658,7 +1658,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1686,7 +1686,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1726,7 +1726,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1754,7 +1754,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1794,7 +1794,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1822,7 +1822,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1862,7 +1862,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -1890,7 +1890,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -1930,7 +1930,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -1972,7 +1972,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2012,7 +2012,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -2054,7 +2054,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2094,7 +2094,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -2136,7 +2136,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2176,7 +2176,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2218,7 +2218,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2258,7 +2258,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2300,7 +2300,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2340,7 +2340,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2382,7 +2382,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2422,7 +2422,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2464,7 +2464,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2504,7 +2504,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2546,7 +2546,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2586,7 +2586,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2628,7 +2628,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2668,7 +2668,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2710,7 +2710,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2750,7 +2750,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2792,7 +2792,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2832,7 +2832,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2874,7 +2874,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2914,7 +2914,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -2956,7 +2956,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -2996,7 +2996,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3038,7 +3038,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3078,7 +3078,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3120,7 +3120,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3160,7 +3160,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3202,7 +3202,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3242,7 +3242,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3284,7 +3284,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3324,7 +3324,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3366,7 +3366,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3406,7 +3406,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3448,7 +3448,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3488,7 +3488,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3530,7 +3530,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3570,7 +3570,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3598,7 +3598,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3638,7 +3638,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -3680,7 +3680,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3720,7 +3720,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -3762,7 +3762,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3802,7 +3802,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -3844,7 +3844,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3884,7 +3884,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -3926,7 +3926,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -3966,7 +3966,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4008,7 +4008,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4048,7 +4048,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4090,7 +4090,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4130,7 +4130,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4172,7 +4172,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4212,7 +4212,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4254,7 +4254,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4294,7 +4294,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4336,7 +4336,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4376,7 +4376,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4418,7 +4418,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4458,7 +4458,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4500,7 +4500,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4540,7 +4540,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4582,7 +4582,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4622,7 +4622,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -4664,7 +4664,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4704,7 +4704,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -4746,7 +4746,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4786,7 +4786,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -4828,7 +4828,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4868,7 +4868,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -4910,7 +4910,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -4950,7 +4950,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -4992,7 +4992,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5032,7 +5032,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5074,7 +5074,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5114,7 +5114,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5156,7 +5156,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5196,7 +5196,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5238,7 +5238,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5278,7 +5278,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5320,7 +5320,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5360,7 +5360,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5402,7 +5402,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5442,7 +5442,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5484,7 +5484,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5524,7 +5524,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5566,7 +5566,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5606,7 +5606,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5648,7 +5648,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5688,7 +5688,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5730,7 +5730,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5770,7 +5770,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5812,7 +5812,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5852,7 +5852,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5880,7 +5880,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5920,7 +5920,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -5948,7 +5948,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -5988,7 +5988,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6016,7 +6016,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6056,7 +6056,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6084,7 +6084,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6124,7 +6124,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6152,7 +6152,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6192,7 +6192,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6220,7 +6220,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6260,7 +6260,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6288,7 +6288,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6328,7 +6328,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6356,7 +6356,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6396,7 +6396,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6424,7 +6424,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6464,7 +6464,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6492,7 +6492,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6532,7 +6532,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6560,7 +6560,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6600,7 +6600,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6628,7 +6628,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6668,7 +6668,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6696,7 +6696,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6736,7 +6736,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6764,7 +6764,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6804,7 +6804,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6832,7 +6832,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6872,7 +6872,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6900,7 +6900,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -6940,7 +6940,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -6968,7 +6968,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7008,7 +7008,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7036,7 +7036,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7076,7 +7076,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7104,7 +7104,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7144,7 +7144,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7172,7 +7172,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7212,7 +7212,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7240,7 +7240,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7280,7 +7280,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7308,7 +7308,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7348,7 +7348,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7376,7 +7376,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7416,7 +7416,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7444,7 +7444,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7484,7 +7484,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7512,7 +7512,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7552,7 +7552,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7580,7 +7580,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7620,7 +7620,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7648,7 +7648,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7688,7 +7688,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7716,7 +7716,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7756,7 +7756,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7784,7 +7784,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7824,7 +7824,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7852,7 +7852,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7892,7 +7892,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7920,7 +7920,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -7960,7 +7960,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -7988,7 +7988,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8028,7 +8028,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8056,7 +8056,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8096,7 +8096,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8124,7 +8124,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8164,7 +8164,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8192,7 +8192,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8232,7 +8232,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8260,7 +8260,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8300,7 +8300,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8328,7 +8328,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8368,7 +8368,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8396,7 +8396,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8436,7 +8436,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8464,7 +8464,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8504,7 +8504,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8532,7 +8532,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8572,7 +8572,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8600,7 +8600,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8640,7 +8640,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8668,7 +8668,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8708,7 +8708,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8736,7 +8736,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8776,7 +8776,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -8804,7 +8804,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8844,7 +8844,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -8886,7 +8886,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -8926,7 +8926,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -8968,7 +8968,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9008,7 +9008,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9050,7 +9050,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9090,7 +9090,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9132,7 +9132,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9172,7 +9172,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9214,7 +9214,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9254,7 +9254,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9296,7 +9296,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9336,7 +9336,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9378,7 +9378,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9418,7 +9418,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9460,7 +9460,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9500,7 +9500,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9542,7 +9542,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9582,7 +9582,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9624,7 +9624,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9664,7 +9664,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9706,7 +9706,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9746,7 +9746,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9788,7 +9788,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9828,7 +9828,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9870,7 +9870,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9910,7 +9910,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -9952,7 +9952,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -9992,7 +9992,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10034,7 +10034,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10074,7 +10074,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10116,7 +10116,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10156,7 +10156,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10198,7 +10198,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10238,7 +10238,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10280,7 +10280,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10320,7 +10320,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10362,7 +10362,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10402,7 +10402,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10444,7 +10444,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10484,7 +10484,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10526,7 +10526,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10566,7 +10566,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10608,7 +10608,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10648,7 +10648,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10690,7 +10690,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10730,7 +10730,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10772,7 +10772,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10812,7 +10812,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10854,7 +10854,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10894,7 +10894,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -10936,7 +10936,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -10976,7 +10976,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -11018,7 +11018,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11058,7 +11058,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -11100,7 +11100,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11140,7 +11140,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -11182,7 +11182,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11222,7 +11222,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -11264,7 +11264,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11304,7 +11304,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -11332,7 +11332,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11372,7 +11372,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -11400,7 +11400,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11440,7 +11440,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -11468,7 +11468,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11508,7 +11508,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -11536,7 +11536,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11576,7 +11576,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -11618,7 +11618,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11658,7 +11658,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -11700,7 +11700,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11740,7 +11740,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -11782,7 +11782,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11822,7 +11822,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -11864,7 +11864,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11904,7 +11904,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -11946,7 +11946,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -11986,7 +11986,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12028,7 +12028,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12068,7 +12068,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12110,7 +12110,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12150,7 +12150,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -12192,7 +12192,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -12232,7 +12232,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "YEA",
           "amount": 858000000000,
           "category": "military",
@@ -12260,7 +12260,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -12300,7 +12300,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12342,7 +12342,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12382,7 +12382,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12424,7 +12424,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12464,7 +12464,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12506,7 +12506,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12546,7 +12546,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12588,7 +12588,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12628,7 +12628,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12670,7 +12670,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12710,7 +12710,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12752,7 +12752,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12792,7 +12792,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12834,7 +12834,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12874,7 +12874,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12916,7 +12916,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -12956,7 +12956,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -12998,7 +12998,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13038,7 +13038,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13080,7 +13080,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13120,7 +13120,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13162,7 +13162,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13202,7 +13202,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13244,7 +13244,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13284,7 +13284,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13326,7 +13326,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13366,7 +13366,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13408,7 +13408,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13448,7 +13448,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13490,7 +13490,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13530,7 +13530,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13572,7 +13572,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13612,7 +13612,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13654,7 +13654,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13694,7 +13694,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13722,7 +13722,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13762,7 +13762,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13790,7 +13790,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13830,7 +13830,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13858,7 +13858,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13898,7 +13898,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13926,7 +13926,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -13966,7 +13966,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -13994,7 +13994,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -14034,7 +14034,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14062,7 +14062,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -14102,7 +14102,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -14130,7 +14130,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -14170,7 +14170,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14198,7 +14198,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "YEA",
           "amount": 886000000000,
           "category": "military",
@@ -14238,7 +14238,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14266,7 +14266,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14306,7 +14306,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14334,7 +14334,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -14374,7 +14374,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14402,7 +14402,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14442,7 +14442,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -14470,7 +14470,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14510,7 +14510,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14538,7 +14538,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14578,7 +14578,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -14606,7 +14606,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14646,7 +14646,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14674,7 +14674,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14714,7 +14714,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14742,7 +14742,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14782,7 +14782,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14810,7 +14810,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14850,7 +14850,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14878,7 +14878,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14918,7 +14918,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -14946,7 +14946,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -14986,7 +14986,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -15014,7 +15014,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15054,7 +15054,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -15082,7 +15082,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15122,7 +15122,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -15150,7 +15150,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15190,7 +15190,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -15218,7 +15218,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15258,7 +15258,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -15286,7 +15286,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15326,7 +15326,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -15354,7 +15354,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15394,7 +15394,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -15422,7 +15422,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15462,7 +15462,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -15490,7 +15490,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/815"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15530,7 +15530,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -15572,7 +15572,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15612,7 +15612,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -15654,7 +15654,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15694,7 +15694,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -15736,7 +15736,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15776,7 +15776,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -15818,7 +15818,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -15858,7 +15858,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -15900,7 +15900,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -15940,7 +15940,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -15982,7 +15982,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -16022,7 +16022,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16064,7 +16064,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -16104,7 +16104,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16146,7 +16146,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -16186,7 +16186,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16228,7 +16228,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16268,7 +16268,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16310,7 +16310,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16350,7 +16350,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16392,7 +16392,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16432,7 +16432,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16474,7 +16474,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16514,7 +16514,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16556,7 +16556,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16596,7 +16596,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16638,7 +16638,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16678,7 +16678,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16720,7 +16720,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16760,7 +16760,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16802,7 +16802,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16842,7 +16842,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16884,7 +16884,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -16924,7 +16924,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -16966,7 +16966,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17006,7 +17006,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -17048,7 +17048,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17088,7 +17088,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -17130,7 +17130,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17170,7 +17170,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -17212,7 +17212,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17252,7 +17252,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17294,7 +17294,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17334,7 +17334,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17376,7 +17376,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17416,7 +17416,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17458,7 +17458,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17498,7 +17498,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17540,7 +17540,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17580,7 +17580,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17622,7 +17622,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17662,7 +17662,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17704,7 +17704,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17744,7 +17744,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17786,7 +17786,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17826,7 +17826,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17868,7 +17868,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17908,7 +17908,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -17950,7 +17950,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -17990,7 +17990,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "PRESENT",
           "amount": 858000000000,
           "category": "military",
@@ -18032,7 +18032,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18072,7 +18072,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18114,7 +18114,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18154,7 +18154,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18196,7 +18196,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18236,7 +18236,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18278,7 +18278,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18318,7 +18318,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -18360,7 +18360,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18400,7 +18400,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NOT VOTING",
           "amount": 858000000000,
           "category": "military",
@@ -18442,7 +18442,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18482,7 +18482,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18524,7 +18524,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18564,7 +18564,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18606,7 +18606,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18646,7 +18646,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18688,7 +18688,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18728,7 +18728,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18770,7 +18770,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NOT VOTING",
           "amount": 886000000000,
           "category": "military",
@@ -18810,7 +18810,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18852,7 +18852,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18892,7 +18892,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -18934,7 +18934,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -18974,7 +18974,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -19016,7 +19016,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -19056,7 +19056,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -19098,7 +19098,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",
@@ -19138,7 +19138,7 @@
           "sourceUrl": "https://www.congress.gov/bill/117th-congress/house-bill/7776"
         },
         {
-          "bill": "Omnibus FY2023 — Defense ($858B)",
+          "bill": "Omnibus FY2023 — Military ($858B)",
           "vote": "NAY",
           "amount": 858000000000,
           "category": "military",
@@ -19180,7 +19180,7 @@
           "sourceUrl": "https://www.congress.gov/bill/118th-congress/house-bill/8036"
         },
         {
-          "bill": "Omnibus FY2024 — Defense ($886B)",
+          "bill": "Omnibus FY2024 — Military ($886B)",
           "vote": "NAY",
           "amount": 886000000000,
           "category": "military",

@@ -18,7 +18,7 @@ interface PoliticianRow {
   onChainRef: string | null;
 }
 
-type SortField = "rank" | "name" | "party" | "score" | "votesCompared";
+type SortField = "rank" | "name" | "score" | "votesCompared";
 type SortDirection = "asc" | "desc";
 
 interface AlignmentScoreTableProps {
@@ -57,8 +57,6 @@ export function AlignmentScoreTable({ politicians }: AlignmentScoreTableProps) {
         return mul * (a.rank - b.rank);
       case "name":
         return mul * a.name.localeCompare(b.name);
-      case "party":
-        return mul * (a.party ?? "").localeCompare(b.party ?? "");
       case "score":
         return mul * (a.score - b.score);
       case "votesCompared":
@@ -90,7 +88,6 @@ export function AlignmentScoreTable({ politicians }: AlignmentScoreTableProps) {
               [
                 { field: "rank" as const, label: "Rank" },
                 { field: "name" as const, label: "Name" },
-                { field: "party" as const, label: "Party" },
                 { field: "score" as const, label: "Score" },
                 { field: "votesCompared" as const, label: "Votes Compared" },
               ] as const
@@ -137,9 +134,6 @@ export function AlignmentScoreTable({ politicians }: AlignmentScoreTableProps) {
                     ) : null}
                   </div>
                 </div>
-              </td>
-              <td className="px-3 py-3 text-sm font-bold text-foreground">
-                {pol.party ?? "\u2014"}
               </td>
               <td className="px-3 py-3">
                 <div className="flex items-center gap-2">

@@ -76,7 +76,7 @@ export function MilitaryVsTrialsPie({
         viewBox={`0 0 ${size} ${size}`}
         width={size}
         height={size}
-        className="border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        className=""
         role="img"
         aria-label={`${militaryPct}% military, ${trialsPct}% clinical trials`}
       >

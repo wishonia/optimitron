@@ -158,7 +158,7 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
             {politician.name}
           </h1>
           <p className="text-lg font-bold text-muted-foreground mt-1">
-            {politician.party} &middot; {politician.chamber} &middot; {politician.state}
+            {politician.chamber} &middot; {politician.state}
             {rank > 0 && ` · Rank #${rank} of ${allSorted.length}`}
           </p>
           <p className="text-base font-bold text-foreground mt-2">
@@ -383,6 +383,23 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
             </div>
           </div>
         )}
+        {/* Methodology note */}
+        <div className="border-2 border-muted bg-muted p-4 mt-4">
+          <h3 className="text-xs font-black uppercase text-muted-foreground mb-2">
+            How We Calculate
+          </h3>
+          <ul className="text-xs font-bold text-muted-foreground space-y-1">
+            <li>
+              <span className="font-black">Military:</span> A YEA on the NDAA or a military supplemental adds the full bill amount. A YEA on an omnibus adds the military appropriation portion (~$858-886B).
+            </li>
+            <li>
+              <span className="font-black">Clinical Trials:</span> A YEA on an omnibus adds only 3.3% of the NIH budget — that&apos;s the portion that actually funds clinical trials ($1.56B of $47.3B). The other 96.7% is basic research, overhead, and administration. Source: <a href="https://jamanetwork.com/journals/jama/fullarticle/2720005" target="_blank" rel="noopener noreferrer" className="underline">JAMA</a>.
+            </li>
+            <li>
+              <span className="font-black">Ratio:</span> Military $ &divide; Clinical Trial $. Higher = worse. &infin; means the politician voted for military spending but never voted for any bill containing clinical trial funding.
+            </li>
+          </ul>
+        </div>
       </section>
 
       {/* Context — Wishonia voice */}
@@ -397,7 +414,7 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
               : politician.militaryDollarsVotedFor === 0
                 ? `${politician.name} voted to find out which medicines work without voting for any ${getMilitarySynonym(politician.bioguideId + "-maths-b")}. You'd think this would be more common. You'd be adorable for thinking that.`
                 : politician.clinicalTrialDollarsVotedFor === 0
-                  ? `${politician.name} voted for ${formatDollars(politician.militaryDollarsVotedFor)} in ${getMilitarySynonym(politician.bioguideId + "-maths-c")} and zero dollars finding out which medicines work. It's like having a Department of Transportation that hasn't gotten around to roads yet.`
+                  ? `${politician.name} voted for ${formatDollars(politician.militaryDollarsVotedFor)} in ${getMilitarySynonym(politician.bioguideId + "-maths-c")} and zero dollars finding out which medicines work.`
                   : `${politician.name} spent $${politician.ratio.toLocaleString()} on ${getMilitarySynonym(politician.bioguideId + "-maths-d")} for every $1 finding out which medicines work. Your species average is ${systemRatio.toLocaleString()}:1. Your chance of dying from terrorism: 1 in 30 million. Your chance of dying from disease: 100%.`
             }
           </p>

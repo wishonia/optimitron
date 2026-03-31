@@ -1,6 +1,8 @@
 "use client";
 
-import { Mail } from "lucide-react";
+import { useState } from "react";
+import { Mail, Link2, Check, Twitter, Facebook, Linkedin } from "lucide-react";
+import { Button } from "@/components/retroui/Button";
 
 interface SocialShareButtonsProps {
   url: string;
@@ -8,28 +10,72 @@ interface SocialShareButtonsProps {
 }
 
 export function SocialShareButtons({ url, text }: SocialShareButtonsProps) {
+  const [copied, setCopied] = useState(false);
   const shareText = text ?? "I just mapped my priorities on Optimitron. Compare yours.";
   const encodedText = encodeURIComponent(shareText);
   const encodedUrl = encodeURIComponent(url);
   const emailBody = encodeURIComponent(`${shareText}\n\n${url}`);
 
+  function copyLink() {
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
   return (
-    <div className="flex flex-wrap gap-2">
-      <a
-        href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center border-4 border-primary bg-foreground px-4 py-2 font-bold text-background transition-colors hover:bg-foreground/80"
-      >
-        Share on X
-      </a>
-      <a
-        href={`mailto:?subject=${encodeURIComponent("Try Optimitron")}&body=${emailBody}`}
-        className="inline-flex items-center justify-center gap-2 border-4 border-primary bg-background px-4 py-2 font-bold transition-colors hover:bg-muted"
-      >
-        <Mail className="h-4 w-4" />
-        Email
-      </a>
+    <div className="flex flex-wrap gap-2 justify-center">
+      <Button variant="default" size="sm" asChild>
+        <a
+          href={`https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Twitter className="h-4 w-4" />
+          X
+        </a>
+      </Button>
+      <Button variant="default" size="sm" asChild>
+        <a
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Facebook className="h-4 w-4" />
+          Facebook
+        </a>
+      </Button>
+      <Button variant="default" size="sm" asChild>
+        <a
+          href={`https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedText}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Reddit
+        </a>
+      </Button>
+      <Button variant="default" size="sm" asChild>
+        <a
+          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Linkedin className="h-4 w-4" />
+          LinkedIn
+        </a>
+      </Button>
+      <Button variant="outline" size="sm" asChild>
+        <a
+          href={`mailto:?subject=${encodeURIComponent("Try Optimitron")}&body=${emailBody}`}
+        >
+          <Mail className="h-4 w-4" />
+          Email
+        </a>
+      </Button>
+      <Button variant="outline" size="sm" onClick={copyLink}>
+        {copied ? <Check className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
+        {copied ? "Copied!" : "Copy Link"}
+      </Button>
     </div>
   );
 }

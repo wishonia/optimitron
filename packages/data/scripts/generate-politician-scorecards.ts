@@ -51,7 +51,7 @@ const KEY_BILLS: BudgetBill[] = [
   // FY2023 (117th Congress)
   // ═══════════════════════════════════════════════════════════════════
 
-  // NDAA FY2023 — H.R. 7776, $858B defense authorization
+  // NDAA FY2023 — H.R. 7776, $858B military authorization
   // House roll 516/2022 (H.Res. 1512 concurrence, 350-80)
   // Senate vote 396/117-2 (83-11)
   {
@@ -65,11 +65,11 @@ const KEY_BILLS: BudgetBill[] = [
     senateSession: 2,
     senateVoteNumber: 396,
   },
-  // Omnibus FY2023 — H.R. 2617, defense portion (~$858B)
+  // Omnibus FY2023 — H.R. 2617, military portion (~$858B)
   // House roll 549/2022 (225-201)
   // Senate vote 421/117-2 (68-29)
   {
-    name: "Omnibus FY2023 — Defense ($858B)",
+    name: "Omnibus FY2023 — Military ($858B)",
     amount: 858_000_000_000,
     category: "military",
     sourceUrl: "https://www.congress.gov/bill/117th-congress/house-bill/2617",
@@ -80,7 +80,7 @@ const KEY_BILLS: BudgetBill[] = [
     senateVoteNumber: 421,
   },
   // Omnibus FY2023 — H.R. 2617, NIH portion ($47.5B → $1.57B trials at 3.3%)
-  // Same roll call as above — a YEA on the omnibus funds both defense AND NIH
+  // Same roll call as above — a YEA on the omnibus funds both military AND NIH
   {
     name: "Omnibus FY2023 — NIH ($47.5B)",
     amount: 47_500_000_000,
@@ -97,7 +97,7 @@ const KEY_BILLS: BudgetBill[] = [
   // FY2024 (118th Congress)
   // ═══════════════════════════════════════════════════════════════════
 
-  // NDAA FY2024 — H.R. 2670, $886B defense authorization
+  // NDAA FY2024 — H.R. 2670, $886B military authorization
   // House roll 723/2023 (310-118)
   // Senate vote 343/118-1 (87-13)
   {
@@ -146,11 +146,11 @@ const KEY_BILLS: BudgetBill[] = [
     senateSession: 2,
     senateVoteNumber: 154, // H.R. 815 concurrence, 79-18
   },
-  // Omnibus FY2024 — H.R. 2882, defense portion (~$886B)
+  // Omnibus FY2024 — H.R. 2882, military portion (~$886B)
   // House roll 102/2024 (286-134)
   // Senate vote 114/118-2 (74-24)
   {
-    name: "Omnibus FY2024 — Defense ($886B)",
+    name: "Omnibus FY2024 — Military ($886B)",
     amount: 886_000_000_000,
     category: "military",
     sourceUrl: "https://www.congress.gov/bill/118th-congress/house-bill/2882",
@@ -177,7 +177,7 @@ const KEY_BILLS: BudgetBill[] = [
   // FY2025 (118th Congress)
   // ═══════════════════════════════════════════════════════════════════
 
-  // NDAA FY2025 — H.R. 5009, $895B defense authorization
+  // NDAA FY2025 — H.R. 5009, $895B military authorization
   // House roll 500/2024 (281-140)
   // Senate vote 325/118-2 (85-14)
   {
