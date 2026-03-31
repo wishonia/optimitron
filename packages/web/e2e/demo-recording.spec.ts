@@ -7,15 +7,17 @@
  * Records a 1920x1080 video walking through the full narrative arc:
  *   1. Hook — homepage hero
  *   2. The numbers — Invisible Graveyard, $604 war vs $1 cures
- *   3. The 1% Treaty — One Percent Treaty section
- *   4. Wishocracy — pairwise allocation flow (full)
- *   5. Alignment — politician report cards
- *   6. Misconceptions — myth vs data
- *   7. Compare — country outcomes
- *   8. Transparency — Hypercerts / AT Protocol attestations
- *   9. Prize Pool — dominant assurance contract
- *  10. IAB — Incentive Alignment Bonds
- *  11. Close — homepage hero
+ *   3. War vs Cures chart
+ *   4. The 1% Treaty — One Percent Treaty section
+ *   5. Misconceptions — myth vs data
+ *   6. Compare — country outcomes
+ *   7. Wishocracy — pairwise allocation flow (full)
+ *   8. Alignment — politician report cards
+ *   9. Transparency — Hypercerts / AT Protocol attestations
+ *  10. Prize Pool — dominant assurance contract
+ *  11. Outcomes & Studies — data engine
+ *  12. Referral — viral loop via /r/[code]
+ *  13. Close — homepage hero
  *
  * Run:
  *   BASE_URL=http://localhost:3001 pnpm --filter @optomitron/web exec playwright test e2e/demo-recording.spec.ts --project=demo-recording
@@ -384,11 +386,24 @@ test("full demo walkthrough", async ({ page }) => {
   await pause(SECTION_PAUSE);
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SECTION 12 — Close: Back to Homepage Hero
+  // SECTION 12 — Referral: The Viral Loop
+  // "Share your link. Each friend who votes earns you VOTE points."
+  // ══════════════════════════════════════════════════════════════════════════
+  // Simulate visiting a referral link — shows the redirect flow
+  await go(page, "/r/demo-referrer");
+  // Lands on homepage after redirect with ref cookie set
+  await expect(page.locator("h1").first()).toBeVisible();
+  await pause(2_000);
+
+  // Scroll to the vote section (where referral link card appears after voting)
+  await scrollToText(page, "Should all nations");
+  await pause(2_500);
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SECTION 13 — Close: Back to Homepage Hero
   // "Alignment software for the most powerful AIs on your planet —
   //  the ones made of people."
   // ══════════════════════════════════════════════════════════════════════════
-  await go(page, "/");
   await scrollTo(page, 0);
   await expect(page.locator("h1").first()).toBeVisible();
   await pause(3_000);
@@ -397,8 +412,8 @@ test("full demo walkthrough", async ({ page }) => {
   await scrollTo(page, 400);
   await scrollTo(page, 900);
 
-  // Land on the IAB / Prize sections for the closer
-  await scrollToText(page, "Incentive Alignment");
+  // Land on Two Futures section for the closer
+  await scrollToText(page, "Two Futures");
   await pause(2_000);
   await page.evaluate(() => window.scrollBy({ top: 300, behavior: "smooth" }));
   await pause(2_000);

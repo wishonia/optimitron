@@ -157,7 +157,7 @@ export async function getDashboardData(
       label: getWishReasonLabel("WISHOCRATIC_ALLOCATION"),
       emoji: getWishReasonEmoji("WISHOCRATIC_ALLOCATION"),
       wishesLabel: "2",
-      completed: completedSet.has("WISHOCRATIC_ALLOCATION"),
+      completed: allocationCount >= 10,
       href: ROUTES.wishocracy,
       anchor: null,
       comingSoon: false,
