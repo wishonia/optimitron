@@ -74,7 +74,6 @@ Domain-specific naming belongs in opg/obg/wishocracy/data/web.
 | Outcome not effect in properties | `outcomeBaselineAverage` (but `effectSize` stays — Cohen's d) |
 | Enums over magic strings | Prisma enforces valid values |
 | deletedAt on all models | Soft deletes for cr-sqlite sync |
-| No CureDAO/QuantiModo branding | Use "legacy API" for references |
 
 ### 5. Package Dependencies
 
