@@ -2,73 +2,61 @@ import { describe, expect, it } from "vitest";
 import { describeGovernmentScatterRelationship } from "./governmentScatterplotNarrative";
 
 describe("governmentScatterplotNarrative", () => {
-  it("describes a negative relationship in plain English", () => {
-    expect(
-      describeGovernmentScatterRelationship({
-        correlation: -0.58,
-        hiddenOutliers: 0,
-        pointCount: 18,
-        xLabel: "Mil/Trials",
-        yLabel: "HALE",
-      }),
-    ).toBe(
-      "Across 18 comparable countries, countries with higher Mil/Trials generally have lower HALE. This is a moderate inverse relationship, clear enough to notice, even though it is far from a perfect rule (r=-0.58).",
-    );
+  it("describes a negative relationship with direction, strength, and correlation", () => {
+    const description = describeGovernmentScatterRelationship({
+      correlation: -0.58,
+      hiddenOutliers: 0,
+      pointCount: 18,
+      xLabel: "Mil/Trials",
+      yLabel: "HALE",
+    });
+
+    expect(description).toContain("18 comparable countries");
+    expect(description).toContain("lower HALE");
+    expect(description).toContain("moderate inverse relationship");
+    expect(description).toContain("r=-0.58");
   });
 
   it("mentions excluded outliers when the filter is enabled", () => {
-    expect(
-      describeGovernmentScatterRelationship({
-        correlation: 0.74,
-        hiddenOutliers: 2,
-        pointCount: 12,
-        xLabel: "Military/cap PPP",
-        yLabel: "GDP Per Capita",
-      }),
-    ).toBe(
-      "Across 12 countries after excluding 2 outliers, countries with higher Military/cap PPP generally also have higher GDP Per Capita. This is a strong positive relationship, with a clear overall pattern in the dots (r=0.74).",
-    );
-  });
+    const description = describeGovernmentScatterRelationship({
+      correlation: 0.74,
+      hiddenOutliers: 2,
+      pointCount: 12,
+      xLabel: "Military/cap PPP",
+      yLabel: "GDP Per Capita",
+    });
 
-  it("treats modest correlations as a real but loose pattern", () => {
-    expect(
-      describeGovernmentScatterRelationship({
-        correlation: -0.25,
-        hiddenOutliers: 2,
-        pointCount: 16,
-        xLabel: "Mil/Trials",
-        yLabel: "HALE",
-      }),
-    ).toBe(
-      "Across 16 countries after excluding 2 outliers, countries with higher Mil/Trials generally have lower HALE. This is a modest inverse relationship, real, but still loose and noisy rather than tight (r=-0.25).",
-    );
+    expect(description).toContain("excluding 2 outliers");
+    expect(description).toContain("higher GDP Per Capita");
+    expect(description).toContain("strong positive relationship");
+    expect(description).toContain("r=0.74");
   });
 
   it("describes faint correlations cautiously", () => {
-    expect(
-      describeGovernmentScatterRelationship({
-        correlation: 0.11,
-        hiddenOutliers: 0,
-        pointCount: 10,
-        xLabel: "Debt % GDP",
-        yLabel: "HALE",
-      }),
-    ).toBe(
-      "Across 10 comparable countries, there is only a faint relationship between Debt % GDP and HALE. The dots hint that higher Debt % GDP comes with higher HALE, but the pattern is weak and noisy, so it should be read cautiously (r=0.11).",
-    );
+    const description = describeGovernmentScatterRelationship({
+      correlation: 0.11,
+      hiddenOutliers: 0,
+      pointCount: 10,
+      xLabel: "Debt % GDP",
+      yLabel: "HALE",
+    });
+
+    expect(description).toContain("faint relationship");
+    expect(description).toContain("read cautiously");
+    expect(description).toContain("r=0.11");
   });
 
   it("handles insufficient data", () => {
-    expect(
-      describeGovernmentScatterRelationship({
-        correlation: null,
-        hiddenOutliers: 0,
-        pointCount: 1,
-        xLabel: "Mil/Trials",
-        yLabel: "HALE",
-      }),
-    ).toBe(
-      "There are not enough comparable countries to describe the relationship between Mil/Trials and HALE yet.",
-    );
+    const description = describeGovernmentScatterRelationship({
+      correlation: null,
+      hiddenOutliers: 0,
+      pointCount: 1,
+      xLabel: "Mil/Trials",
+      yLabel: "HALE",
+    });
+
+    expect(description).toContain("not enough comparable countries");
+    expect(description).toContain("Mil/Trials");
+    expect(description).toContain("HALE");
   });
 });

@@ -120,16 +120,16 @@ export default function IABPage() {
               </div>
             </div>
 
-            <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="border-4 border-primary bg-brutal-pink text-brutal-pink-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-3 mb-3">
                 <span className="w-12 h-12 bg-foreground text-background flex items-center justify-center text-lg font-black shrink-0">
                   10%
                 </span>
-                <h3 className="font-black uppercase text-brutal-pink-foreground">
+                <h3 className="font-black uppercase">
                   SuperPAC for Aligned Politicians
                 </h3>
               </div>
-              <p className="text-sm text-background font-bold leading-relaxed">
+              <p className="text-sm font-bold leading-relaxed">
                 Campaign funding for politicians who supported the treaty and
                 push for expansion. Politicians who vote with citizens get
                 funded. Those who don&apos;t, don&apos;t. Alignment scoring
@@ -312,11 +312,11 @@ export default function IABPage() {
 
       {/* Buy IABs */}
       <section id="invest" className="mb-16">
-        <div className="border-4 border-primary bg-brutal-pink p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-2xl font-black uppercase text-brutal-pink-foreground mb-4">
+        <div className="border-4 border-primary bg-brutal-pink text-brutal-pink-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-2xl font-black uppercase mb-4">
             Buy Incentive Alignment Bonds
           </h2>
-          <p className="text-sm font-bold text-background mb-4 max-w-2xl">
+          <p className="text-sm font-bold mb-4 max-w-2xl">
             IABs are Phase 2 — not yet deployed. The referendum (Phase 1) must
             prove demand first. Once deployed, your deposit goes into the Wishocratic fund
             and earns proportional returns from treaty revenue.

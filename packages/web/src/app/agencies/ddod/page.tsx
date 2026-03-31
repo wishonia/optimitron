@@ -228,9 +228,9 @@ export default function DepartmentOfWarPage() {
           Yemen. That is a lot of defending.
         </p>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <div className="text-3xl font-black text-brutal-pink-foreground">13+</div>
-            <div className="mt-1 text-xs font-black uppercase text-background">
+          <div className="border-4 border-primary bg-brutal-pink text-brutal-pink-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <div className="text-3xl font-black">13+</div>
+            <div className="mt-1 text-xs font-black uppercase">
               Wars Since &ldquo;Defense&rdquo; Rebrand
             </div>
           </div>

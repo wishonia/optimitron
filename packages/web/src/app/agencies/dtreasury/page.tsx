@@ -20,7 +20,7 @@ const problemStats = [
       "Your species spends $13.5 trillion per year on social protection programs globally. Between $400 and $675 billion of that is pure administration — case workers, applications, audits, fraud detection — all to decide who deserves to not starve. On my planet, we just... give people money.",
     color: "bg-brutal-pink",
     textColor: "text-brutal-pink-foreground",
-    detailColor: "text-muted-foreground",
+    detailColor: "text-brutal-pink-foreground",
   },
   {
     value: "83,000",
@@ -28,8 +28,8 @@ const problemStats = [
     detail:
       "Eighty-three thousand people whose entire job is interpreting a 74,000-page tax code that no single human understands. You built a system so complicated that you need a small city of people just to run it. Impressive, in a way.",
     color: "bg-brutal-yellow",
-    textColor: "text-foreground",
-    detailColor: "text-muted-foreground",
+    textColor: "text-brutal-yellow-foreground",
+    detailColor: "text-brutal-yellow-foreground",
   },
   {
     value: "0 data",
@@ -37,8 +37,8 @@ const problemStats = [
     detail:
       "Politicians allocate trillions of dollars in public spending with zero systematic data on what citizens actually want. They use polls, focus groups, and whatever their largest donors suggest. On my planet, this is called 'guessing.'",
     color: "bg-brutal-cyan",
-    textColor: "text-foreground",
-    detailColor: "text-muted-foreground",
+    textColor: "text-brutal-cyan-foreground",
+    detailColor: "text-brutal-cyan-foreground",
   },
 ];
 
@@ -57,7 +57,7 @@ const subPages = [
     description:
       "Fixed supply. Zero inflation. No board of 12 unelected humans deciding how much your money is worth. The total supply is set once at deployment and can never increase.",
     color: "bg-brutal-yellow",
-    textColor: "text-foreground",
+    textColor: "text-brutal-yellow-foreground",
   },
   {
     ...dssaLink,
@@ -65,7 +65,7 @@ const subPages = [
     description:
       "The transaction tax accumulates in a treasury that distributes UBI to every verified citizen. World ID prevents fraud. No means testing. No case workers. No applications.",
     color: "bg-brutal-cyan",
-    textColor: "text-foreground",
+    textColor: "text-brutal-cyan-foreground",
   },
 ];
 

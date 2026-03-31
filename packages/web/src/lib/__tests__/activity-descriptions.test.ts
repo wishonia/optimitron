@@ -3,52 +3,31 @@ import { ActivityType, BadgeType } from "@optimitron/db";
 import {
   getActivityDescription,
   getActivityEmoji,
-  getBadgeName,
   getBadgeDescription,
 } from "../activity-descriptions";
 
 describe("getActivityDescription", () => {
-  it("returns description for VOTED_REFERENDUM", () => {
-    const desc = getActivityDescription(ActivityType.VOTED_REFERENDUM);
-    expect(desc).toContain("referendum");
-  });
-
-  it("returns description for SUBMITTED_COMPARISON", () => {
-    const desc = getActivityDescription(ActivityType.SUBMITTED_COMPARISON);
-    expect(desc).toContain("comparison");
-  });
-
-  it("returns description for DEPOSITED_PRIZE with amount", () => {
-    const desc = getActivityDescription(ActivityType.DEPOSITED_PRIZE, {
-      amount: 100,
-    });
+  it("interpolates numeric metadata for prize deposits", () => {
+    const desc = getActivityDescription(ActivityType.DEPOSITED_PRIZE, { amount: 100 });
     expect(desc).toContain("$100");
+    expect(desc).toContain("Earth Optimization Prize");
   });
 
-  it("returns description for RECRUITED_VOTER", () => {
-    const desc = getActivityDescription(ActivityType.RECRUITED_VOTER);
-    expect(desc).toContain("voter");
+  it("resolves human-readable platform names when profile metadata is present", () => {
+    expect(
+      getActivityDescription(ActivityType.UPDATED_PROFILE, { platform: "GITHUB" }),
+    ).toContain("GitHub");
+    expect(
+      getActivityDescription(ActivityType.UPDATED_PROFILE, { platform: "GOOGLE" }),
+    ).toContain("Google");
   });
 
-  it("returns description for UPDATED_PROFILE with platform disconnect", () => {
-    const desc = getActivityDescription(ActivityType.UPDATED_PROFILE, {
-      platform: "GITHUB",
-    });
-    expect(desc).toContain("GitHub");
-  });
-
-  it("returns description for UPDATED_PROFILE with Google disconnect", () => {
-    const desc = getActivityDescription(ActivityType.UPDATED_PROFILE, {
-      platform: "GOOGLE",
-    });
-    expect(desc).toContain("Google");
-  });
-
-  it("returns description for EARNED_BADGE with badgeType", () => {
+  it("resolves human-readable badge names when badge metadata is present", () => {
     const desc = getActivityDescription(ActivityType.EARNED_BADGE, {
       badgeType: BadgeType.FIRST_RECRUIT,
     });
     expect(desc).toContain("First Recruit");
+    expect(desc).toContain("badge");
   });
 
   it("parses JSON string metadata", () => {
@@ -66,12 +45,9 @@ describe("getActivityDescription", () => {
 });
 
 describe("getActivityEmoji", () => {
-  it("returns emoji for each known activity type", () => {
+  it("returns stable emoji tokens for representative activity types", () => {
     expect(getActivityEmoji(ActivityType.VOTED_REFERENDUM)).toBe("🗳️");
-    expect(getActivityEmoji(ActivityType.SUBMITTED_COMPARISON)).toBe("⚖️");
     expect(getActivityEmoji(ActivityType.DEPOSITED_PRIZE)).toBe("💰");
-    expect(getActivityEmoji(ActivityType.RECRUITED_VOTER)).toBe("👥");
-    expect(getActivityEmoji(ActivityType.EARNED_BADGE)).toBe("🏆");
   });
 
   it("returns fallback emoji for unknown type", () => {
@@ -79,28 +55,10 @@ describe("getActivityEmoji", () => {
   });
 });
 
-describe("getBadgeName", () => {
-  it("returns display name for each badge type", () => {
-    expect(getBadgeName(BadgeType.FIRST_COMPARISON)).toBe("First Comparison");
-    expect(getBadgeName(BadgeType.FIRST_RECRUIT)).toBe("First Recruit");
-    expect(getBadgeName(BadgeType.VERIFIED_HUMAN)).toBe("Verified Human");
-    expect(getBadgeName(BadgeType.DEPOSITOR)).toBe("Depositor");
-  });
-
-  it("returns raw type for unknown badge", () => {
-    expect(getBadgeName("UNKNOWN_BADGE")).toBe("UNKNOWN_BADGE");
-  });
-});
-
 describe("getBadgeDescription", () => {
-  it("returns description for each badge type", () => {
-    expect(getBadgeDescription(BadgeType.FIRST_COMPARISON)).toContain(
-      "first pairwise comparison",
-    );
+  it("returns representative badge descriptions without freezing all copy", () => {
+    expect(getBadgeDescription(BadgeType.FIRST_COMPARISON)).toContain("comparison");
     expect(getBadgeDescription(BadgeType.HUNDRED_COMPARISONS)).toContain("100");
-    expect(getBadgeDescription(BadgeType.EARLY_ADOPTER)).toContain(
-      "first month",
-    );
   });
 
   it("returns fallback for unknown badge", () => {

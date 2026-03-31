@@ -120,22 +120,22 @@ function trendColor(trend: string): string {
 
 function gradeBg(grade: string): string {
   switch (grade) {
-    case "A": return "bg-brutal-cyan";
-    case "B": return "bg-brutal-yellow";
-    case "C": return "bg-brutal-yellow";
-    case "D": return "bg-brutal-red";
-    case "F": return "bg-brutal-red";
+    case "A": return "bg-brutal-cyan text-brutal-cyan-foreground";
+    case "B": return "bg-brutal-yellow text-brutal-yellow-foreground";
+    case "C": return "bg-brutal-yellow text-brutal-yellow-foreground";
+    case "D": return "bg-brutal-red text-brutal-red-foreground";
+    case "F": return "bg-brutal-red text-brutal-red-foreground";
     default: return "bg-muted";
   }
 }
 
 function actionBadgeStyle(action: string): string {
   const a = action.toLowerCase();
-  if (a.includes("major increase") || a === "scale_up") return "bg-brutal-cyan text-foreground";
-  if (a.includes("increase") || a === "increase") return "bg-brutal-cyan text-foreground";
+  if (a.includes("major increase") || a === "scale_up") return "bg-brutal-cyan text-brutal-cyan-foreground";
+  if (a.includes("increase") || a === "increase") return "bg-brutal-cyan text-brutal-cyan-foreground";
   if (a.includes("maintain") || a === "maintain") return "bg-muted text-foreground";
-  if (a.includes("major decrease") || a === "major_decrease") return "bg-brutal-red text-foreground";
-  if (a.includes("decrease") || a === "decrease") return "bg-brutal-yellow text-foreground";
+  if (a.includes("major decrease") || a === "major_decrease") return "bg-brutal-red text-brutal-red-foreground";
+  if (a.includes("decrease") || a === "decrease") return "bg-brutal-yellow text-brutal-yellow-foreground";
   if (a.includes("non-discretionary")) return "bg-muted text-foreground";
   if (a.includes("insufficient")) return "bg-muted text-muted-foreground";
   return "bg-muted text-foreground";
@@ -153,9 +153,9 @@ function actionLabel(action: string): string {
 }
 
 function barColor(val: number): string {
-  if (val >= 0.7) return "bg-brutal-cyan";
-  if (val >= 0.4) return "bg-brutal-yellow";
-  return "bg-brutal-red";
+  if (val >= 0.7) return "bg-brutal-cyan text-brutal-cyan-foreground";
+  if (val >= 0.4) return "bg-brutal-yellow text-brutal-yellow-foreground";
+  return "bg-brutal-red text-brutal-red-foreground";
 }
 
 function wesMethodologyLabel(m: string): string {
@@ -251,7 +251,7 @@ export default async function BudgetCategoryPage({
           </div>
           <div
             className={`border-4 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
-              cat.gap >= 0 ? "bg-brutal-cyan" : "bg-brutal-red"
+              cat.gap >= 0 ? "bg-brutal-cyan text-brutal-cyan-foreground" : "bg-brutal-red text-brutal-red-foreground"
             }`}
           >
             <div className="text-xs font-bold uppercase mb-1">Gap</div>
@@ -288,12 +288,12 @@ export default async function BudgetCategoryPage({
                 <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Constrained Optimal</div>
                 <div className="text-xl font-black text-foreground">{fmt(constrainedCat.constrainedOptimal)}</div>
               </div>
-              <div className={`border-4 border-primary p-4 ${constrainedCat.reallocation >= 0 ? "bg-brutal-cyan" : "bg-brutal-red"}`}>
-                <div className="text-xs font-bold uppercase text-muted-foreground mb-1">Reallocation</div>
-                <div className={`text-xl font-black ${constrainedCat.reallocation >= 0 ? "text-foreground" : "text-brutal-red-foreground"}`}>
+              <div className={`border-4 border-primary p-4 ${constrainedCat.reallocation >= 0 ? "bg-brutal-cyan text-brutal-cyan-foreground" : "bg-brutal-red text-brutal-red-foreground"}`}>
+                <div className="text-xs font-bold uppercase mb-1">Reallocation</div>
+                <div className="text-xl font-black">
                   {constrainedCat.reallocation >= 0 ? "+" : ""}{fmt(constrainedCat.reallocation)}
                 </div>
-                <div className="text-xs font-bold text-muted-foreground mt-1">
+                <div className="text-xs font-bold mt-1">
                   {pct(constrainedCat.reallocationPercent)} of current
                 </div>
               </div>
@@ -373,12 +373,12 @@ export default async function BudgetCategoryPage({
               N = {dr.n} observations
             </span>
             {dr.lowFit && (
-              <span className="text-xs font-bold px-2 py-0.5 border-4 border-primary bg-brutal-yellow">
+              <span className="text-xs font-bold px-2 py-0.5 border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground">
                 Low fit (R²&lt;0.3) — treat with caution
               </span>
             )}
             {dr.smallSample && (
-              <span className="text-xs font-bold px-2 py-0.5 border-4 border-primary bg-brutal-yellow">
+              <span className="text-xs font-bold px-2 py-0.5 border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground">
                 Small sample (n≤10) — may overfit
               </span>
             )}
@@ -502,16 +502,16 @@ export default async function BudgetCategoryPage({
       {/* Recommendation Callout */}
       <section
         className={`border-4 border-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-6 mb-8 ${
-          cat.gap >= 0 ? "bg-brutal-cyan" : "bg-brutal-red"
+          cat.gap >= 0 ? "bg-brutal-cyan text-brutal-cyan-foreground" : "bg-brutal-red text-brutal-red-foreground"
         }`}
       >
-        <h2 className="text-lg font-black uppercase text-foreground mb-2">
+        <h2 className="text-lg font-black uppercase mb-2">
           <span className={`inline-block px-2 py-0.5 mr-2 text-sm border-4 border-primary ${actionBadgeStyle(cat.recommendedAction)}`}>
             {actionLabel(cat.recommendedAction)}
           </span>
           RECOMMENDATION
         </h2>
-        <p className="text-foreground font-bold mb-3">
+        <p className="font-bold mb-3">
           {cat.gap >= 0
             ? `Spending on ${cat.name} should be increased by ${fmt(Math.abs(cat.gap))} (${pct(cat.gapPercent)}) to reach the optimal allocation of ${fmt(cat.optimalSpending)}.`
             : `Spending on ${cat.name} should be decreased by ${fmt(Math.abs(cat.gap))} (${pct(Math.abs(cat.gapPercent))}) to reach the optimal allocation of ${fmt(cat.optimalSpending)}.`}

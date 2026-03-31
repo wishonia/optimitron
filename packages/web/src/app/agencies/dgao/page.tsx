@@ -163,7 +163,7 @@ export default function TransparencyPage() {
                       {pol.party} · {pol.chamber}
                     </div>
                   </div>
-                  <div className="border-4 border-primary bg-brutal-cyan px-2 py-1 text-center">
+                  <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground px-2 py-1 text-center">
                     <div className="text-lg font-black">{pol.alignmentScore}%</div>
                   </div>
                 </div>
@@ -172,12 +172,12 @@ export default function TransparencyPage() {
                     href={`https://${pol.storageCid}.ipfs.storacha.link/`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block border border-primary bg-brutal-cyan px-2 py-1 text-[10px] font-black uppercase hover:bg-brutal-cyan transition-colors truncate"
+                    className="block border border-primary bg-brutal-cyan text-brutal-cyan-foreground px-2 py-1 text-[10px] font-black uppercase hover:bg-brutal-cyan transition-colors truncate"
                   >
                     IPFS: {pol.storageCid.slice(0, 20)}...
                   </a>
                   <div
-                    className="border border-primary bg-brutal-cyan px-2 py-1 text-[10px] font-black uppercase truncate"
+                    className="border border-primary bg-brutal-cyan text-brutal-cyan-foreground px-2 py-1 text-[10px] font-black uppercase truncate"
                     title={pol.activityUri}
                   >
                     Activity: {pol.activityUri.split("/").pop()}
@@ -219,7 +219,7 @@ export default function TransparencyPage() {
             href={`https://${snapshotData.storageCid}.ipfs.storacha.link/`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border-4 border-primary bg-brutal-cyan px-3 py-2 text-xs font-black uppercase hover:bg-brutal-cyan transition-colors"
+            className="inline-flex items-center gap-2 border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground px-3 py-2 text-xs font-black uppercase hover:bg-brutal-cyan transition-colors"
           >
             View on IPFS: {snapshotData.storageCid.slice(0, 24)}...
           </a>
@@ -242,11 +242,11 @@ export default function TransparencyPage() {
               employing 83,000 people to process forms.
             </p>
           </div>
-          <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-xl font-black uppercase text-brutal-pink-foreground mb-3">
+          <div className="border-4 border-primary bg-brutal-pink text-brutal-pink-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="text-xl font-black uppercase mb-3">
               UBI Replaces Welfare Bureaucracy
             </h3>
-            <p className="text-sm font-bold text-background leading-relaxed">
+            <p className="text-sm font-bold leading-relaxed">
               Treasury distributes to verified citizens automatically. World ID
               prevents sybil attacks. No means testing. No case workers. No
               applications. Just money going to people who need it, without

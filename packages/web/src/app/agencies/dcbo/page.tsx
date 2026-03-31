@@ -287,9 +287,9 @@ function GradeBadge({ grade }: { grade: string }) {
 
 function RecommendationBadge({ type }: { type: string }) {
   const styles: Record<string, string> = {
-    enact: "bg-brutal-cyan",
-    modify: "bg-brutal-yellow",
-    repeal: "bg-brutal-red",
+    enact: "bg-brutal-cyan text-brutal-cyan-foreground",
+    modify: "bg-brutal-yellow text-brutal-yellow-foreground",
+    repeal: "bg-brutal-red text-brutal-red-foreground",
     maintain: "bg-muted",
   };
   return (

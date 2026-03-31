@@ -23,8 +23,8 @@ export default function DIhPage() {
           same question would have cost $420 million.
         </p>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="border-4 border-primary bg-brutal-pink p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-4 text-sm font-black uppercase tracking-[0.1em] text-brutal-pink-foreground">
+          <div className="border-4 border-primary bg-brutal-pink text-brutal-pink-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="mb-4 text-sm font-black uppercase tracking-[0.1em]">
               Traditional RCT (What NIH Funds)
             </h3>
             <div className="space-y-3">
@@ -49,8 +49,8 @@ export default function DIhPage() {
               ))}
             </div>
           </div>
-          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="mb-4 text-sm font-black uppercase tracking-[0.1em] text-foreground">
+          <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h3 className="mb-4 text-sm font-black uppercase tracking-[0.1em]">
               Pragmatic Trial (What dIH Funds)
             </h3>
             <div className="space-y-3">
@@ -116,7 +116,7 @@ export default function DIhPage() {
               RCTs at $27,800/patient with 86% of applicants excluded.
             </p>
           </div>
-          <div className="border-4 border-primary bg-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-primary bg-foreground text-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl font-black text-brutal-cyan">97%</div>
             <div className="mt-1 text-xs font-black uppercase text-muted-foreground">
               dIH → Patient Subsidies

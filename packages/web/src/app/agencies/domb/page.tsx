@@ -86,12 +86,12 @@ function pct(n: number): string {
 function actionBadgeStyle(action: string | undefined): string {
   if (!action) return "bg-muted text-foreground";
   const a = action.toLowerCase();
-  if (a.includes("major increase") || a === "scale_up") return "bg-brutal-cyan text-foreground";
-  if (a.includes("increase") || a === "increase") return "bg-brutal-cyan text-foreground";
+  if (a.includes("major increase") || a === "scale_up") return "bg-brutal-cyan text-brutal-cyan-foreground";
+  if (a.includes("increase") || a === "increase") return "bg-brutal-cyan text-brutal-cyan-foreground";
   if (a.includes("maintain") || a === "maintain") return "bg-muted text-foreground";
-  if (a.includes("modest decrease") || a === "decrease") return "bg-brutal-yellow text-foreground";
-  if (a.includes("major decrease") || a === "major_decrease") return "bg-brutal-red text-foreground";
-  if (a.includes("decrease")) return "bg-brutal-yellow text-foreground";
+  if (a.includes("modest decrease") || a === "decrease") return "bg-brutal-yellow text-brutal-yellow-foreground";
+  if (a.includes("major decrease") || a === "major_decrease") return "bg-brutal-red text-brutal-red-foreground";
+  if (a.includes("decrease")) return "bg-brutal-yellow text-brutal-yellow-foreground";
   if (a.includes("non-discretionary")) return "bg-muted text-foreground";
   if (a.includes("insufficient")) return "bg-muted text-muted-foreground";
   return "bg-muted text-foreground";
@@ -110,11 +110,11 @@ function actionLabel(action: string): string {
 
 function gradeBadgeColor(grade: string): string {
   switch (grade) {
-    case "A": return "bg-brutal-cyan";
-    case "B": return "bg-brutal-yellow";
-    case "C": return "bg-brutal-yellow";
-    case "D": return "bg-brutal-red";
-    case "F": return "bg-brutal-red";
+    case "A": return "bg-brutal-cyan text-brutal-cyan-foreground";
+    case "B": return "bg-brutal-yellow text-brutal-yellow-foreground";
+    case "C": return "bg-brutal-yellow text-brutal-yellow-foreground";
+    case "D": return "bg-brutal-red text-brutal-red-foreground";
+    case "F": return "bg-brutal-red text-brutal-red-foreground";
     default: return "bg-muted";
   }
 }

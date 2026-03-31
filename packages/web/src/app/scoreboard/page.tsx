@@ -143,14 +143,14 @@ export default async function ScoreboardPage() {
             How to Play
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border-4 border-primary bg-brutal-pink p-5">
+            <div className="border-4 border-primary bg-brutal-pink text-brutal-pink-foreground p-5">
               <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center font-black mb-3">
                 1
               </div>
-              <h3 className="font-black uppercase text-brutal-pink-foreground mb-2">
+              <h3 className="font-black uppercase mb-2">
                 Deposit
               </h3>
-              <p className="text-sm font-bold text-background">
+              <p className="text-sm font-bold">
                 Put USDC into the prize pool. Get PRIZE shares. Your money grows
                 at {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} over 15 years regardless
                 of outcome.

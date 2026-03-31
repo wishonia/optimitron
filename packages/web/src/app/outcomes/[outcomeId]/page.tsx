@@ -17,9 +17,9 @@ import {
 import { studiesLink } from "@/lib/routes";
 
 function badgeClass(tone: "neutral" | "info" | "warning" | "danger"): string {
-  if (tone === "info") return "bg-brutal-cyan border-primary";
-  if (tone === "warning") return "bg-brutal-yellow border-primary";
-  if (tone === "danger") return "bg-brutal-red border-primary";
+  if (tone === "info") return "bg-brutal-cyan text-brutal-cyan-foreground border-primary";
+  if (tone === "warning") return "bg-brutal-yellow text-brutal-yellow-foreground border-primary";
+  if (tone === "danger") return "bg-brutal-red text-brutal-red-foreground border-primary";
   return "bg-muted border-primary";
 }
 

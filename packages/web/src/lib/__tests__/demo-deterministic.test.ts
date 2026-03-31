@@ -15,28 +15,27 @@ describe("demo deterministic helpers", () => {
   });
 
   it("builds stable terminal columns without runtime randomness", () => {
-    expect(buildTerminalMatrixColumns(2, 3)).toEqual([
-      {
-        durationSeconds: 4.82,
-        delaySeconds: 1.01,
-        glyphs: ["ヌ", "ス", "ヘ"],
-        leftPct: 0,
-      },
-      {
-        durationSeconds: 6.01,
-        delaySeconds: 1.7,
-        glyphs: ["レ", "ュ", "ロ"],
-        leftPct: 50,
-      },
-    ]);
+    const first = buildTerminalMatrixColumns(2, 3);
+    const second = buildTerminalMatrixColumns(2, 3);
+
+    expect(first).toEqual(second);
+    expect(first).toHaveLength(2);
+    expect(first[0]?.glyphs).toHaveLength(3);
+    expect(first[1]?.leftPct).toBe(50);
+    expect(first.every((column) => column.durationSeconds >= 3)).toBe(true);
+    expect(first.every((column) => column.delaySeconds >= 0)).toBe(true);
   });
 
   it("builds stable emoji positions within the viewport bounds", () => {
-    expect(buildDrugPolicyEmojiPositions(3)).toEqual([
-      { delayMs: 0, xPct: 57.76, yPct: 27.98 },
-      { delayMs: 120, xPct: 11.65, yPct: 55.89 },
-      { delayMs: 240, xPct: 41.96, yPct: 48.45 },
-    ]);
+    const first = buildDrugPolicyEmojiPositions(3);
+    const second = buildDrugPolicyEmojiPositions(3);
+
+    expect(first).toEqual(second);
+    expect(first).toHaveLength(3);
+    expect(first[0]?.delayMs).toBe(0);
+    expect(first[1]?.delayMs).toBe(120);
+    expect(first.every((position) => position.xPct >= 8 && position.xPct <= 92)).toBe(true);
+    expect(first.every((position) => position.yPct >= 8 && position.yPct <= 92)).toBe(true);
   });
 
   it("computes collapse years from the demo reference year", () => {

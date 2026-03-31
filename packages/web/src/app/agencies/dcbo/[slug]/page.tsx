@@ -112,9 +112,9 @@ function gradeLabel(grade: string): string {
 }
 
 function barColor(val: number): string {
-  if (val >= 0.8) return "bg-brutal-cyan";
-  if (val >= 0.5) return "bg-brutal-yellow";
-  return "bg-brutal-red";
+  if (val >= 0.8) return "bg-brutal-cyan text-brutal-cyan-foreground";
+  if (val >= 0.5) return "bg-brutal-yellow text-brutal-yellow-foreground";
+  return "bg-brutal-red text-brutal-red-foreground";
 }
 
 /* ------------------------------------------------------------------ */

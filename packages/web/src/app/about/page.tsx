@@ -217,7 +217,7 @@ export default function AboutPage() {
           Three separate mechanisms, three separate phases. Don&apos;t mix them up.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="card bg-brutal-pink border-primary">
+          <div className="card bg-brutal-pink text-brutal-pink-foreground border-primary">
             <div className="text-2xl mb-2">🏆</div>
             <h3 className="font-black text-brutal-pink-foreground mb-2">Prize (Phase 1)</h3>
             <p className="text-sm text-background font-bold leading-relaxed">
