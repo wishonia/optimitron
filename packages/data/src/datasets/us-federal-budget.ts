@@ -22,7 +22,7 @@ import type { JurisdictionBudget, BudgetCategory, OutcomeMetric, HistoricalSpend
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 export const US_FEDERAL_BUDGET: JurisdictionBudget = {
-  jurisdictionCode: 'USA',
+  jurisdictionCode: 'US',
   population: 339_000_000,
   fiscalYear: 2025,
   totalOutlays: 6872,

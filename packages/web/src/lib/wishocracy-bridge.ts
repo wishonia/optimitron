@@ -7,7 +7,8 @@
  */
 
 import type { Item } from '@optimitron/wishocracy';
-import { US_WISHOCRATIC_ITEMS, type WishocraticItemDefinition, type USWishocraticItemId } from '@optimitron/data';
+import type { WishocraticItemDefinition } from '@optimitron/data';
+import { WISHOCRATIC_ITEMS, type WishocraticItemId } from '@/lib/wishocracy-data';
 import budgetAnalysisData from '@/data/us-budget-analysis.json';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -111,10 +112,10 @@ function computeEfficiencyContext(item: WishocraticItemDefinition): EfficiencyCo
  * Build enriched wishocratic items with OBG efficiency data.
  * Returns items suitable for display in the pairwise allocation UI.
  */
-export function buildEnrichedWishocraticItems(): Record<USWishocraticItemId, EnrichedWishocraticItem> {
+export function buildEnrichedWishocraticItems(): Record<WishocraticItemId, EnrichedWishocraticItem> {
   const result: Record<string, EnrichedWishocraticItem> = {};
 
-  for (const [key, _item] of Object.entries(US_WISHOCRATIC_ITEMS)) {
+  for (const [key, _item] of Object.entries(WISHOCRATIC_ITEMS)) {
     const item = _item as WishocraticItemDefinition;
     result[key] = {
       id: key,
@@ -132,12 +133,12 @@ export function buildEnrichedWishocraticItems(): Record<USWishocraticItemId, Enr
     };
   }
 
-  return result as Record<USWishocraticItemId, EnrichedWishocraticItem>;
+  return result as Record<WishocraticItemId, EnrichedWishocraticItem>;
 }
 
 /**
  * Get enriched data for a single wishocratic item.
  */
-export function getEnrichedWishocraticItem(id: USWishocraticItemId): EnrichedWishocraticItem | undefined {
+export function getEnrichedWishocraticItem(id: WishocraticItemId): EnrichedWishocraticItem | undefined {
   return buildEnrichedWishocraticItems()[id];
 }

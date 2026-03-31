@@ -33,6 +33,7 @@ pnpm db:up
 pnpm db:down
 pnpm db:logs
 pnpm db:deploy
+pnpm db:test
 pnpm db:migrate
 pnpm db:seed
 pnpm db:reset
@@ -43,3 +44,5 @@ pnpm db:reset
 - `pnpm db:migrate` is for creating new development migrations after schema changes.
 - `pnpm db:deploy` applies committed migrations without prompting for new ones.
 - The seed script is idempotent and safe to rerun.
+- `pnpm db:test` starts the local Docker Postgres if needed, applies committed
+  migrations, and runs the DB-backed integration test suite.

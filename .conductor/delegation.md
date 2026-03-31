@@ -37,13 +37,13 @@ Send results to Mike on Telegram (target: 1762827333).
 ```
 
 ## Rules for All Agents
-1. **One task per run** — don't combine unrelated work
-2. **Read spec.md first** — understand the goal before coding
+1. **Prefer one coherent task per run** — bundle only tightly related work
+2. **Read `spec.md` first for track-backed work** — understand the goal before coding
 3. **Follow existing patterns** — look at similar files in the repo
-4. **Build must pass** — `pnpm --filter @optimitron/<pkg> run build`
-5. **No code without tests** (for Codex/Claude, not dataset generation)
-6. **Commit with conventional commits** — `feat(data):`, `fix(optimizer):`, etc.
-7. **Don't search the web for data** — use training knowledge, cite sources in JSDoc
+4. **Build affected code before handoff** — `pnpm --filter @optimitron/<pkg> run build`
+5. **Code changes that alter behavior need tests**; dataset generation can rely more on validation and spot checks
+6. **Conventional commits are preferred** — `feat(data):`, `fix(optimizer):`, etc.
+7. **Prefer source-backed data with provenance** — if external research is needed, record sources in JSDoc or docs
 
 ## Dataset File Pattern
 Every dataset in `packages/data/src/datasets/` follows this pattern:

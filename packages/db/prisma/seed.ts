@@ -32,6 +32,15 @@ import {
 } from "../src/generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { pathToFileURL } from "node:url";
+import {
+  US_WISHOCRATIC_JURISDICTION,
+  getUSWishocraticCatalogRecords,
+} from "@optimitron/data";
+import {
+  normalizeSeedScopes,
+  parseSeedScopes,
+  type SeedScope,
+} from "./seed-scopes.ts";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
@@ -606,71 +615,57 @@ async function seedJurisdictions() {
 // E) ITEMS — Federal Budget Categories (FY2025 approximate)
 // ============================================================================
 
-async function seedWishocraticItems(usJurisdictionId: string) {
+async function seedWishocraticItems() {
   console.log("💰 Seeding Optimitron budget categories...");
 
-  // Wishocratic items — these are the items citizens compare in pairwise
-  // RAPPA surveys. IDs match WishocraticItemId in wishocracy-data.ts
-  // so WishocraticAllocation.itemAId/itemBId map directly to Item.id.
-  const categories: {
-    id: string;
-    name: string;
-    description: string;
-    category: string;
-    annualBudgetB: number; // billions USD
-  }[] = [
-    { id: "UNIVERSAL_BASIC_INCOME",       name: "Universal Basic Income",                category: "Citizen-Directed",  annualBudgetB: 0 },
-    { id: "PRAGMATIC_CLINICAL_TRIALS",    name: "Pragmatic Clinical Trials",             category: "High-ROI",          annualBudgetB: 1 },
-    { id: "ADDICTION_TREATMENT",          name: "Addiction Treatment Programs",           category: "High-ROI",          annualBudgetB: 10 },
-    { id: "EARLY_CHILDHOOD_EDUCATION",    name: "Early Childhood Education",             category: "High-ROI",          annualBudgetB: 10 },
-    { id: "CYBERSECURITY",                name: "Cybersecurity & Infrastructure Protection", category: "High-ROI",      annualBudgetB: 3 },
-    { id: "DRUG_WAR_ENFORCEMENT",         name: "Drug War Enforcement",                  category: "Low-ROI",           annualBudgetB: 50 },
-    { id: "ICE_IMMIGRATION_ENFORCEMENT",  name: "Mass Immigrant Detention Camps",        category: "Low-ROI",           annualBudgetB: 14 },
-    { id: "FARM_SUBSIDIES_AGRIBUSINESS",  name: "Agribusiness Subsidies",                category: "Low-ROI",           annualBudgetB: 20 },
-    { id: "FOSSIL_FUEL_SUBSIDIES",        name: "Fossil Fuel Subsidies",                 category: "Low-ROI",           annualBudgetB: 20 },
-    { id: "NUCLEAR_WEAPONS_MODERNIZATION",name: "Nuclear Weapons Development",           category: "Low-ROI",           annualBudgetB: 60 },
-    { id: "PRISON_CONSTRUCTION",          name: "Prison Construction & Operations",      category: "Low-ROI",           annualBudgetB: 80 },
-    { id: "MILITARY_OPERATIONS",          name: "Weapons Systems & Pentagon R&D",        category: "Traditional",       annualBudgetB: 425 },
-    { id: "BOMBING_IRAN",                 name: "Bombing Iran",                          category: "Active Wars",       annualBudgetB: 365 },
-    { id: "ISRAEL_GAZA_MILITARY_AID",     name: "Military Aid for Israel's War in Gaza", category: "Active Wars",       annualBudgetB: 4 },
-    { id: "YEMEN_HOUTHI_STRIKES",         name: "Yemen & Houthi Military Strikes",       category: "Active Wars",       annualBudgetB: 5 },
-    { id: "CORPORATE_WELFARE",            name: "Corporate Welfare & Bailouts",          category: "Corporate",         annualBudgetB: 100 },
-    { id: "AI_MASS_SURVEILLANCE",         name: "AI Mass Surveillance Programs",         category: "Surveillance",      annualBudgetB: 5 },
-    { id: "POLICING_VIOLENT_CRIME",       name: "Solving Actual Violent Crime",           category: "Traditional",       annualBudgetB: 15 },
-  ];
+  const jurisdiction = await prisma.jurisdiction.findUnique({
+    where: { code: US_WISHOCRATIC_JURISDICTION.code },
+    select: { id: true },
+  });
 
-  const totalBudgetB = categories.reduce((s, c) => s + c.annualBudgetB, 0);
+  if (!jurisdiction) {
+    throw new Error(
+      `Cannot seed wishocratic items before jurisdiction ${US_WISHOCRATIC_JURISDICTION.code} exists.`,
+    );
+  }
 
-  for (const cat of categories) {
-    const pct = totalBudgetB > 0 ? (cat.annualBudgetB / totalBudgetB) * 100 : 0;
+  const catalogRecords = Object.values(getUSWishocraticCatalogRecords());
+
+  for (const record of catalogRecords) {
     await prisma.wishocraticItem.upsert({
-      where: { id: cat.id },
+      where: { id: record.id },
       update: {
-        name: cat.name,
-        category: cat.category,
-        currentAllocationUsd: cat.annualBudgetB * 1_000_000_000,
-        currentAllocationPct: Number(pct.toFixed(1)),
+        name: record.name,
+        description: record.description,
+        sourceUrl: record.sourceUrl,
+        currentAllocationUsd: record.currentAllocationUsd,
+        currentAllocationPct: record.currentAllocationPct,
         active: true,
-        jurisdictionId: usJurisdictionId,
+        jurisdictionId: jurisdiction.id,
       },
       create: {
-        id: cat.id,
-        name: cat.name,
-        category: cat.category,
-        currentAllocationUsd: cat.annualBudgetB * 1_000_000_000,
-        currentAllocationPct: Number(pct.toFixed(1)),
+        id: record.id,
+        name: record.name,
+        description: record.description,
+        sourceUrl: record.sourceUrl,
+        currentAllocationUsd: record.currentAllocationUsd,
+        currentAllocationPct: record.currentAllocationPct,
         active: true,
-        jurisdictionId: usJurisdictionId,
+        jurisdictionId: jurisdiction.id,
       },
     });
   }
 
-  console.log(`  ✅ ${categories.length} Optimitron budget categories`);
+  console.log(`  ✅ ${catalogRecords.length} Optimitron budget categories`);
 }
 
 // ============================================================================
 // MAIN
 // ============================================================================
+
+export interface SeedDatabaseOptions {
+  scopes?: SeedScope[];
+}
 
 async function seedReferendums() {
   console.log("🗳️  Seeding referendums...");
@@ -691,16 +686,38 @@ async function seedReferendums() {
   console.log("  ✓ 1% Treaty referendum");
 }
 
-export async function seedDatabase() {
-  console.log("🌱 Starting Optimitron seed...\n");
-
+export async function seedReferenceData() {
   const unitMap = await seedUnits();
   const catMap = await seedVariableCategories(unitMap);
   await seedGlobalVariables(unitMap, catMap);
-  const usId = await seedJurisdictions();
-  await seedWishocraticItems(usId);
-  await seedDemoUser();
+  await seedJurisdictions();
+  await seedWishocraticItems();
+}
+
+export async function seedBootstrapData() {
   await seedReferendums();
+}
+
+export async function seedDemoData() {
+  await seedDemoUser();
+}
+
+export async function seedDatabase(options: SeedDatabaseOptions = {}) {
+  const scopes = normalizeSeedScopes(options.scopes);
+
+  console.log(`🌱 Starting Optimitron seed (${scopes.join(", ")})...\n`);
+
+  if (scopes.includes("reference")) {
+    await seedReferenceData();
+  }
+
+  if (scopes.includes("bootstrap")) {
+    await seedBootstrapData();
+  }
+
+  if (scopes.includes("demo")) {
+    await seedDemoData();
+  }
 
   console.log("\n🎉 Seed complete!");
 }
@@ -761,7 +778,8 @@ const isMainModule =
   import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isMainModule) {
-  seedDatabase()
+  Promise.resolve()
+    .then(() => seedDatabase({ scopes: parseSeedScopes(process.argv.slice(2)) }))
     .catch((e) => {
       console.error("❌ Seed failed:", e);
       process.exit(1);

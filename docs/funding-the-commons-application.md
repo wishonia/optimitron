@@ -4,17 +4,17 @@
 
 Governments spend $604 on military for every $1 on clinical trials. 150,000 people die from treatable diseases every day. The treatment queue is 443 years long.
 
-Optimitron is the Earth Optimization Game — open-source public-goods infrastructure that turns this into a solvable coordination problem. Players invest 1% of their savings, recruit every voter they know, and wishocratically allocate the global budget from explosions to cures. If health and income targets are hit by 2040, VOTE holders split the prize pool. If not, deposits have been earning 17%/yr — you still 11x your money. Break-even probability: 0.0067%.
-
-Built with Storacha + IPFS for immutable citizen data, Hypercerts on AT Protocol for verifiable impact receipts, World ID for sybil-resistant one-person-one-vote, ERC-8004 for autonomous agent identity, and smart contracts on Base.
+Optimitron is the Earth Optimization Game. Players invest 1% of their savings, recruit every voter they know, and wishocratically allocate the global budget from explosions to cures. If health and income targets are hit by 2040, VOTE holders split the prize pool. If not, deposits have been earning 17%/yr — you still 11x your money. Break-even probability: 0.0067%.
 
 ## The Problem
 
 Since 1913, governments have printed $170 trillion and used it to kill 97 million people in wars nobody asked them if they wanted to have. Every dollar invested in healthcare returns $1.80. Every dollar invested in military returns $0.60. Your species chose the $0.60 option.
 
-The Political Dysfunction Tax — the total cost of this misallocation — is $101 trillion per year. $12,600 per person. $50,500 per household of four.
+The Political Dysfunction Tax — the total cost of this misallocation — is $101 trillion per year. $50,500 per household of four.
 
-95% of diseases have zero FDA-approved treatments. The FDA makes treatments wait 8.2 years AFTER they've been proven safe. For every 1 person it protects from a bad drug, 3,070 die waiting for a good one. The dollar has lost 96% of its value since 1913 — if wages had kept pace with productivity, the median family would earn $528,000. The actual number is $77,500.
+95% of diseases have zero FDA-approved treatments. The FDA makes treatments wait 8.2 years AFTER they've been proven safe. For every 1 person it protects from a bad drug, 3,070 die waiting for a good one.
+
+If wages had kept pace with productivity, the median family would earn $528,000. The actual number is $77,500. The dollar has lost 96% of its value since 1913. Your governments printed the difference and spent it on missiles.
 
 The parasitic economy — cybercrime plus military spending — is growing at 15% per year. The productive economy is growing at 3%. Argentina collapsed at 38%. Yugoslavia at 40%. The Soviet Union at 45%. By 2040, Earth crosses the same threshold.
 
@@ -104,7 +104,7 @@ All smart contracts on Base Sepolia. Solidity 0.8.24, Hardhat 2.22, OpenZeppelin
 
 ## Why Funding The Commons
 
-You are looking for public goods funding mechanisms. There is $2.7 trillion in public goods funding being spent on explosions every year. You have not noticed because nobody calls it that. They call it "defence." But $2.7 trillion of collectively pooled resources being allocated by a small number of humans toward things nobody voted for is the largest commons misallocation in the history of your species. One percent of it is $27 billion a year for clinical trials. Ninety-nine percent still buys plenty of missiles. Nobody loses strategic advantage. Everyone gains six and a half healthy years.
+You are looking for public goods funding mechanisms. There is $2.7 trillion in public goods funding being spent on explosions every year. You have not noticed because nobody calls it that. They call it "defence." But $2.7 trillion spent on things nobody voted for is the largest commons misallocation in the history of your species. One percent of it is $27 billion a year for clinical trials. Ninety-nine percent still buys plenty of missiles. Nobody loses strategic advantage. Everyone gains six and a half healthy years.
 
 The coordination infrastructure exists. The game exists. The smart contracts are deployed. What does not exist yet is the Prize Fund.
 
@@ -112,11 +112,11 @@ The coordination infrastructure exists. The game exists. The smart contracts are
 
 Funding the Commons seeds the Earth Optimization Prize Fund. Even a dollar. It is real. It is on-chain. It earns yield. It cannot be un-created.
 
-Funding the Commons convenes the Interplanetary Constitutional Convention — the event where the Earth Optimization Protocol stops being a paper and becomes a plan. Your mechanism designers, economists, and public goods researchers establish the protocol: the incentive curves, the allocation algorithms, the metrics for whether the money actually worked. They have been writing papers about coordination problems for decades. Now they have something to ratify.
+Funding the Commons convenes the Interplanetary Constitutional Convention — the event where the Earth Optimization Protocol stops being a paper and becomes a plan. Your mechanism designers, economists, and public goods researchers establish the protocol: the metrics for whether the money actually worked and the rules for what happens when it does not. They have been writing papers about coordination problems for decades. Now they have something to ratify.
 
 Then the hackathons. Each one builds a component of the protocol. A better Wishocracy. A faster trial matching system. A smarter way to score politician alignment. Your developers build on Storacha and Hypercerts because the protocol requires immutable, auditable infrastructure — the kind you already make.
 
-Meanwhile, everyone else on Earth plays the game. Ten pairwise comparisons. Two minutes. Clinical trials versus military spending. Education versus the drug war. Each player gets a referral link. Each friend who plays earns them VOTE points. The referendum grows. The fund grows. Every deposit earns yield whether the targets are hit or not. Every voter makes the demand more visible. The pluralistic ignorance starts to crack.
+Meanwhile, everyone else on Earth plays the game. Each player gets a referral link. Each friend who plays earns them VOTE points. The referendum grows. The fund grows. Every deposit earns yield whether the targets are hit or not. Every voter makes the demand more visible. The pluralistic ignorance starts to crack.
 
 A year from now, the fund has a million players. The data shows what everyone already suspected: when you ask people whether they prefer cures or bombs, they prefer cures. Three years from now, the first politician notices that voting for the treaty comes with a Super PAC and voting against it comes with an opponent who has one. Five years from now, the first treaty is signed. Not because anyone became a better person. Because the incentives finally pointed at the right thing. $27 billion a year flows from the murder budget to clinical trials. Trial capacity increases 12.3 times. The 443-year treatment queue compresses to 36. Your children ask what "untreatable" meant.
 

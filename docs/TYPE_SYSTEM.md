@@ -63,12 +63,12 @@ This separation is **intentional**:
 
 | Package | Defines | Imports from |
 |---------|---------|-------------|
-| `db` | All Prisma models, Zod schemas | Nothing |
+| `db` | All Prisma models, Zod schemas | Curated runtime catalogs when seeding/bootstrapping data |
 | `optimizer` | Measurement, TimeSeries, PredictorConfig, CorrelationResult | Nothing (self-contained) |
 | `wishocracy` | PairwiseComparison, PreferenceWeight, AlignmentScore | Nothing (self-contained) |
 | `opg` | PolicyInput, PolicyResult, PolicyReport | `optimizer` types |
 | `obg` | BudgetInput, BudgetResult, BudgetReport | `optimizer` types |
-| `data` | ParsedHealthRecord, ImportSummary | Nothing (self-contained) |
+| `data` | ParsedHealthRecord, ImportSummary, curated datasets | `optimizer` types where useful |
 | `web` | (none — consumes all) | Everything + conversion layer |
 
 ## Rules
@@ -79,6 +79,8 @@ This separation is **intentional**:
 4. **Libraries NEVER import @prisma/client** — no Node.js runtime dependency
 5. **Libraries MAY import `type` from db** for shared enums or constants
 6. **All new DB models start in schema.prisma** — it's the source of truth
+7. **Dependency rules should pay rent** — prefer one canonical dataset over duplicated copies when runtime constraints still hold
+8. **`db` may import curated runtime catalogs from `data` for seeding/bootstrap** when that removes duplication and does not move Prisma ownership out of `db`
 
 ## Enum Handling
 

@@ -188,15 +188,16 @@ optimizer ← (nothing, foundation)
 wishocracy ← (nothing, standalone pure math)
 opg ← optimizer
 obg ← optimizer + opg
-data ← (nothing)
-db ← (nothing)
+data ← optimizer
+db ← data (curated seed/bootstrap catalogs only)
 web ← everything
 ```
 
 Key rules:
 - **`optimizer` depends on NOTHING** — it's the foundation
-- **`wishocracy` has ZERO database imports** — pure functions only
+- **Pure/browser-facing libraries must not gain runtime Prisma or database imports**
 - **`db` exports pure TS interfaces** — libraries may import TYPE-ONLY exports (not Prisma client)
+- **`db` may consume curated runtime catalogs from `data` when that removes duplicated source data**
 - **No circular deps** — if you need something from both directions, it belongs in `optimizer`
 
 ### Type Sharing Strategy
@@ -215,14 +216,13 @@ We use **Prisma 7** (`prisma@^7.0.0`, `@prisma/client@^7.0.0`) with `@prisma/ada
 
 `packages/web/src/lib/routes.ts` is the single source of truth for page titles and descriptions. Each `NavItem` has a `label`, `description`, and `emoji`. Pages use `getRouteMetadata(link)` from `packages/web/src/lib/metadata.ts` instead of hardcoding metadata. All descriptions are in Wishonia's voice.
 
-## Hard Rules
+## High-Value Defaults
 
-1. **No code without tests.** Every function gets a test. No exceptions.
-2. **Run `pnpm check` before committing.** (typecheck + lint + test)
-3. **Library packages have ZERO database imports.** Pure functions only.
-4. **Types use Zod schemas** where runtime validation matters.
-5. **One task per agent run.** Quality over quantity.
-6. **No off-brand colors.** Neobrutalist = bold, high-contrast, zero pastels. See color rules below.
+1. **Test behavior, regressions, and non-trivial logic changes.** Do not require a bespoke test for every tiny wrapper.
+2. **Run the relevant checks before committing.** Use `pnpm check` for broad changes; at minimum run the affected package build/test/lint surface.
+3. **Library packages should stay runtime-safe.** Pure/browser-facing packages do not get Prisma or runtime DB imports.
+4. **Use Zod where runtime validation protects a real boundary.** Do not cargo-cult it into every internal helper.
+5. **When touching product UI, preserve the existing neobrutalist system unless you are intentionally changing the design direction.**
 
 ## Color Rules (Neobrutalist Aesthetic)
 
@@ -411,9 +411,8 @@ Every run, before picking a new task, scan the codebase with fresh eyes:
 If not, simplify it. This should not feel like enterprise Java.
 
 ### What Good Looks Like
-- Functions are <30 lines
-- Files are <300 lines
+- Functions usually fit on one screen
+- Files stay reviewable; treat 30/300 as smell thresholds, not hard caps
 - Module names tell you exactly what's inside
 - Tests read like documentation
 - No unnecessary abstractions — just functions that take data and return results
-

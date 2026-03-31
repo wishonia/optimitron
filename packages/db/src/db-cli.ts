@@ -14,6 +14,8 @@ export interface DbCliArgs {
 const currentDir = dirname(fileURLToPath(import.meta.url));
 const repoEnvPath = resolve(currentDir, "../../../.env");
 const packageEnvPath = resolve(currentDir, "../.env");
+export const DEFAULT_LOCAL_DATABASE_URL =
+  "postgresql://postgres:postgres@localhost:5432/optimitron";
 
 export function parseEnvFile(content: string): Record<string, string> {
   const entries: Record<string, string> = {};

@@ -293,11 +293,11 @@ describe('Politician Alignment Pipeline — End-to-End', () => {
 
     it('should have per-category alignment breakdowns', () => {
       for (const score of alignmentScores) {
-        expect(score.categoryScores).toBeDefined();
-        if (score.categoryScores) {
-          const keys = Object.keys(score.categoryScores);
+        expect(score.itemScores).toBeDefined();
+        if (score.itemScores) {
+          const keys = Object.keys(score.itemScores);
           expect(keys.length).toBe(8);
-          for (const catScore of Object.values(score.categoryScores)) {
+          for (const catScore of Object.values(score.itemScores)) {
             expect(catScore).toBeGreaterThanOrEqual(0);
             expect(catScore).toBeLessThanOrEqual(100);
           }

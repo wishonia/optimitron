@@ -1,4 +1,6 @@
 /**
+ * Canonical US Wishocratic item catalog shared by dataset consumers and DB seeds.
+ *
  * US Citizen Priority Items
  *
  * The 18 budget priority categories that citizens compare via RAPPA
@@ -63,6 +65,29 @@ export interface WishocraticItemDefinition {
   readonly jurisdictionCode: string;
 }
 
+export interface WishocraticCatalogRecord<TItemId extends string = string> {
+  /** Stable item ID used in DB rows and UI state */
+  readonly id: TItemId;
+  /** Jurisdiction code matching the seeded Jurisdiction.code */
+  readonly jurisdictionCode: string;
+  /** Human-readable name */
+  readonly name: string;
+  /** Item description */
+  readonly description: string;
+  /** URL to supporting documentation or source data */
+  readonly sourceUrl: string | null;
+  /** Current actual budget allocation in USD */
+  readonly currentAllocationUsd: number;
+  /** Current actual budget allocation as a percentage of the total */
+  readonly currentAllocationPct: number;
+}
+
+export const US_WISHOCRATIC_JURISDICTION = {
+  code: 'US',
+  name: 'United States',
+  type: 'COUNTRY',
+} as const;
+
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 export const US_WISHOCRATIC_ITEMS = {
@@ -85,7 +110,7 @@ export const US_WISHOCRATIC_ITEMS = {
     ],
     fiscalCategoryMappings: [],
     type: 'proposed' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
 
   // ─── HIGH-ROI INVESTMENTS ────────────────────────────────────────────
@@ -109,7 +134,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'health_discretionary', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   ADDICTION_TREATMENT: {
     slug: 'addiction_treatment',
@@ -131,7 +156,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'health_discretionary', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   EARLY_CHILDHOOD_EDUCATION: {
     slug: 'early_childhood_ed',
@@ -152,7 +177,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'education', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   CYBERSECURITY: {
     slug: 'cybersecurity',
@@ -175,7 +200,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'military', share: 0.3 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
 
   // ─── WASTEFUL/LOW-ROI SPENDING ──────────────────────────────────────
@@ -206,7 +231,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'other_mandatory', share: 0.2 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   ICE_IMMIGRATION_ENFORCEMENT: {
     slug: 'ice',
@@ -234,7 +259,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'justice', share: 0.2 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   FARM_SUBSIDIES_AGRIBUSINESS: {
     slug: 'farm_subsidies',
@@ -255,7 +280,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'agriculture', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   FOSSIL_FUEL_SUBSIDIES: {
     slug: 'fossil_fuel_subsidies',
@@ -281,7 +306,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'treasury', share: 0.4 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   NUCLEAR_WEAPONS_MODERNIZATION: {
     slug: 'nuclear_weapons',
@@ -307,7 +332,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'energy', share: 0.3 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   PRISON_CONSTRUCTION: {
     slug: 'prisons',
@@ -334,7 +359,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'justice', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
 
   // ─── TRADITIONAL/NECESSARY (for comparison) ─────────────────────────
@@ -355,7 +380,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'military', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
 
   // ─── ACTIVE WARS & CONFLICTS ─────────────────────────────────────────
@@ -381,7 +406,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'military', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   ISRAEL_GAZA_MILITARY_AID: {
     slug: 'israel_gaza_aid',
@@ -403,7 +428,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'military', share: 0.5 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   YEMEN_HOUTHI_STRIKES: {
     slug: 'yemen_houthi',
@@ -425,7 +450,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'military', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
 
   // ─── CORPORATE & SURVEILLANCE ────────────────────────────────────────
@@ -455,7 +480,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'energy', share: 0.2 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   AI_MASS_SURVEILLANCE: {
     slug: 'ai_surveillance',
@@ -481,7 +506,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'justice', share: 0.2 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
   POLICING_VIOLENT_CRIME: {
     slug: 'policing_violent_crime',
@@ -503,7 +528,7 @@ export const US_WISHOCRATIC_ITEMS = {
       { fiscalCategoryId: 'justice', share: 1.0 },
     ],
     type: 'existing' as const,
-    jurisdictionCode: 'USA',
+    jurisdictionCode: 'US',
   },
 } as const;
 
@@ -532,5 +557,54 @@ export function getUSWishocraticAllocations(): Record<USWishocraticItemId, numbe
   }
 
   return allocations as Record<USWishocraticItemId, number>;
+}
+
+export function getUSWishocraticSourceUrl(item: WishocraticItemDefinition): string | null {
+  return item.roiData?.sourceUrl ?? item.sources[0]?.url ?? null;
+}
+
+export function buildUSWishocraticCatalogRecord(
+  itemId: USWishocraticItemId,
+): WishocraticCatalogRecord<USWishocraticItemId> {
+  const item = US_WISHOCRATIC_ITEMS[itemId];
+  const allocations = getUSWishocraticAllocations();
+
+  return {
+    id: itemId,
+    jurisdictionCode: US_WISHOCRATIC_JURISDICTION.code,
+    name: item.name,
+    description: item.description,
+    sourceUrl: getUSWishocraticSourceUrl(item),
+    currentAllocationUsd: item.annualBudgetBillions * 1_000_000_000,
+    currentAllocationPct: allocations[itemId],
+  };
+}
+
+export function getUSWishocraticCatalogRecords(): Record<
+  USWishocraticItemId,
+  WishocraticCatalogRecord<USWishocraticItemId>
+> {
+  const allocations = getUSWishocraticAllocations();
+  const records: Partial<
+    Record<USWishocraticItemId, WishocraticCatalogRecord<USWishocraticItemId>>
+  > = {};
+
+  for (const [itemId, item] of Object.entries(US_WISHOCRATIC_ITEMS)) {
+    const typedItemId = itemId as USWishocraticItemId;
+    records[typedItemId] = {
+      id: typedItemId,
+      jurisdictionCode: US_WISHOCRATIC_JURISDICTION.code,
+      name: item.name,
+      description: item.description,
+      sourceUrl: getUSWishocraticSourceUrl(item),
+      currentAllocationUsd: item.annualBudgetBillions * 1_000_000_000,
+      currentAllocationPct: allocations[typedItemId],
+    };
+  }
+
+  return records as Record<
+    USWishocraticItemId,
+    WishocraticCatalogRecord<USWishocraticItemId>
+  >;
 }
 

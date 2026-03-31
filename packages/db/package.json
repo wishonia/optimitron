@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
+    "test:integration": "tsx src/run-local-db-tests.ts",
     "test:watch": "vitest",
     "db:cli": "tsx src/db-cli.ts",
     "prisma:generate": "prisma generate",
@@ -15,9 +16,13 @@
     "prisma:migrate:dev": "prisma migrate dev --schema prisma/schema.prisma",
     "prisma:migrate:deploy": "prisma migrate deploy --schema prisma/schema.prisma",
     "prisma:push": "prisma db push --schema prisma/schema.prisma",
-    "seed": "prisma db seed"
+    "seed": "prisma db seed",
+    "seed:reference": "tsx prisma/seed.ts --scope reference",
+    "seed:bootstrap": "tsx prisma/seed.ts --scope bootstrap",
+    "seed:demo": "tsx prisma/seed.ts --scope demo"
   },
   "dependencies": {
+    "@optimitron/data": "workspace:*",
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
     "zod": "^3.22.4"

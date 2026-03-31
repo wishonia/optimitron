@@ -1,47 +1,73 @@
 /**
- * Jurisdiction Registry
+ * Jurisdiction registry
  *
- * Central lookup for jurisdiction-specific data (budget, priority items).
- * Each jurisdiction provides its own budget data and citizen priority items.
- * Add new jurisdictions by importing their data and registering here.
+ * Canonical lookup for jurisdiction-specific public catalogs consumed by the
+ * UI and database seed/bootstrap flows.
  */
 
 import { US_FEDERAL_BUDGET } from './datasets/us-federal-budget';
 import type { JurisdictionBudget } from './datasets/jurisdiction-budget';
-import type { WishocraticItemDefinition } from './datasets/us-wishocratic-items';
 import {
-  DEFAULT_WISHOCRATIC_ITEMS_JURISDICTION_CODE,
-  WISHOCRATIC_ITEMS_BY_JURISDICTION,
-} from './wishocratic-items-registry';
+  US_WISHOCRATIC_ITEMS,
+  US_WISHOCRATIC_JURISDICTION,
+  type WishocraticCatalogRecord,
+  type WishocraticItemDefinition,
+  type USWishocraticItemId,
+  getUSWishocraticAllocations,
+  getUSWishocraticCatalogRecords,
+} from './datasets/us-wishocratic-items';
 
-export interface JurisdictionData {
+export interface JurisdictionData<
+  TItemId extends string = string,
+  TItem extends WishocraticItemDefinition = WishocraticItemDefinition,
+> {
+  /** Jurisdiction code matching the seeded Jurisdiction.code */
+  code: string;
+  /** Human-readable name */
+  name: string;
+  /** Prisma JurisdictionType value */
+  type: string;
   /** Budget data with fiscal categories */
   budget: JurisdictionBudget;
   /** Wishocratic items for pairwise comparison */
-  wishocraticItems: Record<string, WishocraticItemDefinition>;
+  wishocraticItems: Readonly<Record<TItemId, TItem>>;
   /** Calculate allocation percentages from wishocratic item budgets */
-  getWishocraticAllocations: () => Record<string, number>;
+  getWishocraticAllocations: () => Record<TItemId, number>;
+  /** Project wishocratic items into DB-ready catalog rows */
+  getWishocraticCatalogRecords: () => Record<TItemId, WishocraticCatalogRecord<TItemId>>;
 }
 
-const JURISDICTIONS: Record<string, JurisdictionData> = {
-  USA: {
+export const JURISDICTIONS = {
+  [US_WISHOCRATIC_JURISDICTION.code]: {
+    code: US_WISHOCRATIC_JURISDICTION.code,
+    name: US_WISHOCRATIC_JURISDICTION.name,
+    type: US_WISHOCRATIC_JURISDICTION.type,
     budget: US_FEDERAL_BUDGET,
-    wishocraticItems: WISHOCRATIC_ITEMS_BY_JURISDICTION.USA.wishocraticItems,
-    getWishocraticAllocations:
-      WISHOCRATIC_ITEMS_BY_JURISDICTION.USA.getWishocraticAllocations,
+    wishocraticItems: US_WISHOCRATIC_ITEMS,
+    getWishocraticAllocations: getUSWishocraticAllocations,
+    getWishocraticCatalogRecords: getUSWishocraticCatalogRecords,
   },
-};
+} as const satisfies Record<
+  string,
+  JurisdictionData<USWishocraticItemId, WishocraticItemDefinition>
+>;
+
+/** Default jurisdiction code */
+export const DEFAULT_JURISDICTION_CODE = US_WISHOCRATIC_JURISDICTION.code;
+
+export type RegisteredJurisdictionCode = keyof typeof JURISDICTIONS;
+export type DefaultJurisdictionCode = typeof DEFAULT_JURISDICTION_CODE;
+export type DefaultJurisdictionData = (typeof JURISDICTIONS)[DefaultJurisdictionCode];
+
+/** Default jurisdiction entry */
+export const DEFAULT_JURISDICTION = JURISDICTIONS[DEFAULT_JURISDICTION_CODE];
 
 /** Get data for a specific jurisdiction */
 export function getJurisdiction(code: string): JurisdictionData | undefined {
-  return JURISDICTIONS[code];
+  return JURISDICTIONS[code as RegisteredJurisdictionCode];
 }
 
 /** List all available jurisdiction codes */
-export function getAvailableJurisdictions(): string[] {
-  return Object.keys(JURISDICTIONS);
+export function getAvailableJurisdictions(): RegisteredJurisdictionCode[] {
+  return Object.keys(JURISDICTIONS) as RegisteredJurisdictionCode[];
 }
-
-/** Default jurisdiction code */
-export const DEFAULT_JURISDICTION_CODE = DEFAULT_WISHOCRATIC_ITEMS_JURISDICTION_CODE;
-

@@ -39,7 +39,17 @@ describeIfDatabase("seedDatabase", () => {
     ).resolves.toBeTruthy();
     await expect(
       prisma.wishocraticItem.findUnique({ where: { id: "PRAGMATIC_CLINICAL_TRIALS" } }),
-    ).resolves.toMatchObject({ name: "Pragmatic Clinical Trials" });
+    ).resolves.toMatchObject({
+      name: "Pragmatic Clinical Trials",
+      sourceUrl: "https://copenhagenconsensus.com/copenhagen-consensus-iii/outcome",
+    });
+
+    const pragmaticTrials = await prisma.wishocraticItem.findUnique({
+      where: { id: "PRAGMATIC_CLINICAL_TRIALS" },
+    });
+    expect(pragmaticTrials?.description).toContain(
+      "produce answers in months instead of decades",
+    );
 
     await seedDatabase();
 
@@ -52,5 +62,5 @@ describeIfDatabase("seedDatabase", () => {
     };
 
     expect(secondCounts).toEqual(firstCounts);
-  });
+  }, 15000);
 });

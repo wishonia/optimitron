@@ -334,7 +334,7 @@ function main(): void {
       const citizenPct = (preferenceWeights.find(pw => pw.itemId === cat.id)?.weight ?? 0) * 100;
       const polVote = pol.votes[cat.id] ?? 0;
       const gap = citizenPct - polVote;
-      const catScore = score.categoryScores?.[cat.id];
+      const catScore = score.itemScores?.[cat.id];
       const catScoreStr = catScore !== undefined ? `${catScore.toFixed(0)}%` : '—';
       add(`| ${cat.name} | ${citizenPct.toFixed(1)}% | ${polVote}% | ${gap >= 0 ? '+' : ''}${gap.toFixed(1)} | ${catScoreStr} |`);
     }

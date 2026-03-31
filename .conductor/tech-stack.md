@@ -11,7 +11,7 @@
 - eslint (typescript-eslint, `recommendedTypeChecked`)
 - Pre-commit hooks: secret detection + typecheck + lint + tests
 
-## Core Libraries (ZERO database imports, pure functions only)
+## Core Libraries (runtime-safe boundaries where they matter)
 - `@optimitron/optimizer` — Causal inference engine (domain-agnostic, no policy/health words)
 - `@optimitron/wishocracy` — RAPPA preference aggregation
 - `@optimitron/opg` — Optimal Policy Generator (depends on optimizer)
@@ -24,6 +24,7 @@
 ## Data Layer
 - Prisma schema → single source of truth for types
 - Zod validators auto-generated from Prisma (planned)
+- `@optimitron/db` may consume curated catalogs from `@optimitron/data` during seeding when that removes duplicated source data without introducing runtime DB coupling into pure libraries
 - Two runtimes: Postgres server + PGlite (browser)
 - cr-sqlite for p2p device sync (Phase 2)
 
@@ -36,7 +37,7 @@
 ## Web
 - Next.js 14 + React 18 (packages/web)
 - Tailwind CSS + shadcn/ui + framer-motion
-- GitHub Pages auto-deploy on push to main
+- Vercel is the primary deployment target
 - Static data files: `packages/web/src/data/*.json`
 
 ## Extension
@@ -67,4 +68,4 @@
 - `tsc` for library builds
 - `tsup` for chat-ui
 - `esbuild` for extension
-- `next build && next export` for web (static export)
+- `next build` for the serverful web app

@@ -42,14 +42,23 @@ A business analyst should be able to use it for revenue optimization without see
 
 ## Testing
 
-- Every function gets a test. No exceptions.
+- Test behavior, invariants, and regressions; do not chase line-by-line coverage.
+- New logic, bug fixes, parsing, and boundary conversions should add or update tests.
+- Tiny wrappers, passive re-exports, and other low-risk mechanical changes do not need dedicated tests when higher-level coverage already exists.
 - Integration tests spanning packages go in `packages/examples/`
+- Delete or rewrite skipped tests that no longer cover a supported path.
 - Use `describe.skip` for tests that need pending work, not deletion
 - Edge cases: NaN, Infinity, empty arrays, single-element arrays, zero values
 - `pnpm review:test-output -- --file <path>` is available for non-blocking AI triage of test/build/typecheck logs
 
-## File Size Limits
+## Architecture Heuristic
 
-- Functions: <30 lines
-- Files: <300 lines
-- If bigger, split it
+Prefer rules with explicit operational value. If a rule forces duplicate data,
+extra conversion layers, or awkward file placement, re-evaluate it and document
+the actual tradeoff instead of preserving the rule by default.
+
+## Code Size Heuristic
+
+- Prefer functions that fit on one screen and files that stay easy to review.
+- Treat roughly 30-line functions and 300-line files as smell thresholds, not hard caps.
+- Split code when it improves comprehension; do not fragment cohesive logic just to satisfy a number.

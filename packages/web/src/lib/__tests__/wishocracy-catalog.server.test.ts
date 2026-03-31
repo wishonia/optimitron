@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getActualGovernmentAllocations } from "@/lib/wishocracy-data";
+import {
+  DEFAULT_WISHOCRACY_JURISDICTION,
+  getActualGovernmentAllocations,
+} from "@/lib/wishocracy-data";
 
 const mocks = vi.hoisted(() => ({
   upsertJurisdiction: vi.fn(),
@@ -36,6 +39,7 @@ describe("wishocracy catalog sync", () => {
 
     expect(record).toEqual({
       id: "PRAGMATIC_CLINICAL_TRIALS",
+      jurisdictionCode: "US",
       name: "Pragmatic Clinical Trials",
       description: expect.any(String),
       currentAllocationUsd: 1e9,
@@ -52,12 +56,12 @@ describe("wishocracy catalog sync", () => {
     ]);
 
     expect(mocks.upsertJurisdiction).toHaveBeenCalledWith({
-      where: { code: "USA" },
+      where: { code: "US" },
       update: {},
       create: {
-        name: "United States",
-        type: "COUNTRY",
-        code: "USA",
+        name: DEFAULT_WISHOCRACY_JURISDICTION.name,
+        type: DEFAULT_WISHOCRACY_JURISDICTION.type,
+        code: "US",
       },
       select: { id: true },
     });

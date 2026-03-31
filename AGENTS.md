@@ -12,6 +12,13 @@ Detailed docs live in `docs/`. Read the relevant ones before working:
 - `.conductor/tech-stack.md` — Language, frameworks, tooling
 - `.conductor/workflow.md` — Development workflow
 
+## Rule Quality
+
+Repo rules should pay rent. Keep a rule only if it clearly prevents a real
+failure mode, duplicated source of truth, dependency cycle, or recurring review
+confusion. If a rule mostly adds ceremony, duplication, or awkward layering,
+replace it with a narrower guideline and document the tradeoff.
+
 ## Critical Architecture Rules
 
 ### 1. Type System — Single Source of Truth
@@ -71,26 +78,49 @@ Domain-specific naming belongs in opg/obg/wishocracy/data/web.
 
 ### 5. Package Dependencies
 
+Package boundaries are a means, not an end. Keep a dependency only if its
+benefits exceed its maintenance cost.
+
+**Keep a dependency boundary when it materially helps one of these:**
+- Prevent runtime breakage (for example, browser-safe libraries importing Prisma)
+- Prevent dependency cycles
+- Keep pure computation libraries reusable outside the app
+- Reduce accidental coupling across unrelated domains
+
+**Relax a boundary when all of these are true:**
+- It removes a duplicated source of truth
+- It does not introduce a cycle
+- It does not violate runtime constraints of the consumer package
+- The resulting architecture is simpler than the workaround needed to preserve the rule
+
+**Current preferred dependency graph:**
 ```
-optimizer ← nothing (foundation)
-wishocracy ← nothing (standalone)
+optimizer ← nothing
+wishocracy ← nothing
 opg ← optimizer
 obg ← optimizer
-data ← nothing (standalone)
-db ← nothing (standalone)
-web ← everything (application layer)
-chat-ui ← nothing (standalone)
+data ← optimizer
+db ← data (seed/bootstrap catalogs only; Prisma remains owned by db)
+web ← everything
+chat-ui ← nothing
 ```
 
-Library packages NEVER import from each other except as shown above.
-The web package is the integration layer where everything comes together.
+The key hard rule is narrower: pure/browser-facing libraries must not gain
+runtime Prisma or database dependencies.
 
 ### 6. Testing
 
-- **No code without tests.** Every function gets a test.
+- Test behavior, invariants, regressions, and parsing/boundary logic.
+- New logic and bug fixes should add or update tests.
+- Tiny wrappers, passive re-exports, docs/config churn, and other low-risk
+  mechanical changes do not need dedicated tests when existing coverage already
+  exercises the behavior.
+- Keep or add high-signal integration tests for cross-package flows in
+  `packages/examples`.
+- Delete or rewrite permanently skipped or low-signal plumbing tests when they
+  stop paying for their maintenance cost.
 - Pre-commit runs ALL tests. If tests fail, don't commit.
 - Use `pnpm --filter @optimitron/<package> test` to run package tests.
-- Integration tests that depend on multiple packages go in `packages/examples`.
 - Currently ~1,700+ tests across all packages.
 
 ### 7. CI/CD
@@ -102,20 +132,19 @@ The web package is the integration layer where everything comes together.
 
 ### 8. Git Workflow
 
-- Always `git pull --rebase` before starting work
-- Always `git pull --rebase` before pushing
+- Sync with remote before long-lived work or before pushing when the worktree is
+  clean.
+- If you already have local edits, commit or stash before rebasing; do not make
+  `git pull --rebase` a blocking ritual on a dirty tree.
 - Commit with conventional commits: `feat:`, `fix:`, `test:`, `refactor:`, `docs:`, `ci:`
 - Use `--no-verify` only if pre-commit hooks are slow; ensure tests pass
 - If push fails (conflict), `git pull --rebase` and retry once
 
 ### 9. File Ownership (Parallel Agents)
 
-When multiple agents work simultaneously, each ONLY modifies files in its assigned package:
-- Agent working on optimizer → only touch `packages/optimizer/`
-- Agent working on data → only touch `packages/data/`
-- etc.
-
-This prevents git conflicts. The web package integrates everything.
+When multiple agents work simultaneously, prefer disjoint write scopes to
+reduce conflicts. Cross-package edits are fine when the change itself crosses
+package boundaries; coordination matters more than arbitrary package walls.
 
 ### 10. Key Files
 
@@ -143,7 +172,6 @@ Before implementing any algorithm, read the relevant paper:
 
 ```bash
 cd /mnt/e/code/optimitron
-git pull --rebase
 pnpm install
 pnpm build
 pnpm test

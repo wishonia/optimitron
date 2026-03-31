@@ -6,11 +6,15 @@
  */
 
 export {
+  DEFAULT_WISHOCRATIC_JURISDICTION as DEFAULT_WISHOCRACY_JURISDICTION,
   DEFAULT_WISHOCRATIC_ITEMS as WISHOCRATIC_ITEMS,
   DEFAULT_WISHOCRATIC_ITEMS_JURISDICTION_CODE as DEFAULT_WISHOCRACY_JURISDICTION_CODE,
+  getDefaultWishocraticCatalogRecord as buildWishocraticCatalogRecord,
+  getDefaultWishocraticCatalogRecords,
   getDefaultWishocraticAllocations as getActualGovernmentAllocations,
 } from '@optimitron/data';
 
 export type {
+  DefaultWishocraticCatalogRecord as WishocraticCatalogRecord,
   DefaultWishocraticItemId as WishocraticItemId,
 } from '@optimitron/data';
