@@ -6,8 +6,8 @@ import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { PALETTE_SEMANTIC } from "@/lib/demo/palette";
 
 const SPONSORS = [
-  { name: "Protocol Labs", logo: "/images/logos/protocol-labs.svg" },
-  { name: "Funding the Commons", logo: "/images/logos/funding-the-commons.svg" },
+  { name: "Protocol Labs", logo: "/images/logos/protocol-labs.svg", size: 80 },
+  { name: "Funding the Commons", logo: "/images/logos/funding-the-commons.svg", size: 120 },
 ];
 
 const BUILT_WITH = [
@@ -56,8 +56,8 @@ export function SlidePostCreditsAliens() {
                 <Image
                   src={s.logo}
                   alt={s.name}
-                  width={80}
-                  height={80}
+                  width={s.size}
+                  height={s.size}
                   className="opacity-90"
                 />
                 <span className="text-2xl md:text-4xl opacity-90">{s.name}</span>

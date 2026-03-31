@@ -39,7 +39,7 @@ interface BarData {
 
 const BARS: BarData[] = [
   {
-    label: "😐 STATUS QUO",
+    label: "☢️ STATUS QUO (Somalia, But Everywhere)",
     detail: `Parasitic economy overtakes productive in ${collapseYearsLeft} years`,
     value: statusQuoIncome,
     widthPct: (statusQuoIncome / optimalIncome) * 100,
@@ -47,7 +47,7 @@ const BARS: BarData[] = [
     colorText: "text-zinc-200",
   },
   {
-    label: "🧪 1% TREATY",
+    label: "🧪 1% TREATY (Minimum Acceptable Governance)",
     detail: `+${treatyHaleGain} healthy yrs · ${trialCapacityX}× trial capacity · ${livesSavedB}B lives saved`,
     value: treatyIncome,
     widthPct: (treatyIncome / optimalIncome) * 100,
@@ -84,8 +84,8 @@ export function SlideCompoundGrowthScenarios() {
       <div className="flex flex-col gap-4 w-full max-w-[1700px] mx-auto">
         {/* Title */}
         {phase >= 1 && (
-          <h1 className="font-pixel text-xl md:text-2xl text-amber-400 text-center slide-fade-in">
-            PLEASE SELECT AN EARTH
+          <h1 className="font-pixel text-3xl md:text-5xl text-amber-400 text-center slide-fade-in">
+            🌍 PLEASE SELECT AN EARTH 🌍
           </h1>
         )}
 

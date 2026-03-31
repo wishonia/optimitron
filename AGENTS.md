@@ -96,7 +96,7 @@ The web package is the integration layer where everything comes together.
 ### 7. CI/CD
 
 - GitHub Actions: typecheck + lint + test on push/PR
-- `packages/web` is excluded from CI typecheck/lint/test (build-only via deploy workflow)
+- Non-web packages validate first in CI; `packages/web` then runs in the `web-validate` stage with database-backed checks before deployment
 - Full server-side web app deploy target: Vercel with project root `packages/web`
 - GitHub Pages is legacy/static-only and does not support auth, cron, or server routes
 

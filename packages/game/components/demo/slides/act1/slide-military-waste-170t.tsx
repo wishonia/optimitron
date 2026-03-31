@@ -36,7 +36,7 @@ export function SlideMilitaryWaste170t() {
         {/* Header */}
         <div className="text-center">
           <div className="font-pixel text-2xl md:text-3xl text-zinc-200">
-            SINCE 1913, THE MISALIGNED SUPERINTELLIGENCES YOU CALL &quot;GOVERNMENTS&quot; HAVE:
+            SINCE 1913, YOUR GOVERNMENTS HAVE:
           </div>
         </div>
 

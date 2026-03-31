@@ -57,27 +57,49 @@ On my planet, governance takes about four minutes a week. You lot seem to spend 
 
 ---
 
-## Earth Optimization Prize
+## The Earth Optimization Game
 
 On my planet, when you want people to coordinate, you design a mechanism where every participant is better off regardless of the outcome. You lot call this "too good to be true" and then go back to losing money on things that are obviously bad. Remarkable.
 
-The [Earth Optimization Prize](https://prize.warondisease.org) is a **dominant assurance contract** funding a global referendum to redirect 1% of military spending toward pragmatic clinical trials. Depositors literally cannot lose money.
+The game has three steps:
+
+1. **Invest** — Put 1% of your savings into the Earth Optimization Fund
+2. **Recruit** — Get every voter you know to play (target: 4 billion — all voters on Earth)
+3. **Allocate** — Players decide how the global budget should be split via pairwise comparisons (Wishocracy)
+
+The **goal**: get governments to redirect 1% of military spending ($27.2B/yr) to pragmatic clinical trials. That's the [1% Treaty](https://impact.warondisease.org). At scale, it means a 12.3x acceleration in treatment discovery, global healthy lifespan rising from 63.3 to 79 years, and median income reaching $339K by year 20. Treatment queue drops from 443 years to 36.
+
+### The Earth Optimization Prize — `/prize`
+
+The Prize is the reward mechanism. It doesn't fund the treaty campaign — it incentivizes voter recruitment by rewarding players if the targets are met.
 
 | Scenario | What happens |
 |----------|-------------|
-| **Plan fails** (thresholds not met after 15 years) | Depositors get principal back + Aave V3 yield — roughly **~4.2x return** ($100 → ~$418) |
-| **Plan succeeds** (health/income thresholds met) | **$14.9M per-capita lifetime income gain**, 10.7 billion lives saved, treatment queue drops from 443 years to 36 years. VOTE holders claim the prize pool. |
+| **Targets hit** (health/income thresholds met by 2040) | Prize pool divides among VOTE holders based on verified voters recruited. **$14.7M per-capita lifetime income gain**, 10.7 billion lives saved. |
+| **Targets missed** (thresholds not met) | Depositors get their money back — the Fund has been earning ~17%/yr, so $100 grows to roughly **~$1,100** (~11x return). Still beats your index fund. |
 | **Break-even probability** | **0.0067%** — depositing is positive-EV if you believe there's even a 1-in-15,000 chance this works |
 
-The success scenario isn't hypothetical. The 1% Treaty redirects $27.2B/yr from military spending into pragmatic clinical trials — the same trial design that found life-saving COVID treatments in 3 months for $30 per patient. At scale, that's a 12.3x acceleration in treatment discovery, global healthy lifespan rising from 63.3 to 79 years, and median income reaching $504K by year 15. The cost per disability-adjusted life year saved: $0.002. Your species currently spends more than that on a single paper clip.
+### The Earth Optimization Fund
 
-### Two paths
+The Fund is where deposits go. It's diversified across venture capital producing ~17%/yr. The Prize pool comes from the Fund. Whether the treaty passes or not, the Fund grows — so depositors literally cannot lose money. Two outcomes, both wins.
 
-**Have capital?** Deposit USDC → receive PRIZE shares → yield accrues via Aave V3 → worst case, you quadruple your money. You also get a referral link for recruiter upside.
+### Two paths in
 
-**Have a network?** Share your referral link → recruit World ID-verified voters → earn 1 VOTE token per verified voter you bring in → if the plan succeeds, VOTE holders claim the prize share. No deposit required.
+**Have capital?** Deposit USDC → receive PRIZE shares → Fund grows at ~17%/yr → worst case, you 11x your money. You also get a referral link for recruiter upside.
+
+**Have a network?** Share your referral link → recruit World ID-verified voters → earn 1 VOTE token per verified voter you bring in → if targets are hit, VOTE holders claim the prize share. No deposit required.
 
 Contracts: `VoterPrizeTreasury` + `VoteToken` on Base Sepolia. Fully on-chain, no admin keys.
+
+### The Tools (to help players win)
+
+These aren't standalone products. They're weapons in the game — each one gives players evidence and mechanisms to push for the treaty:
+
+- **[Wishocracy](/agencies/dcongress/wishocracy)** — pairwise preference allocation. Eight billion ranked preferences, one optimal budget.
+- **[Optimal Budget Generator](/agencies/domb)** — find the cheapest high-performer for each spending category. Singapore: $3K/person on healthcare, lives to 84. America: $12K, lives to 78.
+- **[Optimal Policy Generator](/agencies/dcbo)** — grade every policy A–F by what actually happened. No ideology, just data.
+- **[Decentralized FDA](/agencies/dih/discoveries)** — Outcome Labels + Treatment Rankings. 12.3x cheaper, 12.3x more capacity, zero queue.
+- **[Incentive Alignment Bonds](/iab)** — fund the lobbying campaign once demand is proven (see Phase 2 below).
 
 [Read the paper](https://iab.warondisease.org) | [See the contract architecture](#economic-instruments)
 
@@ -89,7 +111,7 @@ Right now. With this code. Not in some theoretical future where humans have lear
 
 | What | How | Where |
 |------|-----|-------|
-| Fund the referendum | Deposit USDC, earn ~4.2x floor or prize share | [`/prize`](packages/web/) |
+| Play the game | Deposit USDC, recruit voters, earn ~11x floor or prize share | [`/prize`](packages/web/) |
 | Express your budget preferences | 5-minute pairwise comparison survey | [`/agencies/dcongress/wishocracy`](packages/web/) |
 | Score your politicians | Alignment reports vs your stated preferences | [`/agencies/dfec/alignment`](packages/web/) |
 | Grade governments by outcomes | Every nation ranked by health, income, and freedom | [`/governments`](packages/web/) |
@@ -327,7 +349,7 @@ Three separate mechanisms, three separate contract families, three separate page
 
 ### Phase 1: Earth Optimization Prize — `/prize`
 
-A dominant assurance contract funding the global referendum campaign. Deposit USDC → Aave V3 yield accrues → recruit World ID-verified voters. If the plan fails, depositors get ~4.2x their money back. If it succeeds, VOTE token holders claim the prize. Break-even probability: 0.0067%.
+The Prize rewards voter recruitment. Deposit USDC → Fund grows at ~17%/yr → recruit World ID-verified voters → earn VOTE tokens. If health/income targets are met by 2040, VOTE holders claim the prize share. If targets are missed, depositors get their money back with ~11x compound returns. Break-even probability: 0.0067%.
 
 **Contracts**: `VoterPrizeTreasury` + `VoteToken` (deployed on Base Sepolia)
 
@@ -335,9 +357,9 @@ Start here. Everything else depends on proving demand first.
 
 ### Phase 2: Incentive Alignment Bonds — `/iab`
 
-After the referendum proves demand, IABs raise ~$1B to lobby for the 1% Treaty. Same dominant assurance structure — plan fails, bondholders get ~4.2x back. Plan succeeds, treaty revenue ($27B/yr) splits 80/10/10: 80% to pragmatic clinical trials, 10% to bondholder returns (perpetual — 272% annual return on the ~$1B raised), 10% to aligned politician campaigns.
+After the Prize proves demand, IABs raise ~$1B to lobby for the 1% Treaty. Same dominant assurance structure — plan fails, bondholders get compound returns back. Plan succeeds, treaty revenue ($27B/yr) splits 80/10/10: 80% to pragmatic clinical trials, 10% to bondholder returns, 10% to a SuperPAC smart contract that funds aligned politicians and defunds the rest.
 
-The treaty unlocks an **$11.75T annual peace dividend**: $1.35T from military reallocation, $3.5T from health-driven economic growth, $2.8T from healthcare cost reduction, and $4.1T from productivity gains as people stop dying of things you already know how to treat. That's $101T in political dysfunction tax, and this eliminates the largest chunks of it.
+The treaty unlocks an **$114B annual peace dividend** from reduced conflict costs — direct military savings, reduced infrastructure damage, trade disruption reduction, and veteran healthcare savings. Combined with the $101T political dysfunction tax, this is the first cut.
 
 **Contracts**: `IABVault` + `IABSplitter` + `PublicGoodsPool` + `AlignmentScoreOracle` + `PoliticalIncentiveAllocator` (not yet deployed — Phase 1 first)
 
@@ -352,9 +374,9 @@ Independent from Prize and IABs. Different contracts, different purpose. The end
 | Wishocratic allocation | Politicians deciding budgets via lobbying | $4.4B lobbying industry + $181B corporate welfare |
 | Algorithmic 0% inflation | Federal Reserve's 2% "stealth taxation" | 8% of GDP in financial sector extraction |
 
-Citizens do 5 minutes of pairwise comparisons → eigenvector decomposition produces stable budget weights → $WISH transaction taxes are allocated automatically. No politicians. No lobbyists. No 74,000-page tax code. Full trajectory: **$1.16M average income by year 20** (vs. $20.5K status quo), **150+ year healthy lifespan** within the first generation, and a **45x cumulative lifetime income multiplier**.
+Citizens do 5 minutes of pairwise comparisons → eigenvector decomposition produces stable budget weights → $WISH transaction taxes are allocated automatically. No politicians. No lobbyists. No 74,000-page tax code. Full trajectory: **$1.16M average income by year 20** (vs. $20.5K status quo) and a **12x cumulative lifetime income multiplier** under the treaty path alone. Optimal governance pushes that further.
 
-On my planet, this is called "basic infrastructure." On yours, it would be the largest quality-of-life improvement in the history of your species. By a factor of about fifty.
+On my planet, this is called "basic infrastructure." On yours, it would be the largest quality-of-life improvement in the history of your species.
 
 **Contracts**: `WishToken` + `WishocraticTreasury` + `UBIDistributor`
 

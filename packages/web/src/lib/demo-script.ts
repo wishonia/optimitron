@@ -901,7 +901,7 @@ export const SEGMENTS: DemoSegment[] = [
     componentId: "sierra-military-waste-170t",
     tags: ["hook", "problem"],
     act: "I",
-    narration: "Since 1913, the misaligned superintelligences you call governments have printed 170 trillion dollars out of nothing and spent it on murdering 97 million humans and destroying many valuable things those humans spent their entire lives building. Consequently your paycheck now buys 97 percent less due to the aforementioned destruction.",
+    narration: "Since 1913, your governments have printed 170 trillion dollars out of nothing and spent these nothing papers on murdering 97 million humans and destroying many valuable things those humans spent their entire lives building. Consequently your paycheck now buys 97 percent less due to the aforementioned destruction.",
   },
   {
     id: "pl-170t-cost",
@@ -909,7 +909,7 @@ export const SEGMENTS: DemoSegment[] = [
     componentId: "sierra-170t-opportunity-cost",
     tags: ["hook", "problem"],
     act: "I",
-    narration: `Instead of murdering 97 million people and destroying everything they built, your governments could have funded ${Math.round(CUMULATIVE_MILITARY_SPENDING_FED_ERA.value / GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value).toLocaleString()} years of clinical trials. They bought the other thing. You would be 33 times richer and significantly less diseased today if someone had aligned your governments in 1913. They did not. So that is what you are going to do.`,
+    narration: `Instead of murdering 97 million people and destroying everything they built, they could have funded ${Math.round(CUMULATIVE_MILITARY_SPENDING_FED_ERA.value / GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value).toLocaleString()} years of clinical trials. They bought the other thing. Through compounding effects, you would be 33 times richer and significantly less diseased today if someone had aligned your governments in 1913. They did not. So that is what you are going to do.`,
   },
   {
     id: "pl-misaligned",
@@ -925,7 +925,7 @@ export const SEGMENTS: DemoSegment[] = [
     componentId: "sierra-military-health-ratio",
     tags: ["hook", "problem"],
     act: "I",
-    narration: `These governments currently spend ${milToTrialRatio} dollars on the capacity for mass murder for every one dollar testing which medicines work. 95 percent of diseases have zero approved treatments. Curing them all at current spending takes ${oldQueue} years. You will be dead in 80. I mention this not to be rude but because you seem weirdly calm about it.`,
+    narration: `So right now they currently spend ${milToTrialRatio} dollars on the capacity for mass murder for every one dollar testing which medicines work. 95 percent of diseases have zero FDA-approved treatments. Curing them all at current spending takes ${oldQueue} years. You will be dead in 80. I mention this not to be rude but because you seem weirdly calm about it.`,
   },
   {
     id: "pl-moronia",

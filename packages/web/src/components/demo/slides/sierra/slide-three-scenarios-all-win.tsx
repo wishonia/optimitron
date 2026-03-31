@@ -67,7 +67,7 @@ export function SlideThreeScenariosAllWin() {
             <div className="font-pixel text-xl md:text-2xl text-brutal-red mb-4">
               DID NOT PLAY
             </div>
-            <div className="font-pixel text-2xl md:text-3xl text-brutal-red">
+            <div className="font-pixel text-3xl md:text-4xl text-brutal-red">
               SOMALIA
             </div>
             <div className="font-pixel text-lg text-muted-foreground mt-2">
