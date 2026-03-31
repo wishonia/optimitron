@@ -29,9 +29,9 @@ import {
 const militarySpendingPct = Math.round(
   (MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value /
     (MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value + 1)) *
-    100,
-);
-const clinicalTrialsSpendingPct = 100 - militarySpendingPct;
+    1000,
+) / 10; // one decimal place: 99.8%
+const clinicalTrialsSpendingPct = Math.round((100 - militarySpendingPct) * 10) / 10;
 
 export default function TreatyVoteSection() {
   const [answer, setAnswer] = useState<"yes" | "no" | null>(null);
@@ -395,11 +395,11 @@ export default function TreatyVoteSection() {
                 </p>
 
                 <div className="text-base sm:text-lg font-bold text-center">
-                  That&apos;s over{" "}
+                  That&apos;s {" "}
                   <span className="text-brutal-pink text-xl">
                     {militarySpendingPct}%
                   </span>{" "}
-                  to military and less than{" "}
+                  to military and {" "}
                   <span className="text-brutal-pink text-xl">
                     {clinicalTrialsSpendingPct}%
                   </span>{" "}

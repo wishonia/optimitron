@@ -37,7 +37,7 @@ export const CTA = {
 
 export const TAGLINES = {
   gameObjective:
-    "Redirect Earth's resources from the things making you poorest and deadest to the things that make you healthiest and wealthiest.",
+    "Redirect resources from the things that make you poor and dead to things that make you healthy and wealthy!",
   onlyWayToLose: "The only way to lose is to not play.",
   hedgeLine: "Your deposit is a hedge against your own species.",
   arcadeHook:
@@ -127,7 +127,7 @@ export const VOTE_SECTION = {
   sliderPrompt:
     "Adjust the slider to show how you'd split your country's finite resources between the military and clinical trials to cure and treat disease.",
   realityCheck:
-    "on weapons and military systems for every $1 we spend curing ALL DISEASES COMBINED.",
+    "on weapons and military systems for every $1 spent on clinical trials.",
   theQuestion:
     "Should all nations allocate just 1% of military spending to clinical trials to treat and cure disease together, making the world safer and ensuring no country is at a disadvantage?",
   authPrompt: "Sign In to Start Earning VOTE Points",
