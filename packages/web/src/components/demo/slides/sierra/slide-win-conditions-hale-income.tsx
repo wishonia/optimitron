@@ -11,8 +11,10 @@ import { formatCurrency } from "@/lib/demo/formatters";
 
 const currentHALE = GLOBAL_HALE_CURRENT.value.toFixed(1);
 const targetHALE = TREATY_PROJECTED_HALE_YEAR_15.value.toFixed(1);
+const haleProgress = (GLOBAL_HALE_CURRENT.value / TREATY_PROJECTED_HALE_YEAR_15.value) * 100;
 const currentIncome = formatCurrency(Math.round(GLOBAL_AVG_INCOME_2025.value));
 const targetIncome = formatCurrency(Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value));
+const incomeProgress = (GLOBAL_AVG_INCOME_2025.value / TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value) * 100;
 
 export function SlideWinConditionsHaleIncome() {
   return (
@@ -29,6 +31,11 @@ export function SlideWinConditionsHaleIncome() {
             <div className="font-pixel text-xl md:text-2xl text-brutal-cyan mb-4">
               HEALTHY LIFE EXPECTANCY
             </div>
+            <div className="w-full mb-4">
+              <div className="h-4 bg-zinc-800 border-2 border-brutal-cyan/50 rounded-sm overflow-hidden">
+                <div className="h-full bg-brutal-cyan" style={{ width: `${haleProgress}%` }} />
+              </div>
+            </div>
             <div className="font-pixel text-4xl md:text-6xl text-muted-foreground">
               {currentHALE}
             </div>
@@ -43,6 +50,11 @@ export function SlideWinConditionsHaleIncome() {
             <div className="text-5xl mb-3">💰</div>
             <div className="font-pixel text-xl md:text-2xl text-brutal-yellow mb-4">
               MEDIAN INCOME
+            </div>
+            <div className="w-full mb-4">
+              <div className="h-4 bg-zinc-800 border-2 border-brutal-yellow/50 rounded-sm overflow-hidden">
+                <div className="h-full bg-brutal-yellow" style={{ width: `${incomeProgress}%` }} />
+              </div>
             </div>
             <div className="font-pixel text-4xl md:text-6xl text-muted-foreground">
               {currentIncome}

@@ -26,7 +26,11 @@ import {
 import { join } from "path";
 import { execSync } from "child_process";
 import { SEGMENTS, getPlaylistSegments, PLAYLISTS } from "../src/lib/demo-script";
-import { segmentToSlideId } from "../src/lib/demo-tts";
+import {
+  getCanonicalNarrationManifestKey,
+  getLegacyNarrationManifestKeys,
+  type NarrationManifest as Manifest,
+} from "../src/lib/demo-narration";
 
 // ---------------------------------------------------------------------------
 // Gemini TTS — inline to avoid cross-package dependency
@@ -121,13 +125,6 @@ const OUTPUT_DIR = join(__dirname, "..", "public", "audio", "narration");
 const MANIFEST_PATH = join(OUTPUT_DIR, "manifest.json");
 const TEMP_WAV = join(OUTPUT_DIR, "_temp.wav");
 
-interface ManifestEntry {
-  hash: string;
-  file: string;
-  generatedAt: string;
-}
-type Manifest = Record<string, ManifestEntry>;
-
 function hashText(text: string): string {
   return createHash("sha256").update(text).digest("hex").slice(0, 16);
 }
@@ -141,6 +138,35 @@ function loadManifest(): Manifest {
 
 function saveManifest(manifest: Manifest) {
   writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + "\n");
+}
+
+function pruneLegacyManifestEntries(manifest: Manifest) {
+  const fileRefCounts = new Map<string, number>();
+  for (const entry of Object.values(manifest)) {
+    fileRefCounts.set(entry.file, (fileRefCounts.get(entry.file) ?? 0) + 1);
+  }
+
+  const removedKeys: string[] = [];
+  const removedFiles: string[] = [];
+
+  for (const legacyKey of getLegacyNarrationManifestKeys(manifest)) {
+    const entry = manifest[legacyKey];
+    if (!entry) continue;
+
+    removedKeys.push(legacyKey);
+    fileRefCounts.set(entry.file, (fileRefCounts.get(entry.file) ?? 0) - 1);
+    delete manifest[legacyKey];
+
+    if ((fileRefCounts.get(entry.file) ?? 0) <= 0) {
+      const legacyPath = join(OUTPUT_DIR, entry.file);
+      if (existsSync(legacyPath)) {
+        unlinkSync(legacyPath);
+        removedFiles.push(entry.file);
+      }
+    }
+  }
+
+  return { removedKeys, removedFiles };
 }
 
 function wavToMp3(wavPath: string, mp3Path: string) {
@@ -201,12 +227,13 @@ async function main() {
     console.error(
       "\nFix these in:\n" +
       "  - packages/web/src/lib/demo-script.ts (SEGMENTS / PLAYLISTS)\n" +
-      "  - packages/web/src/lib/demo-tts.ts (segmentToSlideId)\n",
+      "  - packages/web/src/lib/demo-narration.ts (segmentToSlideId)\n",
     );
     process.exit(1);
   }
 
   const manifest = loadManifest();
+  const { removedKeys, removedFiles } = pruneLegacyManifestEntries(manifest);
   let generated = 0;
   let cached = 0;
   let skipped = 0;
@@ -215,6 +242,13 @@ async function main() {
   console.log(
     `\n🎙️  Narration Generator — ${segments.length} segments${playlistId ? ` (playlist: ${playlistId})` : ""}\n`,
   );
+
+  if (removedKeys.length > 0) {
+    console.log(`  🧹 ${removedKeys.length} legacy manifest entr${removedKeys.length === 1 ? "y" : "ies"} removed`);
+    if (removedFiles.length > 0) {
+      console.log(`  🗑️  ${removedFiles.length} stale audio file${removedFiles.length === 1 ? "" : "s"} deleted`);
+    }
+  }
 
   // Pre-scan: classify each segment before generating
   const toGenerate: typeof segments = [];
@@ -227,7 +261,7 @@ async function main() {
       continue;
     }
     const hash = hashText(seg.narration);
-    const manifestKey = segmentToSlideId[seg.id] ?? seg.id;
+    const manifestKey = getCanonicalNarrationManifestKey(seg.id);
     const mp3Path = join(OUTPUT_DIR, `${manifestKey}.mp3`);
     if (manifest[manifestKey]?.hash === hash && existsSync(mp3Path)) {
       preCached.push(seg.id);
@@ -252,6 +286,9 @@ async function main() {
   console.log("");
 
   if (toGenerate.length === 0) {
+    if (removedKeys.length > 0) {
+      saveManifest(manifest);
+    }
     console.log("  Nothing to do — all audio is up to date!\n");
     return;
   }
@@ -264,7 +301,7 @@ async function main() {
 
     const hash = hashText(seg.narration);
     // Use the slide-level key that demo-tts.ts looks up in the manifest
-    const manifestKey = segmentToSlideId[seg.id] ?? seg.id;
+    const manifestKey = getCanonicalNarrationManifestKey(seg.id);
     const mp3File = `${manifestKey}.mp3`;
     const mp3Path = join(OUTPUT_DIR, mp3File);
 
@@ -320,7 +357,7 @@ async function main() {
   const postErrors: string[] = [];
   for (const seg of segments) {
     if (!seg.narration?.trim()) continue;
-    const manifestKey = segmentToSlideId[seg.id] ?? seg.id;
+    const manifestKey = getCanonicalNarrationManifestKey(seg.id);
     const entry = manifest[manifestKey];
     if (!entry) {
       postErrors.push(`Segment "${seg.id}" → manifest key "${manifestKey}" NOT in manifest`);
@@ -345,7 +382,7 @@ async function main() {
       console.error(`  • ${err}`);
     }
     console.error(
-      "\nTo fix: ensure segmentToSlideId in demo-tts.ts matches the manifest keys.\n",
+      "\nTo fix: ensure segmentToSlideId in demo-narration.ts matches the manifest keys.\n",
     );
   }
 }

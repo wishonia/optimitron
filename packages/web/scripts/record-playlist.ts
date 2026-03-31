@@ -22,6 +22,10 @@ config({ path: resolve(__dirname, "../../../.env") });
 config({ path: resolve(__dirname, "../.env"), override: true });
 
 import { getPlaylistSegments, PLAYLISTS } from "../src/lib/demo-script";
+import {
+  getNarrationManifestLookupKeys,
+  type NarrationManifest,
+} from "../src/lib/demo-narration";
 import { execSync } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
@@ -67,33 +71,9 @@ async function main() {
 
   // Load manifest to find audio files
   const manifestPath = path.join(audioDir, "manifest.json");
-  const manifest: Record<string, { file: string }> = JSON.parse(
+  const manifest: NarrationManifest = JSON.parse(
     fs.readFileSync(manifestPath, "utf8"),
   );
-
-  // Map segment IDs to slide IDs for manifest lookup
-  const segmentToSlideId: Record<string, string> = {
-    "pl-intro": "earth-optimization-game",
-    "pl-170t": "military-waste-170t",
-    "pl-170t-cost": "170t-opportunity-cost",
-    "pl-misaligned": "misaligned-superintelligence",
-    "pl-ratio": "military-health-ratio",
-    "pl-moronia": "economic-collapse-clock",
-    "pl-wishonia": "compound-growth-scenarios",
-    "pl-treaty": "one-percent-treaty",
-    "pl-game": "pairwise-budget-allocation",
-    "pl-prize": "dominant-assurance-contract",
-    "pl-fund": "three-scenarios-all-win",
-    "pl-dfda": "decentralized-fda",
-    "pl-opg": "optimal-policy-generator",
-    "pl-obg": "optimal-budget-generator",
-    "pl-iab": "incentive-alignment-bonds",
-    "pl-storacha": "ipfs-immutable-storage",
-    "pl-hypercerts": "impact-certificates",
-    "pl-lives": "ten-billion-lives-saved",
-    "pl-close": "final-call-to-action",
-    "pl-cta": "post-credits-aliens",
-  };
 
   // Step 2: Record video
   console.log("\nStep 2: Recording slides...\n");
@@ -117,10 +97,11 @@ async function main() {
 
   for (const [i, seg] of segments.entries()) {
     const id = seg.id;
-    const slideId = segmentToSlideId[id] ?? id;
 
     // Find audio file
-    const entry = manifest[id] ?? manifest[slideId];
+    const entry = getNarrationManifestLookupKeys(id)
+      .map((key) => manifest[key])
+      .find((candidate) => candidate !== undefined);
     const audioFile = entry ? path.join(audioDir, entry.file) : null;
     const duration = audioFile && fs.existsSync(audioFile) ? getAudioDuration(audioFile) : 10;
 

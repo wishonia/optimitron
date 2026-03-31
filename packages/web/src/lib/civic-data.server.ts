@@ -6,6 +6,15 @@ export type { CivicRepresentative, StateDistrict };
 
 type CongressMember = Awaited<ReturnType<typeof fetchers.fetchMembers>>[number];
 
+function isSenateChamber(chamber: string): boolean {
+  return chamber.trim().toLowerCase() === "senate";
+}
+
+function isHouseChamber(chamber: string): boolean {
+  const normalized = chamber.trim().toLowerCase();
+  return normalized === "house" || normalized === "house of representatives";
+}
+
 /**
  * Resolve a US ZIP code to a state + congressional district
  * via the Census Geocoding API.
@@ -55,7 +64,7 @@ function memberToRepresentative(m: CongressMember): CivicRepresentative {
     state: m.state,
     district: m.district,
     chamber: m.chamber,
-    title: m.chamber === "Senate" ? "Senator" : "Representative",
+    title: isSenateChamber(m.chamber) ? "Senator" : "Representative",
     alignmentScore: benchmark
       ? Object.values(benchmark.allocations).reduce((a, b) => a + b, 0) > 0
         ? undefined // alignment score is user-specific, can't compute here
@@ -71,20 +80,20 @@ export async function lookupRepresentatives(
   state: string,
   district?: number,
 ): Promise<CivicRepresentative[]> {
-  const members = await fetchers.fetchMembers(undefined, undefined, 500);
+  const members = await fetchers.fetchMembers();
   if (!members.length) return [];
 
   const stateUpper = state.toUpperCase();
 
   // Senators: match state, chamber = Senate
   const senators = members.filter(
-    (m) => m.state.toUpperCase() === stateUpper && m.chamber.toLowerCase() === "senate",
+    (m) => m.state.toUpperCase() === stateUpper && isSenateChamber(m.chamber),
   );
 
   // House: match state + district
   const houseMembers = members.filter((m) => {
     if (m.state.toUpperCase() !== stateUpper) return false;
-    if (m.chamber.toLowerCase() !== "house") return false;
+    if (!isHouseChamber(m.chamber)) return false;
     if (district != null && m.district != null) return m.district === district;
     return true;
   });

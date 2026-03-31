@@ -37,8 +37,13 @@ export function SlideThreeScenariosAllWin() {
             <div className="font-pixel text-lg text-muted-foreground mt-2">
               VOTE points pay out
             </div>
-            <div className="font-pixel text-2xl md:text-3xl text-brutal-cyan mt-3 border-t border-brutal-cyan/30 pt-3">
-              +{lifetimeGain} LIFETIME INCOME
+            <div className="mt-3 border-t border-brutal-cyan/30 pt-3">
+              <div className="font-pixel text-3xl md:text-5xl text-brutal-cyan">
+                +{lifetimeGain}
+              </div>
+              <div className="font-pixel text-sm md:text-base text-muted-foreground mt-1">
+                LIFETIME INCOME
+              </div>
             </div>
           </div>
 
@@ -62,7 +67,7 @@ export function SlideThreeScenariosAllWin() {
             <div className="font-pixel text-xl md:text-2xl text-brutal-red mb-4">
               DID NOT PLAY
             </div>
-            <div className="font-pixel text-4xl md:text-6xl text-brutal-red">
+            <div className="font-pixel text-2xl md:text-3xl text-brutal-red">
               SOMALIA
             </div>
             <div className="font-pixel text-lg text-muted-foreground mt-2">
