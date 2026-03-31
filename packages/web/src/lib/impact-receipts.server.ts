@@ -2,7 +2,6 @@ import { unstable_cache } from "next/cache";
 import { ethers } from "ethers";
 import { getContracts } from "@optimitron/treasury-shared/addresses";
 import { getProvider, getVoterPrizeTreasuryContract } from "@/lib/contracts/server-client";
-import { serverEnv } from "@/lib/env";
 import { createLogger } from "@/lib/logger";
 import { getPersonhoodProviderLabel } from "@/lib/personhood";
 import { getPersonhoodSummary } from "@/lib/personhood.server";
@@ -24,7 +23,6 @@ interface CachedPrizeDepositReceipt {
   href: string | null;
   id: string;
   occurredAtIso: string;
-  sharesReceived: string;
   title: string;
 }
 
@@ -91,7 +89,7 @@ function getTransactionExplorerUrl(chainId: number, txHash: string) {
 }
 
 function getTreasuryChainId() {
-  const raw = serverEnv.TREASURY_CHAIN_ID ?? serverEnv.VOTE_TOKEN_CHAIN_ID ?? "84532";
+  const raw = process.env.TREASURY_CHAIN_ID ?? process.env.VOTE_TOKEN_CHAIN_ID ?? "84532";
   const parsed = Number(raw);
   return Number.isFinite(parsed) ? parsed : null;
 }
@@ -144,7 +142,7 @@ async function scanPrizeDepositsForWallets(
     }
 
     for (const log of result.value.logs) {
-      if (log.blockNumber == null || !log.transactionHash) {
+      if (!("args" in log) || log.blockNumber == null || !log.transactionHash) {
         continue;
       }
 
@@ -168,7 +166,6 @@ async function scanPrizeDepositsForWallets(
         chainId,
         depositorAddress,
         amount: BigInt(log.args[1]).toString(),
-        sharesReceived: BigInt(log.args[2]).toString(),
         href: getTransactionExplorerUrl(chainId, log.transactionHash),
         occurredAtIso: occurredAt.toISOString(),
         title: `PRIZE deposit ${formatUsdcAmount(BigInt(log.args[1]).toString())}`,
