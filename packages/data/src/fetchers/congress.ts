@@ -406,28 +406,30 @@ function buildBillListPath(congress: number, billType?: string): string {
 export async function fetchMembers(
   congress?: number,
   chamber?: 'house' | 'senate',
-  limit = DEFAULT_LIMIT,
 ): Promise<CongressMember[]> {
   const congressNum = congress ?? CURRENT_CONGRESS;
-  let path: string;
+  const path = `/member/congress/${congressNum}`;
 
-  if (chamber) {
-    // Congress API doesn't have a direct chamber filter on the congress endpoint,
-    // so we filter after fetching
-    path = `/member/congress/${congressNum}`;
-  } else {
-    path = `/member/congress/${congressNum}`;
-  }
-
-  const url = buildCongressUrl(path, {
-    limit,
+  // Paginate through all results (API max 250 per page, Congress has 535+ members)
+  const allRaw: RawMemberListItem[] = [];
+  let nextUrl: string | undefined = buildCongressUrl(path, {
+    limit: DEFAULT_LIMIT,
     currentMember: 'false',
   });
 
-  const json = await fetchCongressJson<{ members: RawMemberListItem[]; pagination?: CongressPagination }>(url);
-  if (!json?.members) return [];
+  while (nextUrl) {
+    const json = await fetchCongressJson<{ members: RawMemberListItem[]; pagination?: CongressPagination }>(nextUrl);
+    if (!json?.members || json.members.length === 0) break;
+    allRaw.push(...json.members);
+    nextUrl = json.pagination?.next;
+    // Append API key to pagination URL if needed
+    if (nextUrl && process.env.CONGRESS_API_KEY && !nextUrl.includes('api_key')) {
+      const sep = nextUrl.includes('?') ? '&' : '?';
+      nextUrl = `${nextUrl}${sep}api_key=${process.env.CONGRESS_API_KEY}`;
+    }
+  }
 
-  let members = json.members.map(parseMemberListItem);
+  let members = allRaw.map(parseMemberListItem);
 
   if (chamber) {
     const chamberName = chamber === 'house' ? 'House of Representatives' : 'Senate';
