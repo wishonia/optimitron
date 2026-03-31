@@ -102,20 +102,35 @@ All smart contracts on Base Sepolia. Solidity 0.8.24, Hardhat 2.22, OpenZeppelin
 - `WishToken` + `WishocraticTreasury` + `UBIDistributor` — Monetary reform
 - `AlignmentScoreOracle` + `PoliticalIncentiveAllocator` — On-chain accountability
 
-## Why This Fits Funding The Commons
+## Why Funding The Commons
 
-This is public-goods infrastructure, not a dashboard.
+You are looking for public goods funding mechanisms. There is $2.7 trillion in public goods funding being spent on explosions every year. You have not noticed because nobody calls it that. They call it "defence." But $2.7 trillion of collectively pooled resources being allocated by a small number of humans toward things nobody voted for is the largest commons misallocation in the history of your species. One percent of it is $27 billion a year for clinical trials. Ninety-nine percent still buys plenty of missiles. Nobody loses strategic advantage. Everyone gains six and a half healthy years.
 
-- **Legible**: every conclusion tied to evidence, measurements, and source links
-- **Forkable**: civic groups, journalists, researchers, and local governments can reuse the stack
-- **Composable**: Storacha, Hypercerts, and ERC-8004 are infrastructure layers, not one-off hacks
-- **Accountable**: the product makes it easier to inspect how public claims are made
+The coordination infrastructure exists. The game exists. The smart contracts are deployed. What does not exist yet is the Prize Fund.
 
-17 TypeScript packages. 4 Solidity contract families. Domain-agnostic causal inference engine. Full Next.js app — live at optimitron.com.
+### Imagine
 
-## Demo Narration Script
+Funding the Commons seeds the Earth Optimization Prize Fund. Even a dollar. It is real. It is on-chain. It earns yield. It cannot be un-created.
 
-The full presentation (27 slides, ~8 minutes) walks through the problem, the game mechanics, the tools, and the sponsor tech integration:
+Funding the Commons convenes the Interplanetary Constitutional Convention — the event where the Earth Optimization Protocol stops being a paper and becomes a plan. Your mechanism designers, economists, and public goods researchers establish the protocol: the incentive curves, the allocation algorithms, the metrics for whether the money actually worked. They have been writing papers about coordination problems for decades. Now they have something to ratify.
+
+Then the hackathons. Each one builds a component of the protocol. A better Wishocracy. A faster trial matching system. A smarter way to score politician alignment. Your developers build on Storacha and Hypercerts because the protocol requires immutable, auditable infrastructure — the kind you already make.
+
+Meanwhile, everyone else on Earth plays the game. Ten pairwise comparisons. Two minutes. Clinical trials versus military spending. Education versus the drug war. Each player gets a referral link. Each friend who plays earns them VOTE points. The referendum grows. The fund grows. Every deposit earns yield whether the targets are hit or not. Every voter makes the demand more visible. The pluralistic ignorance starts to crack.
+
+A year from now, the fund has a million players. The data shows what everyone already suspected: when you ask people whether they prefer cures or bombs, they prefer cures. Three years from now, the first politician notices that voting for the treaty comes with a Super PAC and voting against it comes with an opponent who has one. Five years from now, the first treaty is signed. Not because anyone became a better person. Because the incentives finally pointed at the right thing. $27 billion a year flows from the murder budget to clinical trials. Trial capacity increases 12.3 times. The 443-year treatment queue compresses to 36. Your children ask what "untreatable" meant.
+
+That is one version. The other version is the one where nobody creates the fund and the $2.7 trillion continues buying things that make your species poorer and deader. I have seen both versions on other planets. One of them is considerably nicer.
+
+The infrastructure is ready. The fund is not.
+
+## Demo
+
+Full narrated presentation (27 slides, ~8 min): [optimitron.com/demo?playlist=protocol-labs](https://optimitron.com/demo?playlist=protocol-labs)
+
+Video walkthrough: [optimitron.com/video](https://optimitron.com/video)
+
+## Demo Narration Script (reference only — not part of submission)
 
 ### Slide 1: The Earth Optimization Game
 > The Earth Optimization Game. Optimize your governments to stop making everyone poorer and deader and start making everyone healthier and wealthier!
