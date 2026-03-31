@@ -4,8 +4,8 @@
 > metaphor is "Earth is a game and we're playing it wrong." Every page should feel like a screen
 > in that game — dark backgrounds, pixel fonts, animated data, CRT effects.
 
-**Reference implementation:** `packages/game/` (standalone game package) and
-`packages/web/src/components/demo/slides/sierra/` (presentation slides).
+**Reference implementation:** `packages/web/src/components/demo/` and
+`packages/web/src/components/demo/slides/sierra/`.
 
 **Live demo:** `http://localhost:3001/demo?playlist=protocol-labs`
 
@@ -46,7 +46,7 @@
 The game uses two switchable palettes controlled by CSS classes on the wrapper element.
 Apply `.palette-ega` or `.palette-vga` to activate.
 
-**Source:** `packages/game/lib/demo/palette.ts`, `packages/game/styles/sierra.css`
+**Source:** `packages/web/src/lib/demo/palette.ts`, `packages/web/src/styles/sierra.css`
 
 #### EGA Palette — "The Horror" (Act I)
 
@@ -139,7 +139,7 @@ When using components that reference the neobrutalist color system:
 
 ### Font Families
 
-**Source:** `packages/game/app/layout.tsx`
+**Source:** `packages/web/src/app/layout.tsx`
 
 | Font | CSS Variable | Utility Class | Use For |
 |------|-------------|---------------|---------|
@@ -152,7 +152,7 @@ When using components that reference the neobrutalist color system:
 
 Pixel-perfect sizes for `font-pixel` to prevent subpixel rendering artifacts.
 
-**Source:** `packages/game/styles/sierra.css:95-104`
+**Source:** `packages/web/src/styles/sierra.css`
 
 | Class | Size | Mobile (< 768px) | Use |
 |-------|------|-------------------|-----|
@@ -199,7 +199,7 @@ Button Text     font-pixel text-pixel-sm uppercase
 
 ## 4. CRT & Retro Effects
 
-**Source:** `packages/game/styles/sierra.css:110-175`
+**Source:** `packages/web/src/styles/sierra.css`
 
 ### Scanlines
 
@@ -309,7 +309,7 @@ Three border styles that simulate the beveled edges of 90s GUI windows.
 
 ### CSS Keyframe Animations
 
-**Source:** `packages/game/styles/sierra.css:287-447`
+**Source:** `packages/web/src/styles/sierra.css`
 
 | Animation | Class | Duration | Use |
 |-----------|-------|----------|-----|
@@ -345,7 +345,7 @@ Used on major title text. Pulsing text-shadow in amber/gold.
 
 ### Animation Components
 
-**Source:** `packages/game/components/demo/animations/`
+**Source:** `packages/web/src/components/demo/animations/sierra/`
 
 #### GlitchText
 
@@ -426,7 +426,7 @@ Continuous or burst particle effects. Uses 60fps canvas-free animation loop (DOM
 
 ## 6. UI Chrome (Game HUD)
 
-**Source:** `packages/game/components/demo/chrome/`
+**Source:** `packages/web/src/components/demo/SierraChrome.tsx`
 
 The "chrome" is the persistent game UI that surrounds page content. Not every page needs all
 elements, but the layout structure should be consistent.
@@ -721,7 +721,7 @@ Mobile-first design. Key breakpoints:
 
 ## 9. Audio & Sound Design
 
-**Source:** `packages/game/lib/demo/audio.ts`
+**Source:** `packages/web/src/lib/wish-sound.ts`, `packages/web/src/lib/demo-tts.ts`
 
 All sounds generated via Web Audio API — no audio files needed for SFX.
 
@@ -756,7 +756,7 @@ Three chord modes using sine wave drones at low volume (0.1x master):
 
 ## 10. Slide/Content Design Principles
 
-**Source:** `packages/game/CLAUDE.md`
+**Source:** `packages/web/src/lib/demo-script.ts`
 
 ### The Rules
 
@@ -833,19 +833,18 @@ Step-by-step for converting any existing page to the game aesthetic:
 
 | File | Contents |
 |------|----------|
-| `packages/game/styles/sierra.css` | Complete CSS effects library (640 lines) — palettes, fonts, CRT effects, pixel borders, animations, all UI chrome styles |
-| `packages/game/lib/demo/palette.ts` | EGA/VGA color palettes with semantic mappings |
-| `packages/game/lib/demo/audio.ts` | Web Audio API sound effect presets and background music |
-| `packages/game/CLAUDE.md` | Wishonia voice rules and slide design principles |
-| `packages/game/app/layout.tsx` | Font loading setup (Press Start 2P, VT323, Geist) |
-| `packages/game/components/demo/boot-screen.tsx` | Boot sequence reference implementation |
-| `packages/game/components/demo/chrome/inventory.tsx` | Inventory grid UI |
-| `packages/game/components/demo/chrome/verb-bar.tsx` | Verb action bar UI |
-| `packages/game/components/demo/animations/glitch-text.tsx` | GlitchText component |
-| `packages/game/components/demo/animations/animated-counter.tsx` | AnimatedCounter component |
-| `packages/game/components/demo/animations/animated-bar-chart.tsx` | AnimatedBarChart component |
-| `packages/game/components/demo/animations/progress-ring.tsx` | ProgressRing component |
-| `packages/game/components/demo/animations/particle-emitter.tsx` | ParticleEmitter component |
+| `packages/web/src/styles/sierra.css` | Complete CSS effects library — palettes, fonts, CRT effects, pixel borders, animations, and UI chrome styles |
+| `packages/web/src/lib/demo/palette.ts` | EGA/VGA color palettes with semantic mappings |
+| `packages/web/src/lib/wish-sound.ts` | Web Audio API sound effect presets and fanfares |
+| `packages/web/src/lib/demo-script.ts` | Wishonia narration, segment copy, and playlist structure |
+| `packages/web/src/app/layout.tsx` | Font loading setup (Press Start 2P, VT323, DM Sans, Space Mono) |
+| `packages/web/src/components/demo/slides/GameTitleSlide.tsx` | Title-screen and intro-slide reference implementation |
+| `packages/web/src/components/demo/SierraChrome.tsx` | Full game HUD layout, inventory, narrator, and quest chrome |
+| `packages/web/src/components/demo/animations/sierra/glitch-text.tsx` | GlitchText component |
+| `packages/web/src/components/demo/animations/sierra/animated-counter.tsx` | AnimatedCounter component |
+| `packages/web/src/components/demo/animations/sierra/animated-bar-chart.tsx` | AnimatedBarChart component |
+| `packages/web/src/components/demo/animations/sierra/progress-ring.tsx` | ProgressRing component |
+| `packages/web/src/components/demo/animations/sierra/particle-emitter.tsx` | ParticleEmitter component |
 | `packages/web/src/components/demo/slides/sierra/SierraSlideWrapper.tsx` | Slide wrapper with act-based gradients + pixel grid overlay |
 | `packages/web/src/components/demo/SierraChrome.tsx` | Full game HUD layout |
 | `packages/web/src/components/demo/SierraGameContext.tsx` | Game state management (acts, score, inventory, quests) |
