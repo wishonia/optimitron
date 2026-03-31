@@ -107,9 +107,21 @@ function LiveTtsPresenter({
   const { isMuted, masterVolume, voiceVolume } = useDemoStore();
 
   useEffect(() => {
-    import("@optimitron/wishonia-widget/narration").then((mod) => {
-      setNarrator(() => mod.WishoniaNarrator);
-    });
+    let cancelled = false;
+
+    void import("@optimitron/wishonia-widget/narration")
+      .then((mod) => {
+        if (!cancelled) {
+          setNarrator(() => mod.WishoniaNarrator);
+        }
+      })
+      .catch((error: unknown) => {
+        console.error("Failed to load Wishonia narrator", error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (!Narrator) {
@@ -164,7 +176,9 @@ function AudioSyncPresenter({
 
   // Preload sprites on mount
   useEffect(() => {
-    preloadTier0("/sprites/wishonia/", "png");
+    void preloadTier0("/sprites/wishonia/", "png").catch((error: unknown) => {
+      console.warn("Failed to preload Wishonia sprites", error);
+    });
   }, []);
 
   const bodyHeight = Math.round(size * 0.57);
@@ -181,7 +195,6 @@ function AudioSyncPresenter({
           animation: "wishonia-bob 7s ease-in-out alternate infinite",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={headSrc}
           alt=""
@@ -199,7 +212,6 @@ function AudioSyncPresenter({
           overflow: "hidden",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={bodySrc}
           alt=""

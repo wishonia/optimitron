@@ -96,7 +96,7 @@ export function ParticleEmitter({
       setParticles((prev) => [...prev, ...newParticles]);
       setNextId((prev) => prev + burst);
     }
-  }, [burst, active]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [burst, active]);
 
   // Continuous emission
   useEffect(() => {

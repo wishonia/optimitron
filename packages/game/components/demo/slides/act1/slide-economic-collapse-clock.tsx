@@ -70,7 +70,6 @@ export function SlideEconomicCollapseClock() {
       timers.forEach(clearTimeout);
       if (animRef.current) clearInterval(animRef.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const healthPct = Math.max(0, 100 - parasiticPct);

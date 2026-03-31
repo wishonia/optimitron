@@ -63,7 +63,7 @@ export function ProgressRing({
     }, delay);
 
     return () => clearTimeout(timeout);
-  }, [animate, delay, duration, progress]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [animate, delay, duration, progress]);
 
   return (
     <div className={cn("relative inline-flex items-center justify-center", className)}>

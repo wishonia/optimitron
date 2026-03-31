@@ -230,9 +230,9 @@ export const useDemoStore = create<DemoState & DemoActions>()(
     toggleFullscreen: () => {
       const { isFullscreen } = get();
       if (!isFullscreen) {
-        document.documentElement.requestFullscreen?.();
+        void document.documentElement.requestFullscreen?.();
       } else {
-        document.exitFullscreen?.();
+        void document.exitFullscreen?.();
       }
       set({ isFullscreen: !isFullscreen });
     },

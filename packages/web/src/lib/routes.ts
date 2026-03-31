@@ -112,7 +112,7 @@ export const studiesLink: NavItem = {
   href: ROUTES.outcomes,
   label: "Studies",
   emoji: "🧪",
-  description: "What actually causes what. Your species has the data — you just never bothered to look at it properly.",
+  description: "What actually causes what. Your species has been sitting on the data for decades. You mostly used it to sell yoghurt.",
   matchPrefixes: [ROUTES.outcomes, ROUTES.studies],
 };
 
@@ -120,7 +120,7 @@ export const compareLink: NavItem = {
   href: ROUTES.compare,
   label: "Compare",
   emoji: "🌍",
-  description: "Same species, different settings. See which countries figured out the obvious bits.",
+  description: "Same species, same planet, wildly different results. Some of you figured out healthcare. The rest are still arguing about it on your little phones.",
 };
 
 export const policiesLink: NavItem = {
@@ -134,7 +134,7 @@ export const budgetLink: NavItem = {
   href: ROUTES.domb,
   label: "dOMB — Budget Optimization",
   emoji: "💰",
-  description: "Your government's shopping receipt, annotated by someone who can do maths.",
+  description: "Your government's shopping receipt, annotated by someone who can do maths. You bought 604 murder machines for every stethoscope.",
 };
 
 export const misconceptionsLink: NavItem = {
@@ -148,7 +148,7 @@ export const discoveriesLink: NavItem = {
   href: ROUTES.discoveries,
   label: "Discoveries",
   emoji: "🔬",
-  description: "Health patterns discovered by people who tracked their data. Your doctor doesn't know these yet.",
+  description: "Health patterns discovered by people who tracked their own meat. Your doctor has seven minutes per appointment and just Googled your condition in the hallway.",
 };
 
 export const dtreasuryLink: NavItem = {
@@ -163,21 +163,21 @@ export const federalReserveLink: NavItem = {
   href: ROUTES.dtreasuryDfed,
   label: "dFED — Monetary Policy",
   emoji: "🏦",
-  description: "Why a transparent algorithm beats 12 people guessing about interest rates",
+  description: "Your monetary policy is set by 12 humans in a room guessing. On my planet we use an algorithm. It has never once printed money to buy murder machines.",
 };
 
 export const dirsLink: NavItem = {
   href: ROUTES.dtreasuryDirs,
   label: "dIRS — Transaction Tax",
   emoji: "🏦",
-  description: "74,000 pages of tax code replaced by 6 lines of Solidity. 0.5% on every transaction. No filing. No audits. No accountants.",
+  description: "74,000 pages of tax code replaced by 6 lines of Solidity. Your species invented an entire profession called 'accountant' to decode the rules you wrote for yourselves. Remarkable.",
 };
 
 export const dssaLink: NavItem = {
   href: ROUTES.dtreasuryDssa,
   label: "dSSA — Universal Basic Income",
   emoji: "🍞",
-  description: "80+ welfare programs replaced by one for-loop. Every verified citizen gets an equal share. No means testing. No case workers.",
+  description: "Eighty-plus welfare programs replaced by one for-loop. You currently pay humans to sit in offices deciding which other humans deserve to eat. On my planet we skip that step.",
 };
 
 export const departmentOfWarLink: NavItem = {
@@ -235,7 +235,7 @@ export const transmitLink: NavItem = {
   href: ROUTES.transmit,
   label: "Transmit",
   emoji: "📡",
-  description: "Send data to an alien intelligence. Health, meals, mood, questions — every transmission helps optimise your planet.",
+  description: "Tell me what you ate, how you slept, and whether your meat is functioning. Thirty seconds. Your species spends longer choosing a sandwich.",
 };
 
 export const wishoniaWorldLink: NavItem = {
@@ -259,21 +259,21 @@ export const dashboardLink: NavItem = {
   href: ROUTES.dashboard,
   label: "Dashboard",
   emoji: "📊",
-  description: "Your referral link, badges, leaderboard rank, and proof you played. The campaign control room.",
+  description: "Your referral link, your rank, and proof you did something other than argue about it on the internet. The rare human achievement of clicking a button.",
 };
 
 export const profileLink: NavItem = {
   href: ROUTES.profile,
   label: "Profile",
   emoji: "🧭",
-  description: "Your name, your face, your connected accounts. The bit where you tell the system who you are.",
+  description: "Your name, your face, your connected accounts. On my planet this takes four seconds. Your species will somehow need twenty minutes and a password reset.",
 };
 
 export const censusLink: NavItem = {
   href: ROUTES.census,
   label: "Census",
   emoji: "📋",
-  description: "Location, income, demographics. The data that turns you from a rounding error into a data point.",
+  description: "Location, income, demographics. Without this you are a rounding error. With it you are a data point. On your planet this counts as a promotion.",
 };
 
 export const checkInLink: NavItem = {
@@ -301,7 +301,7 @@ export const transparencyLink: NavItem = {
   href: ROUTES.dgao,
   label: "dGAO — Transparency & Audit",
   emoji: "🔍",
-  description: "Every attestation, every fund distribution — on IPFS, impossible to quietly delete. Unlike your government's version.",
+  description: "Every attestation, every fund flow — on IPFS, impossible to quietly delete. Your governments call their version 'transparency' and then redact it. We don't have a word for redact.",
   matchPrefixes: [ROUTES.dgao],
 };
 
@@ -317,7 +317,7 @@ export const governmentsLink: NavItem = {
   href: ROUTES.governments,
   label: "Government Report Cards",
   emoji: "💀",
-  description: "Every government ranked by body count — the data they hope you never see",
+  description: "Every government ranked by how many of its citizens it keeps alive versus how many it spends money on killing. The data they hope you never see.",
   matchPrefixes: [ROUTES.governments],
 };
 
@@ -326,7 +326,7 @@ export const politicianLeaderboardLink: NavItem = {
   href: "/governments/US/politicians",
   label: "Politician Leaderboard",
   emoji: "🏛️",
-  description: "How your representatives actually vote vs what you actually wanted. The receipts.",
+  description: "How your representatives actually vote versus what you actually want. A single number per politician. Public. Immutable. They hate this page.",
   matchPrefixes: [ROUTES.politicians, "/governments"],
 };
 
@@ -334,7 +334,7 @@ export const scoreboardLink: NavItem = {
   href: ROUTES.scoreboard,
   label: "Humanity's Scoreboard",
   emoji: "🕹️",
-  description: "Healthy lifespan and median income — the two numbers that matter. Plus the prize pool, voter count, and collapse countdown.",
+  description: "Two numbers: how long you live without disease and how much a normal person earns. Not GDP. Not billionaire wealth. The median. Everything else on this site exists to move these two numbers up.",
   matchPrefixes: [ROUTES.scoreboard],
 };
 
@@ -356,7 +356,7 @@ export const earthOptimizationPrizePaperLink: NavItem = {
   label: "Earth Optimization Prize",
   href: "https://prize.warondisease.org",
   emoji: "🏆",
-  description: "Outcome-based charity for governance reforms that reduce suffering",
+  description: "A prize where losing means you get richer. Your species invented gambling and philanthropy separately. This is what happens when you combine them and remove the stupidity.",
   external: true,
 };
 
@@ -443,7 +443,7 @@ export const dfdaSpecPaperLink: NavItem = {
   label: "dFDA Spec",
   href: "https://dfda-spec.warondisease.org",
   emoji: "🧬",
-  description: "Decentralized FDA — causal inference on health interventions",
+  description: "Your FDA makes treatments wait 8.2 years after they are proven safe. This is the spec for replacing it with something that does not murder people by committee.",
   external: true,
 };
 
@@ -451,7 +451,7 @@ export const wishocracyPaperLink: NavItem = {
   label: "Wishocracy",
   href: "https://wishocracy.warondisease.org",
   emoji: "🗳️",
-  description: "Preference aggregation via pairwise comparisons (RAPPA)",
+  description: "Pick between two things, ten times. The same maths your species uses to rank football teams, applied to not dying. Outperforms Congress in under a minute.",
   external: true,
 };
 
@@ -459,7 +459,7 @@ export const optimalPolicyGeneratorPaperLink: NavItem = {
   label: "Optimal Policy Generator",
   href: "https://opg.warondisease.org",
   emoji: "📋",
-  description: "Score and rank policies by causal impact on welfare",
+  description: "Every policy scored by whether it actually made humans richer or less dead. Your current method is to argue about it on television until someone wins by being louder.",
   external: true,
 };
 
@@ -467,7 +467,7 @@ export const optimalBudgetGeneratorPaperLink: NavItem = {
   label: "Optimal Budget Generator",
   href: "https://obg.warondisease.org",
   emoji: "💰",
-  description: "Allocate budgets using diminishing-returns modeling",
+  description: "The maths for spending money on things that work instead of things that explode. Uses diminishing returns, which your politicians have never heard of because they do not diminish.",
   external: true,
 };
 
@@ -475,7 +475,7 @@ export const optimocracyPaperLink: NavItem = {
   label: "Optimocracy",
   href: "https://optimocracy.warondisease.org",
   emoji: "⚖️",
-  description: "Two-metric welfare function for governance evaluation",
+  description: "Grade a civilisation with two numbers: how long its people live and how much they earn. Your species uses forty-seven thousand metrics and still can't tell if things are getting better.",
   external: true,
 };
 
@@ -483,7 +483,7 @@ export const invisibleGraveyardPaperLink: NavItem = {
   label: "Invisible Graveyard",
   href: "https://invisible-graveyard.warondisease.org",
   emoji: "⚰️",
-  description: "102M deaths from FDA post-safety efficacy delays since 1962",
+  description: "102 million humans who died waiting for treatments that were already proven safe. They were just sitting in a cabinet. Being safe. While people died in the queue.",
   external: true,
 };
 
@@ -491,7 +491,7 @@ export const onePercentTreatyPaperLink: NavItem = {
   label: "The 1% Treaty",
   href: "https://impact.warondisease.org",
   emoji: "🕊️",
-  description: "Redirect 1% of military spending to clinical trials",
+  description: "Going from spending 99% of the murder budget on murder to 98%. Your species will find this controversial.",
   external: true,
 };
 
@@ -499,7 +499,7 @@ export const politicalDysfunctionTaxPaperLink: NavItem = {
   label: "Political Dysfunction Tax",
   href: "https://political-dysfunction-tax.warondisease.org",
   emoji: "🏛️",
-  description: "$101T/yr cost of governance inefficiency worldwide",
+  description: "Your governments cost you $101 trillion a year in dysfunction. Per person, per year. Including the ones who cannot afford lunch.",
   external: true,
 };
 
@@ -507,7 +507,7 @@ export const incentiveAlignmentBondsPaperLink: NavItem = {
   label: "Incentive Alignment Bonds",
   href: "https://iab.warondisease.org",
   emoji: "🤝",
-  description: "Smart contracts funding politicians by alignment score",
+  description: "War bonds paid 4%. These pay 272%. Grandma would be furious if she hadn't died of cancer.",
   external: true,
 };
 
@@ -515,7 +515,7 @@ export const fullManualPaperLink: NavItem = {
   label: "Full Manual",
   href: "https://manual.warondisease.org",
   emoji: "📖",
-  description: "Complete guide to ending war and disease",
+  description: "The complete idiot's guide to legally bribing your way to utopia. Contains pictures, because reading is hard when you are diseased and dying.",
   external: true,
 };
 
@@ -664,7 +664,7 @@ export const githubLink: NavItem = {
   label: "GitHub",
   href: "https://github.com/mikepsinn/optimitron",
   emoji: "💻",
-  description: "Source code, issues, and contributions",
+  description: "All the code. Open source. Because on my planet, 'trust me' is not a governance strategy.",
   external: true,
 };
 
@@ -672,7 +672,7 @@ export const contractsSourceLink: NavItem = {
   label: "Smart Contracts",
   href: "https://github.com/mikepsinn/optimitron/tree/main/packages",
   emoji: "📜",
-  description: "treasury-prize, treasury-iab, treasury-wish, treasury-shared — all Solidity source",
+  description: "The contracts that handle the money. Auditable, immutable, and incapable of taking a lobbying lunch. Unlike your current system.",
   external: true,
 };
 
@@ -680,7 +680,7 @@ export const readmeLink: NavItem = {
   label: "README",
   href: "https://github.com/mikepsinn/optimitron#readme",
   emoji: "📝",
-  description: "Feature overview, setup, and architecture at a glance",
+  description: "What this thing does, how to run it, and why fifteen packages is still fewer moving parts than your tax code.",
   external: true,
 };
 
@@ -688,7 +688,7 @@ export const mitLicenseLink: NavItem = {
   label: "MIT License",
   href: "https://opensource.org/licenses/MIT",
   emoji: "📄",
-  description: "Free to use, modify, and distribute",
+  description: "Free to use, modify, and distribute. Alignment software should not have a paywall. That would be very Earth of us.",
   external: true,
 };
 

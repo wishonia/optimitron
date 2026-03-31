@@ -12,23 +12,28 @@ export function SlideRestoreFromWishonia() {
   const showQuestMeters = useDemoStore((s) => s.showQuestMeters);
 
   useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
     // Phase 0: Loading
     // Phase 1: Palette burst
-    setTimeout(() => {
+    timers.push(setTimeout(() => {
       setPhase(1);
       setPalette("vga"); // INSTANT palette shift!
       setScore(0);
-    }, 1000);
+    }, 1000));
 
     // Phase 2: Quest meters appear
-    setTimeout(() => {
+    timers.push(setTimeout(() => {
       setPhase(2);
       showQuestMeters();
-    }, 2500);
+    }, 2500));
 
     // Phase 3: CTA
-    setTimeout(() => setPhase(3), 3500);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    timers.push(setTimeout(() => setPhase(3), 3500));
+
+    return () => {
+      timers.forEach(clearTimeout);
+    };
   }, []);
 
   return (

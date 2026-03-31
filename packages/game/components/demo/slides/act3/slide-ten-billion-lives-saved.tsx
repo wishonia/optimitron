@@ -77,7 +77,6 @@ export function SlideTenBillionLivesSaved() {
     timers.push(setTimeout(() => setShowConfetti(true), 800 + stats.length * 300 + 500));
 
     return () => timers.forEach(clearTimeout);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

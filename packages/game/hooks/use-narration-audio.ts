@@ -77,7 +77,7 @@ export function useNarrationAudio(slideId?: string, enabled = true): NarrationAu
 
     let cancelled = false;
 
-    (async () => {
+    void (async () => {
       const manifest = await getManifest();
       if (cancelled) return;
 
@@ -136,7 +136,7 @@ export function useNarrationAudio(slideId?: string, enabled = true): NarrationAu
         sourceRef.current = null;
       }
     };
-  }, [slideId, enabled]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [slideId, enabled]);
 
   return { hasMp3, analyserNode };
 }
