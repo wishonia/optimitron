@@ -10,15 +10,12 @@ export async function awardBadge(
   type: BadgeType,
   metadata?: string,
 ): Promise<boolean> {
-  try {
-    await prisma.badge.create({
-      data: { userId, type, metadata },
-    });
-    return true;
-  } catch {
-    // Unique constraint violation — badge already exists
-    return false;
-  }
+  const result = await prisma.badge.createMany({
+    data: { userId, type, metadata },
+    skipDuplicates: true,
+  });
+
+  return result.count > 0;
 }
 
 /**

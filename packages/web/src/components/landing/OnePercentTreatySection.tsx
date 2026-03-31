@@ -7,18 +7,12 @@ import {
   TRADITIONAL_PHASE3_COST_PER_PATIENT,
   DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT,
   CURRENT_TRIAL_SLOTS_AVAILABLE,
+  DFDA_PATIENTS_FUNDABLE_ANNUALLY,
+  STATUS_QUO_QUEUE_CLEARANCE_YEARS,
   DFDA_QUEUE_CLEARANCE_YEARS,
   DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED,
 } from "@optimitron/data/parameters";
 import { ParameterValue } from "@/components/shared/ParameterValue";
-const dfdaCapacity = Math.round(
-  (GLOBAL_MILITARY_SPENDING_ANNUAL_2024.value * 0.01 * 0.8) /
-    DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT.value,
-);
-const dfdaCapacityFmt = `${(dfdaCapacity / 1e6).toFixed(1)}M`;
-const currentQueueYears = Math.round(
-  6650 / (15 * 1), // approximation: 6650 diseases / 15 treatments per year
-);
 
 const treatySteps = [
   {
@@ -28,22 +22,22 @@ const treatySteps = [
     description: `Your species spends ${fmtParam({...GLOBAL_MILITARY_SPENDING_ANNUAL_2024, unit: "USD"})} per year on the ability to destroy itself. We are asking for one percent of that. One. Percent.`,
   },
   {
-    before: `${fmtParam(TRADITIONAL_PHASE3_COST_PER_PATIENT)}`,
+    before: fmtParam(TRADITIONAL_PHASE3_COST_PER_PATIENT),
     label: "Trial Cost",
-    after: `${fmtParam(DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT)}`,
+    after: fmtParam(DFDA_PRAGMATIC_TRIAL_COST_PER_PATIENT),
     description: `Current clinical trials cost ${fmtParam(TRADITIONAL_PHASE3_COST_PER_PATIENT)} because you insist on running them in the most expensive way possible. Scale fixes that.`,
   },
   {
-    before: `${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)}M/yr`,
+    before: `${fmtParam(CURRENT_TRIAL_SLOTS_AVAILABLE)}/yr`,
     label: "Trial Capacity",
-    after: `${dfdaCapacityFmt}/yr`,
-    description: `From ${(CURRENT_TRIAL_SLOTS_AVAILABLE.value / 1e6).toFixed(1)} million patients per year to ${(dfdaCapacity / 1e6).toFixed(1)} million. Same willing participants. Just actually letting them participate.`,
+    after: `${fmtParam(DFDA_PATIENTS_FUNDABLE_ANNUALLY)}/yr`,
+    description: `From ${fmtParam(CURRENT_TRIAL_SLOTS_AVAILABLE)} patients per year to ${fmtParam(DFDA_PATIENTS_FUNDABLE_ANNUALLY)}. Same willing participants. Just actually letting them participate.`,
   },
   {
-    before: `${currentQueueYears} years`,
+    before: `${fmtParam(STATUS_QUO_QUEUE_CLEARANCE_YEARS)}`,
     label: "Treatment Queue",
-    after: `${Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value)} years`,
-    description: `The ${currentQueueYears}-year queue to test treatments for every known disease shrinks to ${Math.round(DFDA_QUEUE_CLEARANCE_YEARS.value)} years. Still embarrassing, but survivable.`,
+    after: `${fmtParam(DFDA_QUEUE_CLEARANCE_YEARS)}`,
+    description: `The ${fmtParam(STATUS_QUO_QUEUE_CLEARANCE_YEARS)} queue to test treatments for every known disease shrinks to ${fmtParam(DFDA_QUEUE_CLEARANCE_YEARS)}. Still embarrassing, but survivable.`,
   },
 ];
 
