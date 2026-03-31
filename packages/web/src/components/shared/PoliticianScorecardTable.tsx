@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/retroui/Button";
 import { getMilitarySynonym } from "@/lib/messaging";
 
 interface PoliticianScore {
@@ -104,17 +105,15 @@ export function PoliticianScorecardTable({
       {!compact && (
         <div className="flex gap-2 mb-4">
           {(["all", "Senate", "House"] as const).map((c) => (
-            <button
+            <Button
               key={c}
+              size="sm"
+              variant={chamberFilter === c ? "default" : "outline"}
               onClick={() => setChamberFilter(c)}
-              className={`px-3 py-1 text-xs font-black uppercase border-2 border-primary transition-all ${
-                chamberFilter === c
-                  ? "bg-brutal-pink text-brutal-pink-foreground"
-                  : "bg-background text-foreground hover:bg-muted"
-              }`}
+              className="text-xs font-black uppercase"
             >
               {c === "all" ? `All (${scorecards.length})` : c}
-            </button>
+            </Button>
           ))}
         </div>
       )}

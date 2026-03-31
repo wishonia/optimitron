@@ -69,7 +69,7 @@
   /* Neobrutalist color tokens - matching primary/secondary/accent */
   --brutal-pink: rgb(236, 70, 153);
   --brutal-pink-foreground: rgb(255, 255, 255);
-  --brutal-cyan: rgb(123, 221, 234);
+  --brutal-cyan: rgb(6, 182, 212);
   --brutal-cyan-foreground: rgb(0, 0, 0);
   --brutal-yellow: rgb(255, 221, 87);
   --brutal-yellow-foreground: rgb(0, 0, 0);
@@ -143,8 +143,8 @@
   /* Dark mode neobrutalist colors */
   --brutal-pink: rgb(244, 114, 182);
   --brutal-pink-foreground: rgb(0, 0, 0);
-  --brutal-cyan: rgb(34, 211, 238);
-  --brutal-cyan-foreground: rgb(0, 0, 0);
+  --brutal-cyan: rgb(8, 145, 178);
+  --brutal-cyan-foreground: rgb(255, 255, 255);
   --brutal-yellow: rgb(253, 224, 71);
   --brutal-yellow-foreground: rgb(0, 0, 0);
   --brutal-red: rgb(239, 68, 68);

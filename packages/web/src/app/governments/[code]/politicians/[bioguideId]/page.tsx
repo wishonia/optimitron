@@ -384,21 +384,42 @@ export default async function PoliticianDetailPage({ params }: PageProps) {
           </div>
         )}
         {/* Methodology note */}
-        <div className="border-2 border-muted bg-muted p-4 mt-4">
-          <h3 className="text-xs font-black uppercase text-muted-foreground mb-2">
+        <div className="border-4 border-primary bg-muted p-6 mt-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h3 className="text-sm font-black uppercase text-foreground mb-4">
             How We Calculate
           </h3>
-          <ul className="text-xs font-bold text-muted-foreground space-y-1">
-            <li>
-              <span className="font-black">Military:</span> A YEA on the NDAA or a military supplemental adds the full bill amount. A YEA on an omnibus adds the military appropriation portion (~$858-886B).
-            </li>
-            <li>
-              <span className="font-black">Clinical Trials:</span> A YEA on an omnibus adds only 3.3% of the NIH budget — that&apos;s the portion that actually funds clinical trials ($1.56B of $47.3B). The other 96.7% is basic research, overhead, and administration. Source: <a href="https://jamanetwork.com/journals/jama/fullarticle/2720005" target="_blank" rel="noopener noreferrer" className="underline">JAMA</a>.
-            </li>
-            <li>
-              <span className="font-black">Ratio:</span> Military $ &divide; Clinical Trial $. Higher = worse. &infin; means the politician voted for military spending but never voted for any bill containing clinical trial funding.
-            </li>
-          </ul>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div>
+              <div className="text-xs font-black uppercase text-brutal-red mb-1">
+                Military $
+              </div>
+              <p className="text-xs font-bold text-muted-foreground">
+                A YEA on the NDAA or a military supplemental adds the full bill amount.
+                A YEA on an omnibus adds the military appropriation portion (~$858&ndash;886B).
+              </p>
+            </div>
+            <div>
+              <div className="text-xs font-black uppercase text-brutal-cyan mb-1">
+                Clinical Trials $
+              </div>
+              <p className="text-xs font-bold text-muted-foreground">
+                A YEA on an omnibus adds only 3.3% of the NIH budget &mdash;
+                the portion that actually funds clinical trials ($1.56B of $47.3B).
+                The other 96.7% is basic research, overhead, and administration.
+                {" "}<a href="https://jamanetwork.com/journals/jama/fullarticle/2720005" target="_blank" rel="noopener noreferrer" className="underline text-foreground">Source: JAMA</a>.
+              </p>
+            </div>
+            <div>
+              <div className="text-xs font-black uppercase text-foreground mb-1">
+                Ratio
+              </div>
+              <p className="text-xs font-bold text-muted-foreground">
+                Military $ &divide; Clinical Trial $. Higher = worse.
+                &infin; means the politician voted for military spending but never
+                voted for any bill containing clinical trial funding.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
