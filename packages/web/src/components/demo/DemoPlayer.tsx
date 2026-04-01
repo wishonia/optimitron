@@ -543,7 +543,6 @@ function DemoPlayerInner({
           onToggleCaptions={() => setIsCaptionsVisible((visible) => !visible)}
           onToggleForceLive={() => setForceLive((f) => !f)}
           onToggleRecord={() => isRecording ? stopRecording() : startRecording()}
-          onGoTo={goTo}
         />
       </div>
 

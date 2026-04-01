@@ -41,6 +41,14 @@ import {
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_MULTIPLIER,
   CUMULATIVE_MILITARY_SPENDING_FED_ERA,
   GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+  GLOBAL_HOUSEHOLD_WEALTH_USD,
+  TYPE_II_ERROR_COST_RATIO,
+  ECONOMIC_MULTIPLIER_HEALTHCARE_INVESTMENT,
+  ECONOMIC_MULTIPLIER_MILITARY_SPENDING,
+  TREATY_TRAJECTORY_CAGR_YEAR_20,
+  TREATY_TRAJECTORY_AVG_INCOME_YEAR_20,
+  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_20,
+  US_MILITARY_SPENDING_2024_ANNUAL,
 } from "@optimitron/data/parameters";
 // Precompute for narration strings (spoken-word, so use full words not abbreviations)
 const deathsDaily = Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value).toLocaleString();
@@ -62,6 +70,14 @@ const totalSufferingQuad = (DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_SUFFERING_HOUR
 const treatyHaleGainYears = Math.round(TREATY_HALE_GAIN_YEAR_15.value * 10) / 10;
 const treatyIncomeMultiplier = Math.round(TREATY_TRAJECTORY_LIFETIME_INCOME_MULTIPLIER.value);
 const optimalGovernanceIncomeMultiplier = Math.round(WISHONIA_TRAJECTORY_LIFETIME_INCOME_MULTIPLIER.value);
+const publicWealthT = `$${Math.round(GLOBAL_HOUSEHOLD_WEALTH_USD.value / 1e12).toLocaleString()} trillion`;
+const typeIIErrorRatio = Math.round(TYPE_II_ERROR_COST_RATIO.value).toLocaleString();
+const healthcareRoi = `$${ECONOMIC_MULTIPLIER_HEALTHCARE_INVESTMENT.value.toFixed(2)}`;
+const militaryRoi = `$${ECONOMIC_MULTIPLIER_MILITARY_SPENDING.value.toFixed(2)}`;
+const treatyCagr20 = (TREATY_TRAJECTORY_CAGR_YEAR_20.value * 100).toFixed(1);
+const currentIncome20 = `$${Math.round(CURRENT_TRAJECTORY_AVG_INCOME_YEAR_20.value / 1000).toLocaleString()},000`;
+const treatyIncome20 = `$${Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_20.value / 1000).toLocaleString()},000`;
+const usMilitaryAnnualB = `$${(US_MILITARY_SPENDING_2024_ANNUAL.value / 1e9).toFixed(1)} billion`;
 
 export type SierraAct =
   | "I"
@@ -101,7 +117,7 @@ export interface DemoPlaylist {
 // Segment Library (~30 segments)
 // ---------------------------------------------------------------------------
 
-export const SEGMENTS: DemoSegment[] = [
+export const SEGMENTS = [
   // ── HOOKS & PROBLEM ──────────────────────────────────────────────────────
   {
     id: "hook-deaths",
@@ -266,6 +282,89 @@ export const SEGMENTS: DemoSegment[] = [
     act: "III",
     scoreAdd: 8_000_000_000,
     narration: `Your governments are the most powerful artificial intelligences your species has ever built. They process more information, control more resources, and make more consequential decisions than any LLM. And they are misaligned. Optimitron. Alignment software for the most powerful AIs on your planet — the ones made of people.`,
+  },
+
+  // ── RECOVERED LEGACY SIERRA BEATS ───────────────────────────────────────
+  {
+    id: "government-body-count",
+    title: "The Body Count Ledger",
+    slideId: "government-body-count",
+    bgColor: "foreground",
+    tags: ["problem", "evidence"],
+    act: "I",
+    narration: "Your governments kept score. You can read the numbers on the screen. Nobody held a referendum on any of it. They wrote it down. Then they filed it. Then they increased the budget.",
+  },
+  {
+    id: "ai-hacker-breach",
+    title: "The AI Breach",
+    slideId: "ai-hacker-breach",
+    bgColor: "foreground",
+    tags: ["problem"],
+    act: "I",
+    narration: "That just happened. Well, a simulation of it. A real AI hacker would not have shown you the terminal. It would not have introduced itself. It would have taken 4.7 seconds and you would have noticed six months later when your bank called.",
+  },
+  {
+    id: "public-vs-lobbyist-90to1",
+    title: "90 to 1",
+    slideId: "public-vs-lobbyist-90to1",
+    bgColor: "yellow",
+    tags: ["problem", "mechanism"],
+    act: "II-solution",
+    narration: `The public holds ${publicWealthT}. The concentrated interests who run your government hold $5 trillion. You outnumber them 90 to 1. Your species identified the exact collective action problem by which your governance fails, published it, assigned it in universities, and then continued to be governed by it for sixty years. You are not outgunned. You are just not coordinated.`,
+  },
+  {
+    id: "healthcare-vs-military-roi",
+    title: "ROI Contrast",
+    slideId: "healthcare-vs-military-roi",
+    bgColor: "cyan",
+    tags: ["evidence", "financial", "solution"],
+    act: "II-solution",
+    narration: `Healthcare spending returns ${healthcareRoi} per dollar invested. Your murder budget returns ${militaryRoi}. Your species has not noticed this because the murder budget has a better lobby.`,
+  },
+  {
+    id: "gdp-20-year-forecast",
+    title: "Twenty-Year Forecast",
+    slideId: "gdp-20-year-forecast",
+    bgColor: "yellow",
+    tags: ["evidence", "financial", "solution"],
+    act: "II-solution",
+    narration: `At current trajectory, your economy grows at 2.5 percent. Redirect 1 percent of the explosions budget, and it compounds at ${treatyCagr20} percent. Over twenty years, that is the difference between ${currentIncome20} per person per year and ${treatyIncome20} per person per year. One slider. Twenty-seven times more money.`,
+  },
+  {
+    id: "congress-military-trials-ratio",
+    title: "Congress Voted 1,094 to 1",
+    slideId: "congress-military-trials-ratio",
+    bgColor: "foreground",
+    tags: ["problem", "evidence"],
+    act: "II-accountability",
+    narration: `Your Congress spent ${usMilitaryAnnualB} on the military this year. And $810 million on clinical trials. That is a ratio of 1,094 to 1. For every dollar spent trying to stop diseases from killing you, 1,094 dollars on new ways to kill other people's children. Both parties voted for this. It is not a left-right problem. It is a math problem.`,
+  },
+  {
+    id: "fda-approval-delay-8yr",
+    title: "The Queue Is the Killer",
+    slideId: "fda-approval-delay-8yr",
+    bgColor: "foreground",
+    tags: ["problem", "evidence", "feature"],
+    act: "II-armory",
+    narration: `Vioxx killed 55,000 people from heart attacks. The FDA approved it. When patients started dying, someone filled out a PDF form. A PDF. Then they faxed it. Five years and tens of thousands of corpses later, someone noticed a pattern. This is your safety system. Meanwhile, your FDA makes treatments wait 8.2 years after they have already been proven safe. Just sitting there. Being safe. For every 1 person protected from a dangerous drug, ${typeIIErrorRatio} die waiting for a safe one locked in the approval cabinet. It is a lifeguard who confirms the life preserver floats, then locks it in a cabinet while a billion people drown in line for two life jackets.`,
+  },
+  {
+    id: "drug-policy-natural-experiment",
+    title: "Portugal vs America",
+    slideId: "drug-policy-natural-experiment",
+    bgColor: "cyan",
+    tags: ["evidence", "feature"],
+    act: "II-armory",
+    narration: `Portugal decriminalised all drugs in 2001. Overdose deaths dropped 80 percent. America spent $${drugWarCostB.toLocaleString()} billion a year on the War on Drugs. Overdose deaths rose 1,700 percent. One country looked at the evidence. The other one declared war on it.`,
+  },
+  {
+    id: "disease-cure-supply-chain",
+    title: "How A Cure Actually Gets Made",
+    slideId: "disease-cure-supply-chain",
+    bgColor: "background",
+    tags: ["solution", "mechanism", "feature"],
+    act: "II-armory",
+    narration: "Now look at this cured disease. The researcher in Lagos who found the cheaper trial does not know the lobbyist in Brussels who passed the directive. The lobbyist does not know the nonprofit in Manila that recruited a million voters. The voters do not know the bondholder in New York whose greed funded the campaign. The bondholder does not know the politician in Delhi who voted yes because the SuperPAC funded her opponent last time she voted no. Millions of people cooperated to cure this disease. No one gave orders.",
   },
 
   // Legacy alias — playlists referencing the old combined hook still work
@@ -820,7 +919,7 @@ export const SEGMENTS: DemoSegment[] = [
     slideId: "170t-opportunity-cost",
     tags: ["hook", "problem"],
     act: "I",
-    narration: `Instead of murdering 97 million people and destroying everything they built, they could have funded ${Math.round(CUMULATIVE_MILITARY_SPENDING_FED_ERA.value / GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value).toLocaleString()} years of clinical trials. They bought the other thing. Through compounding effects, you would be 33 times richer and significantly less diseased today if someone had aligned your governments in 1913. They did not. So that is what you are going to do.`,
+    narration: `Instead of murdering 97 million people and destroying everything they built, they could have funded ${Math.round(CUMULATIVE_MILITARY_SPENDING_FED_ERA.value / GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value).toLocaleString()} years of clinical trials. They bought the other thing. Through compounding effects, you would be 33 times richer and significantly less diseased today if someone had aligned your governments properly in 1913. They did not. So that is what you are going to do.`,
   },
   {
     id: "misaligned-superintelligence-brief",
@@ -1014,32 +1113,20 @@ export const SEGMENTS: DemoSegment[] = [
     act: "III",
     narration: "The Earth Optimization Game is brought to you by the good humans at Protocol Labs funding the Commons, Hypercerts, Storacha, Worldcoin, and Base.",
   },
-];
+] satisfies readonly DemoSegment[];
 
 // ---------------------------------------------------------------------------
-// Segment lookup
+// Segment registry
 // ---------------------------------------------------------------------------
 
-const segmentMap = new Map(SEGMENTS.map((s) => [s.id, s]));
+export type DemoSegmentId = (typeof SEGMENTS)[number]["id"];
 
-export function getSegment(id: string): DemoSegment | undefined {
-  return segmentMap.get(id);
-}
+const segmentById = Object.fromEntries(
+  SEGMENTS.map((segment) => [segment.id, segment]),
+) as Record<DemoSegmentId, DemoSegment>;
 
-export function getSegments(ids: string[]): DemoSegment[] {
-  return resolveSegments(ids);
-}
-
-function requireSegment(id: string): DemoSegment {
-  const segment = segmentMap.get(id);
-  if (!segment) {
-    throw new Error(`Unknown demo segment: ${id}`);
-  }
-  return segment;
-}
-
-function resolveSegments(ids: readonly string[]): DemoSegment[] {
-  return ids.map(requireSegment);
+function resolveSegments(ids: readonly DemoSegmentId[]): DemoSegment[] {
+  return ids.map((id) => segmentById[id]);
 }
 
 // ---------------------------------------------------------------------------
@@ -1411,7 +1498,3 @@ export function estimatePlaylistDuration(playlistId: string): number {
 
 /** Default playlist */
 export const DEFAULT_PLAYLIST_ID = "full-demo";
-
-// Keep backward compat — DEMO_SLIDES is the full demo playlist
-export const DEMO_SLIDES = getPlaylistSegments(DEFAULT_PLAYLIST_ID);
-export const ESTIMATED_TOTAL_SECONDS = estimatePlaylistDuration(DEFAULT_PLAYLIST_ID);

@@ -17,7 +17,6 @@ interface DemoControlsProps {
   onToggleCaptions: () => void;
   onToggleForceLive: () => void;
   onToggleRecord: () => void;
-  onGoTo: (index: number) => void;
 }
 
 export function DemoControls({

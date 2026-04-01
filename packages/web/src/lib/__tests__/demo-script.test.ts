@@ -2,10 +2,9 @@ import { describe, expect, it } from "vitest";
 
 import {
   DEFAULT_PLAYLIST_ID,
-  DEMO_SLIDES,
-  ESTIMATED_TOTAL_SECONDS,
   PLAYLISTS,
   SEGMENTS,
+  estimatePlaylistDuration,
   getPlaylist,
   getPlaylistSegments,
 } from "../demo-script";
@@ -46,11 +45,11 @@ describe("demo script playlists", () => {
 
   it("keeps default playlist helpers aligned with the stored playlist object", () => {
     const playlist = getPlaylist(DEFAULT_PLAYLIST_ID);
+    const segments = getPlaylistSegments(DEFAULT_PLAYLIST_ID);
 
     expect(playlist).toBeDefined();
-    expect(getPlaylistSegments(DEFAULT_PLAYLIST_ID)).toEqual(playlist?.segments ?? []);
-    expect(DEMO_SLIDES).toEqual(playlist?.segments ?? []);
-    expect(ESTIMATED_TOTAL_SECONDS).toBeGreaterThan(0);
+    expect(segments).toEqual(playlist?.segments ?? []);
+    expect(estimatePlaylistDuration(DEFAULT_PLAYLIST_ID)).toBeGreaterThan(0);
   });
 
   it("returns an empty list for unknown playlists", () => {
