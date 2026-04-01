@@ -145,7 +145,7 @@ export default function NPVAnalysisSection() {
           </Card>
           <Card className="bg-brutal-yellow text-brutal-yellow-foreground border-4 border-primary p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-sm font-bold uppercase mb-2">NPV-Adjusted ROI</div>
-            <div className="text-4xl font-black text-brutal-pink"><ParameterValue param={DFDA_ROI_RD_ONLY} /></div>
+            <div className="text-4xl font-black"><ParameterValue param={DFDA_ROI_RD_ONLY} /></div>
             <div className="text-xs mt-2">After time value of money</div>
           </Card>
         </div>
@@ -240,7 +240,7 @@ export default function NPVAnalysisSection() {
           </div>
           <div className="mt-6 bg-brutal-yellow text-brutal-yellow-foreground border-4 border-primary p-4">
             <p className="font-bold text-center">
-              The {roiRaw}:1 NPV-adjusted ROI is the <span className="text-brutal-pink">canonical figure</span> we use for
+              The {roiRaw}:1 NPV-adjusted ROI is the <span className="font-black">canonical figure</span> we use for
               academic credibility. It&apos;s conservative and passes rigorous financial scrutiny.
             </p>
           </div>

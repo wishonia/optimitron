@@ -150,13 +150,15 @@ describe("getDashboardData", () => {
     expect(result.organizations.created[0]?.memberCount).toBe(5);
     expect(result.globalProgress).toBeDefined();
     expect(result.globalProgress.current).toBeGreaterThanOrEqual(0);
-    expect(result.questChecklist).toHaveLength(10);
+    expect(result.questChecklist.map((item) => item.reason)).toEqual([
+      "REFERENDUM_VOTE",
+      "REFERRAL",
+      "WISHOCRATIC_ALLOCATION",
+      "PRIZE_DEPOSIT",
+    ]);
     expect(result.impactReceipts).toEqual({ items: [], walletCount: 0 });
-    // REFERRAL should be completed because referralCount > 0
+    // REFERRAL stays incomplete until the user hits the gameplay goal.
     const referralQuest = result.questChecklist.find((q) => q.reason === "REFERRAL");
-    expect(referralQuest?.completed).toBe(true);
-    // KYC should be coming soon
-    const kycQuest = result.questChecklist.find((q) => q.reason === "KYC_COMPLETION");
-    expect(kycQuest?.comingSoon).toBe(true);
+    expect(referralQuest?.completed).toBe(false);
   });
 });

@@ -76,7 +76,7 @@ export function HowToWinSection() {
             </h3>
             <p className="text-lg sm:text-xl font-bold">
               Depositors split the pool.{" "}
-              <span className="text-brutal-pink font-black">
+              <span className="font-black underline decoration-4">
                 <ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} />x
               </span>{" "}
               return. Still beats a retirement account.
