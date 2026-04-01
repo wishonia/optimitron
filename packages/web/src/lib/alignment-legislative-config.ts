@@ -124,7 +124,7 @@ export const ALIGNMENT_LEGISLATIVE_CATEGORY_RULES: readonly AlignmentLegislative
     policyAreas: ["crime and law enforcement", "drugs"],
   },
   {
-    categoryId: "ICE_IMMIGRATION_ENFORCEMENT",
+    categoryId: "ICE_CRIMINAL_DEPORTATION",
     keywords: [
       "alien gang",
       "border patrol",

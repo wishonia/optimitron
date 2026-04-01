@@ -27,7 +27,7 @@ describe("alignment legislative classification", () => {
       policyArea: "Immigration",
     });
 
-    expect(matches[0]?.categoryId).toBe("ICE_IMMIGRATION_ENFORCEMENT");
+    expect(matches[0]?.categoryId).toBe("ICE_CRIMINAL_DEPORTATION");
   });
 
   it("does not misclassify unrelated justice language as immigration enforcement", () => {
@@ -60,7 +60,7 @@ describe("alignment legislative classification", () => {
       policyArea: "Immigration",
     });
 
-    expect(matches[0]?.categoryId).toBe("ICE_IMMIGRATION_ENFORCEMENT");
+    expect(matches[0]?.categoryId).toBe("ICE_CRIMINAL_DEPORTATION");
   });
 
   it("classifies comparative-effectiveness research appropriations into pragmatic clinical trials", () => {

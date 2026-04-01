@@ -125,14 +125,14 @@ describe("alignment politician source", () => {
         votes: [
           {
             billId: "119-hr-23:Senate:1:22",
-            itemId: "ICE_IMMIGRATION_ENFORCEMENT",
+            itemId: "ICE_CRIMINAL_DEPORTATION",
             allocationPct: -0.8,
             updatedAt: new Date("2026-03-12T00:00:00.000Z"),
             votedAt: new Date("2026-03-12T00:00:00.000Z"),
           },
           {
             billId: "118-hjres-7:Senate:1:80",
-            itemId: "ICE_IMMIGRATION_ENFORCEMENT",
+            itemId: "ICE_CRIMINAL_DEPORTATION",
             allocationPct: -0.7,
             updatedAt: new Date("2026-03-11T00:00:00.000Z"),
             votedAt: new Date("2026-03-11T00:00:00.000Z"),
@@ -145,8 +145,8 @@ describe("alignment politician source", () => {
 
     expect(profiles[0]?.sourceType).toBe("congress_partial");
     expect(profiles[0]?.sourceNote).toContain("curated benchmark");
-    expect(profiles[0]?.allocations.ICE_IMMIGRATION_ENFORCEMENT).not.toBe(
-      bernie.allocations.ICE_IMMIGRATION_ENFORCEMENT,
+    expect(profiles[0]?.allocations.ICE_CRIMINAL_DEPORTATION).not.toBe(
+      bernie.allocations.ICE_CRIMINAL_DEPORTATION,
     );
     expect(profiles[0]?.summary).toContain("partially tilt");
   });

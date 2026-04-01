@@ -80,14 +80,14 @@ describe("alignment legislative sync helpers", () => {
         {
           allocationPct: -0.8,
           billId: "bill-1",
-          itemId: "ICE_IMMIGRATION_ENFORCEMENT",
+          itemId: "ICE_CRIMINAL_DEPORTATION",
           updatedAt: new Date(),
           votedAt: new Date("2026-01-01"),
         },
         {
           allocationPct: -0.9,
           billId: "bill-2",
-          itemId: "ICE_IMMIGRATION_ENFORCEMENT",
+          itemId: "ICE_CRIMINAL_DEPORTATION",
           updatedAt: new Date(),
           votedAt: new Date("2026-01-02"),
         },
@@ -99,14 +99,14 @@ describe("alignment legislative sync helpers", () => {
         {
           allocationPct: 0.8,
           billId: "bill-1",
-          itemId: "ICE_IMMIGRATION_ENFORCEMENT",
+          itemId: "ICE_CRIMINAL_DEPORTATION",
           updatedAt: new Date(),
           votedAt: new Date("2026-01-01"),
         },
         {
           allocationPct: 0.9,
           billId: "bill-2",
-          itemId: "ICE_IMMIGRATION_ENFORCEMENT",
+          itemId: "ICE_CRIMINAL_DEPORTATION",
           updatedAt: new Date(),
           votedAt: new Date("2026-01-02"),
         },
@@ -119,8 +119,8 @@ describe("alignment legislative sync helpers", () => {
     expect(negativeRecord?.rollCallCount).toBe(2);
     expect(negativeRecord?.categoriesCovered).toBe(1);
     expect(positiveRecord).not.toBeNull();
-    expect(negativeRecord?.allocations.ICE_IMMIGRATION_ENFORCEMENT).toBeLessThan(
-      positiveRecord?.allocations.ICE_IMMIGRATION_ENFORCEMENT ?? 0,
+    expect(negativeRecord?.allocations.ICE_CRIMINAL_DEPORTATION).toBeLessThan(
+      positiveRecord?.allocations.ICE_CRIMINAL_DEPORTATION ?? 0,
     );
   });
 
@@ -231,7 +231,7 @@ describe("alignment legislative sync helpers", () => {
     expect(rows[0]).toMatchObject({
       externalId: "S000033",
       billId: "119-s-5:senate:1:7",
-      itemId: "ICE_IMMIGRATION_ENFORCEMENT",
+      itemId: "ICE_CRIMINAL_DEPORTATION",
     });
     expect(rows[0]?.allocationPct).toBeLessThan(0);
   });
