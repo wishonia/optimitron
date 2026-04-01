@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface Particle {
@@ -47,7 +47,13 @@ export function ParticleEmitter({
   rotate = false,
 }: ParticleEmitterProps) {
   const [particles, setParticles] = useState<Particle[]>([]);
-  const [nextId, setNextId] = useState(0);
+  const nextIdRef = useRef(0);
+
+  const getNextId = useCallback(() => {
+    const id = nextIdRef.current;
+    nextIdRef.current += 1;
+    return id;
+  }, []);
 
   const getEmoji = useCallback(() => {
     if (Array.isArray(emoji)) {
@@ -71,7 +77,7 @@ export function ParticleEmitter({
     const v = speed * (0.5 + Math.random() * 0.5);
 
     return {
-      id: nextId,
+      id: getNextId(),
       x: x ?? 50,
       y: y ?? 50,
       emoji: getEmoji(),
@@ -81,20 +87,13 @@ export function ParticleEmitter({
       vx: Math.cos(rad) * v,
       vy: Math.sin(rad) * v,
     };
-  }, [direction, spread, speed, nextId, getEmoji]);
+  }, [direction, spread, speed, getEmoji, getNextId]);
 
   // Burst effect
   useEffect(() => {
     if (burst && active) {
-      const newParticles: Particle[] = [];
-      for (let i = 0; i < burst; i++) {
-        newParticles.push({
-          ...createParticle(),
-          id: nextId + i,
-        });
-      }
+      const newParticles = Array.from({ length: burst }, () => createParticle());
       setParticles((prev) => [...prev, ...newParticles]);
-      setNextId((prev) => prev + burst);
     }
   }, [burst, active]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -104,7 +103,6 @@ export function ParticleEmitter({
 
     const interval = setInterval(() => {
       setParticles((prev) => [...prev, createParticle()]);
-      setNextId((prev) => prev + 1);
     }, 1000 / rate);
 
     return () => clearInterval(interval);
