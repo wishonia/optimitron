@@ -6,18 +6,8 @@
 
 Detailed docs live in `docs/`. Read the relevant ones before working:
 - `docs/TYPE_SYSTEM.md` — How types flow from Prisma → all packages
-- `docs/CONVENTIONS.md` — Naming, commits, domain agnosticism, testing
 - `docs/WEB_APP.md` — Current Next.js app behavior, auth, envs, deployment, smoke checks
-- `.conductor/product.md` — Product context and user personas
-- `.conductor/tech-stack.md` — Language, frameworks, tooling
-- `.conductor/workflow.md` — Development workflow
 
-## Rule Quality
-
-Repo rules should pay rent. Keep a rule only if it clearly prevents a real
-failure mode, duplicated source of truth, dependency cycle, or recurring review
-confusion. If a rule mostly adds ceremony, duplication, or awkward layering,
-replace it with a narrower guideline and document the tradeoff.
 
 ## Critical Architecture Rules
 
@@ -45,13 +35,6 @@ schema.prisma → @optimitron/db exports:
 
 ### 2. Library Package Rules
 
-These packages are **pure functions with ZERO runtime database dependencies:**
-- `@optimitron/optimizer` — Domain-agnostic causal inference
-- `@optimitron/wishocracy` — Preference aggregation (RAPPA)
-- `@optimitron/opg` — Optimal Policy Generator
-- `@optimitron/obg` — Optimal Budget Generator
-- `@optimitron/data` — Data fetchers and importers
-
 They MAY import **type-only** exports from `@optimitron/db`.
 They MUST NOT import Prisma client, database connections, or any runtime DB code.
 They MUST work in the browser (for PGlite/local-first).
@@ -75,90 +58,8 @@ Domain-specific naming belongs in opg/obg/wishocracy/data/web.
 | Enums over magic strings | Prisma enforces valid values |
 | deletedAt on all models | Soft deletes for cr-sqlite sync |
 
-### 5. Package Dependencies
 
-Package boundaries are a means, not an end. Keep a dependency only if its
-benefits exceed its maintenance cost.
-
-**Keep a dependency boundary when it materially helps one of these:**
-- Prevent runtime breakage (for example, browser-safe libraries importing Prisma)
-- Prevent dependency cycles
-- Keep pure computation libraries reusable outside the app
-- Reduce accidental coupling across unrelated domains
-
-**Relax a boundary when all of these are true:**
-- It removes a duplicated source of truth
-- It does not introduce a cycle
-- It does not violate runtime constraints of the consumer package
-- The resulting architecture is simpler than the workaround needed to preserve the rule
-
-**Current preferred dependency graph:**
-```
-optimizer ← nothing
-wishocracy ← nothing
-opg ← optimizer
-obg ← optimizer
-data ← optimizer
-db ← data (seed/bootstrap catalogs only; Prisma remains owned by db)
-web ← everything
-chat-ui ← nothing
-```
-
-The key hard rule is narrower: pure/browser-facing libraries must not gain
-runtime Prisma or database dependencies.
-
-### 6. Testing
-
-- Test behavior, invariants, regressions, and parsing/boundary logic.
-- New logic and bug fixes should add or update tests.
-- Tiny wrappers, passive re-exports, docs/config churn, and other low-risk
-  mechanical changes do not need dedicated tests when existing coverage already
-  exercises the behavior.
-- Keep or add high-signal integration tests for cross-package flows in
-  `packages/examples`.
-- Delete or rewrite permanently skipped or low-signal plumbing tests when they
-  stop paying for their maintenance cost.
-- Pre-commit runs ALL tests. If tests fail, don't commit.
-- Use `pnpm --filter @optimitron/<package> test` to run package tests.
-- Currently ~1,700+ tests across all packages.
-
-### 7. CI/CD
-
-- GitHub Actions: typecheck + lint + test on push/PR
-- Non-web packages validate first in CI; `packages/web` then runs in the `web-validate` stage with database-backed checks before deployment
-- Full server-side web app deploy target: Vercel with project root `packages/web`
-- GitHub Pages is legacy/static-only and does not support auth, cron, or server routes
-
-### 8. Git Workflow
-
-- Sync with remote before long-lived work or before pushing when the worktree is
-  clean.
-- If you already have local edits, commit or stash before rebasing; do not make
-  `git pull --rebase` a blocking ritual on a dirty tree.
-- Commit with conventional commits: `feat:`, `fix:`, `test:`, `refactor:`, `docs:`, `ci:`
-- Use `--no-verify` only if pre-commit hooks are slow; ensure tests pass
-- If push fails (conflict), `git pull --rebase` and retry once
-
-### 9. File Ownership (Parallel Agents)
-
-When multiple agents work simultaneously, prefer disjoint write scopes to
-reduce conflicts. Cross-package edits are fine when the change itself crosses
-package boundaries; coordination matters more than arbitrary package walls.
-
-### 10. Key Files
-
-| File | Purpose |
-|------|---------|
-| `CLAUDE.md` | Detailed agent instructions (algorithms, papers, architecture) |
-| `AGENTS.md` | This file — architectural rules for all agents |
-| `CHECKLIST.md` | Prioritized feature checklist (P0/P1/P2) |
-| `USER_STORIES.md` | User personas and revenue strategy |
-| `FUNDING.md` | Funding plan and targets |
-| `ONE_PAGER.md` | Elevator pitch |
-| `ARCHITECTURE.md` | Technical architecture details |
-| `LEGACY_API_GAPS.md` | Features from legacy API not yet ported |
-
-### 11. Papers (Algorithm Source of Truth)
+### Papers (Algorithm Source of Truth)
 
 Before implementing any algorithm, read the relevant paper:
 - Optimizer → [dFDA Spec](https://dfda-spec.warondisease.org)
@@ -167,11 +68,4 @@ Before implementing any algorithm, read the relevant paper:
 - OBG → [Optimal Budget Generator](https://obg.warondisease.org)
 - IAB → [Incentive Alignment Bonds](https://iab.warondisease.org)
 
-## Quick Start
 
-```bash
-cd /mnt/e/code/optimitron
-pnpm install
-pnpm build
-pnpm test
-```
