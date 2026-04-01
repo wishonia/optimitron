@@ -100,8 +100,8 @@ export function PoliticalDysfunctionTaxSection() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.3}>
-          <div className="p-8 border-4 border-primary bg-brutal-red text-brutal-red-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-4xl sm:text-5xl font-black mb-2">
+          <div className="p-4 sm:p-8 border-4 border-primary bg-brutal-red text-brutal-red-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
+            <div className="text-2xl sm:text-4xl md:text-5xl font-black mb-2 break-words">
               $<CountUp value={Math.round(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL.value)} className="" />/person/year
             </div>
             <p className="font-bold max-w-xl mx-auto">

@@ -15,22 +15,46 @@ interface PreferenceData {
 }
 
 const BRUTAL_COLORS = [
-  "hsl(var(--brutal-pink))",
-  "hsl(var(--brutal-cyan))",
-  "hsl(var(--brutal-yellow))",
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-  "hsl(var(--brutal-red))",
-  "hsl(var(--muted))",
+  "var(--brutal-pink)",
+  "var(--brutal-cyan)",
+  "var(--brutal-yellow)",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+  "var(--brutal-red)",
+  "var(--brutal-green)",
 ];
 
 function formatItemName(slug: string): string {
   return slug
     .replace(/_/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function ChartLegend({
+  data,
+  colors,
+}: {
+  data: { name: string; value: number }[];
+  colors: string[];
+}) {
+  return (
+    <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 justify-center">
+      {data.map((item, i) => (
+        <div key={item.name} className="flex items-center gap-1.5">
+          <span
+            className="inline-block w-3 h-3 border-2 border-primary shrink-0"
+            style={{ backgroundColor: colors[i % colors.length] }}
+          />
+          <span className="text-xs font-black uppercase">
+            {item.name} {item.value}%
+          </span>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function toChartData(allocations: Record<string, number>) {
@@ -101,6 +125,7 @@ export function WishocracyPreview() {
                   valueFormatter={(v) => `${v}%`}
                 />
               </div>
+              <ChartLegend data={citizenData} colors={BRUTAL_COLORS} />
             </div>
           </ScrollReveal>
 
@@ -120,6 +145,7 @@ export function WishocracyPreview() {
                   valueFormatter={(v) => `${v}%`}
                 />
               </div>
+              <ChartLegend data={govData} colors={BRUTAL_COLORS} />
             </div>
           </ScrollReveal>
         </div>

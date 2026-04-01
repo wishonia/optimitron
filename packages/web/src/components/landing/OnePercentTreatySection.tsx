@@ -58,22 +58,27 @@ export function OnePercentTreatySection() {
 
         <div className="space-y-4 mb-12">
           {treatySteps.map((step) => (
-            <div key={step.label} className="p-6 border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="flex items-center gap-3 shrink-0">
-                  <span className="text-lg font-black line-through opacity-60">
-                    {step.before}
-                  </span>
-                  <span className="text-brutal-cyan font-black text-xl">&rarr;</span>
-                  <span className="text-lg font-black text-brutal-cyan">
-                    {step.after}
-                  </span>
-                </div>
-                <div className="flex-grow">
-                  <span className="text-xs font-black px-2.5 py-1 bg-foreground text-background uppercase">
+            <div key={step.label} className="p-4 sm:p-6 border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+              <div className="flex flex-col md:flex-row md:items-center gap-4">
+                <div className="shrink-0">
+                  <span className="text-xs font-black px-2.5 py-1 bg-foreground text-background uppercase md:hidden">
                     {step.label}
                   </span>
-                  <p className="text-sm text-foreground leading-relaxed font-bold mt-2">
+                  <div className="flex items-center gap-2 sm:gap-3 mt-2 md:mt-0">
+                    <span className="text-sm sm:text-lg font-black line-through opacity-60 break-all sm:break-normal">
+                      {step.before}
+                    </span>
+                    <span className="text-brutal-cyan font-black text-lg sm:text-xl">&rarr;</span>
+                    <span className="text-sm sm:text-lg font-black text-brutal-cyan break-all sm:break-normal">
+                      {step.after}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex-grow">
+                  <span className="text-xs font-black px-2.5 py-1 bg-foreground text-background uppercase hidden md:inline">
+                    {step.label}
+                  </span>
+                  <p className="text-sm text-foreground leading-relaxed font-bold md:mt-2">
                     {step.description}
                   </p>
                 </div>
