@@ -45,6 +45,12 @@ export default defineConfig({
         deviceScaleFactor: 1,
       },
     },
+    {
+      name: "mobile",
+      use: {
+        ...devices["iPhone 14"],
+      },
+    },
   ],
   webServer: process.env.SKIP_SERVER
     ? undefined

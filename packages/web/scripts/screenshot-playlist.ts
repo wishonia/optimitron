@@ -14,8 +14,11 @@ import * as fs from "fs";
 import * as path from "path";
 
 async function main() {
-  const playlistId = process.argv[2] ?? "protocol-labs";
-  const baseUrl = process.argv[3] ?? "http://localhost:3001";
+  const args = process.argv.slice(2);
+  const isMobile = args.includes("--mobile");
+  const positionalArgs = args.filter((a) => !a.startsWith("--"));
+  const playlistId = positionalArgs[0] ?? "protocol-labs";
+  const baseUrl = positionalArgs[1] ?? "http://localhost:3001";
 
   const playlist = PLAYLISTS.find((p) => p.id === playlistId);
   if (!playlist) {
@@ -27,11 +30,20 @@ async function main() {
   const pw = await import("@playwright/test");
   const { chromium } = pw;
 
-  const outDir = path.resolve(__dirname, "../../..", "docs", "demo-scripts", "screenshots");
+  const suffix = isMobile ? path.join("screenshots", "mobile") : "screenshots";
+  const outDir = path.resolve(__dirname, "../../..", "docs", "demo-scripts", suffix);
   fs.mkdirSync(outDir, { recursive: true });
 
+  const viewport = isMobile ? { width: 390, height: 844 } : { width: 1920, height: 1080 };
+
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+  const page = await browser.newPage({
+    viewport,
+    isMobile,
+    hasTouch: isMobile,
+  });
+
+  console.log(`Mode: ${isMobile ? "mobile (390x844)" : "desktop (1920x1080)"}`);
 
   // Set dark mode
   await page.emulateMedia({ colorScheme: "dark" });
