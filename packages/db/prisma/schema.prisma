@@ -27,8 +27,9 @@
 // ============================================================================
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider   = "prisma-client"
+  output     = "../src/generated/prisma"
+  engineType = "client"
 }
 
 // Zod schemas are manually maintained in ../src/zod/index.ts
