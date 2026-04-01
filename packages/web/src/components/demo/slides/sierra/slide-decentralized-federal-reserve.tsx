@@ -68,7 +68,7 @@ export function SlideDecentralizedFederalReserve() {
         {phase >= 2 && (
           <div className="w-full fade-in">
             {/* Header row */}
-            <div className="grid grid-cols-[1fr_1fr_1fr] border-b-2 border-zinc-600 pb-3 mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] border-b-2 border-zinc-600 pb-3 mb-2">
               <div />
               <div className="font-pixel text-2xl md:text-3xl text-red-400 text-center tracking-widest">
                 FED
@@ -84,7 +84,7 @@ export function SlideDecentralizedFederalReserve() {
               {ROWS.map((row, i) => (
                 <div
                   key={row.label}
-                  className={`grid grid-cols-[1fr_1fr_1fr] items-start py-2 border-b border-zinc-800 ${
+                  className={`grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] items-start py-2 border-b border-zinc-800 ${
                     i < visibleRows ? "fade-in" : "opacity-0"
                   }`}
                 >

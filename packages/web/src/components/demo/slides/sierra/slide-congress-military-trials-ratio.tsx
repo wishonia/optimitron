@@ -72,20 +72,20 @@ export function SlideCongressMilitaryTrialsRatio() {
         </div>
 
         {/* Politician table */}
-        <div className="bg-black/40 border border-cyan-500/30 rounded overflow-hidden">
+        <div className="bg-black/40 border border-cyan-500/30 rounded overflow-x-auto">
           {/* Header */}
-          <div className="grid grid-cols-12 gap-2 px-4 py-2 bg-cyan-500/10 border-b border-cyan-500/30">
-            <div className="col-span-4 font-pixel text-xl text-cyan-400">NAME</div>
-            <div className="col-span-1 font-pixel text-xl text-cyan-400">PARTY</div>
-            <div className="col-span-3 font-pixel text-xl text-cyan-400 text-right">MIL $</div>
-            <div className="col-span-2 font-pixel text-xl text-cyan-400 text-right">TRIALS $</div>
-            <div className="col-span-2 font-pixel text-xl text-cyan-400 text-right">RATIO</div>
+          <div className="grid grid-cols-12 gap-2 px-3 md:px-4 py-2 bg-cyan-500/10 border-b border-cyan-500/30 min-w-[520px]">
+            <div className="col-span-4 font-pixel text-sm md:text-xl text-cyan-400">NAME</div>
+            <div className="col-span-1 font-pixel text-sm md:text-xl text-cyan-400">PARTY</div>
+            <div className="col-span-3 font-pixel text-sm md:text-xl text-cyan-400 text-right">MIL $</div>
+            <div className="col-span-2 font-pixel text-sm md:text-xl text-cyan-400 text-right">TRIALS $</div>
+            <div className="col-span-2 font-pixel text-sm md:text-xl text-cyan-400 text-right">RATIO</div>
           </div>
 
           {DISPLAY_POLITICIANS.map((pol, i) => (
             <div
               key={pol.id}
-              className={`grid grid-cols-12 gap-2 px-4 py-2 border-b border-zinc-800/50 items-center transition-all duration-500 ${
+              className={`grid grid-cols-12 gap-2 px-3 md:px-4 py-2 border-b border-zinc-800/50 items-center transition-all duration-500 min-w-[520px] ${
                 i < visibleRows ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
               }`}
             >
@@ -103,7 +103,7 @@ export function SlideCongressMilitaryTrialsRatio() {
                   href={`https://optimitron.com/governments/US/politicians/${pol.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-pixel text-xl text-zinc-200 hover:text-cyan-400 transition-colors"
+                  className="font-pixel text-sm md:text-xl text-zinc-200 hover:text-cyan-400 transition-colors"
                 >
                   {pol.name}
                 </a>

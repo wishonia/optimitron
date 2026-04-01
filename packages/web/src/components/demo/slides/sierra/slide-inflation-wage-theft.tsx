@@ -116,7 +116,7 @@ export function SlideInflationWageTheft() {
         </div>
 
         {/* Pay stub comparison */}
-        <div className={`w-full grid grid-cols-2 gap-4 transition-opacity duration-500 ${
+        <div className={`w-full grid grid-cols-1 md:grid-cols-2 gap-4 transition-opacity duration-500 ${
           phase >= 3 ? "opacity-100" : "opacity-0"
         }`}>
           <div className="text-center p-4 bg-emerald-500/10 border border-emerald-500/30 rounded">

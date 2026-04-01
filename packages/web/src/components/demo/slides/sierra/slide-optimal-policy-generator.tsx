@@ -177,16 +177,16 @@ export function SlideOptimalPolicyGenerator() {
               <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest" style={{ color: palette.muted }}>
                 Policy
               </div>
-              <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest text-center w-28 md:w-36" style={{ color: palette.muted }}>
+              <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest text-center w-16 md:w-36" style={{ color: palette.muted }}>
                 Health
               </div>
-              <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest text-center w-28 md:w-36" style={{ color: palette.muted }}>
+              <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest text-center w-16 md:w-36" style={{ color: palette.muted }}>
                 Income
               </div>
-              <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest text-center w-16 md:w-24" style={{ color: palette.muted }}>
+              <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest text-center w-10 md:w-24" style={{ color: palette.muted }}>
                 Grade
               </div>
-              <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest text-center w-32 md:w-44" style={{ color: palette.muted }}>
+              <div className="font-pixel text-lg md:text-2xl uppercase tracking-widest text-center w-20 md:w-44" style={{ color: palette.muted }}>
                 Action
               </div>
             </div>
@@ -215,7 +215,7 @@ export function SlideOptimalPolicyGenerator() {
                     </div>
 
                     {/* Health effect */}
-                    <div className="text-center w-28 md:w-36">
+                    <div className="text-center w-16 md:w-36">
                       <span
                         className="font-pixel text-lg md:text-2xl"
                         style={{ color: effectColor(row.health, palette) }}
@@ -225,7 +225,7 @@ export function SlideOptimalPolicyGenerator() {
                     </div>
 
                     {/* Income effect */}
-                    <div className="text-center w-28 md:w-36">
+                    <div className="text-center w-16 md:w-36">
                       <span
                         className="font-pixel text-lg md:text-2xl"
                         style={{ color: effectColor(row.income, palette) }}
@@ -235,7 +235,7 @@ export function SlideOptimalPolicyGenerator() {
                     </div>
 
                     {/* Evidence grade */}
-                    <div className="text-center w-16 md:w-24">
+                    <div className="text-center w-10 md:w-24">
                       <span
                         className="font-pixel text-xl md:text-3xl font-bold"
                         style={{ color: gradeColor(row.grade, palette) }}
@@ -245,7 +245,7 @@ export function SlideOptimalPolicyGenerator() {
                     </div>
 
                     {/* Action badge */}
-                    <div className="flex justify-center w-32 md:w-44">
+                    <div className="flex justify-center w-20 md:w-44">
                       <span
                         className="font-pixel text-lg md:text-2xl px-2 py-0.5 rounded border"
                         style={{

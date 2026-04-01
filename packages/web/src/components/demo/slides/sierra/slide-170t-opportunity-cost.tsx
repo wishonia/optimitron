@@ -23,7 +23,7 @@ export function Slide170tOpportunityCost() {
         </div>
 
         {/* Side by side */}
-        <div className="grid grid-cols-2 gap-6 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
           {/* What they bought */}
           <div className="bg-muted border-2 border-brutal-red rounded-lg p-6 text-center">
             <div className="font-pixel text-xl md:text-2xl text-brutal-red mb-4">

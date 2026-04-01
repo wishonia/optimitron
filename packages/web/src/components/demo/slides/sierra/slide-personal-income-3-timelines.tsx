@@ -166,7 +166,7 @@ export function SlidePersonalIncome3Timelines() {
               </div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3">
                 <div>
                   <div className="font-pixel text-xs md:text-base text-zinc-400 mb-1">
                     LIFETIME INCOME

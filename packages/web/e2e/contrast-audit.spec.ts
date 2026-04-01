@@ -7,6 +7,15 @@
  */
 import { test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import * as fs from "fs";
+import * as path from "path";
+
+// Auto-discover all demo slide components from the sierra/ directory
+const DEMO_SLIDES = fs
+  .readdirSync(path.resolve(__dirname, "../src/components/demo/slides/sierra"))
+  .filter((f) => f.startsWith("slide-") && f.endsWith(".tsx"))
+  .map((f) => f.replace(/^slide-/, "").replace(/\.tsx$/, ""))
+  .sort();
 
 // All static routes from packages/web/src/lib/routes.ts
 const PAGES = [
@@ -37,7 +46,7 @@ const PAGES = [
   "/agencies/dih/discoveries",
   "/agencies/ddod",
   "/governments",
-  "/demo",
+  ...DEMO_SLIDES.map((id) => `/demo#${id}`),
 ];
 
 interface ContrastViolation {

@@ -100,7 +100,7 @@ export function SlideAlignmentSwitch() {
               HERE IS THE SWITCH
             </p>
 
-            <div className="flex items-center justify-center gap-4 md:gap-8">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
               {/* LEFT chart — Median Income (appears after switch) */}
               <div className={`text-center flex-1 transition-opacity duration-1000 ${leverOn ? "opacity-100" : "opacity-0"}`}>
                 <div className="font-pixel text-xl md:text-2xl text-emerald-400 mb-2">

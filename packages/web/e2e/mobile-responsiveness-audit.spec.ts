@@ -24,6 +24,13 @@ test.use({
   hasTouch: true,
 });
 
+// Auto-discover all demo slide components from the sierra/ directory
+const DEMO_SLIDES = fs
+  .readdirSync(path.resolve(__dirname, "../src/components/demo/slides/sierra"))
+  .filter((f) => f.startsWith("slide-") && f.endsWith(".tsx"))
+  .map((f) => f.replace(/^slide-/, "").replace(/\.tsx$/, ""))
+  .sort();
+
 // Same page list as contrast-audit.spec.ts
 const PAGES = [
   "/",
@@ -53,7 +60,7 @@ const PAGES = [
   "/agencies/dih/discoveries",
   "/agencies/ddod",
   "/governments",
-  "/demo",
+  ...DEMO_SLIDES.map((id) => `/demo#${id}`),
 ];
 
 interface ResponsivenessIssue {
@@ -248,7 +255,7 @@ for (const url of PAGES) {
     }
 
     // --- Take screenshot ---
-    const filename = url === "/" ? "home" : url.replace(/\//g, "_").replace(/^_/, "");
+    const filename = url === "/" ? "home" : url.replace(/[/#]/g, "_").replace(/^_/, "");
     await page.screenshot({
       path: path.join(screenshotDir, `${filename}.png`),
       fullPage: true,

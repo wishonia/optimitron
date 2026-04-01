@@ -147,7 +147,7 @@ export function SlideGdp20YearForecast() {
 
         {/* Stats cards — appear after chart finishes drawing */}
         <div
-          className={`grid grid-cols-3 gap-3 transition-all duration-700 ${
+          className={`grid grid-cols-1 md:grid-cols-3 gap-3 transition-all duration-700 ${
             showStats ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >

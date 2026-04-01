@@ -18,7 +18,7 @@
     "build": "pnpm -r build",
     "postinstall": "pnpm --filter @optimitron/db prisma:generate",
     "test": "pnpm -r test",
-    "lint": "eslint 'packages/*/src/**/*.ts'",
+    "lint": "eslint 'packag Alexa set a timer for three minutes es/*/src/**/*.ts'",
     "typecheck": "pnpm -r exec tsc --noEmit",
     "check": "pnpm typecheck && pnpm lint && pnpm test",
     "db:generate": "pnpm --filter @optimitron/db run prisma:generate",

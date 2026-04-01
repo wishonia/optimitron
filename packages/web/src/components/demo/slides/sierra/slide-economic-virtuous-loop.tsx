@@ -173,7 +173,7 @@ export function SlideEconomicVirtuousLoop() {
 
         {/* Side-by-side loops */}
         {phase >= 2 && (
-          <div className="flex items-start justify-center gap-8 md:gap-16 fade-up">
+          <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-8 md:gap-16 fade-up">
             <LoopCircle
               stations={VIRTUOUS}
               color="emerald"

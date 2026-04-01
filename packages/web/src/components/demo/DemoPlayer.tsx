@@ -185,7 +185,9 @@ function DemoPlayerInner({
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (hash) {
-      const idx = slides.findIndex((s) => s.id === hash);
+      let idx = slides.findIndex((s) => s.id === hash);
+      // Fallback: match on slideId so /demo#daily-death-toll works too
+      if (idx < 0) idx = slides.findIndex((s) => s.slideId === hash);
       if (idx >= 0) setCurrentIndex(idx);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only on mount
@@ -493,7 +495,7 @@ function DemoPlayerInner({
 
       {/* Wishonia character — bottom right, click to play */}
       <div
-        className="absolute -bottom-4 -right-2 z-20 cursor-pointer"
+        className="absolute -bottom-4 -right-2 z-20 cursor-pointer hidden md:block"
         onClick={() => {
           if (!isPlaying) {
             setIsPlaying(true);
@@ -501,6 +503,20 @@ function DemoPlayerInner({
         }}
       >
         <WishoniaPresenter analyserNode={analyserNode} />
+      </div>
+      {/* Mobile: smaller Wishonia */}
+      <div
+        className="absolute -bottom-2 right-1 z-20 cursor-pointer md:hidden overflow-hidden"
+        style={{ width: 80, height: 80 }}
+        onClick={() => {
+          if (!isPlaying) {
+            setIsPlaying(true);
+          }
+        }}
+      >
+        <div className="origin-top-left scale-[0.57]">
+          <WishoniaPresenter analyserNode={analyserNode} />
+        </div>
       </div>
 
       <MobileSettingsDrawer

@@ -25,27 +25,27 @@ function QuestMetrics() {
   const incomeProgress = (GLOBAL_AVG_INCOME_2025.value / TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value) * 100;
 
   return (
-    <div className="flex gap-4 px-2 py-1">
+    <div className="flex flex-col md:flex-row gap-1 md:gap-4 px-2 py-1">
       {/* HALE meter */}
-      <div className="flex items-center gap-2">
-        <span className="text-lg">❤️</span>
+      <div className="flex items-center gap-1 md:gap-2">
+        <span className="text-sm md:text-lg">❤️</span>
         <div className="flex flex-col gap-0.5">
-          <span className={`${ARCADE} text-xs text-brutal-cyan`}>
+          <span className={`${ARCADE} text-[10px] md:text-xs text-brutal-cyan`}>
             HALE {haleCurrent}→{haleTarget}
           </span>
-          <div className="w-28 h-2.5 bg-zinc-800 border border-brutal-cyan/50 rounded-sm overflow-hidden">
+          <div className="w-16 md:w-28 h-1.5 md:h-2.5 bg-zinc-800 border border-brutal-cyan/50 rounded-sm overflow-hidden">
             <div className="h-full bg-brutal-cyan" style={{ width: `${haleProgress}%` }} />
           </div>
         </div>
       </div>
       {/* Income meter */}
-      <div className="flex items-center gap-2">
-        <span className="text-lg">💰</span>
+      <div className="flex items-center gap-1 md:gap-2">
+        <span className="text-sm md:text-lg">💰</span>
         <div className="flex flex-col gap-0.5">
-          <span className={`${ARCADE} text-xs text-brutal-yellow`}>
+          <span className={`${ARCADE} text-[10px] md:text-xs text-brutal-yellow`}>
             INCOME {incomeCurrent}→{incomeTarget}
           </span>
-          <div className="w-28 h-2.5 bg-zinc-800 border border-brutal-yellow/50 rounded-sm overflow-hidden">
+          <div className="w-16 md:w-28 h-1.5 md:h-2.5 bg-zinc-800 border border-brutal-yellow/50 rounded-sm overflow-hidden">
             <div className="h-full bg-brutal-yellow" style={{ width: `${incomeProgress}%` }} />
           </div>
         </div>
@@ -77,20 +77,17 @@ function DeathTicker() {
   }, []);
 
   return (
-    <div className="flex items-center gap-2 px-2 py-1 justify-end text-right">
+    <div className="flex items-center gap-1 md:gap-2 px-2 py-1 justify-end text-right">
       <div className="flex flex-col gap-0.5 items-end text-right">
         <div className="flex items-center gap-1">
-          <span className="text-lg">💀</span>
-          <span className={`${ARCADE} text-xs text-brutal-red tabular-nums`} ref={ref}>0</span>
+          <span className="text-sm md:text-lg">💀</span>
+          <span className={`${ARCADE} text-[10px] md:text-xs text-brutal-red tabular-nums`} ref={ref}>0</span>
         </div>
-        <span className={`${ARCADE} text-xs text-brutal-red`}>
-          HUMANS 
-        </span>
-        <span className={`${ARCADE} text-xs text-brutal-red`}>
-          TERMINATED
+        <span className={`${ARCADE} text-[10px] md:text-xs text-brutal-red`}>
+          HUMANS TERMINATED
         </span>
         <div className="flex items-center gap-1.5 justify-end">
-          <span className={`${ARCADE} text-[10px] text-muted-foreground`}>THIS SESSION</span>
+          <span className={`${ARCADE} text-[8px] md:text-[10px] text-muted-foreground`}>THIS SESSION</span>
         </div>
       </div>
     </div>

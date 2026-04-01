@@ -79,7 +79,7 @@ export function SlideHealthcareVsMilitaryRoi() {
       <div className="flex flex-col items-center gap-6 w-full max-w-[1700px] mx-auto">
         {/* Cards side by side */}
         {phase >= 1 && (
-          <div className="grid grid-cols-2 gap-6 w-full fade-up">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full fade-up">
             {/* MILITARY — money burns */}
             <div className="flex flex-col items-center gap-4 p-6 bg-black/40 border border-red-500/30 rounded">
               <div className="font-pixel text-2xl md:text-3xl text-red-400 tracking-widest">MILITARY</div>
