@@ -26,7 +26,7 @@ describe("Wishocratic items registry", () => {
     const pragmaticTrials = getDefaultWishocraticCatalogRecord("PRAGMATIC_CLINICAL_TRIALS");
 
     expect(getAvailableWishocraticItemsJurisdictions()).toEqual(["US"]);
-    expect(Object.keys(registryEntry?.wishocraticItems ?? {})).toHaveLength(22);
+    expect(Object.keys(registryEntry?.wishocraticItems ?? {})).toHaveLength(23);
     expect(registryEntry?.wishocraticItems.PRAGMATIC_CLINICAL_TRIALS.name).toBe(
       "Pragmatic Clinical Trials",
     );

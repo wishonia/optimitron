@@ -55,6 +55,13 @@ export interface WishocraticItemDefinition {
   readonly annualBudgetBillions: number;
   /** URL to the authoritative source for the annualBudgetBillions figure */
   readonly budgetSourceUrl: string | null;
+  /**
+   * Estimated citizen allocation percentage (0-100) based on survey data.
+   * Seeded from Gallup/Pew/Chicago Council polling; updated periodically from
+   * live RAPPA pairwise comparison results in the database.
+   * All values must sum to 100 across items.
+   */
+  readonly estimatedCitizenAllocationPct: number;
   /** ROI data with source citation (null if no clear ROI framing) */
   readonly roiData: Readonly<WishocraticItemRoiData> | null;
   /** Evidence sources */
@@ -101,6 +108,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '💰',
     annualBudgetBillions: 0,
     budgetSourceUrl: null,
+    estimatedCitizenAllocationPct: 5,
     roiData: {
       source: 'GiveDirectly RCTs',
       ratio: '1:1',
@@ -124,6 +132,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🔬',
     annualBudgetBillions: 2,
     budgetSourceUrl: 'https://www.nih.gov/about-nih/what-we-do/budget',
+    estimatedCitizenAllocationPct: 8,
     roiData: {
       source: 'Copenhagen Consensus',
       ratio: '45:1',
@@ -147,6 +156,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🏥',
     annualBudgetBillions: 13,
     budgetSourceUrl: 'https://www.samhsa.gov/about-us/budget',
+    estimatedCitizenAllocationPct: 6,
     roiData: {
       source: 'NIDA Research',
       ratio: '7:1',
@@ -156,6 +166,8 @@ export const US_WISHOCRATIC_ITEMS = {
     sources: [
       { name: 'NIDA — Treatment is cost-effective (7:1 ROI)', url: 'https://nida.nih.gov/publications/principles-drug-addiction-treatment-research-based-guide-third-edition/frequently-asked-questions/drug-addiction-treatment-worth-its-cost' },
       { name: 'SAMHSA — 2023 National Survey on Drug Use and Health', url: 'https://www.samhsa.gov/data/data-we-collect/nsduh-national-survey-drug-use-and-health/national-releases/2023' },
+      { name: 'SAMHSA TEDS — 29% treatment completion rate', url: 'https://www.samhsa.gov/data/data-we-collect/teds/datapage' },
+      { name: 'NIDA — 40-60% relapse rates, 80%+ without MAT', url: 'https://nida.nih.gov/publications/drugs-brains-behavior-science-addiction/treatment-recovery' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'health_discretionary', share: 1.0 },
@@ -170,6 +182,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '👶',
     annualBudgetBillions: 13,
     budgetSourceUrl: 'https://www.acf.hhs.gov/ohs/about/head-start',
+    estimatedCitizenAllocationPct: 8,
     roiData: {
       source: 'Heckman Equation',
       ratio: '13:1',
@@ -178,6 +191,8 @@ export const US_WISHOCRATIC_ITEMS = {
     },
     sources: [
       { name: 'Heckman Equation — 13:1 ROI Toolbox', url: 'https://heckmanequation.org/resource/13-roi-toolbox/' },
+      { name: 'HHS — Head Start Impact Study: gains fade by 3rd grade', url: 'https://www.acf.hhs.gov/opre/report/third-grade-follow-head-start-impact-study-final-report' },
+      { name: 'NAEP — Reading scores flat since 1971 despite 3x spending', url: 'https://nces.ed.gov/nationsreportcard/ltt/' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'education', share: 1.0 },
@@ -192,6 +207,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🔐',
     annualBudgetBillions: 3,
     budgetSourceUrl: 'https://www.cisa.gov/about',
+    estimatedCitizenAllocationPct: 3,
     roiData: {
       source: 'CISA / GAO Reports',
       ratio: '20:1',
@@ -201,6 +217,7 @@ export const US_WISHOCRATIC_ITEMS = {
     sources: [
       { name: 'CISA — Cybersecurity Best Practices', url: 'https://www.cisa.gov/topics/cybersecurity-best-practices' },
       { name: 'GAO — Critical Infrastructure Protection', url: 'https://www.gao.gov/products/gao-23-106441' },
+      { name: 'FBI IC3 — $12.5B in cybercrime losses, 880K complaints (2023)', url: 'https://www.ic3.gov/AnnualReport/Reports/2023_IC3Report.pdf' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'homeland_security', share: 0.7 },
@@ -218,6 +235,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🚔',
     annualBudgetBillions: 75,
     budgetSourceUrl: 'https://www.whitehouse.gov/ondcp/budget/',
+    estimatedCitizenAllocationPct: 2,
     roiData: {
       source: 'Cato Institute',
       ratio: 'Negative ROI',
@@ -232,6 +250,9 @@ export const US_WISHOCRATIC_ITEMS = {
       { name: 'Pew Research — More imprisonment does not reduce state drug problems', url: 'https://www.pewtrusts.org/en/research-and-analysis/issue-briefs/2018/03/more-imprisonment-does-not-reduce-state-drug-problems' },
       { name: 'Transform — Portugal drug decriminalisation results', url: 'https://transformdrugs.org/blog/drug-decriminalisation-in-portugal-setting-the-record-straight' },
       { name: 'Cato Institute — Four decades of failure', url: 'https://www.cato.org/policy-analysis/four-decades-counting-continued-failure-war-drugs' },
+      { name: 'USSC — 44% of drug offenders rearrested for new drug offence', url: 'https://www.ussc.gov/research/research-reports/recidivism-federal-drug-trafficking-offenders' },
+      { name: 'BOP — $39,158/yr average cost per federal inmate', url: 'https://www.federalregister.gov/documents/2023/11/01/2023-24174/annual-determination-of-average-cost-of-incarceration-fee-acif' },
+      { name: 'EMCDDA — Portugal: drug deaths 3/million vs EU avg 23.7', url: 'https://www.emcdda.europa.eu/countries/drug-reports/2023/portugal_en' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'justice', share: 0.6 },
@@ -241,27 +262,48 @@ export const US_WISHOCRATIC_ITEMS = {
     type: 'existing' as const,
     jurisdictionCode: 'US',
   },
-  ICE_IMMIGRATION_ENFORCEMENT: {
-    slug: 'ice',
-    name: 'Mass Immigrant Detention Camps',
-    description: 'ICE enforcement, detention, and removal operations. Cost per deportation: $10,900-$12,500. Detention: $142/day average, 55-day average stay. Of ICE arrests in FY2023, 27% had criminal convictions; 73% had no criminal record. Immigration court backlog: 3.7 million pending cases. Average case takes 4+ years. Alternatives to detention cost $4.50/day with 90%+ court appearance rates.',
-    icon: '🚨',
-    annualBudgetBillions: 10,
+  ICE_CRIMINAL_DEPORTATION: {
+    slug: 'ice_criminal',
+    name: 'Deporting Criminal Immigrants',
+    description: 'ICE enforcement targeting immigrants with criminal convictions. Of ICE arrests in FY2023, 27% had criminal convictions. Cost per deportation: $10,900-$12,500. Detention: $142/day average, 55-day average stay. Immigration court backlog: 3.7 million pending cases, average case takes 4+ years.',
+    icon: '🚔',
+    annualBudgetBillions: 3,
     budgetSourceUrl: 'https://www.dhs.gov/sites/default/files/2024-03/2024_0311_cfo_fy2025bib.pdf',
+    estimatedCitizenAllocationPct: 3,
+    roiData: null,
+    sources: [
+      { name: 'ICE ERO — FY2023 Annual Report (27% criminal, 73% non-criminal)', url: 'https://www.ice.gov/doclib/eoy/eroReportFY2023.pdf' },
+      { name: 'American Immigration Council — Cost per deportation $10,900-$12,500', url: 'https://www.americanimmigrationcouncil.org/research/the-cost-of-immigration-enforcement' },
+      { name: 'TRAC — 3.7M immigration court backlog', url: 'https://trac.syr.edu/phptools/immigration/court_backlog/' },
+    ],
+    fiscalCategoryMappings: [
+      { fiscalCategoryId: 'homeland_security', share: 0.8 },
+      { fiscalCategoryId: 'justice', share: 0.2 },
+    ],
+    type: 'existing' as const,
+    jurisdictionCode: 'US',
+  },
+  ICE_NONCRIMINAL_DEPORTATION: {
+    slug: 'ice_noncriminal',
+    name: 'Deporting Non-Criminal Immigrants',
+    description: 'ICE enforcement targeting immigrants with no criminal record. 73% of ICE arrests in FY2023 had no criminal conviction. Undocumented immigrants pay $96.7 billion in taxes annually while being barred from most benefits. Alternatives to detention cost $4.50/day with 90%+ court appearance rates vs $142/day for detention. CBO projects immigration reduces federal deficits by $0.9 trillion over 2024-2034.',
+    icon: '🚨',
+    annualBudgetBillions: 7,
+    budgetSourceUrl: 'https://www.dhs.gov/sites/default/files/2024-03/2024_0311_cfo_fy2025bib.pdf',
+    estimatedCitizenAllocationPct: 2,
     roiData: {
       source: 'Cato Institute / CBO',
       ratio: 'Negative ROI',
-      description: 'Immigrants created $14.5T fiscal surplus (1994-2023); deportation reduces GDP and tax revenue',
+      description: 'Deporting net tax contributors; CBO projects immigration reduces deficits by $0.9T (2024-2034)',
       sourceUrl: 'https://www.cato.org/white-paper/immigrants-recent-effects-government-budgets-1994-2023',
     },
     sources: [
-      { name: 'Cato Institute — Immigrants reduced deficits by $14.5 trillion (1994-2023)', url: 'https://www.cato.org/white-paper/immigrants-recent-effects-government-budgets-1994-2023' },
-      { name: 'CBO — Immigration surge reduces deficits by $0.9 trillion (2024-2034)', url: 'https://www.cbo.gov/publication/60569' },
+      { name: 'ICE ERO — FY2023 Annual Report (73% non-criminal)', url: 'https://www.ice.gov/doclib/eoy/eroReportFY2023.pdf' },
       { name: 'ITEP — Undocumented immigrants paid $96.7B in taxes (2022)', url: 'https://itep.org/undocumented-immigrants-taxes-2024/' },
+      { name: 'CBO — Immigration reduces deficits by $0.9T (2024-2034)', url: 'https://www.cbo.gov/publication/60569' },
       { name: 'PNAS — Undocumented immigrants half as likely to be arrested for violent crime', url: 'https://www.pnas.org/doi/10.1073/pnas.2014704117' },
-      { name: 'National Immigration Forum — Detention costs $152-$165/day vs $4.50/day alternatives', url: 'https://forumtogether.org/article/immigration-detention-costs-in-a-time-of-mass-deportation/' },
-      { name: 'American Immigration Council — ICE/CBP budget tripled since 2003', url: 'https://www.americanimmigrationcouncil.org/fact-sheet/the-cost-of-immigration-enforcement-and-border-security/' },
-      { name: 'Penn Wharton — Mass deportation GDP impact analysis', url: 'https://budgetmodel.wharton.upenn.edu/issues/2025/7/28/mass-deportation-of-unauthorized-immigrants-fiscal-and-economic-effects' },
+      { name: 'National Immigration Forum — Detention $142/day vs alternatives $4.50/day', url: 'https://forumtogether.org/article/immigration-detention-costs-in-a-time-of-mass-deportation/' },
+      { name: 'Penn Wharton — Mass deportation GDP impact', url: 'https://budgetmodel.wharton.upenn.edu/issues/2025/7/28/mass-deportation-of-unauthorized-immigrants-fiscal-and-economic-effects' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'homeland_security', share: 0.8 },
@@ -277,6 +319,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🌽',
     annualBudgetBillions: 22,
     budgetSourceUrl: 'https://www.cbo.gov/topics/agriculture',
+    estimatedCitizenAllocationPct: 2,
     roiData: {
       source: 'EWG Analysis',
       ratio: 'Low ROI',
@@ -284,7 +327,9 @@ export const US_WISHOCRATIC_ITEMS = {
       sourceUrl: 'https://www.ewg.org/research/farm-subsidies',
     },
     sources: [
-      { name: 'EWG — Farm subsidy distribution analysis', url: 'https://www.ewg.org/research/farm-subsidies' },
+      { name: 'EWG — Farm subsidy distribution (top 10% get 78%)', url: 'https://www.ewg.org/research/updated-ewg-farm-subsidy-database-shows-largest-producers-reap-billions-despite-climate' },
+      { name: 'USDA Census of Agriculture 2022 — Farm count decline', url: 'https://www.nass.usda.gov/Publications/AgCensus/2022/' },
+      { name: 'USDA ERS — 40% of corn to ethanol', url: 'https://www.ers.usda.gov/data-products/feed-grains-database/' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'agriculture', share: 1.0 },
@@ -299,6 +344,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🛢️',
     annualBudgetBillions: 11,
     budgetSourceUrl: 'https://home.treasury.gov/policy-issues/tax-policy/tax-expenditures',
+    estimatedCitizenAllocationPct: 1,
     roiData: {
       source: 'IMF Analysis',
       ratio: 'Negative ROI',
@@ -326,6 +372,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '☢️',
     annualBudgetBillions: 61,
     budgetSourceUrl: 'https://www.cbo.gov/publication/59054',
+    estimatedCitizenAllocationPct: 2,
     roiData: {
       source: 'Arms Control Association',
       ratio: 'Low ROI',
@@ -353,6 +400,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🔒',
     annualBudgetBillions: 55,
     budgetSourceUrl: 'https://bjs.ojp.gov/topics/corrections',
+    estimatedCitizenAllocationPct: 5,
     roiData: {
       source: 'Vera Institute / BJS',
       ratio: 'Low ROI',
@@ -372,20 +420,22 @@ export const US_WISHOCRATIC_ITEMS = {
     jurisdictionCode: 'US',
   },
 
-  // ─── TRADITIONAL/NECESSARY (for comparison) ─────────────────────────
+  // ─── MILITARY ────────────────────────────────────────────────────────
   MILITARY_OPERATIONS: {
     slug: 'military',
     name: 'Base Military Budget',
-    description: 'The largest military budget on the planet by a factor of three. Troop salaries, weapons procurement, R&D, base operations, training, and maintenance — excluding nuclear weapons and active conflicts broken out separately. Since 2001, the War on Terror produced a 9x increase in global terrorist attacks (1,800/yr to 16,900/yr). Countries with active jihadist groups tripled from 12 to 40+. Whether this makes you safer or just makes defence contractors richer is a question your political system is structurally incapable of asking.',
+    description: 'The full Pentagon budget — troop salaries, weapons procurement, R&D, base operations, training, and maintenance — excluding nuclear weapons and active conflicts broken out separately. The largest military budget on the planet by a factor of three. GAO found $756 billion in cumulative cost overruns across 84 major acquisition programmes. Only 4 of 28 met all cost, schedule, and performance goals. The F-35 is 78% over budget and 10+ years behind schedule.',
     icon: '🛡️',
     annualBudgetBillions: 806,
     budgetSourceUrl: 'https://comptroller.defense.gov/Budget-Materials/',
+    estimatedCitizenAllocationPct: 10,
     roiData: null,
     sources: [
-      { name: 'Watson Institute — $8 trillion total cost of post-9/11 wars', url: 'https://watson.brown.edu/costsofwar/figures/2023/BudgetaryCosts' },
-      { name: 'Global Terrorism Database — Attacks rose from 1,800/yr to 16,900/yr', url: 'https://www.start.umd.edu/gtd/' },
-      { name: 'CSIS — Jihadist groups tripled from ~12 to 40+ countries', url: 'https://www.csis.org/analysis/evolution-salafi-jihadist-threat' },
-      { name: 'SIGAR — Taliban retook Afghanistan in 11 days after 20 years', url: 'https://www.sigar.mil/pdf/lessonslearned/SIGAR-21-46-LL.pdf' },
+      { name: 'DoD Comptroller — FY2025 Budget Materials', url: 'https://comptroller.defense.gov/Budget-Materials/' },
+      { name: 'GAO — $756B cumulative cost overruns, 4/28 programs met goals', url: 'https://www.gao.gov/products/gao-24-106815' },
+      { name: 'GAO — F-35 78% cost overrun, $1.7T lifecycle', url: 'https://www.gao.gov/products/gao-24-106473' },
+      { name: 'Watson Institute — $8T total cost of post-9/11 wars', url: 'https://watson.brown.edu/costsofwar/figures/2023/BudgetaryCosts' },
+      { name: 'Global Terrorism Database — Attacks 1,800/yr to 16,900/yr', url: 'https://www.start.umd.edu/gtd/' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'military', share: 1.0 },
@@ -402,6 +452,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '💣',
     annualBudgetBillions: 37,
     budgetSourceUrl: 'https://www.csis.org/analysis/iran-war-cost-estimate-update-113-billion-day-6-165-billion-day-12',
+    estimatedCitizenAllocationPct: 1,
     roiData: {
       source: 'CSIS / Pentagon briefing to Senate Appropriations',
       ratio: 'Negative ROI',
@@ -426,10 +477,11 @@ export const US_WISHOCRATIC_ITEMS = {
   ISRAEL_GAZA_MILITARY_AID: {
     slug: 'israel_gaza_aid',
     name: "Military Aid for Israel's War in Gaza",
-    description: 'Weapons and munitions funding operations that UN experts have characterised as genocide, with over 65,000 Palestinian civilians killed. The diplomatic cost to the US is incalculable. On my planet, paying for someone else\'s war crimes is also considered a war crime. Here you call it "strategic alliance."',
+    description: 'Weapons and munitions since October 2023, funding operations that UN experts have characterised as genocide, with over 65,000 Palestinian civilians killed. Gallup (July 2025): 32% of Americans approve of Israel\'s military action in Gaza, down from 50% in 2023. Quinnipiac (August 2025): 60% oppose sending more military aid.',
     icon: '🇮🇱',
     annualBudgetBillions: 15,
     budgetSourceUrl: 'https://crsreports.congress.gov/product/pdf/RL/RL33222',
+    estimatedCitizenAllocationPct: 0,
     roiData: {
       source: 'Quincy Institute / Congressional Research Service',
       ratio: 'Negative ROI',
@@ -438,6 +490,9 @@ export const US_WISHOCRATIC_ITEMS = {
     },
     sources: [
       { name: 'Quincy Institute — $21.7B in US military aid to Israel since Oct 2023', url: 'https://quincyinst.org/research/u-s-military-aid-and-arms-transfers-to-israel-october-2023-september-2025/' },
+      { name: 'CRS — U.S. Foreign Aid to Israel', url: 'https://crsreports.congress.gov/product/pdf/RL/RL33222' },
+      { name: 'Gallup — 32% approve Israel military action in Gaza (July 2025)', url: 'https://news.gallup.com/poll/692948/u.s.-back-israel-military-action-gaza-new-low.aspx' },
+      { name: 'Quinnipiac — 60% oppose more military aid to Israel (August 2025)', url: 'https://poll.qu.edu/poll-release?releaseid=3929' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'foreign_aid', share: 0.5 },
@@ -453,6 +508,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🚢',
     annualBudgetBillions: 4,
     budgetSourceUrl: 'https://www.csis.org/analysis/',
+    estimatedCitizenAllocationPct: 1,
     roiData: {
       source: 'Congressional Research Service',
       ratio: 'Low ROI',
@@ -478,6 +534,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🏦',
     annualBudgetBillions: 142,
     budgetSourceUrl: 'https://www.jct.gov/publications/2024/jcx-1-24/',
+    estimatedCitizenAllocationPct: 1,
     roiData: {
       source: 'Cato Institute',
       ratio: 'Low ROI',
@@ -490,6 +547,8 @@ export const US_WISHOCRATIC_ITEMS = {
       { name: 'Bloomberg — Foxconn delivered 1,454 of 13,000 promised jobs', url: 'https://www.bloomberg.com/news/features/2019-02-06/inside-wisconsin-s-disastrous-4-5-billion-deal-with-foxconn' },
       { name: 'Springer — 75-98% of subsidised projects happen without the incentive', url: 'https://link.springer.com/article/10.1007/s11142-023-09804-6' },
       { name: 'Cato Institute — Corporate welfare in the federal budget', url: 'https://www.cato.org/policy-analysis/corporate-welfare-federal-budget-0' },
+      { name: 'Good Jobs First — 38% job creation shortfall across subsidy deals', url: 'https://www.goodjobsfirst.org/subsidy-tracker' },
+      { name: 'Good Jobs First — Amazon built NYC office without $3B subsidy', url: 'https://www.goodjobsfirst.org/amazon-tracker' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'commerce', share: 0.5 },
@@ -499,12 +558,13 @@ export const US_WISHOCRATIC_ITEMS = {
     jurisdictionCode: 'US',
   },
   AI_MASS_SURVEILLANCE: {
-    slug: 'ai_surveillance',
-    name: 'AI Mass Surveillance Programs',
+    slug: 'mass_surveillance',
+    name: 'Mass Surveillance Programs',
     description: 'The NSA\'s bulk collection programme was reviewed by the Privacy and Civil Liberties Oversight Board, which found "not a single instance" where it made a concrete difference in a counterterrorism investigation. Facial recognition misidentifies Black faces at 10-100x the rate of white faces. The marginal cost per real terrorist detected via bulk surveillance exceeds $14 billion. You are building a panopticon that does not work and disproportionately harms minorities.',
     icon: '👁️',
     annualBudgetBillions: 5,
     budgetSourceUrl: 'https://www.dni.gov/index.php/what-we-do/ic-budget',
+    estimatedCitizenAllocationPct: 0,
     roiData: {
       source: 'Brennan Center for Justice',
       ratio: 'Negative ROI',
@@ -532,6 +592,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🔍',
     annualBudgetBillions: 9,
     budgetSourceUrl: 'https://www.justice.gov/jmd/page/file/1614846/download',
+    estimatedCitizenAllocationPct: 8,
     roiData: {
       source: 'FBI Uniform Crime Report / Bureau of Justice Statistics',
       ratio: 'Variable',
@@ -540,7 +601,9 @@ export const US_WISHOCRATIC_ITEMS = {
     },
     sources: [
       { name: 'BJS — Crime and justice data', url: 'https://bjs.ojp.gov/topics/crime' },
-      { name: 'FBI — Uniform Crime Reporting clearance rates', url: 'https://ucr.fbi.gov/' },
+      { name: 'FBI Crime Data Explorer — Clearance rates (50% homicide, 12% property)', url: 'https://cde.ucr.cjis.gov/LATEST/webapp/#/pages/explorer/crime/crime-trend' },
+      { name: 'End the Backlog — 100K-200K untested rape kits', url: 'https://www.endthebacklog.org/' },
+      { name: 'Detroit rape kit audit — 817 serial rapists identified from 11,341 kits', url: 'https://www.endthebacklog.org/detroit/' },
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'justice', share: 1.0 },
@@ -557,6 +620,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🌍',
     annualBudgetBillions: 30,
     budgetSourceUrl: 'https://www.usaid.gov/cj',
+    estimatedCitizenAllocationPct: 6,
     roiData: {
       source: 'Copenhagen Consensus / FEMA',
       ratio: '20:1',
@@ -581,6 +645,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🎖️',
     annualBudgetBillions: 120,
     budgetSourceUrl: 'https://www.va.gov/budget/',
+    estimatedCitizenAllocationPct: 12,
     roiData: {
       source: 'Congressional Budget Office',
       ratio: 'Moral Obligation',
@@ -589,7 +654,9 @@ export const US_WISHOCRATIC_ITEMS = {
     },
     sources: [
       { name: 'VA — Budget and financial reports', url: 'https://www.va.gov/budget/' },
-      { name: 'VA — National Veteran Suicide Prevention Annual Report', url: 'https://www.mentalhealth.va.gov/suicide_prevention/data.asp' },
+      { name: 'VA — National Veteran Suicide Prevention Annual Report (17.5/day)', url: 'https://www.mentalhealth.va.gov/docs/data-sheets/2023/2023-National-Veteran-Suicide-Prevention-Annual-Report-FINAL-508.pdf' },
+      { name: 'VA OIG — Mental health wait times avg 36 days', url: 'https://www.va.gov/oig/pubs/VAOIG-23-01676-52.pdf' },
+      { name: 'VA — 296K disability claims pending over 125 days', url: 'https://www.benefits.va.gov/reports/mmwr.asp' },
       { name: 'CBO — Veterans healthcare analysis', url: 'https://www.cbo.gov/topics/veterans' },
     ],
     fiscalCategoryMappings: [
@@ -605,6 +672,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '🚀',
     annualBudgetBillions: 25,
     budgetSourceUrl: 'https://www.nasa.gov/budgets-plans-and-reports/',
+    estimatedCitizenAllocationPct: 8,
     roiData: {
       source: 'NASA Economic Impact Report',
       ratio: '14:1',
@@ -630,6 +698,7 @@ export const US_WISHOCRATIC_ITEMS = {
     icon: '⚡',
     annualBudgetBillions: 10,
     budgetSourceUrl: 'https://www.energy.gov/cfo/articles/fy-2025-budget-justification',
+    estimatedCitizenAllocationPct: 6,
     roiData: {
       source: 'IEA / IRENA',
       ratio: '8:1',
