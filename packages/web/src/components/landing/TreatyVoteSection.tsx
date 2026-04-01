@@ -259,7 +259,7 @@ export default function TreatyVoteSection() {
     >
       <Container>
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black uppercase text-center mb-10">
-          THE <span className="text-brutal-pink">QUESTION</span>
+          THE <span className="text-brutal-yellow-foreground">QUESTION</span>
         </h2>
 
         {/* Slider Card — Shows First */}

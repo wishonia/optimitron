@@ -35,19 +35,19 @@ export function OutcomeLabel({ title, subtitle, tag, data, footer }: OutcomeLabe
   const renderProgressBar = (item: OutcomeItem, isSideEffect: boolean = false) => {
     // Determine color based on positivity or if it's a side effect
     const colorClass = isSideEffect
-      ? 'bg-amber-500' // Use amber for side effects if isPositive is not explicitly set
+      ? 'bg-brutal-yellow' // Use yellow for side effects
       : item.isPositive === true
-        ? 'bg-green-600'
+        ? 'bg-brutal-green'
         : item.isPositive === false
-          ? 'bg-red-600'
+          ? 'bg-brutal-red'
           : 'bg-muted-foreground'; // Default or neutral color if positivity is undefined and not a side effect
 
     const textColorClass = isSideEffect
-        ? 'text-red-600' // Side effects usually shown in red/amber text
+        ? 'text-brutal-red' // Side effects usually shown in red text
         : item.isPositive === true
-          ? 'text-green-600'
+          ? 'text-brutal-green'
           : item.isPositive === false
-            ? 'text-red-600'
+            ? 'text-brutal-red'
             : 'text-muted-foreground';
 
     const valueString = `${item.value.percentage > 0 ? '+' : ''}${item.value.percentage}%` +

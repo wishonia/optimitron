@@ -97,7 +97,7 @@ export function ParameterValue({
         onPointerEnter={handleEnter}
         onPointerLeave={handleLeave}
         sideOffset={4}
-        className="max-w-sm border-4 border-primary bg-background p-4 text-left shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+        className="max-w-sm border-4 border-primary bg-background text-foreground p-4 text-left shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
       >
         <ParameterPopoverContent param={param} confidenceInterval={confidenceInterval} />
       </Popover.Content>

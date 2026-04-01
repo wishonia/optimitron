@@ -55,8 +55,8 @@ export function ReferralGoalCard({ stats }: ReferralGoalCardProps) {
           </div>
 
           <p className="text-sm font-bold text-center">
-            {stats.referrals < 3
-              ? "Share your link — get 3 friends to play!"
+            {stats.referrals < GAME.referralGoal
+              ? `Share your link — get ${GAME.referralGoal} friends to play!`
               : stats.referrals < 5
                 ? "You're in the top 50%! Can you reach 5?"
                 : stats.referrals < 10
