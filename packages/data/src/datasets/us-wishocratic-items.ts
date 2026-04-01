@@ -143,7 +143,7 @@ export const US_WISHOCRATIC_ITEMS = {
   ADDICTION_TREATMENT: {
     slug: 'addiction_treatment',
     name: 'Addiction Treatment Programs',
-    description: 'Harm reduction, medication-assisted treatment, and recovery support programmes. 46.3 million Americans meet criteria for substance use disorder. 94% receive no treatment. Of those who do, completion rates vary wildly by programme quality.',
+    description: 'Harm reduction, medication-assisted treatment (MAT), and recovery support programmes. 46.3 million Americans meet criteria for substance use disorder. 94% receive no treatment. Of those in publicly funded programmes, 29% complete treatment. Relapse rate without MAT: 80%+ within one year. Only 22% of people with opioid use disorder receive any MAT despite it cutting overdose death risk in half.',
     icon: '🏥',
     annualBudgetBillions: 13,
     budgetSourceUrl: 'https://www.samhsa.gov/about-us/budget',
@@ -273,7 +273,7 @@ export const US_WISHOCRATIC_ITEMS = {
   FARM_SUBSIDIES_AGRIBUSINESS: {
     slug: 'farm_subsidies',
     name: 'Agribusiness Subsidies',
-    description: 'Commodity payments, crop insurance subsidies, and conservation programmes. The top 8% of farms receive 62% of all payments. US farm count: 6.8 million (1935) → 2.04 million (2022) despite continuous subsidies since 1933. 40% of subsidized corn goes to ethanol, 36% to animal feed, ~10% to human food. 142,000 farms lost between 2017-2022 alone.',
+    description: 'Commodity payments, crop insurance subsidies, and conservation programmes. The top 10% of agribusiness corporations receive 78% of all payments. The top 1% receive 27%. The bottom 80% of recipients share 9%. US farm count: 6.8 million (1935) → 2.04 million (2022) despite continuous subsidies since 1933. 40% of subsidized corn goes to ethanol, 36% to animal feed, ~10% to human food.',
     icon: '🌽',
     annualBudgetBillions: 22,
     budgetSourceUrl: 'https://www.cbo.gov/topics/agriculture',

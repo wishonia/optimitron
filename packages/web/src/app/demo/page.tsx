@@ -1,4 +1,5 @@
 import { DemoPlayer } from "@/components/demo/DemoPlayer";
+import { DarkThemeOverride } from "@/components/DarkThemeOverride";
 import { DEFAULT_PLAYLIST_ID, getPlaylist } from "@/lib/demo-script";
 import { demoLink } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
@@ -16,6 +17,7 @@ export default async function DemoPage({ searchParams }: PageProps) {
 
   return (
     <>
+      <DarkThemeOverride />
       {/* Presentation mode — hide site chrome */}
       <style>{`
         nav, footer { display: none !important; }
