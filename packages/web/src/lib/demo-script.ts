@@ -1055,7 +1055,7 @@ export const SEGMENTS = [
     slideId: "decentralized-irs",
     tags: ["feature"],
     act: "II-armory",
-    narration: "Your tax code is 74,000 pages. It costs 546 billion dollars a year in compliance. A 0.5 percent transaction tax does the same job in four lines of Solidity. No filing. No accountants. No loopholes. No lobbyist can bribe a smart contract to give their client a tax loophole.",
+    narration: "Your tax code is 74,000 pages. It costs 546 billion dollars a year in compliance. A 0.5 percent transaction tax does the same job in four lines of Solidity. No filing. No accountants. No lobbyist can bribe a smart contract to give their client a tax loophole.",
   },
   {
     id: "decentralized-welfare",

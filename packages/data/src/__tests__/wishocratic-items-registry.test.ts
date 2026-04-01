@@ -26,14 +26,14 @@ describe("Wishocratic items registry", () => {
     const pragmaticTrials = getDefaultWishocraticCatalogRecord("PRAGMATIC_CLINICAL_TRIALS");
 
     expect(getAvailableWishocraticItemsJurisdictions()).toEqual(["US"]);
-    expect(Object.keys(registryEntry?.wishocraticItems ?? {})).toHaveLength(18);
+    expect(Object.keys(registryEntry?.wishocraticItems ?? {})).toHaveLength(22);
     expect(registryEntry?.wishocraticItems.PRAGMATIC_CLINICAL_TRIALS.name).toBe(
       "Pragmatic Clinical Trials",
     );
     expect(pragmaticTrials).toMatchObject({
       id: "PRAGMATIC_CLINICAL_TRIALS",
       jurisdictionCode: "US",
-      currentAllocationUsd: 1_000_000_000,
+      currentAllocationUsd: 2_000_000_000,
       sourceUrl: "https://copenhagenconsensus.com/copenhagen-consensus-iii/outcome",
     });
     expect(allocations.MILITARY_OPERATIONS).toBeGreaterThan(

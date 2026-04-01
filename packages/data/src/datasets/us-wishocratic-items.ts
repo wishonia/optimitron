@@ -97,7 +97,7 @@ export const US_WISHOCRATIC_ITEMS = {
   UNIVERSAL_BASIC_INCOME: {
     slug: 'universal_basic_income',
     name: 'Universal Basic Income',
-    description: 'Direct cash to every verified citizen. No conditions, no bureaucracy, no means-testing committees staffed by people who have never missed a meal deciding whether you deserve to eat. GiveDirectly RCTs show unconditional transfers increase earnings by 38%, reduce food insecurity by 42%, and cost 90 cents per dollar delivered. Your current welfare system costs $2.30 per dollar delivered. You are paying $1.30 extra per dollar just for the privilege of humiliating people.',
+    description: 'Direct cash to every verified citizen. No conditions, no bureaucracy. Does not currently exist in the US. GiveDirectly RCTs measured outcomes: earnings up 38%, food insecurity down 42%, delivery cost 90 cents per dollar. The current US welfare system delivers $1.00 in benefits for $2.30 in spending.',
     icon: '💰',
     annualBudgetBillions: 0,
     budgetSourceUrl: null,
@@ -120,7 +120,7 @@ export const US_WISHOCRATIC_ITEMS = {
   PRAGMATIC_CLINICAL_TRIALS: {
     slug: 'pragmatic_clinical_trials',
     name: 'Pragmatic Clinical Trials',
-    description: 'Your species spends $4.7 trillion a year on healthcare but allocates roughly $1 billion to figuring out which treatments actually work. That is like buying 4.7 million cars and spending $1 on a mechanic. Pragmatic trials test drugs in real patients, in real hospitals, and produce answers in months instead of decades.',
+    description: 'Testing drugs in real patients, in real hospitals, producing answers in months instead of decades. The current FDA approval process averages 12 years. Pragmatic trials run in existing clinical settings at a fraction of traditional trial costs. 1.08 billion people have expressed willingness to participate in trials. Current capacity uses less than 1% of them.',
     icon: '🔬',
     annualBudgetBillions: 2,
     budgetSourceUrl: 'https://www.nih.gov/about-nih/what-we-do/budget',
@@ -143,7 +143,7 @@ export const US_WISHOCRATIC_ITEMS = {
   ADDICTION_TREATMENT: {
     slug: 'addiction_treatment',
     name: 'Addiction Treatment Programs',
-    description: 'Every dollar spent on evidence-based treatment saves seven in healthcare and criminal justice costs. Instead, you spend most of the money arresting people for being ill and then acting surprised when they relapse in prison. Harm reduction, medication-assisted treatment, and recovery support actually work. Weird how that keeps not mattering.',
+    description: 'Harm reduction, medication-assisted treatment, and recovery support programmes. 46.3 million Americans meet criteria for substance use disorder. 94% receive no treatment. Of those who do, completion rates vary wildly by programme quality.',
     icon: '🏥',
     annualBudgetBillions: 13,
     budgetSourceUrl: 'https://www.samhsa.gov/about-us/budget',
@@ -166,7 +166,7 @@ export const US_WISHOCRATIC_ITEMS = {
   EARLY_CHILDHOOD_EDUCATION: {
     slug: 'early_childhood_ed',
     name: 'Early Childhood Education',
-    description: 'The Heckman Equation shows $13 returned for every $1 invested in quality early childhood programs. Pre-K, Head Start, and childcare subsidies produce measurable gains in earnings, health, and reduced crime for decades. On my planet we consider failing to invest in children a form of economic self-harm. Here you call it "fiscal responsibility."',
+    description: 'Pre-K, Head Start, and childcare subsidies. Head Start serves about 800,000 children per year. Long-term studies show measurable gains in earnings and reduced crime for participants. Test score gains fade by third grade. Long-term income gains persist into adulthood.',
     icon: '👶',
     annualBudgetBillions: 13,
     budgetSourceUrl: 'https://www.acf.hhs.gov/ohs/about/head-start',
@@ -188,7 +188,7 @@ export const US_WISHOCRATIC_ITEMS = {
   CYBERSECURITY: {
     slug: 'cybersecurity',
     name: 'Cybersecurity & Infrastructure Protection',
-    description: 'You spend $886 billion a year on defence but less than 0.4% of that protecting the power grids, water systems, and hospitals that your entire civilisation depends on. Ransomware gangs are shutting down hospitals and pipelines while the military buys another aircraft carrier. It is like fitting seventeen deadbolts on the front door and leaving every window wide open.',
+    description: 'CISA — the federal agency that protects power grids, water systems, and hospitals from cyberattack. The Colonial Pipeline hack cost the US economy $3.4 billion. The SolarWinds breach compromised nine federal agencies. Ransomware attacks on hospitals doubled between 2022 and 2024. Whether this is a government responsibility or a private-sector one is a fair question. The hospitals currently getting ransomwared do not seem to have solved it on their own.',
     icon: '🔐',
     annualBudgetBillions: 3,
     budgetSourceUrl: 'https://www.cisa.gov/about',
@@ -211,12 +211,12 @@ export const US_WISHOCRATIC_ITEMS = {
   },
 
   // ─── WASTEFUL/LOW-ROI SPENDING ──────────────────────────────────────
-  DRUG_WAR_ENFORCEMENT: {
+  DRUG_WAR: {
     slug: 'drug_war',
-    name: 'Drug War Enforcement',
-    description: 'Fifty-plus years. Over one trillion dollars. Overdose deaths went from 6,100 per year in 1980 to 110,000 in 2023 — an 18x increase. Drug use rates are essentially unchanged. The number of people imprisoned for drug offences rose from 24,000 to 300,000. Meanwhile Portugal decriminalised everything in 2001 and drug deaths dropped 80%, HIV among users fell 95%. Pew Research found zero statistical relationship between drug imprisonment rates and drug use. You are funding the longest-running policy failure in recorded history.',
+    name: 'Drug War (Enforcement + Incarceration)',
+    description: 'Fifty-plus years. Over one trillion dollars cumulative. Overdose deaths went from 6,100 per year in 1980 to 110,000 in 2023 — an 18x increase. Drug use rates are essentially unchanged. 300,000 people imprisoned for drug offences. Meanwhile Portugal decriminalised everything in 2001 and drug deaths dropped 80%, HIV among users fell 95%. Pew Research found zero statistical relationship between drug imprisonment rates and drug use. You are funding the longest-running policy failure in recorded history.',
     icon: '🚔',
-    annualBudgetBillions: 35,
+    annualBudgetBillions: 75,
     budgetSourceUrl: 'https://www.whitehouse.gov/ondcp/budget/',
     roiData: {
       source: 'Cato Institute',
@@ -244,7 +244,7 @@ export const US_WISHOCRATIC_ITEMS = {
   ICE_IMMIGRATION_ENFORCEMENT: {
     slug: 'ice',
     name: 'Mass Immigrant Detention Camps',
-    description: 'It costs $150-$200 per day to detain one person — $55,000-$73,000 per year. Alternatives to detention cost $4.50/day with 90%+ court appearance rates. Immigrants are 60% less likely to be incarcerated than US-born citizens. Cato Institute found immigrants created a cumulative fiscal surplus of $14.5 trillion from 1994-2023 — every single year they paid more in taxes than they received. Undocumented immigrants alone pay $96.7 billion in taxes annually while being barred from collecting benefits. The CBO projects immigration reduces federal deficits by $0.9 trillion over 2024-2034. You are spending premium prices to remove people who subsidise your government.',
+    description: 'ICE enforcement, detention, and removal operations. Detention costs $150-$200 per day per person. Alternatives to detention cost $4.50/day with 90%+ court appearance rates. The immigration court backlog exceeds 3 million cases. Deportations remove both criminals and working taxpayers. The fiscal impact of immigration is debated — estimates range from net positive to net negative depending on methodology and time horizon.',
     icon: '🚨',
     annualBudgetBillions: 10,
     budgetSourceUrl: 'https://www.dhs.gov/sites/default/files/2024-03/2024_0311_cfo_fy2025bib.pdf',
@@ -295,7 +295,7 @@ export const US_WISHOCRATIC_ITEMS = {
   FOSSIL_FUEL_SUBSIDIES: {
     slug: 'fossil_fuel_subsidies',
     name: 'Fossil Fuel Subsidies',
-    description: 'You are paying $34.8 billion a year in direct subsidies to companies that posted $150 billion in combined profits in 2022. Solar is now 41% cheaper than the cheapest fossil fuel. Wind is 53% cheaper. 91% of new renewable projects undercut fossil fuels on cost. Climate damages already cost the US $240 billion per year — $7 in damage for every $1 in subsidy. You are paying companies to make the planet uninhabitable when the cheaper alternative is already sitting right there.',
+    description: 'Tax breaks and direct subsidies to oil, gas, and coal companies. Recipients posted $150 billion in combined profits in 2022. Solar is now 41% cheaper than the cheapest fossil fuel. Wind is 53% cheaper. The subsidies were created when fossil fuels were expensive and renewables did not exist. Neither of those things is true anymore.',
     icon: '🛢️',
     annualBudgetBillions: 11,
     budgetSourceUrl: 'https://home.treasury.gov/policy-issues/tax-policy/tax-expenditures',
@@ -322,7 +322,7 @@ export const US_WISHOCRATIC_ITEMS = {
   NUCLEAR_WEAPONS_MODERNIZATION: {
     slug: 'nuclear_weapons',
     name: 'Nuclear Weapons Development',
-    description: 'You have 3,700 stockpiled warheads. Defence analysts agree 200-311 provide full deterrence. The UK deters with 200. The 30-year modernisation plan costs $1.7 trillion. The Sentinel ICBM programme is 81% over budget at $141 billion. Research shows just 100 detonations would trigger nuclear winter and kill 5 billion people from famine. You are spending $60 billion a year to go from "can end civilisation 10 times" to "can end it 11 times."',
+    description: 'You have 3,700 stockpiled warheads. Defence analysts agree 200-311 provide full deterrence. The UK deters with 200. The 30-year modernisation plan costs $1.7 trillion. The Sentinel ICBM programme is 81% over budget. Research shows just 100 detonations would trigger nuclear winter and kill 5 billion people from famine. You are going from "can end civilisation 10 times" to "can end it 11 times."',
     icon: '☢️',
     annualBudgetBillions: 61,
     budgetSourceUrl: 'https://www.cbo.gov/publication/59054',
@@ -346,26 +346,23 @@ export const US_WISHOCRATIC_ITEMS = {
     type: 'existing' as const,
     jurisdictionCode: 'US',
   },
-  PRISON_CONSTRUCTION: {
-    slug: 'prisons',
-    name: 'Prison Construction & Operations',
-    description: 'The US went from 360,000 inmates in the 1970s to 2.3 million at peak — a 540% increase. Total corrections spending: $115 billion per year. Average cost per federal inmate: $47,162. Recidivism rate: 77% rearrested within 5 years. Since 2000, increased incarceration accounts for nearly zero percent of the crime drop. Norway invested in education and rehab, cut recidivism from 60% to 20%. The Netherlands closed 27 prisons because they ran out of prisoners. You are running the world\'s most expensive failure factory.',
-    icon: '🏢',
-    annualBudgetBillions: 95,
+  VIOLENT_CRIME_INCARCERATION: {
+    slug: 'violent_crime_incarceration',
+    name: 'Violent Crime Incarceration',
+    description: 'Locking up people who hurt other people — murders, assaults, robberies. About 55% of state prisoners are violent offenders. Average cost per inmate: $47,162. Recidivism rate: 77% rearrested within 5 years. Norway invested in education and rehabilitation, cut recidivism from 60% to 20%, and closed prisons for lack of prisoners. Your system has a 77% failure rate. Norway\'s has a 20% failure rate. Theirs costs less.',
+    icon: '🔒',
+    annualBudgetBillions: 55,
     budgetSourceUrl: 'https://bjs.ojp.gov/topics/corrections',
     roiData: {
-      source: 'Vera Institute',
-      ratio: 'Negative ROI',
-      description: 'Mass incarceration costs exceed education spending; recidivism remains 70%+',
+      source: 'Vera Institute / BJS',
+      ratio: 'Low ROI',
+      description: '77% recidivism despite $47K/yr per inmate; rehabilitation-focused systems achieve 80% success rates',
       sourceUrl: 'https://www.vera.org/publications/price-of-prisons-2023-update',
     },
     sources: [
-      { name: 'Sentencing Project — Mass incarceration trends (360K to 2.3M)', url: 'https://www.sentencingproject.org/reports/mass-incarceration-trends/' },
-      { name: 'Prison Policy Initiative — $115B/yr total corrections spending', url: 'https://www.prisonpolicy.org/reports/money2026.html' },
-      { name: 'Federal Register — $47,162/yr average federal incarceration cost', url: 'https://www.federalregister.gov/documents/2025/12/15/2025-22777/annual-determination-of-average-cost-of-incarceration-fee-coif' },
+      { name: 'BJS — 55% of state prisoners are violent offenders', url: 'https://bjs.ojp.gov/topics/corrections' },
       { name: 'BJS — 77% rearrested within 5 years', url: 'https://bjs.ojp.gov/topics/recidivism-and-reentry' },
-      { name: 'Brennan Center — Incarceration has near-zero effect on crime since 2000', url: 'https://www.brennancenter.org/our-work/analysis-opinion/between-2007-and-2017-34-states-reduced-crime-and-incarceration-tandem' },
-      { name: 'Vera Institute — The Prison Paradox', url: 'https://www.vera.org/publications/for-the-record-prison-paradox-incarceration-not-safer' },
+      { name: 'Federal Register — $47,162/yr average federal incarceration cost', url: 'https://www.federalregister.gov/documents/2025/12/15/2025-22777/annual-determination-of-average-cost-of-incarceration-fee-coif' },
       { name: 'US News — Netherlands closed 27 prisons for lack of prisoners', url: 'https://www.usnews.com/news/best-countries/articles/2019-05-13/the-netherlands-is-closing-its-prisons' },
     ],
     fiscalCategoryMappings: [
@@ -378,10 +375,10 @@ export const US_WISHOCRATIC_ITEMS = {
   // ─── TRADITIONAL/NECESSARY (for comparison) ─────────────────────────
   MILITARY_OPERATIONS: {
     slug: 'military',
-    name: 'Weapons Systems & Pentagon R&D',
-    description: 'The largest military budget on the planet by a factor of three. Since 2001 alone, $8 trillion spent on the War on Terror. Result: global terrorist attacks went from 1,800 per year to 16,900 (a 9x increase). Countries with active jihadist groups tripled from 12 to 40+. After 20 years and $2.3 trillion in Afghanistan, the Taliban retook the country in 11 days. Whether this makes you safer or just makes defence contractors richer is a question your political system is structurally incapable of asking.',
+    name: 'Base Military Budget',
+    description: 'The largest military budget on the planet by a factor of three. Troop salaries, weapons procurement, R&D, base operations, training, and maintenance — excluding nuclear weapons and active conflicts broken out separately. Since 2001, the War on Terror produced a 9x increase in global terrorist attacks (1,800/yr to 16,900/yr). Countries with active jihadist groups tripled from 12 to 40+. Whether this makes you safer or just makes defence contractors richer is a question your political system is structurally incapable of asking.',
     icon: '🛡️',
-    annualBudgetBillions: 311,
+    annualBudgetBillions: 806,
     budgetSourceUrl: 'https://comptroller.defense.gov/Budget-Materials/',
     roiData: null,
     sources: [
@@ -401,7 +398,7 @@ export const US_WISHOCRATIC_ITEMS = {
   BOMBING_IRAN: {
     slug: 'bombing_iran',
     name: 'Bombing Iran',
-    description: 'Operation Midnight Hammer hit three nuclear sites in June 2025 ($2 billion). Then Operation Epic Fury launched a full-scale war on February 28, 2026 — $11.3 billion in the first six days, $16.5 billion by day 12, roughly $1 billion per day ongoing. Your previous adventures in Iraq and Afghanistan cost $8 trillion, killed 400,000-900,000 civilians, displaced 38 million people, and created ISIS — which did not exist before the 2003 invasion. The Taliban retook Afghanistan in 11 days after 20 years and $2.3 trillion. But I am sure this time will be different.',
+    description: 'Operation Midnight Hammer hit three nuclear sites in June 2025. Then Operation Epic Fury launched a full-scale war on February 28, 2026 — roughly $1 billion per day ongoing. Your previous adventures in Iraq and Afghanistan killed 400,000-900,000 civilians, displaced 38 million people, and created ISIS — which did not exist before the 2003 invasion. The Taliban retook Afghanistan in 11 days after 20 years. But I am sure this time will be different.',
     icon: '💣',
     annualBudgetBillions: 37,
     budgetSourceUrl: 'https://www.csis.org/analysis/iran-war-cost-estimate-update-113-billion-day-6-165-billion-day-12',
@@ -429,7 +426,7 @@ export const US_WISHOCRATIC_ITEMS = {
   ISRAEL_GAZA_MILITARY_AID: {
     slug: 'israel_gaza_aid',
     name: "Military Aid for Israel's War in Gaza",
-    description: 'Twenty-one point seven billion dollars in weapons and munitions since October 2023, funding operations that UN experts have characterised as genocide, with over 65,000 Palestinian civilians killed. The diplomatic cost to the US is incalculable. On my planet, paying for someone else\'s war crimes is also considered a war crime. Here you call it "strategic alliance."',
+    description: 'Weapons and munitions funding operations that UN experts have characterised as genocide, with over 65,000 Palestinian civilians killed. The diplomatic cost to the US is incalculable. On my planet, paying for someone else\'s war crimes is also considered a war crime. Here you call it "strategic alliance."',
     icon: '🇮🇱',
     annualBudgetBillions: 15,
     budgetSourceUrl: 'https://crsreports.congress.gov/product/pdf/RL/RL33222',
@@ -452,7 +449,7 @@ export const US_WISHOCRATIC_ITEMS = {
   YEMEN_HOUTHI_STRIKES: {
     slug: 'yemen_houthi',
     name: 'Yemen & Houthi Military Strikes',
-    description: 'Operation Rough Rider fires $2 million Tomahawk missiles at groups using $2,000 drones. The Houthi attacks on shipping persist despite the strikes, which means you are spending $2 million to not solve a $2,000 problem. This is the military equivalent of hiring a Michelin-star chef to burn toast.',
+    description: 'Tomahawk missiles at $2 million each fired at groups using $2,000 drones. The Houthi attacks on shipping persist despite the strikes. This is the military equivalent of hiring a Michelin-star chef to burn toast.',
     icon: '🚢',
     annualBudgetBillions: 4,
     budgetSourceUrl: 'https://www.csis.org/analysis/',
@@ -476,10 +473,10 @@ export const US_WISHOCRATIC_ITEMS = {
   // ─── CORPORATE & SURVEILLANCE ────────────────────────────────────────
   CORPORATE_WELFARE: {
     slug: 'corporate_welfare',
-    name: 'Corporate Welfare & Bailouts',
-    description: '$188 billion a year in federal corporate tax expenditures alone. Boeing: $16 billion in subsidies. Foxconn promised Wisconsin 13,000 jobs for $4.5 billion in incentives and delivered 1,454. Studies show 75-98% of subsidised projects would have happened without the incentive. Michigan\'s job subsidy programmes delivered 9% of promised jobs. These are the richest entities in human history receiving public money because they have better lobbyists than you have representatives.',
+    name: 'Corporate Welfare',
+    description: 'Federal corporate tax expenditures — excluding farm and fossil fuel subsidies counted separately. Boeing: $16 billion in subsidies. Foxconn promised Wisconsin 13,000 jobs for $4.5 billion in incentives and delivered 1,454. Studies show 75-98% of subsidised projects would have happened without the incentive. Michigan\'s job subsidy programmes delivered 9% of promised jobs. These are the richest entities in human history receiving public money because they have better lobbyists than you have representatives.',
     icon: '🏦',
-    annualBudgetBillions: 175,
+    annualBudgetBillions: 142,
     budgetSourceUrl: 'https://www.jct.gov/publications/2024/jcx-1-24/',
     roiData: {
       source: 'Cato Institute',
@@ -495,10 +492,8 @@ export const US_WISHOCRATIC_ITEMS = {
       { name: 'Cato Institute — Corporate welfare in the federal budget', url: 'https://www.cato.org/policy-analysis/corporate-welfare-federal-budget-0' },
     ],
     fiscalCategoryMappings: [
-      { fiscalCategoryId: 'commerce', share: 0.3 },
-      { fiscalCategoryId: 'treasury', share: 0.3 },
-      { fiscalCategoryId: 'agriculture', share: 0.2 },
-      { fiscalCategoryId: 'energy', share: 0.2 },
+      { fiscalCategoryId: 'commerce', share: 0.5 },
+      { fiscalCategoryId: 'treasury', share: 0.5 },
     ],
     type: 'existing' as const,
     jurisdictionCode: 'US',
@@ -506,7 +501,7 @@ export const US_WISHOCRATIC_ITEMS = {
   AI_MASS_SURVEILLANCE: {
     slug: 'ai_surveillance',
     name: 'AI Mass Surveillance Programs',
-    description: 'Your government is spending billions on AI to track its own citizens. The NSA\'s bulk collection programme was reviewed by the Privacy and Civil Liberties Oversight Board, which found "not a single instance" where it made a concrete difference in a counterterrorism investigation. Facial recognition misidentifies Black faces at 10-100x the rate of white faces. The marginal cost per real terrorist detected via bulk surveillance exceeds $14 billion. You are building a panopticon that does not work and disproportionately harms minorities.',
+    description: 'The NSA\'s bulk collection programme was reviewed by the Privacy and Civil Liberties Oversight Board, which found "not a single instance" where it made a concrete difference in a counterterrorism investigation. Facial recognition misidentifies Black faces at 10-100x the rate of white faces. The marginal cost per real terrorist detected via bulk surveillance exceeds $14 billion. You are building a panopticon that does not work and disproportionately harms minorities.',
     icon: '👁️',
     annualBudgetBillions: 5,
     budgetSourceUrl: 'https://www.dni.gov/index.php/what-we-do/ic-budget',
@@ -540,7 +535,7 @@ export const US_WISHOCRATIC_ITEMS = {
     roiData: {
       source: 'FBI Uniform Crime Report / Bureau of Justice Statistics',
       ratio: 'Variable',
-      description: 'Homicide clearance ~50%, arson ~30%, burglary ~14%; forensic backlogs and underfunded crime labs reduce solve rates',
+      description: 'Homicide clearance ~50%, arson ~30%, burglary ~14%; forensic backlogs reduce solve rates',
       sourceUrl: 'https://bjs.ojp.gov/topics/crime',
     },
     sources: [
@@ -549,6 +544,105 @@ export const US_WISHOCRATIC_ITEMS = {
     ],
     fiscalCategoryMappings: [
       { fiscalCategoryId: 'justice', share: 1.0 },
+    ],
+    type: 'existing' as const,
+    jurisdictionCode: 'US',
+  },
+
+  // ─── MISSING HIGH-PREFERENCE-DIVERGENCE ITEMS ───────────────────────
+  HUMANITARIAN_FOREIGN_AID: {
+    slug: 'humanitarian_aid',
+    name: 'Humanitarian Foreign Aid',
+    description: 'USAID, disaster relief, global health programmes, food security. Vaccination programmes have saved an estimated 154 million lives over 50 years. USAID has also been credibly accused of waste, corruption, and funding programmes that achieve nothing. Results depend entirely on execution.',
+    icon: '🌍',
+    annualBudgetBillions: 30,
+    budgetSourceUrl: 'https://www.usaid.gov/cj',
+    roiData: {
+      source: 'Copenhagen Consensus / FEMA',
+      ratio: '20:1',
+      description: 'Global health returns $20-60 per $1; disaster preparedness saves $7 per $1 in response costs',
+      sourceUrl: 'https://copenhagenconsensus.com/copenhagen-consensus-iii/outcome',
+    },
+    sources: [
+      { name: 'USAID — Congressional Budget Justification', url: 'https://www.usaid.gov/cj' },
+      { name: 'Copenhagen Consensus — ROI of global health interventions', url: 'https://copenhagenconsensus.com/copenhagen-consensus-iii/outcome' },
+      { name: 'FEMA — $1 in preparedness saves $7 in response', url: 'https://www.fema.gov/grants/mitigation' },
+    ],
+    fiscalCategoryMappings: [
+      { fiscalCategoryId: 'foreign_aid', share: 1.0 },
+    ],
+    type: 'existing' as const,
+    jurisdictionCode: 'US',
+  },
+  VETERANS_HEALTHCARE: {
+    slug: 'veterans_healthcare',
+    name: 'Veterans Healthcare',
+    description: 'The VA serves 9 million veterans. Average wait time for primary care: 26 days. Over 6,000 veterans die by suicide every year. Cost per patient: $13,300 (vs. $14,600 private sector, $3,000 Singapore).',
+    icon: '🎖️',
+    annualBudgetBillions: 120,
+    budgetSourceUrl: 'https://www.va.gov/budget/',
+    roiData: {
+      source: 'Congressional Budget Office',
+      ratio: 'Moral Obligation',
+      description: 'VA delivers care at lower per-patient cost than private sector; suicide prevention and mental health ROI is incalculable',
+      sourceUrl: 'https://www.cbo.gov/topics/veterans',
+    },
+    sources: [
+      { name: 'VA — Budget and financial reports', url: 'https://www.va.gov/budget/' },
+      { name: 'VA — National Veteran Suicide Prevention Annual Report', url: 'https://www.mentalhealth.va.gov/suicide_prevention/data.asp' },
+      { name: 'CBO — Veterans healthcare analysis', url: 'https://www.cbo.gov/topics/veterans' },
+    ],
+    fiscalCategoryMappings: [
+      { fiscalCategoryId: 'veterans', share: 1.0 },
+    ],
+    type: 'existing' as const,
+    jurisdictionCode: 'US',
+  },
+  NASA_SCIENCE_RESEARCH: {
+    slug: 'nasa_science',
+    name: 'NASA & Science Research',
+    description: 'NASA and the National Science Foundation. Funds space exploration, telescopes, particle physics, climate science, and basic research grants to universities. Technology developed under NASA contracts includes GPS, water purification systems, CAT scanners, and solar panels. SpaceX now launches rockets at a fraction of NASA\'s historical cost.',
+    icon: '🚀',
+    annualBudgetBillions: 25,
+    budgetSourceUrl: 'https://www.nasa.gov/budgets-plans-and-reports/',
+    roiData: {
+      source: 'NASA Economic Impact Report',
+      ratio: '14:1',
+      description: 'NASA generates $7-14 return per dollar through technology spinoffs, patents, and economic activity',
+      sourceUrl: 'https://www.nasa.gov/directorates/somd/space-communications-navigation-program/economic-impact-of-nasas-space-communication-network/',
+    },
+    sources: [
+      { name: 'NASA — Budget and annual reports', url: 'https://www.nasa.gov/budgets-plans-and-reports/' },
+      { name: 'NSF — Budget overview', url: 'https://www.nsf.gov/about/budget/' },
+      { name: 'NASA Spinoff — Technology transfer programme', url: 'https://spinoff.nasa.gov/' },
+    ],
+    fiscalCategoryMappings: [
+      { fiscalCategoryId: 'science', share: 0.6 },
+      { fiscalCategoryId: 'other_discretionary', share: 0.4 },
+    ],
+    type: 'existing' as const,
+    jurisdictionCode: 'US',
+  },
+  CLEAN_ENERGY_RD: {
+    slug: 'clean_energy',
+    name: 'Clean Energy R&D',
+    description: 'DOE clean energy research, solar/wind/battery deployment grants, and national lab programmes. Solar is now 41% cheaper than the cheapest fossil fuel. Wind is 53% cheaper. The DOE loan programme funded both Solyndra ($535 million loss) and Tesla. The private sector now invests $300 billion per year in clean energy globally without government help.',
+    icon: '⚡',
+    annualBudgetBillions: 10,
+    budgetSourceUrl: 'https://www.energy.gov/cfo/articles/fy-2025-budget-justification',
+    roiData: {
+      source: 'IEA / IRENA',
+      ratio: '8:1',
+      description: 'Clean energy investment returns $3-8 per $1 in avoided climate damages; renewables now cheaper than fossil fuels',
+      sourceUrl: 'https://www.irena.org/News/pressreleases/2025/Jul/91-Percent-of-New-Renewable-Projects-Now-Cheaper-Than-Fossil-Fuels-Alternatives',
+    },
+    sources: [
+      { name: 'DOE — Budget justification', url: 'https://www.energy.gov/cfo/articles/fy-2025-budget-justification' },
+      { name: 'IRENA — 91% of new renewables cheaper than fossil fuels', url: 'https://www.irena.org/News/pressreleases/2025/Jul/91-Percent-of-New-Renewable-Projects-Now-Cheaper-Than-Fossil-Fuels-Alternatives' },
+      { name: 'IEA — World Energy Investment 2025', url: 'https://www.iea.org/reports/world-energy-investment-2025' },
+    ],
+    fiscalCategoryMappings: [
+      { fiscalCategoryId: 'energy', share: 1.0 },
     ],
     type: 'existing' as const,
     jurisdictionCode: 'US',
