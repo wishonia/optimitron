@@ -106,7 +106,7 @@ describe("alignment legislative classification", () => {
       policyArea: "Crime and Law Enforcement",
     });
 
-    expect(matches[0]?.categoryId).toBe("PRISON_CONSTRUCTION");
+    expect(matches[0]?.categoryId).toBe("VIOLENT_CRIME_INCARCERATION");
   });
 
   it("infers restrictive bills as category decreases", () => {

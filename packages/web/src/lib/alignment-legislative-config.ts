@@ -101,7 +101,7 @@ export const ALIGNMENT_LEGISLATIVE_CATEGORY_RULES: readonly AlignmentLegislative
     policyAreas: ["children", "education", "families"],
   },
   {
-    categoryId: "DRUG_WAR_ENFORCEMENT",
+    categoryId: "DRUG_WAR",
     keywords: [
       "counter narcotics",
       "counter-narcotics",
@@ -233,7 +233,7 @@ export const ALIGNMENT_LEGISLATIVE_CATEGORY_RULES: readonly AlignmentLegislative
     policyAreas: ["armed forces and national security"],
   },
   {
-    categoryId: "PRISON_CONSTRUCTION",
+    categoryId: "VIOLENT_CRIME_INCARCERATION",
     keywords: [
       "bureau of prisons",
       "correctional facility",

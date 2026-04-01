@@ -577,7 +577,7 @@ export const US_WISHOCRATIC_ITEMS = {
   VETERANS_HEALTHCARE: {
     slug: 'veterans_healthcare',
     name: 'Veterans Healthcare',
-    description: 'The VA serves 9 million veterans. Average wait time for primary care: 26 days. Over 6,000 veterans die by suicide every year. Cost per patient: $13,300 (vs. $14,600 private sector, $3,000 Singapore).',
+    description: 'Healthcare for 9 million veterans. Average wait for mental health appointment: 36 days (VA standard: 20 days). Disability claims backlog: 296,000 pending over 125 days. 17.5 veterans die by suicide per day — a number that has remained stable for over a decade despite increased spending. Cost per patient: $13,300.',
     icon: '🎖️',
     annualBudgetBillions: 120,
     budgetSourceUrl: 'https://www.va.gov/budget/',

@@ -17,8 +17,8 @@ const ITEMS = [
   { ...US_WISHOCRATIC_ITEMS.POLICING_VIOLENT_CRIME, pct: 10, color: "#fb923c" },
   { ...US_WISHOCRATIC_ITEMS.MILITARY_OPERATIONS, pct: 9, color: "#f87171" },
   { ...US_WISHOCRATIC_ITEMS.NUCLEAR_WEAPONS_MODERNIZATION, pct: 6, color: "#ef4444" },
-  { ...US_WISHOCRATIC_ITEMS.DRUG_WAR_ENFORCEMENT, pct: 5, color: "#dc2626" },
-  { ...US_WISHOCRATIC_ITEMS.PRISON_CONSTRUCTION, pct: 3, color: "#b91c1c" },
+  { ...US_WISHOCRATIC_ITEMS.DRUG_WAR, pct: 5, color: "#dc2626" },
+  { ...US_WISHOCRATIC_ITEMS.VIOLENT_CRIME_INCARCERATION, pct: 3, color: "#b91c1c" },
 ];
 
 // Build pie chart segments
