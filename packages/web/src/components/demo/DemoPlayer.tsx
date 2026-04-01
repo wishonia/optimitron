@@ -359,7 +359,7 @@ function DemoPlayerInner({
           className={`absolute inset-0 overflow-y-auto ${bgClass}`}
         >
           <Suspense fallback={<div className={`absolute inset-0 ${bgClass}`} />}>
-            <SlideComponent />
+            <SlideComponent segment={slide} />
           </Suspense>
         </motion.div>
       </AnimatePresence>

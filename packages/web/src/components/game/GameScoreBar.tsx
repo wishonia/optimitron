@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Vote, Heart, BarChart3 } from "lucide-react";
 import { calculateImpactLedger } from "@/lib/impact-ledger";
 import { formatLives } from "@/lib/formatters";
+import { ROUTES } from "@/lib/routes";
 
 interface GameStats {
   wishes: number;
@@ -20,6 +22,7 @@ interface GameStats {
  */
 export function GameScoreBar() {
   const { status } = useSession();
+  const pathname = usePathname();
   const [stats, setStats] = useState<GameStats | null>(null);
 
   useEffect(() => {
@@ -32,6 +35,8 @@ export function GameScoreBar() {
       })
       .catch(() => {});
   }, [status]);
+
+  if (pathname.startsWith(ROUTES.demo)) return null;
 
   if (status !== "authenticated" || !stats) return null;
 
