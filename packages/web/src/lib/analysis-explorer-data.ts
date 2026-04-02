@@ -9,8 +9,8 @@ import {
   type PairStudyResult,
 } from "@optimitron/optimizer";
 
-import governmentSizeRaw from "../data/us-government-size-analysis.json";
-import optimalBudgetRaw from "../data/optimal-budget.json";
+import { usGovernmentSizeAnalysis as governmentSizeRaw } from "../data/us-government-size-analysis";
+import { usBudgetAnalysis as optimalBudgetRaw } from "../data/us-budget-analysis";
 import type {
   EvidenceGrade,
   ExplorerFreshness,
@@ -198,7 +198,7 @@ const OPTIMAL_BUDGET_SOURCE_ID = "us_optimal_budget";
 const DEFAULT_OUTCOME_DIRECTION: ExplorerOutcome["direction"] = "higher_better";
 
 const governmentSizeData = governmentSizeRaw as GovernmentSizeData;
-const optimalBudgetData = optimalBudgetRaw as OptimalBudgetData;
+const optimalBudgetData = optimalBudgetRaw as unknown as OptimalBudgetData;
 
 let cachedCatalog: ExplorerCatalog | null = null;
 

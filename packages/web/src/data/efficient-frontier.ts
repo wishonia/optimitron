@@ -1,0 +1,604 @@
+// Converted from efficient-frontier.json — define proper types as needed
+export const efficientFrontierData = {
+  "generatedAt": "2026-03-22T08:52:06.518Z",
+  "currentYears": [
+    2019,
+    2020,
+    2021,
+    2022
+  ],
+  "categories": {
+    "health": {
+      "label": "Health",
+      "spendingField": "healthSpendingPerCapitaPpp",
+      "deciles": [
+        {
+          "decile": 1,
+          "count": 3,
+          "avgSpending": 2977.22,
+          "avgLifeExpectancy": 80.5,
+          "avgInfantMortality": 2.47,
+          "avgGdpPerCapita": 33812.22,
+          "avgMedianIncome": 14036,
+          "countries": [
+            "CZE",
+            "PRT",
+            "ISR"
+          ]
+        },
+        {
+          "decile": 2,
+          "count": 3,
+          "avgSpending": 3296.56,
+          "avgLifeExpectancy": 82.53,
+          "avgInfantMortality": 2.77,
+          "avgGdpPerCapita": 33924.44,
+          "avgMedianIncome": 17522,
+          "countries": [
+            "NZL",
+            "ITA",
+            "ESP"
+          ]
+        },
+        {
+          "decile": 3,
+          "count": 3,
+          "avgSpending": 3784.44,
+          "avgLifeExpectancy": 83.29,
+          "avgInfantMortality": 2.01,
+          "avgGdpPerCapita": 39185.56,
+          "avgMedianIncome": 17703,
+          "countries": [
+            "KOR",
+            "FIN",
+            "JPN"
+          ]
+        },
+        {
+          "decile": 4,
+          "count": 3,
+          "avgSpending": 4374.33,
+          "avgLifeExpectancy": 81.32,
+          "avgInfantMortality": 3.01,
+          "avgGdpPerCapita": 38278.89,
+          "avgMedianIncome": 20371,
+          "countries": [
+            "GBR",
+            "BEL",
+            "FRA"
+          ]
+        },
+        {
+          "decile": 5,
+          "count": 3,
+          "avgSpending": 4649.67,
+          "avgLifeExpectancy": 81.89,
+          "avgInfantMortality": 2.83,
+          "avgGdpPerCapita": 44125.56,
+          "avgMedianIncome": 22227,
+          "countries": [
+            "AUS",
+            "DNK",
+            "AUT"
+          ]
+        },
+        {
+          "decile": 6,
+          "count": 3,
+          "avgSpending": 4975.89,
+          "avgLifeExpectancy": 82.07,
+          "avgInfantMortality": 2.57,
+          "avgGdpPerCapita": 55544.44,
+          "avgMedianIncome": 22949,
+          "countries": [
+            "SWE",
+            "IRL",
+            "NLD"
+          ]
+        },
+        {
+          "decile": 7,
+          "count": 3,
+          "avgSpending": 5386.11,
+          "avgLifeExpectancy": 81.72,
+          "avgInfantMortality": 2.98,
+          "avgGdpPerCapita": 46132.22,
+          "avgMedianIncome": 25542,
+          "countries": [
+            "CAN",
+            "DEU",
+            "NOR"
+          ]
+        },
+        {
+          "decile": 8,
+          "count": 2,
+          "avgSpending": 8279.33,
+          "avgLifeExpectancy": 80.15,
+          "avgInfantMortality": 4.05,
+          "avgGdpPerCapita": 55340,
+          "avgMedianIncome": 26789,
+          "countries": [
+            "CHE",
+            "USA"
+          ]
+        }
+      ]
+    },
+    "education": {
+      "label": "Education",
+      "spendingField": "educationSpendingPerCapitaPpp",
+      "deciles": [
+        {
+          "decile": 1,
+          "count": 3,
+          "avgSpending": 1370.78,
+          "avgLifeExpectancy": 81.29,
+          "avgInfantMortality": 2.21,
+          "avgGdpPerCapita": 33385.56,
+          "avgMedianIncome": 15385,
+          "countries": [
+            "JPN",
+            "CZE",
+            "PRT"
+          ]
+        },
+        {
+          "decile": 2,
+          "count": 3,
+          "avgSpending": 1592,
+          "avgLifeExpectancy": 81.96,
+          "avgInfantMortality": 2.59,
+          "avgGdpPerCapita": 36838.89,
+          "avgMedianIncome": 19961,
+          "countries": [
+            "ESP",
+            "ITA",
+            "DEU"
+          ]
+        },
+        {
+          "decile": 3,
+          "count": 3,
+          "avgSpending": 1966.78,
+          "avgLifeExpectancy": 81.74,
+          "avgInfantMortality": 3.19,
+          "avgGdpPerCapita": 35961.11,
+          "avgMedianIncome": 20371,
+          "countries": [
+            "NZL",
+            "GBR",
+            "FRA"
+          ]
+        },
+        {
+          "decile": 4,
+          "count": 3,
+          "avgSpending": 2246.67,
+          "avgLifeExpectancy": 82.66,
+          "avgInfantMortality": 2.64,
+          "avgGdpPerCapita": 42677.78,
+          "avgMedianIncome": 21021,
+          "countries": [
+            "KOR",
+            "AUT",
+            "AUS"
+          ]
+        },
+        {
+          "decile": 5,
+          "count": 3,
+          "avgSpending": 2354.11,
+          "avgLifeExpectancy": 81.87,
+          "avgInfantMortality": 2.84,
+          "avgGdpPerCapita": 40255.56,
+          "avgMedianIncome": 18556,
+          "countries": [
+            "CAN",
+            "FIN",
+            "ISR"
+          ]
+        },
+        {
+          "decile": 6,
+          "count": 3,
+          "avgSpending": 2538.33,
+          "avgLifeExpectancy": 81.41,
+          "avgInfantMortality": 2.83,
+          "avgGdpPerCapita": 54153.33,
+          "avgMedianIncome": 25216,
+          "countries": [
+            "NLD",
+            "IRL",
+            "BEL"
+          ]
+        },
+        {
+          "decile": 7,
+          "count": 3,
+          "avgSpending": 2955,
+          "avgLifeExpectancy": 81.07,
+          "avgInfantMortality": 3.4,
+          "avgGdpPerCapita": 51745.56,
+          "avgMedianIncome": 24753,
+          "countries": [
+            "CHE",
+            "USA",
+            "SWE"
+          ]
+        },
+        {
+          "decile": 8,
+          "count": 2,
+          "avgSpending": 3852,
+          "avgLifeExpectancy": 82.15,
+          "avgInfantMortality": 2.43,
+          "avgGdpPerCapita": 49318.33,
+          "avgMedianIncome": 27567,
+          "countries": [
+            "DNK",
+            "NOR"
+          ]
+        }
+      ]
+    },
+    "military": {
+      "label": "Military",
+      "spendingField": "militarySpendingPerCapitaPpp",
+      "deciles": [
+        {
+          "decile": 1,
+          "count": 3,
+          "avgSpending": 298.78,
+          "avgLifeExpectancy": 82.06,
+          "avgInfantMortality": 2.6,
+          "avgGdpPerCapita": 50306.67,
+          "avgMedianIncome": 16903,
+          "countries": [
+            "IRL",
+            "ESP",
+            "AUT"
+          ]
+        },
+        {
+          "decile": 2,
+          "count": 3,
+          "avgSpending": 393.11,
+          "avgLifeExpectancy": 83.09,
+          "avgInfantMortality": 2.39,
+          "avgGdpPerCapita": 39713.33,
+          "avgMedianIncome": 21130,
+          "countries": [
+            "CHE",
+            "PRT",
+            "JPN"
+          ]
+        },
+        {
+          "decile": 3,
+          "count": 3,
+          "avgSpending": 459.56,
+          "avgLifeExpectancy": 80.37,
+          "avgInfantMortality": 2.91,
+          "avgGdpPerCapita": 35973.33,
+          "avgMedianIncome": 15179,
+          "countries": [
+            "BEL",
+            "CZE",
+            "NZL"
+          ]
+        },
+        {
+          "decile": 4,
+          "count": 3,
+          "avgSpending": 559.22,
+          "avgLifeExpectancy": 82.37,
+          "avgInfantMortality": 2.86,
+          "avgGdpPerCapita": 40933.33,
+          "avgMedianIncome": 21014,
+          "countries": [
+            "ITA",
+            "SWE",
+            "CAN"
+          ]
+        },
+        {
+          "decile": 5,
+          "count": 3,
+          "avgSpending": 603.67,
+          "avgLifeExpectancy": 81.17,
+          "avgInfantMortality": 2.59,
+          "avgGdpPerCapita": 42205.56,
+          "avgMedianIncome": 24841,
+          "countries": [
+            "DEU",
+            "FIN",
+            "DNK"
+          ]
+        },
+        {
+          "decile": 6,
+          "count": 3,
+          "avgSpending": 740,
+          "avgLifeExpectancy": 81.44,
+          "avgInfantMortality": 3.02,
+          "avgGdpPerCapita": 40365.56,
+          "avgMedianIncome": 21986,
+          "countries": [
+            "NLD",
+            "FRA",
+            "GBR"
+          ]
+        },
+        {
+          "decile": 7,
+          "count": 3,
+          "avgSpending": 992.22,
+          "avgLifeExpectancy": 83.23,
+          "avgInfantMortality": 2.41,
+          "avgGdpPerCapita": 46290,
+          "avgMedianIncome": 23203,
+          "countries": [
+            "AUS",
+            "NOR",
+            "KOR"
+          ]
+        },
+        {
+          "decile": 8,
+          "count": 2,
+          "avgSpending": 2011,
+          "avgLifeExpectancy": 79.55,
+          "avgInfantMortality": 3.83,
+          "avgGdpPerCapita": 48163.33,
+          "avgMedianIncome": 19901,
+          "countries": [
+            "ISR",
+            "USA"
+          ]
+        }
+      ]
+    },
+    "social": {
+      "label": "Social",
+      "spendingField": "socialSpendingPerCapitaPpp",
+      "deciles": [
+        {
+          "decile": 1,
+          "count": 3,
+          "avgSpending": 6561.11,
+          "avgLifeExpectancy": 81.23,
+          "avgInfantMortality": 2.4,
+          "avgGdpPerCapita": 37964.44,
+          "avgMedianIncome": 15962,
+          "countries": [
+            "KOR",
+            "CZE",
+            "ISR"
+          ]
+        },
+        {
+          "decile": 2,
+          "count": 3,
+          "avgSpending": 7375.11,
+          "avgLifeExpectancy": 82.22,
+          "avgInfantMortality": 2.96,
+          "avgGdpPerCapita": 35533.33,
+          "avgMedianIncome": 22227,
+          "countries": [
+            "NZL",
+            "PRT",
+            "AUS"
+          ]
+        },
+        {
+          "decile": 3,
+          "count": 3,
+          "avgSpending": 8848.44,
+          "avgLifeExpectancy": 81.74,
+          "avgInfantMortality": 3.23,
+          "avgGdpPerCapita": 37885.56,
+          "avgMedianIncome": 20347,
+          "countries": [
+            "CAN",
+            "GBR",
+            "ESP"
+          ]
+        },
+        {
+          "decile": 4,
+          "count": 3,
+          "avgSpending": 9842,
+          "avgLifeExpectancy": 82.61,
+          "avgInfantMortality": 2.44,
+          "avgGdpPerCapita": 53177.78,
+          "avgMedianIncome": 20403,
+          "countries": [
+            "JPN",
+            "IRL",
+            "NLD"
+          ]
+        },
+        {
+          "decile": 5,
+          "count": 3,
+          "avgSpending": 11045.11,
+          "avgLifeExpectancy": 82.56,
+          "avgInfantMortality": 2.46,
+          "avgGdpPerCapita": 42467.78,
+          "avgMedianIncome": 22405,
+          "countries": [
+            "CHE",
+            "ITA",
+            "FIN"
+          ]
+        },
+        {
+          "decile": 6,
+          "count": 3,
+          "avgSpending": 11937.67,
+          "avgLifeExpectancy": 81.56,
+          "avgInfantMortality": 2.57,
+          "avgGdpPerCapita": 43045.56,
+          "avgMedianIncome": 22762,
+          "countries": [
+            "SWE",
+            "DEU",
+            "AUT"
+          ]
+        },
+        {
+          "decile": 7,
+          "count": 3,
+          "avgSpending": 12637.56,
+          "avgLifeExpectancy": 80.07,
+          "avgInfantMortality": 3.66,
+          "avgGdpPerCapita": 44943.33,
+          "avgMedianIncome": 23866,
+          "countries": [
+            "FRA",
+            "BEL",
+            "USA"
+          ]
+        },
+        {
+          "decile": 8,
+          "count": 2,
+          "avgSpending": 13488.67,
+          "avgLifeExpectancy": 82.15,
+          "avgInfantMortality": 2.43,
+          "avgGdpPerCapita": 49318.33,
+          "avgMedianIncome": 27567,
+          "countries": [
+            "DNK",
+            "NOR"
+          ]
+        }
+      ]
+    },
+    "rd": {
+      "label": "R&D",
+      "spendingField": "rdSpendingPerCapitaPpp",
+      "deciles": [
+        {
+          "decile": 1,
+          "count": 3,
+          "avgSpending": 475.89,
+          "avgLifeExpectancy": 82.14,
+          "avgInfantMortality": 2.79,
+          "avgGdpPerCapita": 31701.11,
+          "avgMedianIncome": 16903,
+          "countries": [
+            "ESP",
+            "PRT",
+            "NZL"
+          ]
+        },
+        {
+          "decile": 2,
+          "count": 3,
+          "avgSpending": 614.33,
+          "avgLifeExpectancy": 80.4,
+          "avgInfantMortality": 2.69,
+          "avgGdpPerCapita": 35655.56,
+          "avgMedianIncome": 17746,
+          "countries": [
+            "ITA",
+            "GBR",
+            "CZE"
+          ]
+        },
+        {
+          "decile": 3,
+          "count": 3,
+          "avgSpending": 786.56,
+          "avgLifeExpectancy": 82.37,
+          "avgInfantMortality": 3.29,
+          "avgGdpPerCapita": 41471.11,
+          "avgMedianIncome": 22423,
+          "countries": [
+            "CAN",
+            "AUS",
+            "FRA"
+          ]
+        },
+        {
+          "decile": 4,
+          "count": 3,
+          "avgSpending": 1024.89,
+          "avgLifeExpectancy": 81.69,
+          "avgInfantMortality": 2.53,
+          "avgGdpPerCapita": 53708.89,
+          "avgMedianIncome": 25216,
+          "countries": [
+            "IRL",
+            "NLD",
+            "FIN"
+          ]
+        },
+        {
+          "decile": 5,
+          "count": 3,
+          "avgSpending": 1254.56,
+          "avgLifeExpectancy": 82.94,
+          "avgInfantMortality": 2.2,
+          "avgGdpPerCapita": 45364.44,
+          "avgMedianIncome": 21579,
+          "countries": [
+            "NOR",
+            "JPN",
+            "DNK"
+          ]
+        },
+        {
+          "decile": 6,
+          "count": 3,
+          "avgSpending": 1362.56,
+          "avgLifeExpectancy": 80.9,
+          "avgInfantMortality": 2.83,
+          "avgGdpPerCapita": 41654.44,
+          "avgMedianIncome": 24841,
+          "countries": [
+            "DEU",
+            "AUT",
+            "BEL"
+          ]
+        },
+        {
+          "decile": 7,
+          "count": 3,
+          "avgSpending": 1755.56,
+          "avgLifeExpectancy": 81.07,
+          "avgInfantMortality": 3.4,
+          "avgGdpPerCapita": 51745.56,
+          "avgMedianIncome": 24753,
+          "countries": [
+            "SWE",
+            "CHE",
+            "USA"
+          ]
+        },
+        {
+          "decile": 8,
+          "count": 2,
+          "avgSpending": 2073.5,
+          "avgLifeExpectancy": 82.87,
+          "avgInfantMortality": 2.4,
+          "avgGdpPerCapita": 39893.33,
+          "avgMedianIncome": 16354,
+          "countries": [
+            "KOR",
+            "ISR"
+          ]
+        }
+      ]
+    }
+  },
+  "totals": {
+    "usCurrentTotalPerCapita": 30122,
+    "efficientFrontierTotalPerCapita": 11683.78,
+    "ratio": 2.578,
+    "missingUsCategories": 0,
+    "missingFloorCategories": 0
+  }
+};

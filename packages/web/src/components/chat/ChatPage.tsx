@@ -36,7 +36,7 @@ import type { CivicRepresentative } from "../../lib/civic-data";
 import type { ClassifiedBill } from "../../app/api/civic/bills/route";
 import { listExplorerOutcomes, getOutcomeMegaStudy } from "../../lib/analysis-explorer-data";
 import { getOutcomeHubPath } from "../../lib/analysis-explorer-routes";
-import misconceptionsData from "../../../public/data/misconceptions.json";
+import { misconceptionsData } from "@/data/misconceptions";
 import "./chat-theme.css";
 
 const VoiceChatOverlay = lazy(() => import("./VoiceChatOverlay"));

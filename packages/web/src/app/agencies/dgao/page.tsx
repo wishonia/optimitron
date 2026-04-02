@@ -3,8 +3,8 @@ import {
   fmtParam,
 } from "@optimitron/data/parameters";
 import { GameCTA } from "@/components/ui/game-cta";
-import hypercertData from "@/data/alignment-hypercerts.json";
-import snapshotData from "@/data/wishocracy-snapshot.json";
+import { alignmentHypercerts as hypercertData } from "@/data/alignment-hypercerts";
+import { wishocracySnapshot as snapshotData } from "@/data/wishocracy-snapshot";
 import { transparencyLink } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
 

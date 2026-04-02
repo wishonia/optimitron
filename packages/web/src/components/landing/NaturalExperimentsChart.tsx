@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { motion, useInView, useReducedMotion, AnimatePresence } from "framer-motion";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { policiesLink } from "@/lib/routes";
-import experimentsRaw from "../../../public/data/natural-experiments.json";
+import { naturalExperimentsData as experimentsRaw } from "@/data/natural-experiments";
 
 interface Outcome {
   metric: string;

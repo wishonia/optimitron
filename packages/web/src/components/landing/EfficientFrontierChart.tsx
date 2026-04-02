@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import efficientFrontierData from "@/data/efficient-frontier.json";
+import { efficientFrontierData } from "@/data/efficient-frontier";
 
 const WIDTH = 800;
 const HEIGHT = 400;

@@ -11,7 +11,7 @@ import { ALIGNMENT_BENCHMARK_SOURCE_NOTE } from "@/lib/alignment-benchmarks";
 import type { PersonalAlignmentState } from "@/lib/alignment-report";
 import { wishocracyLink } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
-import hypercertData from "@/data/alignment-hypercerts.json";
+import { alignmentHypercerts as hypercertData } from "@/data/alignment-hypercerts";
 
 interface HypercertPolitician {
   politicianId: string;

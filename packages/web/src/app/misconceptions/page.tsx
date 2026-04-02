@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import misconceptionData from "../../../public/data/misconceptions.json";
+import { misconceptionsData as misconceptionData } from "@/data/misconceptions";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
 
 interface KeyStats {
