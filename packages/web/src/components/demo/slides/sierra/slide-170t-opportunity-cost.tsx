@@ -4,14 +4,16 @@ import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import {
   CUMULATIVE_MILITARY_SPENDING_FED_ERA,
   GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+  WAR_COUNTERFACTUAL_INCOME_MULTIPLE,
+  WAR_DEATHS_SINCE_1900,
+  fmtParam,
 } from "@optimitron/data/parameters";
-import { GAME_PARAMS } from "@/lib/demo/parameters";
 
 const militarySpent = CUMULATIVE_MILITARY_SPENDING_FED_ERA.value;
 const trialsAnnual = GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL.value;
 const yearsOfTrials = Math.round(militarySpent / trialsAnnual);
-const pctLost = GAME_PARAMS.dollarPurchasingPowerLost;
-const richerMultiple = Math.round(1 / (1 - pctLost / 100));
+const richerMultiple = Math.round(WAR_COUNTERFACTUAL_INCOME_MULTIPLE.value);
+const warDeaths = fmtParam(WAR_DEATHS_SINCE_1900);
 
 export function Slide170tOpportunityCost() {
   return (
@@ -31,7 +33,7 @@ export function Slide170tOpportunityCost() {
             </div>
             <div className="text-6xl md:text-8xl mb-4">💣</div>
             <div className="font-pixel text-4xl md:text-6xl text-brutal-red">
-              97M DEAD
+              {warDeaths} DEAD
             </div>
             <div className="font-pixel text-lg md:text-xl text-muted-foreground mt-3">
               + everything they built, destroyed

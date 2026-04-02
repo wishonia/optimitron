@@ -88,6 +88,7 @@ export const slideRegistry = {
   "viral-doubling-to-4b": demoSlide("slide-viral-doubling-to-4b"),
   "vote-point-dollar-value": demoSlide("slide-vote-point-dollar-value"),
   "vote-value-asymmetry": demoSlide("slide-vote-value-asymmetry"),
+  "war-compounding-losses": demoSlide("slide-war-compounding-losses"),
   "win-conditions-hale-income": demoSlide("slide-win-conditions-hale-income"),
 } satisfies Record<string, DemoSlideComponentEntry>;
 

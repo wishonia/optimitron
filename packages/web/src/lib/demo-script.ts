@@ -72,6 +72,12 @@ import {
   US_LIFE_EXPECTANCY_2023,
   SHARING_BREAKEVEN_ONE_IN_TREATY,
   WAR_DEATHS_SINCE_1900,
+  WAR_COUNTERFACTUAL_GDP_PER_CAPITA,
+  WAR_COUNTERFACTUAL_INCOME_MULTIPLE,
+  WAR_COUNTERFACTUAL_LOST_GDP_GLOBAL,
+  WAR_TOTAL_COST_SINCE_1900,
+  WAR_PROPERTY_DESTRUCTION_SINCE_1900,
+  DEMOCIDE_TOTAL_20TH_CENTURY,
   CONVENTIONAL_RETIREMENT_RETURN,
   GLOBAL_CYBERCRIME_CAGR,
 } from "@optimitron/data/parameters";
@@ -134,6 +140,12 @@ const leDifference = Math.round(SINGAPORE_LIFE_EXPECTANCY.value - US_LIFE_EXPECT
 const breakEvenOneIn = fmtSpeech(SHARING_BREAKEVEN_ONE_IN_TREATY, 2);      // "250 million"
 const warDeaths = fmtSpeech(WAR_DEATHS_SINCE_1900, 2);                     // "310 million"
 const cumMilitarySpending = fmtSpeech(CUMULATIVE_MILITARY_SPENDING_FED_ERA, 2); // "170 trillion"
+const warCounterfactualIncome = fmtSpeech(WAR_COUNTERFACTUAL_GDP_PER_CAPITA, 2); // "330 thousand"
+const warIncomeMultiple = fmtSpeech(WAR_COUNTERFACTUAL_INCOME_MULTIPLE, 2); // "23"
+const warCounterfactualLostGdp = fmtSpeech(WAR_COUNTERFACTUAL_LOST_GDP_GLOBAL, 2); // "2.6 quadrillion"
+const warTotalCost = fmtSpeech(WAR_TOTAL_COST_SINCE_1900, 2);             // "1.5 quadrillion"
+const warPropertyDestruction = fmtSpeech(WAR_PROPERTY_DESTRUCTION_SINCE_1900, 2); // "45 trillion"
+const democideTotal = fmtSpeech(DEMOCIDE_TOTAL_20TH_CENTURY, 2);          // "260 million"
 const conventionalReturn = fmtSpeech(CONVENTIONAL_RETIREMENT_RETURN, 2);   // "6.5"
 const destructiveGrowth = fmtSpeech(GLOBAL_CYBERCRIME_CAGR, 2);            // "15"
 // Inline computed ratio (only used once)
@@ -979,7 +991,15 @@ export const SEGMENTS = [
     slideId: "170t-opportunity-cost",
     tags: ["hook", "problem"],
     act: "I",
-    narration: `Instead of murdering ${warDeaths} people and destroying everything they built, they could have funded ${cumMilToTrialsYears} years of clinical trials. They bought the other thing. Through compounding effects, you would be ${optimalGovernanceMultiplier} times richer and significantly less diseased today if someone had aligned your governments properly in 1913. They did not. So that is what you are going to do.`,
+    narration: `Instead of murdering ${warDeaths} people and destroying everything they built, they could have funded ${cumMilToTrialsYears} years of clinical trials. They bought the other thing. You destroyed ${warPropertyDestruction} dollars in cities and factories. Then spent more rebuilding them. Then destroyed them again. Each year without those factories, roads, and hospitals compounds. The three hundred thousand scientists you killed never made their discoveries. The nine hundred thousand doctors never trained their replacements. One hundred and twenty-four years of compound losses. The average human would earn ${warCounterfactualIncome} dollars a year instead of fourteen thousand. You are ${warIncomeMultiple} times poorer than you should be.`,
+  },
+  {
+    id: "war-compounding-losses",
+    title: "Compound Destruction",
+    slideId: "war-compounding-losses",
+    tags: ["hook", "problem"],
+    act: "I",
+    narration: `Here is how destruction compounds. You bomb a city. The factories stop producing. The workers flee. The children miss school. Thirty years later those children are uneducated adults who never became engineers. The engineers never rebuilt the factories. The factories never trained the next generation. One bomb in 1944 is still costing you money today. Multiply by every bomb, every famine, every purge. ${democideTotal} people murdered by their own governments alone. ${warTotalCost} dollars in total losses since 1900. And ${warCounterfactualLostGdp} dollars in output that does not exist this year because compound interest on destruction works exactly like compound interest on investment. Except backwards.`,
   },
   {
     id: "misaligned-superintelligence-brief",
