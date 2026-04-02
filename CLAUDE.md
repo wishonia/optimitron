@@ -394,6 +394,8 @@ Before committing, always run:
 pnpm check    # runs: typecheck + lint + test
 ```
 
+The tsc config can't be invoked directly on a single file due to jsx/alias issues — need to use the project-level pnpm typecheck.
+
 - **TypeScript strict mode** is ON (noUncheckedIndexedAccess, noImplicitOverride)
 - **ESLint** uses typescript-eslint strict rules
 - **No `any`** — use proper types or `unknown` with type guards

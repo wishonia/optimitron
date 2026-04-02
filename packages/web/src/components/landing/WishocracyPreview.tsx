@@ -77,11 +77,12 @@ function getEstimatedCitizenAllocations(): Record<string, number> {
   return allocs;
 }
 
-/** Pick a compelling pair for the landing page slider */
+/** Pick a compelling pair for the landing page slider.
+ * No casting — TypeScript catches invalid IDs at build time. */
 const LANDING_PAIRS: [WishocraticItemId, WishocraticItemId][] = [
-  ["PRAGMATIC_CLINICAL_TRIALS" as WishocraticItemId, "BOMBING_IRAN" as WishocraticItemId],
-  ["UNIVERSAL_BASIC_INCOME" as WishocraticItemId, "DRUG_WAR_ENFORCEMENT" as WishocraticItemId],
-  ["EARLY_CHILDHOOD_EDUCATION" as WishocraticItemId, "NUCLEAR_WEAPONS_MODERNIZATION" as WishocraticItemId],
+  ["PRAGMATIC_CLINICAL_TRIALS", "BOMBING_IRAN"],
+  ["UNIVERSAL_BASIC_INCOME", "DRUG_WAR"],
+  ["EARLY_CHILDHOOD_EDUCATION", "NUCLEAR_WEAPONS_MODERNIZATION"],
 ];
 
 export function WishocracyPreview() {
@@ -161,17 +162,16 @@ export function WishocracyPreview() {
               <h3 className="text-lg font-black uppercase text-center mb-4">
                 What People Actually Want
               </h3>
-              <div className="h-64">
-                <PieChart
-                  data={citizenData}
-                  dataKey="value"
-                  nameKey="name"
-                  colors={BRUTAL_COLORS}
-                  innerRadius={40}
-                  outerRadius={90}
-                  valueFormatter={(v) => `${v}%`}
-                />
-              </div>
+              <PieChart
+                className="h-64"
+                data={citizenData}
+                dataKey="value"
+                nameKey="name"
+                colors={BRUTAL_COLORS}
+                innerRadius={40}
+                outerRadius={90}
+                valueFormatter={(v) => `${v}%`}
+              />
               <ChartLegend data={citizenData} colors={BRUTAL_COLORS} />
             </div>
           </ScrollReveal>
@@ -181,17 +181,16 @@ export function WishocracyPreview() {
               <h3 className="text-lg font-black uppercase text-center mb-4">
                 What Governments Spend
               </h3>
-              <div className="h-64">
-                <PieChart
-                  data={govData}
-                  dataKey="value"
-                  nameKey="name"
-                  colors={BRUTAL_COLORS}
-                  innerRadius={40}
-                  outerRadius={90}
-                  valueFormatter={(v) => `${v}%`}
-                />
-              </div>
+              <PieChart
+                className="h-64"
+                data={govData}
+                dataKey="value"
+                nameKey="name"
+                colors={BRUTAL_COLORS}
+                innerRadius={40}
+                outerRadius={90}
+                valueFormatter={(v) => `${v}%`}
+              />
               <ChartLegend data={govData} colors={BRUTAL_COLORS} />
             </div>
           </ScrollReveal>

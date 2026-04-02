@@ -36,7 +36,7 @@ const screenshotDir = path.resolve(
 );
 
 async function auditCurrentSlide(
-  page: Parameters<Parameters<typeof test>[1]>[0]["page"],
+  page: import("@playwright/test").Page,
   slideId: string,
   slideIndex: number,
   viewport: "desktop" | "mobile",

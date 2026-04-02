@@ -44,7 +44,11 @@ const PieChart = React.forwardRef<HTMLDivElement, PieChartProps>(
   ) => {
     return (
       <div ref={ref} className={cn("h-80 w-full", className)} {...props}>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          initialDimension={{ width: 320, height: 320 }}
+        >
           <RechartsPieChart>
             <Pie
               data={data}
