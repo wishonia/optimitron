@@ -80,8 +80,9 @@ export async function navigateAndSettle(
   url: string,
 ): Promise<void> {
   const isDemoSlide = url.includes("#");
-  // Demo page loads 60+ lazy slide components — needs more time
-  const timeout = isDemoSlide ? 60_000 : 15_000;
+  // Demo page loads 60+ lazy slide components — needs more time.
+  // Dev server on first compile can also be slow.
+  const timeout = isDemoSlide ? 60_000 : 30_000;
   await page.goto(url, { waitUntil: "domcontentloaded", timeout });
 
   if (isDemoSlide) {
@@ -134,10 +135,17 @@ export async function getDeduplicatedOverflows(
       if (rect.width === 0 || rect.height === 0) continue;
       if (rect.right <= vw + 5) continue; // +5px tolerance
 
-      // Check if any ancestor is already in the overflow list
+      // Skip elements inside an overflow:hidden container — the overflow
+      // is visually clipped and not a real user-facing issue.
+      let isClippedByParent = false;
       let isChildOfOverflow = false;
       let parent = el.parentElement;
       while (parent) {
+        const pStyle = window.getComputedStyle(parent);
+        if (pStyle.overflow === "hidden" || pStyle.overflowX === "hidden") {
+          isClippedByParent = true;
+          break;
+        }
         const pRect = parent.getBoundingClientRect();
         if (pRect.right > vw + 5 && pRect.width > 0) {
           isChildOfOverflow = true;
@@ -145,7 +153,7 @@ export async function getDeduplicatedOverflows(
         }
         parent = parent.parentElement;
       }
-      if (isChildOfOverflow) continue;
+      if (isClippedByParent || isChildOfOverflow) continue;
 
       const tag = el.tagName.toLowerCase();
       const id = el.id ? `#${el.id}` : "";

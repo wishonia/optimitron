@@ -28,17 +28,17 @@ export function SlideThreeScenariosAllWin() {
           {/* Metrics hit */}
           <div className="bg-muted border-2 border-brutal-cyan rounded-lg p-6 text-center">
             <div className="text-4xl mb-3">🌍</div>
-            <div className="font-pixel text-xl md:text-2xl text-brutal-cyan mb-4">
+            <div className="font-pixel text-xl md:text-2xl text-sierra-cyan mb-4">
               METRICS HIT
             </div>
-            <div className="font-pixel text-4xl md:text-6xl text-brutal-cyan">
+            <div className="font-pixel text-4xl md:text-6xl text-sierra-cyan">
               {voteValue}+
             </div>
             <div className="font-pixel text-lg text-muted-foreground mt-2">
               VOTE points pay out
             </div>
             <div className="mt-3 border-t border-brutal-cyan/30 pt-3">
-              <div className="font-pixel text-3xl md:text-5xl text-brutal-cyan">
+              <div className="font-pixel text-3xl md:text-5xl text-sierra-cyan">
                 +{lifetimeGain}
               </div>
               <div className="font-pixel text-sm md:text-base text-muted-foreground mt-1">

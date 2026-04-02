@@ -28,7 +28,7 @@ export function SlideWinConditionsHaleIncome() {
           {/* HALE */}
           <div className="bg-muted border-2 border-brutal-cyan rounded-lg p-6 text-center">
             <div className="text-5xl mb-3">❤️</div>
-            <div className="font-pixel text-xl md:text-2xl text-brutal-cyan mb-4">
+            <div className="font-pixel text-xl md:text-2xl text-sierra-cyan mb-4">
               HEALTHY LIFE EXPECTANCY
             </div>
             <div className="w-full mb-4">
@@ -40,7 +40,7 @@ export function SlideWinConditionsHaleIncome() {
               {currentHALE}
             </div>
             <div className="font-pixel text-2xl text-muted-foreground my-2">→</div>
-            <div className="font-pixel text-4xl md:text-6xl text-brutal-cyan">
+            <div className="font-pixel text-4xl md:text-6xl text-sierra-cyan">
               {targetHALE} yrs
             </div>
           </div>

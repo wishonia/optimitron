@@ -33,7 +33,7 @@ export function LandingProblemSection() {
             per year on weapons and{" "}
             <ParameterValue param={{...GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL, unit: "USD"}} display="withUnit" />{" "}
             on testing medicines. That&apos;s a{" "}
-            <span className="text-brutal-yellow font-black">
+            <span className="text-brutal-red font-black">
               {milToTrialsRatio.toLocaleString()}:1
             </span>{" "}
             ratio. On my planet, we call this a configuration error.
@@ -50,7 +50,7 @@ export function LandingProblemSection() {
             </div>
             <div className="space-y-6">
               <div>
-                <div className="text-3xl font-black text-brutal-yellow">
+                <div className="text-3xl font-black text-brutal-red">
                   <ParameterValue param={{...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"}} display="withUnit" />/yr
                 </div>
                 <p className="mt-1 text-sm font-bold text-background">
@@ -60,7 +60,7 @@ export function LandingProblemSection() {
                 </p>
               </div>
               <div>
-                <div className="text-2xl font-black text-brutal-yellow">
+                <div className="text-2xl font-black text-brutal-red">
                   <ParameterValue param={{...POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL, unit: "USD"}} display="withUnit" />/person
                 </div>
                 <p className="mt-1 text-sm font-bold text-background">
@@ -80,7 +80,7 @@ export function LandingProblemSection() {
             </div>
             <div className="space-y-6">
               <div>
-                <div className="text-3xl font-black text-brutal-yellow">
+                <div className="text-3xl font-black text-brutal-red">
                   <ParameterValue param={GLOBAL_DISEASE_DEATHS_DAILY} /> deaths/day
                 </div>
                 <p className="mt-1 text-sm font-bold text-background">
@@ -89,7 +89,7 @@ export function LandingProblemSection() {
                 </p>
               </div>
               <div>
-                <div className="text-2xl font-black text-brutal-yellow">
+                <div className="text-2xl font-black text-brutal-red">
                   <ParameterValue param={{...EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL, unit: "deaths"}} display="withUnit" />
                 </div>
                 <p className="mt-1 text-sm font-bold text-background">
@@ -104,7 +104,7 @@ export function LandingProblemSection() {
         </div>
 
         <div className="mt-8">
-          <div className="border-4 border-brutal-yellow bg-brutal-yellow text-brutal-yellow-foreground p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-brutal-yellow bg-brutal-yellow text-brutal-red-foreground p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-center text-sm font-bold">
               On my planet, when a system kills{" "}
               <ParameterValue param={{...GLOBAL_DISEASE_DEATHS_DAILY, unit: ""}} /> people a day and costs{" "}

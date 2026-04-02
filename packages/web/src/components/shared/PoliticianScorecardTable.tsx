@@ -109,7 +109,7 @@ export function PoliticianScorecardTable({
       {/* Title + search row */}
       <div className="flex items-end justify-between mb-2 gap-4">
         {sortKey === "ratio" ? (
-          <h3 className="text-lg font-black uppercase text-foreground">
+          <h3 className="text-lg font-black uppercase">
             {sortAsc ? "Least Bad Players" : "Worst Players"}
           </h3>
         ) : <div />}

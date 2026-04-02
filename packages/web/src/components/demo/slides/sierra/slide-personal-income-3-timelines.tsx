@@ -87,8 +87,8 @@ const EARTHS: EarthOption[] = [
     tag: "[LOADED]",
     borderColor: "border-red-600/60",
     bgColor: "bg-red-950/40",
-    textColor: "text-red-400",
-    tagColor: "text-red-300",
+    textColor: "text-white",
+    tagColor: "text-white",
     lifetimeIncome: statusQuoLifetimeIncome,
     incomeMultiplier: "",
     haleGain: `${GLOBAL_HALE_CURRENT.value.toFixed(1)} yrs`,
@@ -102,8 +102,8 @@ const EARTHS: EarthOption[] = [
     tag: "◄◄◄",
     borderColor: "border-emerald-500/60",
     bgColor: "bg-emerald-500/10",
-    textColor: "text-emerald-400",
-    tagColor: "text-emerald-400",
+    textColor: "text-white",
+    tagColor: "text-white",
     lifetimeIncome: treatyLifetimeIncome,
     incomeMultiplier: `(${treatyMultiplier}×)`,
     haleGain: `+${treatyHaleGain} yrs`,
@@ -117,8 +117,8 @@ const EARTHS: EarthOption[] = [
     tag: "",
     borderColor: "border-amber-500/60",
     bgColor: "bg-amber-500/10",
-    textColor: "text-amber-400",
-    tagColor: "text-amber-400",
+    textColor: "text-white",
+    tagColor: "text-white",
     lifetimeIncome: wishoniaLifetimeIncome,
     incomeMultiplier: `(${wishoniaMultiplier}×)`,
     haleGain: `+${wishoniaHaleGain} yrs`,
@@ -130,10 +130,10 @@ const EARTHS: EarthOption[] = [
 
 export function SlidePersonalIncome3Timelines() {
   return (
-    <SierraSlideWrapper act={3} className="text-emerald-400">
+    <SierraSlideWrapper act={3} className="text-sierra-green">
       <div className="flex flex-col items-center justify-center gap-4 max-w-[1700px] mx-auto">
         {/* Title */}
-        <h1 className="font-pixel text-3xl md:text-5xl text-amber-400 text-center">
+        <h1 className="font-pixel text-3xl md:text-5xl text-white text-center">
           PLEASE SELECT AN EARTH
         </h1>
 
@@ -150,7 +150,7 @@ export function SlidePersonalIncome3Timelines() {
                   <span className={`font-pixel text-xl md:text-3xl ${earth.textColor}`}>
                     {earth.label}
                   </span>
-                  <span className={`font-pixel text-sm md:text-lg text-zinc-400`}>
+                  <span className={`font-pixel text-sm md:text-lg text-white/70`}>
                     {earth.subtitle}
                   </span>
                 </div>
@@ -168,20 +168,20 @@ export function SlidePersonalIncome3Timelines() {
               {/* Stats Grid */}
               <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3">
                 <div>
-                  <div className="font-pixel text-xs md:text-base text-zinc-400 mb-1">
+                  <div className="font-pixel text-xs md:text-base text-white/70 mb-1">
                     LIFETIME INCOME
                   </div>
                   <div className={`font-pixel text-lg md:text-2xl ${earth.textColor}`}>
                     {formatCurrency(earth.lifetimeIncome)}{" "}
                     {earth.incomeMultiplier && (
-                      <span className="text-zinc-200 text-sm md:text-lg">
+                      <span className="text-white/70 text-sm md:text-lg">
                         {earth.incomeMultiplier}
                       </span>
                     )}
                   </div>
                 </div>
                 <div>
-                  <div className="font-pixel text-xs md:text-base text-zinc-400 mb-1">
+                  <div className="font-pixel text-xs md:text-base text-white/70 mb-1">
                     GDP 2045
                   </div>
                   <div className={`font-pixel text-lg md:text-2xl ${earth.textColor}`}>
@@ -189,7 +189,7 @@ export function SlidePersonalIncome3Timelines() {
                   </div>
                 </div>
                 <div>
-                  <div className="font-pixel text-xs md:text-base text-zinc-400 mb-1">
+                  <div className="font-pixel text-xs md:text-base text-white/70 mb-1">
                     GROWTH
                   </div>
                   <div className={`font-pixel text-lg md:text-2xl ${earth.textColor}`}>
@@ -197,7 +197,7 @@ export function SlidePersonalIncome3Timelines() {
                   </div>
                 </div>
                 <div>
-                  <div className="font-pixel text-xs md:text-base text-zinc-400 mb-1">
+                  <div className="font-pixel text-xs md:text-base text-white/70 mb-1">
                     HEALTHY YEARS
                   </div>
                   <div className={`font-pixel text-lg md:text-2xl ${earth.textColor}`}>
@@ -205,7 +205,7 @@ export function SlidePersonalIncome3Timelines() {
                   </div>
                 </div>
                 <div>
-                  <div className="font-pixel text-xs md:text-base text-zinc-400 mb-1">
+                  <div className="font-pixel text-xs md:text-base text-white/70 mb-1">
                     DYSFUNCTION TAX
                   </div>
                   <div className={`font-pixel text-lg md:text-2xl ${earth.textColor}`}>
@@ -218,7 +218,7 @@ export function SlidePersonalIncome3Timelines() {
         </div>
 
         {/* Collapse warning for Earth B */}
-        <div className="font-pixel text-xs md:text-sm text-red-400/70 text-center">
+        <div className="font-pixel text-xs md:text-sm text-sierra-red text-center">
           EARTH B: DESTRUCTIVE ECONOMY AT {destructivePctGdp}% GDP — INSTABILITY BY {instabilityYear} — COLLAPSE THRESHOLD BY {collapseYear}
         </div>
       </div>

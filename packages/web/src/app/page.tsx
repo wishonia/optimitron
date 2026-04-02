@@ -43,6 +43,7 @@ import {
   iabLink,
 } from "@/lib/routes";
 import { GameCTA } from "@/components/ui/game-cta";
+import { DemoVideoSection } from "@/components/landing/DemoVideoSection";
 import { CTA, TAGLINES } from "@/lib/messaging";
 import {
   DESTRUCTIVE_ECONOMY_35PCT_YEAR,
@@ -168,6 +169,9 @@ export default function Home() {
     <div>
       {/* ── 1. Hero — Game name + objective ── */}
       <HeroSection />
+
+      {/* ── 1b. Demo Video — show don't tell ── */}
+      <DemoVideoSection />
 
       {/* ── 2. TLDR — It's 2 buttons, tell your friends, done ── */}
       <TLDRSection />

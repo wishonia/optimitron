@@ -126,55 +126,10 @@ export async function getContrastViolations(
         }
         current = current.parentElement;
       }
-      // Fallback: use elementsFromPoint to find the actual visual background.
-      // This handles cases where the background comes from a positioned sibling
-      // rather than a direct ancestor (e.g. absolute overlays, z-indexed layers).
-      const rect = el.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const stack = document.elementsFromPoint(cx, cy);
-        // Walk the visual stack (starting from topmost) looking for a bg
-        let foundSelf = false;
-        for (const stackEl of stack) {
-          // Skip elements above our target in the stack
-          if (stackEl === el) { foundSelf = true; continue; }
-          if (!foundSelf) continue;
-          // Skip the target's own ancestors (already checked above)
-          if (el.contains(stackEl) || stackEl.contains(el)) continue;
-
-          const stackStyle = window.getComputedStyle(stackEl);
-
-          // Check gradient
-          const stackBgImage = stackStyle.backgroundImage;
-          if (stackBgImage && stackBgImage !== "none" && stackBgImage.includes("gradient")) {
-            const colorMatch = stackBgImage.match(
-              /rgba?\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+(?:\s*,\s*[\d.]+)?\s*\)/,
-            );
-            if (colorMatch) {
-              const gradColor = parseColor(colorMatch[0]);
-              if (gradColor && gradColor[3] >= 0.5) {
-                let fallbackBase: [number, number, number] = [gradColor[0], gradColor[1], gradColor[2]];
-                for (let i = layers.length - 1; i >= 0; i--) {
-                  fallbackBase = alphaComposite(layers[i], fallbackBase);
-                }
-                return { bg: fallbackBase, hasGradient: true };
-              }
-            }
-          }
-
-          const stackBg = parseColor(stackStyle.backgroundColor);
-          if (stackBg && stackBg[3] >= 0.99) {
-            let fallbackBase: [number, number, number] = [stackBg[0], stackBg[1], stackBg[2]];
-            for (let i = layers.length - 1; i >= 0; i--) {
-              fallbackBase = alphaComposite(layers[i], fallbackBase);
-            }
-            return { bg: fallbackBase, hasGradient };
-          }
-        }
-      }
-
-      // Last resort: assume black background (dark mode default)
+      // Fallback: assume black background (dark mode default).
+      // We intentionally skip elementsFromPoint here — it can return
+      // colors from unrelated z-layers (e.g. HUD overlays behind slides)
+      // which produce false positives worse than assuming black.
       let base: [number, number, number] = [0, 0, 0];
       for (let i = layers.length - 1; i >= 0; i--) {
         base = alphaComposite(layers[i], base);

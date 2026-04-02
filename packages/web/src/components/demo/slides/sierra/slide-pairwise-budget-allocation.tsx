@@ -94,7 +94,7 @@ export function SlidePairwiseBudgetAllocation() {
         <h1 className="font-pixel text-2xl md:text-4xl text-brutal-cyan">
           MAKE YOUR WISHOCRATIC ALLOCATION
         </h1>
-        <div className="font-terminal text-xl md:text-2xl text-zinc-200 mt-2">
+        <div className="font-terminal text-xl md:text-2xl text-sierra-fg mt-2">
           Compare two priorities. Drag to split funding. Repeat.
         </div>
       </div>
@@ -104,7 +104,7 @@ export function SlidePairwiseBudgetAllocation() {
         {phase >= 2 && (
           <div className="bg-muted border-2 border-brutal-cyan rounded-lg p-6 animate-fade-in">
             {/* Pair counter */}
-            <div className="font-pixel text-lg md:text-xl text-zinc-400 text-center mb-4">
+            <div className="font-pixel text-lg md:text-xl text-sierra-fg text-center mb-4">
               COMPARISON {activePair + 1} OF {PAIRS.length}
             </div>
 
@@ -112,22 +112,22 @@ export function SlidePairwiseBudgetAllocation() {
             <div className="flex justify-between items-center mb-4">
               <div className="flex-1 text-center">
                 <div className="text-4xl md:text-6xl mb-2">{pair.a.icon}</div>
-                <div className="font-pixel text-3xl md:text-5xl text-emerald-400">
+                <div className="font-pixel text-3xl md:text-5xl text-sierra-green">
                   {allocationA}%
                 </div>
-                <div className="font-pixel text-lg md:text-2xl text-zinc-200 mt-1 px-2">
+                <div className="font-pixel text-lg md:text-2xl text-sierra-fg mt-1 px-2">
                   {pair.a.name}
                 </div>
               </div>
 
-              <div className="font-pixel text-2xl md:text-3xl text-zinc-500 px-2">vs</div>
+              <div className="font-pixel text-2xl md:text-3xl text-sierra-fg px-2">vs</div>
 
               <div className="flex-1 text-center">
                 <div className="text-4xl md:text-6xl mb-2">{pair.b.icon}</div>
-                <div className="font-pixel text-3xl md:text-5xl text-red-400">
+                <div className="font-pixel text-3xl md:text-5xl text-sierra-red">
                   {allocationB}%
                 </div>
-                <div className="font-pixel text-lg md:text-2xl text-zinc-200 mt-1 px-2">
+                <div className="font-pixel text-lg md:text-2xl text-sierra-fg mt-1 px-2">
                   {pair.b.name}
                 </div>
               </div>

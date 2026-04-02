@@ -62,8 +62,8 @@ export function InvisibleGraveyardSection() {
           {graveyardStats.map((stat, i) => (
             <ScrollReveal key={stat.label} delay={i * 0.1}>
               <div className="p-6 border-4 border-brutal-yellow bg-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                <div className="text-3xl sm:text-4xl font-black text-brutal-yellow mb-2">
-                  <CountUp value={stat.value} suffix={stat.suffix} className="text-brutal-yellow" />
+                <div className="text-3xl sm:text-4xl font-black text-brutal-red mb-2">
+                  <CountUp value={stat.value} suffix={stat.suffix} className="text-brutal-red" />
                 </div>
                 <h3 className="text-sm font-black text-background uppercase mb-2">
                   {stat.label}
@@ -77,7 +77,7 @@ export function InvisibleGraveyardSection() {
         </div>
 
         <ScrollReveal delay={0.4}>
-          <div className="p-8 border-4 border-brutal-yellow bg-brutal-yellow text-brutal-yellow-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
+          <div className="p-8 border-4 border-brutal-yellow bg-brutal-yellow text-brutal-red-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-3xl sm:text-4xl font-black mb-2">
               <ParameterValue param={{...DFDA_EFFICACY_LAG_ELIMINATION_ECONOMIC_VALUE, unit: "USD"}} />
             </div>

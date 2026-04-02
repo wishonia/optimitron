@@ -28,14 +28,14 @@ export function StatBar({ label, value, max = 10, className }: StatBarProps) {
         className,
       )}
     >
-      <span className="w-[72px] shrink-0 text-muted-foreground uppercase tracking-wider">
+      <span className="w-[72px] shrink-0 uppercase tracking-wider">
         {label}
       </span>
-      <span className="text-foreground tracking-[-0.05em]" aria-label={`${filled} out of ${max}`}>
+      <span className="tracking-[-0.05em]" aria-label={`${filled} out of ${max}`}>
         {"█".repeat(filled)}
-        <span className="text-muted-foreground/40">{"░".repeat(empty)}</span>
+        <span className="opacity-30">{"░".repeat(empty)}</span>
       </span>
-      <span className="text-muted-foreground tabular-nums">
+      <span className="tabular-nums">
         {filled}/{max}
       </span>
     </div>

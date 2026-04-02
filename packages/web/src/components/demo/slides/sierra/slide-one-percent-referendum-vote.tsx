@@ -89,11 +89,11 @@ export function SlideOnePercentReferendumVote() {
   const clinicalPct = (100 - sliderValue).toFixed(1);
 
   return (
-    <SierraSlideWrapper act={2} className="text-cyan-400">
+    <SierraSlideWrapper act={2} className="text-sierra-cyan">
       {/* Level header */}
       <div className="text-center mb-4">
-        <div className="font-pixel text-xl text-cyan-400 mb-1">LEVEL 2</div>
-        <h1 className="font-pixel text-2xl md:text-4xl text-cyan-400">
+        <div className="font-pixel text-xl text-sierra-cyan mb-1">LEVEL 2</div>
+        <h1 className="font-pixel text-2xl md:text-4xl text-sierra-cyan">
           WISHOCRATIC PAIRWISE ALLOCATION
         </h1>
         <div className="font-terminal text-xl md:text-2xl text-zinc-200 mt-2">
@@ -105,14 +105,14 @@ export function SlideOnePercentReferendumVote() {
         {/* Slider allocation */}
         {phase >= 1 && (
           <div className="bg-muted border-2 border-brutal-cyan rounded-lg p-6 animate-fade-in">
-            <div className="font-pixel text-xl md:text-2xl text-cyan-400 text-center mb-4">
+            <div className="font-pixel text-xl md:text-2xl text-sierra-cyan text-center mb-4">
               DRAG TO ALLOCATE
             </div>
 
             {/* Percentage display */}
             <div className="flex justify-between items-center mb-4">
               <div className="flex-1 text-center">
-                <div className="font-pixel text-4xl md:text-5xl text-red-400">
+                <div className="font-pixel text-4xl md:text-5xl text-sierra-red">
                   {militaryDisplay}%
                 </div>
                 <div className="font-pixel text-xl md:text-2xl text-zinc-200 mt-1">
@@ -120,7 +120,7 @@ export function SlideOnePercentReferendumVote() {
                 </div>
               </div>
               <div className="flex-1 text-center">
-                <div className="font-pixel text-4xl md:text-5xl text-emerald-400">
+                <div className="font-pixel text-4xl md:text-5xl text-sierra-green">
                   {clinicalPct}%
                 </div>
                 <div className="font-pixel text-xl md:text-2xl text-zinc-200 mt-1">

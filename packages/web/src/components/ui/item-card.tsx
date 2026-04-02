@@ -80,12 +80,12 @@ export function ItemCard({
       </div>
 
       {/* Item name */}
-      <h3 className="font-black uppercase text-foreground text-lg mb-2 tracking-tight">
+      <h3 className="font-black uppercase text-lg mb-2 tracking-tight">
         {name}
       </h3>
 
       {/* Description */}
-      <p className="text-sm font-bold text-muted-foreground leading-relaxed mb-4 flex-grow">
+      <p className="text-sm font-bold leading-relaxed mb-4 flex-grow">
         {description}
       </p>
 
@@ -94,7 +94,7 @@ export function ItemCard({
 
       {/* Footer: cost + equip button */}
       <div className="flex items-center justify-between border-t-2 border-primary pt-3 mt-auto">
-        <span className="font-pixel text-[10px] text-muted-foreground uppercase">
+        <span className="font-pixel text-[10px] uppercase">
           Cost: {cost}
         </span>
 
@@ -102,7 +102,7 @@ export function ItemCard({
           <NavItemLink
             item={link.item}
             variant="custom"
-            className="inline-flex items-center gap-1 font-pixel text-[10px] font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1 font-pixel text-[10px] font-black uppercase underline underline-offset-2 hover:opacity-70 transition-opacity"
           >
             {link.label} &rarr;
           </NavItemLink>
@@ -112,13 +112,13 @@ export function ItemCard({
             href={externalLink.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 font-pixel text-[10px] font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1 font-pixel text-[10px] font-black uppercase underline underline-offset-2 hover:opacity-70 transition-opacity"
           >
             {externalLink.label} &rarr;
           </a>
         )}
         {!link && !externalLink && !locked && (
-          <span className="font-pixel text-[10px] text-muted-foreground uppercase">
+          <span className="font-pixel text-[10px] uppercase">
             Coming Soon
           </span>
         )}

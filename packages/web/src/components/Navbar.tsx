@@ -128,7 +128,7 @@ export default function Navbar() {
                               <SheetClose asChild key={item.href}>
                                 <Link
                                   href={item.href}
-                                  className={`flex items-center gap-2 px-3 py-2 text-sm font-bold uppercase transition-all border-2 ${
+                                  className={`flex items-center gap-2 px-3 py-3 text-sm font-bold uppercase transition-all border-2 ${
                                     active
                                       ? "border-primary bg-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
                                       : "border-transparent hover:border-primary hover:bg-background hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
@@ -161,7 +161,7 @@ export default function Navbar() {
                       <SheetClose asChild>
                         <Link
                           href={profileLink.href}
-                          className="block text-sm font-black uppercase px-3 py-2 border-2 border-transparent hover:border-primary hover:bg-background hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
+                          className="block text-sm font-black uppercase px-3 py-3 border-2 border-transparent hover:border-primary hover:bg-background hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all"
                         >
                           {profileLink.emoji} {profileLink.label}
                         </Link>

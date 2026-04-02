@@ -1,12 +1,7 @@
-import { videoLink } from "@/lib/routes";
-import { getRouteMetadata } from "@/lib/metadata";
-
-export const metadata = getRouteMetadata(videoLink);
-
 const VIDEO_URL =
   "https://static.warondisease.org/assets/videos/optimitron-demo-2026-03-31-seekable.mp4";
 
-export default function VideoPage() {
+export function DemoVideoSection() {
   return (
     <video
       className="w-full block"

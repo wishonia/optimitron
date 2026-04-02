@@ -77,6 +77,52 @@
 }
 
 /* ========================================
+   SIERRA TEXT COLOR UTILITIES (WCAG AA on dark)
+
+   These are the ONLY text colors demo slides should use.
+   All values are tuned for ≥4.5:1 contrast on dark backgrounds
+   (--sierra-bg or SierraSlideWrapper gradients).
+   ======================================== */
+
+/* Semantic roles */
+@utility text-sierra-fg      { color: var(--sierra-fg); }
+@utility text-sierra-muted   { color: var(--sierra-muted); }
+@utility text-sierra-danger   { color: #ff6b6b; }
+@utility text-sierra-success  { color: #69db7c; }
+@utility text-sierra-accent   { color: var(--sierra-accent); }
+@utility text-sierra-score    { color: var(--sierra-score); }
+@utility text-sierra-death    { color: var(--sierra-death); }
+
+/* Named colors */
+@utility text-sierra-cyan     { color: #67e8f9; }
+@utility text-sierra-teal     { color: #5eead4; }
+@utility text-sierra-green    { color: #86efac; }
+@utility text-sierra-red      { color: #fca5a5; }
+@utility text-sierra-amber    { color: #fde68a; }
+@utility text-sierra-gold     { color: var(--sierra-gold); }
+@utility text-sierra-orange   { color: var(--sierra-orange); }
+@utility text-sierra-coral    { color: var(--sierra-coral); }
+@utility text-sierra-blue     { color: var(--sierra-bright-blue); }
+@utility text-sierra-purple   { color: #c4b5fd; }
+@utility text-sierra-pink     { color: #f9a8d4; }
+@utility text-sierra-lime     { color: var(--sierra-lime); }
+
+/* Background equivalents */
+@utility bg-sierra-bg         { background-color: var(--sierra-bg); }
+@utility bg-sierra-surface    { background-color: rgba(0, 0, 0, 0.4); }
+@utility bg-sierra-danger     { background-color: #dc2626; }
+@utility bg-sierra-success    { background-color: #16a34a; }
+@utility bg-sierra-cyan       { background-color: #0891b2; }
+@utility bg-sierra-amber      { background-color: #d97706; }
+
+/* Border equivalents */
+@utility border-sierra        { border-color: var(--sierra-border); }
+@utility border-sierra-danger { border-color: #ef444480; }
+@utility border-sierra-success{ border-color: #22c55e80; }
+@utility border-sierra-cyan   { border-color: #06b6d480; }
+@utility border-sierra-amber  { border-color: #f59e0b80; }
+
+/* ========================================
    TYPOGRAPHY
    ======================================== */
 

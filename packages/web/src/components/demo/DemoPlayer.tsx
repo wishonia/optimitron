@@ -181,6 +181,17 @@ function DemoPlayerInner({
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Expose navigation for Playwright tests
+  useEffect(() => {
+    const w = window as Window & { __demoNav?: { setSlide: (i: number) => void; getSlide: () => number; total: number } };
+    w.__demoNav = {
+      setSlide: (i: number) => { setCurrentIndex(i); setIsPlaying(false); },
+      getSlide: () => currentIndex,
+      total: slides.length,
+    };
+    return () => { delete w.__demoNav; };
+  });
+
   // Sync initial slide from URL hash after hydration
   useEffect(() => {
     const hash = window.location.hash.slice(1);

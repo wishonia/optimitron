@@ -229,16 +229,16 @@ function HealthTab() {
                 <tr
                   key={d.country}
                   className={`border-b border-primary hover:bg-brutal-cyan ${
-                    d.country === "United States" ? "bg-brutal-red" : ""
+                    d.country === "United States" ? "bg-brutal-red text-brutal-red-foreground" : ""
                   }`}
                 >
-                  <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>
-                  <td className="py-2 px-2 text-right text-foreground font-bold">${d.spending.toLocaleString()}</td>
-                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.pctGDP}%</td>
-                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.lifeExp}</td>
-                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.infantMort}</td>
+                  <td className="py-2 px-2 font-bold">{d.country}</td>
+                  <td className="py-2 px-2 text-right font-bold">${d.spending.toLocaleString()}</td>
+                  <td className="py-2 px-2 text-right font-bold">{d.pctGDP}%</td>
+                  <td className="py-2 px-2 text-right font-bold">{d.lifeExp}</td>
+                  <td className="py-2 px-2 text-right font-bold">{d.infantMort}</td>
                   <td className="py-2 px-2 text-center">
-                    <span className="text-xs px-2 py-0.5 bg-muted border border-primary text-foreground font-bold">{d.system}</span>
+                    <span className="text-xs px-2 py-0.5 bg-muted border border-primary font-bold">{d.system}</span>
                   </td>
                   <td className="py-2 px-2 text-center">{d.universal ? "✅" : "❌"}</td>
                 </tr>
@@ -292,22 +292,22 @@ function DrugTab() {
               <tr
                 key={d.country}
                 className={`border-b border-primary hover:bg-brutal-cyan ${
-                  d.country === "United States" ? "bg-brutal-red" : ""
+                  d.country === "United States" ? "bg-brutal-red text-brutal-red-foreground" : ""
                 }`}
               >
-                <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>
+                <td className="py-2 px-2 font-bold">{d.country}</td>
                 <td className="py-2 px-2 text-center">
-                  <span className={`text-xs px-2 py-0.5 border font-bold ${approachColor[d.approach] ?? "bg-muted text-foreground border-primary"}`}>
+                  <span className={`text-xs px-2 py-0.5 border font-bold ${approachColor[d.approach] ?? "bg-muted border-primary"}`}>
                     {d.approach}
                   </span>
                 </td>
-                <td className={`py-2 px-2 text-right font-black ${d.deaths > 10 ? "text-brutal-red" : d.deaths < 2 ? "text-brutal-cyan" : "text-foreground"}`}>
+                <td className={`py-2 px-2 text-right font-black ${d.country !== "United States" ? (d.deaths > 10 ? "text-brutal-red" : d.deaths < 2 ? "text-brutal-cyan" : "") : ""}`}>
                   {d.deaths}
                 </td>
-                <td className="py-2 px-2 text-right text-foreground font-bold">{d.incarceration}</td>
-                <td className="py-2 px-2 text-right text-foreground font-bold">{d.hiv}%</td>
-                <td className="py-2 px-2 text-right text-foreground font-bold">{d.treatment}%</td>
-                <td className="py-2 px-2 text-right text-muted-foreground font-bold">{d.year ?? "—"}</td>
+                <td className="py-2 px-2 text-right font-bold">{d.incarceration}</td>
+                <td className="py-2 px-2 text-right font-bold">{d.hiv}%</td>
+                <td className="py-2 px-2 text-right font-bold">{d.treatment}%</td>
+                <td className="py-2 px-2 text-right opacity-70 font-bold">{d.year ?? "—"}</td>
               </tr>
             ))}
           </tbody>
@@ -378,14 +378,14 @@ function EducationTab() {
                 <tr
                   key={d.country}
                   className={`border-b border-primary hover:bg-brutal-cyan ${
-                    d.country === "United States" ? "bg-brutal-red" : ""
+                    d.country === "United States" ? "bg-brutal-red text-brutal-red-foreground" : ""
                   }`}
                 >
-                  <td className="py-2 px-2 text-foreground font-bold">{d.country}</td>
-                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.spending}%</td>
-                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.math}</td>
-                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.reading}</td>
-                  <td className="py-2 px-2 text-right text-foreground font-bold">{d.science}</td>
+                  <td className="py-2 px-2 font-bold">{d.country}</td>
+                  <td className="py-2 px-2 text-right font-bold">{d.spending}%</td>
+                  <td className="py-2 px-2 text-right font-bold">{d.math}</td>
+                  <td className="py-2 px-2 text-right font-bold">{d.reading}</td>
+                  <td className="py-2 px-2 text-right font-bold">{d.science}</td>
                   <td className="py-2 px-2 text-right font-black text-brutal-pink">{avg}</td>
                 </tr>
               );
