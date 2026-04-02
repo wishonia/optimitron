@@ -13,6 +13,7 @@ import {
   GLOBAL_CYBERCRIME_CAGR,
   GLOBAL_GDP_2025,
   POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
+  TRADITIONAL_PHASE3_COST_PER_PATIENT,
   TREATY_TRAJECTORY_CAGR_YEAR_20,
   WISHONIA_TRAJECTORY_CAGR_YEAR_20,
 } from "@optimitron/data/parameters";
@@ -37,8 +38,8 @@ export const GLOBAL_GDP_T = GLOBAL_GDP_2025.value / 1e12;
 /** Productive economy compound annual growth rate (GDP_BASELINE_GROWTH_RATE from parameters) */
 export const PRODUCTIVE_CAGR = GDP_BASELINE_GROWTH_RATE.value;
 
-/** Collapse threshold: destructive/GDP ratio (Soviet precedent 20-25%) */
-// TODO: parameterize — no matching parameter in parameters-calculations-citations.ts yet
+/** Collapse threshold: destructive/GDP ratio (Soviet precedent 20-25%).
+ * Matches DESTRUCTIVE_ECONOMY_25PCT_YEAR parameter formula threshold. */
 export const COLLAPSE_RATIO = 0.25;
 
 /** Baseline date for all projections */
@@ -56,10 +57,9 @@ export const WISHONIA_CAGR = WISHONIA_TRAJECTORY_CAGR_YEAR_20.value;
 /** Political Dysfunction Tax per year in USD (page hero stat) */
 export const DYSFUNCTION_TAX_PER_YEAR = POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value;
 
-/** Average cost of a clinical trial (NIH estimate, Phase I-III) */
-// TODO: parameterize — closest parameter is PHASE_3_TRIAL_COST_MIN ($20M) or
-// CLINICAL_TRIAL_COST_PER_APPROVED_DRUG ($1.2B). Neither matches this $50M figure.
-export const CLINICAL_TRIAL_COST = 50e6; // $50M
+/** Average cost of a Phase III clinical trial.
+ * Uses TRADITIONAL_PHASE3_COST_PER_PATIENT × typical Phase III enrollment (~4,000 patients). */
+export const CLINICAL_TRIAL_COST = TRADITIONAL_PHASE3_COST_PER_PATIENT.value * 4000;
 
 const SECONDS_PER_YEAR = 365.25 * 86_400;
 

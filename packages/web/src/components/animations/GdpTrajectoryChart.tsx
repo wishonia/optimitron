@@ -12,7 +12,7 @@ import {
   WISHONIA_CAGR,
   COLLAPSE_RATIO,
   computeCollapseYears,
-} from "@/data/collapse-constants";
+} from "@/lib/collapse-projections";
 
 const WIDTH = 800;
 const HEIGHT = 440;

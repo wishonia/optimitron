@@ -9,8 +9,6 @@ import {
   type ParsedMeasurement,
 } from "@optimitron/chat-ui";
 import { API_ROUTES } from "@/lib/api-routes";
-// MythBusterCard removed — misconceptions page deleted
-// OutcomeCard removed — explorer infrastructure deleted
 import { BudgetResultCard } from "./BudgetResultCard";
 import { RepresentativeCard } from "./RepresentativeCard";
 import { BillListCard } from "./BillListCard";
@@ -34,15 +32,11 @@ import {
 import { buildBillCBA, type BillCBA } from "../../lib/civic-cba";
 import type { CivicRepresentative } from "../../lib/civic-data";
 import type { ClassifiedBill } from "../../app/api/civic/bills/route";
-// Explorer imports removed — outcomes/studies pages deleted
-// misconceptions data deleted — OPG covers policy analysis better
 import "./chat-theme.css";
 
 const VoiceChatOverlay = lazy(() => import("./VoiceChatOverlay"));
 
 // --- Extended message types for app-specific cards ---
-// MythCardMessage removed
-// OutcomeCardMessage removed — explorer deleted
 type BudgetResultMessage = { type: "budgetResult"; allocations: Record<string, number>; actualAllocations: Record<string, number> };
 
 // --- Civic engagement message types ---
@@ -56,8 +50,6 @@ type SendToRepMessage = { type: "sendToRep"; representatives: CivicRepresentativ
 
 type AppChatMessage =
   | ChatMessage
-  // MythCardMessage removed
-  // OutcomeCardMessage removed
   | BudgetResultMessage
   | RepCardMessage
   | BillListMessage
@@ -680,8 +672,6 @@ export default function ChatPage() {
   const renderCustomMessage = useCallback((msg: ChatMessage): ReactNode | null => {
     const m = msg as AppChatMessage;
     switch (m.type) {
-      // mythCard removed
-      // outcomeCard case removed — explorer deleted
       case "budgetResult":
         return <BudgetResultCard allocations={m.allocations} actualAllocations={m.actualAllocations} />;
       case "repCard":

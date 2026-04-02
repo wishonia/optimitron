@@ -49,6 +49,26 @@ export interface BudgetReportCategory {
   efficiency?: EfficiencyAnalysis;
 }
 
+export interface EfficientFrontierDecile {
+  decile: number;
+  spending: number;
+  outcome: number;
+  countries: number;
+}
+
+export interface EfficientFrontierCategory {
+  spendingField: string;
+  outcomeField: string;
+  outcomeName: string;
+  deciles: EfficientFrontierDecile[];
+}
+
+export interface EfficientFrontierTotals {
+  usCurrentTotalPerCapita: number;
+  efficientFrontierTotalPerCapita: number;
+  ratio: number;
+}
+
 export interface BudgetReportJSON {
   jurisdiction: string;
   totalSpendingNominal: number;
@@ -59,4 +79,9 @@ export interface BudgetReportJSON {
   inflationAdjustment?: Record<string, unknown>;
   methodology?: Record<string, unknown>;
   note?: string;
+  /** Efficient frontier decile data for scatter plot visualization */
+  efficientFrontier?: {
+    categories: Record<string, EfficientFrontierCategory>;
+    totals: EfficientFrontierTotals;
+  };
 }

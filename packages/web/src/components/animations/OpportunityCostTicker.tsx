@@ -5,7 +5,7 @@ import { useReducedMotion } from "framer-motion";
 import {
   DYSFUNCTION_TAX_PER_SECOND,
   CLINICAL_TRIAL_COST,
-} from "@/data/collapse-constants";
+} from "@/lib/collapse-projections";
 
 /**
  * Shows clinical trials that could have been funded with governance waste,

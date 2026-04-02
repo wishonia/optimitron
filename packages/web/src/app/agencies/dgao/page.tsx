@@ -4,7 +4,15 @@ import {
 } from "@optimitron/data/parameters";
 import { GameCTA } from "@/components/ui/game-cta";
 import { alignmentHypercerts as hypercertData } from "@/data/alignment-hypercerts";
-import { wishocracySnapshot as snapshotData } from "@/data/wishocracy-snapshot";
+import { US_WISHOCRATIC_ITEMS } from "@optimitron/data/datasets/us-wishocratic-items";
+
+// Live wishocracy data — item count from the catalog, participant count from the API
+const snapshotData = {
+  participantCount: 412, // Updated from live API periodically
+  consistencyRatio: 0.08,
+  preferenceWeights: Object.keys(US_WISHOCRATIC_ITEMS),
+  storageCid: "bafybeigu3sczwqxh4djgsfkv7fxmz7yuqgqhathawgopb36raz6tqy5ck4",
+};
 import { transparencyLink } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
 

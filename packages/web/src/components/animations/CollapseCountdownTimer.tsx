@@ -8,7 +8,7 @@ import {
   DESTRUCTIVE_CAGR,
   GLOBAL_GDP_T,
   PRODUCTIVE_CAGR,
-} from "@/data/collapse-constants";
+} from "@/lib/collapse-projections";
 
 /**
  * Target ratio for countdown. 0.50 = 50% of GDP is destructive

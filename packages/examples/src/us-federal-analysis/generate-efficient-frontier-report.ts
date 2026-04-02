@@ -29,7 +29,7 @@ const WEB_DIR = path.resolve(__dirname, '../../../../packages/web/public/data');
 // Sources: OECD Health Statistics, SIPRI, UNESCO, World Bank
 // ---------------------------------------------------------------------------
 
-const SPENDING_CATEGORIES: SpendingDecileCategory[] = [
+export const SPENDING_CATEGORIES: SpendingDecileCategory[] = [
   {
     categoryId: 'health',
     categoryName: 'Healthcare',

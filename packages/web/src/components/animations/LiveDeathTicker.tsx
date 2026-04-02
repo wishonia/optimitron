@@ -9,7 +9,7 @@ import {
   DYSFUNCTION_TAX_PER_YEAR,
   DESTRUCTIVE_PER_SECOND,
   DESTRUCTIVE_BASE_T,
-} from "@/data/collapse-constants";
+} from "@/lib/collapse-projections";
 
 function formatDollars(n: number): string {
   if (n >= 1e9) return `$${(n / 1e9).toFixed(1)}B`;

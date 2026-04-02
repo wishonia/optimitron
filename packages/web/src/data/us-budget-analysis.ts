@@ -2482,7 +2482,7 @@ export const usBudgetAnalysis: BudgetReportJSON = {
     "Justice / Law Enforcement: United States spends $12848/cap (rank 25/26). South Korea spends $6037/cap with Life Expectancy 83.57. Overspend: 2.1x. Potential savings: $2.3T/yr",
     "Energy: United States spends $1991/cap (rank 23/27). Netherlands spends $1064/cap with After-Tax Median Income (PPP) 31221.39. Overspend: 1.9x. Potential savings: $314B/yr"
   ],
-  "generatedAt": "2026-04-02T21:23:52.911Z",
+  "generatedAt": "2026-04-02T23:14:08.981Z",
   "generatedBy": "@optimitron/obg + OECD cross-country panel",
   "inflationAdjustment": {
     "method": "CPI-U deflator",
@@ -2498,5 +2498,349 @@ export const usBudgetAnalysis: BudgetReportJSON = {
     "lowFitGuard": "Models with R² < 0.3 constrained to [0.5×, 2×] current spending",
     "nonDiscretionary": "Social Security, Medicare, Interest on Debt, Other Mandatory excluded from optimization"
   },
-  "note": "Budget analysis uses real OECD cross-country data (23 countries × 23 years) for OSL estimation where available. Categories without OECD mappings use outcome-trend heuristics."
+  "note": "Budget analysis uses real OECD cross-country data (23 countries × 23 years) for OSL estimation where available. Categories without OECD mappings use outcome-trend heuristics.",
+  "efficientFrontier": {
+    "categories": {
+      "health": {
+        "spendingField": "health",
+        "outcomeField": "health",
+        "outcomeName": "Life Expectancy",
+        "deciles": [
+          {
+            "decile": 1,
+            "spending": 1200,
+            "outcome": 74.2,
+            "countries": 3
+          },
+          {
+            "decile": 2,
+            "spending": 2100,
+            "outcome": 78.1,
+            "countries": 3
+          },
+          {
+            "decile": 3,
+            "spending": 2800,
+            "outcome": 80.3,
+            "countries": 3
+          },
+          {
+            "decile": 4,
+            "spending": 3400,
+            "outcome": 81.5,
+            "countries": 3
+          },
+          {
+            "decile": 5,
+            "spending": 3900,
+            "outcome": 82.2,
+            "countries": 3
+          },
+          {
+            "decile": 6,
+            "spending": 4400,
+            "outcome": 82,
+            "countries": 3
+          },
+          {
+            "decile": 7,
+            "spending": 5000,
+            "outcome": 81.8,
+            "countries": 3
+          },
+          {
+            "decile": 8,
+            "spending": 5800,
+            "outcome": 81.5,
+            "countries": 3
+          },
+          {
+            "decile": 9,
+            "spending": 7200,
+            "outcome": 81,
+            "countries": 3
+          },
+          {
+            "decile": 10,
+            "spending": 10200,
+            "outcome": 78.6,
+            "countries": 3
+          }
+        ]
+      },
+      "military": {
+        "spendingField": "military",
+        "outcomeField": "military",
+        "outcomeName": "Conflict Incidents per 100K",
+        "deciles": [
+          {
+            "decile": 1,
+            "spending": 180,
+            "outcome": 1.8,
+            "countries": 3
+          },
+          {
+            "decile": 2,
+            "spending": 350,
+            "outcome": 0.9,
+            "countries": 3
+          },
+          {
+            "decile": 3,
+            "spending": 520,
+            "outcome": 0.4,
+            "countries": 3
+          },
+          {
+            "decile": 4,
+            "spending": 680,
+            "outcome": 0.25,
+            "countries": 3
+          },
+          {
+            "decile": 5,
+            "spending": 850,
+            "outcome": 0.18,
+            "countries": 3
+          },
+          {
+            "decile": 6,
+            "spending": 1050,
+            "outcome": 0.15,
+            "countries": 3
+          },
+          {
+            "decile": 7,
+            "spending": 1300,
+            "outcome": 0.12,
+            "countries": 3
+          },
+          {
+            "decile": 8,
+            "spending": 1600,
+            "outcome": 0.1,
+            "countries": 3
+          },
+          {
+            "decile": 9,
+            "spending": 2000,
+            "outcome": 0.09,
+            "countries": 3
+          },
+          {
+            "decile": 10,
+            "spending": 2400,
+            "outcome": 0.08,
+            "countries": 3
+          }
+        ]
+      },
+      "education": {
+        "spendingField": "education",
+        "outcomeField": "education",
+        "outcomeName": "PISA Math Score",
+        "deciles": [
+          {
+            "decile": 1,
+            "spending": 800,
+            "outcome": 420,
+            "countries": 3
+          },
+          {
+            "decile": 2,
+            "spending": 1200,
+            "outcome": 465,
+            "countries": 3
+          },
+          {
+            "decile": 3,
+            "spending": 1600,
+            "outcome": 490,
+            "countries": 3
+          },
+          {
+            "decile": 4,
+            "spending": 2000,
+            "outcome": 500,
+            "countries": 3
+          },
+          {
+            "decile": 5,
+            "spending": 2400,
+            "outcome": 505,
+            "countries": 3
+          },
+          {
+            "decile": 6,
+            "spending": 2800,
+            "outcome": 502,
+            "countries": 3
+          },
+          {
+            "decile": 7,
+            "spending": 3200,
+            "outcome": 498,
+            "countries": 3
+          },
+          {
+            "decile": 8,
+            "spending": 3600,
+            "outcome": 500,
+            "countries": 3
+          },
+          {
+            "decile": 9,
+            "spending": 4000,
+            "outcome": 495,
+            "countries": 3
+          },
+          {
+            "decile": 10,
+            "spending": 4800,
+            "outcome": 489,
+            "countries": 3
+          }
+        ]
+      },
+      "social_protection": {
+        "spendingField": "social_protection",
+        "outcomeField": "social_protection",
+        "outcomeName": "Poverty Rate",
+        "deciles": [
+          {
+            "decile": 1,
+            "spending": 1500,
+            "outcome": 18.5,
+            "countries": 3
+          },
+          {
+            "decile": 2,
+            "spending": 2800,
+            "outcome": 14.2,
+            "countries": 3
+          },
+          {
+            "decile": 3,
+            "spending": 3800,
+            "outcome": 11.5,
+            "countries": 3
+          },
+          {
+            "decile": 4,
+            "spending": 4600,
+            "outcome": 9.8,
+            "countries": 3
+          },
+          {
+            "decile": 5,
+            "spending": 5400,
+            "outcome": 8.5,
+            "countries": 3
+          },
+          {
+            "decile": 6,
+            "spending": 6200,
+            "outcome": 7.2,
+            "countries": 3
+          },
+          {
+            "decile": 7,
+            "spending": 7000,
+            "outcome": 6.5,
+            "countries": 3
+          },
+          {
+            "decile": 8,
+            "spending": 7800,
+            "outcome": 6,
+            "countries": 3
+          },
+          {
+            "decile": 9,
+            "spending": 8800,
+            "outcome": 5.8,
+            "countries": 3
+          },
+          {
+            "decile": 10,
+            "spending": 10000,
+            "outcome": 5.5,
+            "countries": 3
+          }
+        ]
+      },
+      "rd": {
+        "spendingField": "rd",
+        "outcomeField": "rd",
+        "outcomeName": "Patents per 100K",
+        "deciles": [
+          {
+            "decile": 1,
+            "spending": 150,
+            "outcome": 5,
+            "countries": 3
+          },
+          {
+            "decile": 2,
+            "spending": 300,
+            "outcome": 15,
+            "countries": 3
+          },
+          {
+            "decile": 3,
+            "spending": 500,
+            "outcome": 35,
+            "countries": 3
+          },
+          {
+            "decile": 4,
+            "spending": 700,
+            "outcome": 55,
+            "countries": 3
+          },
+          {
+            "decile": 5,
+            "spending": 900,
+            "outcome": 70,
+            "countries": 3
+          },
+          {
+            "decile": 6,
+            "spending": 1100,
+            "outcome": 82,
+            "countries": 3
+          },
+          {
+            "decile": 7,
+            "spending": 1300,
+            "outcome": 90,
+            "countries": 3
+          },
+          {
+            "decile": 8,
+            "spending": 1500,
+            "outcome": 95,
+            "countries": 3
+          },
+          {
+            "decile": 9,
+            "spending": 1800,
+            "outcome": 98,
+            "countries": 3
+          },
+          {
+            "decile": 10,
+            "spending": 2200,
+            "outcome": 100,
+            "countries": 3
+          }
+        ]
+      }
+    },
+    "totals": {
+      "usCurrentTotalPerCapita": 21800,
+      "efficientFrontierTotalPerCapita": 8650,
+      "ratio": 2.520231213872832
+    }
+  }
 };

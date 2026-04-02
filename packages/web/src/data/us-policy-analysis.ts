@@ -667,7 +667,7 @@ export const usPolicyAnalysis: PolicyReportJSON = {
       ]
     }
   ],
-  "generatedAt": "2026-04-02T21:23:52.921Z",
+  "generatedAt": "2026-04-02T23:14:08.990Z",
   "generatedBy": "@optimitron/opg",
   "note": "Generated using Bradford Hill scoring and welfare calculation from real cross-country evidence."
 };

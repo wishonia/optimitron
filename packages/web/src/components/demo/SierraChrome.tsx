@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { DEATHS_PER_SECOND } from "@/data/collapse-constants";
+import { DEATHS_PER_SECOND } from "@/lib/collapse-projections";
 import {
   GLOBAL_HALE_CURRENT,
   TREATY_PROJECTED_HALE_YEAR_15,
