@@ -1,36 +1,39 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
-
-type Theme = "dark" | "light";
+import {
+  applyThemeToRoot,
+  DEFAULT_THEME,
+  resolveTheme,
+  THEME_STORAGE_KEY,
+  toggleThemeValue,
+  type Theme,
+} from "@/lib/theme";
 
 const ThemeContext = createContext<{
   theme: Theme;
   toggle: () => void;
-}>({ theme: "dark", toggle: () => {} });
+}>({ theme: DEFAULT_THEME, toggle: () => {} });
 
 export function useTheme() {
   return useContext(ThemeContext);
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
 
   useEffect(() => {
-    const stored = localStorage.getItem("optimitron-theme") as Theme | null;
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-      document.documentElement.classList.toggle("dark", stored === "dark");
-      document.documentElement.classList.toggle("light", stored === "light");
-    }
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    const nextTheme = resolveTheme(stored);
+    setTheme(nextTheme);
+    applyThemeToRoot(nextTheme);
   }, []);
 
   const toggle = useCallback(() => {
     setTheme((prev) => {
-      const next = prev === "dark" ? "light" : "dark";
-      localStorage.setItem("optimitron-theme", next);
-      document.documentElement.classList.toggle("dark", next === "dark");
-      document.documentElement.classList.toggle("light", next === "light");
+      const next = toggleThemeValue(prev);
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+      applyThemeToRoot(next);
       return next;
     });
   }, []);

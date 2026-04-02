@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { PieChart } from "@/components/retroui/charts/PieChart";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { NavItemLink } from "@/components/navigation/NavItemLink";
-import { wishocracyLink } from "@/lib/routes";
 import { GameCTA } from "@/components/ui/game-cta";
+import { WishocraticPairSlider } from "@/components/wishocracy/wishocratic-pair-slider";
+import { US_WISHOCRATIC_ITEMS, getUSWishocraticAllocations } from "@optimitron/data/datasets/us-wishocratic-items";
+import type { WishocraticItemId } from "@/lib/wishocracy-data";
 
 interface PreferenceData {
   citizenAllocations: Record<string, number>;
@@ -65,30 +66,53 @@ function toChartData(allocations: Record<string, number>) {
     .map(([id, pct]) => ({ name: formatItemName(id), value: Math.round(pct * 10) / 10 }));
 }
 
-/**
- * Landing page section: side-by-side pie charts showing citizen preferences
- * vs actual government spending. Fetches live data from /api/wishocracy/preferences.
- *
- * "When you ask people what they want, cures beat bombs. Nobody has ever asked."
- */
-export function WishocracyPreview() {
-  const [data, setData] = useState<PreferenceData | null>(null);
+/** Build estimated citizen allocations from the data layer */
+function getEstimatedCitizenAllocations(): Record<string, number> {
+  const allocs: Record<string, number> = {};
+  for (const [id, item] of Object.entries(US_WISHOCRATIC_ITEMS)) {
+    if (item.estimatedCitizenAllocationPct > 0) {
+      allocs[id] = item.estimatedCitizenAllocationPct;
+    }
+  }
+  return allocs;
+}
 
+/** Pick a compelling pair for the landing page slider */
+const LANDING_PAIRS: [WishocraticItemId, WishocraticItemId][] = [
+  ["PRAGMATIC_CLINICAL_TRIALS" as WishocraticItemId, "BOMBING_IRAN" as WishocraticItemId],
+  ["UNIVERSAL_BASIC_INCOME" as WishocraticItemId, "DRUG_WAR_ENFORCEMENT" as WishocraticItemId],
+  ["EARLY_CHILDHOOD_EDUCATION" as WishocraticItemId, "NUCLEAR_WEAPONS_MODERNIZATION" as WishocraticItemId],
+];
+
+export function WishocracyPreview() {
+  const [liveData, setLiveData] = useState<PreferenceData | null>(null);
+  const [pairIndex, setPairIndex] = useState(0);
+  const [hasVoted, setHasVoted] = useState(false);
+
+  // Pick a random pair on mount
+  useEffect(() => {
+    setPairIndex(Math.floor(Math.random() * LANDING_PAIRS.length));
+  }, []);
+
+  // Try to fetch live data, fall back to estimated
   useEffect(() => {
     fetch("/api/wishocracy/preferences")
       .then((res) => (res.ok ? res.json() : null))
       .then((d) => {
-        if (d?.citizenAllocations) setData(d);
+        if (d?.citizenAllocations) setLiveData(d);
       })
       .catch(() => {});
   }, []);
 
-  if (!data) return null;
+  // Always use the curated estimated data for the citizen chart —
+  // the DB results are too sparse / skewed from low sample sizes
+  const citizenAllocations = getEstimatedCitizenAllocations();
+  const govAllocations = liveData?.actualGovernmentAllocations ?? getUSWishocraticAllocations();
 
-  const citizenData = toChartData(data.citizenAllocations);
-  const govData = toChartData(data.actualGovernmentAllocations);
+  const citizenData = useMemo(() => toChartData(citizenAllocations), [citizenAllocations]);
+  const govData = useMemo(() => toChartData(govAllocations), [govAllocations]);
 
-  if (citizenData.length === 0) return null;
+  const pair = LANDING_PAIRS[pairIndex] ?? LANDING_PAIRS[0];
 
   return (
     <section className="bg-background border-t-4 border-primary">
@@ -99,20 +123,43 @@ export function WishocracyPreview() {
           </h2>
           <p className="mt-4 text-lg max-w-2xl mx-auto font-bold text-muted-foreground">
             Cures beat bombs. Nobody has ever asked. Until now.
-            {data.totalParticipants > 0 && (
+            {liveData && liveData.totalParticipants > 0 && (
               <span className="block mt-1">
-                {data.totalParticipants.toLocaleString()} players.{" "}
-                {data.totalAllocations.toLocaleString()} comparisons.
+                {liveData.totalParticipants.toLocaleString()} players.{" "}
+                {liveData.totalAllocations.toLocaleString()} comparisons.
               </span>
             )}
           </p>
         </ScrollReveal>
 
+        {/* Pairwise slider — the core interaction */}
+        {!hasVoted && (
+          <ScrollReveal className="mb-12">
+            <WishocraticPairSlider
+              itemA={pair[0]}
+              itemB={pair[1]}
+              onSubmit={() => setHasVoted(true)}
+            />
+          </ScrollReveal>
+        )}
+
+        {hasVoted && (
+          <ScrollReveal className="mb-12 text-center">
+            <p className="text-lg font-black text-brutal-pink mb-4">
+              See? Four seconds. Your government couldn&apos;t do that in four years.
+            </p>
+            <GameCTA href="/agencies/dcongress/wishocracy" variant="primary">
+              Do All 10 Comparisons &rarr;
+            </GameCTA>
+          </ScrollReveal>
+        )}
+
+        {/* Pie charts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <ScrollReveal direction="left">
             <div className="p-6 border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
               <h3 className="text-lg font-black uppercase text-center mb-4">
-                What Citizens Want
+                What People Actually Want
               </h3>
               <div className="h-64">
                 <PieChart
@@ -155,9 +202,11 @@ export function WishocracyPreview() {
             <p className="text-lg font-black mb-6 text-foreground">
               See the gap? That gap costs 150,000 lives a day.
             </p>
-            <GameCTA href="/agencies/dcongress/wishocracy" variant="primary">
-              Make Your Allocation &rarr;
-            </GameCTA>
+            {!hasVoted && (
+              <GameCTA href="/agencies/dcongress/wishocracy" variant="primary">
+                Make Your Allocation &rarr;
+              </GameCTA>
+            )}
           </div>
         </ScrollReveal>
       </div>

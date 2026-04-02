@@ -6,7 +6,6 @@
 
 Detailed docs live in `docs/`. Read the relevant ones before working:
 - `docs/TYPE_SYSTEM.md` — How types flow from Prisma → all packages
-- `docs/WEB_APP.md` — Current Next.js app behavior, auth, envs, deployment, smoke checks
 
 
 ## Critical Architecture Rules

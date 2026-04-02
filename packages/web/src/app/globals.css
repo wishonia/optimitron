@@ -8,9 +8,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Game-first design system — dark mode default, Sierra aesthetic */
+/* Game-first design system — Sierra aesthetic */
 :root {
-  /* Base colors — dark by default (game aesthetic) */
+  /* Base colors — dark token set, overridden by .light on the root html class */
   --background: rgb(0, 0, 0);
   --foreground: rgb(255, 255, 255);
 
@@ -87,7 +87,7 @@
   --shadow-color: rgb(0, 0, 0);
 }
 
-/* Light mode fallback (opt-in via .light class) */
+/* Light mode tokens (enabled by the root html class) */
 .light {
   --background: rgb(255, 255, 255);
   --foreground: rgb(0, 0, 0);

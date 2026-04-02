@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import { GameScoreBar } from "@/components/game/GameScoreBar";
+import { DEFAULT_THEME } from "@/lib/theme";
 import { wagmiConfig } from "@/lib/wagmi-config";
 
 const dmSans = DM_Sans({
@@ -91,7 +92,7 @@ export default async function RootLayout({
   const initialState = cookieToInitialState(wagmiConfig, cookie);
 
   return (
-    <html lang="en" className="dark palette-vga">
+    <html lang="en" className={`${DEFAULT_THEME} palette-vga`}>
       <body className={`font-sans antialiased ${fontVariables}`} suppressHydrationWarning>
         <Providers initialState={initialState}>
           <Navbar />
