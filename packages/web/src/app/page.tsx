@@ -63,18 +63,20 @@ export const metadata: Metadata = {
   },
 };
 
-/** Each card uses the NavItem as the single source of truth for title + description. */
-const productWorkflows: { item: typeof prizeLink; cta: string; color: string; textColor: string }[] = [
-  { item: prizeLink, cta: CTA.playTheGame, color: "bg-brutal-pink", textColor: "text-brutal-pink-foreground" },
-  { item: scoreboardLink, cta: CTA.viewScoreboard, color: "bg-brutal-cyan", textColor: "text-brutal-cyan-foreground" },
-  { item: wishocracyLink, cta: CTA.startVoting, color: "bg-brutal-yellow", textColor: "text-brutal-yellow-foreground" },
-  { item: alignmentLink, cta: CTA.checkAlignment, color: "bg-brutal-cyan", textColor: "text-brutal-cyan-foreground" },
-  { item: trackLink, cta: CTA.openChat, color: "bg-brutal-cyan", textColor: "text-brutal-cyan-foreground" },
-  { item: opgLink, cta: "See Policy Grades", color: "bg-brutal-cyan", textColor: "text-brutal-cyan-foreground" },
-  { item: obgLink, cta: "See Budget Analysis", color: "bg-brutal-red", textColor: "text-brutal-red-foreground" },
-  { item: governmentsLink, cta: "See Report Cards", color: "bg-brutal-red", textColor: "text-brutal-red-foreground" },
-  { item: iabLink, cta: "Learn More", color: "bg-brutal-yellow", textColor: "text-brutal-yellow-foreground" },
-  { item: demoLink, cta: "Watch Demo", color: "bg-brutal-cyan", textColor: "text-brutal-cyan-foreground" },
+import type { BrutalCardBgColor } from "@/components/ui/brutal-card";
+import { NavItemCard, NavItemCardGrid } from "@/components/ui/nav-item-card";
+
+const productWorkflows: { item: typeof prizeLink; bgColor: BrutalCardBgColor }[] = [
+  { item: prizeLink, bgColor: "pink" },
+  { item: scoreboardLink, bgColor: "cyan" },
+  { item: wishocracyLink, bgColor: "yellow" },
+  { item: alignmentLink, bgColor: "cyan" },
+  { item: trackLink, bgColor: "cyan" },
+  { item: opgLink, bgColor: "cyan" },
+  { item: obgLink, bgColor: "red" },
+  { item: governmentsLink, bgColor: "red" },
+  { item: iabLink, bgColor: "yellow" },
+  { item: demoLink, bgColor: "cyan" },
 ];
 
 export default function Home() {
@@ -179,28 +181,15 @@ export default function Home() {
             subtitle="On my planet, governance takes four minutes a week. Pick a mode."
             size="lg"
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <NavItemCardGrid columns={3}>
             {productWorkflows.map((workflow) => (
-              <div
+              <NavItemCard
                 key={workflow.item.href}
-                className={`p-6 border-4 border-primary ${workflow.color} ${workflow.textColor} shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] transition-all`}
-              >
-                <div className="text-xs font-black px-2.5 py-1 bg-foreground text-background inline-block self-start mb-4 uppercase">
-                  {workflow.item.emoji} {workflow.item.label}
-                </div>
-                <p className="text-base sm:text-lg leading-relaxed font-bold flex-grow">
-                  {workflow.item.description}
-                </p>
-                <NavItemLink
-                  item={workflow.item}
-                  variant="custom"
-                  className="mt-6 inline-flex items-center text-sm font-black uppercase hover:opacity-70 transition-colors"
-                >
-                  {workflow.cta} &rarr;
-                </NavItemLink>
-              </div>
+                item={workflow.item}
+                bgColor={workflow.bgColor}
+              />
             ))}
-          </div>
+          </NavItemCardGrid>
           {/* Armory link */}
           <div className="mt-8 text-center">
             <NavItemLink

@@ -24,47 +24,14 @@ import {
 import { getRouteMetadata } from "@/lib/metadata";
 import { GameCTA } from "@/components/ui/game-cta";
 
-const productSurfaces = [
-  {
-    item: wishocracyLink,
-    title: "Build an ideal budget",
-    desc: `Nobody asked you how to spend ${fmtParam({...US_FEDERAL_SPENDING_2024, unit: "USD"})}. This lets you answer anyway.`,
-    cta: "Open Wishocracy",
-    tone: "bg-brutal-pink",
-    titleColor: "text-brutal-pink-foreground",
-    descColor: "text-background",
-    ctaColor: "text-brutal-pink-foreground hover:text-brutal-yellow",
-  },
-  {
-    item: alignmentLink,
-    title: "Match with politicians",
-    desc: "Find out which of your elected officials actually agrees with you. Brace yourself.",
-    cta: "Open Alignment",
-    tone: "bg-brutal-yellow",
-    titleColor: "text-brutal-yellow-foreground",
-    descColor: "text-brutal-yellow-foreground",
-    ctaColor: "text-brutal-yellow-foreground hover:text-brutal-pink",
-  },
-  {
-    item: opgLink,
-    title: "Inspect the evidence",
-    desc: "Every claim, tested against data. No opinions. No vibes. Just receipts.",
-    cta: "Browse Studies",
-    tone: "bg-brutal-cyan",
-    titleColor: "text-brutal-cyan-foreground",
-    descColor: "text-brutal-cyan-foreground",
-    ctaColor: "text-brutal-cyan-foreground hover:text-brutal-pink",
-  },
-  {
-    item: trackLink,
-    title: "Track yourself",
-    desc: "Log what you do, eat, and feel. I'll tell you what's actually working. Your intuition won't like it.",
-    cta: "Open Tracking",
-    tone: "bg-brutal-cyan",
-    titleColor: "text-brutal-cyan-foreground",
-    descColor: "text-brutal-cyan-foreground",
-    ctaColor: "text-brutal-cyan-foreground hover:text-brutal-pink",
-  },
+import type { BrutalCardBgColor } from "@/components/ui/brutal-card";
+import { NavItemCard, NavItemCardGrid } from "@/components/ui/nav-item-card";
+
+const productSurfaces: { item: typeof wishocracyLink; bgColor: BrutalCardBgColor }[] = [
+  { item: wishocracyLink, bgColor: "pink" },
+  { item: alignmentLink, bgColor: "yellow" },
+  { item: opgLink, bgColor: "cyan" },
+  { item: trackLink, bgColor: "cyan" },
 ];
 
 const openSourceButtons = communityLinks.filter(
@@ -158,26 +125,15 @@ export default function AboutPage() {
 
       <section className="mb-16">
         <h2 className="section-title">What You Can Do Here</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <NavItemCardGrid columns={2}>
           {productSurfaces.map((surface) => (
-            <div
-              key={surface.title}
-              className={`p-6 border-4 border-primary ${surface.tone} shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] flex flex-col`}
-            >
-              <h3 className={`text-xl font-black ${surface.titleColor} mb-3`}>{surface.title}</h3>
-              <p className={`text-sm ${surface.descColor} leading-relaxed font-bold flex-grow`}>
-                {surface.desc}
-              </p>
-              <NavItemLink
-                item={surface.item}
-                variant="custom"
-                className={`mt-5 inline-flex items-center text-sm font-black uppercase ${surface.ctaColor} transition-colors`}
-              >
-                {surface.cta} &rarr;
-              </NavItemLink>
-            </div>
+            <NavItemCard
+              key={surface.item.href}
+              item={surface.item}
+              bgColor={surface.bgColor}
+            />
           ))}
-        </div>
+        </NavItemCardGrid>
       </section>
 
       <section className="mb-16">
