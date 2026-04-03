@@ -995,6 +995,14 @@ export const SEGMENTS = [
     narration: `Instead of murdering ${warDeaths} people and destroying everything they built, they could have funded ${cumMilToTrialsYears} years of clinical trials. They bought the other thing. You destroyed ${warPropertyDestruction} dollars in cities and factories. Then spent more rebuilding them. Then destroyed them again. Each year without those factories, roads, and hospitals compounds. The three hundred thousand scientists you killed never made their discoveries. The nine hundred thousand doctors never trained their replacements. One hundred and twenty-four years of compound losses. The average human would earn ${warCounterfactualIncome} dollars a year instead of fourteen thousand. You are ${warIncomeMultiple} times poorer than you should be.`,
   },
   {
+    id: "brain-drain-professionals",
+    title: "The Brain Drain",
+    slideId: "brain-drain-professionals",
+    tags: ["hook", "problem", "evidence"],
+    act: "I",
+    narration: `Three hundred and ten million dead. That is a number. Here is what is inside the number. Scientists and researchers. Three hundred and ten thousand. Physicians. Nine hundred and thirty thousand. Engineers. Six hundred and twenty thousand. Nurses and midwives. One point two million. Teachers and professors. Three point one million. Skilled tradespeople. Nine point three million. Fifteen and a half million professionals who made civilisation function. And these are conservative estimates. They assume professionals died at the same rate as everyone else. They did not. The Khmer Rouge executed anyone wearing glasses. The Nazis murdered a third of Europe's physicists, physicians, and mathematicians. Stalin purged engineers and academics. Every authoritarian regime discovers the same insight: educated people ask inconvenient questions. Alexander Fleming survived World War One. One scientist. One accidental discovery. Penicillin. One billion lives saved. You killed three hundred and ten thousand others who never got the chance.`,
+  },
+  {
     id: "war-compounding-losses",
     title: "Compound Destruction",
     slideId: "war-compounding-losses",
@@ -1225,6 +1233,7 @@ export const PLAYLISTS: DemoPlaylist[] = [
       "protocol-labs-credits",
       "misaligned-superintelligence-brief",
       "military-waste-170t",
+      "brain-drain-professionals",
       "opportunity-cost-170t",
       "military-health-ratio-brief",
       // Game Over + Turn (~10s)
@@ -1269,6 +1278,7 @@ export const PLAYLISTS: DemoPlaylist[] = [
       "military-health-ratio",
       "economic-collapse-clock",
       "global-failed-state",
+      "brain-drain-professionals",
       "ai-hacker-spiral",
       "inflation-wage-theft",
       // GAME OVER / RESTORE
@@ -1578,4 +1588,4 @@ export function estimatePlaylistDuration(playlistId: string): number {
 }
 
 /** Default playlist */
-export const DEFAULT_PLAYLIST_ID = "full-demo";
+export const DEFAULT_PLAYLIST_ID = "protocol-labs";

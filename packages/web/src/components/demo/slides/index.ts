@@ -28,6 +28,7 @@ export const slideRegistry = {
   "ai-hacker-spiral": demoSlide("slide-ai-hacker-spiral"),
   "alignment-switch": demoSlide("slide-alignment-switch"),
   armory: demoSlide("slide-armory"),
+  "brain-drain-professionals": demoSlide("slide-brain-drain-professionals"),
   "compound-growth-scenarios": demoSlide("slide-compound-growth-scenarios"),
   "congress-military-trials-ratio": demoSlide(
     "slide-congress-military-trials-ratio",
