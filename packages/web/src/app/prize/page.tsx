@@ -17,6 +17,7 @@ import {
 } from "@optimitron/data/parameters";
 import {
   contractsSourceLink,
+  earthOptimizationPrizeDetailsLink,
   prizeLink,
   ROUTES,
 } from "@/lib/routes";
@@ -40,6 +41,7 @@ async function getPoolStats() {
   }
 }
 import { GameCTA } from "@/components/ui/game-cta";
+import { DisclaimerBanner } from "@/components/ui/disclaimer-banner";
 
 export const metadata = getRouteMetadata(prizeLink);
 
@@ -52,7 +54,7 @@ const levels = [
   {
     level: "LEVEL 1",
     title: "DEPOSIT",
-    description: "Put your papers in the machine. The machine gives you PRIZE shares. Your papers grow at " + poolReturn + " annually whether humanity gets its act together or not.",
+    description: "Put your papers in the machine. The machine gives you PRIZE shares. Projected growth: " + poolReturn + " annually (based on VC-sector diversification of the Prize fund).",
     color: "bg-brutal-pink",
     textColor: "text-brutal-pink-foreground",
   },
@@ -80,7 +82,7 @@ const levels = [
   {
     level: "BOSS LEVEL",
     title: "WAIT 15 YEARS",
-    description: "Sit there. For fifteen years. If humans are measurably less dead and less poor, VOTE holders split the pool. If not, depositors get ~" + poolMultiple + " back. Either way, you win. The only boss fight is patience.",
+    description: "Sit there. For fifteen years. If humans are measurably less dead and less poor, VOTE holders split the pool. If not, depositors would receive ~" + poolMultiple + " back (projected). The only boss fight is patience.",
     color: "bg-foreground",
     textColor: "text-background",
   },
@@ -110,7 +112,7 @@ const contractDetails = [
   {
     label: "Fail-Safe",
     value: "Dominant Assurance",
-    detail: `15yr maturity. Thresholds not met = PRIZE holders claim principal + ~${poolMultiple} growth.`,
+    detail: `15yr maturity. Thresholds not met = PRIZE holders claim principal + ~${poolMultiple} projected growth.`,
   },
 ];
 
@@ -118,6 +120,11 @@ export default async function PrizePage() {
   const poolStats = await getPoolStats();
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      {/* DISCLAIMER — Top */}
+      <section className="mb-8">
+        <DisclaimerBanner />
+      </section>
+
       {/* HERO — Arcade Cabinet */}
       <section className="mb-16 text-center">
         <p className="font-pixel text-sm font-bold uppercase tracking-[0.3em] text-brutal-pink mb-4">
@@ -127,12 +134,21 @@ export default async function PrizePage() {
           Insert Coin to Play
         </h1>
         <p className="text-lg font-bold text-muted-foreground max-w-2xl mx-auto mb-6">
-          The only arcade game where you get your coins back {poolMultiple} if you lose.
+          A dominant assurance game with a projected {poolMultiple} return if thresholds are missed.
         </p>
-        <p className="text-base font-bold text-foreground max-w-2xl mx-auto">
-          Your deposit is a hedge against your own species. Recruit voters too
-          and you win in both scenarios. The only losing move is not playing.
+        <p className="text-base font-bold text-foreground max-w-2xl mx-auto mb-4">
+          We are currently seeking a foundation to host the Earth Optimization
+          Prize Fund. All figures below are projections based on VC-sector
+          diversification — not promises.
         </p>
+        <NavItemLink
+          item={earthOptimizationPrizeDetailsLink}
+          variant="custom"
+          external
+          className="inline-flex items-center text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
+        >
+          Read Full Prize Details &rarr;
+        </NavItemLink>
       </section>
 
       {/* GAME OVER CARDS — The Two Outcomes */}
@@ -147,8 +163,8 @@ export default async function PrizePage() {
             </div>
             <p className="text-sm font-bold leading-relaxed">
               Humanity stays stupid. Metrics miss the targets after 15 years.
-              Your coins come back multiplied — {poolReturn} annual growth for
-              15 years. Better than any retirement fund on your planet.
+              Projected outcome: ~{poolReturn} annual growth
+              for 15 years (based on VC-sector diversification).
             </p>
           </div>
           <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
@@ -162,7 +178,7 @@ export default async function PrizePage() {
               Humanity gets its act together. You lose the deposit. But your
               income just went up {incomeGain} per capita lifetime
               and you gained {haleGain} extra healthy years. You won&apos;t miss
-              the coins.
+              the deposit.
             </p>
           </div>
         </div>
@@ -170,7 +186,7 @@ export default async function PrizePage() {
           <p className="text-sm font-bold text-foreground text-center">
             Recruit voters too? You earn VOTE points.
             VOTE point holders split the pool if humanity wins.
-            <span className="font-black text-brutal-pink"> You win either way.</span>
+            <span className="font-black text-brutal-pink"> Dominant assurance design.</span>
           </p>
         </div>
       </section>
@@ -182,8 +198,8 @@ export default async function PrizePage() {
             Insert Coin
           </h2>
           <p className="text-sm font-bold mb-6 max-w-2xl">
-            Your papers go into the Earth Optimization Prize fund ({poolReturn} annually). You get PRIZE shares.
-            Recruit verified voters and you also earn VOTE points, which pay out if humanity
+            Your papers would go into the Earth Optimization Prize fund (projected {poolReturn} annually, based on VC-sector diversification). You get PRIZE shares.
+            Recruit verified voters and you also earn VOTE points, which would pay out if humanity
             wins. This is the first arcade game in history where the house loses on purpose.
           </p>
           <VoterPrizeTreasuryDeposit />
