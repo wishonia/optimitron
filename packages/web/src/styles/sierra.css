@@ -617,9 +617,6 @@
    ======================================== */
 
 @media (max-width: 768px) {
-  .font-pixel {
-    font-size: 10px;
-  }
   
   .narrator-box {
     flex-direction: column;

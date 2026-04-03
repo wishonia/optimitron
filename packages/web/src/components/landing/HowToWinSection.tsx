@@ -3,9 +3,6 @@ import { Container } from "@/components/ui/container";
 import { SectionHeader } from "@/components/ui/section-header";
 import { ParameterValue } from "@/components/shared/ParameterValue";
 import { HumanityScoreboard } from "@/components/shared/HumanityScoreboard";
-import { GovernmentLeaderboard } from "@/components/shared/GovernmentLeaderboard";
-import { NavItemLink } from "@/components/navigation/NavItemLink";
-import { governmentsLink } from "@/lib/routes";
 import { TAGLINES, POINT, PRIZE_OUTCOMES } from "@/lib/messaging";
 import { TwoOutcomes } from "@/components/prize/TwoOutcomes";
 import {
@@ -26,23 +23,6 @@ export function HowToWinSection() {
         {/* Humanity's Scoreboard — reusable component */}
         <div className="mb-8">
           <HumanityScoreboard />
-        </div>
-
-        {/* Country leaderboard preview */}
-        <div className="mb-6">
-          <p className="text-lg sm:text-xl font-black uppercase mb-4 text-center">
-            Most Misaligned Governments
-          </p>
-          <GovernmentLeaderboard limit={10} compact />
-          <div className="mt-3 text-center">
-            <NavItemLink
-              item={governmentsLink}
-              variant="custom"
-              className="text-base font-black uppercase hover:text-brutal-pink transition-colors"
-            >
-              See all government scoreboards &rarr;
-            </NavItemLink>
-          </div>
         </div>
 
         {/* The awareness insight */}

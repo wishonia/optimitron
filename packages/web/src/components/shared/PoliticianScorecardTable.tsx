@@ -41,6 +41,9 @@ interface PoliticianScorecardTableProps {
   countryCode?: string;
   /** Show only this many rows. Hides filters and ratio callout when set. */
   limit?: number;
+  /** Show a dynamic heading that updates with the rank mode toggle */
+  showTitle?: boolean;
+  subtitle?: string;
 }
 
 export function PoliticianScorecardTable({
@@ -48,6 +51,8 @@ export function PoliticianScorecardTable({
   systemWideRatio,
   countryCode = "US",
   limit,
+  showTitle = false,
+  subtitle,
 }: PoliticianScorecardTableProps) {
   const compact = limit != null;
   const [rankMode, setRankMode] = useState<RankMode>("worst");
@@ -115,8 +120,22 @@ export function PoliticianScorecardTable({
 
   const hdrClass = `p-2 text-xs font-black uppercase text-muted-foreground whitespace-nowrap text-left${compact ? "" : " cursor-pointer hover:text-foreground transition-colors"}`;
 
+  const dynamicTitle = rankMode === "worst" ? "Worst Players" : "Least Bad Players";
+
   return (
-    <div>
+    <div className="bg-background text-foreground border-4 border-primary p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      {showTitle && (
+        <div className="text-center mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider mb-4">
+            {dynamicTitle}
+          </h2>
+          {subtitle && (
+            <p className="text-lg sm:text-xl font-bold max-w-3xl mx-auto">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )}
       {/* Chamber filter — hidden in compact mode */}
       {!compact && (
         <div className="flex gap-2 mb-4">
@@ -154,22 +173,20 @@ export function PoliticianScorecardTable({
             Least Bad Players
           </Button>
         </div>
-        {!compact && (
-          <input
-            type="text"
-            placeholder="Search name or state..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border-2 border-primary bg-background px-3 py-1 text-sm font-bold text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brutal-pink w-48"
-          />
-        )}
+        <input
+          type="text"
+          placeholder="Search name or state..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border-2 border-primary bg-background px-3 py-1 text-sm font-bold text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brutal-pink w-48"
+        />
       </div>
       <p className="text-xs font-bold text-muted-foreground mb-3">
         Ranked by military-to-clinical-trials spending ratio, then total military spend, then least clinical trial funding.
       </p>
 
       {/* Table */}
-      <div className="border-4 border-primary bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-x-auto">
+      <div className="border-2 border-primary overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b-4 border-primary">

@@ -247,15 +247,13 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
             Least Bad Governments
           </Button>
         </div>
-        {!compact && (
-          <input
-            type="text"
-            placeholder="Search country..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border-2 border-primary bg-background px-3 py-1 text-sm font-bold text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brutal-pink w-48"
-          />
-        )}
+        <input
+          type="text"
+          placeholder="Search country..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border-2 border-primary bg-background px-3 py-1 text-sm font-bold text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brutal-pink w-48"
+        />
       </div>
       <p className="text-xs font-bold text-muted-foreground mb-3">
         Ranked by military-to-clinical-trials spending ratio, then total military spend, then least clinical trial funding.

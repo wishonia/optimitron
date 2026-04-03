@@ -141,11 +141,6 @@ export default function Home() {
       {/* ── 14. Politician Leaderboard — mini table ── */}
       <SectionContainer bgColor="foreground" borderPosition="top" padding="lg">
         <Container>
-          <SectionHeader
-            title="Politician Leaderboard"
-            subtitle="How your representatives actually vote vs what you actually wanted. The receipts."
-            size="lg"
-          />
           <PoliticianScorecardTable
             scorecards={POLITICIAN_SCORECARDS.map((p) => ({
               bioguideId: p.id.toUpperCase(),
@@ -159,6 +154,8 @@ export default function Home() {
             }))}
             systemWideRatio={SYSTEM_WIDE_MILITARY_TO_TRIALS_RATIO}
             limit={10}
+            showTitle
+            subtitle="How your representatives actually vote vs what you actually wanted. The receipts."
           />
           <div className="mt-8 text-center">
             <GameCTA href="/governments/US/politicians" variant="cyan">

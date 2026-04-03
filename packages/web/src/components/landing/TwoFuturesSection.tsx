@@ -1,180 +1,116 @@
-"use client";
-
-import { useRef } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { SectionContainer } from "@/components/ui/section-container";
+import { Container } from "@/components/ui/container";
+import { SectionHeader } from "@/components/ui/section-header";
 import { GameCTA } from "@/components/ui/game-cta";
 import {
-  fmtParam,
+  GLOBAL_AVG_INCOME_2025,
+  TREATY_TRAJECTORY_AVG_INCOME_YEAR_15,
+  WISHONIA_TRAJECTORY_AVG_INCOME_YEAR_15,
   POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL,
-  TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
-  WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
-  DFDA_QUEUE_CLEARANCE_YEARS,
-  STATUS_QUO_QUEUE_CLEARANCE_YEARS,
+  DESTRUCTIVE_ECONOMY_50PCT_YEAR,
+  TREATY_HALE_GAIN_YEAR_15,
+  WISHONIA_HALE_GAIN_YEAR_15,
+  DFDA_TRIAL_CAPACITY_MULTIPLIER,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED,
 } from "@optimitron/data/parameters";
-const rows = [
+
+const collapseYearsLeft = Math.round(DESTRUCTIVE_ECONOMY_50PCT_YEAR.value) - 2026;
+const globalDysfunctionCostT = Math.round(POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL.value / 1e12);
+const treatyHaleGain = Math.round(TREATY_HALE_GAIN_YEAR_15.value * 10) / 10;
+const wishoniaHaleGain = Math.round(WISHONIA_HALE_GAIN_YEAR_15.value * 10) / 10;
+const trialCapacityX = DFDA_TRIAL_CAPACITY_MULTIPLIER.value.toFixed(1);
+const livesSavedB = (DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED.value / 1e9).toFixed(1);
+
+function formatCurrency(value: number): string {
+  if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
+  if (value >= 1e3) return `$${(value / 1e3).toFixed(0)}K`;
+  return `$${value.toLocaleString()}`;
+}
+
+const scenarios = [
   {
-    metric: "Governance Cost",
-    pathA: `${fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})}/yr dysfunction`,
-    pathB: "1% redirect saves trillions",
-    aWeight: 90,
-    bWeight: 30,
+    name: "Status Quo",
+    emoji: "☢️",
+    subtitle: "Somalia, But Everywhere",
+    income: formatCurrency(Math.round(GLOBAL_AVG_INCOME_2025.value)),
+    detail: `Parasitic economy overtakes productive in ${collapseYearsLeft} years`,
+    color: "text-muted-foreground",
   },
   {
-    metric: "Preventable Deaths",
-    pathA: "10M/yr antibiotic resistance",
-    pathB: "95% of conditions treated",
-    aWeight: 80,
-    bWeight: 85,
+    name: "1% Treaty",
+    emoji: "🧪",
+    subtitle: "Minimum Acceptable Governance",
+    income: formatCurrency(Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value)),
+    detail: `+${treatyHaleGain} healthy yrs · ${trialCapacityX}× trial capacity · ${livesSavedB}B lives saved`,
+    color: "text-brutal-cyan",
   },
   {
-    metric: "Approval Queue",
-    pathA: `${fmtParam(STATUS_QUO_QUEUE_CLEARANCE_YEARS)} for all treatments`,
-    pathB: `${fmtParam(DFDA_QUEUE_CLEARANCE_YEARS)} via dFDA`,
-    aWeight: 95,
-    bWeight: 15,
-  },
-  {
-    metric: "Income Impact",
-    pathA: "Status quo decline",
-    pathB: `${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})} gains`,
-    aWeight: 40,
-    bWeight: 90,
-  },
-  {
-    metric: "Health ROI",
-    pathA: "$0 return on dysfunction",
-    pathB: "$2–$4 per $1 invested",
-    aWeight: 10,
-    bWeight: 75,
+    name: "Optimal Governance",
+    emoji: "🌍",
+    subtitle: `End the $${globalDysfunctionCostT}T/yr Political Dysfunction Tax`,
+    income: formatCurrency(Math.round(WISHONIA_TRAJECTORY_AVG_INCOME_YEAR_15.value)),
+    detail: `+${wishoniaHaleGain} healthy yrs`,
+    color: "text-brutal-yellow",
   },
 ];
 
 export function TwoFuturesSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const reduced = useReducedMotion();
-
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-      <motion.div
-        initial={reduced ? {} : { opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4 }}
-        className="text-center mb-12"
-      >
-        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
-          Two Futures. Same Species. Same Year.
-        </h2>
-      </motion.div>
+    <SectionContainer bgColor="background" borderPosition="both" padding="lg">
+      <Container>
+        <SectionHeader
+          title="Please Select an Earth"
+          subtitle="You are currently on Path A. You chose it by not choosing. Which is very on-brand for your species."
+          size="lg"
+        />
 
-      {/* Diverging bar chart */}
-      <div ref={ref} className="max-w-5xl mx-auto mb-8">
-        {/* Header labels */}
-        <div className="flex items-center mb-4">
-          <div className="w-1/2 pr-4 text-right">
-            <span className="text-xs font-black uppercase text-brutal-red">
-              Path A — Status Quo
-            </span>
-          </div>
-          <div className="w-px h-4 bg-muted shrink-0" />
-          <div className="w-1/2 pl-4 text-left">
-            <span className="text-xs font-black uppercase text-brutal-cyan">
-              Path B — 1% Treaty
-            </span>
-          </div>
+        <div className="border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-x-auto max-w-4xl mx-auto mb-8">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b-4 border-primary">
+                <th className="p-3 text-left text-xs font-black uppercase text-muted-foreground">
+                  Scenario
+                </th>
+                <th className="p-3 text-right text-xs font-black uppercase text-muted-foreground">
+                  Income / Person / Year
+                </th>
+                <th className="p-3 text-left text-xs font-black uppercase text-muted-foreground">
+                  What Changes
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {scenarios.map((s) => (
+                <tr
+                  key={s.name}
+                  className="border-b-2 border-primary last:border-b-0"
+                >
+                  <td className="p-3">
+                    <div className={`font-black text-sm uppercase ${s.color}`}>
+                      {s.emoji} {s.name}
+                    </div>
+                    <div className="text-xs font-bold text-muted-foreground">
+                      {s.subtitle}
+                    </div>
+                  </td>
+                  <td className={`p-3 text-right font-black text-lg ${s.color}`}>
+                    {s.income}
+                  </td>
+                  <td className="p-3 font-bold text-sm text-foreground">
+                    {s.detail}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* Rows */}
-        <div className="space-y-3">
-          {rows.map((row, i) => (
-            <motion.div
-              key={row.metric}
-              initial={reduced ? {} : { opacity: 0, y: 15 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="flex items-center"
-            >
-              {/* Left side (Path A) — bars grow right-to-left */}
-              <div className="w-1/2 pr-2 sm:pr-4 flex items-center justify-end gap-2">
-                <span className="text-xs text-muted-foreground font-bold text-right hidden sm:block max-w-32 leading-tight">
-                  {row.pathA}
-                </span>
-                <div className="w-32 sm:w-48 h-8 relative overflow-hidden">
-                  <motion.div
-                    initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
-                    animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                    transition={{
-                      duration: 0.7,
-                      delay: 0.2 + i * 0.1,
-                      ease: [0.87, 0, 0.13, 1],
-                    }}
-                    style={{ originX: 1, width: `${row.aWeight}%` }}
-                    className="absolute inset-y-0 right-0 bg-brutal-red border-l-2 border-primary"
-                  />
-                </div>
-              </div>
-
-              {/* Center metric label */}
-              <div className="shrink-0 w-px self-stretch bg-muted relative">
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 py-0.5 border border-primary whitespace-nowrap z-10">
-                  <span className="text-xs font-black text-foreground uppercase">
-                    {row.metric}
-                  </span>
-                </div>
-              </div>
-
-              {/* Right side (Path B) — bars grow left-to-right */}
-              <div className="w-1/2 pl-2 sm:pl-4 flex items-center gap-2">
-                <div className="w-32 sm:w-48 h-8 relative overflow-hidden">
-                  <motion.div
-                    initial={reduced ? { scaleX: 1 } : { scaleX: 0 }}
-                    animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-                    transition={{
-                      duration: 0.7,
-                      delay: 0.3 + i * 0.1,
-                      ease: [0.87, 0, 0.13, 1],
-                    }}
-                    style={{ originX: 0, width: `${row.bWeight}%` }}
-                    className="absolute inset-y-0 left-0 bg-brutal-cyan border-r-2 border-primary"
-                  />
-                </div>
-                <span className="text-xs text-muted-foreground font-bold hidden sm:block max-w-32 leading-tight">
-                  {row.pathB}
-                </span>
-              </div>
-            </motion.div>
-          ))}
+        <div className="text-center">
+          <GameCTA href="/prize" variant="secondary" size="lg">
+            Choose Path B
+          </GameCTA>
         </div>
-
-        {/* Mobile: show labels below for small screens */}
-        <div className="sm:hidden mt-6 space-y-2">
-          {rows.map((row) => (
-            <div key={`mobile-${row.metric}`} className="flex items-start gap-2 text-xs">
-              <span className="font-black text-foreground shrink-0">{row.metric}:</span>
-              <span className="text-brutal-red">{row.pathA}</span>
-              <span className="text-muted-foreground">vs</span>
-              <span className="text-brutal-cyan">{row.pathB}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom CTA */}
-      <motion.div
-        initial={reduced ? {} : { opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: 0.8 }}
-      >
-        <div className="p-6 border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center max-w-3xl mx-auto">
-          <p className="text-xl font-black mb-4">
-            You are currently on Path A. You chose it by not choosing. Which
-            is very on-brand for your species.
-          </p>
-          <GameCTA href="/prize" variant="secondary" size="lg">Choose Path B</GameCTA>
-        </div>
-      </motion.div>
-    </section>
+      </Container>
+    </SectionContainer>
   );
 }

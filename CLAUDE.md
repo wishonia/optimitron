@@ -234,7 +234,10 @@ The UI uses a **dark-mode game aesthetic** with neobrutalist accents. Run `pnpm 
 - **Children inside colored sections must NOT use `text-foreground` or `text-white`** — let them inherit the correct color from the parent
 - `SectionContainer` and `BrutalCard` handle this automatically via their `bgColor` prop — use those instead of raw divs
 - If you must use a raw div with `bg-brutal-yellow`, always pair it: `bg-brutal-yellow text-brutal-yellow-foreground`
-- **Foreground tokens:** yellow=black, pink=black, cyan=black, red=black, green=black
+- **Foreground tokens (light mode):** yellow=black, pink=black, cyan=black, red=black, green=black
+- **Foreground tokens (dark mode):** yellow=black, pink=**white**, cyan=black, red=**white**, green=black
+- **CRITICAL: always match bg and text tokens** — `bg-brutal-yellow` must pair with `text-brutal-yellow-foreground`, never `text-brutal-red-foreground` (red-foreground is white in dark mode, invisible on yellow)
+- **`bgColor="foreground"` inverts the color context** — `text-foreground` and `text-muted-foreground` become invisible. Any component placed inside an inverted section that uses explicit `text-foreground`/`text-muted-foreground` MUST wrap itself in `bg-background text-foreground` to create its own color context. Prefer using a non-inverted `bgColor` (brutal tokens or `"background"`) unless you control every child's text color.
 
 ### Approved Colors ONLY
 - **Brutal tokens:** `brutal-pink`, `brutal-cyan`, `brutal-yellow`, `brutal-red`, `brutal-green` (and `-foreground` variants)

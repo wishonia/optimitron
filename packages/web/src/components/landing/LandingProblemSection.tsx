@@ -104,7 +104,7 @@ export function LandingProblemSection() {
         </div>
 
         <div className="mt-8">
-          <div className="border-4 border-brutal-yellow bg-brutal-yellow text-brutal-red-foreground p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <div className="border-4 border-brutal-yellow bg-brutal-yellow text-brutal-yellow-foreground p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-center text-sm font-bold">
               On my planet, when a system kills{" "}
               <ParameterValue param={{...GLOBAL_DISEASE_DEATHS_DAILY, unit: ""}} /> people a day and costs{" "}
