@@ -50,7 +50,7 @@ export function GlobalProgressCard({ progress }: GlobalProgressCardProps) {
         <div className="space-y-2">
           <div className="flex justify-between text-sm font-bold">
             <span>{currentProgress.toFixed(1)}% of global population</span>
-            <span>{progress.target}% target</span>
+            <span>{parseFloat(progress.target.toFixed(2))}% target</span>
           </div>
           <div className="h-8 bg-background border-4 border-primary rounded-none overflow-hidden">
             <div className="h-full bg-primary transition-all duration-500" style={{ width: `${progressPercentage}%` }} />

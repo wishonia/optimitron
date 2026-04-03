@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount } from "wagmi";
 import Link from "next/link";
 import { CopyLinkButton } from "@/components/sharing/copy-link-button";
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
@@ -32,8 +31,6 @@ export function ReferendumVoteSection({
   const [answer, setAnswer] = useState<string | null>(existingAnswer);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [mintQueued, setMintQueued] = useState(false);
-  const { address } = useAccount();
   const { showWishReward } = useWishPoints();
 
   // Store referral code for attribution at signup and vote time
@@ -55,7 +52,6 @@ export function ReferendumVoteSection({
         body: JSON.stringify({
           answer: position,
           ref: storedRef,
-          walletAddress: address ?? undefined,
         }),
       });
 
@@ -64,10 +60,7 @@ export function ReferendumVoteSection({
         throw new Error(data.error ?? "Failed to cast vote");
       }
 
-      const result = (await res.json()) as { voteTokenMint?: unknown; wishesEarned?: number };
-      if (result.voteTokenMint) {
-        setMintQueued(true);
-      }
+      const result = (await res.json()) as { wishesEarned?: number };
 
       if (result.wishesEarned) {
         try { showWishReward(result.wishesEarned, "Referendum Vote"); } catch { /* noop */ }
@@ -130,41 +123,22 @@ export function ReferendumVoteSection({
           </p>
         </div>
 
-        {/* VOTE point earning info */}
-        {mintQueued ? (
-          <div className="border-4 border-primary bg-brutal-cyan p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-lg font-black uppercase text-brutal-cyan-foreground mb-2">
-              1 VOTE Point Queued
-            </h3>
-            <p className="text-sm font-bold text-brutal-cyan-foreground">
-              Your verified vote earned 1 VOTE point. It will be minted
-              on-chain in the next batch.{" "}
-              <Link
-                href="/contribute"
-                className="font-black text-brutal-pink underline hover:text-brutal-cyan-foreground"
-              >
-                View your VOTE balance &rarr;
-              </Link>
-            </p>
-          </div>
-        ) : (
-          <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-lg font-black uppercase text-brutal-yellow-foreground mb-2">
-              Earn VOTE Points
-            </h3>
-            <p className="text-sm font-bold text-brutal-yellow-foreground">
-              Verify with World ID below{address ? "" : " and connect a wallet"} to earn 1 VOTE point for this
-              vote. VOTE points are redeemable for a share of the{" "}
-              <Link
-                href="/contribute"
-                className="font-black text-brutal-pink underline hover:text-brutal-yellow-foreground"
-              >
-                Earth Optimization Prize
-              </Link>{" "}
-              if health and income outcomes improve.
-            </p>
-          </div>
-        )}
+        <div className="border-4 border-primary bg-brutal-yellow p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h3 className="text-lg font-black uppercase text-brutal-yellow-foreground mb-2">
+            Earn Referral Rewards
+          </h3>
+          <p className="text-sm font-bold text-brutal-yellow-foreground">
+            Verify with World ID below, then share your link. Each verified voter
+            who uses it earns you 1 VOTE point. Link a wallet on your{" "}
+            <Link
+              href="/profile"
+              className="font-black text-brutal-pink underline hover:text-brutal-yellow-foreground"
+            >
+              profile
+            </Link>{" "}
+            so those rewards can be minted on-chain.
+          </p>
+        </div>
 
         {/* World ID verification — only show if not yet verified */}
         <WorldIdVerificationCard show />

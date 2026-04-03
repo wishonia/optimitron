@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   updateMany: vi.fn(),
   getMinterWallet: vi.fn(),
   getVoteTokenContract: vi.fn(),
+  syncPendingReferralVoteTokenMints: vi.fn(),
 }));
 
 vi.mock("@/lib/cron", () => ({
@@ -33,6 +34,10 @@ vi.mock("@/lib/contracts/server-client", () => ({
   getVoteTokenContract: mocks.getVoteTokenContract,
 }));
 
+vi.mock("@/lib/referral-vote-token-mint.server", () => ({
+  syncPendingReferralVoteTokenMints: mocks.syncPendingReferralVoteTokenMints,
+}));
+
 import { GET } from "./route";
 
 function makeRequest() {
@@ -43,6 +48,7 @@ describe("GET /api/cron/vote-token-mint", () => {
   beforeEach(() => {
     vi.resetAllMocks();
     vi.spyOn(console, "error").mockImplementation(() => {});
+    mocks.syncPendingReferralVoteTokenMints.mockResolvedValue([]);
   });
 
   it("returns 401 for unauthorized requests", async () => {
@@ -63,6 +69,7 @@ describe("GET /api/cron/vote-token-mint", () => {
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
       processed: 0,
+      syncedReferralMints: 0,
       message: "No pending mints",
     });
   });
@@ -99,6 +106,7 @@ describe("GET /api/cron/vote-token-mint", () => {
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.processed).toBe(2);
+    expect(data.syncedReferralMints).toBe(0);
     expect(data.ids).toEqual(["mint_1", "mint_2"]);
     expect(data.txHash).toBe("0xtxhash");
 
@@ -145,5 +153,21 @@ describe("GET /api/cron/vote-token-mint", () => {
       where: { id: { in: ["mint_1"] } },
       data: { status: "FAILED" },
     });
+  });
+
+  it("syncs referral rewards before minting pending rows", async () => {
+    mocks.isAuthorizedCronRequest.mockReturnValue(true);
+    mocks.syncPendingReferralVoteTokenMints.mockResolvedValue([{ id: "mint_sync_1" }]);
+    mocks.findMany.mockResolvedValue([]);
+
+    const res = await GET(makeRequest());
+
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({
+      processed: 0,
+      syncedReferralMints: 1,
+      message: "No pending mints",
+    });
+    expect(mocks.syncPendingReferralVoteTokenMints).toHaveBeenCalledWith(200);
   });
 });

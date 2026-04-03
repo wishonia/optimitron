@@ -8,8 +8,7 @@ const mocks = vi.hoisted(() => ({
   grantWishes: vi.fn(),
   upsert: vi.fn(),
   findUserByUsernameOrReferralCode: vi.fn(),
-  userFindUnique: vi.fn(),
-  voteTokenMintUpsert: vi.fn(),
+  syncReferralVoteTokenMintForVote: vi.fn(),
 }));
 
 vi.mock("@/lib/auth-utils", () => ({
@@ -21,8 +20,6 @@ vi.mock("@/lib/prisma", () => ({
     activity: { create: mocks.activityCreate },
     referendum: { findUnique: mocks.findUnique },
     referendumVote: { upsert: mocks.upsert },
-    user: { findUnique: mocks.userFindUnique },
-    voteTokenMint: { upsert: mocks.voteTokenMintUpsert },
   },
 }));
 
@@ -30,10 +27,8 @@ vi.mock("@/lib/referral.server", () => ({
   findUserByUsernameOrReferralCode: mocks.findUserByUsernameOrReferralCode,
 }));
 
-vi.mock("@/lib/env", () => ({
-  serverEnv: {
-    VOTE_TOKEN_CHAIN_ID: "84532",
-  },
+vi.mock("@/lib/referral-vote-token-mint.server", () => ({
+  syncReferralVoteTokenMintForVote: mocks.syncReferralVoteTokenMintForVote,
 }));
 
 vi.mock("@/lib/wishes.server", () => ({
@@ -71,8 +66,7 @@ describe("POST /api/referendums/[slug]/vote", () => {
     mocks.activityCreate.mockResolvedValue({ id: "activity_1" });
     mocks.checkBadgesAfterWish.mockResolvedValue(undefined);
     mocks.grantWishes.mockResolvedValue(null);
-    mocks.userFindUnique.mockResolvedValue(null);
-    mocks.voteTokenMintUpsert.mockResolvedValue(null);
+    mocks.syncReferralVoteTokenMintForVote.mockResolvedValue(null);
   });
 
   it("returns 401 when unauthenticated", async () => {
@@ -141,11 +135,20 @@ describe("POST /api/referendums/[slug]/vote", () => {
     const res = await POST(makeRequest("test-ref", { answer: "yes" }), makeParams("test-ref"));
 
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ vote, voteTokenMint: null, wishesEarned: 2 });
+    await expect(res.json()).resolves.toEqual({
+      vote,
+      referrerVoteTokenMint: null,
+      wishesEarned: 2,
+    });
     expect(mocks.upsert).toHaveBeenCalledWith({
       where: { userId_referendumId: { userId: "user_1", referendumId: "ref_1" } },
       update: { answer: "YES", deletedAt: null },
       create: { userId: "user_1", referendumId: "ref_1", answer: "YES", referredByUserId: null },
+    });
+    expect(mocks.syncReferralVoteTokenMintForVote).toHaveBeenCalledWith({
+      referredVoterUserId: "user_1",
+      referrerUserId: undefined,
+      referendumId: "ref_1",
     });
     expect(mocks.activityCreate).toHaveBeenCalledWith({
       data: {
@@ -179,7 +182,11 @@ describe("POST /api/referendums/[slug]/vote", () => {
     const res = await POST(makeRequest("test-ref", { answer: "no" }), makeParams("test-ref"));
 
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ vote, voteTokenMint: null, wishesEarned: 0 });
+    await expect(res.json()).resolves.toEqual({
+      vote,
+      referrerVoteTokenMint: null,
+      wishesEarned: 0,
+    });
     expect(mocks.upsert).toHaveBeenCalledWith(
       expect.objectContaining({
         create: expect.objectContaining({ answer: "NO" }),
@@ -196,7 +203,11 @@ describe("POST /api/referendums/[slug]/vote", () => {
     const res = await POST(makeRequest("test-ref", { answer: "ABSTAIN" }), makeParams("test-ref"));
 
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual({ vote: updatedVote, voteTokenMint: null, wishesEarned: 0 });
+    await expect(res.json()).resolves.toEqual({
+      vote: updatedVote,
+      referrerVoteTokenMint: null,
+      wishesEarned: 0,
+    });
     expect(mocks.upsert).toHaveBeenCalledWith(
       expect.objectContaining({
         update: { answer: "ABSTAIN", deletedAt: null },
@@ -265,6 +276,48 @@ describe("POST /api/referendums/[slug]/vote", () => {
       amount: 2,
       activityId: undefined,
       dedupeKey: "ref_1",
+    });
+  });
+
+  it("queues the referral reward for the vote's stored referrer", async () => {
+    mocks.requireAuth.mockResolvedValue({ userId: "user_1" });
+    mocks.findUnique.mockResolvedValue(ACTIVE_REFERENDUM);
+    mocks.upsert.mockResolvedValue({
+      id: "vote_1",
+      answer: "YES",
+      userId: "user_1",
+      referendumId: "ref_1",
+      referredByUserId: "referrer_1",
+    });
+    mocks.syncReferralVoteTokenMintForVote.mockResolvedValue({
+      id: "mint_1",
+      userId: "referrer_1",
+    });
+
+    const res = await POST(
+      makeRequest("test-ref", { answer: "YES", ref: "friend123" }),
+      makeParams("test-ref"),
+    );
+
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({
+      vote: {
+        id: "vote_1",
+        answer: "YES",
+        userId: "user_1",
+        referendumId: "ref_1",
+        referredByUserId: "referrer_1",
+      },
+      referrerVoteTokenMint: {
+        id: "mint_1",
+        userId: "referrer_1",
+      },
+      wishesEarned: 0,
+    });
+    expect(mocks.syncReferralVoteTokenMintForVote).toHaveBeenCalledWith({
+      referredVoterUserId: "user_1",
+      referrerUserId: "referrer_1",
+      referendumId: "ref_1",
     });
   });
 });

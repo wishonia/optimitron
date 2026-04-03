@@ -3,9 +3,9 @@ import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-utils";
 import { ActivityType, VotePosition } from "@optimitron/db";
 import { findUserByUsernameOrReferralCode } from "@/lib/referral.server";
-import { serverEnv } from "@/lib/env";
 import { grantWishes } from "@/lib/wishes.server";
 import { checkBadgesAfterWish } from "@/lib/badges.server";
+import { syncReferralVoteTokenMintForVote } from "@/lib/referral-vote-token-mint.server";
 
 export async function POST(
   request: Request,
@@ -94,49 +94,16 @@ export async function POST(
       console.error("[REFERENDUM VOTE] Activity log error:", activityError);
     }
 
-    // Queue VOTE token mint if user has verified World ID + wallet
-    let voteTokenMint = null;
+    // Queue referral VOTE reward for the referrer when the referred voter is verified.
+    let referrerVoteTokenMint = null;
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        include: {
-          personhoodVerifications: {
-            where: { provider: "WORLD_ID", status: "VERIFIED", deletedAt: null },
-            take: 1,
-          },
-        },
+      referrerVoteTokenMint = await syncReferralVoteTokenMintForVote({
+        referredVoterUserId: userId,
+        referrerUserId: vote.referredByUserId,
+        referendumId: referendum.id,
       });
-
-      const verification = user?.personhoodVerifications[0];
-      const walletAddress = (body as Record<string, unknown>).walletAddress as
-        | string
-        | undefined;
-
-      if (verification && walletAddress) {
-        const chainId = Number(serverEnv.VOTE_TOKEN_CHAIN_ID ?? "84532"); // Base Sepolia (testnet) by default
-        const amount = "1000000000000000000"; // 1 VOTE (1e18)
-
-        voteTokenMint = await prisma.voteTokenMint.upsert({
-          where: {
-            userId_referendumId: { userId, referendumId: referendum.id },
-          },
-          update: {
-            walletAddress,
-            deletedAt: null,
-          },
-          create: {
-            userId,
-            referendumId: referendum.id,
-            nullifierHash: verification.externalId,
-            walletAddress,
-            amount,
-            chainId,
-          },
-        });
-      }
     } catch (mintError) {
-      // Non-blocking: vote succeeds even if mint queue fails
-      console.error("[VOTE TOKEN MINT] Queue error:", mintError);
+      console.error("[VOTE TOKEN MINT] Referral reward queue error:", mintError);
     }
 
     // Grant wish points for voting
@@ -155,7 +122,7 @@ export async function POST(
       console.error("[REFERENDUM VOTE] Wish grant error:", wishError);
     }
 
-    return NextResponse.json({ vote, voteTokenMint, wishesEarned });
+    return NextResponse.json({ vote, referrerVoteTokenMint, wishesEarned });
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

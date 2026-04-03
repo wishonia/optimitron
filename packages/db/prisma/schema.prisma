@@ -2566,12 +2566,12 @@ enum VoteTokenMintStatus {
 
 /// Type of user-facing receipt published through Hypercert / AT Protocol flows
 /// Links a referendum vote to an on-chain VOTE token mint.
-/// 1 VOTE per verified vote per referendum.
+/// 1 VOTE to the referrer per referred verified vote per referendum.
 model VoteTokenMint {
   /// Unique identifier
   id String @id @default(cuid())
 
-  /// The user who voted and receives VOTE tokens
+  /// The referrer who receives the VOTE reward
   userId String
 
   /// Which referendum this mint is for
@@ -2608,9 +2608,9 @@ model VoteTokenMint {
   user       User       @relation("UserVoteTokenMints", fields: [userId], references: [id], onDelete: Cascade)
   referendum Referendum @relation(fields: [referendumId], references: [id])
 
-  @@unique([userId, referendumId])
   @@unique([nullifierHash, referendumId])
   @@index([userId])
+  @@index([userId, referendumId])
   @@index([referendumId])
   @@index([status])
 }

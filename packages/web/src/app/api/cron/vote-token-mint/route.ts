@@ -7,6 +7,7 @@ import {
   getVoteTokenContract,
 } from "@/lib/contracts/server-client";
 import { serverEnv } from "@/lib/env";
+import { syncPendingReferralVoteTokenMints } from "@/lib/referral-vote-token-mint.server";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -16,10 +17,11 @@ const BATCH_SIZE = 200;
 /**
  * Batch minting cron job for VOTE tokens.
  *
- * 1. Fetches all PENDING VoteTokenMint records
- * 2. Groups into batches of ~200
- * 3. Calls VoteToken.batchMintForVoters() on-chain
- * 4. Updates status to SUBMITTED → CONFIRMED on tx confirmation
+ * 1. Backfills referral-based VoteTokenMint rows for newly eligible rewards
+ * 2. Fetches all PENDING VoteTokenMint records
+ * 3. Groups into batches of ~200
+ * 4. Calls VoteToken.batchMintForVoters() on-chain
+ * 5. Updates status to SUBMITTED → CONFIRMED on tx confirmation
  */
 export async function GET(request: Request) {
   if (!isAuthorizedCronRequest(request)) {
@@ -27,6 +29,14 @@ export async function GET(request: Request) {
   }
 
   try {
+    let syncedReferralMints = 0;
+    try {
+      syncedReferralMints = (await syncPendingReferralVoteTokenMints(BATCH_SIZE))
+        .length;
+    } catch (syncError) {
+      console.error("[VOTE TOKEN MINT CRON] Referral sync error:", syncError);
+    }
+
     const pendingMints = await prisma.voteTokenMint.findMany({
       where: { status: "PENDING", deletedAt: null },
       orderBy: { createdAt: "asc" },
@@ -34,7 +44,11 @@ export async function GET(request: Request) {
     });
 
     if (pendingMints.length === 0) {
-      return NextResponse.json({ processed: 0, message: "No pending mints" });
+      return NextResponse.json({
+        processed: 0,
+        syncedReferralMints,
+        message: "No pending mints",
+      });
     }
 
     const ids = pendingMints.map((m) => m.id);
@@ -96,6 +110,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       processed: pendingMints.length,
+      syncedReferralMints,
       ids,
       txHash,
     });

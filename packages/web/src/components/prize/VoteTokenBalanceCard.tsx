@@ -80,8 +80,8 @@ export function VoteTokenBalanceCard() {
           Sign In to View VOTE Balance
         </h3>
         <p className="text-sm font-bold">
-          Vote on referendums. Prove you&apos;re human via World ID. Each
-          verified vote = 1 VOTE point. Simple enough even for your species.
+          Vote, prove you&apos;re human via World ID, and share your referral
+          link. Each verified voter you recruit earns you 1 VOTE point.
         </p>
         <Link
           href="/auth/signin?callbackUrl=/contribute"
@@ -113,7 +113,7 @@ export function VoteTokenBalanceCard() {
         <div className="grid gap-4 grid-cols-2">
           <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-4">
             <div className="text-xs font-black uppercase">
-              Confirmed Votes
+              Confirmed Rewards
             </div>
             <div className="text-3xl font-black">
               {data.totalVotes}
@@ -132,14 +132,15 @@ export function VoteTokenBalanceCard() {
         {data.totalVotes === 0 && (
           <div className="mt-4 border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-3">
             <p className="text-xs font-bold">
-              You don&apos;t have any VOTE points yet. Vote on a{" "}
+              You don&apos;t have any VOTE points yet. Share a{" "}
               <Link
                 href={ROUTES.referendum}
                 className="font-black text-brutal-pink underline hover:text-foreground"
               >
                 referendum
               </Link>{" "}
-              and verify with World ID to earn 1 VOTE per verified vote.
+              and bring in verified voters through your link to earn 1 VOTE for
+              each referral.
             </p>
           </div>
         )}

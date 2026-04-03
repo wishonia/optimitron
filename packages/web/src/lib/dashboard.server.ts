@@ -97,7 +97,7 @@ export async function getDashboardData(
   const globalProgressPct =
     (totalReferendumVotes / GLOBAL_POPULATION_2024.value) * 100;
   const targetPct =
-    GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT.value * 100;
+    Math.round(GLOBAL_POPULATION_ACTIVISM_THRESHOLD_PCT.value * 10000) / 100;
 
   // Quest checklist: which wish reasons has this user completed?
   const todayIso = new Date().toISOString().slice(0, 10);

@@ -10,6 +10,10 @@ import {
   PRIZE_POOL_HORIZON_MULTIPLE,
   PRIZE_POOL_ANNUAL_RETURN,
   TREATY_HALE_GAIN_YEAR_15,
+  GLOBAL_HALE_CURRENT,
+  TREATY_PROJECTED_HALE_YEAR_15,
+  GLOBAL_AVG_INCOME_2025,
+  TREATY_TRAJECTORY_AVG_INCOME_YEAR_15,
 } from "@optimitron/data/parameters";
 import {
   contractsSourceLink,
@@ -272,20 +276,46 @@ export default async function PrizePage() {
             <h3 className="font-mono text-lg font-black mb-2 uppercase">
               Median Healthy Life Years
             </h3>
-            <p className="text-sm leading-relaxed font-bold">
+            <p className="text-sm leading-relaxed font-bold mb-4">
               Not &ldquo;are you alive&rdquo; but &ldquo;are you alive and can you
               open a jar without crying.&rdquo; Median, not mean — one billionaire
               living to 120 doesn&apos;t mean your healthcare works.
+            </p>
+            <div className="flex items-center justify-between font-mono text-xs font-black uppercase mb-1">
+              <span>Now: {fmtParam(GLOBAL_HALE_CURRENT)}</span>
+              <span>Target: {fmtParam(TREATY_PROJECTED_HALE_YEAR_15)}</span>
+            </div>
+            <div className="h-4 bg-brutal-cyan-foreground/20 border-2 border-primary rounded-sm overflow-hidden">
+              <div
+                className="h-full bg-brutal-cyan-foreground"
+                style={{ width: `${(GLOBAL_HALE_CURRENT.value / TREATY_PROJECTED_HALE_YEAR_15.value * 100).toFixed(0)}%` }}
+              />
+            </div>
+            <p className="font-mono text-xs font-black mt-1 text-center">
+              +{fmtParam(TREATY_HALE_GAIN_YEAR_15)} by 2040
             </p>
           </div>
           <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h3 className="font-mono text-lg font-black mb-2 uppercase">
               Median Real After-Tax Income
             </h3>
-            <p className="text-sm leading-relaxed font-bold">
+            <p className="text-sm leading-relaxed font-bold mb-4">
               What can a normal person actually buy after the government&apos;s had
               its go at their paycheque? Not GDP — that counts arms dealing and
               divorce lawyers. This counts &ldquo;can you feed your kids.&rdquo;
+            </p>
+            <div className="flex items-center justify-between font-mono text-xs font-black uppercase mb-1">
+              <span>Now: {fmtParam(GLOBAL_AVG_INCOME_2025)}</span>
+              <span>Target: {fmtParam(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15)}</span>
+            </div>
+            <div className="h-4 bg-brutal-yellow-foreground/20 border-2 border-primary rounded-sm overflow-hidden">
+              <div
+                className="h-full bg-brutal-yellow-foreground"
+                style={{ width: `${(GLOBAL_AVG_INCOME_2025.value / TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value * 100).toFixed(0)}%` }}
+              />
+            </div>
+            <p className="font-mono text-xs font-black mt-1 text-center">
+              {fmtParam(GLOBAL_AVG_INCOME_2025)} → {fmtParam(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15)} by 2040
             </p>
           </div>
         </div>
