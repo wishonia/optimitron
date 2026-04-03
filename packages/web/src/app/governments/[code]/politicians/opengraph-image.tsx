@@ -23,8 +23,9 @@ export default async function OGImage({ params }: { params: Promise<{ code: stri
         justifyContent: "center",
       }}
     >
-      <div style={{ fontSize: 80, fontWeight: 900, textTransform: "uppercase", letterSpacing: -3 }}>
-        {gov?.flag ?? "🌍"} {gov?.name ?? code}
+      <div style={{ display: "flex", fontSize: 80, fontWeight: 900, textTransform: "uppercase", letterSpacing: -3, gap: 16 }}>
+        <span>{gov?.flag ?? "🌍"}</span>
+        <span>{gov?.name ?? code}</span>
       </div>
       <div style={{ fontSize: 40, fontWeight: 900, color: "#ef4444", marginTop: 20, textTransform: "uppercase" }}>
         Politician Scorecards
