@@ -18,6 +18,7 @@ interface PoliticianScore {
 }
 
 type SortKey = "name" | "ratio" | "military" | "trials";
+type RankMode = "worst" | "least-bad";
 
 function formatDollars(value: number): string {
   if (value >= 1e12) return `$${(value / 1e12).toFixed(1)}T`;
@@ -49,6 +50,7 @@ export function PoliticianScorecardTable({
   limit,
 }: PoliticianScorecardTableProps) {
   const compact = limit != null;
+  const [rankMode, setRankMode] = useState<RankMode>("worst");
   const [sortKey, setSortKey] = useState<SortKey>("ratio");
   const [sortAsc, setSortAsc] = useState(false);
   const [chamberFilter, setChamberFilter] = useState<"all" | "Senate" | "House">("all");
@@ -65,10 +67,18 @@ export function PoliticianScorecardTable({
   });
 
   const sorted = [...filtered].sort((a, b) => {
+    if (sortKey === "ratio") {
+      // Multi-key: ratio, then military spend, then trials (inverse)
+      const dir = rankMode === "worst" ? -1 : 1;
+      const ratioDiff = a.ratio - b.ratio;
+      if (ratioDiff !== 0) return dir * ratioDiff;
+      const milDiff = a.militaryDollarsVotedFor - b.militaryDollarsVotedFor;
+      if (milDiff !== 0) return dir * milDiff;
+      return -dir * (a.clinicalTrialDollarsVotedFor - b.clinicalTrialDollarsVotedFor);
+    }
     let diff = 0;
     switch (sortKey) {
       case "name": diff = a.name.localeCompare(b.name); break;
-      case "ratio": diff = a.ratio - b.ratio; break;
       case "military": diff = a.militaryDollarsVotedFor - b.militaryDollarsVotedFor; break;
       case "trials": diff = a.clinicalTrialDollarsVotedFor - b.clinicalTrialDollarsVotedFor; break;
     }
@@ -79,8 +89,22 @@ export function PoliticianScorecardTable({
 
   const handleSort = (key: SortKey) => {
     if (compact) return;
-    if (sortKey === key) setSortAsc(!sortAsc);
-    else { setSortKey(key); setSortAsc(key === "name"); }
+    if (key === "ratio") {
+      // Toggle rank mode instead of raw asc/desc
+      const next: RankMode = rankMode === "worst" ? "least-bad" : "worst";
+      setRankMode(next);
+      setSortKey("ratio");
+    } else if (sortKey === key) {
+      setSortAsc(!sortAsc);
+    } else {
+      setSortKey(key);
+      setSortAsc(key === "name");
+    }
+  };
+
+  const handleRankMode = (mode: RankMode) => {
+    setRankMode(mode);
+    setSortKey("ratio");
   };
 
   const indicator = (key: SortKey) => compact ? "" : sortKey === key ? (sortAsc ? " ↑" : " ↓") : "";

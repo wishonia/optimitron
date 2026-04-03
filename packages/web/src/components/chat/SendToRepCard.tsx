@@ -50,7 +50,7 @@ export function SendToRepCard({ representatives, vote }: SendToRepCardProps) {
               <div className="opto-send-rep__rep-info">
                 <span className="opto-send-rep__rep-name">{rep.name}</span>
                 <span className="opto-send-rep__rep-detail">
-                  {rep.title} &middot; {rep.party}
+                  {rep.title}
                 </span>
               </div>
               <div className="opto-send-rep__actions">

@@ -212,7 +212,7 @@ export function AlignmentReport({
                   {topMatch.name}
                 </h2>
                 <p className="mt-1 text-sm font-bold uppercase tracking-[0.15em] text-muted-foreground">
-                  {topMatch.title} · {topMatch.party}
+                  {topMatch.title}
                 </p>
                 <p className="mt-2 text-[11px] font-black uppercase tracking-[0.15em] text-muted-foreground">
                   {formatCoverageLabel(topMatch)}
@@ -356,7 +356,7 @@ export function AlignmentReport({
                     {politician.name}
                   </h3>
                   <p className="mt-1 text-sm font-bold uppercase tracking-[0.15em] text-muted-foreground">
-                    {politician.title} · {politician.party}
+                    {politician.title}
                   </p>
                   <p className="mt-2 text-[11px] font-black uppercase tracking-[0.15em] text-muted-foreground">
                     {formatCoverageLabel(politician)}

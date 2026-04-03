@@ -75,8 +75,7 @@ export function SlideCongressMilitaryTrialsRatio() {
         <div className="bg-black/40 border border-cyan-500/30 rounded overflow-x-auto">
           {/* Header */}
           <div className="grid grid-cols-12 gap-2 px-3 md:px-4 py-2 bg-cyan-500/10 border-b border-cyan-500/30 min-w-[520px]">
-            <div className="col-span-4 font-pixel text-sm md:text-xl text-cyan-400">NAME</div>
-            <div className="col-span-1 font-pixel text-sm md:text-xl text-cyan-400">PARTY</div>
+            <div className="col-span-5 font-pixel text-sm md:text-xl text-cyan-400">NAME</div>
             <div className="col-span-3 font-pixel text-sm md:text-xl text-cyan-400 text-right">MIL $</div>
             <div className="col-span-2 font-pixel text-sm md:text-xl text-cyan-400 text-right">TRIALS $</div>
             <div className="col-span-2 font-pixel text-sm md:text-xl text-cyan-400 text-right">RATIO</div>
@@ -90,7 +89,7 @@ export function SlideCongressMilitaryTrialsRatio() {
               }`}
             >
               {/* Name */}
-              <div className="col-span-4 flex items-center gap-2">
+              <div className="col-span-5 flex items-center gap-2">
                 <Image
                   src={`https://bioguide.congress.gov/bioguide/photo/${pol.id[0]?.toUpperCase() ?? "X"}/${pol.id.toUpperCase()}.jpg`}
                   alt={pol.name}
@@ -107,21 +106,6 @@ export function SlideCongressMilitaryTrialsRatio() {
                 >
                   {pol.name}
                 </a>
-              </div>
-
-              {/* Party */}
-              <div className="col-span-1">
-                <span
-                  className={`font-pixel text-xl ${
-                    pol.party === "Democrat"
-                      ? "text-blue-400"
-                      : pol.party === "Republican"
-                      ? "text-red-400"
-                      : "text-amber-400"
-                  }`}
-                >
-                  {pol.party === "Democrat" ? "D" : pol.party === "Republican" ? "R" : "I"}
-                </span>
               </div>
 
               {/* Military $ voted for */}

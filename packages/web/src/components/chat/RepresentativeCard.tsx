@@ -7,13 +7,6 @@ interface RepresentativeCardProps {
   onViewAlignment?: (rep: CivicRepresentative) => void;
 }
 
-function partyBadgeClass(party: string): string {
-  const p = party.toLowerCase();
-  if (p.includes("democrat")) return "opto-rep-card__party--dem";
-  if (p.includes("republican")) return "opto-rep-card__party--rep";
-  return "opto-rep-card__party--ind";
-}
-
 export function RepresentativeCard({
   representatives,
   onSeeBills,
@@ -36,9 +29,6 @@ export function RepresentativeCard({
           <div key={rep.bioguideId} className="opto-rep-card__item">
             <div className="opto-rep-card__info">
               <span className="opto-rep-card__name">{rep.name}</span>
-              <span className={`opto-rep-card__party ${partyBadgeClass(rep.party)}`}>
-                {rep.party}
-              </span>
             </div>
             <div className="opto-rep-card__detail">
               {rep.title} &middot; {rep.state}

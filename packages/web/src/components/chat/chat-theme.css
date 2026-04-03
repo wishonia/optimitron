@@ -1048,25 +1048,6 @@
   font-size: 0.95rem;
 }
 
-.opto-rep-card__party {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 0.1rem 0.4rem;
-  border: 1px solid black;
-}
-
-.opto-rep-card__party--dem {
-  background: var(--brutal-cyan);
-}
-
-.opto-rep-card__party--rep {
-  background: var(--brutal-pink);
-}
-
-.opto-rep-card__party--ind {
-  background: var(--brutal-yellow);
-}
 
 .opto-rep-card__detail {
   font-size: 0.75rem;

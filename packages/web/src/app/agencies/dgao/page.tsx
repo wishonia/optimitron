@@ -168,7 +168,7 @@ export default function TransparencyPage() {
                       {pol.name}
                     </div>
                     <div className="text-xs font-bold text-muted-foreground">
-                      {pol.party} · {pol.chamber}
+                      {pol.chamber}
                     </div>
                   </div>
                   <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground px-2 py-1 text-center">

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { getMilitarySynonym, getMilitarySynonymTitle } from "@/lib/messaging";
+import { getMilitarySynonymTitle } from "@/lib/messaging";
 import {
   formatPoliticianOgDescriptor,
   formatPoliticianOgRatio,
@@ -54,21 +54,22 @@ export default async function OGImage({ params }: { params: Promise<{ code: stri
   const trialsPct = total > 0 ? (p.clinicalTrialDollarsVotedFor / total) * 100 : 50;
   const ratioText = formatPoliticianOgRatio(p.ratio);
   const descriptorText = formatPoliticianOgDescriptor([
-    p.party,
     p.chamber,
     p.state,
   ]);
 
-  // SVG pie chart using stroke-dasharray trick
-  // Circle circumference = 2πr = 2π×90 ≈ 565.5
-  const circumference = 2 * Math.PI * 90;
-  const milDash = (milPct / 100) * circumference;
-  const trialsDash = circumference - milDash;
+  // Bar widths: military always fills most of the bar, trials gets a minimum
+  // visible width so it doesn't disappear entirely
+  const barMaxWidth = 1080; // px (1200 - padding)
+  const milBarWidth = Math.round((milPct / 100) * barMaxWidth);
+  const trialsBarWidth = Math.max(Math.round((trialsPct / 100) * barMaxWidth), 4);
+  const milLabel = getMilitarySynonymTitle(p.bioguideId + "-og-bar");
 
   return new ImageResponse(
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         width: "100%",
         height: "100%",
         backgroundColor: "#000",
@@ -77,88 +78,51 @@ export default async function OGImage({ params }: { params: Promise<{ code: stri
         fontFamily: "sans-serif",
       }}
     >
-      {/* Left side: info */}
-      <div style={{ display: "flex", flexDirection: "column", flex: 1, marginRight: 40 }}>
-        {/* Name + party */}
-        <div style={{ display: "flex", fontSize: 48, fontWeight: 900, textTransform: "uppercase", letterSpacing: -2, lineHeight: 1.1 }}>
-          {p.name}
-        </div>
-        <div style={{ display: "flex", fontSize: 22, fontWeight: 700, color: "#888", marginTop: 8 }}>
-          {descriptorText}
-        </div>
+      {/* Name + descriptor */}
+      <div style={{ display: "flex", fontSize: 52, fontWeight: 900, textTransform: "uppercase", letterSpacing: -2, lineHeight: 1.1 }}>
+        {p.name}
+      </div>
+      <div style={{ display: "flex", fontSize: 24, fontWeight: 700, color: "#888", marginTop: 8 }}>
+        {descriptorText}
+      </div>
 
-        {/* Stats */}
-        <div style={{ display: "flex", gap: 32, marginTop: 32 }}>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ display: "flex", fontSize: 16, fontWeight: 700, color: "#ef4444", textTransform: "uppercase" }}>{getMilitarySynonym(p.bioguideId + "-og-stat")}</div>
-            <div style={{ display: "flex", fontSize: 40, fontWeight: 900, color: "#ef4444" }}>{fmt(p.militaryDollarsVotedFor)}</div>
-            <div style={{ display: "flex", fontSize: 18, fontWeight: 700, color: "#ef4444" }}>{milPct.toFixed(1)}%</div>
+      {/* Ratio callout */}
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginTop: 32 }}>
+        <div style={{ display: "flex", fontSize: 56, fontWeight: 900, color: "#ef4444" }}>{ratioText}</div>
+        <div style={{ display: "flex", fontSize: 24, fontWeight: 700, color: "#888" }}>ratio</div>
+      </div>
+
+      {/* Horizontal bars */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 32 }}>
+        {/* Military bar */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", fontSize: 18, fontWeight: 900, color: "#ef4444", textTransform: "uppercase" }}>{milLabel}</div>
+            <div style={{ display: "flex", fontSize: 18, fontWeight: 900, color: "#ef4444" }}>{fmt(p.militaryDollarsVotedFor)}</div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ display: "flex", fontSize: 16, fontWeight: 700, color: "#00D9FF", textTransform: "uppercase" }}>Testing Medicines</div>
-            <div style={{ display: "flex", fontSize: 40, fontWeight: 900, color: "#00D9FF" }}>{fmt(p.clinicalTrialDollarsVotedFor)}</div>
-            <div style={{ display: "flex", fontSize: 18, fontWeight: 700, color: "#00D9FF" }}>{trialsPct.toFixed(2)}%</div>
+          <div style={{ display: "flex", width: "100%", height: 56, backgroundColor: "#1a1a1a", border: "3px solid #333" }}>
+            <div style={{ display: "flex", width: milBarWidth, height: "100%", backgroundColor: "#ef4444" }} />
           </div>
         </div>
-
-        {/* Bottom */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "auto" }}>
-          <div style={{ display: "flex", fontSize: 15, fontWeight: 700, color: "#666" }}>
-            optimitron.earth
+        {/* Clinical trials bar */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", fontSize: 18, fontWeight: 900, color: "#00D9FF", textTransform: "uppercase" }}>Clinical Trials</div>
+            <div style={{ display: "flex", fontSize: 18, fontWeight: 900, color: "#00D9FF" }}>{fmt(p.clinicalTrialDollarsVotedFor)}</div>
           </div>
-          <div style={{ display: "flex", fontSize: 18, fontWeight: 900, color: "#FF6B9D", textTransform: "uppercase" }}>
-            The Earth Optimization Game
+          <div style={{ display: "flex", width: "100%", height: 56, backgroundColor: "#1a1a1a", border: "3px solid #333" }}>
+            <div style={{ display: "flex", width: trialsBarWidth, height: "100%", backgroundColor: "#00D9FF" }} />
           </div>
         </div>
       </div>
 
-      {/* Right side: pie chart */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: 320, position: "relative" }}>
-        <svg width="240" height="240" viewBox="0 0 200 200">
-          {/* Background circle (military - red) */}
-          <circle
-            cx="100" cy="100" r="90"
-            fill="none"
-            stroke="#ef4444"
-            strokeWidth="80"
-            strokeDasharray={`${milDash} ${trialsDash}`}
-            strokeDashoffset={circumference / 4}
-            transform="rotate(-90 100 100)"
-          />
-          {/* Trials slice (cyan) — overlaid */}
-          {trialsPct > 0.01 && (
-            <circle
-              cx="100" cy="100" r="90"
-              fill="none"
-              stroke="#00D9FF"
-              strokeWidth="80"
-              strokeDasharray={`${trialsDash} ${milDash}`}
-              strokeDashoffset={-(milDash - circumference / 4)}
-              transform="rotate(-90 100 100)"
-            />
-          )}
-        </svg>
-        {/* Ratio in center */}
-        <div style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          position: "absolute",
-          top: "50%",
-          marginTop: -30,
-        }}>
-          <div style={{ display: "flex", fontSize: 44, fontWeight: 900, color: "#fff" }}>{ratioText}</div>
+      {/* Bottom */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "auto" }}>
+        <div style={{ display: "flex", fontSize: 15, fontWeight: 700, color: "#666" }}>
+          optimitron.earth
         </div>
-        {/* Legend */}
-        <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 12, height: 12, backgroundColor: "#ef4444" }} />
-            <div style={{ display: "flex", fontSize: 13, fontWeight: 700, color: "#aaa" }}>{getMilitarySynonymTitle(p.bioguideId + "-og-legend")}</div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 12, height: 12, backgroundColor: "#00D9FF" }} />
-            <div style={{ display: "flex", fontSize: 13, fontWeight: 700, color: "#aaa" }}>Medicines</div>
-          </div>
+        <div style={{ display: "flex", fontSize: 18, fontWeight: 900, color: "#FF6B9D", textTransform: "uppercase" }}>
+          The Earth Optimization Game
         </div>
       </div>
     </div>,
