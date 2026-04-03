@@ -18,6 +18,7 @@ import { ShareTemplatesCard } from "@/components/dashboard/ShareTemplatesCard"
 import { StickyShareFooter } from "@/components/dashboard/StickyShareFooter"
 import { QuestChecklistCard } from "@/components/dashboard/QuestChecklistCard"
 import { ImpactReceiptsCard } from "@/components/dashboard/ImpactReceiptsCard"
+import { WorldIdVerificationCard } from "@/components/personhood/WorldIdVerificationCard"
 import type { DashboardData, LeaderboardEntry } from "@/types/dashboard"
 
 export function DashboardClient({
@@ -99,6 +100,9 @@ export function DashboardClient({
           </div>
 
           <ImpactReceiptsCard receipts={initialData.impactReceipts} />
+
+          {/* Identity Verification */}
+          <WorldIdVerificationCard show />
         </div>
       </div>
       <StickyShareFooter referrals={initialData.stats.referrals} referralLink={referralLink} />

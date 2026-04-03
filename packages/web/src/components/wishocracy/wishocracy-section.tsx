@@ -12,10 +12,9 @@ import { WishocracyCompletionCard } from "./WishocracyCompletionCard";
 import { WishocracyEditSection } from "./WishocracyEditSection";
 import { WishocracyIntroCard } from "./WishocracyIntroCard";
 import { WishocracyLoadingCard } from "./WishocracyLoadingCard";
-import { WishocracyReferralCard } from "./WishocracyReferralCard";
+import { WishocracyItemManager } from "./WishocracyItemManager";
 import { WishocracyResetButton } from "./WishocracyResetButton";
 import { WishocracyStatusBar } from "./WishocracyStatusBar";
-import { WorldIdVerificationCard } from "@/components/personhood/WorldIdVerificationCard";
 
 export default function WishocracySection() {
   const { state, handlers } = useWishocracyState();
@@ -68,11 +67,12 @@ export default function WishocracySection() {
           onShowAuthPrompt={() => handlers.setShowAuthPrompt(true)}
         />
 
-        <WorldIdVerificationCard show={isAuthenticated && !state.isLoading} />
-
-        <WishocracyReferralCard
-          show={isAuthenticated && !state.isLoading}
-          shareUrl={shareUrl}
+        <WishocracyItemManager
+          show={!state.isLoading && !state.showIntro && !state.showItemInclusion && !isComplete}
+          selectedItemIds={state.selectedItemIds}
+          completedCount={state.allocations.length}
+          totalPairs={state.totalPossiblePairs}
+          onRemoveItem={handlers.handleItemRemove}
         />
 
         <AnimatePresence mode="wait">
@@ -114,7 +114,7 @@ export default function WishocracySection() {
         />
 
         <WishocracyAllocationCard
-          show={!state.showIntro && !state.showItemInclusion}
+          show={isComplete}
           isLoading={state.isLoading}
           allocations={state.allocations}
         />

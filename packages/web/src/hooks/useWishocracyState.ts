@@ -229,6 +229,46 @@ export function useWishocracyState() {
     });
   }
 
+  function handleItemRemove(itemId: WishocraticItemId) {
+    const nextSelected = new Set(selectedItemIds);
+    nextSelected.delete(itemId);
+    const nextRejected = new Set(rejectedItemIds);
+    nextRejected.add(itemId);
+
+    const nextAllocations = allocations.filter(
+      (a) => a.itemAId !== itemId && a.itemBId !== itemId,
+    );
+    const nextPairs = shuffledPairs.filter(
+      (p) => p[0] !== itemId && p[1] !== itemId,
+    );
+
+    setIncludedItemIds(nextSelected);
+    setExcludedItemIds(nextRejected);
+    setAllocations(nextAllocations);
+    setShuffledPairs(nextPairs);
+    setCurrentPairIndex(0);
+
+    if (status === "authenticated" && session?.user?.id) {
+      void fetch(API_ROUTES.wishocracy.itemInclusions, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          inclusions: [{ itemId, included: false }],
+        }),
+      });
+    } else {
+      storage.setPendingWishocracy({
+        allocations: nextAllocations.map((a) => ({
+          ...a,
+          timestamp: a.timestamp ?? new Date().toISOString(),
+        })),
+        currentPairIndex: 0,
+        shuffledPairs: nextPairs,
+        includedItemIds: Array.from(nextSelected),
+      });
+    }
+  }
+
   async function handleEditSave(
     updatedAllocations: Array<{
       itemAId: string;
@@ -299,6 +339,7 @@ export function useWishocracyState() {
       handleReset,
       handleItemInclusionComplete,
       handleEditSave,
+      handleItemRemove,
       setShowIntro,
       setShowItemInclusion,
       setShowAuthPrompt,
