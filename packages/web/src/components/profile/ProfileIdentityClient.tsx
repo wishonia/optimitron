@@ -7,6 +7,7 @@ import { PlayerNameBanner } from "@/components/dashboard/PlayerNameBanner"
 import { ProfileCard } from "@/components/dashboard/ProfileCard"
 import { ConnectedAccountsCard } from "@/components/dashboard/ConnectedAccountsCard"
 import { EmailSignatureCard } from "@/components/dashboard/EmailSignatureCard"
+import { WorldIdVerificationCard } from "@/components/personhood/WorldIdVerificationCard"
 import { buildUserReferralUrl } from "@/lib/url"
 import type { DashboardUser, DashboardSocialAccount } from "@/types/dashboard"
 
@@ -60,6 +61,8 @@ export function ProfileIdentityClient({
           socialAccounts={socialAccounts}
           onRefresh={refreshPage}
         />
+
+        <WorldIdVerificationCard show />
 
         <EmailSignatureCard referralLink={referralLink} userName={user.name} />
       </div>
