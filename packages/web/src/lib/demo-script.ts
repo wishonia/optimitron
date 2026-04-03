@@ -1131,7 +1131,7 @@ export const SEGMENTS = [
   },
   {
     id: "decentralized-irs",
-    title: "Decentralized IRS",
+    title: "Automated Revenue Service",
     slideId: "decentralized-irs",
     tags: ["feature"],
     act: "II-armory",
@@ -1139,7 +1139,7 @@ export const SEGMENTS = [
   },
   {
     id: "decentralized-welfare",
-    title: "Decentralized Welfare",
+    title: "Universal Security Administration",
     slideId: "decentralized-welfare",
     tags: ["feature"],
     act: "II-armory",
@@ -1147,7 +1147,7 @@ export const SEGMENTS = [
   },
   {
     id: "decentralized-federal-reserve",
-    title: "Decentralized Fed",
+    title: "Algorithmic Reserve",
     slideId: "decentralized-federal-reserve",
     tags: ["feature"],
     act: "II-armory",
@@ -1159,7 +1159,7 @@ export const SEGMENTS = [
     slideId: "ipfs-immutable-storage",
     tags: ["feature"],
     act: "II-armory",
-    narration: "The Optimal Policy Generator, Budget Generator, and Decentralized FDA are all powered by data collected through a decentralized census. 8 billion citizens verified via World ID. Budget preferences, treaty votes, health outcomes, impact metrics — stored on Storacha and pinned to IPFS. No government can delete it. No lobbyist can edit it.",
+    narration: "The Optimal Policy Generator, Budget Generator, and Decentralized FDA are all powered by data collected through the Decentralized Census. 8 billion citizens verified via World ID. Budget preferences, treaty votes, health outcomes, impact metrics — stored on Storacha and pinned to IPFS. No government can delete it. No lobbyist can edit it.",
   },
   {
     id: "impact-certificates-brief",

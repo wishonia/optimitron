@@ -4,6 +4,7 @@ import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { GameCTA } from "@/components/ui/game-cta";
 import { agenciesLink, ROUTES } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
+import { AGENCIES } from "@optimitron/data";
 
 export const metadata = getRouteMetadata(agenciesLink);
 
@@ -22,11 +23,10 @@ const departments: { label: string; agencies: AgencyCard[] }[] = [
     agencies: [
       {
         emoji: "🏛️",
-        name: "Decentralized Congress",
-        description:
-          "Every citizen votes on the budget. Takes two minutes. Your Congress takes two years and still gets it wrong.",
+        name: AGENCIES.dcongress.dName,
+        description: AGENCIES.dcongress.tagline,
         href: ROUTES.dcongress,
-        earthEquivalent: "Congress",
+        earthEquivalent: AGENCIES.dcongress.replacesAgencyName,
         color: "yellow",
       },
     ],
@@ -36,20 +36,18 @@ const departments: { label: string; agencies: AgencyCard[] }[] = [
     agencies: [
       {
         emoji: "💸",
-        name: "Decentralized Treasury",
-        description:
-          "0.5% transaction tax, UBI, and Wishocratic allocation — in one currency. The seventy-four-thousand-page tax code is not invited.",
+        name: AGENCIES.dtreasury.dName,
+        description: AGENCIES.dtreasury.tagline,
         href: ROUTES.dtreasury,
-        earthEquivalent: "Treasury + IRS + Federal Reserve + Social Security",
+        earthEquivalent: AGENCIES.dtreasury.replacesAgencyName,
         color: "pink",
       },
       {
         emoji: "🤝",
-        name: "Decentralized Election Commission",
-        description:
-          "Smart contracts fund politicians by alignment score. No PACs. No lobbying. No bribery with extra steps.",
+        name: AGENCIES.dfec.dName,
+        description: AGENCIES.dfec.tagline,
         href: ROUTES.dfec,
-        earthEquivalent: "Federal Election Commission",
+        earthEquivalent: AGENCIES.dfec.replacesAgencyName,
         color: "cyan",
       },
     ],
@@ -59,29 +57,26 @@ const departments: { label: string; agencies: AgencyCard[] }[] = [
     agencies: [
       {
         emoji: "📋",
-        name: "Optimal Policy Generator",
-        description:
-          "Every policy ranked by whether it actually works. Causal inference on decades of data across dozens of countries.",
+        name: AGENCIES.dcbo.dName,
+        description: AGENCIES.dcbo.tagline,
         href: ROUTES.opg,
-        earthEquivalent: "Congressional Budget Office",
+        earthEquivalent: AGENCIES.dcbo.replacesAgencyName,
         color: "cyan",
       },
       {
         emoji: "💰",
-        name: "Optimal Budget Generator",
-        description:
-          "Your government's budget diagnosed with cross-country efficiency analysis. More money. Worse outcomes. On every line item.",
+        name: AGENCIES.domb.dName,
+        description: AGENCIES.domb.tagline,
         href: ROUTES.obg,
-        earthEquivalent: "Office of Management and Budget",
+        earthEquivalent: AGENCIES.domb.replacesAgencyName,
         color: "yellow",
       },
       {
         emoji: "🔍",
-        name: "Decentralized Accountability",
-        description:
-          "Every number stored where nobody can quietly delete it. Your governments love deleting things. This system can't.",
+        name: AGENCIES.dgao.dName,
+        description: AGENCIES.dgao.tagline,
         href: ROUTES.dgao,
-        earthEquivalent: "Government Accountability Office",
+        earthEquivalent: AGENCIES.dgao.replacesAgencyName,
         color: "background",
       },
     ],
@@ -91,29 +86,26 @@ const departments: { label: string; agencies: AgencyCard[] }[] = [
     agencies: [
       {
         emoji: "🧬",
-        name: "Decentralized Health",
-        description:
-          "Same science, 30x cheaper, 44x faster. Your NIH spends 97% of its budget on things that aren't clinical trials. It's a fire department that budgets 3% for water.",
+        name: AGENCIES.dih.dName,
+        description: AGENCIES.dih.tagline,
         href: ROUTES.dih,
-        earthEquivalent: "National Institutes of Health + FDA",
+        earthEquivalent: AGENCIES.dih.replacesAgencyName,
         color: "pink",
       },
       {
         emoji: "💀",
-        name: "Decentralized Defense",
-        description:
-          "We don't have one. War is a negative-sum game and the spreadsheet agrees.",
+        name: AGENCIES.ddod.dName,
+        description: AGENCIES.ddod.tagline,
         href: ROUTES.ddod,
-        earthEquivalent: "Department of Defense",
+        earthEquivalent: AGENCIES.ddod.replacesAgencyName,
         color: "background",
       },
       {
         emoji: "🌐",
-        name: "Decentralized Census",
-        description:
-          "citizenCount() returns in fifty milliseconds. No fourteen-billion-dollar survey required.",
+        name: AGENCIES.dcensus.dName,
+        description: AGENCIES.dcensus.tagline,
         href: ROUTES.dcensus,
-        earthEquivalent: "Census Bureau",
+        earthEquivalent: AGENCIES.dcensus.replacesAgencyName,
         color: "cyan",
       },
     ],

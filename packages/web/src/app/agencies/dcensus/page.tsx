@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { WishoniaAgencyPage } from "@/components/wishonia-agency/WishoniaAgencyPage";
-import { getWishoniaAgency } from "@optimitron/data";
+import { AGENCIES } from "@optimitron/data";
 
-const agency = getWishoniaAgency("dcensus")!;
+const agency = AGENCIES.dcensus;
 
 export const metadata: Metadata = {
   title: `${agency.dName}: ${agency.replacesAgencyName} — DEPRECATED | Optimitron`,
-  description: agency.tagline,
+  description: agency.description,
 };
 
 export default function DCensusPage() {

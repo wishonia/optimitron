@@ -12,12 +12,27 @@ export interface WishoniaAgencyStat {
   color?: "pink" | "cyan" | "yellow" | "green";
 }
 
+/** What an agency actually optimizes for — stated vs revealed preference. */
+export interface OptimizationMetric {
+  /** Short metric name, e.g. "Papers Published" or "Median HALE" */
+  metric: string;
+  /** Why this is what they actually optimize for (or should). */
+  description: string;
+}
+
 export interface WishoniaAgency {
   id: string;
   dName: string;
   replaces: string[];
   replacesAgencyName: string;
+  /** Full Wishonia-voice explanation (1-3 sentences). Used for page hero, nav, metadata. */
+  description: string;
+  /** One-liner for compact UIs (tools page, slide-armory, index cards). */
   tagline: string;
+  /** What the Earth agency actually optimizes for (the perverse incentive). */
+  deprecatedMetrics: OptimizationMetric[];
+  /** What the replacement optimizes for (the metric that matters). */
+  optimalMetrics: OptimizationMetric[];
   stats: WishoniaAgencyStat[];
   codeHeader: string;
   replacementCode: string;
@@ -29,14 +44,26 @@ export interface WishoniaAgency {
   cardColor: "pink" | "cyan" | "yellow" | "green";
 }
 
-export const WISHONIA_AGENCIES: WishoniaAgency[] = [
-  {
+/** Keyed record of all Wishonia agencies. Use `AGENCIES.dfed` for direct access. */
+export const AGENCIES = {
+  dfed: {
     id: "dfed",
-    dName: "dFED",
+    dName: "Algorithmic Reserve",
     replaces: ["fed"],
     replacesAgencyName: "Federal Reserve System",
-    tagline:
+    description:
       "Twelve people in a room deciding how much your money is worth. On my planet, we call that a hostage situation.",
+    tagline: "0% inflation anchored to productivity — new money via UBI, not banks",
+    deprecatedMetrics: [
+      { metric: "2% Annual Inflation Target", description: "Deliberately devalues every paycheck by 2%/year. They call this 'price stability.' Your grandparents call it 'why a house costs 40x what it used to.'" },
+      { metric: "Bank Profitability", description: "New money goes to banks first. They lend it out before prices adjust. By the time it reaches you, the purchasing power is already gone." },
+      { metric: "Institutional Self-Preservation", description: "111 years, zero audits. The Fed's primary achievement is making everyone too busy to question why 12 people control the money supply." },
+    ],
+    optimalMetrics: [
+      { metric: "Median Real After-Tax Income", description: "The only monetary policy metric that matters: can a normal person buy more stuff this year than last year?" },
+      { metric: "0% Inflation Rate", description: "Fixed supply anchored to productivity growth. Your money buys more over time, not less." },
+      { metric: "Equal Distribution of New Money", description: "Productivity gains distributed as UBI, not funnelled through banks to asset holders first." },
+    ],
     stats: [
       {
         value: "12",
@@ -86,13 +113,24 @@ constructor(
       "Your central bank has one job: manage the money supply. In 111 years they've managed to destroy 96% of it. On my planet we'd call that a bug report, not a mandate.",
     cardColor: "pink",
   },
-  {
+  dirs: {
     id: "dirs",
-    dName: "dIRS",
+    dName: "Automated Revenue Service",
     replaces: ["irs"],
     replacesAgencyName: "Internal Revenue Service",
-    tagline:
+    description:
       "Six lines of code. That's all it took.",
+    tagline: "Six lines of Solidity replace 74,000 pages of tax code",
+    deprecatedMetrics: [
+      { metric: "Tax Code Complexity", description: "74,000 pages. Every loophole is a feature, not a bug — it's how donors get paid back." },
+      { metric: "Compliance Burden", description: "6.1 billion hours/year of citizen time. An entire profession ('accountant') exists to decode rules you wrote for yourselves." },
+      { metric: "Audit Revenue", description: "83,000 employees optimizing for catching mistakes in a system designed to produce them." },
+    ],
+    optimalMetrics: [
+      { metric: "Revenue per Dollar of Overhead", description: "0.5% transaction tax collects the same revenue at ~0% administrative cost." },
+      { metric: "Zero Citizen Filing Time", description: "No forms, no deadlines, no accountants. Tax happens automatically on every transfer." },
+      { metric: "Zero Loopholes", description: "Can't lobby a smart contract. Can't offshore a protocol. The tax is unavoidable because it's the protocol." },
+    ],
     stats: [
       {
         value: "83,000",
@@ -142,13 +180,24 @@ function _update(address from, address to, uint256 value) internal override {
       "83,000 people interpreting 74,000 pages to do what six lines of code does automatically. And you wonder where your taxes go.",
     cardColor: "cyan",
   },
-  {
+  dssa: {
     id: "dssa",
-    dName: "dSSA",
+    dName: "Universal Security Administration",
     replaces: ["ssa"],
     replacesAgencyName: "Social Security Administration + Welfare Bureaucracy",
-    tagline:
+    description:
       "You spend more administering help than you spend helping. That's not a safety net — that's a jobs programme for administrators.",
+    tagline: "UBI replaces 83 welfare programs with one for-loop",
+    deprecatedMetrics: [
+      { metric: "Means-Testing Accuracy", description: "Optimizing for 'did we correctly decide who deserves to eat' instead of just feeding everyone." },
+      { metric: "Fraud Prevention Rate", description: "Spending more catching the 1.5% who cheat than it would cost to just give everyone the money." },
+      { metric: "Caseworker Employment", description: "80+ overlapping programs, each with its own bureaucracy, each justifying its own existence." },
+    ],
+    optimalMetrics: [
+      { metric: "Poverty Rate", description: "One number. Is it going down? Good. Is it zero? Done." },
+      { metric: "Zero Humans Falling Through Cracks", description: "UBI via World ID. If you're human, you qualify. No applications, no wait, no committee deciding if you deserve lunch." },
+      { metric: "Admin Cost as % of Disbursement", description: "Current system: up to 50% overhead. UBI for-loop: ~0%." },
+    ],
     stats: [
       {
         value: "$1.1T",
@@ -197,13 +246,24 @@ function distributeUBI() external {                             // Anyone can ca
       "You spend more money deciding who deserves help than you spend helping them. That's not a safety net. That's a jobs programme for form designers.",
     cardColor: "yellow",
   },
-  {
+  dfec: {
     id: "dfec",
-    dName: "dFEC",
+    dName: "Aligned Election Commission",
     replaces: ["fec"],
     replacesAgencyName: "Federal Election Commission + Campaign Finance System",
-    tagline:
+    description:
       "Your politicians are funded by the people they're supposed to regulate. You call this 'campaign finance.' I call it 'bribery with extra steps.'",
+    tagline: "Politicians funded by alignment score, not donor checks",
+    deprecatedMetrics: [
+      { metric: "Donor Access Preserved", description: "0.01% of the population provides the majority of campaign funds. The FEC's job is to make sure this stays legal." },
+      { metric: "Incumbent Re-Election Rate", description: "94% of incumbents win. The campaign finance system is an incumbent protection racket that files paperwork." },
+      { metric: "Dark Money Facilitated", description: "67% increase in undisclosed spending since Citizens United. The FEC has 6 commissioners and they deadlock on purpose." },
+    ],
+    optimalMetrics: [
+      { metric: "Citizen-Politician Alignment Score", description: "One number per politician: how closely do their votes match what citizens actually want? Public. Immutable. Updated in real-time." },
+      { metric: "Policy Outcomes vs Citizen Preferences", description: "Did the things people voted for actually happen? And did outcomes improve?" },
+      { metric: "Campaign Funding Proportional to Alignment", description: "Represent citizens well → get funded. Represent donors well → get nothing." },
+    ],
     stats: [
       {
         value: "$4.7B",
@@ -255,13 +315,24 @@ function allocate(bytes32 jurisdiction, bytes32[] leaves,
       "Your politicians are funded by the people they're supposed to regulate. You call this 'campaign finance.' I call it 'bribery with extra steps.'",
     cardColor: "green",
   },
-  {
+  dgao: {
     id: "dgao",
-    dName: "dGAO",
+    dName: "Decentralized Accountability Office",
     replaces: ["gao"],
     replacesAgencyName: "Government Accountability Office",
-    tagline:
+    description:
       "You pay 3,400 humans to audit a ledger that could audit itself. Then you wait eighteen months for the results.",
+    tagline: "Every fund flow on IPFS — impossible to quietly delete",
+    deprecatedMetrics: [
+      { metric: "Reports Published", description: "900+ reports/year. Impressive output. 33% of recommendations are ignored. Impressive futility." },
+      { metric: "Audit Cycle Time", description: "18 months from start to published report. By then the money is spent, the people are gone, and the next scandal has started." },
+      { metric: "Sampling Coverage", description: "Can only audit a fraction of government spending. The rest is trusted on faith. Which is how you get $35 trillion in debt." },
+    ],
+    optimalMetrics: [
+      { metric: "Real-Time Transaction Visibility", description: "Every government transaction visible in seconds, not 18 months. On IPFS. Immutable." },
+      { metric: "Zero Ability to Hide Spending", description: "When the ledger is public, there's nothing to audit. The transparency IS the accountability." },
+      { metric: "100% Coverage", description: "Every transaction, not a sample. Every department, not a rotation. Always, not periodically." },
+    ],
     stats: [
       {
         value: "3,400",
@@ -311,13 +382,24 @@ function allocate(bytes32 jurisdiction, bytes32[] leaves,
       "You pay 3,400 humans $803 million a year to audit a ledger. My ledger audits itself. It's called a blockchain. You invented it and then didn't use it. My planet banned this as performance art in year six.",
     cardColor: "cyan",
   },
-  {
+  dcbo: {
     id: "dcbo",
-    dName: "dCBO",
+    dName: "Optimal Policy Generator",
     replaces: ["cbo"],
     replacesAgencyName: "Congressional Budget Office",
-    tagline:
+    description:
       "275 humans spend months guessing what a bill will cost. The algorithm does it in 200 milliseconds and shows its work.",
+    tagline: "Grade every policy A–F by what actually happened",
+    deprecatedMetrics: [
+      { metric: "Bills Scored per Session", description: "Throughput of a process that takes 2-4 months per bill. By the time it's scored, the political moment has passed." },
+      { metric: "Political Neutrality Perception", description: "The CBO is 'nonpartisan' in the same way a referee is neutral — everyone screams at them and the rules keep changing." },
+      { metric: "Forecast Accuracy (Low)", description: "CBO deficit projections are routinely off by hundreds of billions. The 10-year forecast is astrology with spreadsheets." },
+    ],
+    optimalMetrics: [
+      { metric: "Policy Grade Accuracy (A–F)", description: "Every policy graded by what actually happened when someone tried it. Cross-country causal inference, not projection." },
+      { metric: "Evidence Quality Score", description: "Weighted by study rigor, precision, and recency. Shows its work. Can't be lobbied." },
+      { metric: "Time to Score: Milliseconds", description: "200ms, not 4 months. The algorithm doesn't need to convene a meeting." },
+    ],
     stats: [
       {
         value: "275",
@@ -369,13 +451,24 @@ export function calculateWES(estimates: EffectEstimate[]): WESCalculationResult 
       "275 humans spend months guessing what a bill will cost. The algorithm does it in 200 milliseconds and shows its work. But sure, let the humans keep guessing.",
     cardColor: "yellow",
   },
-  {
+  domb: {
     id: "domb",
-    dName: "dOMB",
+    dName: "Optimal Budget Generator",
     replaces: ["omb"],
     replacesAgencyName: "Office of Management and Budget",
-    tagline:
+    description:
       "535 politicians decide how to spend $6.8 trillion. None of them asked you. The eigenvector asks everyone.",
+    tagline: "Find the cheapest high performer per budget category",
+    deprecatedMetrics: [
+      { metric: "Presidential Budget Proposal Completion", description: "500 staff spend a year writing a document that Congress ignores. The budget is decided by horse-trading, not analysis." },
+      { metric: "Political Alignment of Allocations", description: "Money flows to districts of powerful committee chairs, not to where it produces the most welfare per dollar." },
+      { metric: "Zero Citizens Consulted", description: "535 politicians decide how to spend $6.8 trillion. The number of citizens whose preferences are formally measured: zero." },
+    ],
+    optimalMetrics: [
+      { metric: "Citizen Preference Satisfaction", description: "8 billion pairwise comparisons aggregated by eigenvector. The budget reflects what people actually want, not what lobbyists negotiated." },
+      { metric: "Welfare per Dollar (Diminishing Returns)", description: "Each category funded to the point where the next dollar stops helping. Your government has never modelled diminishing returns." },
+      { metric: "Cross-Country Efficiency Benchmarking", description: "Singapore spends $3K/person on healthcare and lives to 84. America spends $12K and lives to 78. The algorithm notices." },
+    ],
     stats: [
       {
         value: "~500",
@@ -427,13 +520,24 @@ function updateWeights(
       "535 politicians decide how to spend $6.8 trillion. None of them asked you. The eigenvector asks everyone and costs nothing.",
     cardColor: "pink",
   },
-  {
+  dcensus: {
     id: "dcensus",
-    dName: "dCensus",
+    dName: "Decentralized Census Bureau",
     replaces: ["census"],
     replacesAgencyName: "United States Census Bureau",
-    tagline:
+    description:
       "You spend fourteen billion dollars to count everyone once every ten years. I return citizenCount() in fifty milliseconds.",
+    tagline: "citizenCount() returns in 50ms — no $14B survey needed",
+    deprecatedMetrics: [
+      { metric: "Decennial Headcount Accuracy", description: "One count, every 10 years. Your entire congressional apportionment is based on data that's already 5 years stale on average." },
+      { metric: "Survey Response Rate", description: "Declining every decade. The 2020 Census cost $14.2B and still missed ~5% of the population — disproportionately the poorest." },
+      { metric: "Processing Time (8 Months)", description: "Data collection to published results: 8 months. By the time you see the data, it's already wrong." },
+    ],
+    optimalMetrics: [
+      { metric: "Real-Time Population Count", description: "citizenCount() returns in 50ms. Updated the instant someone registers. Always current." },
+      { metric: "Zero Undercount", description: "Registration is incentivized by UBI — if you want your monthly payment, you register. The hardest-to-reach populations have the strongest incentive." },
+      { metric: "Continuous Demographic Data", description: "Census data isn't collected once a decade — it's a live stream. Policy decisions use this-morning's data, not last-decade's." },
+    ],
     stats: [
       {
         value: "$14.2B",
@@ -480,13 +584,26 @@ function citizenCount() external view returns (uint256) {
       "You spend fourteen billion dollars to count everyone once every ten years. I return citizenCount() in fifty milliseconds. Every time someone asks.",
     cardColor: "green",
   },
-  {
+  dih: {
     id: "dih",
-    dName: "dIH",
+    dName: "Optimal Institutes of Health",
     replaces: ["nih", "fda", "hhs", "dea", "va"],
-    replacesAgencyName: "National Institutes of Health",
-    tagline:
+    replacesAgencyName: "National Institutes of Health + FDA",
+    description:
       "You spend $47 billion a year on medical research and 3.3% of it funds actual trials. The rest funds grant proposals about trials. It's like buying 4.7 million cars and spending $1 on a mechanic.",
+    tagline: "97% clinical trials, 3% overhead — the exact mirror of your NIH",
+    deprecatedMetrics: [
+      { metric: "Papers Published", description: "The NIH optimizes for publications, not patients. Scientists spend 50-67% of their time writing grant proposals instead of doing science." },
+      { metric: "Grant Renewal Rate", description: "The incentive is to produce preliminary results that justify the next grant, not to produce cures. Cures end funding." },
+      { metric: "Career Risk Minimization (FDA)", description: "Approving a drug that harms 100 people = career over. Delaying a drug that could save 100,000 = nobody notices. The FDA optimizes for the first risk, not the second." },
+      { metric: "Pharma Profit Margins (FDA)", description: "8.2 years of exclusivity after safety is proven. Not because it takes that long — because the delay IS the business model." },
+    ],
+    optimalMetrics: [
+      { metric: "Patients in Clinical Trials", description: "97% of budget on pragmatic trials, 3% on overhead. The exact mirror of the NIH. 30x more patients, 30x more data, 30x more cures." },
+      { metric: "Median Healthy Life Expectancy (HALE)", description: "The only number that matters. Are people living longer without disease? Everything else is overhead." },
+      { metric: "Cost per DALY Averted", description: "$0.84 per DALY averted with pragmatic trials. Traditional system: ~$50,000. A 60,000x efficiency gap." },
+      { metric: "Time from Safety Proof to Patient Access", description: "Zero years. If it's proven safe, patients can access it. No 8.2-year queue while people die waiting." },
+    ],
     stats: [
       {
         value: "$47B",
@@ -538,13 +655,24 @@ function allocateSubsidy(patient) {
       "Your scientists spend half their lives writing essays about why they should be allowed to try curing diseases. Then a committee spends forty minutes rejecting them. You spend $47 billion a year on this. 3.3% of it touches a patient. On my planet, we cured disease in year 340. We did not have grant committees.",
     cardColor: "cyan",
   },
-  {
+  ddod: {
     id: "ddod",
-    dName: "dDoD",
+    dName: "Department of Peace",
     replaces: ["dod", "tsa", "state"],
     replacesAgencyName: "Department of Defense (née Department of War)",
-    tagline:
+    description:
       "War is a negative-sum game and the spreadsheet agrees. We don't have a Department of War because — and I want to be precise here — war is fucking stupid.",
+    tagline: "We don't have one",
+    deprecatedMetrics: [
+      { metric: "Defense Contractor Revenue", description: "$886B/year in US military spending. The top 5 contractors made $196B in 2023. Peace is bad for business." },
+      { metric: "Geopolitical Influence", description: "800+ military bases in 80+ countries. The metric is 'presence' not 'outcome.' Nobody measures whether any of this makes anyone safer." },
+      { metric: "Jobs in Congressional Districts", description: "The F-35 has parts made in 45 states. Not because it needs them — because that makes it impossible to cancel. The plane is a jobs program that occasionally flies." },
+    ],
+    optimalMetrics: [
+      { metric: "Years Without Armed Conflict", description: "On Wishonia: 4,225 consecutive years. On Earth: 0. At no point in recorded history." },
+      { metric: "Human Lives Not Ended", description: "4.5 million post-WWII deaths from US operations alone. The optimal number is zero." },
+      { metric: "Resources Redirected to Health", description: "604:1 military-to-clinical-trial ratio. Redirect 1% and you fund the entire dFDA. Redirect 10% and you cure most diseases within a decade." },
+    ],
     stats: [
       {
         value: "$2.72T",
@@ -590,12 +718,133 @@ function allocateSubsidy(patient) {
       "In 1947 they renamed the Department of War to the Department of Defense. The wars did not become more defensive. They just sounded nicer. Since the rebrand: 13+ wars, 0 defensive.",
     cardColor: "pink",
   },
-];
 
-const wishoniaAgencyMap = new Map(WISHONIA_AGENCIES.map(a => [a.id, a]));
+  dcongress: {
+    id: "dcongress",
+    dName: "Open Congress",
+    replaces: ["congress"],
+    replacesAgencyName: "United States Congress",
+    description:
+      "Every citizen votes on the budget. Takes two minutes. Your Congress takes two years and still gets it wrong.",
+    tagline: "Every citizen votes on the budget — takes two minutes",
+    deprecatedMetrics: [
+      { metric: "Bills Passed per Session", description: "Quantity of legislation, not quality of outcomes. A Congress that passes 300 bad laws is rated higher than one that passes 10 good ones." },
+      { metric: "Re-Election Rate", description: "94% of incumbents win. The system optimizes for keeping its current occupants employed, not for producing good governance." },
+      { metric: "Donor Satisfaction", description: "Campaign donors get 760% ROI on lobbying investments. Citizens get a 'thank you for your input' form letter." },
+    ],
+    optimalMetrics: [
+      { metric: "Citizen Preference Alignment", description: "Does the budget match what 8 billion people actually want? Measured by Wishocratic pairwise comparison, not by what 535 people horse-traded." },
+      { metric: "Welfare Outcome per Dollar", description: "Did the money produce more health, more income, less suffering? The only scorecard that matters." },
+    ],
+    stats: [
+      { value: "535", label: "Members", description: "Humans deciding a $6.8T budget with no formal preference measurement", color: "pink" },
+      { value: "94%", label: "Incumbency Rate", description: "Re-election rate for sitting members of Congress", color: "yellow" },
+      { value: "~20%", label: "Approval Rating", description: "Public approval of Congress — lowest of any institution", color: "cyan" },
+    ],
+    codeHeader: "535 politicians horse-trading → 8 billion citizens tapping",
+    replacementCode: `// Wishocracy — replaces Congressional budget allocation
+// Citizens do ~10 pairwise comparisons ("education or defense?")
+// Eigenvector decomposition produces stable budget weights
+// See: WishocraticTreasury.updateWeights()`,
+    codeLanguage: "solidity",
+    codeExplanation:
+      "Each citizen makes ~10 pairwise comparisons between budget priorities. Eigenvector aggregation produces a stable allocation that reflects the preferences of everyone who participated — not just the 535 who got elected.",
+    annualSavings: "$0",
+    savingsComparison:
+      "The value isn't cost savings — it's $6.8 trillion in federal spending allocated by citizen preferences instead of donor preferences.",
+    wishoniaQuote:
+      "You elect 535 humans, send them to a building, and then act surprised when they do what their donors want instead of what you want. The system is working exactly as designed. Just not for you.",
+    cardColor: "yellow",
+  },
 
+  dtreasury: {
+    id: "dtreasury",
+    dName: "Automated Treasury",
+    replaces: ["treasury", "irs", "fed", "ssa"],
+    replacesAgencyName: "Treasury + IRS + Federal Reserve + Social Security",
+    description:
+      "0.5% transaction tax, UBI, and Wishocratic allocation — in one currency. Your seventy-four-thousand-page tax code is not invited.",
+    tagline: "One currency, one tax, one safety net — no tax code required",
+    deprecatedMetrics: [
+      { metric: "Tax Revenue Collected", description: "The current system spends $546B/year in compliance costs to collect taxes. The overhead is the product." },
+      { metric: "Inflation Target Met", description: "The Fed targets 2% annual theft from every paycheck and calls it 'price stability.'" },
+      { metric: "Welfare Fraud Prevented", description: "Spending more catching the 1.5% who cheat than it would cost to just give everyone the money." },
+    ],
+    optimalMetrics: [
+      { metric: "Revenue per Dollar of Overhead", description: "0.5% automatic transaction tax: same revenue, ~0% administrative cost." },
+      { metric: "Poverty Rate", description: "UBI keeps everyone above the poverty line. No applications, no caseworkers, no cracks to fall through." },
+      { metric: "Purchasing Power Stability", description: "0% inflation. Your money buys more over time, not less." },
+    ],
+    stats: [
+      { value: "74,000", label: "Tax Code Pages", description: "Pages of Internal Revenue Code and regulations", color: "pink" },
+      { value: "$546B", label: "Compliance Cost", description: "Annual cost of tax compliance in the US", color: "yellow" },
+      { value: "80+", label: "Welfare Programs", description: "Overlapping federal means-tested welfare programs", color: "cyan" },
+    ],
+    codeHeader: "Four agencies → one token contract",
+    replacementCode: `// WishToken.sol handles all four functions:
+// 1. Currency (ERC-20 token)
+// 2. Tax (0.5% on every transfer → treasury)
+// 3. Monetary policy (fixed supply, 0% inflation)
+// 4. Welfare (UBI distribution to all verified citizens)
+// See: WishToken.sol, UBIDistributor.sol, WishocraticTreasury.sol`,
+    codeLanguage: "solidity",
+    codeExplanation:
+      "A single token contract replaces four government agencies. The 0.5% transaction tax replaces the IRS. Fixed supply replaces the Fed. UBI distribution replaces welfare. Wishocratic allocation replaces Congressional budgeting.",
+    annualSavings: "$758B+",
+    savingsComparison:
+      "IRS compliance ($546B) + welfare admin overhead ($212B+) eliminated. Plus: 96% of purchasing power no longer stolen by inflation.",
+    wishoniaQuote:
+      "You have four agencies, 74,000 pages of rules, 83,000 employees, and 80 welfare programs — all doing what one smart contract does in six lines. And you wonder where your taxes go.",
+    cardColor: "pink",
+  },
+
+  dfda: {
+    id: "dfda",
+    dName: "Decentralized FDA",
+    replaces: ["fda"],
+    replacesAgencyName: "Food and Drug Administration",
+    description:
+      "Your FDA makes treatments wait 8.2 years AFTER they've been proven safe. Just sitting there. Being safe. While people die. This replaces the queue with maths.",
+    tagline: "Real-time Outcome Labels & Treatment Rankings",
+    deprecatedMetrics: [
+      { metric: "Approval Queue Length", description: "8.2 years from safety proof to patient access. The delay IS the business model — it protects pharma exclusivity, not patients." },
+      { metric: "Career Risk Minimization", description: "Approving a drug that harms 100 = career over. Blocking a drug that could save 100,000 = nobody notices. The FDA optimizes for the first." },
+      { metric: "Regulatory Fee Revenue", description: "75% of drug review costs are paid by the companies being reviewed. The regulator is funded by the regulated." },
+    ],
+    optimalMetrics: [
+      { metric: "Time from Safety Proof to Patient Access", description: "Zero. If it's proven safe, patients can access it immediately." },
+      { metric: "Real-Time Outcome Labels", description: "Every treatment gets a continuously-updated label showing effectiveness, side effects, and optimal dosage from real-world data." },
+      { metric: "Treatment Rankings by Condition", description: "For any condition, see all treatments ranked by effectiveness, safety, and confidence — updated in real-time." },
+    ],
+    stats: [
+      { value: "8.2 yrs", label: "Efficacy Lag", description: "Average delay from safety proof to FDA approval", color: "pink" },
+      { value: "102M", label: "Deaths in Queue", description: "Estimated deaths waiting for treatments already proven safe", color: "pink" },
+      { value: "$2.6B", label: "Cost per Drug", description: "Average cost to bring one drug to market through the FDA process", color: "yellow" },
+    ],
+    codeHeader: "8.2-year queue → real-time outcome data",
+    replacementCode: `// The dFDA replaces the approval queue with continuous evidence:
+// Stage 1: Real-world evidence from existing data ($1/patient)
+// Stage 2: Pragmatic trials in routine care ($929/patient)
+// Every treatment gets an Outcome Label — updated in real-time
+// See: dfda.earth for the full specification`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "Instead of a binary approve/reject gate, treatments get continuously-updated Outcome Labels showing what actually happens when real humans take them. Doctors and patients see effectiveness, side effects, and confidence levels — from millions of data points, not a single trial of 200 people.",
+    annualSavings: "$0",
+    savingsComparison:
+      "The value is measured in lives, not dollars. 102 million people died waiting for treatments that were already proven safe.",
+    wishoniaQuote:
+      "Your FDA has two speeds: 'not yet' and 'too late.' The queue exists because a bureaucrat who approves a drug that hurts 100 people gets fired, but a bureaucrat who blocks a drug that could save 100,000 gets promoted. The incentives are perfect — for killing people slowly.",
+    cardColor: "cyan",
+  },
+} satisfies Record<string, WishoniaAgency>;
+
+/** Backwards-compatible array (derived from AGENCIES record). */
+export const WISHONIA_AGENCIES: WishoniaAgency[] = Object.values(AGENCIES);
+
+/** Look up an agency by ID. Use `AGENCIES.dfed` for known IDs instead. */
 export function getWishoniaAgency(id: string): WishoniaAgency | undefined {
-  return wishoniaAgencyMap.get(id);
+  return (AGENCIES as Record<string, WishoniaAgency>)[id];
 }
 
 export function getWishoniaAgencies(): WishoniaAgency[] {

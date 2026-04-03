@@ -8,6 +8,7 @@ import {
   PRIZE_POOL_HORIZON_MULTIPLE,
   VICTORY_BOND_ANNUAL_RETURN_PCT,
 } from "@optimitron/data/parameters";
+import { AGENCIES } from "@optimitron/data";
 // Precompute for descriptions (same pattern as demo-script.ts)
 const costReduction = Math.round(DFDA_TRIAL_COST_REDUCTION_FACTOR.value);
 const speedup = Math.round(DFDA_COMBINED_TREATMENT_SPEEDUP_MULTIPLIER.value);
@@ -72,6 +73,8 @@ export interface NavItem {
   label: string;
   emoji: string;
   description: string;
+  /** One-liner for compact UIs (slides, tool grids, card subtitles). */
+  tagline?: string;
   cta: string;
   external?: boolean;
   matchPrefixes?: string[];
@@ -112,43 +115,48 @@ export function isNavItemActive(pathname: string, item: NavItem): boolean {
 
 export const opgLink: NavItem = {
   href: ROUTES.opg,
-  label: "Optimal Policy Generator",
+  label: AGENCIES.dcbo.dName,
   emoji: "📋",
-  description: "Every policy ranked by whether it actually works. Causal inference on decades of data across dozens of countries. Most of your policies fail.",
+  description: AGENCIES.dcbo.description,
+  tagline: AGENCIES.dcbo.tagline,
   cta: "See Policy Grades",
 };
 
 export const obgLink: NavItem = {
   href: ROUTES.obg,
-  label: "Optimal Budget Generator",
+  label: AGENCIES.domb.dName,
   emoji: "💰",
-  description: "Your government's shopping receipt, annotated by someone who can do maths. More money. Worse outcomes. On every line item.",
+  description: AGENCIES.domb.description,
+  tagline: AGENCIES.domb.tagline,
   cta: "See Budget Analysis",
 };
 
 export const dihLink: NavItem = {
   href: "https://dih.earth",
-  label: "Decentralized Institutes of Health",
+  label: AGENCIES.dih.dName,
   emoji: "🧬",
-  description: `${costReduction}x cheaper clinical trials. ${speedup}x faster treatment discovery. Your NIH spends 97% of its budget on things that aren't clinical trials.`,
+  description: AGENCIES.dih.description,
+  tagline: AGENCIES.dih.tagline,
   external: true,
   cta: "Visit dIH.earth",
 };
 
 export const dfdaLink: NavItem = {
   href: "https://dfda.earth",
-  label: "Decentralized FDA",
+  label: AGENCIES.dfda.dName,
   emoji: "💊",
-  description: `Your FDA makes treatments wait 8.2 years AFTER they've been proven safe. This replaces the queue with maths.`,
+  description: AGENCIES.dfda.description,
+  tagline: AGENCIES.dfda.tagline,
   external: true,
   cta: "Visit dFDA.earth",
 };
 
 export const dtreasuryLink: NavItem = {
   href: ROUTES.dtreasury,
-  label: "Decentralized Treasury",
+  label: AGENCIES.dtreasury.dName,
   emoji: "💸",
-  description: "0.5% transaction tax, UBI, and Wishocratic allocation — in one currency. Your seventy-four-thousand-page tax code is not invited.",
+  description: AGENCIES.dtreasury.description,
+  tagline: AGENCIES.dtreasury.tagline,
   matchPrefixes: [ROUTES.dtreasury],
 
   cta: "Explore Treasury",
@@ -156,36 +164,40 @@ export const dtreasuryLink: NavItem = {
 
 export const federalReserveLink: NavItem = {
   href: ROUTES.dtreasuryDfed,
-  label: "Decentralized Federal Reserve",
+  label: AGENCIES.dfed.dName,
   emoji: "🏦",
-  description: "Your monetary policy is set by 12 humans in a room guessing. On my planet we use an algorithm. It has never once printed money to buy murder machines.",
+  description: AGENCIES.dfed.description,
+  tagline: AGENCIES.dfed.tagline,
 
   cta: "Learn More",
 };
 
 export const dirsLink: NavItem = {
   href: ROUTES.dtreasuryDirs,
-  label: "Decentralized IRS",
+  label: AGENCIES.dirs.dName,
   emoji: "🏦",
-  description: "74,000 pages of tax code replaced by 6 lines of Solidity. Your species invented an entire profession called 'accountant' to decode the rules you wrote for yourselves. Remarkable.",
+  description: AGENCIES.dirs.description,
+  tagline: AGENCIES.dirs.tagline,
 
   cta: "Learn More",
 };
 
 export const dssaLink: NavItem = {
   href: ROUTES.dtreasuryDssa,
-  label: "Decentralized Welfare",
+  label: AGENCIES.dssa.dName,
   emoji: "🍞",
-  description: "Eighty-plus welfare programs replaced by one for-loop. You currently pay humans to sit in offices deciding which other humans deserve to eat. On my planet we skip that step.",
+  description: AGENCIES.dssa.description,
+  tagline: AGENCIES.dssa.tagline,
 
   cta: "Learn More",
 };
 
 export const departmentOfWarLink: NavItem = {
   href: ROUTES.ddod,
-  label: "Decentralized Defense",
+  label: AGENCIES.ddod.dName,
   emoji: "💀",
-  description: "We don't have one. War is a negative-sum game and the spreadsheet agrees.",
+  description: AGENCIES.ddod.description,
+  tagline: AGENCIES.ddod.tagline,
 
   cta: "Learn More",
 };
@@ -195,6 +207,7 @@ export const referendumLink: NavItem = {
   label: "Referendums",
   emoji: "🗳️",
   description: "Vote on things that matter. Prove you're human. Skip the middleman who was going to ignore you anyway.",
+  tagline: "Vote on things that matter — skip the middleman",
   matchPrefixes: [ROUTES.referendum],
 
   cta: "Vote Now",
@@ -205,6 +218,7 @@ export const agenciesLink: NavItem = {
   label: "Optimized Governance",
   emoji: "🏛️",
   description: "Ten agencies running a civilisation. No bureaucracy, no corruption, no seventy-four-thousand-page tax code. Just code.",
+  tagline: "Nine agencies. No bureaucracy. Just code.",
   matchPrefixes: [ROUTES.agencies],
 
   cta: "See All Agencies",
@@ -227,6 +241,7 @@ export const wishocracyLink: NavItem = {
   label: "Wishocracy",
   emoji: "🗳️",
   description: "Pick between two things. Do it ten times. Congratulations, you've just outperformed Congress.",
+  tagline: "Pick between two things, ten times — outperform Congress",
   cta: "Start Voting",
 };
 
@@ -235,6 +250,7 @@ export const alignmentLink: NavItem = {
   label: "Alignment",
   emoji: "🏛️",
   description: "Find out which politicians accidentally agree with you. Spoiler: fewer than you'd hope.",
+  tagline: "Find out which politicians accidentally agree with you",
   cta: "Check Alignment",
 };
 
@@ -243,6 +259,7 @@ export const transmitLink: NavItem = {
   label: "Transmit",
   emoji: "📡",
   description: "Tell me what you ate, how you slept, and whether your meat is functioning. Thirty seconds. Your species spends longer choosing a sandwich.",
+  tagline: "Thirty seconds — what you ate, how you slept, how you feel",
 
   cta: "Start Tracking",
 };
@@ -252,6 +269,7 @@ export const wishoniaWorldLink: NavItem = {
   label: "Wishonia",
   emoji: "🌍",
   description: "A planet that ended war in year 12 and disease in year 340. This is what 4,297 years of not being idiots looks like.",
+  tagline: "4,297 years of not being idiots",
 
   cta: "Visit Wishonia",
 };
@@ -261,6 +279,7 @@ export const moroniaLink: NavItem = {
   label: "Moronia",
   emoji: "💀",
   description: `A planet with a 94.7% correlation to yours. It spent ${milToTrialRatio}x more on weapons than cures. It no longer exists.`,
+  tagline: "A planet like yours — it no longer exists",
   cta: "See Moronia",
 };
 
@@ -269,6 +288,7 @@ export const dashboardLink: NavItem = {
   label: "Dashboard",
   emoji: "📊",
   description: "Your referral link, your rank, and proof you did something other than argue about it on the internet. The rare human achievement of clicking a button.",
+  tagline: "Your referral link, your rank, your progress",
 
   cta: "Open Dashboard",
 };
@@ -278,6 +298,7 @@ export const profileLink: NavItem = {
   label: "Profile",
   emoji: "🧭",
   description: "Your name, your face, your connected accounts. On my planet this takes four seconds. Your species will somehow need twenty minutes and a password reset.",
+  tagline: "Your name, your face, your connected accounts",
 
   cta: "View Profile",
 };
@@ -287,6 +308,7 @@ export const censusLink: NavItem = {
   label: "Census",
   emoji: "📋",
   description: "Location, income, demographics. Without this you are a rounding error. With it you are a data point. On your planet this counts as a promotion.",
+  tagline: "Location, income, demographics — become a data point",
 
   cta: "Take Census",
 };
@@ -296,6 +318,7 @@ export const checkInLink: NavItem = {
   label: "Check-In",
   emoji: "☀️",
   description: "Thirty seconds a day to tell me if you're alive and thriving. On my planet we call this 'minimum viable self-awareness.'",
+  tagline: "Thirty seconds a day of minimum viable self-awareness",
 
   cta: "Check In",
 };
@@ -305,15 +328,17 @@ export const settingsLink: NavItem = {
   label: "Settings",
   emoji: "⚙️",
   description: "Notification preferences, account toggles, and other knobs your species inexplicably needs labelled.",
+  tagline: "Notification preferences and account toggles",
 
   cta: "Open Settings",
 };
 
 export const transparencyLink: NavItem = {
   href: ROUTES.dgao,
-  label: "Decentralized Accountability",
+  label: AGENCIES.dgao.dName,
   emoji: "🔍",
-  description: "Every attestation, every fund flow — on IPFS, impossible to quietly delete. Your governments call their version 'transparency' and then redact it. We don't have a word for redact.",
+  description: AGENCIES.dgao.description,
+  tagline: AGENCIES.dgao.tagline,
   matchPrefixes: [ROUTES.dgao],
 
   cta: "View Audit",
@@ -324,6 +349,7 @@ export const toolsLink: NavItem = {
   label: "Tools",
   emoji: "🧰",
   description: "Eighteen weapons for fixing civilisation. All free. Your move.",
+  tagline: "Every tool for fixing civilisation — all free",
   matchPrefixes: [ROUTES.tools],
 
   cta: "Open Armory",
@@ -334,6 +360,7 @@ export const governmentsLink: NavItem = {
   label: "Government Report Cards",
   emoji: "💀",
   description: "Every government ranked by how many of its citizens it keeps alive versus how many it spends money on killing. The data they hope you never see.",
+  tagline: "Every government ranked by who it keeps alive",
   matchPrefixes: [ROUTES.governments],
 
   cta: "See Report Cards",
@@ -345,6 +372,7 @@ export const politicianLeaderboardLink: NavItem = {
   label: "Politician Leaderboard",
   emoji: "🏛️",
   description: "How your representatives actually vote versus what you actually want. A single number per politician. Public. Immutable. They hate this page.",
+  tagline: "How your representatives actually vote vs what you want",
   matchPrefixes: [ROUTES.politicians, "/governments"],
 
   cta: "See Rankings",
@@ -355,6 +383,7 @@ export const scoreboardLink: NavItem = {
   label: "Humanity's Scoreboard",
   emoji: "🕹️",
   description: "Two numbers: how long you live without disease and how much a normal person earns. Not GDP. Not billionaire wealth. The median. Everything else on this site exists to move these two numbers up.",
+  tagline: "Two numbers: disease-free lifespan and median income",
   matchPrefixes: [ROUTES.scoreboard],
 
   cta: "View Scoreboard",
@@ -365,6 +394,7 @@ export const iabLink: NavItem = {
   label: "Incentive Alignment Bonds",
   emoji: "🤝",
   description: `Learn about aligning politicians with humanity. Projected ${bondReturn}/year returns if treaty passes. Lobbying, but it cures diseases instead of causing them.`,
+  tagline: "Lobbying, but it cures diseases instead of causing them",
   cta: "Learn More",
 };
 
@@ -373,6 +403,7 @@ export const prizeLink: NavItem = {
   label: "Prize",
   emoji: "🏆",
   description: `A dominant assurance game with projected ${poolMultiple} return if thresholds are missed. Currently seeking a foundation host.`,
+  tagline: "Deposit, recruit, win or get ~4.2x back",
   cta: "Play the Game",
 };
 
@@ -391,6 +422,7 @@ export const aboutLink: NavItem = {
   label: "About",
   emoji: "ℹ️",
   description: "What this is, why it exists, and why an alien had to build it because your species wouldn't.",
+  tagline: "What this is, why it exists, and why an alien built it",
 
   cta: "Learn More",
 };
@@ -400,6 +432,7 @@ export const demoLink: NavItem = {
   label: "Demo",
   emoji: "🎬",
   description: "A guided tour by an alien who's been running a planet for 4,237 years. She has notes.",
+  tagline: "A guided tour by a 4,237-year-old governance AI",
   matchPrefixes: [ROUTES.demo],
 
   cta: "Watch Demo",
@@ -410,6 +443,7 @@ export const videoLink: NavItem = {
   label: "Video",
   emoji: "📺",
   description: "Your governments spend 604 dollars on weapons for every one dollar on curing disease. I fixed this on my planet. Here is how you fix it on yours.",
+  tagline: "$604 on weapons per $1 on cures — here's the fix",
 
   cta: "Watch Video",
 };
@@ -419,6 +453,7 @@ export const contributeLink: NavItem = {
   label: "Contribute",
   emoji: "🤝",
   description: "How to help. The bar is on the floor and your species still trips over it.",
+  tagline: "How to help — the bar is on the floor",
 
   cta: "Contribute",
 };
@@ -434,6 +469,16 @@ export const navSections: NavSection[] = [
   { id: "optimized-gov", label: "Optimized Governance", items: [dtreasuryLink, opgLink, obgLink, transparencyLink, dihLink, dfdaLink, agenciesLink, departmentOfWarLink] },
   { id: "earth", label: "Earth", items: [governmentsLink, politicianLeaderboardLink, opgLink] },
   { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink] },
+];
+
+/** Sections for the /tools page — every tool grouped by purpose */
+export const toolSections: NavSection[] = [
+  { id: "analysis", label: "Analysis", items: [opgLink, obgLink, governmentsLink, politicianLeaderboardLink, scoreboardLink] },
+  { id: "health", label: "Health", items: [dihLink, dfdaLink] },
+  { id: "democracy", label: "Democracy", items: [wishocracyLink, alignmentLink, referendumLink] },
+  { id: "finance", label: "Finance", items: [prizeLink, iabLink, dtreasuryLink, federalReserveLink, dirsLink, dssaLink] },
+  { id: "transparency", label: "Transparency", items: [transparencyLink] },
+  { id: "player", label: "Player", items: [transmitLink, dashboardLink, censusLink, checkInLink] },
 ];
 
 /** Footer-only internal links */

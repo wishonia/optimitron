@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { WishoniaAgencyPage } from "@/components/wishonia-agency/WishoniaAgencyPage";
-import { getWishoniaAgency } from "@optimitron/data";
+import { AGENCIES } from "@optimitron/data";
 import {
   fmtParam,
   CUMULATIVE_MILITARY_SPENDING_FED_ERA,
@@ -11,7 +11,7 @@ import { getRouteMetadata } from "@/lib/metadata";
 
 export const metadata = getRouteMetadata(federalReserveLink);
 
-const agency = getWishoniaAgency("dfed")!;
+const agency = AGENCIES.dfed;
 
 const historicalCycles = [
   {

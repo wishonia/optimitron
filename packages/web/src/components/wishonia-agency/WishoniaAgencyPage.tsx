@@ -21,7 +21,7 @@ export function WishoniaAgencyPage({
         <AgencyStampHero
           agencyName={agency.replacesAgencyName}
           dName={agency.dName}
-          tagline={agency.tagline}
+          tagline={agency.description}
         />
 
         {/* What They Cost You */}

@@ -2,6 +2,16 @@
 
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { useEffect, useState } from "react";
+import {
+  dfdaLink,
+  opgLink,
+  obgLink,
+  wishocracyLink,
+  iabLink,
+  federalReserveLink,
+  dirsLink,
+  dssaLink,
+} from "@/lib/routes";
 
 interface TechItem {
   id: string;
@@ -14,58 +24,58 @@ interface TechItem {
 const technologies: TechItem[] = [
   {
     id: "dfda",
-    name: "Decentralized FDA",
-    icon: "🧬",
-    description: "Real-time Outcome Labels & Treatment Rankings",
+    name: dfdaLink.label,
+    icon: dfdaLink.emoji,
+    description: dfdaLink.tagline!,
     color: "#22c55e",
   },
   {
     id: "opg",
-    name: "Optimal Policy Generator",
-    icon: "📋",
-    description: "Grade every policy A–F by what actually happened",
+    name: opgLink.label,
+    icon: opgLink.emoji,
+    description: opgLink.tagline!,
     color: "#06b6d4",
   },
   {
     id: "obg",
-    name: "Optimal Budget Generator",
-    icon: "💰",
-    description: "Find the cheapest high performer per category",
+    name: obgLink.label,
+    icon: obgLink.emoji,
+    description: obgLink.tagline!,
     color: "#eab308",
   },
   {
     id: "wishocracy",
-    name: "Wishocracy",
-    icon: "🗳️",
-    description: "Pairwise budget allocation — 8 billion preferences, one optimal budget",
+    name: wishocracyLink.label,
+    icon: wishocracyLink.emoji,
+    description: wishocracyLink.tagline!,
     color: "#a855f7",
   },
   {
     id: "iabs",
-    name: "Incentive Alignment Bonds",
-    icon: "📊",
-    description: "Align senator incentives with outcomes",
+    name: iabLink.label,
+    icon: iabLink.emoji,
+    description: iabLink.tagline!,
     color: "#3b82f6",
   },
   {
     id: "dfed",
-    name: "Decentralized Fed",
-    icon: "🏦",
-    description: "0% inflation anchored to productivity — new money via UBI, not banks",
+    name: federalReserveLink.label,
+    icon: federalReserveLink.emoji,
+    description: federalReserveLink.tagline!,
     color: "#f43f5e",
   },
   {
     id: "dirs",
-    name: "Decentralized IRS",
-    icon: "🧾",
-    description: "0.5% transaction tax — four lines of Solidity replace 74,000 pages",
+    name: dirsLink.label,
+    icon: dirsLink.emoji,
+    description: dirsLink.tagline!,
     color: "#f97316",
   },
   {
     id: "dwelfare",
-    name: "Decentralized Welfare",
-    icon: "🤝",
-    description: "UBI replaces $675B in welfare bureaucracy",
+    name: dssaLink.label,
+    icon: dssaLink.emoji,
+    description: dssaLink.tagline!,
     color: "#10b981",
   },
 ];

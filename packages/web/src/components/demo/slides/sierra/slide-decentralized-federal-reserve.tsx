@@ -60,7 +60,7 @@ export function SlideDecentralizedFederalReserve() {
           }`}
         >
           <h1 className="font-pixel text-3xl md:text-5xl text-emerald-400">
-            🏦 A DECENTRALIZED FEDERAL RESERVE
+            🏦 THE ALGORITHMIC RESERVE
           </h1>
         </div>
 

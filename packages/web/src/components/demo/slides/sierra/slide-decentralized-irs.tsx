@@ -7,7 +7,7 @@ export function SlideDecentralizedIrs() {
     <SierraSlideWrapper act={2}>
       <div className="flex flex-col items-center justify-center gap-8 max-w-[1400px] mx-auto">
         <h1 className="font-pixel text-3xl md:text-5xl text-brutal-yellow text-center">
-          📄 A DECENTRALIZED IRS
+          📄 AUTOMATED REVENUE SERVICE
         </h1>
 
         <div className="grid grid-cols-[1fr_auto_1fr] gap-6 w-full items-center">

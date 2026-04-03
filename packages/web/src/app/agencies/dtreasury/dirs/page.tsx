@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { WishoniaAgencyPage } from "@/components/wishonia-agency/WishoniaAgencyPage";
-import { getWishoniaAgency } from "@optimitron/data";
+import { AGENCIES } from "@optimitron/data";
 import { dirsLink, ROUTES } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
 
 export const metadata = getRouteMetadata(dirsLink);
 
-const agency = getWishoniaAgency("dirs")!;
+const agency = AGENCIES.dirs;
 
 const howItWorks = [
   {
