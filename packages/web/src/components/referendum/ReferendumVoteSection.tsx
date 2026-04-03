@@ -7,6 +7,7 @@ import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
 import { useWishPoints } from "@/components/wishes/WishPointProvider";
 import { WorldIdVerificationCard } from "@/components/personhood/WorldIdVerificationCard";
 import { getSignInPath } from "@/lib/routes";
+import { REFERRAL } from "@/lib/messaging";
 import { storage } from "@/lib/storage";
 import { buildReferendumReferralUrl } from "@/lib/url";
 
@@ -128,8 +129,7 @@ export function ReferendumVoteSection({
             Earn Referral Rewards
           </h3>
           <p className="text-sm font-bold text-brutal-yellow-foreground">
-            Verify with World ID below, then share your link. Each verified voter
-            who uses it earns you 1 VOTE point. Link a wallet on your{" "}
+            {REFERRAL.verifyAndEarn} Link a wallet on your{" "}
             <Link
               href="/profile"
               className="font-black text-brutal-pink underline hover:text-brutal-yellow-foreground"

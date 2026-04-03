@@ -11,6 +11,7 @@ import {
   VOTE_TOKEN_VALUE,
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
 } from "@optimitron/data/parameters";
+import { POINTS } from "@/lib/messaging";
 
 /**
  * Game-specific constants that have no matching parameter in @optimitron/data.
@@ -84,8 +85,6 @@ export const SCORE_PROGRESSION = {
 } as const;
 
 // Inventory items collected throughout the demo
-const votePointDisplay = `$${Math.round(VOTE_TOKEN_VALUE.value).toLocaleString()}`;
-
 export const INVENTORY_ITEMS = [
   {
     slot: 1,
@@ -132,8 +131,8 @@ export const INVENTORY_ITEMS = [
     acquiredAt: "vote-point-value",
     icon: "silver-pair",
     emoji: "\u{1F948}",
-    name: "VOTE POINTS \u00D72",
-    tooltip: `${votePointDisplay} each if targets are hit. Earned by getting friends to play.`,
+    name: `${POINTS.toUpperCase()} \u00D72`,
+    tooltip: `Prize pool share if targets are hit. Earned by getting friends to play.`,
   },
   {
     slot: 7,

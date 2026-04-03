@@ -1,4 +1,5 @@
 import { GameCTA } from "@/components/ui/game-cta";
+import { POINT, POINTS, REFERRAL } from "@/lib/messaging";
 import {
   fmtParam,
   PRIZE_POOL_HORIZON_MULTIPLE,
@@ -118,13 +119,13 @@ export default async function ScoreboardPage() {
           </div>
           <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="text-xs font-black uppercase text-muted-foreground">
-              VOTE Points Earned
+              {POINTS} Earned
             </div>
             <div className="mt-2 text-2xl font-black text-brutal-yellow">
               {stats.votePoints.toLocaleString()}
             </div>
             <div className="text-[10px] font-bold text-muted-foreground">
-              1 per verified voter recruited
+              {REFERRAL.earnOneShort}
             </div>
           </div>
           <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
@@ -164,8 +165,8 @@ export default async function ScoreboardPage() {
                 Recruit
               </h3>
               <p className="text-sm font-bold">
-                Share your link. Every human who votes earns you 1 VOTE point.
-                It&apos;s a pyramid scheme where the thing at the top is not
+                Share your link. {REFERRAL.earnOne}
+                It&apos;s a referral chain where the thing at the top is not
                 dying from preventable diseases.
               </p>
             </div>

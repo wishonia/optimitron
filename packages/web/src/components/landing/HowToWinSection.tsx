@@ -7,9 +7,8 @@ import { HumanityScoreboard } from "@/components/shared/HumanityScoreboard";
 import { GovernmentLeaderboard } from "@/components/shared/GovernmentLeaderboard";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { governmentsLink } from "@/lib/routes";
-import { TAGLINES } from "@/lib/messaging";
+import { TAGLINES, POINT } from "@/lib/messaging";
 import {
-  VOTE_TOKEN_VALUE,
   PRIZE_POOL_HORIZON_MULTIPLE,
   GLOBAL_COORDINATION_TARGET_SUPPORTERS,
 } from "@optimitron/data/parameters";
@@ -61,12 +60,7 @@ export function HowToWinSection() {
               If Targets Are Hit
             </h3>
             <p className="text-lg sm:text-xl font-bold text-foreground">
-              VOTE holders get paid. Each point worth{" "}
-              <ParameterValue
-                param={VOTE_TOKEN_VALUE}
-                className="text-brutal-pink font-black"
-              />
-              +. Plus: everyone lives in a world with diseases cured.
+              {POINT} holders get paid from the prize pool. Plus: everyone lives in a world with diseases cured.
             </p>
           </BrutalCard>
 

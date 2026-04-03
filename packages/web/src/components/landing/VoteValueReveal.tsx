@@ -9,7 +9,6 @@ import { ParameterValue } from "@/components/shared/ParameterValue";
 import { CollapseCountdownTimer } from "@/components/animations/CollapseCountdownTimer";
 import { VOTE_VALUE, CTA } from "@/lib/messaging";
 import {
-  VOTE_TOKEN_VALUE,
   PRIZE_POOL_ANNUAL_RETURN,
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   TREATY_HALE_GAIN_YEAR_15,
@@ -20,18 +19,23 @@ export function VoteValueReveal() {
   return (
     <SectionContainer bgColor="pink" borderPosition="bottom" padding="lg">
       <Container>
-        {/* Part A — The Big Number */}
+        {/* Part A — The Stakes */}
         <div className="text-center mb-12">
           <ArcadeTag className="mb-4">{VOTE_VALUE.heading}</ArcadeTag>
-          <div className="text-6xl sm:text-7xl md:text-8xl font-black text-brutal-pink-foreground mb-4">
+          <div className="text-5xl sm:text-6xl md:text-7xl font-black text-brutal-pink-foreground mb-4">
             <ParameterValue
-              param={VOTE_TOKEN_VALUE}
+              param={TREATY_HALE_GAIN_YEAR_15}
               className="text-brutal-pink-foreground"
-            />
-            +
+            />{" "}
+            More Healthy Years
           </div>
           <p className="text-xl sm:text-2xl font-black text-brutal-pink-foreground uppercase mb-4">
-            Per VOTE Point
+            +{" "}
+            <ParameterValue
+              param={TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA}
+              className="text-brutal-pink-foreground"
+            />{" "}
+            Lifetime Income Per Person
           </p>
           <p className="text-base sm:text-lg font-bold text-background max-w-2xl mx-auto">
             {VOTE_VALUE.subheading}

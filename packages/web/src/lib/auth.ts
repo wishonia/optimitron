@@ -115,6 +115,14 @@ if (serverEnv.GOOGLE_CLIENT_ID && serverEnv.GOOGLE_CLIENT_SECRET) {
   );
 }
 
+/** Which sign-in providers are configured for this deployment (env-var based). */
+export function getConfiguredProviders() {
+  return {
+    email: true,
+    google: Boolean(serverEnv.GOOGLE_CLIENT_ID && serverEnv.GOOGLE_CLIENT_SECRET),
+  };
+}
+
 export const authOptions: NextAuthOptions = {
   secret: serverEnv.NEXTAUTH_SECRET,
   adapter: createAuthAdapter(),

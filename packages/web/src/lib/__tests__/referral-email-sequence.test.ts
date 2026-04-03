@@ -155,7 +155,7 @@ describe("referral email sequence", () => {
     }
   });
 
-  it("share message does not mention VOTE points", () => {
+  it("share message does not mention point name", () => {
     const email = buildReferralSequenceEmail({
       step: 0,
       referralCount: 0,
@@ -174,7 +174,7 @@ describe("referral email sequence", () => {
       )
       .join("");
 
-    expect(shareMessage).not.toContain("VOTE point");
+    expect(shareMessage).not.toContain("VOTE Point");
   });
 
   it("completes sequence when all steps are exhausted", () => {

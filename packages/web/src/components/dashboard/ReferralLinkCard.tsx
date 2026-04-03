@@ -5,6 +5,7 @@ import { Card } from "@/components/retroui/Card"
 import { CopyLinkButton } from "@/components/sharing/copy-link-button"
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons"
 import { ROUTES } from "@/lib/routes"
+import { REFERRAL } from "@/lib/messaging"
 
 interface ReferralLinkCardProps {
   referralLink: string
@@ -26,7 +27,7 @@ export function ReferralLinkCard({
         Now Get All Your Friends to Play!
       </h3>
       <p className="font-bold text-base sm:text-lg text-center mb-4">
-        Every friend you get to help Optimize Earth earns 1 VOTE point!
+        {REFERRAL.earnOne}
       </p>
 
       <div className="mb-2">

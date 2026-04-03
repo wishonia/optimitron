@@ -3,6 +3,7 @@ import { BrutalCard } from "@/components/ui/brutal-card";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Container } from "@/components/ui/container";
+import { REFERRAL } from "@/lib/messaging";
 import { contributeLink, ROUTES } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
 
@@ -24,7 +25,7 @@ export default function ContributePage() {
                 Play the Game
               </h3>
               <p className="text-lg font-bold text-foreground mb-4">
-                Vote on the 1% Treaty. Share your link. Every verified voter you bring in earns you a VOTE point. Free. Thirty seconds.
+                Vote on the 1% Treaty. Share your link. {REFERRAL.earnOne} Free. Thirty seconds.
               </p>
               <GameCTA href="/#vote" variant="secondary">
                 Play Now

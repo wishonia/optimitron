@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usPolicyAnalysis } from "@/data/us-policy-analysis";
 import { getPolicyPath } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
+import { PRIZE_CTA_COPY } from "@/lib/messaging";
 import { GLOBAL_AVG_INCOME_2025, GLOBAL_HALE_CURRENT } from "@optimitron/data/parameters";
 
 // All types flow from @optimitron/opg via the generated .ts file.
@@ -231,7 +232,7 @@ export default function PoliciesPage() {
       <div className="mt-10">
         <PrizeCTA
           headline="These recommendations need political will to implement."
-          body="The bottleneck is pluralistic ignorance — everyone wants evidence-based policy, nobody knows everyone else does. Deposit USDC, recruit verified voters for the 1% Treaty referendum, earn VOTE points."
+          body={`The bottleneck is pluralistic ignorance — everyone wants evidence-based policy, nobody knows everyone else does. ${PRIZE_CTA_COPY.depositAndRecruit}`}
           variant="yellow"
         />
       </div>

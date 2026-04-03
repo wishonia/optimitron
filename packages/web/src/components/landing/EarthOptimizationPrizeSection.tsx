@@ -1,6 +1,7 @@
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { earthOptimizationPrizePaperLink } from "@/lib/routes";
 import { GameCTA } from "@/components/ui/game-cta";
+import { POINT, REFERRAL, PRIZE_OUTCOMES } from "@/lib/messaging";
 import {
   PRIZE_POOL_HORIZON_MULTIPLE,
   fmtParam,
@@ -9,7 +10,7 @@ const coreCards = [
   {
     title: "Dominant Assurance",
     description:
-      `Deposit USDC into the Earth Optimization Prize fund. Plan fails after 15 years? Projected ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} return (based on VC-sector diversification). Plan succeeds? Everyone benefits from higher GDP. All figures are hypothetical projections, not guarantees.`,
+      `Deposit into the Earth Optimization Prize fund. Plan fails after 15 years? Projected ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} return (based on VC-sector diversification). Plan succeeds? Everyone benefits from higher GDP. All figures are hypothetical projections, not guarantees.`,
     color: "bg-brutal-pink",
     textColor: "text-brutal-pink-foreground",
   },
@@ -23,7 +24,7 @@ const coreCards = [
   {
     title: "Referral Recruitment",
     description:
-      "Share your referral link. Every person who verifies support for the 1% Treaty via World ID earns you 1 VOTE point. Metrics hit targets after 15 years? VOTE holders split the pool pro-rata. No deposit required to recruit.",
+      `Share your referral link. ${REFERRAL.earnOne} Metrics hit targets after 15 years? ${PRIZE_OUTCOMES.successShort} ${REFERRAL.noDeposit}`,
     color: "bg-brutal-cyan",
     textColor: "text-brutal-cyan-foreground",
   },

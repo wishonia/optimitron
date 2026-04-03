@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/routes";
+import { POINT, POINTS, POINT_NAME, REFERRAL } from "@/lib/messaging";
 
 interface VoteTokenMint {
   id: string;
@@ -54,7 +55,7 @@ export function VoteTokenBalanceCard() {
         const json = (await res.json()) as BalanceResponse;
         setData(json);
       } catch {
-        setError("Failed to load VOTE point balance");
+        setError(`Failed to load ${POINT} balance`);
       } finally {
         setLoading(false);
       }
@@ -77,11 +78,10 @@ export function VoteTokenBalanceCard() {
     return (
       <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="text-lg font-black uppercase mb-2">
-          Sign In to View VOTE Balance
+          Sign In to View {POINTS}
         </h3>
         <p className="text-sm font-bold">
-          Vote, prove you&apos;re human via World ID, and share your referral
-          link. Each verified voter you recruit earns you 1 VOTE point.
+          {REFERRAL.verifyAndEarn}
         </p>
         <Link
           href="/auth/signin?callbackUrl=/contribute"
@@ -108,7 +108,7 @@ export function VoteTokenBalanceCard() {
       {/* Balance Summary */}
       <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <h3 className="font-black uppercase text-foreground mb-4">
-          Your VOTE Points
+          Your {POINTS}
         </h3>
         <div className="grid gap-4 grid-cols-2">
           <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-4">
@@ -121,7 +121,7 @@ export function VoteTokenBalanceCard() {
           </div>
           <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-4">
             <div className="text-xs font-black uppercase">
-              Total VOTE Balance
+              Total {POINT_NAME} Balance
             </div>
             <div className="text-3xl font-black">
               {formatVOTE(data.totalBalance)}
@@ -132,14 +132,14 @@ export function VoteTokenBalanceCard() {
         {data.totalVotes === 0 && (
           <div className="mt-4 border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-3">
             <p className="text-xs font-bold">
-              You don&apos;t have any VOTE points yet. Share a{" "}
+              You don&apos;t have any {POINTS} yet. Share a{" "}
               <Link
                 href={ROUTES.referendum}
                 className="font-black text-brutal-pink underline hover:text-foreground"
               >
                 referendum
               </Link>{" "}
-              and bring in verified voters through your link to earn 1 VOTE for
+              and bring in verified voters through your link to earn 1 {POINT_NAME} for
               each referral.
             </p>
           </div>
@@ -182,7 +182,7 @@ export function VoteTokenBalanceCard() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-black">
-                      {formatVOTE(mint.amount)} VOTE
+                      {formatVOTE(mint.amount)} {POINT_NAME}
                     </span>
                     <span
                       className={`text-[10px] font-black uppercase px-2 py-0.5 border border-primary ${style.bg} ${style.text}`}

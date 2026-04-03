@@ -9,6 +9,7 @@ import { SocialShareButtons } from "@/components/sharing/social-share-buttons";
 import { Button } from "@/components/retroui/Button";
 import { alignmentLink } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
+import { REFERRAL, PRIZE_CTA_COPY } from "@/lib/messaging";
 import { WISHOCRATIC_ITEMS, WishocraticItemId } from "@/lib/wishocracy-data";
 import type { WishocraticAllocationInput } from "@/lib/wishocracy-allocation";
 import { calculateAllocationsFromPairwise } from "@/lib/wishocracy-calculations";
@@ -207,7 +208,7 @@ export function WishocracyCompletionCard({
       <div className="mt-8">
         <PrizeCTA
           headline="Now prove demand for the world you just described."
-          body="You've expressed what matters. The 1% Treaty referendum turns preferences into political pressure. Deposit USDC, share your referral link, recruit verified voters. Every person you bring in earns you a VOTE point."
+          body={`You've expressed what matters. The 1% Treaty referendum turns preferences into political pressure. ${PRIZE_CTA_COPY.depositAndRecruit} ${REFERRAL.earnOne}`}
           variant="pink"
         />
       </div>

@@ -11,6 +11,7 @@ import { ALIGNMENT_BENCHMARK_SOURCE_NOTE } from "@/lib/alignment-benchmarks";
 import type { PersonalAlignmentState } from "@/lib/alignment-report";
 import { wishocracyLink } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
+import { PRIZE_CTA_COPY } from "@/lib/messaging";
 import { alignmentHypercerts as hypercertData } from "@/data/alignment-hypercerts";
 
 interface HypercertPolitician {
@@ -444,7 +445,7 @@ export function AlignmentReport({
       <section className="mb-10">
         <PrizeCTA
           headline="Prove that voters want representatives who actually represent them."
-          body="The alignment scores above show the gap. The 1% Treaty referendum collapses pluralistic ignorance — everyone wants this, nobody knows everyone else does. Deposit USDC, recruit verified voters, earn VOTE points."
+          body={`The alignment scores above show the gap. The 1% Treaty referendum collapses pluralistic ignorance — everyone wants this, nobody knows everyone else does. ${PRIZE_CTA_COPY.depositAndRecruit}`}
           variant="cyan"
         />
       </section>

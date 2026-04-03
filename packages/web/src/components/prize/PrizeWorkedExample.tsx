@@ -7,6 +7,7 @@ import {
   PRIZE_POOL_HORIZON_MULTIPLE,
   VOTE_TOKEN_VALUE,
 } from "@optimitron/data/parameters";
+import { POINT_NAME } from "@/lib/messaging";
 import { SectionHeader } from "@/components/ui/section-header";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { CountUp } from "@/components/animations/CountUp";
@@ -107,7 +108,7 @@ export function PrizeWorkedExample() {
                 Targets Hit
               </div>
               <p className="text-sm font-bold text-foreground mb-2">
-                {votes} VOTE &times; {fmtParam(VOTE_TOKEN_VALUE)} each
+                {votes} {POINT_NAME} &times; {fmtParam(VOTE_TOKEN_VALUE)} each
               </p>
               <p className="text-4xl sm:text-5xl font-black text-foreground">
                 $<CountUp value={winReturn} duration={2} />

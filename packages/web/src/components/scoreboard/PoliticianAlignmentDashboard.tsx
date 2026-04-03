@@ -2,6 +2,7 @@
 
 import type { AggregateScoreData } from "@/lib/aggregate-alignment.server";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
+import { PRIZE_CTA_COPY } from "@/lib/messaging";
 import { CitizenPrioritiesChart } from "./CitizenPrioritiesChart";
 import { AlignmentScoreTable } from "./AlignmentScoreTable";
 
@@ -114,7 +115,7 @@ export function PoliticianAlignmentDashboard({ data }: PoliticianAlignmentDashbo
       <section className="mt-10">
         <PrizeCTA
           headline="The gap between citizens and politicians is the problem. The referendum is the fix."
-          body="The misalignment above exists because nobody has proven demand for change. Deposit USDC, recruit verified voters for the 1% Treaty referendum, earn VOTE points for every person you bring in."
+          body={`The misalignment above exists because nobody has proven demand for change. ${PRIZE_CTA_COPY.depositAndRecruit}`}
           variant="pink"
         />
       </section>

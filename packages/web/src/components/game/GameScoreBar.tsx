@@ -8,6 +8,7 @@ import { Vote, Heart, BarChart3 } from "lucide-react";
 import { calculateImpactLedger } from "@/lib/impact-ledger";
 import { formatLives } from "@/lib/formatters";
 import { ROUTES } from "@/lib/routes";
+import { POINTS, POINT_NAME, REFERRAL } from "@/lib/messaging";
 
 interface GameStats {
   wishes: number;
@@ -18,7 +19,7 @@ interface GameStats {
 
 /**
  * Global sticky score bar — shown at the bottom of every page when logged in.
- * Shows: Wishes | VOTE points | Lives Saved | Comparisons
+ * Shows: Wishes | VOTE Points | Lives Saved | Comparisons
  */
 export function GameScoreBar() {
   const { status } = useSession();
@@ -49,10 +50,10 @@ export function GameScoreBar() {
           <Link
             href="/dashboard#referral"
             className="flex items-center gap-1.5 hover:text-brutal-cyan transition-colors"
-            title="VOTE points (1 per voter recruited)"
+            title={`${POINTS} (${REFERRAL.earnOneShort})`}
           >
             <Vote className="h-3.5 w-3.5 text-brutal-cyan" />
-            <span>{stats.votePoints} VOTE</span>
+            <span>{stats.votePoints} {POINT_NAME}</span>
           </Link>
 
           <Link

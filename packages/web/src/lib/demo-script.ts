@@ -81,6 +81,7 @@ import {
   CONVENTIONAL_RETIREMENT_RETURN,
   GLOBAL_CYBERCRIME_CAGR,
 } from "@optimitron/data/parameters";
+import { POINT, POINTS } from "@/lib/messaging";
 
 // ---------------------------------------------------------------------------
 // Speech-formatted parameter values for TTS narration.
@@ -488,7 +489,7 @@ export const SEGMENTS = [
     slideId: "three-scenarios-all-win",
     bgColor: "cyan",
     tags: ["mechanism", "financial"],
-    narration: `If the scoreboard metrics hit their targets in fifteen years, VOTE holders get paid. Each point could be worth ${votePointValue} dollars. If the targets are missed, depositors split the prize pool at ${poolMultiple} times their original deposit. That still beats a retirement account. Every player wins. The only losing move is not playing.`,
+    narration: `If the scoreboard metrics hit their targets in fifteen years, ${POINT} holders get paid from the prize pool. If the targets are missed, depositors split the prize pool at ${poolMultiple} times their original deposit. That still beats a retirement account. Every player wins. The only losing move is not playing.`,
   },
   {
     id: "game-the-question",
@@ -833,18 +834,18 @@ export const SEGMENTS = [
     act: "II-money",
     scoreAdd: 800_000_000,
     inventoryAdd: { id: "prize-deposit", name: "PRIZE DEPOSIT", icon: "🪙" },
-    narration: `Deposit one hundred dollars into the VC-diversified fund. Two things can happen. If Earth hits its targets, the pool unlocks and VOTE point holders split it. If Earth misses, your hundred dollars still grew at ${prizeReturn} percent a year — ${poolMultiple} times your money back. Both paths pay. There is no path where you lose.`,
+    narration: `Deposit one hundred dollars into the VC-diversified fund. Two things can happen. If Earth hits its targets, the pool unlocks and ${POINT} holders split it. If Earth misses, your hundred dollars still grew at ${prizeReturn} percent a year — ${poolMultiple} times your money back. Both paths pay. There is no path where you lose.`,
   },
   {
     id: "vote-point-dollar-value",
-    title: "VOTE Point Value",
+    title: `${POINT} Value`,
     slideId: "vote-point-dollar-value",
     bgColor: "yellow",
     tags: ["financial"],
     act: "II-money",
     scoreAdd: 1_000_000_000,
-    inventoryAdd: { id: "vote-points", name: "VOTE POINTS ×2", icon: "🥈" },
-    narration: `Now for the Vote Points. Every friend you got to play earned you one point. If the world's retirement savings compound in the prize pool at ${prizeReturn} percent instead of ${conventionalReturn}, each VOTE point is worth ${votePointValue} dollars. Two friends playing: double that. Ten friends: ten times. Points cannot be bought. They can only be earned by getting real people to play the game. The more friends you bring in, the bigger the prize pool gets, the more valuable everyone's points become.`,
+    inventoryAdd: { id: "vote-points", name: `${POINTS.toUpperCase()} ×2`, icon: "🥈" },
+    narration: `Now for the ${POINTS}. Every friend you got to play earned you one point. If the world's retirement savings compound in the prize pool at ${prizeReturn} percent instead of ${conventionalReturn}, each ${POINT} is worth ${votePointValue} dollars. Two friends playing: double that. Ten friends: ten times. Points cannot be bought. They can only be earned by getting real people to play the game. The more friends you bring in, the bigger the prize pool gets, the more valuable everyone's points become.`,
   },
   {
     id: "three-scenarios-all-win-full",
@@ -854,7 +855,7 @@ export const SEGMENTS = [
     tags: ["financial", "cta"],
     act: "II-money",
     scoreAdd: 1_500_000_000,
-    narration: `But wait — if humanity wins, does my deposit go to VOTE holders instead of back to me? Yes. And here is why that is fine. First: get even two friends to play and you have Vote Points worth far more than your deposit. Second: if humanity wins, everyone is ${treatyIncomeMultiplier} times richer. Your one hundred dollar deposit vanishes into a world where your lifetime income just increased by ${treatyGain} dollars. You do not mourn the one hundred dollars. You are too busy being a multimillionaire in a civilisation that cured all disease. The only way to lose is not to play.`,
+    narration: `But wait — if humanity wins, does my deposit go to ${POINT} holders instead of back to me? Yes. And here is why that is fine. First: get even two friends to play and you have ${POINTS} worth far more than your deposit. Second: if humanity wins, everyone is ${treatyIncomeMultiplier} times richer. Your one hundred dollar deposit vanishes into a world where your lifetime income just increased by ${treatyGain} dollars. You do not mourn the one hundred dollars. You are too busy being a multimillionaire in a civilisation that cured all disease. The only way to lose is not to play.`,
   },
   {
     id: "alignment-switch",
@@ -944,7 +945,7 @@ export const SEGMENTS = [
     tags: ["solution"],
     act: "II-armory",
     scoreAdd: 5_800_000_000,
-    narration: `You are looking at this and thinking: this is impossibly complicated. Decentralized clinical trials, smart contracts, causal inference engines, immutable storage, algorithmic governance — who is going to build all of this? The answer: you do not need to know. Nobody knows how to make a pencil. Not one person on Earth. The wood comes from one country, the graphite from another, the rubber from a third, the paint from a fourth. Millions of people each doing one tiny step. No one coordinates them. The price system does. That is what the prize pool is. Four billion people, each with Vote Points worth ${votePointValue} dollars, will figure out how to build a decentralized FDA the same way they figured out how to build a pencil. You do not need a plan. You need an incentive. And the game does not pick which solution wins. Researcher discovers cheaper trials? Gets paid. Lobbyist passes legislation? Gets paid. Nonprofit gets a million people to play? Gets paid. Every approach competes. The best ones get funded. That is not central planning. That is a market for saving civilisation.`,
+    narration: `You are looking at this and thinking: this is impossibly complicated. Decentralized clinical trials, smart contracts, causal inference engines, immutable storage, algorithmic governance — who is going to build all of this? The answer: you do not need to know. Nobody knows how to make a pencil. Not one person on Earth. The wood comes from one country, the graphite from another, the rubber from a third, the paint from a fourth. Millions of people each doing one tiny step. No one coordinates them. The price system does. That is what the prize pool is. Four billion people, each with ${POINTS} tied to the prize pool, will figure out how to build a decentralized FDA the same way they figured out how to build a pencil. You do not need a plan. You need an incentive. And the game does not pick which solution wins. Researcher discovers cheaper trials? Gets paid. Lobbyist passes legislation? Gets paid. Nonprofit gets a million people to play? Gets paid. Every approach competes. The best ones get funded. That is not central planning. That is a market for saving civilisation.`,
   },
   {
     id: "personal-income-upside",
@@ -1079,7 +1080,7 @@ export const SEGMENTS = [
     slideId: "three-scenarios-all-win",
     tags: ["mechanism", "financial"],
     act: "II-money",
-    narration: `Billions of people have to overcome pluralistic ignorance and work together to achieve this. Since your species requires small pieces of paper with presidents on them before you will do anything, you create the Earth Optimization Prize Fund. The target is 1 percent of global savings, diversified across the venture capital sector, producing ${prizeReturn} percent annual returns. If humanity hits the median income and healthy lifespan targets by 2040, your Vote Points pay out. If humanity fails, you get your deposit back plus ${prizeReturn} percent annual returns — your hundred dollars still becomes ${poolMultiple} hundred. Two out of three outcomes are wins. The third option is Somalia.`,
+    narration: `Billions of people have to overcome pluralistic ignorance and work together to achieve this. Since your species requires small pieces of paper with presidents on them before you will do anything, you create the Earth Optimization Prize Fund. The target is 1 percent of global savings, diversified across the venture capital sector, producing ${prizeReturn} percent annual returns. If humanity hits the median income and healthy lifespan targets by 2040, your ${POINTS} pay out. If humanity fails, you get your deposit back plus ${prizeReturn} percent annual returns — your hundred dollars still becomes ${poolMultiple} hundred. Two out of three outcomes are wins. The third option is Somalia.`,
   },
   {
     id: "dominant-assurance-contract",
@@ -1087,7 +1088,7 @@ export const SEGMENTS = [
     slideId: "dominant-assurance-contract",
     tags: ["mechanism", "financial"],
     act: "II-money",
-    narration: `Vote, then share your referral link. Each friend who votes through your link earns you one VOTE point. Each point could be worth up to ${votePointValue} dollars.`,
+    narration: `Vote, then share your referral link. Each friend who votes through your link earns you one ${POINT} — your share of the prize pool if humanity hits its targets.`,
   },
   {
     id: "armory-brief",

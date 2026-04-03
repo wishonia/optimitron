@@ -2,6 +2,7 @@
 
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { GAME_PARAMS } from "@/lib/demo/parameters";
+import { POINTS } from "@/lib/messaging";
 import {
   VOTE_TOKEN_VALUE,
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
@@ -35,7 +36,7 @@ export function SlideThreeScenariosAllWin() {
               {voteValue}+
             </div>
             <div className="font-pixel text-lg text-muted-foreground mt-2">
-              VOTE points pay out
+              {POINTS} pay out
             </div>
             <div className="mt-3 border-t border-brutal-cyan/30 pt-3">
               <div className="font-pixel text-3xl md:text-5xl text-sierra-cyan">

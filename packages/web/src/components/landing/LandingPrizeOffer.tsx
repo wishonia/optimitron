@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { PrizeCalculator } from "@/components/prize/PrizeCalculator";
 import { GameCTA } from "@/components/ui/game-cta";
+import { POINT, REFERRAL, PRIZE_OUTCOMES } from "@/lib/messaging";
 import {
   fmtParam,
   PRIZE_POOL_HORIZON_MULTIPLE,
@@ -66,8 +67,7 @@ export function LandingPrizeOffer() {
               + Per Capita
             </div>
             <p className="mt-3 text-sm font-bold">
-              Everyone gets richer. VOTE point holders claim proportional
-              shares of the prize pool. Recruiters who brought in verified
+              Everyone gets richer. {PRIZE_OUTCOMES.successShort} Recruiters who brought in verified
               voters get the biggest share. Everyone else benefits from higher
               GDP up to{" "}
               {fmtParam({
@@ -96,7 +96,7 @@ export function LandingPrizeOffer() {
                   Have Capital?
                 </div>
                 <p className="text-sm font-bold">
-                  Deposit USDC → Get PRIZE shares → Fund earns{" "}
+                  Deposit → Get PRIZE shares → Fund earns{" "}
                   {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} → Floor of ~
                   {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} if plan fails. Also get a
                   referral link for success-side upside.
@@ -108,8 +108,8 @@ export function LandingPrizeOffer() {
                 </div>
                 <p className="text-sm font-bold">
                   Share referral link → Recruit verified voters (World ID) →
-                  Earn 1 VOTE point per voter → Prize share if plan succeeds.
-                  No deposit required.
+                  {REFERRAL.earnOne} Prize share if plan succeeds.
+                  {REFERRAL.noDeposit}
                 </p>
               </div>
             </div>

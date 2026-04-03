@@ -15,6 +15,7 @@ import { parseUnits, formatUnits, type Address } from "viem";
 import { baseSepolia } from "wagmi/chains";
 import { voterPrizeTreasuryAbi, voteTokenAbi } from "@optimitron/treasury-prize/abi";
 import { getContracts } from "@optimitron/treasury-shared/addresses";
+import { POINTS, POINT_NAME } from "@/lib/messaging";
 
 const USDC_DECIMALS = 6;
 const PRESET_AMOUNTS = ["100", "500", "1,000", "5,000"];
@@ -446,7 +447,7 @@ export function VoterPrizeTreasuryDeposit() {
               </div>
               <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-2">
                 <div className="text-[10px] font-black uppercase">
-                  VOTE Points
+                  {POINTS}
                 </div>
                 <div className="text-sm font-black">
                   {voteBalance !== undefined
@@ -563,20 +564,20 @@ export function VoterPrizeTreasuryDeposit() {
       {isDeployed && isConnected && canRedeemVotes && (
         <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-6">
           <h3 className="font-black uppercase mb-3">
-            Redeem Your VOTE Points
+            Redeem Your {POINTS}
           </h3>
           <p className="text-xs font-bold mb-4">
-            Outcome thresholds have been met. Your VOTE points from verified
+            Outcome thresholds have been met. Your {POINTS} from verified
             referendum votes entitle you to a proportional share of the prize
             treasury.
           </p>
           <div className="flex items-center gap-4">
             <div>
               <div className="text-[10px] font-black uppercase">
-                Your VOTE Balance
+                Your {POINT_NAME} Balance
               </div>
               <div className="text-lg font-black">
-                {formatVOTE(voteBalanceBigint)} VOTE
+                {formatVOTE(voteBalanceBigint)} {POINT_NAME}
               </div>
             </div>
             <div>

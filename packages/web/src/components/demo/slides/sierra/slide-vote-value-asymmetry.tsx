@@ -2,6 +2,7 @@
 
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { GAME_PARAMS } from "@/lib/demo/parameters";
+import { POINT } from "@/lib/messaging";
 import {
   TREATY_PERSONAL_UPSIDE_BLEND,
   TREATY_HALE_GAIN_YEAR_15,
@@ -95,7 +96,7 @@ export function SlideVoteValueAsymmetry() {
               {formatCurrency(votePointValue)}
             </div>
             <div className="font-pixel text-xl md:text-2xl text-zinc-200">
-              per VOTE point if treaty passes
+              per {POINT} if income &amp; HALE targets are hit
             </div>
           </div>
         </div>

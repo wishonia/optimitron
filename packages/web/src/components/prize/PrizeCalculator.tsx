@@ -9,11 +9,12 @@ import {
   VOTE_2_CLAIMS_PAYOUT,
   fmtParam,
 } from "@optimitron/data/parameters";
+import { POINT } from "@/lib/messaging";
 /**
  * Interactive Prize return calculator.
  *
  * Fail scenario:  deposit × PRIZE_POOL_HORIZON_MULTIPLE (~11.1x over 15 years)
- * Success scenario: VOTE points × pro-rata share of pool (VOTE_TOKEN_VALUE per VOTE if canonical pool size)
+ * Success scenario: VOTE Points × pro-rata share of pool (VOTE_TOKEN_VALUE per VOTE if canonical pool size)
  */
 
 const FAIL_MULTIPLIER = PRIZE_POOL_HORIZON_MULTIPLE.value;
@@ -96,7 +97,7 @@ export function PrizeCalculator() {
         />
       </div>
 
-      {/* VOTE points input */}
+      {/* VOTE Points input */}
       <div className="mb-6">
         <label className="block text-xs font-black uppercase text-muted-foreground mb-2">
           Verified Voters You Recruit
@@ -162,11 +163,11 @@ export function PrizeCalculator() {
             {formatUSD(successPayout)}
           </div>
           <div className="text-sm font-bold mb-3">
-            {voteCount} VOTE point{voteCount > 1 ? "s" : ""} × {formatUSD(VOTE_VALUE)} each
+            {voteCount} {POINT}{voteCount > 1 ? "s" : ""} × {formatUSD(VOTE_VALUE)} each
           </div>
           <div className="text-xs font-bold space-y-1">
             <p>
-              VOTE holders split the pool pro-rata. Each VOTE point
+              {POINT} holders split the pool pro-rata. Each {POINT}
               is worth ~{fmtParam(VOTE_TOKEN_VALUE)} if the canonical pool
               size materializes. You earned {voteCount} by recruiting {voteCount} verified voter{voteCount > 1 ? "s" : ""}.
             </p>

@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useEffect, useState } from "react";
-import { getProviders, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { AlertCard } from "@/components/ui/alert-card";
 import { Button } from "@/components/retroui/Button";
 import { Input } from "@/components/retroui/Input";
@@ -13,6 +13,11 @@ import { storage } from "@/lib/storage";
 
 const logger = createLogger("auth-form");
 
+interface ProviderFlags {
+  email: boolean;
+  google: boolean;
+}
+
 interface AuthFormProps {
   callbackUrl?: string;
   referralCode?: string | null;
@@ -20,6 +25,8 @@ interface AuthFormProps {
   compact?: boolean;
   /** Message shown below the success alert after a magic link is sent */
   emailSuccessFooter?: string;
+  /** Pre-resolved provider flags from the server — skips the client-side fetch when provided */
+  providers?: ProviderFlags;
 }
 
 export function AuthForm({
@@ -28,20 +35,18 @@ export function AuthForm({
   initialError = null,
   compact = false,
   emailSuccessFooter,
+  providers,
 }: AuthFormProps) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
   const [pendingAction, setPendingAction] = useState<"google" | "magic" | "demo" | null>(null);
-  const [availableProviders, setAvailableProviders] = useState({
-    email: true,
-    google: false,
-  });
 
   const isLoading = pendingAction !== null;
   const fieldClassName = compact ? "h-11 text-base" : "h-12 text-base";
   const buttonClassName = compact ? "h-11 text-sm" : "h-12 text-base";
-  const { email: magicLinkEnabled, google: googleEnabled } = availableProviders;
+  const magicLinkEnabled = providers?.email ?? true;
+  const googleEnabled = providers?.google ?? true;
 
   useEffect(() => {
     if (!initialError) {
@@ -50,29 +55,6 @@ export function AuthForm({
 
     setError(initialError);
   }, [initialError]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    void getProviders()
-      .then((providers) => {
-        if (cancelled || !providers) {
-          return;
-        }
-
-        setAvailableProviders({
-          email: Boolean(providers.email),
-          google: Boolean(providers.google),
-        });
-      })
-      .catch((providerError) => {
-        logger.error("Failed to load auth providers", providerError);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   function persistAuthContext() {
     if (referralCode) {
@@ -238,7 +220,9 @@ export function AuthForm({
               </Label>
               <Input
                 id="auth-email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="you@example.com"

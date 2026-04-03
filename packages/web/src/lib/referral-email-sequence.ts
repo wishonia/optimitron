@@ -1,5 +1,4 @@
 import {
-  VOTE_TOKEN_VALUE,
   PRIZE_POOL_ANNUAL_RETURN,
   GLOBAL_DISEASE_DEATHS_DAILY,
   MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
@@ -9,6 +8,7 @@ import {
   fmtParam,
   fmtRaw,
 } from "@optimitron/data/parameters";
+import { POINTS } from "@/lib/messaging";
 
 const HOUR_MS = 60 * 60 * 1000;
 const REFERRAL_TARGET = 3;
@@ -18,7 +18,6 @@ const FOLLOW_UP_DELAYS_MS = [0, 24 * HOUR_MS, 96 * HOUR_MS] as const;
  *  welcome-email handler (signup / auth event) time to advance the step. */
 export const STEP_0_CRON_GRACE_MS = 10 * 60 * 1000;
 
-const voteValue = fmtParam(VOTE_TOKEN_VALUE);
 const annualReturn = fmtParam(PRIZE_POOL_ANNUAL_RETURN);
 const dailyDeaths = fmtRaw(GLOBAL_DISEASE_DEATHS_DAILY.value);
 const spendingRatio = fmtParam(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO);
@@ -186,7 +185,7 @@ export function buildReferralSequenceEmail({
       "2. Drop it in one group chat \u2014 it takes 30 seconds to vote.",
       `3. Post on social: "${dailyDeaths} people die daily from treatable diseases. Governments spend ${spendingRatio} more on weapons than finding new treatments. 30 seconds to vote for the 1% Treaty."`,
       "",
-      `The boring part your species seems to care about: Players who invite verified voters earn VOTE points. If the game works, each point is worth ~${voteValue}. If it doesn't, depositors in the prize fund still earn ${annualReturn} annually. Either way, you told your friends about something that matters.`,
+      `The boring part your species seems to care about: Players who invite verified voters earn ${POINTS} — their share of the prize pool if humanity hits its targets. If the plan fails, depositors in the prize fund still earn ${annualReturn} annually. Either way, you told your friends about something that matters.`,
       "",
       "\u2014 Wishonia",
     ].join("\n"),
@@ -220,7 +219,7 @@ export function buildReferralSequenceEmail({
           </ul>
           <div style="margin-top:24px;padding:16px;border:3px solid #111827;background:#111827;color:#ffffff;">
             <p style="margin:0;font-size:13px;line-height:1.6;text-align:center;">
-              <strong>THE BORING PART YOUR SPECIES SEEMS TO CARE ABOUT:</strong> Players who invite verified voters earn VOTE points. If the game works, each point is worth ~${voteValue}. If it doesn&rsquo;t, depositors in the prize fund still earn ${annualReturn} annually. Either way, you told your friends about something that matters, which on your planet apparently requires financial incentives. Fascinating.
+              <strong>THE BORING PART YOUR SPECIES SEEMS TO CARE ABOUT:</strong> Players who invite verified voters earn ${POINTS} &mdash; their share of the prize pool if humanity hits its targets. If the plan fails, depositors in the prize fund still earn ${annualReturn} annually. Either way, you told your friends about something that matters, which on your planet apparently requires financial incentives. Fascinating.
             </p>
           </div>
           <p style="margin:24px 0 0;font-size:14px;color:#666;text-align:right;font-style:italic;">&mdash; Wishonia</p>

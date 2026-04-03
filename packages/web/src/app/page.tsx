@@ -46,11 +46,9 @@ import { GameCTA } from "@/components/ui/game-cta";
 import { DemoVideoSection } from "@/components/landing/DemoVideoSection";
 import { OptimalPolicyPreview } from "@/components/landing/OptimalPolicyPreview";
 import { OptimalBudgetPreview } from "@/components/landing/OptimalBudgetPreview";
-import { CTA, TAGLINES } from "@/lib/messaging";
+import { CTA, TAGLINES, POINTS } from "@/lib/messaging";
 import {
   DESTRUCTIVE_ECONOMY_35PCT_YEAR,
-  VOTE_TOKEN_VALUE,
-  GLOBAL_COORDINATION_TARGET_SUPPORTERS,
 } from "@optimitron/data/parameters";
 import { ParameterValue } from "@/components/shared/ParameterValue";
 export const metadata: Metadata = {
@@ -209,7 +207,7 @@ export default function Home() {
       {/* ── 8. Final CTA ── */}
       <CTASection
         heading="The Clock Is Running"
-        description={<>The parasitic economy hits 35% of GDP by <ParameterValue param={DESTRUCTIVE_ECONOMY_35PCT_YEAR} display="integer" />. Your VOTE points are worth <ParameterValue param={VOTE_TOKEN_VALUE} display="withUnit" /> if <ParameterValue param={GLOBAL_COORDINATION_TARGET_SUPPORTERS} figures={1} /> people play. Worth nothing if they don&apos;t.</>}
+        description={<>The parasitic economy hits 35% of GDP by <ParameterValue param={DESTRUCTIVE_ECONOMY_35PCT_YEAR} display="integer" />. Your {POINTS} pay out if enough people play. Worth nothing if they don&apos;t.</>}
         bgColor="yellow"
       >
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

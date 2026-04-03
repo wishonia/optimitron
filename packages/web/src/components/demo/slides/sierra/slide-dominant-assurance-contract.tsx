@@ -2,6 +2,7 @@
 
 import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { useEffect, useState } from "react";
+import { POINT, POINTS } from "@/lib/messaging";
 import {
   PRIZE_POOL_SIZE,
   VOTE_TOKEN_VALUE,
@@ -39,7 +40,7 @@ export function SlideDominantAssuranceContract() {
           VOTE → SHARE → EARN
         </h1>
 
-        {/* Flow: vote → share link → earn VOTE points → value */}
+        {/* Flow: vote → share link → earn VOTE Points → value */}
         <div
           className="flex items-center justify-center gap-3 md:gap-6 transition-opacity duration-500"
           style={{ opacity: phase >= 2 ? 1 : 0 }}
@@ -58,17 +59,17 @@ export function SlideDominantAssuranceContract() {
           <div className="font-pixel text-2xl text-muted-foreground">→</div>
           <div className="text-center p-4 bg-muted border-2 border-brutal-yellow rounded">
             <div className="text-4xl mb-2">🏆</div>
-            <div className="font-pixel text-xl md:text-2xl text-brutal-yellow">EARN VOTE POINTS</div>
+            <div className="font-pixel text-xl md:text-2xl text-brutal-yellow">EARN {POINTS.toUpperCase()}</div>
             <div className="font-terminal text-sm md:text-lg text-muted-foreground">1 point per voter recruited</div>
           </div>
         </div>
 
-        {/* VOTE point value */}
+        {/* VOTE Point value */}
         <div
           className="text-center transition-opacity duration-500"
           style={{ opacity: phase >= 3 ? 1 : 0 }}
         >
-          <div className="font-pixel text-lg text-muted-foreground mb-1">EACH VOTE POINT COULD BE WORTH UP TO</div>
+          <div className="font-pixel text-lg text-muted-foreground mb-1">EACH {POINT.toUpperCase()} COULD BE WORTH UP TO</div>
           <div className="font-pixel text-5xl md:text-7xl text-brutal-yellow">{voteValue}</div>
           <div className="font-pixel text-lg text-muted-foreground mt-1">if the fund receives 1% of global savings and targets are hit</div>
         </div>
@@ -82,7 +83,7 @@ export function SlideDominantAssuranceContract() {
             <div className="text-4xl">🌍</div>
             <div className="font-pixel text-xl md:text-2xl text-brutal-cyan">TARGETS HIT</div>
             <div className="font-terminal text-lg md:text-xl text-zinc-200">
-              Prize pool splits by your VOTE points
+              Prize pool splits by your {POINTS}
             </div>
           </div>
           <div className="bg-muted border-2 border-brutal-yellow rounded-lg p-5 text-center space-y-2">

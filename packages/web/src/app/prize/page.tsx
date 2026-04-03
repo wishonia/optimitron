@@ -42,6 +42,7 @@ async function getPoolStats() {
 }
 import { GameCTA } from "@/components/ui/game-cta";
 import { DisclaimerBanner } from "@/components/ui/disclaimer-banner";
+import { POINT, POINTS, REFERRAL, PRIZE_OUTCOMES } from "@/lib/messaging";
 
 export const metadata = getRouteMetadata(prizeLink);
 
@@ -61,7 +62,7 @@ const levels = [
   {
     level: "LEVEL 2",
     title: "RECRUIT",
-    description: "Share your referral link. Every person who verifies support for the 1% Treaty via World ID earns you 1 VOTE point. No deposit required.",
+    description: `Share your referral link. ${REFERRAL.earnOne} ${REFERRAL.noDeposit}`,
     color: "bg-brutal-yellow",
     textColor: "text-brutal-yellow-foreground",
   },
@@ -82,7 +83,7 @@ const levels = [
   {
     level: "BOSS LEVEL",
     title: "WAIT 15 YEARS",
-    description: "Sit there. For fifteen years. If humans are measurably less dead and less poor, VOTE holders split the pool. If not, depositors would receive ~" + poolMultiple + " back (projected). The only boss fight is patience.",
+    description: `Sit there. For fifteen years. If humans are measurably less dead and less poor, ${POINT} holders split the pool. If not, depositors would receive ~${poolMultiple} back (projected). The only boss fight is patience.`,
     color: "bg-foreground",
     textColor: "text-background",
   },
@@ -92,7 +93,7 @@ const contractDetails = [
   {
     label: "Contract",
     value: "VoterPrizeTreasury.sol",
-    detail: "Dominant assurance pool with Earth Optimization Prize fund yield and VOTE point rewards",
+    detail: `Dominant assurance pool with Earth Optimization Prize fund yield and ${POINT} rewards`,
   },
   {
     label: "Health Metric",
@@ -107,7 +108,7 @@ const contractDetails = [
   {
     label: "Sybil Resistance",
     value: "World ID + Referral Links",
-    detail: "One verified vote per person. VOTE points go to the referrer.",
+    detail: `One verified vote per person. ${POINTS} go to the referrer.`,
   },
   {
     label: "Fail-Safe",
@@ -184,8 +185,8 @@ export default async function PrizePage() {
         </div>
         <div className="border-4 border-primary border-t-0 bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm font-bold text-foreground text-center">
-            Recruit voters too? You earn VOTE points.
-            VOTE point holders split the pool if humanity wins.
+            Recruit voters too? You earn {POINTS}.
+            {PRIZE_OUTCOMES.successShort}
             <span className="font-black text-brutal-pink"> Dominant assurance design.</span>
           </p>
         </div>
@@ -199,7 +200,7 @@ export default async function PrizePage() {
           </h2>
           <p className="text-sm font-bold mb-6 max-w-2xl">
             Your papers would go into the Earth Optimization Prize fund (projected {poolReturn} annually, based on VC-sector diversification). You get PRIZE shares.
-            Recruit verified voters and you also earn VOTE points, which would pay out if humanity
+            Recruit verified voters and you also earn {POINTS}, which would pay out if humanity
             wins. This is the first arcade game in history where the house loses on purpose.
           </p>
           <VoterPrizeTreasuryDeposit />

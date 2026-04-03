@@ -3,6 +3,7 @@ import {
   fmtParam,
 } from "@optimitron/data/parameters";
 import { GameCTA } from "@/components/ui/game-cta";
+import { POINT, POINTS, POINT_NAME, REFERRAL, PRIZE_OUTCOMES } from "@/lib/messaging";
 import { alignmentHypercerts as hypercertData } from "@/data/alignment-hypercerts";
 import { US_WISHOCRATIC_ITEMS } from "@optimitron/data/datasets/us-wishocratic-items";
 
@@ -295,10 +296,9 @@ export default function TransparencyPage() {
         <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm font-bold leading-relaxed mb-4">
             The Prize is a dominant assurance contract (VoterPrizeTreasury).
-            Depositors fund the pool with USDC, which earns Prize fund yield.
-            Recruiters share referral links — each verified voter (World ID)
-            earns the recruiter 1 VOTE point. When health and income metrics
-            cross thresholds, VOTE holders claim proportional prize share.
+            Depositors fund the pool, which earns Prize fund yield.
+            Recruiters share referral links — {REFERRAL.earnOne} When health and income metrics
+            cross thresholds, {PRIZE_OUTCOMES.successShort}
             If thresholds aren&apos;t met after 15 years, depositors reclaim
             principal + ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} yield. All on-chain. No committee.
           </p>
@@ -306,12 +306,12 @@ export default function TransparencyPage() {
             <div className="border-4 border-primary bg-background p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Depositors</div>
               <div className="text-sm font-black mt-1">PRIZE Shares</div>
-              <div className="text-xs text-muted-foreground mt-1">USDC → Prize fund yield. ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} floor if plan fails. Sybil-resistant via capital commitment.</div>
+              <div className="text-xs text-muted-foreground mt-1">Deposit → Prize fund yield. ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} floor if plan fails. Sybil-resistant via capital commitment.</div>
             </div>
             <div className="border-4 border-primary bg-background p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Recruiters</div>
-              <div className="text-sm font-black mt-1">VOTE Points</div>
-              <div className="text-xs text-muted-foreground mt-1">1 VOTE per verified voter recruited via referral link. World ID prevents duplicates.</div>
+              <div className="text-sm font-black mt-1">{POINTS}</div>
+              <div className="text-xs text-muted-foreground mt-1">{REFERRAL.earnOneShort} via referral link. World ID prevents duplicates.</div>
             </div>
             <div className="border-4 border-primary bg-background p-3">
               <div className="text-xs font-black uppercase text-muted-foreground">Outcomes</div>

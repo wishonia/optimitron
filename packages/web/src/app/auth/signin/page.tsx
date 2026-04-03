@@ -1,8 +1,5 @@
-"use client";
-
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
 import { AuthForm } from "@/components/auth/AuthForm";
+import { getConfiguredProviders } from "@/lib/auth";
 import { DEFAULT_POST_LOGIN_ROUTE } from "@/lib/routes";
 
 function getAuthErrorMessage(error: string | null) {
@@ -18,11 +15,20 @@ function getAuthErrorMessage(error: string | null) {
   }
 }
 
-function SignInContent() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? DEFAULT_POST_LOGIN_ROUTE;
-  const referralCode = searchParams.get("ref");
-  const initialError = getAuthErrorMessage(searchParams.get("error"));
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const callbackUrl =
+    (typeof params.callbackUrl === "string" ? params.callbackUrl : undefined) ??
+    DEFAULT_POST_LOGIN_ROUTE;
+  const referralCode = typeof params.ref === "string" ? params.ref : null;
+  const initialError = getAuthErrorMessage(
+    typeof params.error === "string" ? params.error : null,
+  );
+  const providers = getConfiguredProviders();
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-brutal-yellow">
@@ -31,16 +37,9 @@ function SignInContent() {
           callbackUrl={callbackUrl}
           referralCode={referralCode}
           initialError={initialError}
+          providers={providers}
         />
       </div>
     </div>
-  );
-}
-
-export default function SignInPage() {
-  return (
-    <Suspense>
-      <SignInContent />
-    </Suspense>
   );
 }

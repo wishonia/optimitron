@@ -4,6 +4,7 @@ import { SierraSlideWrapper } from "./SierraSlideWrapper";
 import { AnimatedCounter } from "../../animations/sierra/animated-counter";
 import { AnimatedLineChart } from "../../animations/sierra/animated-line-chart";
 import { GAME_PARAMS } from "@/lib/demo/parameters";
+import { POINT } from "@/lib/messaging";
 import { useEffect, useState } from "react";
 
 export function SlidePrizePoolVsIndexFund() {
@@ -93,7 +94,7 @@ export function SlidePrizePoolVsIndexFund() {
           <div className="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded">
             <div className="text-xl mb-1">✅</div>
             <div className="font-pixel text-xl text-emerald-400">Treaty Passes</div>
-            <div className="font-pixel text-xl text-zinc-200">VOTE point + 10.5x</div>
+            <div className="font-pixel text-xl text-zinc-200">{POINT} + 10.5x</div>
           </div>
           <div className="bg-cyan-500/10 border border-cyan-500/30 p-3 rounded">
             <div className="text-xl mb-1">📈</div>

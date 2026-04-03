@@ -4,11 +4,37 @@
  */
 
 import {
-  VOTE_TOKEN_VALUE,
   PRIZE_POOL_HORIZON_MULTIPLE,
   MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
   fmtParam,
 } from "@optimitron/data/parameters";
+
+/** Point name — single source of truth. Change here to rename everywhere. */
+export const POINT_NAME = "VOTE" as const;
+/** Pre-built variants so components don't need template literals */
+export const POINT = `${POINT_NAME} Point` as const;
+export const POINTS = `${POINT_NAME} Points` as const;
+
+export const REFERRAL = {
+  /** How you earn — the core mechanic */
+  earnOne: `Every verified voter you bring in earns you 1 ${POINT}.`,
+  /** Short version for compact UI */
+  earnOneShort: `1 ${POINT} per verified voter recruited`,
+  /** No deposit needed */
+  noDeposit: "No deposit required.",
+  /** World ID + earn combo */
+  verifyAndEarn: `Verify with World ID, then share your link. Each verified voter who uses it earns you 1 ${POINT}.`,
+} as const;
+
+export const PRIZE_OUTCOMES = {
+  /** Success scenario — one-liner */
+  successShort: `${POINT} holders claim proportional shares of the prize pool.`,
+} as const;
+
+export const PRIZE_CTA_COPY = {
+  /** The standard PrizeCTA body suffix used across all pages */
+  depositAndRecruit: `Deposit into the prize pool, recruit verified voters, earn ${POINTS}.`,
+} as const;
 
 /** Game balance constants — tweak here, updates everywhere */
 export const GAME = {
@@ -36,7 +62,7 @@ export const CTA = {
   answerTheQuestion: "Answer the Question",
   convinceMe: "Convince Me First",
   seeTheMath: "See the Full Math",
-  earnPoints: "Earn VOTE Points",
+  earnPoints: `Earn ${POINT_NAME} Points`,
   playNow: "Play Now",
   seeTheRules: "See the Rules",
   startPlaying: "Start Playing",
@@ -138,12 +164,12 @@ export const VOTE_SECTION = {
     "on weapons and military systems for every $1 spent on clinical trials.",
   theQuestion:
     "Should all nations allocate just 1% of military spending to clinical trials to treat and cure disease together, making the world safer and ensuring no country is at a disadvantage?",
-  authPrompt: "Sign In to Start Earning VOTE Points",
-  authSubtext: `Every friend you recruit earns you 1 VOTE point. Each point could be worth ${fmtParam(VOTE_TOKEN_VALUE)}+ if enough people play.`,
+  authPrompt: "Sign In to Cast Your Vote",
+  authSubtext: `Every friend you recruit earns you 1 ${POINT_NAME} Point — your share of the prize pool if humanity hits its targets.`,
   authPrivacy: "30 seconds. No spam. Just proof you're a real human.",
   emailSuccessFooter:
-    "Your vote is locked in. Now share your link to start earning VOTE points.",
-  sharePrompt: "Each friend who votes earns you 1 VOTE point. Get them in.",
+    `Your vote is locked in. Now share your link to start earning ${POINT_NAME} Points.`,
+  sharePrompt: `Each friend who votes earns you 1 ${POINT_NAME} Point. Get them in.`,
 };
 
 export const VOTE_VALUE = {
@@ -153,17 +179,17 @@ export const VOTE_VALUE = {
   failHeading: "If the Plan Fails",
   failBody: "annual returns — better than most hedge funds. Their money grew while sitting in the Wishocratic Earth Optimization Fund for 15 years.",
   successHeading: "If the Plan Succeeds",
-  successBody: "VOTE holders claim proportional shares of the prize pool.",
+  successBody: `${POINT_NAME} Point holders claim proportional shares of the prize pool.`,
   breakEvenPrefix: "The break-even probability is 1 in",
   breakEvenSuffix: "Even pessimists should take this bet.",
   deadlineHeading: "The Clock Is Ticking",
   deadlineBody:
     "The parasitic economy — military spending, cybercrime, regulatory capture — is growing faster than the productive economy. When it hits 50% of GDP, stealing beats creating and the system collapses. That's not a prediction. It's compound interest.",
   deadlineQuip:
-    `Your VOTE points are worth ${fmtParam(VOTE_TOKEN_VALUE)} if 4 billion people play. Worth nothing if they don't. The deadline doesn't care about your schedule.`,
+    `Your ${POINT_NAME} Points pay out if enough people play. Worth nothing if they don't. The deadline doesn't care about your schedule.`,
   flywheelHeading: "The Flywheel",
   flywheelDescription:
-    "Retirement funds, foundations, billionaires — they all have an incentive to deposit because the returns beat conventional investing either way. You have an incentive to get your friends to play because each voter increases your VOTE value.",
+    `Retirement funds, foundations, billionaires — they all have an incentive to deposit because the returns beat conventional investing either way. You have an incentive to get your friends to play because each voter increases your ${POINT_NAME} Point value.`,
   shopkeeperQuip:
     "You don't need to be altruistic. You just need to be numerate.",
 };

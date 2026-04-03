@@ -179,7 +179,7 @@ export default function AboutPage() {
             <div className="text-2xl mb-2">🏆</div>
             <h3 className="font-black text-brutal-pink-foreground mb-2">Prize (Phase 1)</h3>
             <p className="text-sm text-background font-bold leading-relaxed">
-              Deposit USDC. Recruit voters for the 1% Treaty referendum. If it
+              Deposit into the prize pool. Recruit voters for the 1% Treaty referendum. If it
               works, you share the prize. If it doesn&apos;t, you get ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} your
               deposit back from the Earth Optimization Prize fund after 15 years. Zero downside.
             </p>

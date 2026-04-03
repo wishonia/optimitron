@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usBudgetAnalysis } from "@/data/us-budget-analysis";
 import { getBudgetCategoryPath } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
+import { PRIZE_CTA_COPY } from "@/lib/messaging";
 import { EfficientFrontierChart, EfficientFrontierSummary } from "@/components/landing/EfficientFrontierChart";
 
 // All types flow from @optimitron/obg via the generated .ts file.
@@ -233,7 +234,7 @@ export default function BudgetPage() {
       <div className="mt-10">
         <PrizeCTA
           headline="The gap between current and optimal won't close itself."
-          body="Every misallocated dollar above is a life not saved. The 1% Treaty referendum proves demand for evidence-based budgeting. Deposit USDC, recruit verified voters, earn VOTE points."
+          body={`Every misallocated dollar above is a life not saved. The 1% Treaty referendum proves demand for evidence-based budgeting. ${PRIZE_CTA_COPY.depositAndRecruit}`}
           variant="dark"
         />
       </div>

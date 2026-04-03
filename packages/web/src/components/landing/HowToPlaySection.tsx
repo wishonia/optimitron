@@ -6,12 +6,11 @@ import { BrutalCard } from "@/components/ui/brutal-card";
 import { GameCTA } from "@/components/ui/game-cta";
 import { ParameterValue } from "@/components/shared/ParameterValue";
 import {
-  VOTE_TOKEN_VALUE,
   PRIZE_POOL_HORIZON_MULTIPLE,
   DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_LIVES_SAVED,
   TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
 } from "@optimitron/data/parameters";
-import { CTA, TAGLINES } from "@/lib/messaging";
+import { CTA, TAGLINES, POINT, POINTS, REFERRAL } from "@/lib/messaging";
 import { ROUTES } from "@/lib/routes";
 const steps: { number: string; title: string; body: ReactNode; color: "pink" | "cyan" | "yellow"; ctas: { label: string; href: string }[] }[] = [
   {
@@ -27,21 +26,21 @@ const steps: { number: string; title: string; body: ReactNode; color: "pink" | "
   {
     number: "2",
     title: "Get Your Link",
-    body: "Sign in and get your referral URL. Every verified voter you bring in earns you 1 VOTE point.",
+    body: `Sign in and get your referral URL. ${REFERRAL.earnOne}`,
     color: "cyan",
     ctas: [{ label: "Sign In", href: "#vote" }],
   },
   {
     number: "3",
     title: "Play With Friends",
-    body: <>Share your link with 2 friends. They each share with 2 more. 28 rounds of this = <ParameterValue param={{...TREATY_CAMPAIGN_VOTING_BLOC_TARGET, value: Math.round(TREATY_CAMPAIGN_VOTING_BLOC_TARGET.value / 1e6), unit: ""}} display="integer" />M people = tipping point. Each VOTE point worth <ParameterValue param={VOTE_TOKEN_VALUE} display="withUnit" />+ if targets are hit.</>,
+    body: <>Share your link with 2 friends. They each share with 2 more. 28 rounds of this = <ParameterValue param={{...TREATY_CAMPAIGN_VOTING_BLOC_TARGET, value: Math.round(TREATY_CAMPAIGN_VOTING_BLOC_TARGET.value / 1e6), unit: ""}} display="integer" />M people = tipping point. Each {POINT} is your share of the prize pool if targets are hit.</>,
     color: "yellow",
     ctas: [],
   },
   {
     number: "4",
     title: "Deposit",
-    body: <>Put money in the prize fund. If the plan works, VOTE holders get paid. If it doesn&apos;t, projected return is <ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} figures={2} />x (based on VC-sector diversification). All figures are projections, not guarantees.</>,
+    body: <>{POINT} holders get paid if the plan works. Put money in the prize fund — if it doesn&apos;t work, projected return is <ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} figures={2} />x (based on VC-sector diversification). All figures are projections, not guarantees.</>,
     color: "pink",
     ctas: [{ label: CTA.insertCoin, href: "/prize" }],
   },

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
+import { POINTS, REFERRAL } from "@/lib/messaging";
 import {
   fmtParam,
   TREATY_ANNUAL_FUNDING,
@@ -231,11 +232,11 @@ export default function IABPage() {
             <ul className="space-y-2 text-sm font-bold">
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">1.</span>
-                <span>Deposit USDC → PRIZE shares (Prize fund yield)</span>
+                <span>Deposit → PRIZE shares (Prize fund yield)</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">2.</span>
-                <span>Recruit verified voters → earn VOTE points</span>
+                <span>Recruit verified voters → earn {POINTS}</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-cyan font-black shrink-0">3.</span>

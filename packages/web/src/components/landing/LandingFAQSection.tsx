@@ -3,13 +3,13 @@
 import type { ReactNode } from "react";
 import { Accordion } from "@/components/retroui/Accordion";
 import { ParameterValue } from "@/components/shared/ParameterValue";
+import { POINT } from "@/lib/messaging";
 import {
   PRIZE_POOL_HORIZON_MULTIPLE,
   TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
   MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
   TREATY_TRAJECTORY_AVG_INCOME_YEAR_15,
   CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15,
-  VOTE_TOKEN_VALUE,
 } from "@optimitron/data/parameters";
 
 const objections: { id: string; question: string; answer: ReactNode }[] = [
@@ -38,7 +38,7 @@ const objections: { id: string; question: string; answer: ReactNode }[] = [
   {
     id: "share",
     question: "Why should I share this with friends?",
-    answer: <>Everyone would be healthier and <ParameterValue param={{...TREATY_TRAJECTORY_AVG_INCOME_YEAR_15, value: Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value / CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value), unit: ""}} display="integer" />x richer if their governments weren&apos;t spending <ParameterValue param={MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO} display="integer" /> times more on blowing everything up than on clinical trials. But everyone assumes nobody else would agree to a saner allocation — despite the fact that this is what literally everyone wants. That&apos;s called pluralistic ignorance and it&apos;s the only thing standing between you and a cured planet. Each friend who plays proves one more person agrees, earns you a VOTE point worth <ParameterValue param={VOTE_TOKEN_VALUE} display="withUnit" />+, and moves closer to the tipping point. You&apos;re not asking for a favour. You&apos;re showing them the maths.</>,
+    answer: <>Everyone would be healthier and <ParameterValue param={{...TREATY_TRAJECTORY_AVG_INCOME_YEAR_15, value: Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value / CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value), unit: ""}} display="integer" />x richer if their governments weren&apos;t spending <ParameterValue param={MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO} display="integer" /> times more on blowing everything up than on clinical trials. But everyone assumes nobody else would agree to a saner allocation — despite the fact that this is what literally everyone wants. That&apos;s called pluralistic ignorance and it&apos;s the only thing standing between you and a cured planet. Each friend who plays proves one more person agrees, earns you a {POINT} — your share of the prize pool if targets are met — and moves closer to the tipping point. You&apos;re not asking for a favour. You&apos;re showing them the maths.</>,
   },
 ];
 
