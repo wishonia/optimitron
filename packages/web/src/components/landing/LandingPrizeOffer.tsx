@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import { PrizeCalculator } from "@/components/prize/PrizeCalculator";
 import { GameCTA } from "@/components/ui/game-cta";
-import { POINT, REFERRAL, PRIZE_OUTCOMES } from "@/lib/messaging";
+import { TwoOutcomes } from "@/components/prize/TwoOutcomes";
+import { REFERRAL, PRIZE_OUTCOMES } from "@/lib/messaging";
 import {
   fmtParam,
   PRIZE_POOL_HORIZON_MULTIPLE,
@@ -34,54 +35,19 @@ export function LandingPrizeOffer() {
         </div>
 
         {/* Two outcomes */}
-        <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <div className="mb-2 text-xs font-black uppercase">
-              If the Plan Fails
-            </div>
-            <div className="text-4xl font-black">
-              ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} Back
-            </div>
-            <p className="mt-3 text-sm font-bold">
-              Projected principal growth: {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} annually
-              in the Prize fund for 15 years (based on VC-sector diversification).
-              All figures are projections, not guarantees.
-            </p>
-            <div className="mt-4 border-4 border-primary bg-background text-foreground px-3 py-2 inline-block">
-              <span className="text-xs font-black uppercase">
-                vs {fmtParam(CONVENTIONAL_RETIREMENT_RETURN)} in conventional
-                retirement
-              </span>
-            </div>
-          </div>
-
-          <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <div className="mb-2 text-xs font-black uppercase">
-              If the Plan Succeeds
-            </div>
-            <div className="text-4xl font-black">
-              {fmtParam({
-                ...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
-                unit: "USD",
-              })}
-              + Per Capita
-            </div>
-            <p className="mt-3 text-sm font-bold">
-              Everyone gets richer. {PRIZE_OUTCOMES.successShort} Recruiters who brought in verified
-              voters get the biggest share. Everyone else benefits from higher
-              GDP up to{" "}
-              {fmtParam({
-                ...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
-                unit: "USD",
-              })}{" "}
-              per capita lifetime.
-            </p>
-            <div className="mt-4 border-4 border-primary bg-background text-foreground px-3 py-2 inline-block">
-              <span className="text-xs font-black uppercase">
-                Prize share proportional to voters you recruited
-              </span>
-            </div>
-          </div>
+        <div className="mb-12">
+          <TwoOutcomes
+            fail={{
+              title: "If the Plan Fails",
+              metric: <>~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} Back</>,
+              description: <>Projected principal growth: {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} annually in the Prize fund for 15 years (based on VC-sector diversification). All figures are projections, not guarantees.<div className="mt-4 border-4 border-primary bg-background text-foreground px-3 py-2 inline-block"><span className="text-xs font-black uppercase">vs {fmtParam(CONVENTIONAL_RETIREMENT_RETURN)} in conventional retirement</span></div></>,
+            }}
+            success={{
+              title: "If the Plan Succeeds",
+              metric: <>{fmtParam({ ...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD" })}+ Per Capita</>,
+              description: <>Everyone gets richer. {PRIZE_OUTCOMES.successShort} Recruiters who brought in verified voters get the biggest share. Everyone else benefits from higher GDP up to {fmtParam({ ...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD" })} per capita lifetime.<div className="mt-4 border-4 border-primary bg-background text-foreground px-3 py-2 inline-block"><span className="text-xs font-black uppercase">Prize share proportional to voters you recruited</span></div></>,
+            }}
+          />
         </div>
 
         {/* How it works — condensed */}

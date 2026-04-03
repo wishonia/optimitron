@@ -7,16 +7,17 @@ const MAX_DEPTH = 50;
 const DEFAULT_DEPTH = 10;
 
 /**
- * GET /api/storacha/verify/{cid}?depth=10&type=wishocracy-aggregation&jurisdiction=us-federal
+ * GET /api/ipfs/verify/{cid}?depth=10&type=wishocracy-aggregation&jurisdiction=us-federal
  *
  * Verify the history chain of a snapshot CID.
- * No Storacha client needed — reads from the public IPFS gateway.
+ * No provider client needed — reads from the configured public IPFS gateway.
  */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ cid: string }> },
 ) {
   try {
+    const { getIpfsStorageGatewayUrlBuilder } = await import("@/lib/ipfs-storage");
     const { cid } = await params;
     const trimmed = cid.trim();
 
@@ -34,19 +35,20 @@ export async function GET(
     const jurisdictionFilter = searchParams.get("jurisdiction") ?? undefined;
 
     const { verifyHistoryChain } = await import("@optimitron/storage");
+    const gatewayUrlBuilder = await getIpfsStorageGatewayUrlBuilder();
 
     const filter: { type?: string; jurisdictionId?: string } = {};
     if (typeFilter) filter.type = typeFilter;
     if (jurisdictionFilter) filter.jurisdictionId = jurisdictionFilter;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- filter shape matches StoredSnapshotFilter
-    const verification = await verifyHistoryChain(trimmed, depth, fetch, filter as any);
+    const verification = await verifyHistoryChain(trimmed, depth, fetch, filter as any, gatewayUrlBuilder);
 
     return NextResponse.json(verification, {
       headers: { "Cache-Control": "public, s-maxage=600" },
     });
   } catch (error) {
-    console.error("[STORACHA VERIFY] Error:", error);
+    console.error("[IPFS VERIFY] Error:", error);
     return NextResponse.json(
       { error: "Failed to verify snapshot chain." },
       { status: 500 },

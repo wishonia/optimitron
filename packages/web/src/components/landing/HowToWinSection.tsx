@@ -1,13 +1,13 @@
 import { SectionContainer } from "@/components/ui/section-container";
 import { Container } from "@/components/ui/container";
 import { SectionHeader } from "@/components/ui/section-header";
-import { BrutalCard } from "@/components/ui/brutal-card";
 import { ParameterValue } from "@/components/shared/ParameterValue";
 import { HumanityScoreboard } from "@/components/shared/HumanityScoreboard";
 import { GovernmentLeaderboard } from "@/components/shared/GovernmentLeaderboard";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { governmentsLink } from "@/lib/routes";
-import { TAGLINES, POINT } from "@/lib/messaging";
+import { TAGLINES, POINT, PRIZE_OUTCOMES } from "@/lib/messaging";
+import { TwoOutcomes } from "@/components/prize/TwoOutcomes";
 import {
   PRIZE_POOL_HORIZON_MULTIPLE,
   GLOBAL_COORDINATION_TARGET_SUPPORTERS,
@@ -54,28 +54,19 @@ export function HowToWinSection() {
         </div>
 
         {/* Win/Lose outcomes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <BrutalCard bgColor="background" shadowSize={8} padding="lg">
-            <h3 className="text-2xl sm:text-3xl font-black uppercase text-foreground mb-3">
-              If Targets Are Hit
-            </h3>
-            <p className="text-lg sm:text-xl font-bold text-foreground">
-              {POINT} holders get paid from the prize pool. Plus: everyone lives in a world with diseases cured.
-            </p>
-          </BrutalCard>
-
-          <BrutalCard bgColor="yellow" shadowSize={8} padding="lg">
-            <h3 className="text-2xl sm:text-3xl font-black uppercase mb-3">
-              If Targets Are Missed
-            </h3>
-            <p className="text-lg sm:text-xl font-bold">
-              Depositors split the pool.{" "}
-              <span className="font-black underline decoration-4">
-                <ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} />x
-              </span>{" "}
-              return. Still beats a retirement account.
-            </p>
-          </BrutalCard>
+        <div className="mb-8">
+          <TwoOutcomes
+            fail={{
+              title: PRIZE_OUTCOMES.failTitle,
+              metric: <><ParameterValue param={PRIZE_POOL_HORIZON_MULTIPLE} />x RETURN</>,
+              description: "Depositors split the pool. Still beats a retirement account.",
+            }}
+            success={{
+              title: PRIZE_OUTCOMES.successTitle,
+              metric: "PRIZE POOL SPLIT",
+              description: <>{POINT} holders get paid from the prize pool. Plus: everyone lives in a world with diseases cured.</>,
+            }}
+          />
         </div>
 
         {/* Punchline */}

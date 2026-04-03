@@ -68,7 +68,10 @@ const serverSchema = z.object({
   ATPROTO_PASSWORD: z.string().optional(),
   ATPROTO_PDS_URL: z.string().optional(),
 
-  // ── Storacha (IPFS) ──────────────────────────────────────────────
+  // ── IPFS storage ─────────────────────────────────────────────────
+  IPFS_STORAGE_PROVIDER: z.enum(["storacha", "pinata"]).optional(),
+  PINATA_JWT: z.string().optional(),
+  PINATA_GATEWAY: z.string().optional(),
   STORACHA_KEY: z.string().optional(),
   STORACHA_PROOF: z.string().optional(),
 

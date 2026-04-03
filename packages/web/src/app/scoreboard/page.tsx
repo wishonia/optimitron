@@ -1,4 +1,6 @@
 import { GameCTA } from "@/components/ui/game-cta";
+import { StatCardGrid } from "@/components/ui/stat-card";
+import { NumberedStepCard } from "@/components/ui/numbered-step-card";
 import { POINT, POINTS, REFERRAL } from "@/lib/messaging";
 import {
   fmtParam,
@@ -94,47 +96,15 @@ export default async function ScoreboardPage() {
         <h2 className="text-xl font-black font-pixel uppercase tracking-tight text-foreground mb-6 text-center">
           Live Game Status
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-xs font-black uppercase text-muted-foreground">
-              Prize Pool
-            </div>
-            <div className="mt-2 text-2xl font-black text-brutal-pink">
-              ${stats.poolUSD.toLocaleString()}
-            </div>
-            <div className="text-[10px] font-bold text-muted-foreground">
-              grows at {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} over 15yr
-            </div>
-          </div>
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-xs font-black uppercase text-muted-foreground">
-              Verified Voters
-            </div>
-            <div className="mt-2 text-2xl font-black text-brutal-cyan">
-              {stats.verifiedVoters.toLocaleString()}
-            </div>
-            <div className="text-[10px] font-bold text-muted-foreground">
-              of {fmtParam({...TREATY_CAMPAIGN_VOTING_BLOC_TARGET, unit: ""})} target
-            </div>
-          </div>
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-xs font-black uppercase text-muted-foreground">
-              {POINTS} Earned
-            </div>
-            <div className="mt-2 text-2xl font-black text-brutal-yellow">
-              {stats.votePoints.toLocaleString()}
-            </div>
-            <div className="text-[10px] font-bold text-muted-foreground">
-              {REFERRAL.earnOneShort}
-            </div>
-          </div>
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="text-xs font-black uppercase text-muted-foreground mb-2">
-              Time Remaining
-            </div>
-            <CollapseCountdownTimer size="sm" showLabel={false} />
-          </div>
-        </div>
+        <StatCardGrid
+          columns={4}
+          stats={[
+            { label: "Prize Pool", value: `$${stats.poolUSD.toLocaleString()}`, description: `grows at ${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} over 15yr`, size: "sm" },
+            { label: "Verified Voters", value: stats.verifiedVoters.toLocaleString(), description: `of ${fmtParam({...TREATY_CAMPAIGN_VOTING_BLOC_TARGET, unit: ""})} target`, size: "sm" },
+            { label: `${POINTS} Earned`, value: stats.votePoints.toLocaleString(), description: REFERRAL.earnOneShort, size: "sm" },
+            { label: "Time Remaining", value: <CollapseCountdownTimer size="sm" showLabel={false} />, size: "sm" },
+          ]}
+        />
       </section>
 
       {/* How the Game Works */}
@@ -144,45 +114,24 @@ export default async function ScoreboardPage() {
             How to Play
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="border-4 border-primary bg-brutal-pink text-brutal-pink-foreground p-5">
-              <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center font-black mb-3">
-                1
-              </div>
-              <h3 className="font-black uppercase mb-2">
-                Deposit
-              </h3>
-              <p className="text-sm font-bold">
-                Put your papers in the machine. Get PRIZE shares. Your papers
-                grow at {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} over 15 years whether
-                humanity figures it out or not.
-              </p>
-            </div>
-            <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-5">
-              <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center font-black mb-3">
-                2
-              </div>
-              <h3 className="font-black uppercase mb-2">
-                Recruit
-              </h3>
-              <p className="text-sm font-bold">
-                Share your link. {REFERRAL.earnOne}
-                It&apos;s a referral chain where the thing at the top is not
-                dying from preventable diseases.
-              </p>
-            </div>
-            <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-5">
-              <div className="w-10 h-10 bg-foreground text-background flex items-center justify-center font-black mb-3">
-                3
-              </div>
-              <h3 className="font-black uppercase mb-2">
-                Score
-              </h3>
-              <p className="text-sm font-bold">
-                15 years later: metrics hit targets → VOTE holders split the
-                pool. Metrics miss → depositors get ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} back.
-                Nobody loses.
-              </p>
-            </div>
+            <NumberedStepCard
+              step={1}
+              title="Deposit"
+              description={`Put your papers in the machine. Get PRIZE shares. Your papers grow at ${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} over 15 years whether humanity figures it out or not.`}
+              color="pink"
+            />
+            <NumberedStepCard
+              step={2}
+              title="Recruit"
+              description={`Share your link. ${REFERRAL.earnOne} It's a referral chain where the thing at the top is not dying from preventable diseases.`}
+              color="yellow"
+            />
+            <NumberedStepCard
+              step={3}
+              title="Score"
+              description={`15 years later: metrics hit targets → VOTE holders split the pool. Metrics miss → depositors get ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} back. Nobody loses.`}
+              color="cyan"
+            />
           </div>
         </div>
       </section>

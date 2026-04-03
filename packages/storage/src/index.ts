@@ -1,5 +1,6 @@
 export * from './types.js';
 export * from './client.js';
+export * from './pinata.js';
 export * from './wishocracy-store.js';
 export * from './analysis-store.js';
 export * from './health-analysis-store.js';

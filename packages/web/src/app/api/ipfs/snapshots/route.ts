@@ -11,28 +11,28 @@ const VALID_TYPES = new Set([
 ]);
 
 /**
- * GET /api/storacha/snapshots?type=wishocracy-aggregation&jurisdiction=us-federal
+ * GET /api/ipfs/snapshots?type=wishocracy-aggregation&jurisdiction=us-federal
  *
- * Lists recent snapshots stored in the project's Storacha space.
+ * Lists recent snapshots stored in the configured IPFS storage provider.
  * Public endpoint — the data on IPFS is already public.
  */
 export async function GET(request: NextRequest) {
   try {
-    const { isStorachaConfigured, getStorachaClient } = await import(
-      "@/lib/storacha"
+    const { isIpfsStorageConfigured, getIpfsStorageClient, getIpfsStorageGatewayUrlBuilder } = await import(
+      "@/lib/ipfs-storage"
     );
 
-    if (!isStorachaConfigured()) {
+    if (!isIpfsStorageConfigured()) {
       return NextResponse.json(
-        { error: "Storacha not configured" },
+        { error: "IPFS storage not configured" },
         { status: 503 },
       );
     }
 
-    const client = await getStorachaClient();
+    const client = await getIpfsStorageClient();
     if (!client) {
       return NextResponse.json(
-        { error: "Storacha client unavailable" },
+        { error: "IPFS storage client unavailable" },
         { status: 503 },
       );
     }
@@ -48,6 +48,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const gatewayUrlBuilder = await getIpfsStorageGatewayUrlBuilder();
+
     const { listUploadCids, tryRetrieveStoredSnapshot } = await import(
       "@optimitron/storage"
     );
@@ -56,7 +58,7 @@ export async function GET(request: NextRequest) {
 
     const results = await Promise.all(
       cids.map(async (cid) => {
-        const snapshot = await tryRetrieveStoredSnapshot(cid);
+        const snapshot = await tryRetrieveStoredSnapshot(cid, fetch, gatewayUrlBuilder);
         if (!snapshot) return null;
         if (typeFilter && snapshot.type !== typeFilter) return null;
         if (jurisdictionFilter && snapshot.jurisdictionId !== jurisdictionFilter)
@@ -74,7 +76,7 @@ export async function GET(request: NextRequest) {
       { headers: { "Cache-Control": "public, s-maxage=300" } },
     );
   } catch (error) {
-    console.error("[STORACHA SNAPSHOTS] Error:", error);
+    console.error("[IPFS SNAPSHOTS] Error:", error);
     return NextResponse.json(
       { error: "Failed to list snapshots." },
       { status: 500 },

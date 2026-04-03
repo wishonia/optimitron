@@ -1,6 +1,7 @@
 import {
   findLatestStoredSnapshot,
   retrieveStoredSnapshot,
+  type GatewayUrlBuilder,
   type StorachaListClient,
   type StoredSnapshotFilter,
 } from './client.js';
@@ -21,14 +22,16 @@ export async function getLatest(
   client: StorachaListClient,
   fetchImpl: typeof fetch = fetch,
   filter: StoredSnapshotFilter = {},
+  gatewayUrlBuilder?: GatewayUrlBuilder,
 ): Promise<string | null> {
-  return (await findLatestStoredSnapshot(client, fetchImpl, filter))?.cid ?? null;
+  return (await findLatestStoredSnapshot(client, fetchImpl, filter, {}, gatewayUrlBuilder))?.cid ?? null;
 }
 
 export async function getHistory(
   latestCid: string,
   depth: number,
   fetchImpl: typeof fetch = fetch,
+  gatewayUrlBuilder?: GatewayUrlBuilder,
 ): Promise<string[]> {
   const history: string[] = [];
   const visited = new Set<string>();
@@ -41,7 +44,7 @@ export async function getHistory(
 
     visited.add(currentCid);
     history.push(currentCid);
-    const snapshot = await retrieveStoredSnapshot(currentCid, fetchImpl);
+    const snapshot = await retrieveStoredSnapshot(currentCid, fetchImpl, gatewayUrlBuilder);
     currentCid = snapshot.previousCid;
   }
 
@@ -53,6 +56,7 @@ export async function verifyHistoryChain(
   depth: number,
   fetchImpl: typeof fetch = fetch,
   filter: StoredSnapshotFilter = {},
+  gatewayUrlBuilder?: GatewayUrlBuilder,
 ): Promise<SnapshotChainVerification> {
   const errors: string[] = [];
   const records: VerifiedSnapshotUpload[] = [];
@@ -66,7 +70,7 @@ export async function verifyHistoryChain(
     }
 
     visited.add(currentCid);
-    const snapshot = await retrieveStoredSnapshot(currentCid, fetchImpl);
+    const snapshot = await retrieveStoredSnapshot(currentCid, fetchImpl, gatewayUrlBuilder);
     records.push({ cid: currentCid, depth: records.length, snapshot });
 
     if (filter.type && snapshot.type !== filter.type) {

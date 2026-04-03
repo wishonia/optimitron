@@ -10,6 +10,7 @@ export type StorachaClient = Client;
 export type StorachaCreateOptions = Parameters<typeof Storacha.create>[0];
 export type StorachaEmail = `${string}@${string}`;
 export type StorachaDid = `did:${string}:${string}`;
+export type GatewayUrlBuilder = (cid: string) => string;
 
 export interface UploadListItemLike {
   root: unknown;
@@ -30,6 +31,13 @@ export interface StorachaListClient {
       list(options?: { cursor?: string; size?: number; signal?: AbortSignal }): Promise<UploadListResponseLike>;
     };
   };
+}
+
+export type IpfsUploadClient = StorachaUploadClient;
+export type IpfsListClient = StorachaListClient;
+
+export interface GatewayUrlCapable {
+  gatewayUrlBuilder?: GatewayUrlBuilder;
 }
 
 export interface UploadListOptions {
@@ -93,14 +101,55 @@ function selectLatestSnapshotUpload(
   return [...candidates].sort(compareSnapshotUploads)[0] ?? null;
 }
 
+export function buildIpfsGatewayUrl(cid: string, template: string): string {
+  const trimmedTemplate = template.trim();
+  if (!trimmedTemplate) {
+    throw new Error('Gateway template is required');
+  }
+
+  if (trimmedTemplate.includes('{cid}')) {
+    return trimmedTemplate.replaceAll('{cid}', cid);
+  }
+
+  const normalizedTemplate = trimmedTemplate.replace(/\/+$/, '');
+  if (/\/ipfs$/i.test(normalizedTemplate)) {
+    return `${normalizedTemplate}/${cid}`;
+  }
+
+  return `${normalizedTemplate}/ipfs/${cid}`;
+}
+
+export function buildPublicIpfsGatewayUrl(cid: string): string {
+  return buildIpfsGatewayUrl(cid, 'https://ipfs.io');
+}
+
 export function buildStorachaGatewayUrl(cid: string): string {
-  return `https://${cid}.ipfs.storacha.link`;
+  return buildIpfsGatewayUrl(cid, 'https://{cid}.ipfs.storacha.link');
+}
+
+export function buildPinataGatewayUrl(cid: string, gateway?: string): string {
+  if (!gateway) {
+    return buildPublicIpfsGatewayUrl(cid);
+  }
+
+  const normalizedGateway = /^https?:\/\//i.test(gateway)
+    ? gateway
+    : `https://${gateway}`;
+
+  return buildIpfsGatewayUrl(cid, normalizedGateway);
 }
 
 export function createJsonBlob(value: unknown): Blob {
   return new Blob([JSON.stringify(value, null, 2)], {
     type: 'application/json',
   });
+}
+
+function resolveGatewayUrlBuilder(
+  client?: Partial<GatewayUrlCapable> | null,
+  fallback: GatewayUrlBuilder = buildStorachaGatewayUrl,
+): GatewayUrlBuilder {
+  return client?.gatewayUrlBuilder ?? fallback;
 }
 
 export async function createStorachaClient(
@@ -190,8 +239,9 @@ export async function retrieveJson<T>(
   cid: string,
   schema: { parse(value: unknown): T },
   fetchImpl: typeof fetch = fetch,
+  gatewayUrlBuilder: GatewayUrlBuilder = buildStorachaGatewayUrl,
 ): Promise<T> {
-  const response = await fetchImpl(buildStorachaGatewayUrl(cid));
+  const response = await fetchImpl(gatewayUrlBuilder(cid));
   if (!response.ok) {
     throw new Error(`Storacha retrieve failed with ${response.status}`);
   }
@@ -201,15 +251,17 @@ export async function retrieveJson<T>(
 export async function retrieveStoredSnapshot(
   cid: string,
   fetchImpl: typeof fetch = fetch,
+  gatewayUrlBuilder: GatewayUrlBuilder = buildStorachaGatewayUrl,
 ): Promise<StoredSnapshot> {
-  return retrieveJson(cid, StoredSnapshotSchema, fetchImpl);
+  return retrieveJson(cid, StoredSnapshotSchema, fetchImpl, gatewayUrlBuilder);
 }
 
 export async function tryRetrieveStoredSnapshot(
   cid: string,
   fetchImpl: typeof fetch = fetch,
+  gatewayUrlBuilder: GatewayUrlBuilder = buildStorachaGatewayUrl,
 ): Promise<StoredSnapshot | null> {
-  const response = await fetchImpl(buildStorachaGatewayUrl(cid));
+  const response = await fetchImpl(gatewayUrlBuilder(cid));
   if (!response.ok) {
     throw new Error(`Storacha retrieve failed with ${response.status}`);
   }
@@ -243,16 +295,17 @@ export async function listUploadCids(
 }
 
 export async function findLatestStoredSnapshot(
-  client: StorachaListClient,
+  client: StorachaListClient & Partial<GatewayUrlCapable>,
   fetchImpl: typeof fetch = fetch,
   filter: StoredSnapshotFilter = {},
   options: UploadListOptions = {},
+  gatewayUrlBuilder = resolveGatewayUrlBuilder(client),
 ): Promise<StoredSnapshotUpload<StoredSnapshot> | null> {
   const uploadCids = await listUploadCids(client, options);
   const snapshotUploads = (
     await Promise.all(
       uploadCids.map(async (cid) => {
-        const snapshot = await tryRetrieveStoredSnapshot(cid, fetchImpl);
+        const snapshot = await tryRetrieveStoredSnapshot(cid, fetchImpl, gatewayUrlBuilder);
         return snapshot ? { cid, snapshot } : null;
       }),
     )
@@ -265,10 +318,11 @@ export async function findLatestStoredSnapshot(
 }
 
 export async function getLatestUploadCid(
-  client: StorachaListClient,
+  client: StorachaListClient & Partial<GatewayUrlCapable>,
   fetchImpl: typeof fetch = fetch,
   filter: StoredSnapshotFilter = {},
   options: UploadListOptions = {},
+  gatewayUrlBuilder = resolveGatewayUrlBuilder(client),
 ): Promise<string | null> {
-  return (await findLatestStoredSnapshot(client, fetchImpl, filter, options))?.cid ?? null;
+  return (await findLatestStoredSnapshot(client, fetchImpl, filter, options, gatewayUrlBuilder))?.cid ?? null;
 }

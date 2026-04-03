@@ -27,6 +27,8 @@ export const REFERRAL = {
 } as const;
 
 export const PRIZE_OUTCOMES = {
+  failTitle: "If Targets Are Missed",
+  successTitle: "If Targets Are Hit",
   /** Success scenario — one-liner */
   successShort: `${POINT} holders claim proportional shares of the prize pool.`,
 } as const;

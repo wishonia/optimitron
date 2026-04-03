@@ -7,7 +7,7 @@ export type StatCardColor = "yellow" | "pink" | "cyan" | "green" | "default"
 export type StatCardSize = "sm" | "md" | "lg"
 
 export interface StatCardProps {
-  value: string | number
+  value: React.ReactNode
   label: string
   description?: string
   icon?: LucideIcon

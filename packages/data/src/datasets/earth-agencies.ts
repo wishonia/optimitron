@@ -15,6 +15,7 @@ import type { TimePoint, OutcomeSeries, AgencyGrade } from "./agency-performance
 import type { AgencyHistoricalTrend } from "./agency-historical-trends";
 import { US_AGENCY_PERFORMANCE } from "./agency-performance";
 import { ALL_HISTORICAL_TRENDS } from "./agency-historical-trends";
+import { WISHONIA_AGENCIES } from "./wishonia-agencies";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -44,29 +45,15 @@ export interface EarthAgency {
 
 // ---------------------------------------------------------------------------
 // Mapping: Earth agency ID → Wishonia agency ID
+// Derived from the canonical `replaces` field in wishonia-agencies.ts
 // ---------------------------------------------------------------------------
 
-const replacedByMap: Record<string, string> = {
-  irs: "dirs",
-  fed: "dfed",
-  nih: "dih",
-  fda: "dih",
-  hhs: "dih",
-  dea: "dih",
-  va: "dih",
-  dod: "ddod",
-  tsa: "ddod",
-  state: "ddod",
-  doed: "domb",
-  ice: "dcensus",
-  bop: "dcbo",
-  epa: "dcbo",
-  fbi: "dgao",
-  cyber: "dgao",
-  usda: "dcbo",
-  hud: "domb",
-  osha: "dcbo",
-};
+const replacedByMap = new Map<string, string>();
+for (const wa of WISHONIA_AGENCIES) {
+  for (const earthId of wa.replaces) {
+    replacedByMap.set(earthId, wa.id);
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Historical ID mapping — the historical trends file uses slightly different
@@ -141,7 +128,7 @@ export const EARTH_AGENCIES: EarthAgency[] = US_AGENCY_PERFORMANCE.map(
       agency.historical = historical;
     }
 
-    const replacement = replacedByMap[ap.agencyId];
+    const replacement = replacedByMap.get(ap.agencyId);
     if (replacement) {
       agency.replacedBy = replacement;
     }

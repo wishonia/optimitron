@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
+  buildPinataGatewayUrl,
   buildJurisdictionSpaceName,
   buildStorachaGatewayUrl,
   createJurisdictionSpace,
@@ -24,6 +25,18 @@ describe('storage client helpers', () => {
   it('builds Storacha gateway URLs', () => {
     expect(buildStorachaGatewayUrl('bafytest')).toBe(
       'https://bafytest.ipfs.storacha.link',
+    );
+  });
+
+  it('builds Pinata gateway URLs from a dedicated gateway', () => {
+    expect(buildPinataGatewayUrl('bafytest', 'demo-gateway.mypinata.cloud')).toBe(
+      'https://demo-gateway.mypinata.cloud/ipfs/bafytest',
+    );
+  });
+
+  it('falls back to a public IPFS gateway when no Pinata gateway is provided', () => {
+    expect(buildPinataGatewayUrl('bafytest')).toBe(
+      'https://ipfs.io/ipfs/bafytest',
     );
   });
 

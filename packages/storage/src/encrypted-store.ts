@@ -1,6 +1,11 @@
 import type { webcrypto } from 'node:crypto';
 import { encryptJson, decryptJson } from './crypto.js';
-import { uploadJson, buildStorachaGatewayUrl, type StorachaUploadClient } from './client.js';
+import {
+  uploadJson,
+  buildStorachaGatewayUrl,
+  type GatewayUrlBuilder,
+  type StorachaUploadClient,
+} from './client.js';
 import { EncryptedPayloadSchema } from './types.js';
 
 export async function uploadEncryptedJson(
@@ -17,8 +22,9 @@ export async function retrieveEncryptedJson<T>(
   key: webcrypto.CryptoKey,
   schema: { parse(value: unknown): T },
   fetchImpl: typeof fetch = fetch,
+  gatewayUrlBuilder: GatewayUrlBuilder = buildStorachaGatewayUrl,
 ): Promise<T> {
-  const response = await fetchImpl(buildStorachaGatewayUrl(cid));
+  const response = await fetchImpl(gatewayUrlBuilder(cid));
   if (!response.ok) {
     throw new Error(`Storacha retrieve failed with ${response.status}`);
   }

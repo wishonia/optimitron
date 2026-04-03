@@ -7,7 +7,7 @@ const isStaticExport = process.env.NEXT_OUTPUT_EXPORT === 'true';
 
 const nextConfig = {
   transpilePackages: ['@optimitron/data'],
-  serverExternalPackages: ['@storacha/client', 'multiformats'],
+  serverExternalPackages: ['@storacha/client', 'multiformats', 'pinata'],
   output: isStaticExport ? 'export' : undefined,
   basePath: isStaticExport ? '/optimitron' : '',
   outputFileTracingRoot: path.resolve(__dirname, "../.."),
@@ -37,6 +37,7 @@ const nextConfig = {
         if (
           /^@optimitron\/storage(\/|$)/.test(request) ||
           /^@storacha\//.test(request) ||
+          /^pinata(\/|$)/.test(request) ||
           /^multiformats(\/|$)/.test(request)
         ) {
           return callback(null, "node-commonjs " + request);

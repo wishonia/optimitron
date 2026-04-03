@@ -42,6 +42,7 @@ async function getPoolStats() {
 }
 import { GameCTA } from "@/components/ui/game-cta";
 import { DisclaimerBanner } from "@/components/ui/disclaimer-banner";
+import { TwoOutcomes } from "@/components/prize/TwoOutcomes";
 import { POINT, POINTS, REFERRAL, PRIZE_OUTCOMES } from "@/lib/messaging";
 
 export const metadata = getRouteMetadata(prizeLink);
@@ -154,42 +155,19 @@ export default async function PrizePage() {
 
       {/* GAME OVER CARDS — The Two Outcomes */}
       <section className="mb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <p className="font-pixel text-xs font-black uppercase tracking-[0.2em] mb-2 opacity-80">
-              Game Over — You Lose
-            </p>
-            <div className="font-mono text-3xl font-black mb-3">
-              ~{poolMultiple} BACK
-            </div>
-            <p className="text-sm font-bold leading-relaxed">
-              Humanity stays stupid. Metrics miss the targets after 15 years.
-              Projected outcome: ~{poolReturn} annual growth
-              for 15 years (based on VC-sector diversification).
-            </p>
-          </div>
-          <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <p className="font-pixel text-xs font-black uppercase tracking-[0.2em] mb-2 opacity-80">
-              Game Over — You Win
-            </p>
-            <div className="font-mono text-3xl font-black mb-3">
-              {incomeGain}+ INCOME
-            </div>
-            <p className="text-sm font-bold leading-relaxed">
-              Humanity gets its act together. You lose the deposit. But your
-              income just went up {incomeGain} per capita lifetime
-              and you gained {haleGain} extra healthy years. You won&apos;t miss
-              the deposit.
-            </p>
-          </div>
-        </div>
-        <div className="border-4 border-primary border-t-0 bg-background p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm font-bold text-foreground text-center">
-            Recruit voters too? You earn {POINTS}.
-            {PRIZE_OUTCOMES.successShort}
-            <span className="font-black text-brutal-pink"> Dominant assurance design.</span>
-          </p>
-        </div>
+        <TwoOutcomes
+          fail={{
+            title: "Game Over — You Lose",
+            metric: <>~{poolMultiple} BACK</>,
+            description: <>Humanity stays stupid. Metrics miss the targets after 15 years. Projected outcome: ~{poolReturn} annual growth for 15 years (based on VC-sector diversification).</>,
+          }}
+          success={{
+            title: "Game Over — You Win",
+            metric: <>{incomeGain}+ INCOME</>,
+            description: <>Humanity gets its act together. You lose the deposit. But your income just went up {incomeGain} per capita lifetime and you gained {haleGain} extra healthy years. You won&apos;t miss the deposit.</>,
+          }}
+          footer={<>Recruit voters too? You earn {POINTS}. {PRIZE_OUTCOMES.successShort}<span className="font-black text-brutal-pink"> Dominant assurance design.</span></>}
+        />
       </section>
 
       {/* INSERT COIN — Deposit Section */}

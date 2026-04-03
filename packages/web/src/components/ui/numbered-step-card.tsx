@@ -6,8 +6,10 @@ export type StepCardColor = "cyan" | "pink" | "yellow" | "green" | "purple" | "d
 
 export interface NumberedStepCardProps {
   step: number
+  /** Override the number badge with a custom label (e.g. "LEVEL 2", "BOSS LEVEL") */
+  label?: string
   title: string
-  description: string
+  description: React.ReactNode
   color?: StepCardColor
   className?: string
 }
@@ -23,6 +25,7 @@ const colorClasses: Record<StepCardColor, string> = {
 
 export function NumberedStepCard({
   step,
+  label,
   title,
   description,
   color = "default",
@@ -38,7 +41,7 @@ export function NumberedStepCard({
     >
       <div className="flex items-start gap-4 sm:gap-6">
         <div className="bg-primary text-background w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-black text-xl sm:text-2xl flex-shrink-0">
-          {step}
+          {label ?? step}
         </div>
         <div>
           <h3 className="font-black text-xl sm:text-2xl mb-3">{title}</h3>

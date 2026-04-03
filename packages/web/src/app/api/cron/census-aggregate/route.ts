@@ -10,7 +10,7 @@ export const runtime = "nodejs";
  *
  * Aggregates welfare metrics per jurisdiction from census profile data
  * and daily check-in measurements. Applies k-anonymity (min 5 users).
- * Publishes results to Storacha if configured.
+ * Publishes results to IPFS if configured.
  */
 export async function GET(request: Request) {
   if (!isAuthorizedCronRequest(request)) {
@@ -20,12 +20,12 @@ export async function GET(request: Request) {
   try {
     const result = await aggregateCensusData();
 
-    // Publish to Storacha if configured
-    let storachaCid: string | undefined;
+    // Publish to IPFS if configured
+    let ipfsCid: string | undefined;
     if (result.jurisdictions.length > 0) {
       try {
-        const { getStorachaClient } = await import("@/lib/storacha");
-        const client = await getStorachaClient();
+        const { getIpfsStorageClient } = await import("@/lib/ipfs-storage");
+        const client = await getIpfsStorageClient();
 
         if (client) {
           const { uploadJson } = await import("@optimitron/storage");
@@ -36,14 +36,14 @@ export async function GET(request: Request) {
             totalParticipants: result.totalParticipants,
             totalVerified: result.totalVerified,
           };
-          storachaCid = await uploadJson(client, snapshot);
+          ipfsCid = await uploadJson(client, snapshot);
         }
-      } catch (storachaError) {
-        console.error("[CENSUS AGGREGATE] Storacha publish failed:", storachaError);
+      } catch (ipfsError) {
+        console.error("[CENSUS AGGREGATE] IPFS publish failed:", ipfsError);
       }
     }
 
-    return NextResponse.json({ ...result, storachaCid });
+    return NextResponse.json({ ...result, ipfsCid });
   } catch (error) {
     console.error("[CENSUS AGGREGATE] Error:", error);
     return NextResponse.json(

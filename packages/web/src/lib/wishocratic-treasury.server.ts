@@ -72,7 +72,7 @@ export interface PostWeightsResult {
   totalAllocations: number;
   itemCount: number;
   txHash?: string;
-  storachaCid?: string;
+  ipfsCid?: string;
   error?: string;
 }
 
@@ -106,13 +106,13 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
     };
   }
 
-  // ── Publish aggregation snapshot to Storacha (IPFS) ────────────────
-  let storachaCid: string | undefined;
+  // ── Publish aggregation snapshot to IPFS ───────────────────────────
+  let ipfsCid: string | undefined;
   try {
-    const { getStorachaClient } = await import("@/lib/storacha");
-    const storachaClient = await getStorachaClient();
+    const { getIpfsStorageClient } = await import("@/lib/ipfs-storage");
+    const ipfsClient = await getIpfsStorageClient();
 
-    if (storachaClient) {
+    if (ipfsClient) {
       const { storeLinkedAggregation } = await import("@optimitron/storage");
 
       const preferenceWeights = Object.entries(summary.averageAllocations)
@@ -123,18 +123,18 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
           label: WISHOCRATIC_ITEMS[itemId as WishocraticItemId]?.name,
         }));
 
-      const result = await storeLinkedAggregation(storachaClient, {
+      const result = await storeLinkedAggregation(ipfsClient, {
         jurisdictionId: "us-federal",
         participantCount: summary.totalUsers,
         verifiedParticipantCount: summary.verifiedUsers,
         preferenceWeights,
       });
 
-      storachaCid = result.cid;
-      logger.info(`Aggregation snapshot published to Storacha: ${storachaCid}`);
+      ipfsCid = result.cid;
+      logger.info(`Aggregation snapshot published to IPFS: ${ipfsCid}`);
     }
-  } catch (storachaError) {
-    logger.error("Failed to publish to Storacha — continuing", storachaError);
+  } catch (ipfsError) {
+    logger.error("Failed to publish to IPFS — continuing", ipfsError);
   }
 
   const wishocraticTreasuryAddress = serverEnv.WISHOCRATIC_TREASURY_ADDRESS as `0x${string}` | undefined;
@@ -161,7 +161,7 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
       totalParticipants: summary.totalUsers,
       totalAllocations: summary.totalAllocations,
       itemCount: ids.length,
-      storachaCid,
+      ipfsCid,
     };
   }
 
@@ -201,7 +201,7 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
       totalAllocations: summary.totalAllocations,
       itemCount: ids.length,
       txHash,
-      storachaCid,
+      ipfsCid,
     };
   } catch (error) {
     logger.error("Failed to post weights on-chain", error);
@@ -210,7 +210,7 @@ export async function postWishocraticWeightsOnChain(): Promise<PostWeightsResult
       totalParticipants: summary.totalUsers,
       totalAllocations: summary.totalAllocations,
       itemCount: ids.length,
-      storachaCid,
+      ipfsCid,
       error: String(error),
     };
   }
