@@ -135,14 +135,14 @@ export function PrizeCalculator() {
             {formatUSD(failReturn)}
           </div>
           <div className="text-sm font-bold mb-3">
-            +{formatUSD(failProfit)} profit ({fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} your deposit)
+            +{formatUSD(failProfit)} projected return ({fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)})
           </div>
           <div className="text-xs font-bold space-y-1">
             <p>
               {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} annual Prize fund return × 15 years.
             </p>
             <p className="font-bold pt-1">
-              Your &ldquo;worst case&rdquo; is {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} your money.
+              Projected return if thresholds not met: {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)}.
             </p>
           </div>
         </motion.div>
@@ -177,20 +177,12 @@ export function PrizeCalculator() {
         </motion.div>
       </div>
 
-      {/* Break-even */}
+      {/* Disclaimer */}
       <div className="p-4 border-4 border-primary bg-muted">
-        <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4 mb-2">
-          <span className="text-xs font-black uppercase text-muted-foreground">
-            Break-even probability
-          </span>
-          <span className="text-lg font-black text-foreground">
-            0.0067%
-          </span>
-        </div>
         <p className="text-xs text-muted-foreground font-bold">
-          That&apos;s 1 in 15,000. If you believe there&apos;s even a 0.0067% chance
-          the 1% Treaty happens and the metrics move, your expected value is positive.
-          And if it doesn&apos;t work, you still get {formatUSD(failReturn)} back.
+          All figures are hypothetical projections based on VC-sector
+          diversification of the Prize fund — not guarantees. This is for
+          entertainment and educational purposes only.
         </p>
       </div>
     </div>

@@ -35,7 +35,7 @@ export default function ContributePage() {
                 Deposit
               </h3>
               <p className="text-lg font-bold text-foreground mb-4">
-                On your planet, &ldquo;investment&rdquo; means gambling but wearing a suit. This one&apos;s different. Plan works? VOTE holders split the pool. Plan fails? You get 11x back. Your worst case is multiplying your money.
+                On your planet, &ldquo;investment&rdquo; means gambling but wearing a suit. This one&apos;s different. Plan works? VOTE holders split the pool. Plan fails? Projected 11x return (based on VC-sector diversification). All figures are projections, not guarantees.
               </p>
               <GameCTA href={ROUTES.prize} variant="secondary">
                 Insert Coin

@@ -35,7 +35,7 @@ const TEMPLATES = [
     label: "The Math",
     color: "text-brutal-pink",
     text: (url: string) =>
-      `The break-even probability shift for an Incentive Alignment Bond is 0.0067%. ${DEATHS_DAILY} people die daily from preventable causes. A bond that funds pragmatic clinical trials needs a 0.0067% chance of working to be positive EV. Worst case: ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} from the Prize fund. ${url}`,
+      `${DEATHS_DAILY} people die daily from preventable causes. A dominant assurance bond that funds pragmatic clinical trials. Projected return if thresholds not met: ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} (based on VC-sector diversification). ${url}`,
   },
   {
     label: "Personal",

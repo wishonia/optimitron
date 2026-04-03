@@ -92,7 +92,7 @@ export function PrizeWorkedExample() {
                 $<CountUp value={failReturn} duration={1.5} />
               </p>
               <p className="text-sm font-bold text-foreground mt-2">
-                Your &ldquo;worst case&rdquo;
+                Projected if thresholds missed
               </p>
             </BrutalCard>
           </motion.div>
@@ -120,17 +120,16 @@ export function PrizeWorkedExample() {
         </div>
       </div>
 
-      {/* Break-even */}
+      {/* Disclaimer */}
       <motion.div
         initial={reduced ? {} : { opacity: 0, y: 15 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.4, delay: 1.4 }}
       >
         <BrutalCard shadowSize={4} className="max-w-md">
-          <p className="text-lg font-black text-foreground">
-            Break-even probability:{" "}
-            <span className="text-brutal-pink">0.0067%</span>{" "}
-            <span className="text-sm font-bold text-muted-foreground">(1 in 15,000)</span>
+          <p className="text-sm font-bold text-muted-foreground">
+            All figures are hypothetical projections based on VC-sector
+            diversification — not guarantees.
           </p>
         </BrutalCard>
       </motion.div>

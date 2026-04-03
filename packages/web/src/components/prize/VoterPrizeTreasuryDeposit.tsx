@@ -360,7 +360,7 @@ export function VoterPrizeTreasuryDeposit() {
         {!isConnected ? (
           <div className="space-y-3">
             <p className="text-xs font-bold text-muted-foreground mb-4">
-              Connect your wallet. Your deposit earns yield in the Earth Optimization Prize fund while
+              Connect your wallet. Your deposit would earn projected yield in the Earth Optimization Prize fund (based on VC-sector diversification) while
               it waits for your species to get its act together.
             </p>
             {connectors.length > 0 && (
@@ -619,7 +619,7 @@ export function VoterPrizeTreasuryDeposit() {
           </h3>
           <p className="text-xs font-bold mb-4">
             The prize period has ended and outcome thresholds were not met.
-            You can reclaim your full contribution plus all accrued interest.
+            You can reclaim your full contribution plus projected accrued returns.
           </p>
           <div className="flex items-center gap-4">
             <div>

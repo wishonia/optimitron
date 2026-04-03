@@ -6,8 +6,8 @@ import {
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
-  PRIZE_POOL_HORIZON_MULTIPLE,
-  PRIZE_POOL_ANNUAL_RETURN,
+  VICTORY_BOND_ANNUAL_RETURN_PCT,
+  VICTORY_BOND_ANNUAL_PAYOUT,
   TRADITIONAL_PHASE3_COST_PER_PATIENT,
   EFFICACY_LAG_YEARS,
 } from "@optimitron/data/parameters";
@@ -22,8 +22,8 @@ import { GameCTA } from "@/components/ui/game-cta";
 
 export const metadata = getRouteMetadata(iabLink);
 
-const poolMultiple = fmtParam(PRIZE_POOL_HORIZON_MULTIPLE);
-const poolReturn = fmtParam(PRIZE_POOL_ANNUAL_RETURN);
+const bondReturnPct = fmtParam(VICTORY_BOND_ANNUAL_RETURN_PCT);
+const bondAnnualPayout = fmtParam({...VICTORY_BOND_ANNUAL_PAYOUT, unit: "USD"});
 const dysfunctionTaxFormatted = fmtParam(POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL);
 
 export default function IABPage() {
@@ -47,10 +47,11 @@ export default function IABPage() {
             >
               Earth Optimization Prize referendum
             </NavItemLink>{" "}
-            proves demand, IABs raise ~$1B to lobby for the 1% Treaty. This is
-            a dominant assurance contract: plan fails? ~{poolMultiple} your
-            money back. Plan succeeds? 10% of {fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD"})}/year
-            in treaty revenue flows to bondholders. Everyone else gets higher GDP.
+            proves demand, IABs raise ~$1B to lobby for the 1% Treaty.
+            Your money funds the campaign. Treaty succeeds? {bondReturnPct} projected
+            annual returns as {bondAnnualPayout}/year in treaty revenue flows
+            to bondholders. Treaty fails? The money was spent trying.
+            That&apos;s how investments work.
           </p>
           <p className="text-muted-foreground font-bold leading-relaxed">
             IABs are Phase 2. Phase 1 is proving demand via the referendum.
@@ -59,7 +60,7 @@ export default function IABPage() {
           </p>
         </div>
         <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-          <GameCTA href="#invest" variant="primary">Buy IABs</GameCTA>
+          <GameCTA href="#how-it-works" variant="primary">Learn About IABs</GameCTA>
           <GameCTA href="https://iab.warondisease.org" variant="outline" external>Read the Paper</GameCTA>
           <GameCTA href="/prize" variant="cyan">Phase 1: Prize</GameCTA>
         </div>
@@ -105,17 +106,17 @@ export default function IABPage() {
                   10%
                 </span>
                 <h3 className="font-black uppercase">
-                  Bondholder Returns
+                  Projected Bondholder Returns
                 </h3>
               </div>
               <p className="text-sm font-bold leading-relaxed">
                 Your grandma bought war bonds that paid 4% and got dead Nazis.
-                You buy these and get 272% returns and dead diseases. Grandma
+                These project {bondReturnPct} returns and dead diseases. Grandma
                 would be furious if she hadn&apos;t died of cancer.
               </p>
               <div className="mt-3 border-4 border-primary bg-background px-3 py-2 inline-block">
                 <span className="text-xs font-black uppercase text-muted-foreground">
-                  ~{fmtParam({...TREATY_ANNUAL_FUNDING, unit: "USD", value: TREATY_ANNUAL_FUNDING.value * 0.1})}/year to investors
+                  ~{bondAnnualPayout}/year to investors
                 </span>
               </div>
             </div>
@@ -155,10 +156,10 @@ export default function IABPage() {
         </div>
       </section>
 
-      {/* Dominant Assurance */}
+      {/* Risk & Reward */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
-          Dominant Assurance — You Cannot Lose
+          Risk &amp; Reward
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -166,11 +167,13 @@ export default function IABPage() {
               Treaty Fails
             </div>
             <div className="text-2xl font-black">
-              ~{poolMultiple} Your Money Back
+              Money Was Spent
             </div>
             <p className="text-xs font-bold mt-2">
-              Principal + 15 years of Prize fund returns ({poolReturn} annually) returned to you.
-              Your &ldquo;worst case&rdquo; is multiplying your money.
+              Your investment funded the lobbying campaign — lobbyists, Super PACs,
+              awareness. If the treaty doesn&apos;t pass, the money was spent trying.
+              This is a real investment, not a savings account. The risk is the price
+              of playing for {bondReturnPct} annual returns.
             </p>
           </div>
           <div className="border-4 border-primary bg-brutal-cyan text-brutal-cyan-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -178,30 +181,32 @@ export default function IABPage() {
               Treaty Succeeds
             </div>
             <div className="text-2xl font-black">
-              {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}
+              {bondReturnPct} Annual Returns
             </div>
             <p className="text-xs font-bold mt-2">
-              Per-capita lifetime income gain. Turns out when you stop spending
-              papers on destruction and start spending them on production,
-              things get produced. Bondholders also collect 10% of treaty
-              revenue. Forever. Which is a long time. Unless you die of
-              preventable disease. Which you&apos;re fixing. So it works out.
+              {bondAnnualPayout}/year flows to bondholders who funded a $1B
+              campaign. Plus per-capita lifetime income gains of{" "}
+              {`${fmtParam({...TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}–${fmtParam({...WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA, unit: "USD"})}`}.
+              Turns out when you stop spending papers on destruction and start
+              spending them on production, things get produced.
             </p>
           </div>
         </div>
         <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-sm text-foreground font-bold leading-relaxed">
             You are currently paying {dysfunctionTaxFormatted} per year in
-            political dysfunction tax. The break-even on an IAB requires a
-            0.0067% chance of that changing. The arithmetic here is not subtle.
+            political dysfunction tax. The break-even probability on an IAB is
+            0.0067%. If you believe there&apos;s even a 1-in-15,000 chance of the
+            treaty passing, the expected value is positive. The arithmetic is
+            not subtle.
           </p>
         </div>
       </section>
 
       {/* Calculator */}
-      <section className="mb-16">
+      <section id="how-it-works" className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
-          Calculate Your Returns
+          Projected Return Scenarios
         </h2>
         <div className="border-4 border-primary bg-background p-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <Suspense>
@@ -267,7 +272,7 @@ export default function IABPage() {
               </li>
               <li className="flex gap-2">
                 <span className="text-brutal-pink font-black shrink-0">3.</span>
-                <span>Bondholders earn perpetual 10% returns</span>
+                <span>Bondholders earn projected {bondReturnPct} annual returns</span>
               </li>
             </ul>
             <p className="text-xs font-bold mt-3 opacity-80">
@@ -288,7 +293,7 @@ export default function IABPage() {
         <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-center">
             {[
-              { label: "IAB deposits", detail: "fund the lobbying campaign", color: "bg-brutal-yellow text-brutal-yellow-foreground" },
+              { label: "IAB investment", detail: "funds the lobbying campaign", color: "bg-brutal-yellow text-brutal-yellow-foreground" },
               { label: "Treaty passes", detail: "1% military → clinical trials", color: "bg-brutal-cyan text-brutal-cyan-foreground" },
               { label: "Diseases cured", detail: "80% funds pragmatic trials", color: "bg-brutal-cyan text-brutal-cyan-foreground" },
               { label: "GDP rises", detail: "healthier people earn more", color: "bg-brutal-pink text-brutal-pink-foreground" },
@@ -314,41 +319,6 @@ export default function IABPage() {
         </div>
       </section>
 
-      {/* Buy IABs */}
-      <section id="invest" className="mb-16">
-        <div className="border-4 border-primary bg-brutal-pink text-brutal-pink-foreground p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-2xl font-black uppercase mb-4">
-            Buy Incentive Alignment Bonds
-          </h2>
-          <p className="text-sm font-bold mb-4 max-w-2xl">
-            IABs are Phase 2 — not yet deployed. The referendum (Phase 1) must
-            prove demand first. Once deployed, your deposit goes into the Prize fund
-            and earns proportional returns from treaty revenue.
-          </p>
-          <div className="border-4 border-border bg-background p-6">
-            <div className="text-center">
-              <div className="text-xs font-black uppercase text-muted-foreground mb-2">
-                Contract Status
-              </div>
-              <div className="text-2xl font-black text-foreground mb-3">
-                Not Yet Deployed
-              </div>
-              <p className="text-sm text-muted-foreground font-bold mb-4">
-                Phase 1 (Prize referendum) is live on Base Sepolia. IABs deploy
-                after the referendum proves demand for the 1% Treaty.
-              </p>
-              <NavItemLink
-                item={prizeLink}
-                variant="custom"
-                className="inline-flex items-center justify-center border-2 border-border bg-background px-6 py-2.5 text-sm font-black uppercase text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Play the Game First &rarr;
-              </NavItemLink>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Contract Architecture */}
       <section className="mb-16">
         <h2 className="text-2xl font-black uppercase tracking-tight text-foreground mb-6">
@@ -358,8 +328,8 @@ export default function IABPage() {
           {[
             {
               label: "IABVault",
-              value: "Bond purchases + Prize fund yield",
-              detail: "Depositors get IAB tokens. Principal earns yield. Distributes refunds on failure or revenue share on success.",
+              value: "Bond purchases → campaign funding",
+              detail: "Investors get IAB tokens. Capital funds the lobbying campaign. Revenue share distributed to bondholders on treaty success.",
             },
             {
               label: "IABSplitter",

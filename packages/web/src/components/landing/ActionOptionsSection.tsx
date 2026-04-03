@@ -31,7 +31,7 @@ export default function ActionOptionsSection() {
     {
       option: "OPTION 3: FUND",
       action: "BACK THE PRIZE",
-      description: `Zero-downside pool. Get ${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} yield if it fails. Play the game.`,
+      description: `Dominant assurance design. Projected ${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} return if thresholds not met. Play the game.`,
       color: "bg-background",
       textColor: "text-foreground",
       accentColor: "text-brutal-pink",

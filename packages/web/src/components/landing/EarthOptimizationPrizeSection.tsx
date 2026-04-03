@@ -9,7 +9,7 @@ const coreCards = [
   {
     title: "Dominant Assurance",
     description:
-      `Deposit USDC into the Earth Optimization Prize fund. Plan fails after 15 years? ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} your money back. Plan succeeds? Everyone benefits from higher GDP. You literally cannot lose money. The worst case is getting richer.`,
+      `Deposit USDC into the Earth Optimization Prize fund. Plan fails after 15 years? Projected ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} return (based on VC-sector diversification). Plan succeeds? Everyone benefits from higher GDP. All figures are hypothetical projections, not guarantees.`,
     color: "bg-brutal-pink",
     textColor: "text-brutal-pink-foreground",
   },

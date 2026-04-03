@@ -42,10 +42,9 @@ export function LandingPrizeOffer() {
               ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} Back
             </div>
             <p className="mt-3 text-sm font-bold">
-              Your principal grows at{" "}
-              {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} annually in the
-              Prize fund for 15 years. You get it all back. The
-              &ldquo;worst case&rdquo; is multiplying your money.
+              Projected principal growth: {fmtParam(PRIZE_POOL_ANNUAL_RETURN)} annually
+              in the Prize fund for 15 years (based on VC-sector diversification).
+              All figures are projections, not guarantees.
             </p>
             <div className="mt-4 border-4 border-primary bg-background text-foreground px-3 py-2 inline-block">
               <span className="text-xs font-black uppercase">
@@ -133,13 +132,11 @@ export function LandingPrizeOffer() {
         <div>
           <div className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-sm font-bold text-foreground leading-relaxed">
-              You don&apos;t need to be altruistic. You just need to be
-              numerate. The break-even probability shift is 0.0067%. That&apos;s
-              1 in 15,000. You need to believe there&apos;s a 1-in-15,000
-              chance this works for the expected value to be positive. And if
-              it doesn&apos;t work, you still get ~
-              {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} back. On my planet, this took
-              about twelve seconds to explain.
+              A dominant assurance design where projected returns are
+              ~{fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} if thresholds are not met (based
+              on VC-sector diversification). All figures are hypothetical
+              projections, not guarantees. On my planet, this took about twelve
+              seconds to explain.
             </p>
           </div>
         </div>

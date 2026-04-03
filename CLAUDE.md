@@ -108,11 +108,12 @@ optimitron/
 #### Phase 2: Incentive Alignment Bonds (IABs) — lobbying campaign (after demand is proven)
 - **Contracts:** `IABVault` / `IABSplitter` / `PublicGoodsPool`
 - **Purpose:** After referendum proves demand, raise ~$1B to lobby for the 1% Treaty
-- **Flow:** Deposit USDC → Aave yield → treaty gets passed → $27B/yr treaty revenue splits 80/10/10:
+- **Flow:** Investors buy bonds → capital funds the lobbying campaign (lobbyists, Super PACs, referendum) → treaty passes → $27B/yr treaty revenue splits 80/10/10:
   - 80% → pragmatic clinical trials (public good)
-  - 10% → returns to IAB investors (on the ~$1B raised)
+  - 10% → returns to IAB investors (on the ~$1B raised) = 272% annual returns
   - 10% → superpacs for politicians who supported the treaty / push for expansion
-- **IABs are NOT prizes.** They are a separate lobbying-phase instrument. Do not put IABs on the prize page.
+- **If treaty fails:** the money was spent on the campaign. IABs are a real investment with real risk — no refund, no yield backstop. This is NOT a dominant assurance contract like the Prize.
+- **IABs are NOT prizes.** They are a separate lobbying-phase instrument. Do not put IABs on the prize page. Do not conflate IAB economics with Prize economics (no Aave yield, no Prize fund parameters).
 
 #### $WISH Token — `/treasury` page (monetary reform / UBI / public goods allocation)
 - **Contracts:** `WishToken` / `WishocraticTreasury` / `UBIDistributor`

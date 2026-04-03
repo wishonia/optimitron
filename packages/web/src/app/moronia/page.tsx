@@ -18,7 +18,7 @@ const ratio = Math.round(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.v
 const deathsDaily = Math.round(GLOBAL_DISEASE_DEATHS_DAILY.value).toLocaleString();
 
 const collapseTimeline = [
-  { year: "Year 0", event: "Military AI integration begins. Defence budgets surge 340%. Medical research: -87%." },
+  { year: "Year 0", event: "Military AI integration begins. Military budgets surge 340%. Medical research: -87%." },
   { year: "Year 5", event: "Currency inflation hits 8%. They call it 'transitory.' Terrorism attacks up 400%." },
   { year: "Year 10", event: "Autonomous weapons deployed in 37 countries. Bread costs 200 papers. AI filters out warnings about itself." },
   { year: "Year 12", event: "Warehousing phase begins. 0.7m × 2.1m confinement units. Agricultural processing schedules." },

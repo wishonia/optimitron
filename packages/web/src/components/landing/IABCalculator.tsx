@@ -7,28 +7,22 @@ import {
   TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA,
   VICTORY_BOND_ANNUAL_RETURN_PCT,
-  PRIZE_POOL_HORIZON_MULTIPLE,
-  PRIZE_POOL_ANNUAL_RETURN,
-  fmtParam,
 } from "@optimitron/data/parameters";
 /**
- * Interactive return calculator for the Prize/IAB mechanism.
+ * Interactive return calculator for the IAB mechanism.
  *
- * Fail scenario:  principal × PRIZE_POOL_HORIZON_MULTIPLE (Prize fund, 15-year resolution)
- * Succeed scenario: vote-proportional revenue share + per-capita lifetime income gain
- * Break-even: probability shift per $1K (treaty floor)
+ * IABs are a real investment: your money funds the lobbying campaign.
+ * Fail scenario:  money was spent on the campaign — no return
+ * Succeed scenario: proportional revenue share from treaty flows (272%/yr)
+ * Break-even: 0.0067% probability shift per $1K invested
  */
 
-const FAIL_MULTIPLIER = PRIZE_POOL_HORIZON_MULTIPLE.value;
-const POOL_RETURN_DISPLAY = fmtParam(PRIZE_POOL_ANNUAL_RETURN);
-const POOL_YEARS = 15;
+const ANNUAL_RETURN_RATE = VICTORY_BOND_ANNUAL_RETURN_PCT.value; // 2.72 = 272%
 
-const ANNUAL_RETURN_RATE = VICTORY_BOND_ANNUAL_RETURN_PCT.value; // base annual revenue share
+const TREATY_INCOME_GAIN = TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value;
+const WISHONIA_INCOME_GAIN = WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value;
 
-const TREATY_INCOME_GAIN = TREATY_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value; // $14.9M per-capita lifetime
-const WISHONIA_INCOME_GAIN = WISHONIA_TRAJECTORY_LIFETIME_INCOME_GAIN_PER_CAPITA.value; // $52.1M per-capita lifetime
-
-// Break-even: 0.0067% probability shift per $1K unreimbursed (treaty floor)
+// Break-even: 0.0067% probability shift per $1K invested (treaty floor)
 const BREAKEVEN_PER_1K = 0.0067; // percent
 
 const PRESET_AMOUNTS = [100, 1_000, 10_000, 100_000];
@@ -56,8 +50,6 @@ export function IABCalculator() {
     setAmount(Number(val) || 0);
   }, []);
 
-  const failReturn = amount * FAIL_MULTIPLIER;
-  const failProfit = failReturn - amount;
   const annualRevShare = amount * ANNUAL_RETURN_RATE;
   const breakevenPct = (amount / 1000) * BREAKEVEN_PER_1K;
 
@@ -66,7 +58,7 @@ export function IABCalculator() {
       {/* Input */}
       <div className="mb-6">
         <label className="block text-xs font-black uppercase text-muted-foreground mb-2">
-          Your Investment
+          Hypothetical Investment
         </label>
         <div className="flex items-center gap-4 mb-3">
           <div className="relative flex-grow max-w-xs">
@@ -118,24 +110,21 @@ export function IABCalculator() {
           className="p-5 border-4 border-primary bg-brutal-yellow shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         >
           <div className="text-xs font-black uppercase text-brutal-yellow-foreground mb-1">
-            If the Plan Fails
+            If the Treaty Fails
           </div>
           <div className="text-3xl font-black text-brutal-yellow-foreground mb-1">
-            {formatUSD(failReturn)}
+            {formatUSD(0)}
           </div>
           <div className="text-sm font-bold text-brutal-yellow-foreground mb-3">
-            +{formatUSD(failProfit)} profit ({FAIL_MULTIPLIER.toFixed(1)}x your money)
+            Investment funded the campaign
           </div>
           <div className="text-xs text-brutal-yellow-foreground font-bold space-y-1">
             <p>
-              {POOL_RETURN_DISPLAY} annual Prize fund return × {POOL_YEARS} years.
-            </p>
-            <p>
-              Principal deployed in the Prize fund.
-              Returned with growth if threshold not met.
+              Your {formatUSD(amount)} went to lobbyists, Super PACs, and the
+              awareness campaign. The money was spent trying to pass the treaty.
             </p>
             <p className="font-bold pt-1">
-              Your &ldquo;worst case&rdquo; is {fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} your money.
+              This is a real investment with real risk — not a savings account.
             </p>
           </div>
         </motion.div>
@@ -149,18 +138,17 @@ export function IABCalculator() {
           className="p-5 border-4 border-primary bg-brutal-cyan shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
         >
           <div className="text-xs font-black uppercase text-brutal-cyan-foreground mb-1">
-            If the Plan Succeeds
+            If the Treaty Succeeds
           </div>
           <div className="text-3xl font-black text-brutal-cyan-foreground mb-1">
-            {formatUSD(annualRevShare)}/yr base
+            {formatUSD(annualRevShare)}/yr
           </div>
           <div className="text-sm font-bold text-brutal-cyan-foreground mb-3">
-            + vote-proportional bonus from verified referrals
+            Projected <ParameterValue param={VICTORY_BOND_ANNUAL_RETURN_PCT} /> annual revenue share
           </div>
           <div className="text-xs text-brutal-cyan-foreground font-bold space-y-1">
             <p>
-              Base <ParameterValue param={VICTORY_BOND_ANNUAL_RETURN_PCT} /> revenue share
-              of treaty flows — multiplied by your verified referral votes.
+              10% of treaty revenue flows to bondholders proportionally.
               Plus your personal lifetime income increases by{" "}
               <span className="font-bold">
                 {formatUSD(TREATY_INCOME_GAIN)}–{formatUSD(WISHONIA_INCOME_GAIN)}
@@ -195,8 +183,8 @@ export function IABCalculator() {
               ? `${breakevenPct.toFixed(3)}%`
               : `${breakevenPct.toFixed(1)}%`}
           </span>{" "}
-          chance this works, your expected value is positive.
-          And if it doesn&apos;t work, you still get {formatUSD(failReturn)} back.
+          chance the treaty passes, projected expected value is positive.
+          All figures are hypothetical projections, not guarantees.
         </p>
       </div>
     </div>

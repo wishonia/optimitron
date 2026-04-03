@@ -364,7 +364,7 @@ export const iabLink: NavItem = {
   href: ROUTES.iab,
   label: "Incentive Alignment Bonds",
   emoji: "🤝",
-  description: `Invest in the campaign that outguns the defence lobby ${iabLobbyRatio}x. Bondholders earn ${bondReturn}/year when the treaty passes. Lobbying, but it cures diseases instead of causing them.`,
+  description: `Learn about aligning politicians with humanity. Projected ${bondReturn}/year returns if treaty passes. Lobbying, but it cures diseases instead of causing them.`,
   cta: "Learn More",
 };
 
@@ -372,7 +372,7 @@ export const prizeLink: NavItem = {
   href: ROUTES.prize,
   label: "Prize",
   emoji: "🏆",
-  description: `The only prize where losing means you get richer. Deposit, recruit, and either save civilisation or collect ${poolMultiple}.`,
+  description: `A dominant assurance game with projected ${poolMultiple} return if thresholds are missed. Currently seeking a foundation host.`,
   cta: "Play the Game",
 };
 
@@ -380,7 +380,7 @@ export const earthOptimizationPrizePaperLink: NavItem = {
   label: "Earth Optimization Prize",
   href: "https://prize.warondisease.org",
   emoji: "🏆",
-  description: "A prize where losing means you get richer. Your species invented gambling and philanthropy separately. This is what happens when you combine them and remove the stupidity.",
+  description: "A dominant assurance design combining philanthropy and game theory. Your species invented gambling and philanthropy separately. This is what happens when you combine them and remove the stupidity.",
   external: true,
 
   cta: "Read Paper",
@@ -540,10 +540,28 @@ export const incentiveAlignmentBondsPaperLink: NavItem = {
   label: "Incentive Alignment Bonds",
   href: "https://iab.warondisease.org",
   emoji: "🤝",
-  description: "War bonds paid 4%. These pay 272%. Grandma would be furious if she hadn't died of cancer.",
+  description: "War bonds paid 4%. These project 272%. Grandma would be furious if she hadn't died of cancer.",
   external: true,
 
   cta: "Read Paper",
+};
+
+export const earthOptimizationPrizeDetailsLink: NavItem = {
+  label: "Prize Details",
+  href: "https://manual.warondisease.org/knowledge/strategy/earth-optimization-prize.html",
+  emoji: "🏆",
+  description: "The full specification of the Earth Optimization Prize — dominant assurance mechanics, VC-sector diversification projections, and threshold criteria.",
+  external: true,
+  cta: "Read Details",
+};
+
+export const iabDetailsLink: NavItem = {
+  label: "IAB Details",
+  href: "https://manual.warondisease.org/knowledge/appendix/incentive-alignment-bonds-paper.html",
+  emoji: "🤝",
+  description: "The full Incentive Alignment Bonds specification — 80/10/10 revenue split, lobbying mechanics, and projected bondholder returns.",
+  external: true,
+  cta: "Read Details",
 };
 
 export const fullManualPaperLink: NavItem = {

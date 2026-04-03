@@ -241,7 +241,7 @@ export default function DTreasuryPage() {
                 <h3 className="font-black uppercase text-foreground text-sm">Citizens choose priorities</h3>
                 <p className="text-sm text-muted-foreground font-bold mt-1">
                   Five minutes of pairwise comparison — &ldquo;education or
-                  infrastructure?&rdquo; &ldquo;healthcare or defence?&rdquo;
+                  infrastructure?&rdquo; &ldquo;healthcare or military?&rdquo;
                   — produces stable budget weights via eigenvector decomposition.
                 </p>
               </div>

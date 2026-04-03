@@ -32,7 +32,7 @@ export function ShareTemplatesCard({ referralLink }: ShareTemplatesCardProps) {
     },
     {
       label: "The Math",
-      text: `The break-even probability for the Earth Optimization Prize is 0.0067%. Worst case: ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} from the Prize fund. Best case: we end preventable disease. ${referralLink}`,
+      text: `The Earth Optimization Prize projects ~${fmtParam(PRIZE_POOL_HORIZON_MULTIPLE)} return if thresholds are missed (based on VC-sector diversification). Best case: we end preventable disease. ${referralLink}`,
     },
     {
       label: "Personal",
