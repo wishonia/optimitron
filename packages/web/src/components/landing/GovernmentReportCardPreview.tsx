@@ -14,7 +14,7 @@ export function GovernmentReportCardPreview() {
           subtitle="Every government ranked by body count — the data they hope you never see."
           size="lg"
         />
-        <GovernmentLeaderboard limit={5} compact />
+        <GovernmentLeaderboard limit={10} compact />
         <div className="mt-8 text-center">
           <GameCTA href={ROUTES.governments} variant="primary">
             💀 See All Report Cards

@@ -160,7 +160,7 @@ export default function Home() {
               ratio: p.militaryToTrialsRatio,
             }))}
             systemWideRatio={SYSTEM_WIDE_MILITARY_TO_TRIALS_RATIO}
-            limit={5}
+            limit={10}
           />
           <div className="mt-8 text-center">
             <GameCTA href="/governments/US/politicians" variant="cyan">

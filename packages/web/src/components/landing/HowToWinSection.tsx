@@ -34,7 +34,7 @@ export function HowToWinSection() {
           <p className="text-lg sm:text-xl font-black uppercase mb-4 text-center">
             Most Misaligned Governments
           </p>
-          <GovernmentLeaderboard limit={5} compact />
+          <GovernmentLeaderboard limit={10} compact />
           <div className="mt-3 text-center">
             <NavItemLink
               item={governmentsLink}
