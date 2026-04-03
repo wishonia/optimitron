@@ -1,10 +1,8 @@
 "use client"
 
-import Link from "next/link"
 import { Card } from "@/components/retroui/Card"
 import { CopyLinkButton } from "@/components/sharing/copy-link-button"
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons"
-import { ROUTES } from "@/lib/routes"
 import { REFERRAL } from "@/lib/messaging"
 
 interface ReferralLinkCardProps {
@@ -38,15 +36,6 @@ export function ReferralLinkCard({
         url={referralLink}
         text="Help optimize Earth. Every vote counts toward the tipping point."
       />
-
-      <div className="mt-6 text-center">
-        <Link
-          href={ROUTES.dashboard}
-          className="text-sm font-black uppercase text-foreground hover:text-brutal-pink transition-colors"
-        >
-          Go to Dashboard &rarr;
-        </Link>
-      </div>
     </Card>
   )
 }

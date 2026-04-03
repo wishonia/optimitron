@@ -34,7 +34,7 @@ export function CopyLinkButton({
       <Button
         type="button"
         onClick={handleCopy}
-        className={cn("h-12 w-full gap-2 font-black uppercase", className)}
+        className={cn("h-12 w-auto gap-2 font-black uppercase", className)}
       >
         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         {copied ? "Link Copied" : "Copy Referral Link"}

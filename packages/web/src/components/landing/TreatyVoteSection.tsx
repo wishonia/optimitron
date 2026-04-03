@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card } from "@/components/retroui/Card";
 import { Container } from "@/components/ui/container";
 import { SectionContainer } from "@/components/ui/section-container";
@@ -20,6 +21,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO } from "@optimitron/data/parameters";
 import { trackSliderSubmitted, trackVoteSubmitted } from "@/lib/analytics";
 import { VOTE_SECTION } from "@/lib/messaging";
+import { ROUTES } from "@/lib/routes";
 import {
   buildTreatyWishocraticAllocation,
   getMilitaryAllocationPercentFromPendingTreatyVote,
@@ -455,7 +457,17 @@ export default function TreatyVoteSection() {
               className="max-w-2xl mx-auto mb-16"
             >
               {status === "authenticated" ? (
-                <ReferralLinkCard referralLink={shareUrl} />
+                <>
+                  <ReferralLinkCard referralLink={shareUrl} />
+                  <div className="mt-6 text-center">
+                    <Link
+                      href={ROUTES.dashboard}
+                      className="text-sm font-black uppercase text-foreground hover:text-brutal-pink transition-colors"
+                    >
+                      Go to Dashboard &rarr;
+                    </Link>
+                  </div>
+                </>
               ) : (
                 <Card className="bg-background text-foreground border-4 border-primary p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                   <div className="mb-4">
