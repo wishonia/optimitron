@@ -117,6 +117,8 @@ export function filterMedianIncomeSeries(
     .sort(compareMedianIncomeSeriesRecords);
 }
 
+const CURRENT_YEAR = new Date().getUTCFullYear();
+
 export function rankMedianIncomeRecord(record: MedianIncomeSeriesRecord): number {
   let rank = 0;
 
@@ -128,13 +130,23 @@ export function rankMedianIncomeRecord(record: MedianIncomeSeriesRecord): number
     rank += 60;
   }
   if (record.concept === 'after_tax_median_disposable_income') rank += 10;
-  if (record.priceBasis === 'real') rank += 20;
+  if (record.priceBasis === 'real') rank += 10;
   if (record.purchasingPower === 'ppp') rank += 10;
   if (record.derivation === 'direct') rank += 5;
   if (record.source === 'OECD IDD') rank += 3;
   if (record.source === 'Eurostat EU-SILC') rank += 2;
   if (record.isInterpolated === false) rank += 2;
   if (record.isInterpolated === true) rank -= 5;
+
+  // Staleness penalty: -6 per year beyond 5 years old.
+  // A 2021 record (5 years old) gets no penalty.
+  // A 2011 record (15 years old) gets -60.
+  // A 2004 record (22 years old) gets -102.
+  // This lets a recent derived record (~65) beat a 15-year-old OECD IDD record (~148-60=88).
+  const age = CURRENT_YEAR - record.year;
+  if (age > 5) {
+    rank -= (age - 5) * 6;
+  }
 
   return rank;
 }
