@@ -320,8 +320,8 @@ export const CROWD_DECISION_ACCURACY: Parameter = {
   sourceRef: "surowiecki-2004",
   sourceUrl: "https://archive.org/details/wisdomofcrowds0000suro",
   confidence: "high",
-  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/solution/wishocracy.html",
-  manualPageTitle: "Wishocracy",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/economics/earth-optimization-prize-fund.html",
+  manualPageTitle: "The Earth Optimization Prize Fund",
 };
 
 export const CURRENT_ACTIVE_TRIALS: Parameter = {
@@ -3518,8 +3518,8 @@ export const CONVENTIONAL_RETIREMENT_HORIZON_MULTIPLE: Parameter = {
   confidence: "high",
   formula: "(1 + CONVENTIONAL_RETIREMENT_RETURN) ^ (DESTRUCTIVE_ECONOMY_50PCT_YEAR - DESTRUCTIVE_ECONOMY_BASE_YEAR)",
   latex: "M_{retire} = (1 + r_{retire})^{Y_{50\\%} - Y_0}",
-  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/strategy/earth-optimization-prize.html",
-  manualPageTitle: "The Earth Optimization Prize",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/economics/earth-optimization-prize-fund.html",
+  manualPageTitle: "The Earth Optimization Prize Fund",
 };
 
 export const CURRENT_COMBINATION_EXPLORATION_YEARS: Parameter = {
@@ -6399,8 +6399,8 @@ export const TREATY_PROJECTED_HALE_YEAR_15: Parameter = {
   confidence: "high",
   formula: "GLOBAL_HALE_CURRENT + TREATY_HALE_GAIN_YEAR_15",
   latex: "HALE_{treaty,15} = HALE_0 + \\Delta HALE_{treaty,15}",
-  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/strategy/earth-optimization-prize.html",
-  manualPageTitle: "The Earth Optimization Prize",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/appendix/earth-optimization-prize-protocol.html",
+  manualPageTitle: "Earth Optimization Protocol: Technical Specification",
 };
 
 export const TREATY_QALYS_GAINED_ANNUAL_GLOBAL: Parameter = {
