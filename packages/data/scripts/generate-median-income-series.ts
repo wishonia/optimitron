@@ -16,7 +16,7 @@ import {
   deriveOecdRealMedianDisposableIncome,
 } from '../src/fetchers/oecd-income-distribution.ts';
 import { fetchPIPIncomeSeries } from '../src/fetchers/world-bank-pip.ts';
-import { fetchGovExpenditure } from '../src/fetchers/world-bank.ts';
+import { fetchGovExpenditure, fetchPrivateConsumptionPpp } from '../src/fetchers/world-bank.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -84,7 +84,14 @@ async function main(): Promise<void> {
   });
   console.log(`  Eurostat: ${eurostatRecords.length} records`);
 
-  // 5. Fetch OECD IDD (after-tax for OECD countries)
+  // 5. Fetch World Bank PPP conversion factors (fallback for OECD IDD derivation)
+  console.log('Fetching World Bank PPP conversion factors...');
+  const wbPppPoints = await fetchPrivateConsumptionPpp({
+    period: { startYear: 1995, endYear: currentYear },
+  });
+  console.log(`  WB PPP factors: ${wbPppPoints.length} points`);
+
+  // 6. Fetch OECD IDD (after-tax for OECD countries)
   console.log('Fetching OECD IDD median disposable income...');
   const oecdPeriod = { startYear: 1995, endYear: currentYear };
 
@@ -124,6 +131,7 @@ async function main(): Promise<void> {
     oecdMedianPoints,
     oecdCpiPoints,
     oecdPppPoints,
+    wbPppPoints,
   );
   console.log(`  OECD IDD derived: ${oecdDerived.length} records`);
 

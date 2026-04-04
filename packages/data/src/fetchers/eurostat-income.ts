@@ -154,7 +154,14 @@ export function deriveEurostatRealMedianDisposableIncome(
   return medianPoints.map((point) => {
     const key = `${point.jurisdictionIso3}:${point.year}`;
     const hicpAnnualAverage = hicpByKey.get(key) ?? null;
-    const pppPrivateConsumption = pppByKey.get(key) ?? null;
+    // Try exact year first, then nearest available year (fixes Turkey hyperinflation gap)
+    let pppPrivateConsumption = pppByKey.get(key) ?? null;
+    if (pppPrivateConsumption === null) {
+      for (const offset of [-1, 1, -2, 2]) {
+        const val = pppByKey.get(`${point.jurisdictionIso3}:${point.year + offset}`);
+        if (val != null && val !== 0) { pppPrivateConsumption = val; break; }
+      }
+    }
     const realMedianLocalCurrency =
       hicpAnnualAverage && hicpAnnualAverage !== 0
         ? point.nominalMedianLocalCurrency / (hicpAnnualAverage / 100)

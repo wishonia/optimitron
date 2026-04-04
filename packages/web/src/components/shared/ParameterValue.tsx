@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback } from "react"
 import { Popover } from "@/components/retroui/Popover"
 import { Badge } from "@/components/retroui/Badge"
-import { ExternalLink, Info, FlaskConical, BookOpen } from "lucide-react"
+import { ExternalLink, Info, FlaskConical, BookOpen, type LucideIcon } from "lucide-react"
 import {
   fmtParam,
   fmtParamValueOnly,
@@ -63,17 +63,18 @@ export function ParameterValue({
   })()
 
   const confidenceInterval = formatConfidenceInterval(param)
-  const hasMetadata =
-    param.displayName ||
-    param.description ||
-    param.formula ||
-    param.latex ||
-    param.sourceRef ||
-    param.confidence ||
-    param.calculationsUrl ||
-    param.manualPageUrl ||
-    param.peerReviewed ||
-    confidenceInterval
+  const hasMetadata = [
+    param.displayName,
+    param.description,
+    param.formula,
+    param.latex,
+    param.sourceRef,
+    param.confidence,
+    param.calculationsUrl,
+    param.manualPageUrl,
+    param.peerReviewed,
+    confidenceInterval,
+  ].some(Boolean)
 
   if (!showPopover || !hasMetadata) {
     return <span className={className}>{text}</span>
@@ -150,7 +151,7 @@ function ParameterPopoverContent({
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-2 pt-1 border-t border-primary/20">
+      <div className="space-y-2 pt-2 border-t border-primary/20">
         <div className="flex items-center gap-1.5">
           {param.confidence && (
             <ConfidenceBadge confidence={param.confidence} />
@@ -165,7 +166,7 @@ function ParameterPopoverContent({
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {citation?.URL && (
             <a
               href={citation.URL}
@@ -185,32 +186,65 @@ function ParameterPopoverContent({
             </span>
           )}
           {param.calculationsUrl && (
-            <a
+            <PopoverMetaLink
               href={param.calculationsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] font-bold text-brutal-cyan hover:underline flex items-center gap-1"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <FlaskConical className="h-3 w-3" />
-              Calculations
-            </a>
+              icon={FlaskConical}
+              accent="cyan"
+              label="Calculations"
+            />
           )}
           {param.manualPageUrl && (
-            <a
+            <PopoverMetaLink
               href={param.manualPageUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] font-bold text-brutal-yellow hover:underline flex items-center gap-1"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <BookOpen className="h-3 w-3" />
-              {param.manualPageTitle || "Manual"}
-            </a>
+              icon={BookOpen}
+              accent="yellow"
+              label="Chapter"
+              detail={param.manualPageTitle ?? "Manual"}
+            />
           )}
         </div>
       </div>
     </div>
+  )
+}
+
+function PopoverMetaLink({
+  href,
+  icon: Icon,
+  accent,
+  label,
+  detail,
+}: {
+  href: string
+  icon: LucideIcon
+  accent: "cyan" | "yellow"
+  label: string
+  detail?: string
+}) {
+  const accentClasses = accent === "cyan"
+    ? "bg-brutal-cyan text-brutal-cyan-foreground"
+    : "bg-brutal-yellow text-brutal-yellow-foreground"
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      className={cn(
+        "inline-flex max-w-full items-center gap-1.5 rounded-none border-2 border-primary px-2 py-1 text-[10px] leading-tight shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-px hover:translate-y-px hover:shadow-none",
+        accentClasses
+      )}
+    >
+      <Icon className="h-3 w-3 shrink-0" />
+      <span className="font-black uppercase tracking-wide">{label}</span>
+      {detail && (
+        <span className="min-w-0 truncate font-semibold normal-case">
+          {detail}
+        </span>
+      )}
+      <ExternalLink className="h-3 w-3 shrink-0" />
+    </a>
   )
 }
 
@@ -227,7 +261,7 @@ function ConfidenceBadge({ confidence }: { confidence: string }) {
       variant="outline"
       className={cn(
         "text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary",
-        confidenceColorMap[confidence] || "bg-muted"
+        confidenceColorMap[confidence] ?? "bg-muted"
       )}
     >
       {confidence}

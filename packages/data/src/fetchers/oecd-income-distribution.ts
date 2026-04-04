@@ -1,4 +1,4 @@
-import type { FetchOptions } from '../types';
+import type { DataPoint, FetchOptions } from '../types';
 
 const OECD_IDD_BASE = 'https://sdmx.oecd.org/public/rest/data/OECD.WISE.INE,DSD_WISE_IDD@DF_IDD,';
 
@@ -324,10 +324,27 @@ export function selectPreferredOecdIddPoints(
   });
 }
 
+/**
+ * Look up the nearest available value for a country, trying exact year first,
+ * then ±1, ±2 years.
+ */
+function getNearestValue(
+  byKey: Map<string, number>,
+  iso3: string,
+  year: number,
+): number | null {
+  for (const offset of [0, -1, 1, -2, 2]) {
+    const val = byKey.get(`${iso3}:${year + offset}`);
+    if (val != null && val !== 0) return val;
+  }
+  return null;
+}
+
 export function deriveOecdRealMedianDisposableIncome(
   medianPoints: OecdIddPoint[],
   cpiPoints: OecdIddPoint[],
   pppPoints: OecdIddPoint[],
+  fallbackPppPoints?: DataPoint[],
 ): DerivedOecdMedianDisposableIncomePoint[] {
   const selectedMedianPoints = selectPreferredOecdIddPoints(medianPoints);
   const selectedCpiPoints = selectPreferredOecdIddPoints(cpiPoints);
@@ -340,12 +357,23 @@ export function deriveOecdRealMedianDisposableIncome(
     selectedPppPoints.map((point) => [`${point.jurisdictionIso3}:${point.year}`, point]),
   );
 
+  // World Bank PPP fallback (keyed by iso3:year for nearest-year lookup)
+  const wbPppByKey = new Map<string, number>();
+  if (fallbackPppPoints) {
+    for (const p of fallbackPppPoints) {
+      wbPppByKey.set(`${p.jurisdictionIso3}:${p.year}`, p.value);
+    }
+  }
+
   return selectedMedianPoints.map((point) => {
     const key = `${point.jurisdictionIso3}:${point.year}`;
     const cpiPoint = cpiByKey.get(key);
     const pppPoint = pppByKey.get(key);
     const cpi = cpiPoint?.value ?? null;
-    const ppp = pppPoint?.value ?? null;
+    // OECD PPP first, then World Bank PPP (nearest year) as fallback
+    const ppp = pppPoint?.value
+      ?? getNearestValue(wbPppByKey, point.jurisdictionIso3, point.year)
+      ?? null;
     const realMedianLocalCurrency =
       cpi && cpi !== 0 ? point.value / (cpi / 100) : null;
     const nominalMedianPppUsd = ppp && ppp !== 0 ? point.value / ppp : null;
