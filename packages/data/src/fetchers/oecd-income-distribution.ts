@@ -1,6 +1,6 @@
 import type { FetchOptions } from '../types';
 
-const OECD_IDD_LEGACY_BASE = 'https://stats.oecd.org/SDMX-JSON/data/IDD';
+const OECD_IDD_BASE = 'https://sdmx.oecd.org/public/rest/data/OECD.WISE.INE,DSD_WISE_IDD@DF_IDD,';
 
 export interface OecdIddDimensionValue {
   id: string;
@@ -83,29 +83,47 @@ export interface DerivedOecdMedianDisposableIncomePoint {
   sourceUrl: string;
 }
 
+/** OECD IDD countries with data (all OECD members + key partners) */
+export const OECD_IDD_COUNTRIES = [
+  'AUS', 'AUT', 'BEL', 'CAN', 'CHE', 'CHL', 'CHN', 'COL', 'CRI', 'CZE',
+  'DEU', 'DNK', 'ESP', 'EST', 'FIN', 'FRA', 'GBR', 'GRC', 'HUN', 'IND',
+  'IRL', 'ISL', 'ISR', 'ITA', 'JPN', 'KOR', 'LTU', 'LUX', 'LVA', 'MEX',
+  'NLD', 'NOR', 'NZL', 'POL', 'PRT', 'RUS', 'SVK', 'SVN', 'SWE', 'TUR',
+  'USA',
+];
+
 export const OECD_IDD_SELECTORS = {
   MEDIAN_DISPOSABLE_INCOME_TOTAL: {
+    refArea: OECD_IDD_COUNTRIES,
     frequency: 'A',
     measure: 'INC_DISP',
     statisticalOperation: 'MEDIAN',
     unitMeasure: 'XDC_HH_EQ',
     age: '_T',
+    methodology: 'METH2012',
+    definition: 'D_CUR',
     povertyLine: '_Z',
   },
   CPI_TOTAL: {
+    refArea: OECD_IDD_COUNTRIES,
     frequency: 'A',
     measure: 'CPI',
     statisticalOperation: '_Z',
     unitMeasure: 'IX',
     age: '_T',
+    methodology: 'METH2012',
+    definition: 'D_CUR',
     povertyLine: '_Z',
   },
   PPP_PRIVATE_CONSUMPTION_TOTAL: {
+    refArea: OECD_IDD_COUNTRIES,
     frequency: 'A',
     measure: 'PPP_PRC',
     statisticalOperation: '_Z',
     unitMeasure: 'XDC_USD',
     age: '_T',
+    methodology: 'METH2012',
+    definition: 'D_CUR',
     povertyLine: '_Z',
   },
 } as const;
@@ -354,7 +372,7 @@ export function deriveOecdRealMedianDisposableIncome(
   });
 }
 
-export function buildOECDIDDLegacyUrl(
+export function buildOECDIDDUrl(
   selector: OecdIddSelector = {},
   options: FetchOptions = {},
 ): string {
@@ -376,23 +394,27 @@ export function buildOECDIDDLegacyUrl(
   ].join('.');
   const startYear = options.period?.startYear;
   const endYear = options.period?.endYear;
-  const periodQuery =
-    startYear && endYear
-      ? `?startTime=${startYear}&endTime=${endYear}`
-      : '';
-
-  return `${OECD_IDD_LEGACY_BASE}/${filter}/all${periodQuery}`;
+  const params = new URLSearchParams();
+  if (startYear && endYear) {
+    params.set('startPeriod', String(startYear));
+    params.set('endPeriod', String(endYear));
+  }
+  params.set('dimensionAtObservation', 'TIME_PERIOD');
+  return `${OECD_IDD_BASE}/${filter}?${params.toString()}`;
 }
 
 export async function fetchOECDIDDPoints(
   selector: OecdIddSelector = {},
   options: FetchOptions = {},
 ): Promise<OecdIddPoint[]> {
-  const url = buildOECDIDDLegacyUrl(selector, options);
+  const url = buildOECDIDDUrl(selector, options);
 
   try {
     const response = await fetch(url, {
-      headers: { Accept: 'application/vnd.sdmx.data+json;version=2.0' },
+      headers: {
+        Accept: 'application/vnd.sdmx.data+json',
+        'Accept-Language': 'en',
+      },
     });
 
     if (!response.ok) {

@@ -48,6 +48,8 @@ export interface PIPFetchOptions extends FetchOptions {
   welfareType?: PIPWelfareType;
   fillGaps?: boolean;
   reportingLevel?: 'national';
+  /** Explicit PPP vintage year (e.g. 2017, 2021). Omit to use PIP default. */
+  pppVersion?: number;
 }
 
 const PIP_BASE = 'https://api.worldbank.org/pip/v1/pip';
@@ -82,6 +84,7 @@ export function buildPIPUrl(options: PIPFetchOptions = {}): string {
     welfareType = 'income',
     fillGaps = true,
     reportingLevel = 'national',
+    pppVersion,
   } = options;
   const country = jurisdictions?.length ? jurisdictions.join(',') : 'all';
   const year =
@@ -89,13 +92,16 @@ export function buildPIPUrl(options: PIPFetchOptions = {}): string {
       ? String(period.startYear)
       : 'all';
 
-  return (
+  let url =
     `${PIP_BASE}?country=${country}` +
     `&year=${year}` +
     `&fill_gaps=${fillGaps}` +
     `&welfare_type=${welfareType}` +
-    `&reporting_level=${reportingLevel}`
-  );
+    `&reporting_level=${reportingLevel}`;
+  if (pppVersion != null) {
+    url += `&ppp_version=${pppVersion}`;
+  }
+  return url;
 }
 
 export function parsePIPRecords(

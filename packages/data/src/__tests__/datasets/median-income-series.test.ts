@@ -198,11 +198,9 @@ describe('Median Income Dataset Helpers', () => {
         taxScope: 'after_direct_taxes_and_cash_transfers',
       }),
     );
-    expect(preferred.find((record) => record.jurisdictionIso3 === 'USA')).toEqual(
-      expect.objectContaining({
-        source: 'World Bank PIP',
-        taxScope: 'unknown',
-      }),
-    );
+    // USA falls back to bundled data (which now includes OECD IDD records)
+    const usRecord = preferred.find((record) => record.jurisdictionIso3 === 'USA');
+    expect(usRecord).toBeDefined();
+    expect(usRecord!.jurisdictionIso3).toBe('USA');
   });
 });

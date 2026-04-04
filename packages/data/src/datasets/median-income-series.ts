@@ -122,6 +122,8 @@ export function rankMedianIncomeRecord(record: MedianIncomeSeriesRecord): number
 
   if (isStrictAfterTaxMedianIncomeRecord(record)) {
     rank += 120;
+  } else if (record.taxScope === 'derived_from_gov_spending') {
+    rank += 40;
   } else if (record.isAfterTax) {
     rank += 60;
   }

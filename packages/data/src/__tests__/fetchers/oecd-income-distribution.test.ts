@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
-  buildOECDIDDLegacyUrl,
+  buildOECDIDDUrl,
   deriveOecdRealMedianDisposableIncome,
   extractOecdIddPoints,
   OECD_IDD_SELECTORS,
@@ -105,7 +105,7 @@ describe('OECD Income Distribution Fetcher', () => {
       OECD_IDD_SELECTORS.MEDIAN_DISPOSABLE_INCOME_TOTAL,
     );
 
-    expect(points).toHaveLength(4);
+    expect(points).toHaveLength(2);
     expect(points[0]).toEqual(
       expect.objectContaining({
         jurisdictionIso3: 'AUS',
@@ -164,21 +164,26 @@ describe('OECD Income Distribution Fetcher', () => {
     expect(derived[1]?.realMedianPppUsd).toBeCloseTo(100);
   });
 
-  it('buildOECDIDDLegacyUrl includes the selector values in order', () => {
-    const url = buildOECDIDDLegacyUrl(
+  it('buildOECDIDDUrl includes the selector values in order', () => {
+    const url = buildOECDIDDUrl(
       {
         refArea: ['AUS', 'CAN'],
-        ...OECD_IDD_SELECTORS.MEDIAN_DISPOSABLE_INCOME_TOTAL,
+        frequency: 'A',
+        measure: 'INC_DISP',
+        statisticalOperation: 'MEDIAN',
+        unitMeasure: 'XDC_HH_EQ',
+        age: '_T',
         methodology: 'METH2012',
         definition: 'D_CUR',
+        povertyLine: '_Z',
       },
       { period: { startYear: 2020, endYear: 2021 } },
     );
 
     expect(url).toContain(
-      '/AUS+CAN.A.INC_DISP.MEDIAN.XDC_HH_EQ._T.METH2012.D_CUR._Z/all',
+      '/AUS+CAN.A.INC_DISP.MEDIAN.XDC_HH_EQ._T.METH2012.D_CUR._Z',
     );
-    expect(url).toContain('startTime=2020');
-    expect(url).toContain('endTime=2021');
+    expect(url).toContain('startPeriod=2020');
+    expect(url).toContain('endPeriod=2021');
   });
 });

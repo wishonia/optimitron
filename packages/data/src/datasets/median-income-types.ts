@@ -13,10 +13,12 @@ export type MedianIncomeDerivation = 'direct' | 'derived';
 export type MedianIncomeSource =
   | 'OECD IDD'
   | 'Eurostat EU-SILC'
-  | 'World Bank PIP';
+  | 'World Bank PIP'
+  | 'World Bank PIP + Gov Exp (derived)';
 
 export type MedianIncomeTaxScope =
   | 'after_direct_taxes_and_cash_transfers'
+  | 'derived_from_gov_spending'
   | 'unknown';
 
 export type MedianIncomeTreatment = 'included' | 'excluded' | 'unknown';

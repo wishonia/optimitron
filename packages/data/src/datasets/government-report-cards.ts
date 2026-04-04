@@ -83,6 +83,8 @@ export interface GovernmentMetrics {
   // === ECONOMIC ===
   gdpPerCapita: SourcedValue;
   medianIncome: SourcedValue | null;
+  /** Total government spending per capita in PPP USD (includes transfers, subsidies, debt service — everything) */
+  governmentSpendingPerCapita: SourcedValue;
   debtPctGDP: SourcedValue;
 }
 
@@ -147,6 +149,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: { value: 0.69, source: "Calculated: 3.4% military / 4.9% education" },
     gdpPerCapita: { value: 80_035, source: "World Bank 2023" },
     medianIncome: null, // hydrated from canonical median-income-series
+    governmentSpendingPerCapita: { value: 30_037, source: "IMF WEO 2024 (37.53% of GDP)" },
     debtPctGDP: { value: 123, source: "CBO 2024" },
   },
   {
@@ -194,6 +197,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 36_485, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 13_616, source: "IMF WEO 2024 (37.32% of GDP)" },
     debtPctGDP: { value: 15, source: "IMF 2024" },
   },
   {
@@ -237,6 +241,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 23_382, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 7_917, source: "IMF WEO 2024 (33.86% of GDP)" },
     debtPctGDP: { value: 83, source: "IMF 2024" },
   },
   {
@@ -280,6 +285,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 55_800, source: "World Bank PPP 2023" },
     medianIncome: null, // hydrated from canonical median-income-series
+    governmentSpendingPerCapita: { value: 24_206, source: "IMF WEO 2024 (43.38% of GDP)" },
     debtPctGDP: { value: 101, source: "IMF 2024" },
   },
   {
@@ -323,6 +329,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 54_930, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 24_120, source: "IMF WEO 2024 (43.91% of GDP)" },
     debtPctGDP: { value: 62, source: "IMF 2024" },
   },
   {
@@ -366,6 +373,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 56_875, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 18_610, source: "IMF WEO 2024 (32.72% of GDP)" },
     debtPctGDP: { value: 26, source: "IMF 2024" },
   },
   // Contrast: a government that doesn't kill people
@@ -420,6 +428,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 133_737, source: "World Bank PPP 2023" },
     medianIncome: null, // hydrated from canonical median-income-series
+    governmentSpendingPerCapita: { value: 18_670, source: "IMF WEO 2024 (13.96% of GDP)" },
     debtPctGDP: { value: 168, source: "IMF 2024 (mostly internal/reserves)" },
   },
   {
@@ -468,6 +477,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 55_493, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 31_764, source: "IMF WEO 2024 (57.24% of GDP)" },
     debtPctGDP: { value: 112, source: "IMF 2024" },
   },
   {
@@ -515,6 +525,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 41_887, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 14_384, source: "IMF WEO 2024 (34.34% of GDP)" },
     debtPctGDP: { value: 30, source: "IMF 2024" },
   },
   {
@@ -562,6 +573,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 9_183, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 2_667, source: "IMF WEO 2024 (29.04% of GDP)" },
     debtPctGDP: { value: 83, source: "IMF 2024" },
   },
   {
@@ -609,6 +621,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 6_470, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 1_249, source: "IMF WEO 2024 (19.31% of GDP)" },
     debtPctGDP: { value: 75, source: "IMF 2024" },
   },
   {
@@ -656,6 +669,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 3_076, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 290, source: "IMF WEO 2024 (9.42% of GDP)" },
     debtPctGDP: { value: 40, source: "IMF 2024" },
   },
   {
@@ -703,6 +717,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 16_893, source: "World Bank PPP 2023" },
     medianIncome: null,
+    governmentSpendingPerCapita: { value: 2_478, source: "IMF WEO 2024 (14.67% of GDP)" },
     debtPctGDP: { value: 32, source: "IMF 2024" },
   },
   {
@@ -747,6 +762,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: { value: 0.35, source: "Calculated: 1.2% military / 3.4% education" },
     gdpPerCapita: { value: 33_950, source: "World Bank 2023" },
     medianIncome: null, // hydrated from canonical median-income-series
+    governmentSpendingPerCapita: { value: 14_327, source: "IMF WEO 2024 (42.20% of GDP)" },
     debtPctGDP: { value: 264, source: "IMF 2024" },
   },
   {
@@ -796,6 +812,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 52_824, source: "World Bank 2023" },
     medianIncome: null, // hydrated from canonical median-income-series
+    governmentSpendingPerCapita: { value: 25_445, source: "IMF WEO 2024 (48.17% of GDP)" },
     debtPctGDP: { value: 64, source: "IMF 2024" },
   },
   {
@@ -839,6 +856,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 65_099, source: "World Bank 2023" },
     medianIncome: null, // hydrated from canonical median-income-series
+    governmentSpendingPerCapita: { value: 24_744, source: "IMF WEO 2024 (38.01% of GDP)" },
     debtPctGDP: { value: 51, source: "IMF 2024" },
   },
   {
@@ -882,6 +900,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: null,
     gdpPerCapita: { value: 53_247, source: "World Bank 2023" },
     medianIncome: null, // hydrated from canonical median-income-series
+    governmentSpendingPerCapita: { value: 23_035, source: "IMF WEO 2024 (43.26% of GDP)" },
     debtPctGDP: { value: 107, source: "IMF 2024" },
   },
   {
@@ -935,6 +954,7 @@ export const GOVERNMENTS: GovernmentMetrics[] = [
     militaryToEducationRatio: { value: 0.60, source: "Calculated: 2.8% military / 4.7% education" },
     gdpPerCapita: { value: 32_423, source: "World Bank 2023" },
     medianIncome: null, // hydrated from canonical median-income-series
+    governmentSpendingPerCapita: { value: 7_341, source: "IMF WEO 2024 (22.64% of GDP)" },
     debtPctGDP: { value: 54, source: "IMF 2024" },
   },
 ];
@@ -960,7 +980,7 @@ for (const gov of GOVERNMENTS) {
 // Hydrate medianIncome from the canonical generated median income series,
 // replacing spotty manual entries with the best available after-tax PPP data.
 // ---------------------------------------------------------------------------
-import { getBestAvailableMedianIncomeSeries } from './median-income-series';
+import { getBestAvailableMedianIncomeSeries, rankMedianIncomeRecord } from './median-income-series';
 
 const ISO2_TO_ISO3: Record<string, string> = {
   US: "USA", RU: "RUS", CN: "CHN", GB: "GBR", IL: "ISR", SA: "SAU",
@@ -972,26 +992,24 @@ for (const gov of GOVERNMENTS) {
   const iso3 = ISO2_TO_ISO3[gov.code];
   if (!iso3) continue;
 
-  // Try strict after-tax PPP first
-  let records = getBestAvailableMedianIncomeSeries({
+  // Get all PPP records for this country, pick by rank then recency
+  const records = getBestAvailableMedianIncomeSeries({
     jurisdictions: [iso3],
-    isAfterTax: true,
     purchasingPower: "ppp",
   });
 
-  // Fallback to any PPP record
-  if (records.length === 0) {
-    records = getBestAvailableMedianIncomeSeries({
-      jurisdictions: [iso3],
-      purchasingPower: "ppp",
-    });
-  }
-
-  const best = records[0];
+  const best = [...records]
+    .sort((a, b) => {
+      const rankDiff = rankMedianIncomeRecord(b) - rankMedianIncomeRecord(a);
+      if (rankDiff !== 0) return rankDiff;
+      return b.year - a.year;
+    })[0] ?? null;
   if (best) {
+    const taxLabel = best.isAfterTax ? " (after-tax)" : "";
+    const welfareLabel = best.welfareType === "consumption" ? " (consumption)" : "";
     gov.medianIncome = {
       value: Math.round(best.value),
-      source: `${best.source} ${best.year}${best.isAfterTax ? " (after-tax)" : ""} PPP`,
+      source: `${best.source} ${best.year}${taxLabel}${welfareLabel} PPP`,
       url: best.sourceUrl,
     };
   }

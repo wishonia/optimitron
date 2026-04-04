@@ -1,6 +1,7 @@
 import type { DerivedOecdMedianDisposableIncomePoint } from '../fetchers/oecd-income-distribution';
 import type { DerivedEurostatMedianDisposableIncomePoint } from '../fetchers/eurostat-income';
 import type { PIPCountryData } from '../fetchers/world-bank-pip';
+import type { DataPoint } from '../types';
 import type {
   MedianIncomeSeriesMetadata,
   MedianIncomeSeriesRecord,
@@ -203,6 +204,58 @@ export function buildEurostatMedianIncomeSeries(
       }
 
       return renderedRecords;
+    });
+}
+
+/**
+ * Build derived "after-government" median income records by multiplying
+ * PIP median income × (1 - gov spending % of GDP).
+ *
+ * Uses World Bank GC.XPN.TOTL.GD.ZS (government expense % GDP) to approximate
+ * the total government take including direct tax, inflation, debt, and overhead.
+ */
+export function buildDerivedAfterGovMedianIncomeSeries(
+  pipRecords: PIPCountryData[],
+  govExpPctGdpPoints: DataPoint[],
+): MedianIncomeSeriesRecord[] {
+  // Build lookup: latest gov spending % for each country (most recent year wins)
+  const govExpByCountry = new Map<string, { value: number; year: number }>();
+  for (const point of govExpPctGdpPoints) {
+    if (point.value <= 0 || point.value >= 100) continue;
+    const existing = govExpByCountry.get(point.jurisdictionIso3);
+    if (!existing || point.year > existing.year) {
+      govExpByCountry.set(point.jurisdictionIso3, { value: point.value, year: point.year });
+    }
+  }
+
+  return pipRecords
+    .filter((record) => {
+      const govExp = govExpByCountry.get(record.countryCode);
+      return govExp != null && record.medianAnnual > 0;
+    })
+    .map((record) => {
+      const govPct = govExpByCountry.get(record.countryCode)!.value;
+      const afterGovValue = record.medianAnnual * (1 - govPct / 100);
+      return {
+        jurisdictionIso3: record.countryCode,
+        jurisdictionName: record.countryName,
+        year: record.year,
+        value: afterGovValue,
+        unit: 'PPP-adjusted dollars per year (after government)',
+        concept: 'after_tax_median_disposable_income' as const,
+        priceBasis: 'real' as const,
+        purchasingPower: 'ppp' as const,
+        source: 'World Bank PIP + Gov Exp (derived)' as const,
+        derivation: 'derived' as const,
+        isAfterTax: true,
+        taxScope: 'derived_from_gov_spending' as const,
+        consumptionTaxTreatment: 'unknown' as const,
+        inKindTransferTreatment: 'unknown' as const,
+        isInterpolated: record.isInterpolated,
+        welfareType: record.welfareType,
+        pppBasisNote: `Derived: PIP median ($${Math.round(record.medianAnnual)}) × (1 - ${govPct.toFixed(1)}% gov spending).`,
+        sourceUrl: record.sourceUrl,
+      } satisfies MedianIncomeSeriesRecord;
     });
 }
 
