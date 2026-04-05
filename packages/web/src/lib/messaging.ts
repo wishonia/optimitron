@@ -73,7 +73,7 @@ export const CTA = {
 
 export const TAGLINES = {
   gameObjective:
-    `Your governments spend ${fmtParam(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO)} on weapons for every $1 testing which medicines work. 150,000 humans permanently stop every 24 hours. That's fifty 9/11s a day, except nobody invades anyone about it because diseases don't have oil.`,
+    `Optimize public policy to stop making you poorer and deader and start making you healtier and wealthier!`,
   onlyWayToLose:
     `Your deposit grows at ~10% for 15 years either way. The break-even probability is 1 in 15,000. You lose money by not depositing.`,
   hedgeLine: "Your deposit is a hedge against your own species.",
