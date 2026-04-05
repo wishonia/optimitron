@@ -10,9 +10,13 @@
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync, rmSync, readdirSync } from 'fs';
 import { resolve, dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-import type { EfficiencyAnalysis } from '@optimitron/obg';
-import { BudgetAnalysisOutputSchema, PolicyAnalysisOutputSchema, type BudgetCategoryOutput } from './generate-web-data.js';
+import { fileURLToPath, pathToFileURL } from 'url';
+import {
+  BudgetAnalysisOutputSchema,
+  PolicyAnalysisOutputSchema,
+  hasEfficiency,
+  type BudgetCategoryWithEfficiency,
+} from './generated-analysis-schemas.js';
 import { getBestAvailableMedianIncomeSeries } from '@optimitron/data/datasets/median-income-series';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -26,7 +30,8 @@ const usIncomeRecords = getBestAvailableMedianIncomeSeries({
   isAfterTax: true,
   purchasingPower: 'ppp',
 });
-const usMedianIncome = usIncomeRecords.length > 0 ? Math.round(usIncomeRecords[0].value) : 59_540;
+const latestUsIncomeRecord = usIncomeRecords[0];
+const usMedianIncome = latestUsIncomeRecord ? Math.round(latestUsIncomeRecord.value) : 59_540;
 
 // Jurisdiction config — parameterized so we can generate for any country
 const JURISDICTION = {
@@ -39,7 +44,7 @@ const JURISDICTION = {
 };
 
 // Clean old generated content (keep config files like package.json, .eleventy.js, _includes, _data)
-const KEEP_FILES = new Set(['package.json', 'package-lock.json', 'eleventy.config.js', '.gitignore', 'node_modules', '_includes', '_data', '_site', '.eleventy.js']);
+const KEEP_FILES = new Set(['package.json', 'eleventy.config.js', '.gitignore', 'node_modules', '_includes', '_data', '_site', '.eleventy.js']);
 function cleanSiteDir() {
   if (!existsSync(SITE_DIR)) return;
   for (const entry of readdirSync(SITE_DIR)) {
@@ -51,8 +56,13 @@ function cleanSiteDir() {
 
 // ─── Load Data ──────────────────────────────────────────────────────
 
-const budgetData = BudgetAnalysisOutputSchema.parse(JSON.parse(readFileSync(resolve(WEB_DATA, 'us-budget-analysis.json'), 'utf-8')));
-const policyData = PolicyAnalysisOutputSchema.parse(JSON.parse(readFileSync(resolve(WEB_DATA, 'us-policy-analysis.json'), 'utf-8')));
+type BudgetDataModule = { default: { usBudgetAnalysis: unknown } };
+type PolicyDataModule = { default: { usPolicyAnalysis: unknown } };
+
+const budgetDataModule = await import(pathToFileURL(resolve(WEB_DATA, 'us-budget-analysis.ts')).href) as BudgetDataModule;
+const policyDataModule = await import(pathToFileURL(resolve(WEB_DATA, 'us-policy-analysis.ts')).href) as PolicyDataModule;
+const budgetData = BudgetAnalysisOutputSchema.parse(budgetDataModule.default.usBudgetAnalysis);
+const policyData = PolicyAnalysisOutputSchema.parse(policyDataModule.default.usPolicyAnalysis);
 
 function slugify(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '').replace(/^-+/, '');
@@ -87,12 +97,6 @@ const OECD_FIELD_MAP: Record<string, string> = {
   medicare: 'health', medicaid: 'health', health_discretionary: 'health',
   military: 'military', social_security: 'social', education: 'education', science_nasa: 'rd',
 };
-
-type BudgetCategoryWithEfficiency = BudgetCategoryOutput & { efficiency: EfficiencyAnalysis };
-
-function hasEfficiency(c: BudgetCategoryOutput): c is BudgetCategoryWithEfficiency {
-  return c.efficiency !== null;
-}
 
 function deduplicateByOECDField(categories: BudgetCategoryWithEfficiency[]): BudgetCategoryWithEfficiency[] {
   const seen = new Set<string>();
@@ -286,23 +290,25 @@ layout: layout.njk
     }
 
     // Historical spending
-    if (cat.historicalRealPerCapita.length > 0) {
-      const first = cat.historicalRealPerCapita[0];
-      const last = cat.historicalRealPerCapita[cat.historicalRealPerCapita.length - 1];
-      if (!first || !last) continue;
-      const nomGrowth = ((last.nominalBillions / first.nominalBillions - 1) * 100).toFixed(0);
-      const realGrowth = ((last.realPerCapita / first.realPerCapita - 1) * 100).toFixed(0);
+    const historical = cat.historicalRealPerCapita;
+    if (historical.length > 0) {
+      const first = historical[0];
+      const last = historical[historical.length - 1];
+      if (first && last) {
+        const nomGrowth = ((last.nominalBillions / first.nominalBillions - 1) * 100).toFixed(0);
+        const realGrowth = ((last.realPerCapita / first.realPerCapita - 1) * 100).toFixed(0);
 
-      md += `## Historical Spending (${first.year}–${last.year})\n\n`;
-      md += `- Nominal growth: **+${nomGrowth}%**\n`;
-      md += `- Real per-capita growth: **${Number(realGrowth) >= 0 ? '+' : ''}${realGrowth}%** (inflation + population adjusted)\n`;
-      md += `- Inflation ate: **${Number(nomGrowth) - Number(realGrowth)}pp** of apparent growth\n\n`;
+        md += `## Historical Spending (${first.year}–${last.year})\n\n`;
+        md += `- Nominal growth: **+${nomGrowth}%**\n`;
+        md += `- Real per-capita growth: **${Number(realGrowth) >= 0 ? '+' : ''}${realGrowth}%** (inflation + population adjusted)\n`;
+        md += `- Inflation ate: **${Number(nomGrowth) - Number(realGrowth)}pp** of apparent growth\n\n`;
 
-      md += `| Year | Nominal ($B) | Real/Cap ($) |\n|------|-------------|-------------|\n`;
-      for (const h of cat.historicalRealPerCapita) {
-        md += `| ${h.year} | $${h.nominalBillions}B | $${h.realPerCapita.toFixed(0)} |\n`;
+        md += `| Year | Nominal ($B) | Real/Cap ($) |\n|------|-------------|-------------|\n`;
+        for (const h of historical) {
+          md += `| ${h.year} | $${h.nominalBillions}B | $${h.realPerCapita.toFixed(0)} |\n`;
+        }
+        md += '\n';
       }
-      md += '\n';
     }
 
     // Outcome metrics
@@ -877,4 +883,4 @@ generateWishonia();
 console.warn('  ✅ wishonia/index.md');
 
 console.warn('\nDone! Site in reports/site/');
-console.warn('Run: cd reports/site && npx @11ty/eleventy --serve');
+console.warn('Run: pnpm --filter @optimitron/analysis-site dev');

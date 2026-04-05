@@ -36,7 +36,6 @@ import {
   type DiminishingReturnsModel,
   type EfficiencyAnalysis,
 } from '@optimitron/obg';
-import { z } from 'zod';
 
 // Data imports
 import {
@@ -61,7 +60,8 @@ const usIncomeRecords = getBestAvailableMedianIncomeSeries({
   isAfterTax: true,
   purchasingPower: 'ppp',
 });
-const usMedianIncome = usIncomeRecords.length > 0 ? Math.round(usIncomeRecords[0].value) : 59_540;
+const latestUsIncomeRecord = usIncomeRecords[0];
+const usMedianIncome = latestUsIncomeRecord ? Math.round(latestUsIncomeRecord.value) : 59_540;
 
 // Jurisdiction config — change to generate for any country
 const JURISDICTION = {
@@ -71,7 +71,6 @@ const JURISDICTION = {
   households: 133_000_000,
   medianIncome: usMedianIncome,
 };
-const US_POPULATION = JURISDICTION.population;
 
 // Use canonical mappings from @optimitron/data (no local duplicates)
 const OECD_MAPPINGS = OECD_CATEGORY_MAPPINGS;
@@ -82,100 +81,12 @@ type OECDMapping = OECDCategoryMapping;
 
 // ─── Budget Analysis (OBG) ──────────────────────────────────────────
 
-// ─── Output Types ───────────────────────────────────────────────────────────
-
-import type { BudgetReportCategory } from '@optimitron/obg';
-
-export interface BudgetAnalysisOutput {
-  jurisdiction: string;
-  totalSpendingNominal: number;
-  categories: BudgetReportCategory[];
-  topRecommendations: string[];
-  generatedAt: string;
-  generatedBy: string;
-  inflationAdjustment: Record<string, unknown>;
-  methodology: Record<string, unknown>;
-  note: string;
-}
-
-export interface PolicyOutput {
-  name: string;
-  type: string;
-  category: string;
-  description: string;
-  recommendationType: string;
-  evidenceGrade: string;
-  causalConfidenceScore: number;
-  policyImpactScore: number;
-  welfareScore: number;
-  incomeEffect: number;
-  healthEffect: number;
-  bradfordHillScores: Record<string, number>;
-  rationale: string;
-  currentStatus: string;
-  recommendedTarget: string;
-  blockingFactors: string[];
-}
-
-export interface PolicyAnalysisOutput {
-  jurisdiction: string;
-  policies: PolicyOutput[];
-  generatedAt: string;
-  generatedBy: string;
-  note: string;
-}
-
-// Zod schemas for runtime validation
-// Uses z.any() for efficiency field to avoid cross-package deep type instantiation (TS2589).
-// The explicit interfaces above provide compile-time safety; Zod validates structure at runtime.
-export const BudgetReportCategorySchema: z.ZodType<BudgetReportCategory> = z.object({
-  id: z.string(),
-  name: z.string(),
-  currentSpending: z.number(),
-  currentSpendingRealPerCapita: z.number(),
-  optimalSpendingPerCapita: z.number().nullable(),
-  optimalSpendingNominal: z.number().nullable(),
-  gap: z.number(),
-  gapPercent: z.number(),
-  recommendation: z.string(),
-  evidenceSource: z.string(),
-  outcomeMetrics: z.array(z.object({ name: z.string(), value: z.number(), trend: z.string() })),
-  historicalRealPerCapita: z.array(z.object({ year: z.number(), nominalBillions: z.number(), realPerCapita: z.number() })),
-  diminishingReturns: z.object({
-    modelType: z.string(), r2: z.number(), n: z.number(),
-    marginalReturn: z.number(), elasticity: z.number().nullable(), outcomeName: z.string(),
-  }).nullable(),
-  efficiency: z.any().nullable(),
-}) as unknown as z.ZodType<BudgetReportCategory>;
-
-export const BudgetAnalysisOutputSchema: z.ZodType<BudgetAnalysisOutput> = z.object({
-  jurisdiction: z.string(),
-  totalSpendingNominal: z.number(),
-  categories: z.array(BudgetReportCategorySchema),
-  topRecommendations: z.array(z.string()),
-  generatedAt: z.string(),
-  generatedBy: z.string(),
-  inflationAdjustment: z.record(z.unknown()),
-  methodology: z.record(z.unknown()),
-  note: z.string(),
-}) as unknown as z.ZodType<BudgetAnalysisOutput>;
-
-export const PolicyOutputSchema: z.ZodType<PolicyOutput> = z.object({
-  name: z.string(), type: z.string(), category: z.string(),
-  description: z.string(), recommendationType: z.string(),
-  evidenceGrade: z.string(), causalConfidenceScore: z.number(),
-  policyImpactScore: z.number(), welfareScore: z.number(),
-  incomeEffect: z.number(), healthEffect: z.number(),
-  bradfordHillScores: z.record(z.number()),
-  rationale: z.string(), currentStatus: z.string(),
-  recommendedTarget: z.string(), blockingFactors: z.array(z.string()),
-}) as unknown as z.ZodType<PolicyOutput>;
-
-export const PolicyAnalysisOutputSchema: z.ZodType<PolicyAnalysisOutput> = z.object({
-  jurisdiction: z.string(),
-  policies: z.array(PolicyOutputSchema),
-  generatedAt: z.string(), generatedBy: z.string(), note: z.string(),
-}) as unknown as z.ZodType<PolicyAnalysisOutput>;
+import {
+  hasEfficiency,
+  type BudgetAnalysisOutput,
+  type BudgetCategoryOutput,
+  type PolicyAnalysisOutput,
+} from './generated-analysis-schemas.js';
 
 /** Convert OECD panel data to SpendingOutcomePoint[], run OBG efficiency analysis. */
 function runEfficiencyAnalysis(mapping: OECDMapping): EfficiencyAnalysis | null {
@@ -215,9 +126,9 @@ function fitModelInfo(
   return { model, n: data.length };
 }
 
-function generateBudgetAnalysis() {
+function generateBudgetAnalysis(): BudgetAnalysisOutput {
   const totalSpendingNominal = US_FEDERAL_BUDGET.categories.reduce((sum, cat) => sum + cat.spendingBillions * 1e9, 0);
-  const categories: BudgetReportCategory[] = [];
+  const categories: BudgetCategoryOutput[] = [];
 
   for (const cat of US_FEDERAL_BUDGET.categories) {
     const latestSpending = cat.historicalSpending[cat.historicalSpending.length - 1]?.amount ?? 0;
@@ -257,7 +168,7 @@ function generateBudgetAnalysis() {
     else recommendation = 'maintain';
 
     // Fit a diminishing returns model for informational context
-    let drInfo: BudgetReportCategory['diminishingReturns'] = undefined;
+    let drInfo: BudgetCategoryOutput['diminishingReturns'] = null;
     const modelInfo = fitModelInfo(mapping);
     if (modelInfo) {
       drInfo = {
@@ -305,8 +216,8 @@ function generateBudgetAnalysis() {
   // Only show the most relevant one per OECD field.
   const seenSpendingFields = new Set<string>();
   const withEfficiency = categories
-    .filter(c => c.efficiency !== null)
-    .sort((a, b) => (b.efficiency?.overspendRatio ?? 0) - (a.efficiency?.overspendRatio ?? 0))
+    .filter(hasEfficiency)
+    .sort((a, b) => b.efficiency.overspendRatio - a.efficiency.overspendRatio)
     .filter(c => {
       const mapping = OECD_MAPPINGS[c.id];
       if (!mapping) return true;
@@ -319,7 +230,6 @@ function generateBudgetAnalysis() {
     .slice(0, 10)
     .map(c => {
       const e = c.efficiency;
-      if (!e) return '';
       const savings = e.potentialSavingsTotal;
       const fmtSavings = savings >= 1e12 ? `$${(savings/1e12).toFixed(1)}T` : `$${(savings/1e9).toFixed(0)}B`;
       if (e.overspendRatio > 1.2) {
@@ -371,13 +281,13 @@ const STRUCTURAL_REFORMS: PolicyInput[] = [...STRUCTURAL_POLICY_REFORMS];
 // These are spending reallocations, not structural reforms — the "effect" is the
 // savings redirected as Optimization Dividend (income) and the outcome improvement
 // from matching the high performer's level (health, if the outcome is life expectancy).
-function generateEfficiencyPolicies(budgetCategories: BudgetReportCategory[]): PolicyInput[] {
+function generateEfficiencyPolicies(budgetCategories: BudgetCategoryOutput[]): PolicyInput[] {
   const MEDIAN_INCOME = JURISDICTION.medianIncome;
   const HOUSEHOLDS = JURISDICTION.households;
 
   return budgetCategories
-    .filter((c): c is BudgetReportCategory & { efficiency: EfficiencyAnalysis } =>
-      c.efficiency !== null && c.efficiency.overspendRatio >= 1.5)
+    .filter(hasEfficiency)
+    .filter(c => c.efficiency.overspendRatio >= 1.5)
     .map(c => {
       const e = c.efficiency;
       const savingsPerHH = Math.round(e.potentialSavingsTotal / HOUSEHOLDS);
@@ -415,7 +325,7 @@ function generateEfficiencyPolicies(budgetCategories: BudgetReportCategory[]): P
     });
 }
 
-function generatePolicyAnalysis(budgetCategories: BudgetReportCategory[]) {
+function generatePolicyAnalysis(budgetCategories: BudgetCategoryOutput[]): PolicyAnalysisOutput {
   const efficiencyPolicies = generateEfficiencyPolicies(budgetCategories);
   const allPolicies = [...efficiencyPolicies, ...STRUCTURAL_REFORMS];
 

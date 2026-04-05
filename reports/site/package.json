@@ -4,8 +4,8 @@
   "private": true,
   "description": "Static markdown site of all Optimitron analysis — budget, policies, legislation, efficiency rankings",
   "scripts": {
-    "dev": "npx @11ty/eleventy --serve",
-    "build": "npx @11ty/eleventy"
+    "dev": "eleventy --serve",
+    "build": "eleventy"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0"

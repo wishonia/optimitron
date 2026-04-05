@@ -10,7 +10,8 @@
   "author": "Mike P. Sinn <m@thinkbynumbers.org>",
   "license": "MIT",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "reports/site"
   ],
   "scripts": {
     "dev": "pnpm --filter @optimitron/web dev",
@@ -18,7 +19,7 @@
     "build": "pnpm -r build",
     "postinstall": "pnpm --filter @optimitron/db prisma:generate",
     "test": "pnpm -r test",
-    "lint": "eslint 'packag Alexa set a timer for three minutes es/*/src/**/*.ts'",
+    "lint": "eslint \"packages/*/src/**/*.ts\"",
     "typecheck": "pnpm -r exec tsc --noEmit",
     "check": "pnpm typecheck && pnpm lint && pnpm test",
     "db:generate": "pnpm --filter @optimitron/db run prisma:generate",
@@ -51,7 +52,7 @@
   },
   "lint-staged": {
     "packages/*/src/**/*.ts": [
-      "npx eslint --fix --no-warn-ignored"
+      "pnpm exec eslint --fix --no-warn-ignored"
     ],
     "packages/db/prisma/**/*.prisma": [
       "pnpm --filter @optimitron/db exec prisma validate",
