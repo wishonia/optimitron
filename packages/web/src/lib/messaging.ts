@@ -158,7 +158,7 @@ export const ARCADE_LABELS = {
 
 export const VOTE_SECTION = {
   sliderPrompt:
-    "Adjust the slider to show how you'd split your country's finite resources between the military and clinical trials to cure and treat disease.",
+    "How do you think global governments should allocate between military spending and high efficiency pragmatic clinical trials to cure and treat disease?",
   realityCheck:
     "on weapons and military systems for every $1 spent on clinical trials.",
   theQuestion:

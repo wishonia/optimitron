@@ -401,15 +401,8 @@ export default async function PrizePage() {
         <h2 className="font-pixel text-xl font-black uppercase tracking-tight text-foreground mb-6 text-center">
           Game Status
         </h2>
-        <div className="grid gap-4 md:grid-cols-4 mb-8">
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="font-mono text-xs font-black uppercase text-muted-foreground">
-              Status
-            </div>
-            <div className="font-pixel mt-2 text-2xl font-black text-brutal-cyan">
-              ACCEPTING COINS
-            </div>
-          </div>
+        <CollapseCountdownTimer size="md" className="mb-8" />
+        <div className="grid gap-4 md:grid-cols-2 mb-8">
           <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
             <div className="font-mono text-xs font-black uppercase text-muted-foreground">
               Prize Pool
@@ -426,14 +419,6 @@ export default async function PrizePage() {
             <div className="font-mono mt-2 text-2xl font-black text-foreground">+{haleGain}</div>
             <div className="text-[10px] font-bold text-muted-foreground">
               median healthy life years
-            </div>
-          </div>
-          <div className="border-4 border-primary bg-background p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center">
-            <div className="font-mono text-xs font-black uppercase text-muted-foreground">
-              Time
-            </div>
-            <div className="font-mono mt-2 text-2xl font-black text-brutal-red">
-              <CollapseCountdownTimer size="sm" showLabel={false} />
             </div>
           </div>
         </div>
