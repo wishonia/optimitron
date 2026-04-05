@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { HowToWinSection } from "@/components/landing/HowToWinSection";
-import { HowToPlaySection } from "@/components/landing/HowToPlaySection";
 import { WhyPlaySection } from "@/components/landing/WhyPlaySection";
 import { LandingFAQSection } from "@/components/landing/LandingFAQSection";
 import { TLDRSection } from "@/components/landing/TLDRSection";
 import TreatyVoteSection from "@/components/landing/TreatyVoteSection";
 import { InvisibleGraveyardSection } from "@/components/landing/InvisibleGraveyardSection";
-import { DecentralizedFDASection } from "@/components/landing/DecentralizedFDASection";
 import { WishocracyPreview } from "@/components/landing/WishocracyPreview";
 import { PleaseSelectAnEarthSection } from "@/components/landing/PleaseSelectAnEarthSection";
 import { DecisionMatrixSection } from "@/components/landing/DecisionMatrixSection";
 import { OnePercentTreatySection } from "@/components/landing/OnePercentTreatySection";
-import { PoliticalDysfunctionTaxSection } from "@/components/landing/PoliticalDysfunctionTaxSection";
-import { OptimizedGovernancePreview } from "@/components/landing/OptimizedGovernancePreview";
 import { GovernmentReportCardPreview } from "@/components/landing/GovernmentReportCardPreview";
 import { PoliticianScorecardTable } from "@/components/shared/PoliticianScorecardTable";
 import {
@@ -22,36 +18,16 @@ import {
 } from "@optimitron/data/datasets/us-politician-scorecards";
 import { OutcomeLabelsSection } from "@/components/dfda/OutcomeLabelsSection";
 import { ComparativeEffectivenessSection } from "@/components/dfda/ComparativeEffectivenessSection";
-import { NavItemLink } from "@/components/navigation/NavItemLink";
 import { SectionContainer } from "@/components/ui/section-container";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Container } from "@/components/ui/container";
-import { CTASection } from "@/components/ui/cta-section";
-import {
-  alignmentLink,
-  prizeLink,
-  ROUTES,
-  opgLink,
-  obgLink,
-  transmitLink,
-  wishocracyLink,
-  scoreboardLink,
-  toolsLink,
-  governmentsLink,
-  politicianLeaderboardLink,
-  agenciesLink,
-  demoLink,
-  iabLink,
-} from "@/lib/routes";
 import { GameCTA } from "@/components/ui/game-cta";
 import { DemoVideoSection } from "@/components/landing/DemoVideoSection";
 import { OptimalPolicyPreview } from "@/components/landing/OptimalPolicyPreview";
-import { OptimalBudgetPreview } from "@/components/landing/OptimalBudgetPreview";
-import { CTA, TAGLINES, POINTS } from "@/lib/messaging";
-import {
-  DESTRUCTIVE_ECONOMY_35PCT_YEAR,
-} from "@optimitron/data/parameters";
-import { ParameterValue } from "@/components/shared/ParameterValue";
+import { ArmorySection } from "@/components/landing/ArmorySection";
+import { TAGLINES } from "@/lib/messaging";
+import { FinalCTASection } from "@/components/landing/FinalCTASection";
+
 export const metadata: Metadata = {
   title: "Optimitron — The Earth Optimization Game",
   description: `${TAGLINES.gameObjective} ${TAGLINES.everyPlayerWins}`,
@@ -62,89 +38,63 @@ export const metadata: Metadata = {
   },
 };
 
-import type { BrutalCardBgColor } from "@/components/ui/brutal-card";
-import { NavItemCard, NavItemCardGrid } from "@/components/ui/nav-item-card";
-
-const productWorkflows: { item: typeof prizeLink; bgColor: BrutalCardBgColor }[] = [
-  { item: prizeLink, bgColor: "pink" },
-  { item: scoreboardLink, bgColor: "cyan" },
-  { item: wishocracyLink, bgColor: "yellow" },
-  { item: alignmentLink, bgColor: "cyan" },
-  { item: transmitLink, bgColor: "cyan" },
-  { item: opgLink, bgColor: "cyan" },
-  { item: obgLink, bgColor: "red" },
-  { item: governmentsLink, bgColor: "red" },
-  { item: iabLink, bgColor: "yellow" },
-  { item: demoLink, bgColor: "cyan" },
-];
-
 export default function Home() {
   return (
     <div>
       {/* ── 1. Hero — Game name + objective ── */}
       <HeroSection />
 
-      {/* ── 1b. Demo Video — show don't tell ── */}
+      {/* ── 2. Demo Video — show don't tell ── */}
       <DemoVideoSection />
 
-      {/* ── 2. TLDR — It's 2 buttons, tell your friends, done ── */}
+      {/* ── 3. TLDR — It's 2 buttons, tell your friends, done ── */}
       <TLDRSection />
 
-      {/* ── 3. Vote — The core game action ── */}
+      {/* ── 4. Vote — The core game action ── */}
       <TreatyVoteSection />
 
-      {/* ── 3. How to Win — Scoreboard + win/lose conditions ── */}
+      {/* ── 5. Scoreboard — 2 numbers, that's the game ── */}
       <HowToWinSection />
 
-      {/* ── 4. How to Play — 4-step player journey ── */}
-      <HowToPlaySection />
-
-      {/* ── 5. What Happens If Nobody Plays — Stakes ── */}
+      {/* ── 6. What Happens If Nobody Plays — Stakes ── */}
       <WhyPlaySection />
 
-      {/* ── ARC 1: Money & Policy Evidence ── */}
-
-      {/* ── 6. The $101T Dysfunction Tax ── */}
-      <PoliticalDysfunctionTaxSection />
-
-      {/* ── 7. The Evidence — policies graded A-F ── */}
+      {/* ── 7. Every Policy Graded A-F — causal inference demo ── */}
       <OptimalPolicyPreview />
 
-      {/* ── 8. The Evidence — budgets: 4× overspend ── */}
-      <OptimalBudgetPreview />
-
-      {/* ── 9. The Solution — 1% Treaty ── */}
+      {/* ── 8. The Fix — 1% Treaty ── */}
       <OnePercentTreatySection />
 
-      {/* ── 10. Wishocracy — allocate your budget ── */}
+      {/* ── 9. Wishocracy — allocate your budget ── */}
       <WishocracyPreview />
 
-      {/* ── ARC 2: Health & Treatment ── */}
-
-      {/* ── 11. The Health Crisis — Invisible Graveyard ── */}
+      {/* ── 10. The Invisible Graveyard — boss reveal ── */}
       <InvisibleGraveyardSection />
 
-      {/* ── 12. The Tool — Decentralized FDA ── */}
-      <DecentralizedFDASection />
-
-      {/* ── 12b. Outcome Labels — what dFDA actually produces ── */}
+      {/* ── 11. Outcome Labels — what dFDA produces ── */}
       <OutcomeLabelsSection />
 
-      {/* ── 12c. Treatment Rankings — ranked by what works ── */}
+      {/* ── 12. Treatment Rankings — interactive demo ── */}
       <ComparativeEffectivenessSection />
 
-      {/* ── 10. Please Select an Earth — 3 trajectory comparison ── */}
+      {/* ── 13. Please Select an Earth — world select screen ── */}
       <PleaseSelectAnEarthSection />
 
-      {/* ── 10b. Decision Matrix — deposit vs don't, dominant strategy ── */}
+      {/* ── 14. Decision Matrix — dominant strategy proof ── */}
       <DecisionMatrixSection />
 
-      {/* ── 13. Government Report Cards — mini leaderboard ── */}
+      {/* ── 15. Worst Players: Governments ── */}
       <GovernmentReportCardPreview />
 
-      {/* ── 14. Politician Leaderboard — mini table ── */}
+      {/* ── 16. Worst Players: Politicians ── */}
       <SectionContainer bgColor="foreground" borderPosition="top" padding="lg">
         <Container>
+          <SectionHeader
+            title="Worst Players: Politicians"
+            subtitle="How your representatives actually vote vs what you actually wanted. The receipts."
+            size="lg"
+            className="text-background [&_p]:text-background"
+          />
           <PoliticianScorecardTable
             scorecards={POLITICIAN_SCORECARDS.map((p) => ({
               bioguideId: p.id.toUpperCase(),
@@ -158,8 +108,6 @@ export default function Home() {
             }))}
             systemWideRatio={SYSTEM_WIDE_MILITARY_TO_TRIALS_RATIO}
             limit={10}
-            showTitle
-            subtitle="How your representatives actually vote vs what you actually wanted. The receipts."
           />
           <div className="mt-8 text-center">
             <GameCTA href="/governments/US/politicians" variant="cyan">
@@ -169,60 +117,14 @@ export default function Home() {
         </Container>
       </SectionContainer>
 
-      {/* ── 15. Optimized Governance — agency grid ── */}
-      <OptimizedGovernancePreview />
+      {/* ── 17. The Armory — agencies + game modes ── */}
+      <ArmorySection />
 
-      {/* ── 16. Select Mode — Other game modes ── */}
-      <SectionContainer bgColor="background" borderPosition="none" padding="lg">
-        <Container>
-          <SectionHeader
-            title="Select Mode"
-            subtitle="On my planet, governance takes four minutes a week. Pick a mode."
-            size="lg"
-          />
-          <NavItemCardGrid columns={3}>
-            {productWorkflows.map((workflow) => (
-              <NavItemCard
-                key={workflow.item.href}
-                item={workflow.item}
-                bgColor={workflow.bgColor}
-              />
-            ))}
-          </NavItemCardGrid>
-          {/* Armory link */}
-          <div className="mt-8 text-center">
-            <NavItemLink
-              item={toolsLink}
-              variant="custom"
-              className="text-lg font-black text-foreground uppercase hover:text-brutal-pink transition-colors"
-            >
-              Want more tools? Visit The Armory &rarr;
-            </NavItemLink>
-          </div>
-        </Container>
-      </SectionContainer>
-
-      {/* ── 7. Frequently Asked Objections ── */}
+      {/* ── 18. Frequently Asked Objections ── */}
       <LandingFAQSection />
 
-      {/* ── 8. Final CTA ── */}
-      <CTASection
-        heading="The Clock Is Running"
-        description={<>The parasitic economy hits 35% of GDP by <ParameterValue param={DESTRUCTIVE_ECONOMY_35PCT_YEAR} display="integer" />. Your {POINTS} pay out if enough people play. Worth nothing if they don&apos;t.</>}
-        bgColor="yellow"
-      >
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <GameCTA href="#vote" variant="primary">
-            {CTA.playNow}
-          </GameCTA>
-          <GameCTA href="/prize" variant="secondary">
-            {CTA.seeTheMath}
-          </GameCTA>
-          <GameCTA href={ROUTES.wishocracy} variant="cyan">
-            {CTA.expressPreferences}
-          </GameCTA>
-        </div>
-      </CTASection>
+      {/* ── 19. Final CTA — countdown + ticker ── */}
+      <FinalCTASection />
     </div>
   );
 }

@@ -22,8 +22,8 @@ interface CounterConfig {
   rate: number;
   format: (n: number) => string;
   color: string;
+  emoji: string;
   label: string;
-  quip: string;
   staticFallback: string;
 }
 
@@ -31,26 +31,26 @@ const counters: CounterConfig[] = [
   {
     rate: DEATHS_PER_SECOND,
     format: (n) => Math.floor(n).toLocaleString(),
-    color: "text-brutal-yellow",
-    label: "Died from treatable diseases since you opened this page",
-    quip: "Each one had a name. But sure, take your time.",
-    staticFallback: `~${DEATHS_PER_DAY.toLocaleString()} deaths per day (~${DEATHS_PER_SECOND.toFixed(1)}/sec)`,
+    color: "text-brutal-red",
+    emoji: "💀",
+    label: "Died from treatable diseases",
+    staticFallback: `~${DEATHS_PER_DAY.toLocaleString()} deaths/day`,
   },
   {
     rate: DYSFUNCTION_TAX_PER_SECOND,
     format: formatDollars,
-    color: "text-brutal-red",
-    label: "Burned by misaligned governments since you opened this page",
-    quip: "That's your money, by the way. You earned it. They wasted it.",
-    staticFallback: `$${Math.round(DYSFUNCTION_TAX_PER_YEAR / 1e12)}T/yr in governance dysfunction (~$${(DYSFUNCTION_TAX_PER_SECOND / 1e6).toFixed(1)}M/sec)`,
+    color: "text-brutal-pink",
+    emoji: "🔥",
+    label: "Burned by misaligned governments",
+    staticFallback: `$${Math.round(DYSFUNCTION_TAX_PER_YEAR / 1e12)}T/yr governance waste`,
   },
   {
     rate: DESTRUCTIVE_PER_SECOND,
     format: formatDollars,
-    color: "text-brutal-yellow",
-    label: "Spent on destruction instead of cures since you opened this page",
-    quip: "Every dollar here creates the next cybercriminal. It's a lovely system you've built.",
-    staticFallback: `$${DESTRUCTIVE_BASE_T.toFixed(1)}T/yr on military + cybercrime (~$${Math.round(DESTRUCTIVE_PER_SECOND / 1e3)}K/sec)`,
+    color: "text-brutal-cyan",
+    emoji: "💣",
+    label: "Spent on destruction instead of cures",
+    staticFallback: `$${DESTRUCTIVE_BASE_T.toFixed(1)}T/yr military + cybercrime`,
   },
 ];
 
@@ -85,9 +85,8 @@ export function LiveDeathTicker({ className = "" }: { className?: string }) {
       <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 text-center ${className}`}>
         {counters.map((c) => (
           <div key={c.label}>
-            <p className={`text-sm font-bold ${c.color}/80 uppercase tracking-wider`}>
-              {c.staticFallback}
-            </p>
+            <span className="text-3xl mr-2">{c.emoji}</span>
+            <span className={`text-lg font-bold ${c.color}`}>{c.staticFallback}</span>
           </div>
         ))}
       </div>
@@ -98,17 +97,18 @@ export function LiveDeathTicker({ className = "" }: { className?: string }) {
     <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 text-center ${className}`}>
       {counters.map((c, i) => (
         <div key={c.label}>
-          <div
-            className={`text-3xl sm:text-4xl font-black ${c.color}`}
-            style={{ fontVariantNumeric: "tabular-nums" }}
-          >
-            <span ref={refs[i]}>{c.format(0)}</span>
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-4xl sm:text-5xl">{c.emoji}</span>
+            <span
+              className={`text-3xl sm:text-4xl font-black ${c.color}`}
+              style={{ fontVariantNumeric: "tabular-nums" }}
+              ref={refs[i]}
+            >
+              {c.format(0)}
+            </span>
           </div>
-          <p className="text-[10px] sm:text-xs font-bold text-muted-foreground mt-2 uppercase tracking-wider max-w-xs mx-auto">
+          <p className="text-sm sm:text-base font-bold text-background/80 mt-2 uppercase tracking-wider max-w-xs mx-auto">
             {c.label}
-          </p>
-          <p className="text-[10px] text-muted-foreground mt-1 italic max-w-xs mx-auto">
-            {c.quip}
           </p>
         </div>
       ))}

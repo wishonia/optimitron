@@ -7,9 +7,6 @@ import { POINT } from "@/lib/messaging";
 import {
   PRIZE_POOL_HORIZON_MULTIPLE,
   TREATY_CAMPAIGN_VOTING_BLOC_TARGET,
-  MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO,
-  TREATY_TRAJECTORY_AVG_INCOME_YEAR_15,
-  CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15,
 } from "@optimitron/data/parameters";
 
 const objections: { id: string; question: string; answer: ReactNode }[] = [
@@ -17,12 +14,12 @@ const objections: { id: string; question: string; answer: ReactNode }[] = [
     id: "scam",
     question: "Isn't this a scam?",
     answer:
-      "Zero team allocation. No pre-sale. No admin keys. Every transaction is on-chain and auditable. The smart contract controls distribution — not a committee, not a founder, not an alien. It's a dominant assurance contract: the mechanism literally guarantees you can't lose your principal. The code is on GitHub. Read it.",
+      "Zero team allocation. No admin keys. Dominant assurance contract — you cannot lose principal. Smart contract controls distribution. Code on GitHub.",
   },
   {
     id: "politicians",
     question: "Can politicians just ignore this?",
-    answer: <>Chenoweth&apos;s research shows that 3.5% of a population is the tipping point for political change — no campaign in history has failed after reaching it. That&apos;s <ParameterValue param={TREATY_CAMPAIGN_VOTING_BLOC_TARGET} display="withUnit" /> verified supporters globally. The referendum doesn&apos;t ask permission. It proves demand. Once demand is undeniable, ignoring it becomes more expensive than acting on it.</>,
+    answer: <>3.5% of a population is the tipping point. No campaign in history has failed after reaching it. That&apos;s <ParameterValue param={TREATY_CAMPAIGN_VOTING_BLOC_TARGET} display="withUnit" /> globally. The referendum proves demand. Ignoring proven demand costs more than acting.</>,
   },
   {
     id: "fails",
@@ -33,12 +30,12 @@ const objections: { id: string; question: string; answer: ReactNode }[] = [
     id: "trust",
     question: "Why should I trust an alien?",
     answer:
-      "You shouldn't. Trust the smart contracts. They're open source, deployed on a public blockchain, with no admin keys. The alien is just the narrator. The maths works whether or not you find her charming. VoterPrizeTreasury.sol and VoteToken.sol — full source on GitHub.",
+      "Don't. Trust the smart contracts. Open source, public blockchain, no admin keys. The alien is just the narrator. VoterPrizeTreasury.sol — full source on GitHub.",
   },
   {
     id: "share",
     question: "Why should I share this with friends?",
-    answer: <>Everyone would be healthier and <ParameterValue param={{...TREATY_TRAJECTORY_AVG_INCOME_YEAR_15, value: Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value / CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15.value), unit: ""}} display="integer" />x richer if their governments weren&apos;t spending <ParameterValue param={MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO} display="integer" /> times more on blowing everything up than on clinical trials. But everyone assumes nobody else would agree to a saner allocation — despite the fact that this is what literally everyone wants. That&apos;s called pluralistic ignorance and it&apos;s the only thing standing between you and a cured planet. Each friend who plays proves one more person agrees, earns you a {POINT} — your share of the prize pool if targets are met — and moves closer to the tipping point. You&apos;re not asking for a favour. You&apos;re showing them the maths.</>,
+    answer: <>Everyone wants less war and disease. Nobody knows everyone else does. That&apos;s pluralistic ignorance. Each friend proves one more person agrees and earns you a {POINT}. You&apos;re not asking a favour. You&apos;re showing them the maths.</>,
   },
 ];
 

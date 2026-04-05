@@ -156,7 +156,7 @@ export function PoliticianScorecardTable({
   const dynamicTitle = rankMode === "worst" ? "Worst Players" : "Least Bad Players";
 
   return (
-    <div className="bg-background text-foreground border-4 border-primary p-2 sm:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+    <div className="bg-background text-foreground border-0 sm:border-4 sm:border-primary p-0 sm:p-4 sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
       {showTitle && (
         <div className="text-center mb-6">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider mb-4">
@@ -219,7 +219,7 @@ export function PoliticianScorecardTable({
       </p>
 
       {/* Table */}
-      <div className="border-2 border-primary overflow-x-auto">
+      <div className="border-0 sm:border-2 sm:border-primary overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b-4 border-primary">

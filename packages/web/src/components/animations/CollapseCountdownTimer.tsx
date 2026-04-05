@@ -112,56 +112,56 @@ export function CollapseCountdownTimer({
   const initial = getTimeLeft();
 
   const digitSize = size === "lg" ? "text-4xl md:text-6xl" : size === "md" ? "text-2xl md:text-4xl" : "text-xl md:text-2xl";
-  const labelSize = size === "lg" ? "text-xs" : size === "md" ? "text-[10px]" : "text-[9px]";
+  const labelSize = size === "lg" ? "text-sm" : size === "md" ? "text-xs" : "text-[10px]";
   const gap = size === "lg" ? "gap-4 md:gap-6" : size === "md" ? "gap-3 md:gap-4" : "gap-2";
 
   return (
     <div className={className} ref={containerRef}>
-      <div className={`flex items-center justify-center ${gap} font-mono`} style={{ fontVariantNumeric: "tabular-nums" }}>
+      <div className={`flex flex-wrap items-center justify-center ${gap} font-mono`} style={{ fontVariantNumeric: "tabular-nums" }}>
         <div className="text-center">
           <span ref={refs.years} className={`${digitSize} font-black text-brutal-red`}>
             {reduced ? String(initial.years) : "0"}
           </span>
-          <div className={`${labelSize} font-black uppercase text-muted-foreground mt-1`}>YRS</div>
+          <div className={`${labelSize} font-black uppercase text-background/60 mt-1`}>YRS</div>
         </div>
-        <span className={`${digitSize} font-black text-muted-foreground`}>:</span>
+        <span className={`${digitSize} font-black text-background/40`}>:</span>
         <div className="text-center">
           <span ref={refs.months} className={`${digitSize} font-black text-brutal-red`}>
             {reduced ? String(initial.months).padStart(2, "0") : "00"}
           </span>
-          <div className={`${labelSize} font-black uppercase text-muted-foreground mt-1`}>MO</div>
+          <div className={`${labelSize} font-black uppercase text-background/60 mt-1`}>MO</div>
         </div>
-        <span className={`${digitSize} font-black text-muted-foreground`}>:</span>
+        <span className={`${digitSize} font-black text-background/40`}>:</span>
         <div className="text-center">
           <span ref={refs.days} className={`${digitSize} font-black text-brutal-red`}>
             {reduced ? String(initial.days).padStart(2, "0") : "00"}
           </span>
-          <div className={`${labelSize} font-black uppercase text-muted-foreground mt-1`}>DAYS</div>
+          <div className={`${labelSize} font-black uppercase text-background/60 mt-1`}>DAYS</div>
         </div>
-        <span className={`${digitSize} font-black text-muted-foreground`}>:</span>
+        <span className={`${digitSize} font-black text-background/40`}>:</span>
         <div className="text-center">
           <span ref={refs.hours} className={`${digitSize} font-black text-brutal-red`}>
             {reduced ? String(initial.hours).padStart(2, "0") : "00"}
           </span>
-          <div className={`${labelSize} font-black uppercase text-muted-foreground mt-1`}>HRS</div>
+          <div className={`${labelSize} font-black uppercase text-background/60 mt-1`}>HRS</div>
         </div>
-        <span className={`${digitSize} font-black text-muted-foreground`}>:</span>
+        <span className={`${digitSize} font-black text-background/40`}>:</span>
         <div className="text-center">
           <span ref={refs.minutes} className={`${digitSize} font-black text-brutal-red`}>
             {reduced ? String(initial.minutes).padStart(2, "0") : "00"}
           </span>
-          <div className={`${labelSize} font-black uppercase text-muted-foreground mt-1`}>MIN</div>
+          <div className={`${labelSize} font-black uppercase text-background/60 mt-1`}>MIN</div>
         </div>
-        <span className={`${digitSize} font-black text-muted-foreground`}>:</span>
+        <span className={`${digitSize} font-black text-background/40`}>:</span>
         <div className="text-center">
           <span ref={refs.seconds} className={`${digitSize} font-black text-brutal-red`}>
             {reduced ? String(initial.seconds).padStart(2, "0") : "00"}
           </span>
-          <div className={`${labelSize} font-black uppercase text-muted-foreground mt-1`}>SEC</div>
+          <div className={`${labelSize} font-black uppercase text-background/60 mt-1`}>SEC</div>
         </div>
       </div>
       {showLabel && (
-        <p className="text-xs font-bold text-muted-foreground text-center mt-3">
+        <p className="text-sm sm:text-base font-bold text-background/80 text-center mt-3">
           Until the destructive economy reaches 50% of GDP — the point where stealing beats creating
         </p>
       )}

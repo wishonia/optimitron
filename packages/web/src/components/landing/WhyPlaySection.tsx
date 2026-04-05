@@ -1,8 +1,11 @@
+"use client";
+
 import { SectionContainer } from "@/components/ui/section-container";
 import { Container } from "@/components/ui/container";
 import { SectionHeader } from "@/components/ui/section-header";
 import { GameCTA } from "@/components/ui/game-cta";
 import { ParasiticEconomyChart } from "@/components/shared/ParasiticEconomyChart";
+import { LiveDeathTicker } from "@/components/animations/LiveDeathTicker";
 import { CTA } from "@/lib/messaging";
 
 export function WhyPlaySection() {
@@ -24,6 +27,11 @@ export function WhyPlaySection() {
       </div>
 
       <Container>
+        {/* Real-time counters */}
+        <div className="mb-8">
+          <LiveDeathTicker />
+        </div>
+
         {/* Punchline */}
         <div className="text-center">
           <p className="text-xl sm:text-2xl font-black text-background mb-6">

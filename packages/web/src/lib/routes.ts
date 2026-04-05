@@ -581,6 +581,14 @@ export const politicalDysfunctionTaxPaperLink: NavItem = {
   cta: "Read Paper",
 };
 
+export const dysfunctionTaxLink: NavItem = {
+  label: "Political Dysfunction Tax",
+  href: "/dysfunction-tax",
+  emoji: "💸",
+  description: "Your governments cost you $101 trillion a year in dysfunction. Per person, per year. Including the ones who cannot afford lunch.",
+  cta: "See the Breakdown",
+};
+
 export const incentiveAlignmentBondsPaperLink: NavItem = {
   label: "Incentive Alignment Bonds",
   href: "https://iab.warondisease.org",

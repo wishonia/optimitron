@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { DM_Sans, Space_Mono, Source_Serif_4, Press_Start_2P, VT323 } from "next/font/google";
+import { DM_Sans, Space_Mono, Source_Serif_4, Press_Start_2P, VT323, Creepster } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { cookieToInitialState } from "wagmi";
 import "./globals.css";
@@ -36,7 +36,12 @@ const vt323 = VT323({
   weight: "400",
   variable: "--v0-font-vt323",
 });
-const fontVariables = `${dmSans.variable} ${spaceMono.variable} ${sourceSerif4.variable} ${pressStart2P.variable} ${vt323.variable}`;
+const creepster = Creepster({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--v0-font-creepster",
+});
+const fontVariables = `${dmSans.variable} ${spaceMono.variable} ${sourceSerif4.variable} ${pressStart2P.variable} ${vt323.variable} ${creepster.variable}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -96,7 +101,7 @@ export default async function RootLayout({
       <body className={`font-sans antialiased ${fontVariables}`} suppressHydrationWarning>
         <Providers initialState={initialState}>
           <Navbar />
-          <main className="min-h-screen pb-12">{children}</main>
+          <main className="min-h-screen">{children}</main>
           <Footer />
           <GameScoreBar />
         </Providers>

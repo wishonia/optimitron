@@ -1,0 +1,48 @@
+"use client";
+
+import { SectionContainer } from "@/components/ui/section-container";
+import { Container } from "@/components/ui/container";
+import { SectionHeader } from "@/components/ui/section-header";
+import { GameCTA } from "@/components/ui/game-cta";
+import { CollapseCountdownTimer } from "@/components/animations/CollapseCountdownTimer";
+import { LiveDeathTicker } from "@/components/animations/LiveDeathTicker";
+import { CTA, POINTS } from "@/lib/messaging";
+import { ROUTES } from "@/lib/routes";
+
+export function FinalCTASection() {
+  return (
+    <SectionContainer bgColor="foreground" borderPosition="top" padding="lg">
+      <Container className="max-w-4xl">
+        <SectionHeader
+          title="The Clock Is Running"
+          subtitle={`Your ${POINTS} pay out if enough people play. Worth nothing if they don't.`}
+          size="lg"
+          className="text-background [&_p]:text-background"
+        />
+
+        {/* Countdown to parasitic economy overtake */}
+        <div className="mb-8">
+          <CollapseCountdownTimer />
+        </div>
+
+        {/* Real-time death ticker */}
+        <div className="mb-8">
+          <LiveDeathTicker />
+        </div>
+
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <GameCTA href="#vote" variant="primary">
+            {CTA.playNow}
+          </GameCTA>
+          <GameCTA href="/prize" variant="secondary">
+            {CTA.seeTheMath}
+          </GameCTA>
+          <GameCTA href={ROUTES.wishocracy} variant="cyan">
+            {CTA.expressPreferences}
+          </GameCTA>
+        </div>
+      </Container>
+    </SectionContainer>
+  );
+}

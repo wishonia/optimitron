@@ -22,25 +22,31 @@ function formatCurrency(value: number): string {
   return `$${value.toLocaleString()}`;
 }
 
+const treatyMultiple = (TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value / GLOBAL_AVG_INCOME_2025.value).toFixed(1);
+const optimalMultiple = (WISHONIA_TRAJECTORY_AVG_INCOME_YEAR_15.value / GLOBAL_AVG_INCOME_2025.value).toFixed(1);
+
 const scenarios = [
   {
     name: "Status Quo",
     subtitle: "Somalia, But Everywhere",
     income: formatCurrency(Math.round(GLOBAL_AVG_INCOME_2025.value)),
+    incomeDetail: "baseline",
     hale: GLOBAL_HALE_CURRENT.value,
     color: "text-muted-foreground",
   },
   {
     name: "1% Treaty",
     subtitle: "Minimum Acceptable Governance",
-    income: formatCurrency(Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value)),
+    income: `${treatyMultiple}× current`,
+    incomeDetail: formatCurrency(Math.round(TREATY_TRAJECTORY_AVG_INCOME_YEAR_15.value)),
     hale: TREATY_PROJECTED_HALE_YEAR_15.value,
     color: "text-brutal-cyan",
   },
   {
     name: "Optimal Governance",
     subtitle: `End the $${globalDysfunctionCostT}T/yr Dysfunction Tax`,
-    income: formatCurrency(Math.round(WISHONIA_TRAJECTORY_AVG_INCOME_YEAR_15.value)),
+    income: `${optimalMultiple}× current`,
+    incomeDetail: formatCurrency(Math.round(WISHONIA_TRAJECTORY_AVG_INCOME_YEAR_15.value)),
     hale: WISHONIA_PROJECTED_HALE_YEAR_15.value,
     color: "text-brutal-green",
   },
@@ -52,7 +58,7 @@ export function PleaseSelectAnEarthSection() {
       <Container>
         <SectionHeader
           title="Please Select an Earth"
-          subtitle={`Projected outcomes by ${collapseYear}. You are currently on Path A. You chose it by not choosing. Which is very on-brand for your species.`}
+          subtitle={`You're on Path A. You chose it by not choosing.`}
           size="lg"
         />
 
@@ -60,13 +66,13 @@ export function PleaseSelectAnEarthSection() {
           <table className="w-full">
             <thead>
               <tr className="border-b-4 border-primary">
-                <th className="p-3 text-left text-xs font-black uppercase text-muted-foreground">
+                <th className="p-3 text-left text-sm font-black uppercase text-muted-foreground">
                   Scenario
                 </th>
-                <th className="p-3 text-right text-xs font-black uppercase text-muted-foreground">
+                <th className="p-3 text-right text-sm font-black uppercase text-muted-foreground">
                   Income / Person / Year
                 </th>
-                <th className="p-3 text-right text-xs font-black uppercase text-muted-foreground">
+                <th className="p-3 text-right text-sm font-black uppercase text-muted-foreground">
                   Median HALE
                 </th>
               </tr>
@@ -81,12 +87,17 @@ export function PleaseSelectAnEarthSection() {
                     <div className={`font-black text-sm uppercase ${s.color}`}>
                       {s.name}
                     </div>
-                    <div className="text-xs font-bold text-muted-foreground">
+                    <div className="text-sm font-bold text-muted-foreground">
                       {s.subtitle}
                     </div>
                   </td>
-                  <td className={`p-3 text-right font-black text-lg ${s.color}`}>
-                    {s.income}
+                  <td className="p-3 text-right">
+                    <div className={`font-black text-lg ${s.color}`}>
+                      {s.income}
+                    </div>
+                    <div className="text-sm font-bold text-muted-foreground">
+                      {s.incomeDetail}
+                    </div>
                   </td>
                   <td className={`p-3 text-right font-black text-lg ${s.color}`}>
                     {s.hale} yrs

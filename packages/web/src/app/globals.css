@@ -465,6 +465,8 @@
   --font-arcade: var(--v0-font-press-start-2p);
   --font-pixel: var(--v0-font-press-start-2p);
   --font-terminal: var(--v0-font-vt323);
+  --font-horror: var(--v0-font-creepster);
+  --font-family-horror: var(--font-horror);
 
   /* Animations */
   --animate-accordion-down: accordion-down 0.2s ease-out;
@@ -562,6 +564,32 @@
   }
   to {
     height: 0;
+  }
+}
+
+@keyframes ghost-bob {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--tw-rotate, 0deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(var(--tw-rotate, 0deg));
+  }
+}
+
+@keyframes skull-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.15;
+  }
+  10% {
+    opacity: 0.2;
+  }
+  90% {
+    opacity: 0.12;
+  }
+  100% {
+    transform: translateY(calc(100vh + 4rem)) rotate(15deg);
+    opacity: 0;
   }
 }
 

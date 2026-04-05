@@ -46,8 +46,8 @@ export const GOVERNMENT_LEADERBOARD_COLUMN_META: Record<
     description: "Total life expectancy at birth, including years lived with illness or disability.",
   },
   medianIncome: {
-    label: "What You Keep",
-    description: "GDP per capita minus total government spending per capita (PPP). Captures all forms of taxation: direct taxes, inflation, debt, and regulatory overhead.",
+    label: "Median Income",
+    description: "After-tax median disposable income (PPP). What a typical citizen actually takes home after taxes and transfers.",
   },
   militaryPerCapitaPPP: {
     label: "Mil/cap PPP",

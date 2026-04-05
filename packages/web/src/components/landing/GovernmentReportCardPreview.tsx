@@ -10,7 +10,7 @@ export function GovernmentReportCardPreview() {
     <SectionContainer bgColor="background" borderPosition="top" padding="lg">
       <Container>
         <SectionHeader
-          title="Government Report Cards"
+          title="Worst Players: Governments"
           subtitle="Every government ranked by body count — the data they hope you never see."
           size="lg"
         />

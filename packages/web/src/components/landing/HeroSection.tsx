@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { GameCTA } from "@/components/ui/game-cta";
 import { Container } from "@/components/ui/container";
 import { SectionContainer } from "@/components/ui/section-container";
+import { LiveDeathTicker } from "@/components/animations/LiveDeathTicker";
 import { TAGLINES, CTA } from "@/lib/messaging";
 
 const containerVariants = {
@@ -103,14 +104,14 @@ export function HeroSection() {
             </GameCTA>
           </motion.div>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.9 }}
-            className="mt-4 text-lg sm:text-xl font-black text-muted-foreground uppercase"
+            className="mt-6"
           >
-            Free! Takes 30 seconds!
-          </motion.p>
+            <LiveDeathTicker />
+          </motion.div>
         </motion.div>
       </Container>
     </SectionContainer>

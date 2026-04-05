@@ -43,7 +43,7 @@ function getSortValue(gov: GovernmentMetrics, key: SortKey): number {
     case "killed": return gov.militaryDeathsCaused.value;
     case "hale": return gov.hale?.value ?? 0;
     case "lifeExpectancy": return gov.lifeExpectancy.value;
-    case "medianIncome": return gov.gdpPerCapita.value - gov.governmentSpendingPerCapita.value;
+    case "medianIncome": return gov.medianIncome?.value ?? (gov.gdpPerCapita.value - gov.governmentSpendingPerCapita.value);
     case "militaryPerCapitaPPP":
       return getMilitarySpendingPerCapitaPPP(gov) ?? 0;
     case "militarySpending": return gov.militarySpendingAnnual.value;
@@ -90,7 +90,7 @@ const COLUMN_HELP_TEXT: Record<string, string> = {
   killed: "Estimated total people killed by that government's military actions.",
   hale: "Healthy life expectancy at birth: expected years lived in full health.",
   lifeExpectancy: "Total life expectancy at birth, including years with illness or disability.",
-  medianIncome: "GDP per capita minus government spending per capita (PPP). What citizens actually keep.",
+  medianIncome: "After-tax median disposable income (PPP). What a typical citizen actually takes home.",
   militaryPerCapitaPPP: "Military spending per person in PPP terms.",
   militarySpending: "Annual military spending in USD.",
   healthSpending: "Annual health spending per person.",
@@ -123,7 +123,7 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
     [allGovs],
   );
   const maxIncome = useMemo(
-    () => Math.max(...allGovs.map((g) => g.gdpPerCapita.value - g.governmentSpendingPerCapita.value), 1),
+    () => Math.max(...allGovs.map((g) => g.medianIncome?.value ?? (g.gdpPerCapita.value - g.governmentSpendingPerCapita.value)), 1),
     [allGovs],
   );
   const maxTrialRatio = useMemo(
@@ -187,7 +187,7 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
   const hdrClass = "p-2 text-xs font-black uppercase text-muted-foreground whitespace-nowrap cursor-pointer hover:text-foreground transition-colors";
 
   return (
-    <div className="bg-background text-foreground border-4 border-primary p-2 sm:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+    <div className="bg-background text-foreground border-0 sm:border-4 sm:border-primary p-0 sm:p-4 sm:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
       {/* Rank mode toggle + search */}
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-2 gap-2 sm:gap-4">
         <div className="flex gap-2">
@@ -221,7 +221,7 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
       </p>
 
       {/* Table */}
-      <div className="border-2 border-primary overflow-x-auto">
+      <div className="border-0 sm:border-2 sm:border-primary overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b-4 border-primary">
@@ -258,9 +258,9 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                   Life Exp{indicator("lifeExpectancy")}<ColumnHelp text={COLUMN_HELP_TEXT.lifeExpectancy!} />
                 </th>
               )}
-              {/* What You Keep — hidden on small mobile */}
+              {/* Median Income — hidden on small mobile */}
               <th className={`${hdrClass} text-right hidden sm:table-cell`} onClick={() => handleSort("medianIncome")}>
-                What You Keep{indicator("medianIncome")}<ColumnHelp text={COLUMN_HELP_TEXT.medianIncome!} />
+                Median Income{indicator("medianIncome")}<ColumnHelp text={COLUMN_HELP_TEXT.medianIncome!} />
               </th>
               {!compact && (
                 <>
@@ -282,7 +282,7 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
               const clinicalTrialRatio = getMilitaryToGovernmentClinicalTrialRatio(gov);
               const medicalResearchRatio = getMilitaryToGovernmentMedicalResearchRatio(gov);
               const militaryPerCapitaPPP = getMilitarySpendingPerCapitaPPP(gov);
-              const income = gov.gdpPerCapita.value - gov.governmentSpendingPerCapita.value;
+              const income = gov.medianIncome?.value ?? (gov.gdpPerCapita.value - gov.governmentSpendingPerCapita.value);
               const detailHref = `/governments/${gov.code}`;
               return (
                 <tr
@@ -318,7 +318,7 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-black text-brutal-cyan w-7 shrink-0">HP</span>
+                        <span className="text-[10px] font-black text-brutal-cyan w-7 shrink-0">HALE</span>
                         <SpendingBar
                           value={gov.hale?.value ?? 0}
                           max={maxHale}
@@ -416,7 +416,7 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                     </td>
                   )}
 
-                  {/* What You Keep — hidden on small mobile */}
+                  {/* Median Income — hidden on small mobile */}
                   <td className="p-2 text-right min-w-[80px] hidden sm:table-cell">
                     <GovernmentRowLink href={detailHref} className="text-right">
                       <div className="text-sm font-black text-foreground">
