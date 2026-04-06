@@ -40,7 +40,7 @@ function SingleAgencyCard({ agency }: { agency: EarthAgency }) {
               {agency.name}
             </h3>
           </div>
-          <p className="mt-2 text-sm font-bold text-muted-foreground leading-relaxed">
+          <p className="mt-2 text-sm font-bold leading-relaxed text-background/80">
             {perf.gradeRationale}
           </p>
           <p className="mt-4 text-sm font-bold italic text-background leading-relaxed">
@@ -58,7 +58,7 @@ function SingleAgencyCard({ agency }: { agency: EarthAgency }) {
 function MultiAgencyCard({ agencies }: { agencies: EarthAgency[] }) {
   return (
     <BrutalCard bgColor="foreground" shadowSize={8} padding="lg">
-      <div className="mb-4 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground">
+      <div className="mb-4 text-xs font-black uppercase tracking-[0.15em] text-background/80">
         Replaces {agencies.length} agencies
       </div>
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">

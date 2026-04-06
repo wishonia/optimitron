@@ -39,9 +39,9 @@ const variantStyles = {
     text: "text-background",
     subtext: "text-background",
     stat: "border-border text-background",
-    statLabel: "text-muted-foreground",
+    statLabel: "text-background/80",
     btn: "bg-brutal-pink text-brutal-pink-foreground hover:bg-brutal-pink/80",
-    kicker: "text-muted-foreground",
+    kicker: "text-background/80",
   },
 } as const;
 

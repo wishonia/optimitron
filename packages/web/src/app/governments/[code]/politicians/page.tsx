@@ -128,7 +128,7 @@ export default async function GovernmentPoliticiansPage({ params }: PageProps) {
               title="Presidential Scorecards"
               subtitle="Your 'red team' and 'blue team' argue about everything except this ratio, because they're both inside it. Switching parties is like changing the wallpaper in a burning building."
               size="md"
-              className="text-background [&_p]:text-muted-foreground"
+              className="text-background [&_p]:text-background/80"
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {scorecardData.presidents.map((p) => (

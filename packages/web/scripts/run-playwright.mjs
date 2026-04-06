@@ -2,9 +2,11 @@
 
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import process from "node:process";
 
+const require = createRequire(import.meta.url);
 const DEFAULT_BASE_URL = "http://127.0.0.1:3001";
 const LOCAL_BASE_URL_CANDIDATES = [
   process.env.BASE_URL,
@@ -61,13 +63,7 @@ async function main() {
     delete env.SKIP_SERVER;
   }
 
-  const playwrightArgs = [
-    "exec",
-    "playwright",
-    "test",
-    ...MODE_SPECS[mode],
-    ...appendDefaultProjectArg(passthroughArgs),
-  ];
+  const playwrightArgs = ["test", ...MODE_SPECS[mode], ...appendDefaultProjectArg(passthroughArgs)];
 
   console.log(`[e2e] mode=${mode}`);
   console.log(`[e2e] baseUrl=${execution.baseUrl}`);
@@ -144,11 +140,9 @@ function dedupe(values) {
 
 function runCommand(args, env) {
   return new Promise((resolve, reject) => {
-    const useShell = process.platform === "win32";
-    const child = spawn("pnpm", args, {
+    const child = spawn(process.execPath, [resolvePlaywrightCli(), ...args], {
       cwd: process.cwd(),
       env,
-      shell: useShell,
       stdio: "inherit",
     });
 
@@ -161,6 +155,10 @@ function runCommand(args, env) {
       resolve(code ?? 1);
     });
   });
+}
+
+function resolvePlaywrightCli() {
+  return path.join(path.dirname(require.resolve("@playwright/test/package.json")), "cli.js");
 }
 
 function printHelp() {

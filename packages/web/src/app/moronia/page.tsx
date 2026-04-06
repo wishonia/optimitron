@@ -215,7 +215,7 @@ export default function MoroniaPage() {
           lines is what bad governance costs you.
         </p>
         <div className="border border-red-900/30 bg-red-950/10 backdrop-blur-sm p-6 mb-12">
-          <PersonalIncomeChart />
+          <PersonalIncomeChart surface="dark" />
         </div>
         <div className="border border-red-900/30 bg-red-950/10 backdrop-blur-sm p-6">
           <GdpTrajectoryChart />

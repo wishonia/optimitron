@@ -52,9 +52,9 @@ export function SlideFinalCallToAction() {
         </div>
 
         {/* Left stats | QR Code | Right stats */}
-        <div className="flex items-center gap-6 md:gap-10 w-full max-w-[1600px] justify-center">
+        <div className="flex w-full max-w-[1600px] flex-col items-center justify-center gap-6 md:flex-row md:gap-10">
           {/* Left column — 2 stats */}
-          <div className="flex flex-col gap-4 md:gap-6 flex-1 max-w-[400px]">
+          <div className="flex w-full max-w-[400px] flex-col gap-4 md:flex-1 md:gap-6">
             <div
               className="rounded-lg border-2 p-4 md:p-5 text-center"
               style={{ borderColor: `${palette.success}40`, backgroundColor: `${palette.success}10` }}
@@ -92,7 +92,7 @@ export function SlideFinalCallToAction() {
             >
               <QRCodeSVG
                 value="https://optimitron.com"
-                size={220}
+                size={160}
                 level="H"
                 includeMargin={false}
               />
@@ -109,7 +109,7 @@ export function SlideFinalCallToAction() {
           </div>
 
           {/* Right column — 2 stats */}
-          <div className="flex flex-col gap-4 md:gap-6 flex-1 max-w-[400px]">
+          <div className="flex w-full max-w-[400px] flex-col gap-4 md:flex-1 md:gap-6">
             <div
               className="rounded-lg border-2 p-4 md:p-5 text-center"
               style={{ borderColor: `${palette.success}40`, backgroundColor: `${palette.success}10` }}

@@ -164,7 +164,7 @@ export default function BudgetPage() {
                   <td className={`py-3 px-2 text-right font-bold ${cat.gap >= 0 ? "text-brutal-cyan" : "text-brutal-red"}`}>
                     {pct(cat.gapPercent)}
                   </td>
-                  <td className="py-3 px-2 text-right font-bold text-brutal-yellow">
+                  <td className="py-3 px-2 text-right font-bold text-foreground">
                     {cat.efficiency ? `${cat.efficiency.overspendRatio.toFixed(1)}×` : "—"}
                   </td>
                   <td className="py-3 px-2 text-center">

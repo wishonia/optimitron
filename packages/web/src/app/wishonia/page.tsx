@@ -223,7 +223,7 @@ export default function WishoniaWorldPage() {
           starting point. Different governance.
         </p>
         <div className="border border-white/10 bg-white/5 backdrop-blur-sm p-6 rounded-lg mb-12">
-          <PersonalIncomeChart />
+          <PersonalIncomeChart surface="dark" />
         </div>
         <div className="border border-white/10 bg-white/5 backdrop-blur-sm p-6 rounded-lg">
           <GdpTrajectoryChart />

@@ -354,7 +354,7 @@ export function VoterPrizeTreasuryDeposit() {
     <div className="space-y-6">
       {/* Wallet Connection */}
       <div className="border-4 border-primary bg-background p-6">
-        <h3 className="font-black uppercase mb-3">
+        <h3 className="font-black uppercase text-foreground mb-3">
           Connect Wallet
         </h3>
 
@@ -484,7 +484,7 @@ export function VoterPrizeTreasuryDeposit() {
 
       {/* Deposit Form */}
       <div className="border-4 border-primary bg-background p-6">
-        <h3 className="font-black uppercase mb-3">
+        <h3 className="font-black uppercase text-foreground mb-3">
           Contribute to the Prize
         </h3>
 
@@ -505,7 +505,7 @@ export function VoterPrizeTreasuryDeposit() {
             <label className="text-xs font-black uppercase block mb-1">
               Amount (USDC)
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <input
                 type="text"
                 placeholder="1"
@@ -525,7 +525,7 @@ export function VoterPrizeTreasuryDeposit() {
                   !amount ||
                   parsedAmount === 0n
                 }
-                className="border-4 border-primary bg-brutal-pink px-4 py-2 text-sm font-black uppercase text-brutal-pink-foreground hover:bg-brutal-pink/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full border-4 border-primary bg-brutal-pink px-4 py-2 text-sm font-black uppercase text-brutal-pink-foreground transition-colors hover:bg-brutal-pink/80 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
               >
                 {isBusy
                   ? step === "approving"

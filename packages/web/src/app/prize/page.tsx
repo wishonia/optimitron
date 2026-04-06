@@ -236,7 +236,13 @@ export default async function PrizePage() {
               key={item.level}
               className={`border-4 border-primary ${item.color} p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex gap-6 items-start`}
             >
-              <div className="font-pixel text-xs font-black uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap shrink-0 pt-1">
+              <div
+                className={`font-pixel text-xs font-black uppercase tracking-[0.2em] whitespace-nowrap shrink-0 pt-1 ${
+                  item.textColor === "text-background"
+                    ? "text-background/80"
+                    : "text-muted-foreground"
+                }`}
+              >
                 {item.level}
               </div>
               <div>

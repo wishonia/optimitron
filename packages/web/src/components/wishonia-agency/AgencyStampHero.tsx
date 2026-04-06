@@ -3,7 +3,7 @@ type CardColor = "pink" | "cyan" | "yellow" | "green";
 const dNameColorClasses: Record<CardColor, string> = {
   pink: "text-brutal-pink",
   cyan: "text-brutal-cyan",
-  yellow: "text-brutal-yellow",
+  yellow: "text-brutal-yellow-foreground",
   green: "text-brutal-green",
 };
 

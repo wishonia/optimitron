@@ -135,15 +135,30 @@ export async function getDeduplicatedOverflows(
       if (rect.width === 0 || rect.height === 0) continue;
       if (rect.right <= vw + 5) continue; // +5px tolerance
 
-      // Skip elements inside an overflow:hidden container — the overflow
-      // is visually clipped and not a real user-facing issue.
+      // Skip elements inside an overflow:hidden container or an intentional
+      // horizontally scrollable container. Those patterns are already
+      // contained and are not true viewport breakage.
       let isClippedByParent = false;
+      let isContainedByScrollParent = false;
       let isChildOfOverflow = false;
       let parent = el.parentElement;
       while (parent) {
         const pStyle = window.getComputedStyle(parent);
         if (pStyle.overflow === "hidden" || pStyle.overflowX === "hidden") {
           isClippedByParent = true;
+          break;
+        }
+        const allowsHorizontalScroll =
+          pStyle.overflow === "auto" ||
+          pStyle.overflow === "scroll" ||
+          pStyle.overflowX === "auto" ||
+          pStyle.overflowX === "scroll";
+        if (
+          allowsHorizontalScroll &&
+          parent.scrollWidth > parent.clientWidth + 5 &&
+          parent.clientWidth <= vw + 5
+        ) {
+          isContainedByScrollParent = true;
           break;
         }
         const pRect = parent.getBoundingClientRect();
@@ -153,7 +168,7 @@ export async function getDeduplicatedOverflows(
         }
         parent = parent.parentElement;
       }
-      if (isClippedByParent || isChildOfOverflow) continue;
+      if (isClippedByParent || isContainedByScrollParent || isChildOfOverflow) continue;
 
       const tag = el.tagName.toLowerCase();
       const id = el.id ? `#${el.id}` : "";

@@ -36,6 +36,12 @@ const scenarios = [
 
 const CURRENT_RATE = GDP_BASELINE_GROWTH_RATE.value;
 
+type PersonalIncomeChartSurface = "light" | "dark";
+
+interface PersonalIncomeChartProps {
+  surface?: PersonalIncomeChartSurface;
+}
+
 function formatCurrency(n: number): string {
   if (n >= 1_000_000_000) return `$${(n / 1_000_000_000).toFixed(1)}B`;
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
@@ -51,12 +57,26 @@ function computeTrajectory(start: number, rate: number, years: number): number[]
   return pts;
 }
 
-export function PersonalIncomeChart() {
+export function PersonalIncomeChart({ surface = "light" }: PersonalIncomeChartProps) {
   const [income, setIncome] = useState(DEFAULT_INCOME);
   const [scenarioIdx, setScenarioIdx] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
   const reduced = useReducedMotion();
+  const isDarkSurface = surface === "dark";
+
+  const headingTextClass = isDarkSurface ? "text-white" : "text-foreground";
+  const mutedTextClass = isDarkSurface ? "text-white/70" : "text-muted-foreground";
+  const strongTextClass = isDarkSurface ? "text-white" : "text-foreground";
+  const resetButtonClass = isDarkSurface
+    ? "text-white/70 hover:text-white"
+    : "text-muted-foreground hover:text-foreground";
+  const inactiveToggleClass = isDarkSurface
+    ? "bg-transparent text-white border-white/40 shadow-none hover:bg-white hover:text-black"
+    : "bg-background text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px]";
+  const activeToggleClass = isDarkSurface
+    ? "bg-white text-black shadow-none translate-x-[2px] translate-y-[2px]"
+    : "bg-foreground text-background shadow-none translate-x-[2px] translate-y-[2px]";
 
   const scenario = scenarios[scenarioIdx]!;
   const current = useMemo(() => computeTrajectory(income, CURRENT_RATE, YEARS), [income]);
@@ -126,10 +146,10 @@ export function PersonalIncomeChart() {
         transition={{ duration: 0.4 }}
         className="text-center mb-8"
       >
-        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground">
+        <h2 className={`text-3xl sm:text-4xl font-black uppercase tracking-tight ${headingTextClass}`}>
           How Rich Would You Be?
         </h2>
-        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto font-bold">
+        <p className={`mt-4 text-lg max-w-2xl mx-auto font-bold ${mutedTextClass}`}>
           Enter your income. See what {YEARS} years of compounding looks like with
           and without the {fmtParam({...POLITICAL_DYSFUNCTION_GLOBAL_OPPORTUNITY_COST_TOTAL, unit: "USD"})} governance dysfunction tax.
         </p>
@@ -147,12 +167,12 @@ export function PersonalIncomeChart() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <label
               htmlFor="income-input"
-              className="text-sm font-black uppercase text-muted-foreground"
+              className={`text-sm font-black uppercase ${mutedTextClass}`}
             >
               Your Annual Income:
             </label>
             <div className="flex items-center gap-2">
-              <span className="text-lg font-black">$</span>
+              <span className={`text-lg font-black ${strongTextClass}`}>$</span>
               <input
                 id="income-input"
                 type="number"
@@ -163,11 +183,11 @@ export function PersonalIncomeChart() {
                 }}
                 className="w-32 px-3 py-2 border-4 border-primary font-black text-lg text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:outline-none focus:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] focus:translate-x-[2px] focus:translate-y-[2px] transition-all"
               />
-              <span className="text-sm font-bold text-muted-foreground">/year</span>
+              <span className={`text-sm font-bold ${mutedTextClass}`}>/year</span>
             </div>
             <button
               onClick={() => setIncome(DEFAULT_INCOME)}
-              className="text-xs font-bold text-muted-foreground hover:text-foreground underline transition-colors"
+              className={`text-xs font-bold underline transition-colors ${resetButtonClass}`}
             >
               Reset to median
             </button>
@@ -181,8 +201,8 @@ export function PersonalIncomeChart() {
                 onClick={() => setScenarioIdx(i)}
                 className={`px-4 py-2 text-xs font-black uppercase border-4 border-primary transition-all ${
                   scenarioIdx === i
-                    ? "bg-foreground text-background shadow-none translate-x-[2px] translate-y-[2px]"
-                    : "bg-background text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px]"
+                    ? activeToggleClass
+                    : inactiveToggleClass
                 }`}
               >
                 {s.label}
@@ -348,14 +368,14 @@ export function PersonalIncomeChart() {
           initial={reduced ? {} : { opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.4, delay: 0.8 }}
-          className="text-center text-xs text-muted-foreground mt-4 font-bold max-w-2xl mx-auto"
+          className={`text-center text-xs mt-4 font-bold max-w-2xl mx-auto ${mutedTextClass}`}
         >
           Based on current GDP growth (~2.5%) vs. modelled trajectories from the{" "}
           <a
             href="https://manual.warondisease.org/knowledge/economics/gdp-trajectories.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-muted-foreground"
+            className={`underline ${resetButtonClass}`}
           >
             GDP Trajectories analysis
           </a>

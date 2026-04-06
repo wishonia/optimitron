@@ -21,7 +21,7 @@ export function AnnotatedCodeBlock({
       </p>
       <div className="border-4 border-primary bg-foreground shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="flex items-center justify-between border-b-4 border-primary px-4 py-2">
-          <span className="text-xs font-black uppercase tracking-[0.1em] text-muted-foreground">
+          <span className="text-xs font-black uppercase tracking-[0.1em] text-background/80">
             {language === "solidity" ? "Solidity 0.8.24" : "TypeScript"}
           </span>
           <span className="text-xs font-black uppercase tracking-[0.1em] text-brutal-cyan">

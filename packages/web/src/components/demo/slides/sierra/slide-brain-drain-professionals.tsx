@@ -79,7 +79,7 @@ export function SlideBrainDrainProfessionals() {
         {/* Table */}
         <div className="bg-black/40 border border-red-500/30 rounded overflow-hidden">
           {/* Header */}
-          <div className="flex items-center gap-3 px-4 py-2 border-b border-zinc-700 bg-zinc-900/60">
+          <div className="hidden items-center gap-3 border-b border-zinc-700 bg-zinc-900/60 px-4 py-2 md:flex">
             <div className="w-8 shrink-0" />
             <div className="w-56 shrink-0">
               <span className="font-pixel text-sm text-zinc-500">PROFESSION</span>
@@ -101,22 +101,51 @@ export function SlideBrainDrainProfessionals() {
             return (
               <div
                 key={p.label}
-                className={`flex items-center gap-3 px-4 py-2 border-b border-zinc-800/50 transition-all duration-500 ${
+                className={`grid grid-cols-[2rem,minmax(0,1fr)] gap-3 border-b border-zinc-800/50 px-4 py-3 transition-all duration-500 md:flex md:items-center md:py-2 ${
                   i < visibleRows
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 -translate-x-8"
                 }`}
               >
                 <div className="w-8 shrink-0 text-xl text-center">{p.emoji}</div>
-                <div className="w-56 shrink-0">
-                  <span className="font-pixel text-base text-zinc-200">{p.label}</span>
+                <div className="min-w-0 md:w-56 md:shrink-0">
+                  <span className="block max-w-full break-words font-pixel text-sm leading-tight text-zinc-200 md:text-base">
+                    {p.label}
+                  </span>
+                  <div className="mt-2 grid grid-cols-2 gap-3 md:hidden">
+                    <div>
+                      <div className="font-pixel text-[10px] text-zinc-500">SHARE</div>
+                      <div className="font-pixel text-sm text-zinc-400">
+                        ~{(p.share * 100).toFixed(1)}%
+                      </div>
+                    </div>
+                    <div>
+                      <div className="font-pixel text-[10px] text-zinc-500">KILLED</div>
+                      <div className="font-pixel text-base text-red-400">
+                        {i < visibleRows ? (
+                          <AnimatedCounter
+                            end={killed}
+                            duration={1200}
+                            format="number"
+                          />
+                        ) : (
+                          "0"
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2 md:hidden">
+                    <span className="font-pixel text-xs italic text-zinc-500">
+                      {p.role}
+                    </span>
+                  </div>
                 </div>
-                <div className="w-20 shrink-0 text-right">
+                <div className="hidden w-20 shrink-0 text-right md:block">
                   <span className="font-pixel text-base text-zinc-400">
                     ~{(p.share * 100).toFixed(1)}%
                   </span>
                 </div>
-                <div className="w-36 shrink-0 text-right">
+                <div className="hidden w-36 shrink-0 text-right md:block">
                   <span className="font-pixel text-lg text-red-400">
                     {i < visibleRows ? (
                       <AnimatedCounter
@@ -129,7 +158,7 @@ export function SlideBrainDrainProfessionals() {
                     )}
                   </span>
                 </div>
-                <div className="flex-1">
+                <div className="hidden flex-1 md:block">
                   <span className="font-pixel text-sm text-zinc-500 italic">
                     {p.role}
                   </span>
@@ -140,20 +169,47 @@ export function SlideBrainDrainProfessionals() {
 
           {/* Total row */}
           <div
-            className={`flex items-center gap-3 px-4 py-3 bg-red-500/10 border-t border-red-500/40 transition-all duration-700 ${
+            className={`grid grid-cols-[2rem,minmax(0,1fr)] gap-3 border-t border-red-500/40 bg-red-500/10 px-4 py-3 transition-all duration-700 md:flex md:items-center ${
               showTotal
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 -translate-x-8"
             }`}
           >
             <div className="w-8 shrink-0 text-xl text-center">💀</div>
-            <div className="w-56 shrink-0">
-              <span className="font-pixel text-base text-red-400">TOTAL PROFESSIONAL CLASS</span>
+            <div className="min-w-0 md:w-56 md:shrink-0">
+              <span className="block max-w-full break-words font-pixel text-sm leading-tight text-red-400 md:text-base">
+                TOTAL PROFESSIONAL CLASS
+              </span>
+              <div className="mt-2 grid grid-cols-2 gap-3 md:hidden">
+                <div>
+                  <div className="font-pixel text-[10px] text-red-300">SHARE</div>
+                  <div className="font-pixel text-sm text-red-400">~5%</div>
+                </div>
+                <div>
+                  <div className="font-pixel text-[10px] text-red-300">KILLED</div>
+                  <div className="font-pixel text-lg text-red-500">
+                    {showTotal ? (
+                      <AnimatedCounter
+                        end={TOTAL_PROFESSIONAL_KILLED}
+                        duration={1800}
+                        format="number"
+                      />
+                    ) : (
+                      "0"
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="mt-2 md:hidden">
+                <span className="font-pixel text-xs italic text-red-400">
+                  Made civilization function
+                </span>
+              </div>
             </div>
-            <div className="w-20 shrink-0 text-right">
+            <div className="hidden w-20 shrink-0 text-right md:block">
               <span className="font-pixel text-base text-red-400">~5%</span>
             </div>
-            <div className="w-36 shrink-0 text-right">
+            <div className="hidden w-36 shrink-0 text-right md:block">
               <span className="font-pixel text-xl text-red-500">
                 {showTotal ? (
                   <AnimatedCounter
@@ -166,7 +222,7 @@ export function SlideBrainDrainProfessionals() {
                 )}
               </span>
             </div>
-            <div className="flex-1">
+            <div className="hidden flex-1 md:block">
               <span className="font-pixel text-sm text-red-400 italic">
                 Made civilization function
               </span>

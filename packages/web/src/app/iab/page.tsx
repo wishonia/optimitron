@@ -231,15 +231,15 @@ export default function IABPage() {
             </h3>
             <ul className="space-y-2 text-sm font-bold">
               <li className="flex gap-2">
-                <span className="text-brutal-cyan font-black shrink-0">1.</span>
+                <span className="text-brutal-cyan-foreground font-black shrink-0">1.</span>
                 <span>Deposit → PRIZE shares (Prize fund yield)</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-brutal-cyan font-black shrink-0">2.</span>
+                <span className="text-brutal-cyan-foreground font-black shrink-0">2.</span>
                 <span>Recruit verified voters → earn {POINTS}</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-brutal-cyan font-black shrink-0">3.</span>
+                <span className="text-brutal-cyan-foreground font-black shrink-0">3.</span>
                 <span>Prove demand for the 1% Treaty via global referendum</span>
               </li>
             </ul>
@@ -249,7 +249,7 @@ export default function IABPage() {
             <NavItemLink
               item={prizeLink}
               variant="custom"
-              className="inline-flex items-center mt-4 text-sm font-black text-brutal-pink uppercase hover:text-foreground transition-colors"
+              className="inline-flex items-center mt-4 text-sm font-black text-brutal-cyan-foreground uppercase underline decoration-current underline-offset-2 hover:opacity-80 transition-opacity"
             >
               Go to Prize &rarr;
             </NavItemLink>
@@ -264,15 +264,15 @@ export default function IABPage() {
             </h3>
             <ul className="space-y-2 text-sm font-bold">
               <li className="flex gap-2">
-                <span className="text-brutal-pink font-black shrink-0">1.</span>
+                <span className="text-brutal-pink-foreground font-black shrink-0">1.</span>
                 <span>Raise ~$1B to lobby for treaty passage</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-brutal-pink font-black shrink-0">2.</span>
+                <span className="text-brutal-pink-foreground font-black shrink-0">2.</span>
                 <span>Treaty revenue splits 80/10/10 by smart contract</span>
               </li>
               <li className="flex gap-2">
-                <span className="text-brutal-pink font-black shrink-0">3.</span>
+                <span className="text-brutal-pink-foreground font-black shrink-0">3.</span>
                 <span>Bondholders earn projected {bondReturnPct} annual returns</span>
               </li>
             </ul>

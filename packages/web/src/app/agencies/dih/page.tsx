@@ -119,10 +119,10 @@ export default function DIhPage() {
           </div>
           <div className="border-4 border-primary bg-foreground text-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <div className="text-3xl font-black text-brutal-cyan">97%</div>
-            <div className="mt-1 text-xs font-black uppercase text-muted-foreground">
+            <div className="mt-1 text-xs font-black uppercase text-background/80">
               dIH → Patient Subsidies
             </div>
-            <p className="mt-3 text-xs font-bold text-muted-foreground leading-relaxed">
+            <p className="mt-3 text-xs font-bold leading-relaxed text-background/80">
               dIH flips the ratio. 97% to patients. 3% to infrastructure.
               No grant committees. No scientists spending half their careers
               writing applications to ask permission to do science.

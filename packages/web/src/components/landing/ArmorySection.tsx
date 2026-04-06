@@ -28,8 +28,7 @@ import {
 } from "@/lib/routes";
 import type { BrutalCardBgColor } from "@/components/ui/brutal-card";
 
-const items: { item: NavItem; bgColor: BrutalCardBgColor }[] = [
-  // Agencies
+const agencies: { item: NavItem; bgColor: BrutalCardBgColor }[] = [
   { item: wishocracyLink, bgColor: "yellow" },
   { item: referendumLink, bgColor: "cyan" },
   { item: dtreasuryLink, bgColor: "pink" },
@@ -42,7 +41,9 @@ const items: { item: NavItem; bgColor: BrutalCardBgColor }[] = [
   { item: dihLink, bgColor: "pink" },
   { item: dfdaLink, bgColor: "cyan" },
   { item: departmentOfWarLink, bgColor: "red" },
-  // Game modes
+];
+
+const tools: { item: NavItem; bgColor: BrutalCardBgColor }[] = [
   { item: prizeLink, bgColor: "pink" },
   { item: scoreboardLink, bgColor: "cyan" },
   { item: alignmentLink, bgColor: "yellow" },
@@ -54,24 +55,41 @@ const items: { item: NavItem; bgColor: BrutalCardBgColor }[] = [
 
 export function ArmorySection() {
   return (
-    <SectionContainer bgColor="background" borderPosition="top" padding="lg">
-      <Container>
-        <SectionHeader
-          title="The Armory"
-          subtitle="Everything here is designed to make your species slightly less terrible at governing itself. Browse. Equip. Try not to break anything."
-          size="lg"
-        />
-        <NavItemCardGrid columns={3}>
-          {items.map(({ item, bgColor }) => (
-            <NavItemCard key={item.href} item={item} bgColor={bgColor} />
-          ))}
-        </NavItemCardGrid>
-        <div className="mt-8 text-center">
-          <GameCTA href={toolsLink.href} variant="secondary">
-            Full Armory &rarr;
-          </GameCTA>
-        </div>
-      </Container>
-    </SectionContainer>
+    <>
+      <SectionContainer bgColor="background" borderPosition="top" padding="lg">
+        <Container>
+          <SectionHeader
+            title="Optimized Governance"
+            subtitle="Every agency redesigned around one question: what does the data say actually works?"
+            size="lg"
+          />
+          <NavItemCardGrid columns={3}>
+            {agencies.map(({ item, bgColor }) => (
+              <NavItemCard key={item.href} item={item} bgColor={bgColor} />
+            ))}
+          </NavItemCardGrid>
+        </Container>
+      </SectionContainer>
+
+      <SectionContainer bgColor="yellow" borderPosition="top" padding="lg">
+        <Container>
+          <SectionHeader
+            title="The Armory"
+            subtitle="Your toolkit for fixing the mess described above. Browse. Equip. Try not to break anything."
+            size="lg"
+          />
+          <NavItemCardGrid columns={3}>
+            {tools.map(({ item, bgColor }) => (
+              <NavItemCard key={item.href} item={item} bgColor={bgColor} />
+            ))}
+          </NavItemCardGrid>
+          <div className="mt-8 text-center">
+            <GameCTA href={toolsLink.href} variant="secondary">
+              Full Armory &rarr;
+            </GameCTA>
+          </div>
+        </Container>
+      </SectionContainer>
+    </>
   );
 }
