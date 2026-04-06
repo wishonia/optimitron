@@ -21,6 +21,38 @@ export const GOVERNMENT_LEADERBOARD_DEFAULT_SORT_KEY: GovernmentLeaderboardSortK
 
 export const GOVERNMENT_LEADERBOARD_DEFAULT_SORT_ASC = false;
 
+export interface GovernmentLeaderboardColumnVisibilityConfig {
+  /** Whether users can toggle this column on/off */
+  toggleable: boolean;
+  /** CSS classes applied in "default" mode (preserves existing breakpoint behavior) */
+  defaultHiddenClass: string;
+  /** Whether this column is hidden when compact=true */
+  compactHidden: boolean;
+}
+
+export const GOVERNMENT_LEADERBOARD_COLUMN_VISIBILITY: Record<
+  GovernmentLeaderboardSortKey,
+  GovernmentLeaderboardColumnVisibilityConfig
+> = {
+  rank:                { toggleable: true,  defaultHiddenClass: "hidden md:table-cell",  compactHidden: false },
+  country:             { toggleable: false, defaultHiddenClass: "",                      compactHidden: false },
+  militarySpending:    { toggleable: true,  defaultHiddenClass: "hidden lg:table-cell",  compactHidden: false },
+  killed:              { toggleable: true,  defaultHiddenClass: "hidden lg:table-cell",  compactHidden: false },
+  trialRatio:          { toggleable: true,  defaultHiddenClass: "",                      compactHidden: false },
+  hale:                { toggleable: true,  defaultHiddenClass: "hidden sm:table-cell",  compactHidden: false },
+  lifeExpectancy:      { toggleable: true,  defaultHiddenClass: "hidden xl:table-cell",  compactHidden: true },
+  medianIncome:        { toggleable: true,  defaultHiddenClass: "hidden sm:table-cell",  compactHidden: false },
+  militaryPerCapitaPPP:{ toggleable: true,  defaultHiddenClass: "hidden xl:table-cell",  compactHidden: true },
+  healthSpending:      { toggleable: true,  defaultHiddenClass: "hidden xl:table-cell",  compactHidden: true },
+  researchRatio:       { toggleable: true,  defaultHiddenClass: "hidden md:table-cell",  compactHidden: false },
+};
+
+export const GOVERNMENT_LEADERBOARD_COLUMN_ORDER: GovernmentLeaderboardSortKey[] = [
+  "rank", "country", "militarySpending", "killed", "trialRatio",
+  "hale", "lifeExpectancy", "medianIncome", "militaryPerCapitaPPP",
+  "healthSpending", "researchRatio",
+];
+
 export const GOVERNMENT_LEADERBOARD_COLUMN_META: Record<
   GovernmentLeaderboardSortKey,
   GovernmentLeaderboardColumnMeta

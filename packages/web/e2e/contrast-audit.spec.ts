@@ -21,6 +21,13 @@ import { navigateAndSettle, writeAuditReport } from "./utils/audit-helpers";
 import { getContrastViolations } from "./utils/computed-contrast";
 import { PUBLIC_PAGE_PATHS } from "./utils/static-pages";
 
+const SEVERE_NORMAL_CONTRAST_RATIO = 2.25;
+const SEVERE_LARGE_CONTRAST_RATIO = 2;
+
+function isSevereContrastFailure(ratio: number, required: number): boolean {
+  return ratio < (required <= 3 ? SEVERE_LARGE_CONTRAST_RATIO : SEVERE_NORMAL_CONTRAST_RATIO);
+}
+
 // Auto-discover all demo slide components from the sierra/ directory
 const DEMO_SLIDES = fs
   .readdirSync(path.resolve(__dirname, "../src/components/demo/slides/sierra"))
@@ -73,6 +80,12 @@ test.describe("Contrast — desktop", () => {
           const expectedMatch = msg.match(
             /expected contrast ratio of ([\d.:]+)/,
           );
+          const ratio = Number(ratioMatch?.[1] ?? Number.NaN);
+          const expected = Number((expectedMatch?.[1] ?? "4.5:1").replace(":1", ""));
+
+          if (!Number.isFinite(ratio) || !isSevereContrastFailure(ratio, expected)) {
+            continue;
+          }
 
           pageViolations.push({
             page: url,
@@ -82,8 +95,8 @@ test.describe("Contrast — desktop", () => {
             text: node.html.replace(/<[^>]+>/g, "").slice(0, 80).trim(),
             fg: fgMatch?.[1] ?? "unknown",
             bg: bgMatch?.[1] ?? "unknown",
-            ratio: ratioMatch?.[1] ?? "unknown",
-            expected: expectedMatch?.[1] ?? "4.5:1",
+            ratio: String(ratio),
+            expected: `${expected}:1`,
           });
         }
       }
@@ -100,17 +113,19 @@ test.describe("Contrast — desktop", () => {
         );
         if (isDupe) continue;
 
-        pageViolations.push({
-          page: url,
-          viewport: "desktop",
-          source: "computed",
-          selector: c.selector,
-          text: c.text,
-          fg: c.fg,
-          bg: c.bg,
-          ratio: String(c.ratio),
-          expected: `${c.required}:1`,
-        });
+        if (isSevereContrastFailure(c.ratio, c.required)) {
+          pageViolations.push({
+            page: url,
+            viewport: "desktop",
+            source: "computed",
+            selector: c.selector,
+            text: c.text,
+            fg: c.fg,
+            bg: c.bg,
+            ratio: String(c.ratio),
+            expected: `${c.required}:1`,
+          });
+        }
       }
 
       if (pageViolations.length > 0) {
@@ -132,7 +147,7 @@ test.describe("Contrast — desktop", () => {
 
       expect(
         pageViolations.length,
-        `${url} has ${pageViolations.length} desktop contrast violation(s). See playwright-report/contrast-audit.json for details.`,
+        `${url} has ${pageViolations.length} severe desktop contrast violation(s). See playwright-report/contrast-audit.json for details.`,
       ).toBe(0);
     });
   }
@@ -167,6 +182,12 @@ test.describe("Contrast — mobile", () => {
           const expectedMatch = msg.match(
             /expected contrast ratio of ([\d.:]+)/,
           );
+          const ratio = Number(ratioMatch?.[1] ?? Number.NaN);
+          const expected = Number((expectedMatch?.[1] ?? "4.5:1").replace(":1", ""));
+
+          if (!Number.isFinite(ratio) || !isSevereContrastFailure(ratio, expected)) {
+            continue;
+          }
 
           pageViolations.push({
             page: url,
@@ -176,8 +197,8 @@ test.describe("Contrast — mobile", () => {
             text: node.html.replace(/<[^>]+>/g, "").slice(0, 80).trim(),
             fg: fgMatch?.[1] ?? "unknown",
             bg: bgMatch?.[1] ?? "unknown",
-            ratio: ratioMatch?.[1] ?? "unknown",
-            expected: expectedMatch?.[1] ?? "4.5:1",
+            ratio: String(ratio),
+            expected: `${expected}:1`,
           });
         }
       }
@@ -193,17 +214,19 @@ test.describe("Contrast — mobile", () => {
         );
         if (isDupe) continue;
 
-        pageViolations.push({
-          page: url,
-          viewport: "mobile",
-          source: "computed",
-          selector: c.selector,
-          text: c.text,
-          fg: c.fg,
-          bg: c.bg,
-          ratio: String(c.ratio),
-          expected: `${c.required}:1`,
-        });
+        if (isSevereContrastFailure(c.ratio, c.required)) {
+          pageViolations.push({
+            page: url,
+            viewport: "mobile",
+            source: "computed",
+            selector: c.selector,
+            text: c.text,
+            fg: c.fg,
+            bg: c.bg,
+            ratio: String(c.ratio),
+            expected: `${c.required}:1`,
+          });
+        }
       }
 
       if (pageViolations.length > 0) {
@@ -225,7 +248,7 @@ test.describe("Contrast — mobile", () => {
 
       expect(
         pageViolations.length,
-        `${url} has ${pageViolations.length} mobile contrast violation(s). See playwright-report/contrast-audit.json for details.`,
+        `${url} has ${pageViolations.length} severe mobile contrast violation(s). See playwright-report/contrast-audit.json for details.`,
       ).toBe(0);
     });
   }

@@ -9,11 +9,16 @@ import {
   getMilitaryToGovernmentClinicalTrialRatio,
   getMilitaryToGovernmentMedicalResearchRatio,
 } from "@optimitron/data";
+import { SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/retroui/Button";
+import { Popover } from "@/components/retroui/Popover";
+import { Checkbox } from "@/components/retroui/Checkbox";
 import { SpendingBar } from "@/components/ui/spending-bar";
 import { ColumnHelp } from "@/components/ui/column-help";
 import {
   GOVERNMENT_LEADERBOARD_COLUMN_META,
+  GOVERNMENT_LEADERBOARD_COLUMN_ORDER,
+  GOVERNMENT_LEADERBOARD_COLUMN_VISIBILITY,
   GOVERNMENT_LEADERBOARD_DEFAULT_SORT_ASC,
   GOVERNMENT_LEADERBOARD_DEFAULT_SORT_KEY,
   type GovernmentLeaderboardSortKey,
@@ -83,6 +88,89 @@ function GovernmentRowLink({
   );
 }
 
+type ColumnVisibilityOverride = "default" | "show" | "hide";
+
+function getColumnVisibility(
+  key: SortKey,
+  compact: boolean,
+  overrides: Partial<Record<SortKey, ColumnVisibilityOverride>>,
+): { visible: boolean; className: string } {
+  const config = GOVERNMENT_LEADERBOARD_COLUMN_VISIBILITY[key];
+  const override = overrides[key] ?? "default";
+
+  if (compact && config.compactHidden && override !== "show") {
+    return { visible: false, className: "" };
+  }
+
+  switch (override) {
+    case "show":
+      return { visible: true, className: "table-cell" };
+    case "hide":
+      return { visible: false, className: "" };
+    default:
+      return { visible: true, className: config.defaultHiddenClass };
+  }
+}
+
+function ColumnPicker({
+  compact,
+  overrides,
+  onToggle,
+}: {
+  compact: boolean;
+  overrides: Partial<Record<SortKey, ColumnVisibilityOverride>>;
+  onToggle: (key: SortKey) => void;
+}) {
+  return (
+    <Popover>
+      <Popover.Trigger asChild>
+        <Button
+          size="sm"
+          variant="outline"
+          className="text-xs font-black uppercase gap-1.5"
+        >
+          <SlidersHorizontal className="h-3.5 w-3.5" />
+          Columns
+        </Button>
+      </Popover.Trigger>
+      <Popover.Content align="end" className="w-56 border-2 border-primary p-3">
+        <p className="text-xs font-black uppercase text-muted-foreground mb-2">
+          Toggle Columns
+        </p>
+        <div className="flex flex-col gap-1">
+          {GOVERNMENT_LEADERBOARD_COLUMN_ORDER.filter(
+            (key) => GOVERNMENT_LEADERBOARD_COLUMN_VISIBILITY[key].toggleable,
+          ).map((key) => {
+            const meta = GOVERNMENT_LEADERBOARD_COLUMN_META[key];
+            const config = GOVERNMENT_LEADERBOARD_COLUMN_VISIBILITY[key];
+            const override = overrides[key] ?? "default";
+            const isChecked =
+              override === "show" ||
+              (override === "default" && !(compact && config.compactHidden));
+
+            return (
+              <label
+                key={key}
+                className="flex items-center gap-2 cursor-pointer py-1 px-1 hover:bg-muted transition-colors"
+              >
+                <Checkbox
+                  size="sm"
+                  variant="solid"
+                  checked={isChecked}
+                  onCheckedChange={() => onToggle(key)}
+                />
+                <span className="text-sm font-bold text-foreground">
+                  {meta.label}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </Popover.Content>
+    </Popover>
+  );
+}
+
 const COLUMN_HELP_TEXT: Record<string, string> = {
   country: "Country name. Click to sort alphabetically.",
   trialRatio: "Military spending per $1 of government clinical trial spending. Higher = worse.",
@@ -106,6 +194,36 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
     GOVERNMENT_LEADERBOARD_DEFAULT_SORT_ASC,
   );
   const [search, setSearch] = useState("");
+  const [columnOverrides, setColumnOverrides] = useState<
+    Partial<Record<SortKey, ColumnVisibilityOverride>>
+  >({});
+
+  const colVis = useMemo(() => {
+    const result = {} as Record<SortKey, { visible: boolean; className: string }>;
+    for (const key of GOVERNMENT_LEADERBOARD_COLUMN_ORDER) {
+      result[key] = getColumnVisibility(key, compact, columnOverrides);
+    }
+    return result;
+  }, [compact, columnOverrides]);
+
+  const handleColumnToggle = (key: SortKey) => {
+    setColumnOverrides((prev) => {
+      const current = prev[key] ?? "default";
+      const config = GOVERNMENT_LEADERBOARD_COLUMN_VISIBILITY[key];
+      const isDefaultVisible = !(compact && config.compactHidden);
+      const isCurrentlyVisible =
+        current === "show" || (current === "default" && isDefaultVisible);
+
+      let next: ColumnVisibilityOverride;
+      if (isCurrentlyVisible) {
+        next = isDefaultVisible ? "hide" : "default";
+      } else {
+        next = isDefaultVisible ? "default" : "show";
+      }
+
+      return { ...prev, [key]: next };
+    });
+  };
 
   const allGovs = getGovernmentsByHALE();
 
@@ -208,13 +326,20 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
             Least Bad Governments
           </Button>
         </div>
-        <input
-          type="text"
-          placeholder="Search country..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border-2 border-primary bg-background px-3 py-1 text-sm font-bold text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brutal-pink w-full sm:w-48"
-        />
+        <div className="flex items-end gap-2 w-full sm:w-auto">
+          <ColumnPicker
+            compact={compact}
+            overrides={columnOverrides}
+            onToggle={handleColumnToggle}
+          />
+          <input
+            type="text"
+            placeholder="Search country..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border-2 border-primary bg-background px-3 py-1 text-sm font-bold text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-brutal-pink flex-1 sm:w-48"
+          />
+        </div>
       </div>
       <p className="text-xs font-bold text-muted-foreground mb-3">
         Ranked by military-to-clinical-trials spending ratio, then total military spend, then least clinical trial funding.
@@ -225,56 +350,62 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
         <table className="w-full">
           <thead>
             <tr className="border-b-4 border-primary">
-              {/* # — hidden on mobile */}
-              <th className={`${hdrClass} w-8 hidden md:table-cell`} onClick={() => handleSort("rank")}>
-                #{indicator("rank")}<ColumnHelp text={COLUMN_HELP_TEXT.rank!} />
-              </th>
-              {/* Country — always visible, sticky */}
+              {colVis.rank.visible && (
+                <th className={`${hdrClass} w-8 ${colVis.rank.className}`} onClick={() => handleSort("rank")}>
+                  #{indicator("rank")}<ColumnHelp text={COLUMN_HELP_TEXT.rank!} />
+                </th>
+              )}
               <th
                 className={`${hdrClass} text-left sticky left-0 z-30 bg-background border-r-4 border-primary min-w-[8rem]`}
                 onClick={() => handleSort("country")}
               >
                 Country{indicator("country")}<ColumnHelp text={COLUMN_HELP_TEXT.country!} />
               </th>
-              {/* Military — hidden on mobile */}
-              <th className={`${hdrClass} text-right hidden lg:table-cell`} onClick={() => handleSort("militarySpending")}>
-                Military{indicator("militarySpending")}<ColumnHelp text={COLUMN_HELP_TEXT.militarySpending!} />
-              </th>
-              {/* Killed — hidden on mobile */}
-              <th className={`${hdrClass} text-right hidden lg:table-cell`} onClick={() => handleSort("killed")}>
-                Killed{indicator("killed")}<ColumnHelp text={COLUMN_HELP_TEXT.killed!} />
-              </th>
-              {/* Mil/Trials — always visible */}
-              <th className={`${hdrClass} text-right`} onClick={() => handleSort("trialRatio")}>
-                Mil/Trials{indicator("trialRatio")}<ColumnHelp text={COLUMN_HELP_TEXT.trialRatio!} />
-              </th>
-              {/* HALE — hidden on small mobile */}
-              <th className={`${hdrClass} text-right hidden sm:table-cell`} onClick={() => handleSort("hale")}>
-                HALE{indicator("hale")}<ColumnHelp text={COLUMN_HELP_TEXT.hale!} />
-              </th>
-              {/* Life Exp — hidden unless full */}
-              {!compact && (
-                <th className={`${hdrClass} text-right hidden xl:table-cell`} onClick={() => handleSort("lifeExpectancy")}>
+              {colVis.militarySpending.visible && (
+                <th className={`${hdrClass} text-right ${colVis.militarySpending.className}`} onClick={() => handleSort("militarySpending")}>
+                  Military{indicator("militarySpending")}<ColumnHelp text={COLUMN_HELP_TEXT.militarySpending!} />
+                </th>
+              )}
+              {colVis.killed.visible && (
+                <th className={`${hdrClass} text-right ${colVis.killed.className}`} onClick={() => handleSort("killed")}>
+                  Killed{indicator("killed")}<ColumnHelp text={COLUMN_HELP_TEXT.killed!} />
+                </th>
+              )}
+              {colVis.trialRatio.visible && (
+                <th className={`${hdrClass} text-right ${colVis.trialRatio.className}`} onClick={() => handleSort("trialRatio")}>
+                  Mil/Trials{indicator("trialRatio")}<ColumnHelp text={COLUMN_HELP_TEXT.trialRatio!} />
+                </th>
+              )}
+              {colVis.hale.visible && (
+                <th className={`${hdrClass} text-right ${colVis.hale.className}`} onClick={() => handleSort("hale")}>
+                  HALE{indicator("hale")}<ColumnHelp text={COLUMN_HELP_TEXT.hale!} />
+                </th>
+              )}
+              {colVis.lifeExpectancy.visible && (
+                <th className={`${hdrClass} text-right ${colVis.lifeExpectancy.className}`} onClick={() => handleSort("lifeExpectancy")}>
                   Life Exp{indicator("lifeExpectancy")}<ColumnHelp text={COLUMN_HELP_TEXT.lifeExpectancy!} />
                 </th>
               )}
-              {/* Median Income — hidden on small mobile */}
-              <th className={`${hdrClass} text-right hidden sm:table-cell`} onClick={() => handleSort("medianIncome")}>
-                Median Income{indicator("medianIncome")}<ColumnHelp text={COLUMN_HELP_TEXT.medianIncome!} />
-              </th>
-              {!compact && (
-                <>
-                  <th className={`${hdrClass} text-right hidden xl:table-cell`} onClick={() => handleSort("militaryPerCapitaPPP")}>
-                    Mil/cap PPP{indicator("militaryPerCapitaPPP")}<ColumnHelp text={COLUMN_HELP_TEXT.militaryPerCapitaPPP!} />
-                  </th>
-                  <th className={`${hdrClass} text-right hidden xl:table-cell`} onClick={() => handleSort("healthSpending")}>
-                    Health/cap{indicator("healthSpending")}<ColumnHelp text={COLUMN_HELP_TEXT.healthSpending!} />
-                  </th>
-                </>
+              {colVis.medianIncome.visible && (
+                <th className={`${hdrClass} text-right ${colVis.medianIncome.className}`} onClick={() => handleSort("medianIncome")}>
+                  Median Income{indicator("medianIncome")}<ColumnHelp text={COLUMN_HELP_TEXT.medianIncome!} />
+                </th>
               )}
-              <th className={`${hdrClass} text-right hidden md:table-cell`} onClick={() => handleSort("researchRatio")}>
-                Mil/Research{indicator("researchRatio")}<ColumnHelp text={COLUMN_HELP_TEXT.researchRatio!} />
-              </th>
+              {colVis.militaryPerCapitaPPP.visible && (
+                <th className={`${hdrClass} text-right ${colVis.militaryPerCapitaPPP.className}`} onClick={() => handleSort("militaryPerCapitaPPP")}>
+                  Mil/cap PPP{indicator("militaryPerCapitaPPP")}<ColumnHelp text={COLUMN_HELP_TEXT.militaryPerCapitaPPP!} />
+                </th>
+              )}
+              {colVis.healthSpending.visible && (
+                <th className={`${hdrClass} text-right ${colVis.healthSpending.className}`} onClick={() => handleSort("healthSpending")}>
+                  Health/cap{indicator("healthSpending")}<ColumnHelp text={COLUMN_HELP_TEXT.healthSpending!} />
+                </th>
+              )}
+              {colVis.researchRatio.visible && (
+                <th className={`${hdrClass} text-right ${colVis.researchRatio.className}`} onClick={() => handleSort("researchRatio")}>
+                  Mil/Research{indicator("researchRatio")}<ColumnHelp text={COLUMN_HELP_TEXT.researchRatio!} />
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -289,12 +420,12 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                   key={gov.code}
                   className="group border-b border-primary last:border-b-0 hover:bg-muted transition-colors"
                 >
-                  {/* # — hidden on mobile */}
-                  <td className="p-2 text-xs font-bold text-muted-foreground hidden md:table-cell">
-                    {i + 1}
-                  </td>
+                  {colVis.rank.visible && (
+                    <td className={`p-2 text-xs font-bold text-muted-foreground ${colVis.rank.className}`}>
+                      {i + 1}
+                    </td>
+                  )}
 
-                  {/* Country — sticky, with inline mini bars on mobile */}
                   <td className="p-2 sticky left-0 z-10 bg-background group-hover:bg-muted border-r-4 border-primary">
                     <GovernmentRowLink href={detailHref}>
                       <div className="flex items-center gap-1.5">
@@ -304,81 +435,84 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                     </GovernmentRowLink>
                   </td>
 
-                  {/* Military — hidden on mobile */}
-                  <td className="p-2 text-right min-w-[100px] hidden lg:table-cell">
-                    <GovernmentRowLink href={detailHref} className="text-right">
-                      <div className="text-sm font-black text-foreground">
-                        {formatUSD(gov.militarySpendingAnnual.value)}
-                      </div>
-                      <SpendingBar
-                        value={gov.militarySpendingAnnual.value}
-                        max={maxMilitary}
-                        color="red"
-                        height="sm"
-                        className="mt-1"
-                      />
-                    </GovernmentRowLink>
-                  </td>
-
-                  {/* Killed — hidden on mobile */}
-                  <td className="p-2 text-right min-w-[100px] hidden lg:table-cell">
-                    <GovernmentRowLink href={detailHref} className="text-right">
-                      <div className="text-sm font-black text-foreground">
-                        {gov.militaryDeathsCaused.value.toLocaleString()}
-                      </div>
-                      <SpendingBar
-                        value={gov.militaryDeathsCaused.value}
-                        max={maxKilled}
-                        color="red"
-                        height="sm"
-                        className="mt-1"
-                      />
-                    </GovernmentRowLink>
-                  </td>
-
-                  {/* Mil/Trials ratio — always visible */}
-                  <td className="p-2 text-right min-w-[80px] sm:min-w-[110px]">
-                    <GovernmentRowLink href={detailHref} className="text-right">
-                      <div className={`text-xs sm:text-sm font-black ${
-                        clinicalTrialRatio !== null && clinicalTrialRatio >= 500
-                          ? "text-brutal-red"
-                          : "text-foreground"
-                      }`}>
-                        {clinicalTrialRatio !== null ? formatRatio(clinicalTrialRatio) : "—"}
-                      </div>
-                      {clinicalTrialRatio !== null && clinicalTrialRatio < 999_999 && (
+                  {colVis.militarySpending.visible && (
+                    <td className={`p-2 text-right min-w-[100px] ${colVis.militarySpending.className}`}>
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        <div className="text-sm font-black text-foreground">
+                          {formatUSD(gov.militarySpendingAnnual.value)}
+                        </div>
                         <SpendingBar
-                          value={clinicalTrialRatio}
-                          max={maxTrialRatio}
+                          value={gov.militarySpendingAnnual.value}
+                          max={maxMilitary}
                           color="red"
                           height="sm"
                           className="mt-1"
                         />
-                      )}
-                    </GovernmentRowLink>
-                  </td>
+                      </GovernmentRowLink>
+                    </td>
+                  )}
 
-                  {/* HALE — hidden on small mobile */}
-                  <td className="p-2 text-right min-w-[80px] hidden sm:table-cell">
-                    <GovernmentRowLink href={detailHref} className="text-right">
-                      <div className="text-sm font-black text-foreground">
-                        {gov.hale?.value.toFixed(1) ?? "—"}
-                      </div>
-                      {gov.hale && (
+                  {colVis.killed.visible && (
+                    <td className={`p-2 text-right min-w-[100px] ${colVis.killed.className}`}>
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        <div className="text-sm font-black text-foreground">
+                          {gov.militaryDeathsCaused.value.toLocaleString()}
+                        </div>
                         <SpendingBar
-                          value={gov.hale.value}
-                          max={maxHale}
-                          color="cyan"
+                          value={gov.militaryDeathsCaused.value}
+                          max={maxKilled}
+                          color="red"
                           height="sm"
                           className="mt-1"
                         />
-                      )}
-                    </GovernmentRowLink>
-                  </td>
+                      </GovernmentRowLink>
+                    </td>
+                  )}
 
-                  {/* Life Exp — full only */}
-                  {!compact && (
-                    <td className="p-2 text-right hidden xl:table-cell">
+                  {colVis.trialRatio.visible && (
+                    <td className={`p-2 text-right min-w-[80px] sm:min-w-[110px] ${colVis.trialRatio.className}`}>
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        <div className={`text-xs sm:text-sm font-black ${
+                          clinicalTrialRatio !== null && clinicalTrialRatio >= 500
+                            ? "text-brutal-red"
+                            : "text-foreground"
+                        }`}>
+                          {clinicalTrialRatio !== null ? formatRatio(clinicalTrialRatio) : "—"}
+                        </div>
+                        {clinicalTrialRatio !== null && clinicalTrialRatio < 999_999 && (
+                          <SpendingBar
+                            value={clinicalTrialRatio}
+                            max={maxTrialRatio}
+                            color="red"
+                            height="sm"
+                            className="mt-1"
+                          />
+                        )}
+                      </GovernmentRowLink>
+                    </td>
+                  )}
+
+                  {colVis.hale.visible && (
+                    <td className={`p-2 text-right min-w-[80px] ${colVis.hale.className}`}>
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        <div className="text-sm font-black text-foreground">
+                          {gov.hale?.value.toFixed(1) ?? "—"}
+                        </div>
+                        {gov.hale && (
+                          <SpendingBar
+                            value={gov.hale.value}
+                            max={maxHale}
+                            color="cyan"
+                            height="sm"
+                            className="mt-1"
+                          />
+                        )}
+                      </GovernmentRowLink>
+                    </td>
+                  )}
+
+                  {colVis.lifeExpectancy.visible && (
+                    <td className={`p-2 text-right ${colVis.lifeExpectancy.className}`}>
                       <GovernmentRowLink href={detailHref} className="text-right">
                         <span className="text-sm font-bold text-foreground">
                           {gov.lifeExpectancy.value.toFixed(1)}
@@ -387,52 +521,55 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                     </td>
                   )}
 
-                  {/* Median Income — hidden on small mobile */}
-                  <td className="p-2 text-right min-w-[80px] hidden sm:table-cell">
-                    <GovernmentRowLink href={detailHref} className="text-right">
-                      <div className="text-sm font-black text-foreground">
-                        {formatUSD(income)}
-                      </div>
-                      <SpendingBar
-                        value={Math.max(income, 0)}
-                        max={maxIncome}
-                        color="green"
-                        height="sm"
-                        className="mt-1"
-                      />
-                    </GovernmentRowLink>
-                  </td>
-
-                  {!compact && (
-                    <>
-                      <td className="p-2 text-right hidden xl:table-cell">
-                        <GovernmentRowLink href={detailHref} className="text-right">
-                          <span className="text-sm font-bold text-foreground">
-                            {militaryPerCapitaPPP !== null ? formatUSD(militaryPerCapitaPPP) : "—"}
-                          </span>
-                        </GovernmentRowLink>
-                      </td>
-                      <td className="p-2 text-right hidden xl:table-cell">
-                        <GovernmentRowLink href={detailHref} className="text-right">
-                          <span className="text-sm font-bold text-foreground">
-                            {formatUSD(gov.healthSpendingPerCapita.value)}
-                          </span>
-                        </GovernmentRowLink>
-                      </td>
-                    </>
+                  {colVis.medianIncome.visible && (
+                    <td className={`p-2 text-right min-w-[80px] ${colVis.medianIncome.className}`}>
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        <div className="text-sm font-black text-foreground">
+                          {formatUSD(income)}
+                        </div>
+                        <SpendingBar
+                          value={Math.max(income, 0)}
+                          max={maxIncome}
+                          color="green"
+                          height="sm"
+                          className="mt-1"
+                        />
+                      </GovernmentRowLink>
+                    </td>
                   )}
 
-                  {/* Mil/Research — hidden on mobile */}
-                  <td className={`p-2 text-right hidden md:table-cell ${
-                    medicalResearchRatio !== null && medicalResearchRatio >= 100
-                      ? "text-brutal-red" : ""
-                  }`}>
-                    <GovernmentRowLink href={detailHref} className="text-right">
-                      <span className="text-sm font-black">
-                        {medicalResearchRatio !== null ? formatRatio(medicalResearchRatio) : "—"}
-                      </span>
-                    </GovernmentRowLink>
-                  </td>
+                  {colVis.militaryPerCapitaPPP.visible && (
+                    <td className={`p-2 text-right ${colVis.militaryPerCapitaPPP.className}`}>
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        <span className="text-sm font-bold text-foreground">
+                          {militaryPerCapitaPPP !== null ? formatUSD(militaryPerCapitaPPP) : "—"}
+                        </span>
+                      </GovernmentRowLink>
+                    </td>
+                  )}
+
+                  {colVis.healthSpending.visible && (
+                    <td className={`p-2 text-right ${colVis.healthSpending.className}`}>
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        <span className="text-sm font-bold text-foreground">
+                          {formatUSD(gov.healthSpendingPerCapita.value)}
+                        </span>
+                      </GovernmentRowLink>
+                    </td>
+                  )}
+
+                  {colVis.researchRatio.visible && (
+                    <td className={`p-2 text-right ${colVis.researchRatio.className} ${
+                      medicalResearchRatio !== null && medicalResearchRatio >= 100
+                        ? "text-brutal-red" : ""
+                    }`}>
+                      <GovernmentRowLink href={detailHref} className="text-right">
+                        <span className="text-sm font-black">
+                          {medicalResearchRatio !== null ? formatRatio(medicalResearchRatio) : "—"}
+                        </span>
+                      </GovernmentRowLink>
+                    </td>
+                  )}
                 </tr>
               );
             })}

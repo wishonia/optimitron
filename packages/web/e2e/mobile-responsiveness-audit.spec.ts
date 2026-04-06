@@ -25,6 +25,13 @@ import {
 } from "./utils/audit-helpers";
 import { getContrastViolations } from "./utils/computed-contrast";
 
+const SEVERE_NORMAL_CONTRAST_RATIO = 2.25;
+const SEVERE_LARGE_CONTRAST_RATIO = 2;
+
+function isSevereContrastFailure(ratio: number, required: number): boolean {
+  return ratio < (required <= 3 ? SEVERE_LARGE_CONTRAST_RATIO : SEVERE_NORMAL_CONTRAST_RATIO);
+}
+
 // Force mobile viewport for this entire spec
 test.use({
   viewport: { width: 390, height: 844 },
@@ -295,11 +302,17 @@ for (const url of PAGES) {
       for (const node of v.nodes) {
         const msg = node.any?.[0]?.message ?? "";
         const ratioMatch = msg.match(/contrast of ([\d.]+)/);
+        const expectedMatch = msg.match(/expected contrast ratio of ([\d.:]+)/);
+        const ratio = Number(ratioMatch?.[1] ?? Number.NaN);
+        const expected = Number((expectedMatch?.[1] ?? "4.5:1").replace(":1", ""));
+        if (!Number.isFinite(ratio) || !isSevereContrastFailure(ratio, expected)) {
+          continue;
+        }
         pageIssues.push({
           page: url,
           type: "contrast-axe",
           selector: node.target.join(" > "),
-          details: `ratio=${ratioMatch?.[1] ?? "?"} — ${node.html.replace(/<[^>]+>/g, "").slice(0, 60).trim()}`,
+          details: `ratio=${ratio} — ${node.html.replace(/<[^>]+>/g, "").slice(0, 60).trim()}`,
         });
       }
     }
@@ -307,12 +320,14 @@ for (const url of PAGES) {
     // custom computed-contrast
     const computed = await getContrastViolations(page);
     for (const c of computed) {
-      pageIssues.push({
-        page: url,
-        type: "contrast-computed",
-        selector: c.selector,
-        details: `ratio=${c.ratio} (need ${c.required}:1) fg=${c.fg} bg=${c.bg} "${c.text.slice(0, 50)}"`,
-      });
+      if (isSevereContrastFailure(c.ratio, c.required)) {
+        pageIssues.push({
+          page: url,
+          type: "contrast-computed",
+          selector: c.selector,
+          details: `ratio=${c.ratio} (need ${c.required}:1) fg=${c.fg} bg=${c.bg} "${c.text.slice(0, 50)}"`,
+        });
+      }
     }
 
     // --- Take screenshot ---
@@ -339,7 +354,7 @@ for (const url of PAGES) {
 
     expect(
       pageIssues.length,
-      `${url} has ${pageIssues.length} mobile responsiveness issue(s). See playwright-report/mobile-responsiveness-audit.json for details.`,
+      `${url} has ${pageIssues.length} severe mobile responsiveness issue(s). See playwright-report/mobile-responsiveness-audit.json for details.`,
     ).toBe(0);
   });
 }

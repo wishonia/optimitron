@@ -186,6 +186,9 @@ export async function getContrastViolations(
 
       const text = el.textContent?.trim();
       if (!text || text.length === 0) continue;
+      const hasAlphanumeric = /[\p{L}\p{N}]/u.test(text);
+      const isEmojiOnly = !hasAlphanumeric && /\p{Extended_Pictographic}/u.test(text);
+      if (isEmojiOnly) continue;
 
       // Skip if the element has children that are also text tags
       // (we'll check the innermost element instead)
