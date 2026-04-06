@@ -302,35 +302,6 @@ export function GovernmentLeaderboard({ limit, compact = false }: GovernmentLead
                         <span className="font-black text-foreground text-sm">{gov.name}</span>
                       </div>
                     </GovernmentRowLink>
-                    {/* Mini bars — visible below lg */}
-                    <div className="mt-1.5 space-y-1 lg:hidden">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-black text-brutal-red w-7 shrink-0">MIL</span>
-                        <SpendingBar
-                          value={gov.militarySpendingAnnual.value}
-                          max={maxMilitary}
-                          color="red"
-                          height="sm"
-                          className="flex-1"
-                        />
-                        <span className="text-[10px] font-black text-foreground w-12 text-right shrink-0">
-                          {formatUSD(gov.militarySpendingAnnual.value)}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-black text-brutal-cyan w-7 shrink-0">HALE</span>
-                        <SpendingBar
-                          value={gov.hale?.value ?? 0}
-                          max={maxHale}
-                          color="cyan"
-                          height="sm"
-                          className="flex-1"
-                        />
-                        <span className="text-[10px] font-black text-foreground w-12 text-right shrink-0">
-                          {gov.hale?.value.toFixed(1) ?? "—"}
-                        </span>
-                      </div>
-                    </div>
                   </td>
 
                   {/* Military — hidden on mobile */}

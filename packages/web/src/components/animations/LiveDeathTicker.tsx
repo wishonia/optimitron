@@ -33,8 +33,8 @@ const counters: CounterConfig[] = [
     format: (n) => Math.floor(n).toLocaleString(),
     color: "text-brutal-red",
     emoji: "💀",
-    label: "Died from treatable diseases",
-    staticFallback: `~${DEATHS_PER_DAY.toLocaleString()} deaths/day`,
+    label: "Humans terminated",
+    staticFallback: `~${DEATHS_PER_DAY.toLocaleString()} humans terminated/day`,
   },
   {
     rate: DYSFUNCTION_TAX_PER_SECOND,
