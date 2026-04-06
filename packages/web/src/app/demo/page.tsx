@@ -16,8 +16,8 @@ export default async function DemoPage({ searchParams }: PageProps) {
 
   return (
     <>
-      {/* Presentation mode — hide site chrome, force dark mode variables.
-          CSS variables are set here so they work even if .light is on <html>.
+      {/* Presentation mode — hide site chrome, force dark presentation variables.
+          CSS variables are set here so they work even if light mode is active on <html>.
           This is server-rendered — no flash of light mode. */}
       <style>{`
         nav, footer { display: none !important; }

@@ -18,7 +18,7 @@ import AxeBuilder from "@axe-core/playwright";
 import * as fs from "fs";
 import * as path from "path";
 import { navigateAndSettle, writeAuditReport } from "./utils/audit-helpers";
-import { getContrastViolations, type ComputedContrastViolation } from "./utils/computed-contrast";
+import { getContrastViolations } from "./utils/computed-contrast";
 import { PUBLIC_PAGE_PATHS } from "./utils/static-pages";
 
 // Auto-discover all demo slide components from the sierra/ directory
@@ -129,6 +129,11 @@ test.describe("Contrast — desktop", () => {
           console.log("");
         }
       }
+
+      expect(
+        pageViolations.length,
+        `${url} has ${pageViolations.length} desktop contrast violation(s). See playwright-report/contrast-audit.json for details.`,
+      ).toBe(0);
     });
   }
 });
@@ -217,6 +222,11 @@ test.describe("Contrast — mobile", () => {
           console.log("");
         }
       }
+
+      expect(
+        pageViolations.length,
+        `${url} has ${pageViolations.length} mobile contrast violation(s). See playwright-report/contrast-audit.json for details.`,
+      ).toBe(0);
     });
   }
 });

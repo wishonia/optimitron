@@ -225,18 +225,17 @@ We use **Prisma 7** (`prisma@^7.0.0`, `@prisma/client@^7.0.0`) with `@prisma/ada
 4. **Use Zod where runtime validation protects a real boundary.** Do not cargo-cult it into every internal helper.
 5. **When touching product UI, preserve the existing neobrutalist system unless you are intentionally changing the design direction.**
 
-## Color Rules (Game Aesthetic — Dark Mode Default)
+## Color Rules (Game Aesthetic)
 
-The UI uses a **dark-mode game aesthetic** with neobrutalist accents. Run `pnpm --filter @optimitron/web exec playwright test e2e/contrast-audit.spec.ts` to check contrast. See `docs/game-design-guidelines.md` for the full design system.
+Run `pnpm --filter @optimitron/web exec playwright test e2e/contrast-audit.spec.ts --project=default` to check contrast. See `docs/game-design-guidelines.md` for the full design system.
 
 ### Contrast Rule (CRITICAL)
 - **Every `bg-brutal-*` element MUST set the matching `text-brutal-*-foreground`** on the same element
 - **Children inside colored sections must NOT use `text-foreground` or `text-white`** — let them inherit the correct color from the parent
 - `SectionContainer` and `BrutalCard` handle this automatically via their `bgColor` prop — use those instead of raw divs
 - If you must use a raw div with `bg-brutal-yellow`, always pair it: `bg-brutal-yellow text-brutal-yellow-foreground`
-- **Foreground tokens (light mode):** yellow=black, pink=black, cyan=black, red=black, green=black
-- **Foreground tokens (dark mode):** yellow=black, pink=**white**, cyan=black, red=**white**, green=black
-- **CRITICAL: always match bg and text tokens** — `bg-brutal-yellow` must pair with `text-brutal-yellow-foreground`, never `text-brutal-red-foreground` (red-foreground is white in dark mode, invisible on yellow)
+- **Foreground tokens vary by theme** — never guess them from memory; always use the matching `*-foreground` token
+- **CRITICAL: always match bg and text tokens** — `bg-brutal-yellow` must pair with `text-brutal-yellow-foreground`, never an unrelated foreground token
 - **`bgColor="foreground"` inverts the color context** — `text-foreground` and `text-muted-foreground` become invisible. Any component placed inside an inverted section that uses explicit `text-foreground`/`text-muted-foreground` MUST wrap itself in `bg-background text-foreground` to create its own color context. Prefer using a non-inverted `bgColor` (brutal tokens or `"background"`) unless you control every child's text color.
 
 ### Approved Colors ONLY
@@ -247,8 +246,8 @@ The UI uses a **dark-mode game aesthetic** with neobrutalist accents. Run `pnpm 
 
 ### NEVER Use
 - **Opacity modifiers on black/white:** `text-black/50`, `bg-white/70`, etc. → use `text-muted-foreground` or `text-foreground`
-- **Hardcoded `bg-white`/`text-white`:** → use `bg-background`/`text-primary-foreground` (dark mode compat)
-- **Hardcoded `bg-black`/`text-black`:** → use `bg-foreground`/`text-foreground` (dark mode compat)
+- **Hardcoded `bg-white`/`text-white`:** → use `bg-background`/`text-primary-foreground` (theme compat)
+- **Hardcoded `bg-black`/`text-black`:** → use `bg-foreground`/`text-foreground` (theme compat)
 - **Tailwind color scales:** `bg-emerald-100`, `text-gray-500`, etc. → use brutal-* or semantic tokens
 - **Hardcoded hex colors:** `#ef4444`, `#666`, `#f5f5f5`, etc. → use CSS custom properties
 - **Soft shadows:** `rgba(0,0,0,0.3)` → use `rgba(0,0,0,1)` for brutal hard shadows
@@ -353,7 +352,7 @@ Project-specific components that wrap RetroUI primitives with domain styling.
 ### Border Weight
 - **RetroUI components use `border-2`** — this is the default for all RetroUI primitives
 - **Custom domain components (BrutalCard, SectionContainer) use `border-4 border-primary`** — for extra emphasis
-- Never use `border-black` — use `border-primary` for dark mode compat
+- Never use `border-black` — use `border-primary` for theme compat
 
 ### Shadow Style
 - **RetroUI components use `shadow-md`** which maps to hard offset shadows via CSS custom properties

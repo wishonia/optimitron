@@ -4,8 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
-import { Menu, User, Sun, Moon } from "lucide-react";
-import { useTheme } from "@/components/ThemeProvider";
+import { Menu, User } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -52,20 +51,6 @@ function AvatarButton({
   );
 }
 
-function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  return (
-    <button
-      type="button"
-      onClick={toggle}
-      className="flex items-center justify-center w-10 h-10 border-4 border-primary bg-background text-foreground hover:bg-foreground hover:text-background font-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all rounded-full"
-      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-    >
-      {theme === "dark" ? <Sun className="h-5 w-5 stroke-[3px]" /> : <Moon className="h-5 w-5 stroke-[3px]" />}
-    </button>
-  );
-}
-
 export default function Navbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
@@ -86,9 +71,8 @@ export default function Navbar() {
             <span className="hidden sm:inline">⚡ Optimitron</span>
           </Link>
 
-          {/* Right side: Theme toggle + Avatar + Hamburger */}
+          {/* Right side: Avatar + Hamburger */}
           <div className="flex items-center gap-3">
-            <ThemeToggle />
             <AvatarButton user={user} isAuthenticated={isAuthenticated} />
 
             <Sheet open={open} onOpenChange={setOpen}>

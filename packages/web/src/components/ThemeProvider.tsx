@@ -12,25 +12,32 @@ import {
 
 const ThemeContext = createContext<{
   theme: Theme;
+  setTheme: (theme: Theme) => void;
   toggle: () => void;
-}>({ theme: DEFAULT_THEME, toggle: () => {} });
+}>({ theme: DEFAULT_THEME, setTheme: () => {}, toggle: () => {} });
 
 export function useTheme() {
   return useContext(ThemeContext);
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
+  const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
 
   useEffect(() => {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
     const nextTheme = resolveTheme(stored);
-    setTheme(nextTheme);
+    setThemeState(nextTheme);
     applyThemeToRoot(nextTheme);
   }, []);
 
+  const setTheme = useCallback((nextTheme: Theme) => {
+    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    applyThemeToRoot(nextTheme);
+    setThemeState(nextTheme);
+  }, []);
+
   const toggle = useCallback(() => {
-    setTheme((prev) => {
+    setThemeState((prev) => {
       const next = toggleThemeValue(prev);
       localStorage.setItem(THEME_STORAGE_KEY, next);
       applyThemeToRoot(next);
@@ -39,7 +46,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggle }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggle }}>
       {children}
     </ThemeContext.Provider>
   );

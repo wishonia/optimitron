@@ -10,45 +10,45 @@
 
 /* Game-first design system — Sierra aesthetic */
 :root {
-  /* Base colors — dark token set, overridden by .light on the root html class */
-  --background: rgb(0, 0, 0);
-  --foreground: rgb(255, 255, 255);
+  /* Base colors — light theme is the default app baseline */
+  --background: rgb(255, 255, 255);
+  --foreground: rgb(0, 0, 0);
 
   /* Card & Popover */
-  --card: rgb(23, 23, 23);
-  --card-foreground: rgb(255, 255, 255);
-  --popover: rgb(23, 23, 23);
-  --popover-foreground: rgb(255, 255, 255);
+  --card: rgb(255, 255, 255);
+  --card-foreground: rgb(0, 0, 0);
+  --popover: rgb(255, 255, 255);
+  --popover-foreground: rgb(0, 0, 0);
 
-  /* Primary - Bright pink for dark mode */
-  --primary: rgb(244, 114, 182);
-  --primary-foreground: rgb(0, 0, 0);
+  /* Primary */
+  --primary: rgb(236, 70, 153);
+  --primary-foreground: rgb(255, 255, 255);
 
   /* Secondary - Bright yellow */
-  --secondary: rgb(253, 224, 71);
+  --secondary: rgb(255, 221, 87);
   --secondary-foreground: rgb(0, 0, 0);
 
   /* Accent - Bright cyan */
-  --accent: rgb(165, 243, 252);
+  --accent: rgb(123, 221, 234);
   --accent-foreground: rgb(0, 0, 0);
 
-  /* Muted — brighter foreground for readability on dark backgrounds */
-  --muted: rgb(38, 38, 38);
-  --muted-foreground: rgb(200, 200, 200);
+  /* Muted */
+  --muted: rgb(245, 245, 245);
+  --muted-foreground: rgb(64, 64, 64);
 
   /* Destructive */
-  --destructive: rgb(248, 113, 113);
-  --destructive-foreground: rgb(0, 0, 0);
+  --destructive: rgb(239, 68, 68);
+  --destructive-foreground: rgb(255, 255, 255);
 
-  /* Borders & Inputs — muted sierra border, not white */
-  --border: rgb(58, 58, 90);
-  --input: rgb(58, 58, 90);
-  --ring: rgb(244, 114, 182);
+  /* Borders & Inputs */
+  --border: rgb(0, 0, 0);
+  --input: rgb(0, 0, 0);
+  --ring: rgb(236, 70, 153);
 
   /* Chart colors */
-  --chart-1: rgb(244, 114, 182);
-  --chart-2: rgb(165, 243, 252);
-  --chart-3: rgb(253, 224, 71);
+  --chart-1: rgb(236, 70, 153);
+  --chart-2: rgb(123, 221, 234);
+  --chart-3: rgb(255, 221, 87);
   --chart-4: rgb(0, 200, 83);
   --chart-5: rgb(168, 85, 247);
 
@@ -56,25 +56,25 @@
   --radius: 0px;
 
   /* Sidebar */
-  --sidebar-background: rgb(10, 10, 10);
-  --sidebar-foreground: rgb(255, 255, 255);
-  --sidebar-primary: rgb(244, 114, 182);
-  --sidebar-primary-foreground: rgb(0, 0, 0);
-  --sidebar-accent: rgb(165, 243, 252);
+  --sidebar-background: rgb(250, 250, 250);
+  --sidebar-foreground: rgb(0, 0, 0);
+  --sidebar-primary: rgb(236, 70, 153);
+  --sidebar-primary-foreground: rgb(255, 255, 255);
+  --sidebar-accent: rgb(123, 221, 234);
   --sidebar-accent-foreground: rgb(0, 0, 0);
-  --sidebar-border: rgb(58, 58, 90);
-  --sidebar-ring: rgb(244, 114, 182);
-  --sidebar: rgb(23, 23, 23);
+  --sidebar-border: rgb(0, 0, 0);
+  --sidebar-ring: rgb(236, 70, 153);
+  --sidebar: rgb(245, 245, 245);
 
   /* Neobrutalist color tokens */
-  --brutal-pink: rgb(244, 114, 182);
-  --brutal-pink-foreground: rgb(0, 0, 0);
-  --brutal-cyan: rgb(8, 145, 178);
+  --brutal-pink: rgb(236, 70, 153);
+  --brutal-pink-foreground: rgb(255, 255, 255);
+  --brutal-cyan: rgb(6, 182, 212);
   --brutal-cyan-foreground: rgb(0, 0, 0);
-  --brutal-yellow: rgb(253, 224, 71);
+  --brutal-yellow: rgb(255, 221, 87);
   --brutal-yellow-foreground: rgb(0, 0, 0);
-  --brutal-red: rgb(239, 68, 68);
-  --brutal-red-foreground: rgb(0, 0, 0);
+  --brutal-red: rgb(200, 40, 40);
+  --brutal-red-foreground: rgb(255, 255, 255);
   --brutal-green: rgb(34, 197, 94);
   --brutal-green-foreground: rgb(0, 0, 0);
 
@@ -87,49 +87,49 @@
   --shadow-color: rgb(0, 0, 0);
 }
 
-/* Light mode tokens (enabled by the root html class) */
-.light {
-  --background: rgb(255, 255, 255);
-  --foreground: rgb(0, 0, 0);
-  --card: rgb(255, 255, 255);
-  --card-foreground: rgb(0, 0, 0);
-  --popover: rgb(255, 255, 255);
-  --popover-foreground: rgb(0, 0, 0);
-  --primary: rgb(236, 70, 153);
-  --primary-foreground: rgb(255, 255, 255);
-  --secondary: rgb(255, 221, 87);
+/* Dark mode tokens (enabled by the root html class) */
+.dark {
+  --background: rgb(0, 0, 0);
+  --foreground: rgb(255, 255, 255);
+  --card: rgb(23, 23, 23);
+  --card-foreground: rgb(255, 255, 255);
+  --popover: rgb(23, 23, 23);
+  --popover-foreground: rgb(255, 255, 255);
+  --primary: rgb(244, 114, 182);
+  --primary-foreground: rgb(0, 0, 0);
+  --secondary: rgb(253, 224, 71);
   --secondary-foreground: rgb(0, 0, 0);
-  --accent: rgb(123, 221, 234);
+  --accent: rgb(165, 243, 252);
   --accent-foreground: rgb(0, 0, 0);
-  --muted: rgb(245, 245, 245);
-  --muted-foreground: rgb(64, 64, 64);
-  --destructive: rgb(239, 68, 68);
-  --destructive-foreground: rgb(255, 255, 255);
-  --border: rgb(0, 0, 0);
-  --input: rgb(0, 0, 0);
-  --ring: rgb(236, 70, 153);
-  --chart-1: rgb(236, 70, 153);
-  --chart-2: rgb(123, 221, 234);
-  --chart-3: rgb(255, 221, 87);
+  --muted: rgb(38, 38, 38);
+  --muted-foreground: rgb(200, 200, 200);
+  --destructive: rgb(248, 113, 113);
+  --destructive-foreground: rgb(0, 0, 0);
+  --border: rgb(58, 58, 90);
+  --input: rgb(58, 58, 90);
+  --ring: rgb(244, 114, 182);
+  --chart-1: rgb(244, 114, 182);
+  --chart-2: rgb(165, 243, 252);
+  --chart-3: rgb(253, 224, 71);
   --chart-4: rgb(0, 200, 83);
   --chart-5: rgb(168, 85, 247);
-  --sidebar-background: rgb(250, 250, 250);
-  --sidebar-foreground: rgb(0, 0, 0);
-  --sidebar-primary: rgb(236, 70, 153);
-  --sidebar-primary-foreground: rgb(255, 255, 255);
-  --sidebar-accent: rgb(123, 221, 234);
+  --sidebar-background: rgb(10, 10, 10);
+  --sidebar-foreground: rgb(255, 255, 255);
+  --sidebar-primary: rgb(244, 114, 182);
+  --sidebar-primary-foreground: rgb(0, 0, 0);
+  --sidebar-accent: rgb(165, 243, 252);
   --sidebar-accent-foreground: rgb(0, 0, 0);
-  --sidebar-border: rgb(0, 0, 0);
-  --sidebar-ring: rgb(236, 70, 153);
-  --sidebar: rgb(245, 245, 245);
-  --brutal-pink: rgb(236, 70, 153);
-  --brutal-pink-foreground: rgb(255, 255, 255);
-  --brutal-cyan: rgb(6, 182, 212);
+  --sidebar-border: rgb(58, 58, 90);
+  --sidebar-ring: rgb(244, 114, 182);
+  --sidebar: rgb(23, 23, 23);
+  --brutal-pink: rgb(244, 114, 182);
+  --brutal-pink-foreground: rgb(0, 0, 0);
+  --brutal-cyan: rgb(8, 145, 178);
   --brutal-cyan-foreground: rgb(0, 0, 0);
-  --brutal-yellow: rgb(255, 221, 87);
+  --brutal-yellow: rgb(253, 224, 71);
   --brutal-yellow-foreground: rgb(0, 0, 0);
-  --brutal-red: rgb(200, 40, 40);
-  --brutal-red-foreground: rgb(255, 255, 255);
+  --brutal-red: rgb(239, 68, 68);
+  --brutal-red-foreground: rgb(0, 0, 0);
   --brutal-green: rgb(34, 197, 94);
   --brutal-green-foreground: rgb(0, 0, 0);
   --shadow-color: rgb(0, 0, 0);
@@ -603,4 +603,5 @@ body {
 }
 
 /* No auto-contrast CSS hacks. Text colors are set explicitly in components.
-   Run `pnpm e2e contrast-audit` to find contrast violations. */
+   Run `pnpm --filter @optimitron/web exec playwright test e2e/contrast-audit.spec.ts --project=default`
+   to find contrast violations. */

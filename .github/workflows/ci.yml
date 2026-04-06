@@ -74,7 +74,7 @@ jobs:
     name: web-validate
     needs: core-validate
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     env:
       CI: true
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/optimitron_web_ci
@@ -137,6 +137,16 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:3001
         run: pnpm --filter @optimitron/web exec playwright test e2e/smoke.spec.ts --project=default
+
+      - name: Run contrast audit
+        env:
+          BASE_URL: http://127.0.0.1:3001
+        run: pnpm --filter @optimitron/web exec playwright test e2e/contrast-audit.spec.ts --project=default
+
+      - name: Run mobile responsiveness audit
+        env:
+          BASE_URL: http://127.0.0.1:3001
+        run: pnpm --filter @optimitron/web exec playwright test e2e/mobile-responsiveness-audit.spec.ts --project=default
 
       - name: Upload Playwright artifacts
         if: failure()

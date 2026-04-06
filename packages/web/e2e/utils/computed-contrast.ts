@@ -126,11 +126,18 @@ export async function getContrastViolations(
         }
         current = current.parentElement;
       }
-      // Fallback: assume black background (dark mode default).
-      // We intentionally skip elementsFromPoint here — it can return
-      // colors from unrelated z-layers (e.g. HUD overlays behind slides)
-      // which produce false positives worse than assuming black.
-      let base: [number, number, number] = [0, 0, 0];
+      // Fallback: use the rendered page background instead of assuming a theme.
+      // We intentionally skip elementsFromPoint here — it can return colors
+      // from unrelated z-layers (e.g. HUD overlays behind slides).
+      const bodyBg = parseColor(window.getComputedStyle(document.body).backgroundColor);
+      const rootBg = parseColor(
+        window.getComputedStyle(document.documentElement).backgroundColor,
+      );
+      let base: [number, number, number] = bodyBg
+        ? [bodyBg[0], bodyBg[1], bodyBg[2]]
+        : rootBg
+          ? [rootBg[0], rootBg[1], rootBg[2]]
+          : [1, 1, 1];
       for (let i = layers.length - 1; i >= 0; i--) {
         base = alphaComposite(layers[i], base);
       }

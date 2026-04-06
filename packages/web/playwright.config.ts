@@ -2,13 +2,14 @@ import { defineConfig, devices } from "@playwright/test";
 import path from "path";
 
 const screenshotDir = path.resolve(__dirname, "public/img/screenshots");
+const isCI = Boolean(process.env.CI);
 
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: false,
   retries: 0,
   workers: 1,
-  reporter: "html",
+  reporter: isCI ? [["line"], ["html", { open: "never" }]] : "html",
   timeout: 120_000,
   snapshotPathTemplate: `${screenshotDir}/{testName}/{arg}{ext}`,
   outputDir: screenshotDir,
@@ -16,14 +17,18 @@ export default defineConfig({
     baseURL: process.env.BASE_URL ?? "http://localhost:3001",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
-    video: {
-      mode: "on",
-      size: { width: 1920, height: 1080 },
-    },
+    video: isCI
+      ? "retain-on-failure"
+      : {
+          mode: "on",
+          size: { width: 1920, height: 1080 },
+        },
     viewport: { width: 1920, height: 1080 },
-    launchOptions: {
-      slowMo: 80,
-    },
+    launchOptions: isCI
+      ? undefined
+      : {
+          slowMo: 80,
+        },
   },
   projects: [
     {

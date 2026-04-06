@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation"
 import { ArcadeTag } from "@/components/ui/arcade-tag"
 import { NotificationPreferencesCard } from "@/components/dashboard/NotificationPreferencesCard"
+import { ThemePreferencesCard } from "@/components/settings/ThemePreferencesCard"
 import type { DashboardNotificationPreference } from "@/types/dashboard"
 
 interface SettingsClientProps {
@@ -30,6 +31,7 @@ export function SettingsClient({ notificationPreferences }: SettingsClientProps)
       </div>
 
       <div className="space-y-8">
+        <ThemePreferencesCard />
         <NotificationPreferencesCard
           preferences={notificationPreferences}
           onRefresh={refreshPage}

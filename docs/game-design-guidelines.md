@@ -2,7 +2,7 @@
 
 > **The game IS the app.** Optimitron looks like a Sierra Online adventure game because the core
 > metaphor is "Earth is a game and we're playing it wrong." Every page should feel like a screen
-> in that game — dark backgrounds, pixel fonts, animated data, CRT effects.
+> in that game — bold typography, animated data, CRT effects, and intentional surface contrast.
 
 **Reference implementation:** `packages/web/src/components/demo/` and
 `packages/web/src/components/demo/slides/sierra/`.
@@ -16,7 +16,6 @@
 - **Sierra Online adventure game meets data visualization.** The aesthetic comes from 1990s
   point-and-click adventure games — pixelated fonts, CRT scanlines, limited color palettes,
   typewriter text reveals.
-- **Dark by default.** Black or deep navy backgrounds. Never white backgrounds for primary content.
 - **Data is the hero.** Numbers, charts, and comparisons take center stage. Text is minimal — the
   narrator (Wishonia) handles exposition. On-screen text is for data, punchlines, and labels.
 - **One punchline per page section.** Every section has one thing the viewer remembers.
@@ -33,9 +32,9 @@
 | Landing pages, hero sections | **Full game** | CRT effects, pixel fonts, animated counters, particle effects |
 | Dashboards, scoreboards, leaderboards | **Full game** | Animated bar charts, progress rings, death ticker, game chrome |
 | Budget/policy visualizers | **Full game** | Phase-based reveals, animated comparisons, data cards |
-| Data entry forms, settings | **Tempered** | `font-terminal` for body text, `font-pixel` for headings only. Dark bg, no CRT effects |
-| Long-form reading (papers, docs) | **Tempered** | Standard sans-serif body, dark bg + subtle scanlines, pixel font for section titles |
-| Legal/compliance | **Minimal** | Dark bg, standard readable fonts, game chrome in header/footer only |
+| Data entry forms, settings | **Tempered** | `font-terminal` for body text, `font-pixel` for headings only, no CRT effects |
+| Long-form reading (papers, docs) | **Tempered** | Standard sans-serif body, high-contrast light surfaces, pixel font for section titles |
+| Legal/compliance | **Minimal** | tandard readable fonts, game chrome in header/footer only |
 
 ---
 
@@ -824,7 +823,6 @@ Step-by-step for converting any existing page to the game aesthetic:
 - [ ] All text must be readable at 14px minimum
 - [ ] `prefers-reduced-motion` must disable animations
 - [ ] Semantic HTML (headings, buttons, landmarks) preserved under game styling
-- [ ] Dark mode is the only mode — no light/dark toggle needed
 - [ ] `tabular-nums` on any column of numbers for alignment
 
 ---

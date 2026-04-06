@@ -1,16 +1,16 @@
 "use client"
 
-import React, { useState, useRef, useCallback } from "react"
-import { Popover } from "@/components/retroui/Popover"
+import React, { useState } from "react"
+import { Dialog } from "@/components/retroui/Dialog"
 import { Badge } from "@/components/retroui/Badge"
 import { ExternalLink, Info, FlaskConical, BookOpen, type LucideIcon } from "lucide-react"
 import {
   fmtParam,
   fmtParamValueOnly,
-  formatConfidenceInterval,
   citations,
   type Parameter,
   type Citation,
+  type SourceType,
 } from "@optimitron/data/parameters"
 import { Latex } from "@/components/ui/latex"
 import { cn } from "@/lib/utils"
@@ -40,16 +40,6 @@ export function ParameterValue({
   className,
 }: ParameterValueProps) {
   const [open, setOpen] = useState(false)
-  const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const handleEnter = useCallback(() => {
-    if (closeTimeout.current) clearTimeout(closeTimeout.current)
-    setOpen(true)
-  }, [])
-
-  const handleLeave = useCallback(() => {
-    closeTimeout.current = setTimeout(() => setOpen(false), 150)
-  }, [])
 
   const text = (() => {
     switch (display) {
@@ -62,18 +52,19 @@ export function ParameterValue({
     }
   })()
 
-  const confidenceInterval = formatConfidenceInterval(param)
   const hasMetadata = [
     param.displayName,
     param.description,
     param.formula,
     param.latex,
     param.sourceRef,
+    param.sourceUrl,
     param.confidence,
     param.calculationsUrl,
     param.manualPageUrl,
     param.peerReviewed,
-    confidenceInterval,
+    param.conservative,
+    param.confidenceInterval,
   ].some(Boolean)
 
   if (!showPopover || !hasMetadata) {
@@ -81,120 +72,142 @@ export function ParameterValue({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <span onPointerEnter={handleEnter} onPointerLeave={handleLeave}>
-        <Popover.Trigger asChild>
-          <span
-            className={cn(
-              "cursor-help underline decoration-dotted underline-offset-2 decoration-foreground/30",
-              className
-            )}
-          >
-            {text}
-          </span>
-        </Popover.Trigger>
-      </span>
-      <Popover.Content
-        onPointerEnter={handleEnter}
-        onPointerLeave={handleLeave}
-        sideOffset={4}
-        className="max-w-sm border-4 border-primary bg-background text-foreground p-4 text-left shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-      >
-        <ParameterPopoverContent param={param} confidenceInterval={confidenceInterval} />
-      </Popover.Content>
-    </Popover>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger asChild>
+        <button
+          type="button"
+          className={cn(
+            "cursor-help underline decoration-dotted underline-offset-2 decoration-foreground/30 inline text-left",
+            className
+          )}
+        >
+          {text}
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Content size="md">
+        <Dialog.Header>
+          {param.displayName ?? "Parameter Details"}
+        </Dialog.Header>
+        <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+          <ParameterDetailContent param={param} />
+        </div>
+      </Dialog.Content>
+    </Dialog>
   )
 }
 
-function ParameterPopoverContent({
+const sourceTypeLabels: Record<SourceType, string> = {
+  external: "From External Source",
+  calculated: "Calculated From Other Values",
+  definition: "Fixed Assumption",
+}
+
+function ParameterDetailContent({
   param,
-  confidenceInterval,
 }: {
   param: Parameter
-  confidenceInterval: string | null
 }) {
   const citation: Citation | undefined = param.sourceRef
     ? citations[param.sourceRef]
     : undefined
 
+  const fullValue = fmtParam(param)
+
   return (
-    <div className="space-y-2">
-      {param.displayName && (
-        <div className="font-black text-sm uppercase tracking-wider">
-          {param.displayName}
-        </div>
-      )}
+    <div className="space-y-3">
+      {/* Value + unit prominently displayed */}
+      <div className="text-2xl font-black">{fullValue}</div>
 
       {param.description && (
-        <p className="text-xs font-bold leading-relaxed text-muted-foreground">
+        <p className="text-sm font-bold leading-relaxed text-muted-foreground">
           {param.description}
         </p>
       )}
 
+      {/* Confidence interval — plain English */}
+      {param.confidenceInterval && (
+        <ConfidenceIntervalBlock param={param} />
+      )}
+
       {param.latex ? (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-none border-2 border-primary bg-muted p-3">
           <Latex block>{param.latex}</Latex>
         </div>
       ) : param.formula ? (
-        <div className="text-xs">
+        <div className="text-sm">
           <span className="font-bold">Formula: </span>
-          <code className="bg-muted px-1 py-0.5 rounded text-[10px]">
+          <code className="bg-muted px-1.5 py-0.5 rounded-none border-2 border-primary text-xs">
             {param.formula}
           </code>
         </div>
       ) : null}
 
-      {confidenceInterval && (
-        <div className="flex items-center gap-2 text-xs">
-          <span className="font-bold">95% CI:</span>
-          <span className="font-mono">{confidenceInterval}</span>
-        </div>
-      )}
+      {/* Badges row */}
+      <div className="flex flex-wrap items-center gap-2">
+        {param.sourceType && (
+          <Badge
+            variant="outline"
+            className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary"
+          >
+            {sourceTypeLabels[param.sourceType]}
+          </Badge>
+        )}
+        {param.confidence && (
+          <ConfidenceBadge confidence={param.confidence} />
+        )}
+        {param.peerReviewed && (
+          <Badge
+            variant="outline"
+            className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary bg-brutal-cyan text-brutal-cyan-foreground"
+          >
+            peer-reviewed
+          </Badge>
+        )}
+        {param.conservative && (
+          <Badge
+            variant="outline"
+            className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary bg-brutal-green text-brutal-green-foreground"
+          >
+            conservative estimate
+          </Badge>
+        )}
+      </div>
 
-      <div className="space-y-2 pt-2 border-t border-primary/20">
-        <div className="flex items-center gap-1.5">
-          {param.confidence && (
-            <ConfidenceBadge confidence={param.confidence} />
-          )}
-          {param.peerReviewed && (
-            <Badge
-              variant="outline"
-              className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary bg-brutal-cyan text-brutal-cyan-foreground"
-            >
-              peer-reviewed
-            </Badge>
-          )}
-        </div>
-
+      {/* Links section */}
+      <div className="space-y-3 pt-3 border-t-2 border-primary/20">
         <div className="flex flex-wrap items-center gap-2">
-          {citation?.URL && (
-            <a
-              href={citation.URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] font-bold text-brutal-pink hover:underline flex items-center gap-1"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <ExternalLink className="h-3 w-3" />
-              {citation.title ? "Source" : "Source"}
-            </a>
+          {param.sourceUrl && (
+            <MetaLink
+              href={param.sourceUrl}
+              icon={ExternalLink}
+              accent="pink"
+              label="Original Source"
+            />
           )}
-          {!citation?.URL && param.sourceRef && (
-            <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-              <Info className="h-3 w-3" />
-              {param.sourceRef}
+          {citation?.URL && citation.URL !== param.sourceUrl && (
+            <MetaLink
+              href={citation.URL}
+              icon={ExternalLink}
+              accent="pink"
+              label="Published Study"
+            />
+          )}
+          {!param.sourceUrl && !citation?.URL && param.sourceRef && (
+            <span className="text-xs text-muted-foreground font-bold flex items-center gap-1">
+              <Info className="h-3.5 w-3.5" />
+              Ref: {param.sourceRef.replace(/-/g, " ")}
             </span>
           )}
           {param.calculationsUrl && (
-            <PopoverMetaLink
+            <MetaLink
               href={param.calculationsUrl}
               icon={FlaskConical}
               accent="cyan"
-              label="Calculations"
+              label="Simulations & Sensitivity"
             />
           )}
           {param.manualPageUrl && (
-            <PopoverMetaLink
+            <MetaLink
               href={param.manualPageUrl}
               icon={BookOpen}
               accent="yellow"
@@ -203,12 +216,53 @@ function ParameterPopoverContent({
             />
           )}
         </div>
+
+        {/* Citation detail */}
+        {citation?.title && (
+          <p className="text-xs font-bold text-muted-foreground leading-relaxed">
+            {citation.title}
+            {citation.author?.[0] && (
+              <span>
+                {" — "}
+                {citation.author[0].literal ??
+                  `${citation.author[0].family ?? ""}${citation.author[0].given ? `, ${citation.author[0].given}` : ""}`}
+                {citation.author.length > 1 && " et al."}
+              </span>
+            )}
+            {citation.issued?.["date-parts"]?.[0]?.[0] && (
+              <span> ({citation.issued["date-parts"][0][0]})</span>
+            )}
+          </p>
+        )}
       </div>
     </div>
   )
 }
 
-function PopoverMetaLink({
+function ConfidenceIntervalBlock({ param }: { param: Parameter }) {
+  if (!param.confidenceInterval) return null
+
+  const [low, high] = param.confidenceInterval
+  const lowFmt = fmtParam({ ...param, value: low })
+  const highFmt = fmtParam({ ...param, value: high })
+
+  return (
+    <div className="rounded-none border-2 border-primary/20 bg-muted p-3 text-sm">
+      <div className="font-black uppercase text-xs tracking-wider mb-1">
+        Estimated Range
+      </div>
+      <p className="font-bold text-muted-foreground">
+        The true value likely falls between{" "}
+        <span className="text-foreground">{lowFmt}</span>
+        {" "}and{" "}
+        <span className="text-foreground">{highFmt}</span>
+        <span className="text-xs"> (95% confidence)</span>
+      </p>
+    </div>
+  )
+}
+
+function MetaLink({
   href,
   icon: Icon,
   accent,
@@ -217,13 +271,15 @@ function PopoverMetaLink({
 }: {
   href: string
   icon: LucideIcon
-  accent: "cyan" | "yellow"
+  accent: "cyan" | "yellow" | "pink"
   label: string
   detail?: string
 }) {
-  const accentClasses = accent === "cyan"
-    ? "bg-brutal-cyan text-brutal-cyan-foreground"
-    : "bg-brutal-yellow text-brutal-yellow-foreground"
+  const accentClasses = {
+    cyan: "bg-brutal-cyan text-brutal-cyan-foreground",
+    yellow: "bg-brutal-yellow text-brutal-yellow-foreground",
+    pink: "bg-brutal-pink text-brutal-pink-foreground",
+  }[accent]
 
   return (
     <a
@@ -255,6 +311,13 @@ const confidenceColorMap: Record<string, string> = {
   estimated: "bg-muted text-muted-foreground",
 }
 
+const confidenceLabelMap: Record<string, string> = {
+  high: "High Confidence",
+  medium: "Medium Confidence",
+  low: "Low Confidence",
+  estimated: "Rough Estimate",
+}
+
 function ConfidenceBadge({ confidence }: { confidence: string }) {
   return (
     <Badge
@@ -264,7 +327,7 @@ function ConfidenceBadge({ confidence }: { confidence: string }) {
         confidenceColorMap[confidence] ?? "bg-muted"
       )}
     >
-      {confidence}
+      {confidenceLabelMap[confidence] ?? confidence}
     </Badge>
   )
 }

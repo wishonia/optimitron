@@ -336,6 +336,11 @@ for (const url of PAGES) {
         console.log("");
       }
     }
+
+    expect(
+      pageIssues.length,
+      `${url} has ${pageIssues.length} mobile responsiveness issue(s). See playwright-report/mobile-responsiveness-audit.json for details.`,
+    ).toBe(0);
   });
 }
 
