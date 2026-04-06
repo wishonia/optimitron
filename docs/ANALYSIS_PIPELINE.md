@@ -9,7 +9,8 @@ The web app is the product surface for analysis outputs.
   - [packages/web/src/data/us-budget-analysis.ts](/e:/code/optimitron/packages/web/src/data/us-budget-analysis.ts)
   - [packages/web/src/data/us-policy-analysis.ts](/e:/code/optimitron/packages/web/src/data/us-policy-analysis.ts)
   - [packages/web/src/data/us-government-size-analysis.json](/e:/code/optimitron/packages/web/src/data/us-government-size-analysis.json)
-  - [packages/web/src/data/legislation](/e:/code/optimitron/packages/web/src/data/legislation)
+- Published legislation content lives in:
+  - [content/legislation](/e:/code/optimitron/content/legislation)
 
 ## Commands
 
@@ -22,8 +23,10 @@ The web app is the product surface for analysis outputs.
 
 ## Package boundaries
 
-- `packages/web`: production analysis scripts, generated artifacts, and user-facing routes.
+- `packages/web`: production analysis scripts, generated artifacts, content loaders, and user-facing routes.
+- `packages/opg` and `packages/obg`: canonical policy and budget contracts, including legislation-brief types for drafting pipelines.
 - `packages/examples`: demos, research scripts, experimental outputs, and longer-form exploratory analysis.
+- `content/legislation`: committed markdown drafts reviewed through normal GitHub PRs.
 - `reports/site`: removed. Do not recreate a second static analysis site unless there is a deliberate deployment target for it.
 
 ## Current routes

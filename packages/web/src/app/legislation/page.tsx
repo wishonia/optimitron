@@ -21,7 +21,7 @@ export default function LegislationPage() {
           Drafted bills built from the analysis, not vibes
         </h1>
         <p className="mt-3 max-w-3xl text-sm font-bold text-muted-foreground">
-          These drafts turn the OBG and OPG outputs into concrete bill text. They are still drafts, but they are no longer buried as loose markdown files in the repo.
+          These drafts turn the OBG and OPG outputs into concrete bill text. They live as reviewed markdown in the repo content layer, with direct GitHub edit history instead of hidden app-local strings.
         </p>
       </div>
 
@@ -32,8 +32,21 @@ export default function LegislationPage() {
             href={getLegislationPath(entry.slug)}
             className="border-4 border-primary bg-background p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-shadow hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusBadge status={entry.status} />
+              {entry.categoryName ? (
+                <span className="text-xs font-black uppercase tracking-wide text-muted-foreground">
+                  {entry.categoryName}
+                </span>
+              ) : null}
+            </div>
             <p className="text-xl font-black uppercase text-foreground">{entry.title}</p>
             <p className="mt-3 text-sm font-bold text-muted-foreground">{entry.summary}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-4 text-xs font-black uppercase tracking-wide text-muted-foreground">
+              {entry.overspendRatio ? <span>Overspend {entry.overspendRatio}</span> : null}
+              {entry.usRank ? <span>US rank {entry.usRank}</span> : null}
+              <span>Updated {new Date(entry.updatedAt).toLocaleDateString()}</span>
+            </div>
             <p className="mt-4 text-xs font-black uppercase tracking-wide text-brutal-pink">
               Open draft →
             </p>
@@ -47,6 +60,19 @@ export default function LegislationPage() {
         <ShortcutCard href={ROUTES.dividend} title="Optimization Dividend" description="See what the savings would return to households." />
       </section>
     </div>
+  );
+}
+
+function StatusBadge({ status }: { status: "draft" | "reviewed" }) {
+  const className =
+    status === "reviewed"
+      ? "bg-brutal-cyan text-brutal-cyan-foreground"
+      : "bg-brutal-yellow text-brutal-yellow-foreground";
+
+  return (
+    <span className={`border-2 border-primary px-2 py-1 text-xs font-black uppercase tracking-wide ${className}`}>
+      {status === "reviewed" ? "Reviewed" : "Draft"}
+    </span>
   );
 }
 

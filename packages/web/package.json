@@ -28,7 +28,7 @@
     "audit:colors": "tsx scripts/audit-colors.ts",
     "fix:colors": "tsx scripts/fix-colors.ts",
     "extract:copy": "tsx scripts/extract-copy.ts",
-    "draft:legislation": "tsx scripts/draft-legislation.ts"
+    "draft:legislation": "pnpm run build:workspace-deps && tsx scripts/draft-legislation.ts"
   },
   "dependencies": {
     "@base-org/account": "^2.5.2",

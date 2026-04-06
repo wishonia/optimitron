@@ -12,3 +12,4 @@ export * from './efficient-frontier.js';
 export * from './overspend-ratio.js';
 export * from './efficiency-analysis.js';
 export * from './budget-report-json.js';
+export * from './budget-legislation-brief.js';
