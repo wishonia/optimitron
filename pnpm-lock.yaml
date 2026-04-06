@@ -687,7 +687,7 @@ importers:
         specifier: ^4.11.1
         version: 4.11.1(playwright-core@1.58.2)
       '@playwright/test':
-        specifier: ^1.58.2
+        specifier: 1.58.2
         version: 1.58.2
       '@tailwindcss/postcss':
         specifier: ^4.1.9
@@ -728,6 +728,9 @@ importers:
       openai:
         specifier: ^6.27.0
         version: 6.33.0(ws@8.18.3)(zod@3.25.76)
+      playwright-core:
+        specifier: 1.58.2
+        version: 1.58.2
       png-to-ico:
         specifier: ^3.0.1
         version: 3.0.1
@@ -740,6 +743,9 @@ importers:
       react-email:
         specifier: ^5.2.9
         version: 5.2.10
+      require-in-the-middle:
+        specifier: ^8.0.1
+        version: 8.0.1
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -16370,7 +16376,6 @@ packages:
 
   /module-details-from-path@1.0.4:
     resolution: {integrity: sha512-EGWKgxALGMgzvxYF1UyGTy0HXX/2vHLkw6+NvDKW2jypWbHpjQuj4UMcqQWXHERJhVGKikolT06G3bcKe4fi7w==}
-    dev: false
 
   /moo@0.5.2:
     resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
@@ -18327,7 +18332,6 @@ packages:
       module-details-from-path: 1.0.4
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /require-main-filename@2.0.0:
     resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}

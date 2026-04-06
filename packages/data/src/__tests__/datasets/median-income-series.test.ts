@@ -181,13 +181,20 @@ describe('Median Income Dataset Helpers', () => {
           },
         ];
       });
+    const mockFetchEurostatMedianDisposableIncomeSeries = vi
+      .fn()
+      .mockResolvedValue([]);
 
     const preferred = await fetchPreferredMedianIncomeSeries(
       {
         jurisdictions: ['AUS', 'USA'],
         period: { startYear: 2021, endYear: 2021 },
       },
-      { fetchOecdIddPoints: mockFetchOecdIddPoints },
+      {
+        fetchOecdIddPoints: mockFetchOecdIddPoints,
+        fetchEurostatMedianDisposableIncomeSeries:
+          mockFetchEurostatMedianDisposableIncomeSeries,
+      },
     );
 
     expect(preferred).toHaveLength(2);
@@ -202,5 +209,9 @@ describe('Median Income Dataset Helpers', () => {
     const usRecord = preferred.find((record) => record.jurisdictionIso3 === 'USA');
     expect(usRecord).toBeDefined();
     expect(usRecord!.jurisdictionIso3).toBe('USA');
+    expect(mockFetchEurostatMedianDisposableIncomeSeries).toHaveBeenCalledWith({
+      jurisdictions: ['AUS', 'USA'],
+      period: { startYear: 2021, endYear: 2021 },
+    });
   });
 });
