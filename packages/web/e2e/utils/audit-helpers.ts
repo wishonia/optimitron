@@ -42,29 +42,33 @@ export async function waitForDemoSlide(
  * which uses JavaScript-driven inline styles that CSS can't override.
  */
 export async function forceAnimationsComplete(page: Page): Promise<void> {
-  await page.addStyleTag({
-    content: `
-      *, *::before, *::after {
-        animation-duration: 0s !important;
-        animation-delay: 0s !important;
-        transition-duration: 0s !important;
-        transition-delay: 0s !important;
-      }
-      .opacity-0 { opacity: 1 !important; }
-    `,
+  await retryAfterNavigation(page, async () => {
+    await page.addStyleTag({
+      content: `
+        *, *::before, *::after {
+          animation-duration: 0s !important;
+          animation-delay: 0s !important;
+          transition-duration: 0s !important;
+          transition-delay: 0s !important;
+        }
+        .opacity-0 { opacity: 1 !important; }
+      `,
+    });
   });
 
   // Framer Motion sets opacity via inline style (JS-driven), which CSS
   // !important on attribute selectors can't reliably override.
   // Force all inline opacity:0 to 1 via JavaScript.
-  await page.evaluate(() => {
-    const all = document.querySelectorAll("*");
-    for (const el of all) {
-      const htmlEl = el as HTMLElement;
-      if (htmlEl.style.opacity === "0" || htmlEl.style.opacity === "0.0") {
-        htmlEl.style.opacity = "1";
+  await retryAfterNavigation(page, async () => {
+    await page.evaluate(() => {
+      const all = document.querySelectorAll("*");
+      for (const el of all) {
+        const htmlEl = el as HTMLElement;
+        if (htmlEl.style.opacity === "0" || htmlEl.style.opacity === "0.0") {
+          htmlEl.style.opacity = "1";
+        }
       }
-    }
+    });
   });
 
   // Give the browser a tick to repaint
@@ -109,6 +113,37 @@ export function writeAuditReport(
   const filePath = path.join(dir, `${name}.json`);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
   return filePath;
+}
+
+async function retryAfterNavigation(
+  page: Page,
+  action: () => Promise<void>,
+  maxRetries = 2,
+): Promise<void> {
+  for (let attempt = 0; attempt <= maxRetries; attempt += 1) {
+    try {
+      await action();
+      return;
+    } catch (error) {
+      if (!isExecutionContextResetError(error) || attempt === maxRetries) {
+        throw error;
+      }
+
+      await page.waitForLoadState("domcontentloaded").catch(() => {});
+      await page.waitForTimeout(250);
+    }
+  }
+}
+
+function isExecutionContextResetError(error: unknown): boolean {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  return error.message.includes("Execution context was destroyed")
+    || error.message.includes("Cannot find context with specified id")
+    || error.message.includes("Most likely the page has been closed")
+    || error.message.includes("Target page, context or browser has been closed");
 }
 
 /**

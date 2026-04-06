@@ -24,11 +24,6 @@ export default defineConfig({
           size: { width: 1920, height: 1080 },
         },
     viewport: { width: 1920, height: 1080 },
-    launchOptions: isCI
-      ? undefined
-      : {
-          slowMo: 80,
-        },
   },
   projects: [
     {
@@ -40,6 +35,11 @@ export default defineConfig({
         headless: false,
         channel: "chromium",
         deviceScaleFactor: 1,
+        launchOptions: isCI
+          ? undefined
+          : {
+              slowMo: 80,
+            },
       },
     },
     {

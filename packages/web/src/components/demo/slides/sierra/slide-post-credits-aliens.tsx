@@ -85,13 +85,13 @@ export function SlidePostCreditsAliens() {
             ))}
           </div>
 
-          <div className="text-2xl md:text-4xl opacity-30 font-mono">
+          <div className="text-2xl md:text-4xl font-mono text-white/60">
             v1.0.0 | 2026
           </div>
         </div>
 
         {/* Konami code hint */}
-        <div className="absolute bottom-4 text-xl md:text-3xl opacity-20 font-mono">
+        <div className="absolute bottom-4 text-xl md:text-3xl font-mono text-white/50">
           ↑↑↓↓←→←→BA
         </div>
       </div>

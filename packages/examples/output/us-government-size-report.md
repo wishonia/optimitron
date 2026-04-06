@@ -2,20 +2,20 @@
 
 ## Summary
 
-Lag-aligned panel diagnostics suggest a **minimum efficient government spending floor** around **$16,638 PPP per capita** (support bin **$15,000 - $19,000**).
+Lag-aligned panel diagnostics suggest a **minimum efficient government spending floor** around **$19,299 PPP per capita** (support bin **$18,500 - $20,000**).
 
-- **U.S.-equivalent floor share:** 20.2% of GDP (band 18.2-23.1)
-- **Cross-country floor-bin median share (descriptive only):** 40.0% of GDP (IQR 35.7-43.5)
+- **U.S.-equivalent floor share:** 23.4% of GDP (band 22.5-24.3)
+- **Cross-country floor-bin median share (descriptive only):** 40.0% of GDP (IQR 33.9-42.5)
 - **US latest spending share (2023):** 24.9%
 - **US latest GDP per-capita PPP (2023):** $82,305
 - **US latest spending per-capita PPP (2023):** $20,492
-- **US gap to U.S.-equivalent floor:** +4.7 percentage points
-- **US gap to per-capita floor estimate:** +$3,854
+- **US gap to U.S.-equivalent floor:** +1.5 percentage points
+- **US gap to per-capita floor estimate:** +$1,194
 - **US status vs inferred band:** above optimal band
-- **Headline outcomes used:** Healthy Life Expectancy (HALE)
-- **Qualifying low-spend / high-outcome jurisdictions:** 29
-- **Lowest direct-outcome floor in this model:** Healthy Life Expectancy Only at 20.2% of U.S. GDP
-- **Federal current-budget composition view:** standalone category optima sum to $8,313,687,512,185 (+23.2% vs current federal budget), but the composition table below is constrained to today's federal budget
+- **Headline outcomes used:** Healthy Life Expectancy (HALE), After-Tax Median Income (PPP)
+- **Qualifying low-spend / high-outcome jurisdictions:** 18
+- **Lowest direct-outcome floor in this model:** Healthy Life Expectancy Only at 20.1% of U.S. GDP
+- **Federal current-budget composition view:** standalone category optima sum to $8,126,336,263,304 (+20.4% vs current federal budget), but the composition table below is constrained to today's federal budget
 
 ## Predictor Definition
 
@@ -37,9 +37,9 @@ These floors isolate direct welfare objectives instead of forcing a single combi
 
 | Objective | U.S.-Equiv Floor % GDP | U.S.-Equiv Band | Floor PPP / Capita | Qualifying Jurisdictions |
 |-----------|-----------------------:|----------------|-------------------:|-------------------------:|
-| Combined Direct Welfare | 26.4 | 23.1-44.7 | $21,719 | 16 |
-| Healthy Life Expectancy Only | 20.2 | 18.2-23.1 | $16,638 | 29 |
-| Median Income Only | 26.4 | 23.1-44.7 | $21,719 | 16 |
+| Combined Direct Welfare | 23.4 | 22.5-24.3 | $19,299 | 18 |
+| Healthy Life Expectancy Only | 20.1 | 18.2-22.5 | $16,506 | 29 |
+| Median Income Only | 27.8 | 24.3-44.7 | $22,912 | 16 |
 
 ## Floor Tolerance
 
@@ -47,9 +47,9 @@ This checks how much the combined direct-welfare floor moves when the "within to
 
 | Tolerance | U.S.-Equiv Floor % GDP | U.S.-Equiv Band | Floor PPP / Capita |
 |----------:|-----------------------:|----------------|-------------------:|
-| 0.15 | 26.4 | 23.1-44.7 | $21,719 |
-| 0.35 | 26.4 | 23.1-44.7 | $21,719 |
-| 0.75 | 14.5 | 13.4-15.8 | $11,956 |
+| 0.15 | 27.8 | 24.3-44.7 | $22,912 |
+| 0.35 | 23.4 | 22.5-24.3 | $19,299 |
+| 0.75 | 20.1 | 18.2-22.5 | $16,506 |
 
 ## Temporal Sensitivity (Start Year)
 
@@ -57,43 +57,43 @@ Start-year sensitivity re-runs the same floor benchmark with different left-wind
 
 | Start Year | End Year | Country-Years | Jurisdictions | U.S.-Equiv Floor % GDP | U.S.-Equiv Band | Raw Bin Median % GDP | US % GDP | US Status |
 |-----------:|---------:|--------------:|--------------:|------------------------:|----------------|---------------------:|---------:|----------|
-| 1990 | 2023 | 1402 | 47 | 20.2 | 18.2-23.1 | 40.0 | 24.9 | above optimal band (primary) |
-| 1995 | 2023 | 1233 | 47 | 17.8 | 16.4-19.4 | 39.1 | 24.9 | above optimal band |
-| 2000 | 2023 | 1036 | 47 | 16.3 | 15.2-17.6 | 37.5 | 24.9 | above optimal band |
+| 1990 | 2023 | 1402 | 47 | 23.4 | 22.5-24.3 | 40.0 | 24.9 | above optimal band (primary) |
+| 1995 | 2023 | 1233 | 47 | 27.8 | 24.3-44.7 | 40.7 | 24.9 | within optimal band |
+| 2000 | 2023 | 1036 | 47 | 22.0 | 20.0-24.3 | 40.0 | 24.9 | above optimal band |
 
-COVID exclusion check (dropping 2020-2021 source years): 18.9% GDP U.S.-equivalent (band 17.0-21.9; raw floor-bin median 39.9% GDP; US status above optimal band).
+COVID exclusion check (dropping 2020-2021 source years): 23.0% GDP U.S.-equivalent (band 21.3-24.3; raw floor-bin median 40.1% GDP; US status above optimal band).
 
 ## Federal Composition
 
 The budget-composition summary below comes from the existing US federal budget model, not the cross-country general-government panel. It is useful for "where should money go?" but should not be equated mechanically with the total government size floor.
 
 - **Current federal budget:** $6,750,000,000,000
-- **Standalone federal category optima sum:** $8,313,687,512,185
-- **Gap vs current federal budget if each category hit its standalone optimum:** +$1,563,687,512,185 (+23.2%)
+- **Standalone federal category optima sum:** $8,126,336,263,304
+- **Gap vs current federal budget if each category hit its standalone optimum:** +$1,376,336,263,304 (+20.4%)
 - **Caveat:** This composition model is federal-budget only; the category table below is constrained to the current federal budget even though standalone category optima sum to a different total.
 
 | Top Scale-Ups At Current Budget | Reallocation % | Evidence | Target Share |
 |---------------|------:|----------|--------------:|
-| Education | +271.2% | A | 13.1% |
-| Science & Space (NASA, NSF) | +329.5% | B | 5.2% |
-| Income Security (SNAP, Housing) | +50.9% | D | 6.8% |
-| Community & Regional Development | +89.2% | D | 1.1% |
-| Energy Programs | +46.0% | D | 1.2% |
+| Education | +281.9% | A | 13.5% |
+| Income Security (SNAP, Housing) | +61.4% | D | 7.3% |
+| Science & Space (NASA, NSF) | +217.0% | A | 3.8% |
+| Community & Regional Development | +102.4% | D | 1.2% |
+| Energy Programs | +56.1% | D | 1.2% |
 
 | Top Scale-Downs At Current Budget | Reallocation % | Evidence | Target Share |
 |-----------------|------:|----------|--------------:|
-| Military | -62.3% | D | 5.0% |
+| Military | -59.7% | D | 5.3% |
 
 | Largest Target Shares At Current Budget | Target Share | Current | Target |
 |--------------------------------|--------------:|--------:|--------:|
 | Social Security | 21.0% | $1,418,000,000,000 | $1,418,000,000,000 |
-| Education | 13.1% | $238,000,000,000 | $883,532,444,340 |
+| Education | 13.5% | $238,000,000,000 | $908,859,999,363 |
 | Net Interest on Debt | 13.1% | $881,000,000,000 | $881,000,000,000 |
 | Medicare | 12.9% | $874,000,000,000 | $874,000,000,000 |
 | Medicaid & CHIP | 8.5% | $575,000,000,000 | $575,000,000,000 |
-| Income Security (SNAP, Housing) | 6.8% | $304,000,000,000 | $458,830,755,271 |
-| Science & Space (NASA, NSF) | 5.2% | $81,000,000,000 | $347,916,486,716 |
-| Military | 5.0% | $886,000,000,000 | $334,312,540,436 |
+| Income Security (SNAP, Housing) | 7.3% | $304,000,000,000 | $490,636,825,233 |
+| Military | 5.3% | $886,000,000,000 | $357,487,028,912 |
+| Veterans Benefits | 4.0% | $270,000,000,000 | $270,000,000,000 |
 
 ## Efficient Jurisdictions
 
@@ -101,14 +101,10 @@ These are jurisdictions with at least two lag-aligned observations inside the mi
 
 | Jurisdiction | Qualifying Obs | Median % GDP | Median Spend / Capita PPP | Median HALE | Median After-Tax Income |
 |--------------|---------------:|-------------:|--------------------------:|------------:|--------------------:|
-| Italy | 9 | 43.5 | $15,975 | 71.4 | $16,860 |
-| Sweden | 7 | 32.1 | $16,148 | 70.9 | $19,788 |
-| United Kingdom | 12 | 39.6 | $16,200 | 69.5 | $19,041 |
-| New Zealand | 2 | 35.0 | $16,379 | 70.3 | $16,038 |
-| Portugal | 3 | 42.5 | $16,412 | 69.5 | $12,025 |
-| Greece | 4 | 56.5 | $16,468 | 69.1 | $10,301 |
-| Germany | 3 | 27.9 | $16,525 | 69.1 | $24,841 |
-| Norway | 4 | 32.6 | $16,670 | 69.3 | $23,370 |
+| Finland | 2 | 37.5 | $19,030 | 70.2 | $27,576 |
+| Denmark | 5 | 39.9 | $19,082 | 70.2 | $26,079 |
+| Norway | 2 | 33.0 | $19,373 | 69.7 | $31,694 |
+| France | 3 | 49.1 | $19,755 | 70.4 | $25,526 |
 
 ## Spending Levels vs Typical Outcomes
 
@@ -127,19 +123,19 @@ Coverage notes for metric construction:
 
 | Spending Level (% GDP) | Country-Years | Jurisdictions | Typical Healthy Life Years (HALE) | Typical Healthy Life Years Growth | Typical Real After-Tax Median Income | Typical Real After-Tax Median Income Growth | Notes |
 |------------------------|-------------:|--------------:|-----------------------------------------:|-------------------------------------------:|----------------------------------------------------:|-----------------------------------------------------:|-------|
-| 10.3-16% | 108 | 12 | 65.4 | +0.560 | $14,946 | +3.23% | — |
-| 16-18% | 101 | 17 | 69.5 | +0.184 | $15,494 | +1.15% | — |
-| 18-20% | 65 | 15 | 66.9 | +0.156 | $14,701 | +1.93% | — |
-| 20-22% | 48 | 12 | 66.4 | +0.075 | $8,399 | +2.35% | — |
-| 22-26% | 93 | 16 | 67.0 | +0.004 | $16,812 | +2.14% | — |
-| 26-31% | 129 | 23 | 67.4 | +0.233 | $14,420 | +1.87% | — |
-| 31-33% | 99 | 25 | 67.8 | +0.155 | $14,543 | +2.31% | — |
-| 33-35% | 99 | 22 | 67.7 | +0.176 | $13,722 | +2.75% | — |
-| 35-37% | 88 | 21 | 67.9 | -0.008 | $14,084 | +1.91% | — |
-| 37-39% | 99 | 21 | 68.9 | +0.106 | $16,927 | +0.83% | — |
-| 39-42% | 120 | 22 | 68.7 | +0.317 | $15,533 | +1.49% | — |
-| 42-45% | 105 | 17 | 68.6 | +0.236 | $13,823 | +1.52% | — |
-| 45-62.4% | 115 | 17 | 69.2 | +0.493 | $16,926 | +0.96% | — |
+| 9.7-15% | 92 | 10 | 65.2 | +0.417 | $1,938 | +2.94% | — |
+| 15-18% | 146 | 18 | 67.7 | +0.157 | $8,874 | +2.35% | — |
+| 18-20% | 71 | 16 | 66.1 | +0.295 | $4,400 | +2.29% | — |
+| 20-21% | 33 | 10 | 66.3 | +0.057 | $4,767 | +2.50% | — |
+| 21-26% | 116 | 20 | 67.0 | -0.489 | $7,944 | +2.72% | — |
+| 26-30% | 98 | 21 | 67.7 | +0.102 | $7,062 | +2.21% | — |
+| 30-32% | 93 | 22 | 67.3 | +0.233 | $9,314 | +1.89% | — |
+| 32-35% | 152 | 27 | 68.0 | +0.156 | $11,720 | +2.96% | — |
+| 35-37% | 89 | 21 | 68.0 | +0.152 | $10,543 | +2.56% | — |
+| 37-39% | 100 | 21 | 68.9 | +0.098 | $12,889 | +2.12% | — |
+| 39-42% | 121 | 22 | 68.7 | +0.249 | $15,818 | +1.96% | — |
+| 42-45% | 105 | 17 | 68.4 | +0.378 | $16,577 | +1.60% | — |
+| 45-62.4% | 117 | 19 | 69.1 | +0.310 | $18,851 | +1.53% | — |
 
 ### Spending Per-Capita (PPP) Bins
 
@@ -148,28 +144,29 @@ Per-capita PPP spending is derived as: government expense % GDP × GDP per capit
 
 | Spending Per-Capita PPP Level | Country-Years | Jurisdictions | Typical Healthy Life Years (HALE) | Typical Healthy Life Years Growth | Typical Real After-Tax Median Income | Typical Real After-Tax Median Income Growth | Notes |
 |-------------------------------|-------------:|--------------:|-----------------------------------------:|-------------------------------------------:|----------------------------------------------------:|-----------------------------------------------------:|-------|
-| $257-$2,000 | 119 | 16 | 60.9 | +0.327 | $3,135 | +3.25% | — |
-| $2,000-$3,500 | 92 | 16 | 64.7 | +0.335 | $4,700 | +4.26% | — |
-| $3,500-$4,500 | 97 | 24 | 65.3 | +0.364 | $6,765 | +4.10% | — |
-| $4,500-$5,000 | 52 | 24 | 65.5 | -0.037 | $8,399 | +1.29% | — |
-| $5,000-$5,500 | 49 | 25 | 66.6 | -0.794 | $12,367 | +1.98% | — |
-| $5,500-$7,000 | 117 | 32 | 67.6 | +0.104 | $14,383 | +1.86% | — |
-| $7,000-$8,500 | 120 | 32 | 67.9 | +0.261 | $14,578 | +2.18% | — |
-| $8,500-$10,000 | 112 | 34 | 67.8 | +0.256 | $15,296 | +1.78% | — |
-| $10,000-$11,000 | 78 | 30 | 68.6 | +0.208 | $14,460 | +1.95% | — |
-| $11,000-$13,000 | 126 | 33 | 68.9 | +0.124 | $17,046 | +1.85% | — |
-| $13,000-$15,000 | 92 | 30 | 69.3 | +0.205 | $17,421 | +1.47% | — |
-| $15,000-$19,000 | 111 | 28 | 69.6 | +0.205 | $19,235 | +1.09% | — |
-| $19,000-$36,758 | 104 | 16 | 70.2 | +0.041 | $22,264 | +0.48% | — |
+| $188-$1,500 | 122 | 14 | 60.9 | -0.006 | $1,369 | +2.78% | — |
+| $1,500-$2,500 | 86 | 14 | 64.2 | +0.099 | $2,123 | +3.06% | — |
+| $2,500-$4,000 | 104 | 22 | 65.2 | +0.440 | $2,625 | +3.20% | — |
+| $4,000-$5,000 | 109 | 29 | 64.9 | +0.235 | $4,432 | +2.39% | — |
+| $5,000-$6,500 | 127 | 29 | 66.6 | +0.054 | $8,821 | +2.39% | — |
+| $6,500-$8,000 | 128 | 31 | 68.2 | +0.233 | $10,990 | +1.58% | — |
+| $8,000-$9,500 | 106 | 34 | 67.6 | +0.192 | $11,813 | +1.95% | — |
+| $9,500-$10,000 | 40 | 24 | 67.9 | +0.256 | $12,838 | +2.51% | — |
+| $10,000-$11,000 | 78 | 30 | 68.6 | +0.146 | $14,739 | +2.48% | — |
+| $11,000-$12,500 | 101 | 33 | 68.5 | +0.302 | $16,861 | +2.56% | — |
+| $12,500-$15,000 | 117 | 31 | 69.3 | +0.031 | $17,741 | +1.58% | — |
+| $15,000-$18,500 | 103 | 28 | 69.6 | +0.168 | $22,994 | +1.20% | — |
+| $18,500-$20,000 | 31 | 13 | 70.0 | +0.455 | $25,526 | +1.87% | — |
+| $20,000-$36,758 | 81 | 16 | 70.3 | +0.162 | $28,859 | +1.53% | — |
 
 ## Outcome-Level Results
 
 | Outcome | Weight | N | Mean r | Mean pred r | Mean % Change | Partial r (%GDP \| GDP/cap) | Headline | Confidence |
 |---------|-------:|---:|-------:|------------:|--------------:|-----------------------------:|----------|------------|
-| Healthy Life Expectancy (HALE) | 0.25 | 47 | 0.195 | -0.026 | +1.17% | 0.176 | Yes | C (0.46) |
-| Healthy Life Expectancy Growth (Annualized %) | 0.25 | 47 | -0.036 | -0.006 | +311.70% | -0.016 | No: Excluded from headline because this outcome is a growth diagnostic. | D (0.23) |
-| After-Tax Median Income (PPP) | 0.25 | 37 | 0.155 | -0.004 | +22.92% | 0.027 | No: Excluded from headline because directionality is weak and the confound-adjusted pooled signal is not positive. | D (0.39) |
-| After-Tax Median Income Growth (Annualized %) | 0.25 | 37 | -0.004 | 0.140 | +10.61% | -0.182 | No: Excluded from headline because this outcome is a growth diagnostic. | F (0.19) |
+| Healthy Life Expectancy (HALE) | 0.25 | 47 | 0.185 | -0.059 | +1.01% | 0.169 | Yes | C (0.44) |
+| Healthy Life Expectancy Growth (Annualized %) | 0.25 | 47 | -0.021 | -0.006 | -277.86% | 0.036 | No: Excluded from headline because this outcome is a growth diagnostic. | D (0.24) |
+| After-Tax Median Income (PPP) | 0.25 | 46 | 0.207 | -0.020 | +204.70% | 0.066 | Yes | C (0.42) |
+| After-Tax Median Income Growth (Annualized %) | 0.25 | 46 | 0.033 | 0.115 | +5064.53% | -0.030 | No: Excluded from headline because this outcome is a growth diagnostic. | F (0.16) |
 
 ## Method
 

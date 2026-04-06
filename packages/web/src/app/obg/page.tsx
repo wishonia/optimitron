@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usBudgetAnalysis } from "@/data/us-budget-analysis";
-import { getBudgetCategoryPath } from "@/lib/routes";
+import { getBudgetCategoryPath, ROUTES } from "@/lib/routes";
 import { PrizeCTA } from "@/components/prize/PrizeCTA";
 import { PRIZE_CTA_COPY } from "@/lib/messaging";
 import { EfficientFrontierChart, EfficientFrontierSummary } from "@/components/landing/EfficientFrontierChart";
@@ -78,6 +78,32 @@ export default function BudgetPage() {
         <SummaryCard label="Net Reallocation" value={fmt(totalOptimal - totalCurrent)} color={totalOptimal > totalCurrent ? "text-brutal-cyan" : "text-brutal-red"} />
         <SummaryCard label="Categories Analyzed" value={String(data.categories.length)} />
       </div>
+
+      <section className="mb-10">
+        <h2 className="section-title">Related Analysis</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <RelatedLink
+            href={ROUTES.dividend}
+            title="Optimization Dividend"
+            description="Translate the savings into household payouts."
+          />
+          <RelatedLink
+            href={ROUTES.efficiency}
+            title="Efficiency Rankings"
+            description="See the comparator countries behind each overspend claim."
+          />
+          <RelatedLink
+            href={ROUTES.governmentSize}
+            title="Government Size"
+            description="Switch from federal line items to whole-government floor analysis."
+          />
+          <RelatedLink
+            href={ROUTES.legislation}
+            title="Model Legislation"
+            description="Read the drafted bills built from this analysis."
+          />
+        </div>
+      </section>
 
       {/* Top Recommendations */}
       <section className="mb-10">
@@ -248,5 +274,25 @@ function SummaryCard({ label, value, color = "text-foreground" }: { label: strin
       <div className={`text-2xl font-black ${color}`}>{value}</div>
       <div className="text-xs text-muted-foreground mt-1 font-bold uppercase">{label}</div>
     </div>
+  );
+}
+
+function RelatedLink({
+  href,
+  title,
+  description,
+}: {
+  href: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="card block hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-shadow"
+    >
+      <div className="text-lg font-black uppercase text-foreground">{title}</div>
+      <div className="mt-2 text-sm font-bold text-muted-foreground">{description}</div>
+    </Link>
   );
 }

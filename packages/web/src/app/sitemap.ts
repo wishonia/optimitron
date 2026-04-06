@@ -21,6 +21,10 @@ const STATIC_ROUTES: { path: string; priority: number; changeFrequency: Metadata
   // Analysis
   { path: ROUTES.opg, priority: 0.8, changeFrequency: "weekly" },
   { path: ROUTES.obg, priority: 0.8, changeFrequency: "weekly" },
+  { path: ROUTES.dividend, priority: 0.7, changeFrequency: "weekly" },
+  { path: ROUTES.efficiency, priority: 0.7, changeFrequency: "weekly" },
+  { path: ROUTES.governmentSize, priority: 0.7, changeFrequency: "weekly" },
+  { path: ROUTES.legislation, priority: 0.7, changeFrequency: "weekly" },
   // discoveries route deleted — dFDA is external (dfda.earth)
   // Governance
   { path: ROUTES.agencies, priority: 0.7, changeFrequency: "weekly" },

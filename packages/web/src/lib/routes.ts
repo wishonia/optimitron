@@ -32,6 +32,10 @@ export const ROUTES = {
   alignment: "/agencies/dfec/alignment",
   opg: "/opg",
   obg: "/obg",
+  efficiency: "/efficiency",
+  dividend: "/dividend",
+  governmentSize: "/government-size",
+  legislation: "/legislation",
   dgao: "/agencies/dgao",
   dih: "/agencies/dih",
   ddod: "/agencies/ddod",
@@ -86,6 +90,10 @@ export function getBudgetCategoryPath(name: string): string {
 
 export function getPolicyPath(name: string): string {
   return `${ROUTES.opg}/${slugify(name)}`;
+}
+
+export function getLegislationPath(slug: string): string {
+  return `${ROUTES.legislation}/${slug}`;
 }
 
 export function getSignInPath(

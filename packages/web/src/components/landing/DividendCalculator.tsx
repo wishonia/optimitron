@@ -7,19 +7,17 @@ import { useState } from "react";
  *
  * Shows citizens how much they'd receive monthly from the Universal Dividend
  * funded by efficiency savings identified in the OECD cross-country analysis.
- *
- * Pure client-side math — no API calls. Data from us-budget-analysis.json.
  */
 
 const US_ADULT_POPULATION = 258_000_000;
 
-/** Categories with overspend and potential savings */
-const SAVINGS_CATEGORIES = [
-  { name: "Military", savingsPerCapita: 1773, overspend: 7.4, checked: true },
-  { name: "Healthcare", savingsPerCapita: 7191, overspend: 3.3, checked: true },
-  { name: "R&D / Science", savingsPerCapita: 1148, overspend: 2.4, checked: false },
-  { name: "Social Programs", savingsPerCapita: 6421, overspend: 2.0, checked: false },
-] as const;
+export interface DividendCalculatorCategory {
+  name: string;
+  modelCountry: string;
+  annualSavingsPerAdult: number;
+  overspendRatio: number;
+  includedByDefault?: boolean;
+}
 
 function formatUSD(n: number): string {
   if (n >= 1_000_000_000) return `$${(n / 1_000_000_000).toFixed(1)}B`;
@@ -28,18 +26,24 @@ function formatUSD(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
-export function DividendCalculator() {
-  const [adults, setAdults] = useState(2);
+export function DividendCalculator({
+  categories,
+  initialAdults = 2,
+}: {
+  categories: DividendCalculatorCategory[];
+  initialAdults?: number;
+}) {
+  const [adults, setAdults] = useState(initialAdults);
   const [selected, setSelected] = useState<Record<string, boolean>>(
-    Object.fromEntries(SAVINGS_CATEGORIES.map((c) => [c.name, c.checked]))
+    Object.fromEntries(categories.map((category) => [category.name, category.includedByDefault ?? true])),
   );
 
-  const totalSavingsPerCapita = SAVINGS_CATEGORIES.filter(
-    (c) => selected[c.name]
-  ).reduce((sum, c) => sum + c.savingsPerCapita, 0);
+  const totalSavingsPerAdult = categories
+    .filter((category) => selected[category.name])
+    .reduce((sum, category) => sum + category.annualSavingsPerAdult, 0);
 
-  const annualTotalSavings = totalSavingsPerCapita * US_ADULT_POPULATION;
-  const annualPerAdult = totalSavingsPerCapita;
+  const annualTotalSavings = totalSavingsPerAdult * US_ADULT_POPULATION;
+  const annualPerAdult = totalSavingsPerAdult;
   const monthlyPerAdult = annualPerAdult / 12;
   const monthlyHousehold = monthlyPerAdult * adults;
   const annualHousehold = annualPerAdult * adults;
@@ -58,34 +62,32 @@ export function DividendCalculator() {
         savings could fund a Universal Dividend for every adult citizen.
       </p>
 
-      {/* Category toggles */}
       <div className="mb-4 space-y-2">
         <p className="text-xs font-bold uppercase text-muted-foreground">
           Include savings from:
         </p>
-        {SAVINGS_CATEGORIES.map((cat) => (
+        {categories.map((category) => (
           <label
-            key={cat.name}
+            key={category.name}
             className="flex cursor-pointer items-center gap-2"
           >
             <input
               type="checkbox"
-              checked={selected[cat.name] ?? false}
-              onChange={() => toggleCategory(cat.name)}
+              checked={selected[category.name] ?? false}
+              onChange={() => toggleCategory(category.name)}
               className="h-5 w-5 accent-brutal-pink"
             />
             <span className="text-sm font-bold text-foreground">
-              {cat.name}
+              {category.name}
             </span>
             <span className="text-xs font-bold text-muted-foreground">
-              ({cat.overspend}x overspend → {formatUSD(cat.savingsPerCapita)}
-              /yr per adult)
+              ({category.overspendRatio.toFixed(1)}x vs {category.modelCountry} →{" "}
+              {formatUSD(category.annualSavingsPerAdult)}/yr per adult)
             </span>
           </label>
         ))}
       </div>
 
-      {/* Household size */}
       <div className="mb-4">
         <label className="mb-1 block text-xs font-bold uppercase text-muted-foreground">
           Adults in household
@@ -107,7 +109,6 @@ export function DividendCalculator() {
         </div>
       </div>
 
-      {/* Results */}
       <div className="space-y-3 border-t-4 border-primary pt-4">
         <div className="flex items-baseline justify-between">
           <span className="text-sm font-bold text-muted-foreground">
@@ -138,7 +139,6 @@ export function DividendCalculator() {
         </div>
       </div>
 
-      {/* Opt-out note */}
       <p className="mt-4 text-xs font-bold text-muted-foreground">
         Don&apos;t like a reform? Redirect your dividend back to any program you
         choose. Your money, your call.

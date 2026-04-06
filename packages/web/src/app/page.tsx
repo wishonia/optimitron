@@ -24,6 +24,7 @@ import { Container } from "@/components/ui/container";
 import { GameCTA } from "@/components/ui/game-cta";
 import { DemoVideoSection } from "@/components/landing/DemoVideoSection";
 import { OptimalPolicyPreview } from "@/components/landing/OptimalPolicyPreview";
+import { OptimizedGovernanceSection } from "@/components/landing/OptimizedGovernanceSection";
 import { ArmorySection } from "@/components/landing/ArmorySection";
 import { TAGLINES } from "@/lib/messaging";
 import { FinalCTASection } from "@/components/landing/FinalCTASection";
@@ -117,13 +118,16 @@ export default function Home() {
         </Container>
       </SectionContainer>
 
-      {/* ── 17. The Armory — agencies + game modes ── */}
+      {/* ── 17. Optimized Governance — the agencies ── */}
+      <OptimizedGovernanceSection />
+
+      {/* ── 18. The Armory — player tools ── */}
       <ArmorySection />
 
-      {/* ── 18. Frequently Asked Objections ── */}
+      {/* ── 19. Frequently Asked Objections ── */}
       <LandingFAQSection />
 
-      {/* ── 19. Final CTA — countdown + ticker ── */}
+      {/* ── 20. Final CTA — countdown + ticker ── */}
       <FinalCTASection />
     </div>
   );

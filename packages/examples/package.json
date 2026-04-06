@@ -2,7 +2,7 @@
   "name": "@optimitron/examples",
   "version": "0.1.0",
   "private": true,
-  "description": "Worked examples — federal budget, causal analysis, alignment scoring",
+  "description": "Research, demos, and experimental analysis outputs",
   "type": "module",
   "scripts": {
     "build:deps": "pnpm --filter @optimitron/examples^... build",
@@ -25,8 +25,6 @@
     "generate:drug-policy": "pnpm run build:deps && tsx src/international-analysis/generate-drug-policy-comparison.ts",
     "generate:education": "pnpm run build:deps && tsx src/international-analysis/generate-education-comparison.ts",
     "generate:cross-country": "pnpm run build:deps && tsx src/international-analysis/generate-cross-country-analysis.ts",
-    "generate:web-data": "tsx src/generate-web-data.ts",
-    "generate:site": "tsx src/generate-site-reports.ts",
     "test": "pnpm run build:deps && vitest run",
     "test:integration": "pnpm run build:deps && vitest run src/integration-tests/"
   },
