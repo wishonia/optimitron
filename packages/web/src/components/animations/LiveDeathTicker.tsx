@@ -21,7 +21,8 @@ function formatDollars(n: number): string {
 interface CounterConfig {
   rate: number;
   format: (n: number) => string;
-  color: string;
+  lightSurfaceColor: string;
+  darkSurfaceColor: string;
   emoji: string;
   label: string;
   staticFallback: string;
@@ -31,7 +32,8 @@ const counters: CounterConfig[] = [
   {
     rate: DEATHS_PER_SECOND,
     format: (n) => Math.floor(n).toLocaleString(),
-    color: "text-brutal-red",
+    lightSurfaceColor: "text-brutal-red",
+    darkSurfaceColor: "text-brutal-red",
     emoji: "💀",
     label: "Humans terminated",
     staticFallback: `~${DEATHS_PER_DAY.toLocaleString()} humans terminated/day`,
@@ -39,7 +41,8 @@ const counters: CounterConfig[] = [
   {
     rate: DYSFUNCTION_TAX_PER_SECOND,
     format: formatDollars,
-    color: "text-brutal-pink",
+    lightSurfaceColor: "text-foreground",
+    darkSurfaceColor: "text-brutal-pink",
     emoji: "🔥",
     label: "Burned by misaligned governments",
     staticFallback: `$${Math.round(DYSFUNCTION_TAX_PER_YEAR / 1e12)}T/yr governance waste`,
@@ -47,14 +50,21 @@ const counters: CounterConfig[] = [
   {
     rate: DESTRUCTIVE_PER_SECOND,
     format: formatDollars,
-    color: "text-brutal-cyan",
+    lightSurfaceColor: "text-foreground",
+    darkSurfaceColor: "text-brutal-cyan",
     emoji: "💣",
     label: "Spent on destruction instead of cures",
     staticFallback: `$${DESTRUCTIVE_BASE_T.toFixed(1)}T/yr military + cybercrime`,
   },
 ];
 
-export function LiveDeathTicker({ className = "" }: { className?: string }) {
+export function LiveDeathTicker({
+  className = "",
+  surface = "light",
+}: {
+  className?: string;
+  surface?: "light" | "dark";
+}) {
   const refs = [
     useRef<HTMLSpanElement>(null),
     useRef<HTMLSpanElement>(null),
@@ -86,7 +96,11 @@ export function LiveDeathTicker({ className = "" }: { className?: string }) {
         {counters.map((c) => (
           <div key={c.label}>
             <span className="text-3xl mr-2">{c.emoji}</span>
-            <span className={`text-lg font-bold ${c.color}`}>{c.staticFallback}</span>
+            <span
+              className={`text-lg font-bold ${surface === "dark" ? c.darkSurfaceColor : c.lightSurfaceColor}`}
+            >
+              {c.staticFallback}
+            </span>
           </div>
         ))}
       </div>
@@ -100,7 +114,7 @@ export function LiveDeathTicker({ className = "" }: { className?: string }) {
           <div className="flex items-center justify-center gap-3">
             <span className="text-4xl sm:text-5xl">{c.emoji}</span>
             <span
-              className={`text-3xl sm:text-4xl font-black ${c.color}`}
+              className={`text-3xl sm:text-4xl font-black ${surface === "dark" ? c.darkSurfaceColor : c.lightSurfaceColor}`}
               style={{ fontVariantNumeric: "tabular-nums" }}
               ref={refs[i]}
             >

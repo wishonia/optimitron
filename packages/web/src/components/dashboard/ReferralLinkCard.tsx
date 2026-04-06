@@ -28,7 +28,7 @@ export function ReferralLinkCard({
         {REFERRAL.earnOne}
       </p>
 
-      <div className="mb-2">
+      <div className="mb-2 flex justify-center">
         <CopyLinkButton url={referralLink} variant="landing" />
       </div>
 

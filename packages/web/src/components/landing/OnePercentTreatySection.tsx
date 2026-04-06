@@ -84,7 +84,7 @@ export function OnePercentTreatySection() {
                     <span className="text-sm font-black uppercase">
                       {stat.label}
                     </span>
-                    <span className="text-sm font-black text-brutal-cyan">
+                    <span className="text-sm font-black text-foreground">
                       {stat.improvement}
                     </span>
                   </div>

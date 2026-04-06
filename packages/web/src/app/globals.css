@@ -603,5 +603,5 @@ body {
 }
 
 /* No auto-contrast CSS hacks. Text colors are set explicitly in components.
-   Run `pnpm --filter @optimitron/web exec playwright test e2e/contrast-audit.spec.ts --project=default`
+   Run `pnpm --filter @optimitron/web run e2e -- contrast`
    to find contrast violations. */

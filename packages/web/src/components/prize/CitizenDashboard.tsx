@@ -115,7 +115,7 @@ export function CitizenDashboard() {
       <div className="border-4 border-primary bg-background p-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-muted w-1/3" />
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="h-24 bg-muted" />
             ))}
@@ -398,14 +398,12 @@ export function CitizenDashboard() {
 
       {/* ── Global Tipping Point ── */}
       <div className="border-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-        <div className="flex items-center justify-between mb-1">
-          <h3 className="text-lg font-black uppercase">
-            Progress Toward {TIPPING_POINT_PCT}% Tipping Point
-          </h3>
+        <h3 className="text-lg font-black uppercase mb-1">
+          Progress Toward {TIPPING_POINT_PCT}% Tipping Point{" "}
           <Tooltip.Provider>
             <Tooltip>
               <Tooltip.Trigger asChild>
-                <button className="w-6 h-6 border-4 border-primary bg-background flex items-center justify-center text-xs font-black hover:bg-brutal-pink hover:text-background transition-colors">
+                <button className="inline-flex items-center justify-center w-6 h-6 border-4 border-primary bg-background text-xs font-black hover:bg-brutal-pink hover:text-background transition-colors align-middle">
                   ?
                 </button>
               </Tooltip.Trigger>
@@ -422,11 +420,11 @@ export function CitizenDashboard() {
               </Tooltip.Content>
             </Tooltip>
           </Tooltip.Provider>
-        </div>
-        <p className="text-sm font-bold mb-3">
+        </h3>
+        <p className="text-xs sm:text-sm font-bold mb-3">
           Historical threshold: {TIPPING_POINT_PCT}% active participation — no campaign has ever failed past this point
         </p>
-        <div className="flex justify-between text-sm font-bold mb-2">
+        <div className="flex flex-col sm:flex-row justify-between text-xs sm:text-sm font-bold mb-2 gap-1">
           <span>
             {globalPctOfPopulation.toFixed(
               globalPctOfPopulation < 0.01 ? 6 : 4,
@@ -441,11 +439,11 @@ export function CitizenDashboard() {
             style={{ width: `${Math.min(globalPctOfTarget, 100)}%` }}
           />
         </div>
-        <div className="flex justify-between mt-2">
-          <span className="text-sm font-bold">
+        <div className="flex flex-col sm:flex-row justify-between mt-2 gap-1">
+          <span className="text-xs sm:text-sm font-bold">
             {totalGlobal.toLocaleString()} verified votes
           </span>
-          <span className="text-sm font-bold">
+          <span className="text-xs sm:text-sm font-bold">
             {votesRemaining.toLocaleString()} more needed
           </span>
         </div>

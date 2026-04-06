@@ -133,20 +133,8 @@ jobs:
       - name: Install Playwright browser
         run: pnpm --filter @optimitron/web exec playwright install --with-deps chromium
 
-      - name: Run smoke tests
-        env:
-          BASE_URL: http://127.0.0.1:3001
-        run: pnpm --filter @optimitron/web exec playwright test e2e/smoke.spec.ts --project=default
-
-      - name: Run contrast audit
-        env:
-          BASE_URL: http://127.0.0.1:3001
-        run: pnpm --filter @optimitron/web exec playwright test e2e/contrast-audit.spec.ts --project=default
-
-      - name: Run mobile responsiveness audit
-        env:
-          BASE_URL: http://127.0.0.1:3001
-        run: pnpm --filter @optimitron/web exec playwright test e2e/mobile-responsiveness-audit.spec.ts --project=default
+      - name: Run Playwright web validation
+        run: pnpm --filter @optimitron/web run e2e
 
       - name: Upload Playwright artifacts
         if: failure()

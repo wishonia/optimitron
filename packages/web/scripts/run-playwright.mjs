@@ -1,0 +1,180 @@
+#!/usr/bin/env node
+
+import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
+import path from "node:path";
+import process from "node:process";
+
+const DEFAULT_BASE_URL = "http://127.0.0.1:3001";
+const LOCAL_BASE_URL_CANDIDATES = [
+  process.env.BASE_URL,
+  DEFAULT_BASE_URL,
+  "http://localhost:3001",
+].filter(Boolean);
+
+const MODE_SPECS = {
+  all: [
+    "e2e/smoke.spec.ts",
+    "e2e/contrast-audit.spec.ts",
+    "e2e/mobile-responsiveness-audit.spec.ts",
+  ],
+  smoke: ["e2e/smoke.spec.ts"],
+  contrast: ["e2e/contrast-audit.spec.ts"],
+  mobile: ["e2e/mobile-responsiveness-audit.spec.ts"],
+};
+
+const PLAYWRIGHT_DEFAULT_ARGS = ["--project=default"];
+const scriptArgs = process.argv.slice(2).filter((arg, index) => !(index === 0 && arg === "--"));
+const requestedMode = scriptArgs[0];
+const helpRequested = ["-h", "--help", "help"].includes(requestedMode ?? "");
+const mode = requestedMode && requestedMode in MODE_SPECS ? requestedMode : "all";
+const passthroughArgs = requestedMode && requestedMode in MODE_SPECS
+  ? scriptArgs.slice(1)
+  : scriptArgs;
+
+const isCI = parseBoolean(process.env.CI);
+
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exit(1);
+});
+
+async function main() {
+  if (helpRequested) {
+    printHelp();
+    return;
+  }
+
+  const execution = isCI
+    ? {
+        baseUrl: process.env.BASE_URL ?? DEFAULT_BASE_URL,
+        reuseExistingServer: false,
+        reason: "CI run; using Playwright-managed server",
+      }
+    : await resolveLocalExecution();
+
+  const env = { ...process.env, BASE_URL: execution.baseUrl };
+
+  if (execution.reuseExistingServer) {
+    env.SKIP_SERVER = "1";
+  } else {
+    delete env.SKIP_SERVER;
+  }
+
+  const playwrightArgs = [
+    "exec",
+    "playwright",
+    "test",
+    ...MODE_SPECS[mode],
+    ...appendDefaultProjectArg(passthroughArgs),
+  ];
+
+  console.log(`[e2e] mode=${mode}`);
+  console.log(`[e2e] baseUrl=${execution.baseUrl}`);
+  console.log(`[e2e] ${execution.reason}`);
+
+  const exitCode = await runCommand(playwrightArgs, env);
+  process.exit(exitCode);
+}
+
+async function resolveLocalExecution() {
+  for (const candidate of dedupe(LOCAL_BASE_URL_CANDIDATES)) {
+    if (await isReachable(candidate)) {
+      return {
+        baseUrl: candidate,
+        reuseExistingServer: true,
+        reason: `Reusing running server at ${candidate}`,
+      };
+    }
+  }
+
+  if (!hasExistingBuild()) {
+    throw new Error(
+      [
+        "No running Optimitron web server was detected.",
+        `Checked: ${dedupe(LOCAL_BASE_URL_CANDIDATES).join(", ")}`,
+        "Start `pnpm --filter @optimitron/web run dev` or build the app before running `pnpm --filter @optimitron/web run e2e`.",
+      ].join(" "),
+    );
+  }
+
+  return {
+    baseUrl: process.env.BASE_URL ?? DEFAULT_BASE_URL,
+    reuseExistingServer: false,
+    reason: "No running dev server detected; using existing production build via Playwright",
+  };
+}
+
+function appendDefaultProjectArg(args) {
+  const hasProjectArg = args.some((arg, index) => (
+    arg === "--project" || arg.startsWith("--project=") || (index > 0 && args[index - 1] === "--project")
+  ));
+
+  return hasProjectArg ? args : [...PLAYWRIGHT_DEFAULT_ARGS, ...args];
+}
+
+function hasExistingBuild() {
+  return existsSync(path.resolve(process.cwd(), ".next", "BUILD_ID"));
+}
+
+async function isReachable(baseUrl) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 1500);
+    const response = await fetch(baseUrl, {
+      method: "GET",
+      redirect: "manual",
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    return response.status >= 200 && response.status < 500;
+  } catch {
+    return false;
+  }
+}
+
+function parseBoolean(value) {
+  if (!value) return false;
+  return !["0", "false", "False", "FALSE"].includes(value);
+}
+
+function dedupe(values) {
+  return [...new Set(values)];
+}
+
+function runCommand(args, env) {
+  return new Promise((resolve, reject) => {
+    const useShell = process.platform === "win32";
+    const child = spawn("pnpm", args, {
+      cwd: process.cwd(),
+      env,
+      shell: useShell,
+      stdio: "inherit",
+    });
+
+    child.on("error", reject);
+    child.on("exit", (code, signal) => {
+      if (signal) {
+        reject(new Error(`Playwright exited from signal ${signal}`));
+        return;
+      }
+      resolve(code ?? 1);
+    });
+  });
+}
+
+function printHelp() {
+  console.log(`Usage: pnpm --filter @optimitron/web run e2e -- [mode] [playwright args]
+
+Modes:
+  all        Run smoke, contrast, and mobile audits (default)
+  smoke      Run only smoke tests
+  contrast   Run only the contrast audit
+  mobile     Run only the mobile responsiveness audit
+
+Behavior:
+  - In CI, uses the Playwright-managed built server path
+  - Locally, reuses BASE_URL or a running server on ${DEFAULT_BASE_URL} when available
+  - If no local server is running, falls back to an existing production build
+`);
+}

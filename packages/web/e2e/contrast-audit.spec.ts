@@ -10,8 +10,8 @@
  *
  * Also runs a mobile pass (390×844) since stacking changes text/bg relationships.
  *
- * Run with dev server already up:
- *   SKIP_SERVER=1 pnpm --filter @optimitron/web exec playwright test e2e/contrast-audit.spec.ts
+ * Run:
+ *   pnpm --filter @optimitron/web run e2e -- contrast
  */
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";

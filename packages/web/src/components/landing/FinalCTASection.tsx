@@ -27,7 +27,7 @@ export function FinalCTASection() {
 
         {/* Real-time death ticker */}
         <div className="mb-8">
-          <LiveDeathTicker />
+          <LiveDeathTicker surface="dark" />
         </div>
 
         {/* CTAs */}

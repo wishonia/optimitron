@@ -11,8 +11,8 @@
  *
  * Saves a mobile screenshot of every page.
  *
- * Run with dev server already up:
- *   SKIP_SERVER=1 pnpm --filter @optimitron/web exec playwright test e2e/mobile-responsiveness-audit.spec.ts
+ * Run:
+ *   pnpm --filter @optimitron/web run e2e -- mobile
  */
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";

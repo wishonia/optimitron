@@ -29,7 +29,7 @@ export function WhyPlaySection() {
       <Container>
         {/* Real-time counters */}
         <div className="mb-8">
-          <LiveDeathTicker />
+          <LiveDeathTicker surface="dark" />
         </div>
 
         {/* Punchline */}
