@@ -8,5 +8,6 @@ export * from './orchestrator.js';
 export * from './analysis-publication-review.js';
 export * from './test-output-review.js';
 export * from './legislation-drafter.js';
+export * from './legislation-evidence.js';
 
 export const VERSION = '0.1.0';

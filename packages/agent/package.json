@@ -12,7 +12,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@google/genai": "^1.30.0",
+    "@google/genai": "^1.48.0",
     "@optimitron/data": "workspace:*",
     "@optimitron/hypercerts": "workspace:*",
     "@optimitron/obg": "workspace:*",

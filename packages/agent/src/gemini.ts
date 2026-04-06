@@ -26,14 +26,137 @@ export interface GeminiReasonerOptions {
 
 function responseText(response: { text?: string | (() => string) }): string {
   if (typeof response.text === 'function') {
-    return response.text();
+    const text = response.text();
+    if (text.length > 0) {
+      return text;
+    }
   }
 
   if (typeof response.text === 'string') {
-    return response.text;
+    if (response.text.length > 0) {
+      return response.text;
+    }
+  }
+
+  const candidateText = (response as {
+    candidates?: Array<{
+      content?: {
+        parts?: Array<{ text?: string }>;
+      };
+    }>;
+  }).candidates
+    ?.flatMap(candidate => candidate.content?.parts ?? [])
+    .map(part => part.text ?? '')
+    .join('')
+    .trim();
+
+  if (candidateText && candidateText.length > 0) {
+    return candidateText;
   }
 
   throw new Error('Gemini response did not contain text output');
+}
+
+function stripMarkdownFences(text: string): string {
+  const trimmed = text.trim();
+
+  if (!trimmed.startsWith('```')) {
+    return trimmed;
+  }
+
+  return trimmed
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/, '')
+    .trim();
+}
+
+function sliceLikelyJson(text: string): string {
+  const trimmed = stripMarkdownFences(text);
+  const objectStart = trimmed.indexOf('{');
+  const objectEnd = trimmed.lastIndexOf('}');
+
+  if (objectStart !== -1 && objectEnd !== -1 && objectEnd > objectStart) {
+    return trimmed.slice(objectStart, objectEnd + 1);
+  }
+
+  const arrayStart = trimmed.indexOf('[');
+  const arrayEnd = trimmed.lastIndexOf(']');
+
+  if (arrayStart !== -1 && arrayEnd !== -1 && arrayEnd > arrayStart) {
+    return trimmed.slice(arrayStart, arrayEnd + 1);
+  }
+
+  return trimmed;
+}
+
+function repairJsonString(text: string): string {
+  let result = '';
+  let inString = false;
+  let escaping = false;
+
+  for (const char of text) {
+    if (inString) {
+      if (escaping) {
+        result += char;
+        escaping = false;
+        continue;
+      }
+
+      if (char === '\\') {
+        result += char;
+        escaping = true;
+        continue;
+      }
+
+      if (char === '"') {
+        result += char;
+        inString = false;
+        continue;
+      }
+
+      if (char === '\n') {
+        result += '\\n';
+        continue;
+      }
+
+      if (char === '\r') {
+        result += '\\r';
+        continue;
+      }
+
+      if (char === '\t') {
+        result += '\\t';
+        continue;
+      }
+
+      result += char;
+      continue;
+    }
+
+    if (char === '"') {
+      inString = true;
+    }
+
+    result += char;
+  }
+
+  return result;
+}
+
+function parseJsonResponse(text: string): unknown {
+  const sliced = sliceLikelyJson(text);
+
+  try {
+    return JSON.parse(sliced) as unknown;
+  } catch (initialError) {
+    const repaired = repairJsonString(sliced);
+
+    if (repaired !== sliced) {
+      return JSON.parse(repaired) as unknown;
+    }
+
+    throw initialError;
+  }
 }
 
 export function createGeminiClient(apiKey: string): GeminiClientLike {
@@ -63,7 +186,7 @@ export function createGeminiReasoner(
         },
       });
 
-      const parsed = JSON.parse(responseText(response)) as unknown;
+      const parsed = parseJsonResponse(responseText(response));
       return request.parse(parsed);
     },
   };

@@ -15,6 +15,13 @@
 import { GoogleGenAI } from '@google/genai';
 import { resolveGeminiApiKey } from './gemini.js';
 import type { EfficiencyAnalysis } from '@optimitron/obg';
+import {
+  renderLegislationEvidenceBundle,
+  type LegislationEvidenceBundle,
+} from './legislation-evidence.js';
+
+const DEFAULT_LEGISLATION_DRAFT_MODEL =
+  process.env['LEGISLATION_DRAFT_MODEL'] ?? 'gemini-3.1-pro-preview';
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -64,6 +71,8 @@ export interface DraftLegislationOptions {
   model?: string;
   /** Target jurisdiction (default: "United States") */
   targetJurisdiction?: string;
+  /** Structured evidence bundle synthesized from the Optimitron parameter corpus */
+  evidenceBundle?: LegislationEvidenceBundle;
 }
 
 // ─── Prompt Construction ────────────────────────────────────────────
@@ -72,6 +81,7 @@ function buildPrompt(
   evidence: EfficiencyEvidence,
   exemplars: PolicyExemplarInput[],
   targetJurisdiction: string,
+  evidenceBundle?: LegislationEvidenceBundle,
 ): string {
   const countryList = evidence.topEfficient
     .map(c => `${c.name}: $${c.spendingPerCapita}/cap, ${evidence.outcomeName} ${c.outcome}`)
@@ -83,6 +93,10 @@ function buildPrompt(
         `  Adaptation notes: ${e.adaptationNotes}`
       ).join('\n')
     : 'No specific exemplars available — research the best-performing countries\' policies.';
+
+  const structuredEvidence = evidenceBundle
+    ? renderLegislationEvidenceBundle(evidenceBundle)
+    : 'No structured internal evidence bundle was provided. Use search-grounded external evidence only.';
 
   return `You are a nonpartisan policy analyst drafting model legislation for ${targetJurisdiction}.
 
@@ -101,6 +115,17 @@ The ${targetJurisdiction} ranks **${evidence.rank} out of ${evidence.totalCountr
 
 ${exemplarList}
 
+${structuredEvidence}
+
+## EVIDENCE HANDLING RULES
+
+- Treat the structured internal evidence bundle as a validated hypothesis set derived from Optimitron's canonical parameter corpus.
+- You MAY use numbers from that bundle, but only when they are explicitly tied to the named parameters and clearly explained.
+- Prefer Google-search-grounded external citations for all public-facing factual claims whenever possible.
+- If a proposed number or claim cannot be grounded confidently, omit it or phrase it qualitatively.
+- NEVER output placeholders or leakage markers such as [from prompt], [citation needed], [best country], TODO, or TBD.
+- NEVER present a speculative optimization target as a fact unless you explain the derivation and assumptions.
+
 ## YOUR TASK
 
 Research what specific policies, regulations, and institutional structures the top-performing countries use that enable them to achieve better ${evidence.outcomeName.toLowerCase()} outcomes at lower cost. Then draft model legislation for ${targetJurisdiction} that adapts these evidence-based approaches.
@@ -109,7 +134,7 @@ Research what specific policies, regulations, and institutional structures the t
 
 1. **FINDINGS** — Cite specific data comparing ${targetJurisdiction} to the top-performing countries. Include spending levels, outcomes, and the efficiency gap. Reference real studies, government reports, and international evaluations.
 
-2. **PURPOSE** — State the goal: achieve outcomes comparable to [best country] while reducing per-capita spending from $${evidence.spendingPerCapita} toward the efficient floor of $${evidence.floorSpendingPerCapita}.
+2. **PURPOSE** — State the goal: achieve outcomes comparable to ${evidence.bestCountry.name} while reducing per-capita spending from $${evidence.spendingPerCapita} toward the efficient floor of $${evidence.floorSpendingPerCapita}.
 
 3. **KEY PROVISIONS** — For each major policy mechanism:
    - What it does (modeled on which country's approach)
@@ -133,15 +158,14 @@ Research what specific policies, regulations, and institutional structures the t
 
 ### REALLOCATION: Where should the savings go?
 
-The savings from reducing ${evidence.category.toLowerCase()} overspend should fund evidence-based alternatives that directly improve ${evidence.outcomeName.toLowerCase()}. Consider:
+The savings from reducing ${evidence.category.toLowerCase()} overspend should fund evidence-based alternatives that directly improve ${evidence.outcomeName.toLowerCase()}. Use the structured evidence bundle and grounded search results to evaluate possibilities such as:
 
-- **Singapore-style healthcare** (if not already the category): Mandatory health savings accounts (Medisave) + catastrophic insurance (MediShield) + means-tested safety net (Medifund). Singapore achieves life expectancy 84.1 at 4% GDP vs US 76.9 at 17% GDP. The key is MARKET MECHANISMS with universal coverage — not single-payer, not the current US model. Price transparency, hospital competition, and co-payments keep costs down while mandatory savings ensure everyone is covered.
+- evidence-generation infrastructure, including pragmatic or embedded trials
+- direct citizen dividends or cash-transfer mechanisms when they have a clear causal case
+- institutional reforms borrowed from higher-performing comparator countries
+- targeted reinvestment into programs with much stronger measured marginal returns
 
-- **Universal Basic Income (UBI)**: Countries with stronger social safety nets consistently achieve higher life expectancy. A UBI funded by redirected overspend could eliminate poverty-driven health disparities. Research Alaska's Permanent Fund Dividend, Finland's UBI pilot, and GiveDirectly's evidence. A 0.5% transaction tax replacing the current welfare/IRS bureaucracy could fund UBI at the poverty line while simplifying government.
-
-- **Pragmatic clinical trials**: The US spends $48B/yr on NIH but <10% goes to pragmatic trials. The UK's NIHR model produces actionable evidence at 1/10th the cost.
-
-The legislation should include BOTH the spending reduction AND the reallocation mechanism. Don't just cut — redirect to what works.
+The legislation should include BOTH the spending reduction AND the reallocation mechanism. Don't just cut — redirect to what works. If the evidence is insufficient for a concrete reallocation number, state that openly instead of guessing.
 
 ### INTERMEDIATE METRICS & CAUSAL CHAINS
 
@@ -211,11 +235,16 @@ export async function draftLegislation(
   options: DraftLegislationOptions = {},
 ): Promise<LegislationDraft> {
   const apiKey = resolveGeminiApiKey(options.apiKey);
-  const model = options.model ?? 'gemini-2.5-flash';
+  const model = options.model ?? DEFAULT_LEGISLATION_DRAFT_MODEL;
   const targetJurisdiction = options.targetJurisdiction ?? 'United States';
 
   const ai = new GoogleGenAI({ apiKey });
-  const prompt = buildPrompt(evidence, exemplars, targetJurisdiction);
+  const prompt = buildPrompt(
+    evidence,
+    exemplars,
+    targetJurisdiction,
+    options.evidenceBundle,
+  );
 
   const response = await ai.models.generateContent({
     model,

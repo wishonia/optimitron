@@ -20,11 +20,13 @@ The web app is the product surface for analysis outputs.
   - `pnpm --filter @optimitron/web run refresh:government-size`
 - Draft legislation markdown:
   - `pnpm --filter @optimitron/web run draft:legislation`
+  - This now performs a first-pass evidence synthesis over [packages/data/src/parameters/parameters-calculations-citations.ts](/e:/code/optimitron/packages/data/src/parameters/parameters-calculations-citations.ts) before bill drafting.
 
 ## Package boundaries
 
 - `packages/web`: production analysis scripts, generated artifacts, content loaders, and user-facing routes.
 - `packages/opg` and `packages/obg`: canonical policy and budget contracts, including legislation-brief types for drafting pipelines.
+- `packages/agent`: LLM-facing synthesis and drafting logic, including the typed legislation evidence bundle built from the parameter corpus.
 - `packages/examples`: demos, research scripts, experimental outputs, and longer-form exploratory analysis.
 - `content/legislation`: committed markdown drafts reviewed through normal GitHub PRs.
 - `reports/site`: removed. Do not recreate a second static analysis site unless there is a deliberate deployment target for it.

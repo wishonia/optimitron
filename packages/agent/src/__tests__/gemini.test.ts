@@ -72,6 +72,56 @@ describe('gemini helpers', () => {
     });
   });
 
+  it('repairs common JSON formatting issues in structured responses', async () => {
+    const generateContent = vi.fn().mockResolvedValue({
+      candidates: [
+        {
+          content: {
+            parts: [
+              {
+                text: '{\n  "summary": "Line one\nLine two",\n  "decision": "proceed"\n}',
+              },
+            ],
+          },
+        },
+      ],
+    });
+    const reasoner = createGeminiReasoner({
+      apiKey: 'test-key',
+      client: {
+        models: {
+          generateContent,
+        },
+      },
+    });
+
+    const schema = z.object({
+      summary: z.string(),
+      decision: z.enum(['proceed']),
+    });
+    const result = await reasoner.generateObject({
+      schemaName: 'DecisionWithSummary',
+      prompt: 'Return JSON only.',
+      responseJsonSchema: {
+        type: 'object',
+        required: ['summary', 'decision'],
+        properties: {
+          summary: {
+            type: 'string',
+          },
+          decision: {
+            type: 'string',
+          },
+        },
+      },
+      parse: (value) => schema.parse(value),
+    });
+
+    expect(result.summary).toContain('Line one');
+    expect(result.summary).toContain('Line two');
+    expect(result.decision).toBe('proceed');
+  });
+
   it('throws when no API key is available for askGemini', async () => {
     const original = process.env['GOOGLE_GENERATIVE_AI_API_KEY'];
     const fallback = process.env['GOOGLE_API_KEY'];

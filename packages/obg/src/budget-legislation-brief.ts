@@ -1,25 +1,7 @@
+import type { EfficiencyAnalysis } from "./efficiency-analysis.js";
 import type { BudgetReportCategory, BudgetReportJSON } from "./budget-report-json.js";
 
-export interface BudgetLegislationEvidenceCountry {
-  code: string;
-  name: string;
-  spendingPerCapita: number;
-  outcome: number;
-  rank: number;
-}
-
-export interface BudgetLegislationEvidence {
-  category: string;
-  outcomeName: string;
-  outcome: number;
-  spendingPerCapita: number;
-  floorSpendingPerCapita: number;
-  overspendRatio: number;
-  rank: number;
-  totalCountries: number;
-  potentialSavingsTotal: number;
-  bestCountry: BudgetLegislationEvidenceCountry;
-}
+export type BudgetLegislationEvidence = EfficiencyAnalysis & { category: string };
 
 export interface BudgetLegislationBrief {
   slug: string;
@@ -90,22 +72,8 @@ function toBrief(category: BudgetCategoryWithEfficiency, generatedAt: string): B
     modelCountry: efficiency.bestCountry.name,
     summary,
     evidence: {
+      ...efficiency,
       category: category.name,
-      outcomeName: efficiency.outcomeName,
-      outcome: efficiency.outcome,
-      spendingPerCapita: efficiency.spendingPerCapita,
-      floorSpendingPerCapita: efficiency.floorSpendingPerCapita,
-      overspendRatio: efficiency.overspendRatio,
-      rank: efficiency.rank,
-      totalCountries: efficiency.totalCountries,
-      potentialSavingsTotal: efficiency.potentialSavingsTotal,
-      bestCountry: {
-        code: efficiency.bestCountry.code,
-        name: efficiency.bestCountry.name,
-        spendingPerCapita: efficiency.bestCountry.spendingPerCapita,
-        outcome: efficiency.bestCountry.outcome,
-        rank: efficiency.bestCountry.rank,
-      },
     },
   };
 }
