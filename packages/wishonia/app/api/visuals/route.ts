@@ -4,7 +4,7 @@
  * Returns JSON with optional keyFigure, chart, table, latex, mermaid, etc.
  */
 
-import { generateObject } from "ai";
+import { generateText, Output } from "ai";
 import { google } from "@ai-sdk/google";
 import { VISUALS_SYSTEM_PROMPT, visualsSchema } from "@/lib/visuals-prompt";
 import { getImageIndex } from "@/lib/image-index-cache";
@@ -58,21 +58,24 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await generateObject({
-      model: google("gemini-3-flash-preview", {
-        safetySettings: [
-          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
-          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
-        ],
-      }),
-      schema: visualsSchema,
+    const result = await generateText({
+      model: google("gemini-3-flash-preview"),
+      providerOptions: {
+        google: {
+          safetySettings: [
+            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+          ],
+        },
+      },
+      output: Output.object({ schema: visualsSchema }),
       system: systemPrompt,
       prompt,
     });
 
-    return Response.json(result.object);
+    return Response.json(result.output);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return Response.json({ error: message }, { status: 500 });
