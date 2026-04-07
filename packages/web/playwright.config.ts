@@ -6,9 +6,9 @@ const isCI = Boolean(process.env.CI);
 
 export default defineConfig({
   testDir: "./e2e",
-  fullyParallel: false,
+  fullyParallel: true,
   retries: 0,
-  workers: 1,
+  workers: isCI ? 4 : 4,
   reporter: isCI ? [["line"], ["html", { open: "never" }]] : "html",
   timeout: 120_000,
   snapshotPathTemplate: `${screenshotDir}/{testName}/{arg}{ext}`,

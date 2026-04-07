@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { DM_Sans, Space_Mono, Source_Serif_4, Press_Start_2P, VT323, Creepster } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { cookieToInitialState } from "wagmi";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -106,6 +107,9 @@ export default async function RootLayout({
           <GameScoreBar />
         </Providers>
         <Analytics />
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        )}
       </body>
     </html>
   );
