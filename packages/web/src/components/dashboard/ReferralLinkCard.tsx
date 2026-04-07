@@ -1,7 +1,6 @@
 "use client"
 
 import { Card } from "@/components/retroui/Card"
-import { CopyLinkButton } from "@/components/sharing/copy-link-button"
 import { SocialShareButtons } from "@/components/sharing/social-share-buttons"
 import { REFERRAL } from "@/lib/messaging"
 
@@ -27,10 +26,6 @@ export function ReferralLinkCard({
       <p className="font-bold text-base sm:text-lg text-center mb-4">
         {REFERRAL.earnOne}
       </p>
-
-      <div className="mb-2 flex justify-center">
-        <CopyLinkButton url={referralLink} variant="landing" />
-      </div>
 
       <SocialShareButtons
         url={referralLink}
