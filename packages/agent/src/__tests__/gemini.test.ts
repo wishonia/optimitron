@@ -17,7 +17,12 @@ describe('gemini helpers', () => {
 
   it('generates structured JSON objects via the injected client', async () => {
     const generateContent = vi.fn().mockResolvedValue({
-      text: () => '{"decision":"proceed"}',
+      functionCalls: [
+        {
+          name: 'Decision',
+          args: { decision: 'proceed' },
+        },
+      ],
     });
     const reasoner = createGeminiReasoner({
       apiKey: 'test-key',
@@ -58,21 +63,75 @@ describe('gemini helpers', () => {
       config: {
         temperature: 0.2,
         maxOutputTokens: 256,
-        responseMimeType: 'application/json',
-        responseJsonSchema: {
-          type: 'object',
-          required: ['decision'],
-          properties: {
-            decision: {
-              type: 'string',
-            },
+        tools: [
+          {
+            functionDeclarations: [
+              {
+                name: 'Decision',
+                description: 'Return the Decision object.',
+                parametersJsonSchema: {
+                  type: 'object',
+                  required: ['decision'],
+                  properties: {
+                    decision: {
+                      type: 'string',
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+        toolConfig: {
+          functionCallingConfig: {
+            mode: 'ANY',
+            allowedFunctionNames: ['Decision'],
           },
         },
       },
     });
   });
 
-  it('repairs common JSON formatting issues in structured responses', async () => {
+  it('falls back to parsing JSON text when function calls are absent', async () => {
+    const generateContent = vi.fn().mockResolvedValue({
+      text: () => '{"decision":"proceed"}',
+    });
+    const reasoner = createGeminiReasoner({
+      apiKey: 'test-key',
+      client: {
+        models: {
+          generateContent,
+        },
+      },
+      model: 'gemini-test',
+      temperature: 0.2,
+      maxOutputTokens: 256,
+    });
+
+    const schema = z.object({
+      decision: z.enum(['proceed']),
+    });
+    const result = await reasoner.generateObject({
+      schemaName: 'Decision',
+      prompt: 'Return a JSON decision.',
+      responseJsonSchema: {
+        type: 'object',
+        required: ['decision'],
+        properties: {
+          decision: {
+            type: 'string',
+          },
+        },
+      },
+      parse: (value) => schema.parse(value),
+    });
+
+    expect(result).toEqual({
+      decision: 'proceed',
+    });
+  });
+
+  it('repairs common JSON formatting issues in structured text fallbacks', async () => {
     const generateContent = vi.fn().mockResolvedValue({
       candidates: [
         {

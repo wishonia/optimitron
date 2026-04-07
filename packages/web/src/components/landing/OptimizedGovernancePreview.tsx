@@ -19,6 +19,7 @@ import {
   departmentOfWarLink,
   type NavItem,
 } from "@/lib/routes";
+import { WISHONIA_AGENCIES } from "@optimitron/data";
 
 const agencies: NavItem[] = [
   wishocracyLink,
@@ -34,6 +35,7 @@ const agencies: NavItem[] = [
   dfdaLink,
   departmentOfWarLink,
 ];
+const wishoniaAgencyCount = WISHONIA_AGENCIES.length;
 
 export function OptimizedGovernancePreview() {
   return (
@@ -41,7 +43,7 @@ export function OptimizedGovernancePreview() {
       <Container>
         <SectionHeader
           title="Optimized Governance"
-          subtitle="Ten agencies running a civilisation. No bureaucracy, no corruption, no seventy-four-thousand-page tax code. Just code."
+          subtitle={`${wishoniaAgencyCount} optimized agencies running a civilisation. No bureaucracy, no corruption, no seventy-four-thousand-page tax code. Just code.`}
           size="lg"
         />
         <NavItemCardGrid columns={3}>

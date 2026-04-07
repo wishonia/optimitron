@@ -113,4 +113,39 @@ describe('legislation evidence bundle', () => {
     expect(getLegislationEvidenceParameter('NIH_CLINICAL_TRIALS_SPENDING_PCT')?.value).toBe(0.033);
     expect(getLegislationEvidenceCitation('recovery-trial-82x-cost-reduction')?.title).toContain('RECOVERY');
   });
+
+  it('accepts citation URLs when they resolve to known parameter-backed sources', async () => {
+    const reasoner: StructuredReasoner = {
+      async generateObject(request) {
+        return request.parse({
+          summary: 'Use the manual page and source URLs already embedded in the parameter corpus.',
+          missingEvidence: [],
+          rejectedIdeas: [],
+          insights: [
+            {
+              title: 'IAB-style rent caps',
+              claim: 'Residual rents should be explicit, rule-bound, and capped.',
+              whyItMatters: 'This constrains hidden privilege and turns lobbying rents into auditable incentive payments.',
+              policyImplication: 'Bills should use open, capped outcome contracts rather than opaque discretion.',
+              parameterRefs: ['VICTORY_BOND_FUNDING_PCT'],
+              citationRefs: ['https://iab.warondisease.org##welfare-analysis'],
+              implementationIdeas: ['Cap residual upside and disclose all payout formulas.'],
+              counterarguments: ['Poorly designed caps could still invite gaming.'],
+              openQuestions: ['What is the right cap level?'],
+              novelty: 'medium',
+              confidence: 'estimated',
+            },
+          ],
+        });
+      },
+    };
+
+    const bundle = await synthesizeLegislationEvidenceBundle({
+      objective: 'Test URL-backed citation refs.',
+      apiKey: 'test-key',
+      reasoner,
+    });
+
+    expect(bundle.parameters.some((parameter) => parameter.parameterName === 'VICTORY_BOND_FUNDING_PCT')).toBe(true);
+  });
 });

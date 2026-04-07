@@ -102,6 +102,21 @@ export const ADAPTABLE_TRIAL_TOTAL_COST: Parameter = {
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
 };
 
+export const ANNUAL_TERRORISM_DEATH_RISK_DENOMINATOR: Parameter = {
+  value: 30000000.0,
+  parameterName: "ANNUAL_TERRORISM_DEATH_RISK_DENOMINATOR",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-annual_terrorism_death_risk_denominator",
+  unit: "people",
+  displayName: "Annual Terrorism Death Risk (1 in X)",
+  description: "Annual probability of being killed by terrorism expressed as '1 in X'. An American's annual odds of dying in a terrorist attack are approximately 1 in 30 million.",
+  sourceType: "external",
+  sourceRef: "chance-of-dying-from-terrorism-1-in-30m",
+  sourceUrl: "https://www.cato.org/policy-analysis/terrorism-immigration-risk-analysis",
+  confidence: "high",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/strategy/declaration-of-optimization.html",
+  manualPageTitle: "Declaration of Optimization",
+};
+
 export const ANTIDEPRESSANT_TRIAL_EXCLUSION_RATE: Parameter = {
   value: 0.861,
   parameterName: "ANTIDEPRESSANT_TRIAL_EXCLUSION_RATE",
@@ -3555,6 +3570,22 @@ export const CONVENTIONAL_RETIREMENT_HORIZON_MULTIPLE: Parameter = {
   manualPageTitle: "The Earth Optimization Prize Fund",
 };
 
+export const CUMULATIVE_MILITARY_IN_GOVT_TRIAL_YEARS: Parameter = {
+  value: 37777.77777777778,
+  parameterName: "CUMULATIVE_MILITARY_IN_GOVT_TRIAL_YEARS",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-cumulative_military_in_govt_trial_years",
+  unit: "years",
+  displayName: "Military Spending in Government Clinical Trial Years",
+  description: "Cumulative military spending since 1913 expressed in equivalent years of government clinical trial spending ($170T / $4.5B per year)",
+  sourceType: "calculated",
+  confidence: "high",
+  formula: "CUMULATIVE_MILITARY_SPENDING_FED_ERA / GLOBAL_GOVERNMENT_CLINICAL_TRIALS_SPENDING_ANNUAL",
+  latex: "\\begin{gathered}\nYears_{mil \\to trials,gov} \\\\\n= \\frac{Spending_{mil,cum,fed}}{Spending_{trials,gov}} \\\\\n= \\frac{\\$170T}{\\$4.5B} \\\\\n= 37{,}800\n\\end{gathered}",
+  confidenceInterval: [28333.333333333332, 55889.07556635113],
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/strategy/declaration-of-optimization.html",
+  manualPageTitle: "Declaration of Optimization",
+};
+
 export const CURRENT_COMBINATION_EXPLORATION_YEARS: Parameter = {
   value: 13672803.030303031,
   parameterName: "CURRENT_COMBINATION_EXPLORATION_YEARS",
@@ -5137,8 +5168,8 @@ export const GLOBAL_DISEASE_DEATHS_PER_MINUTE: Parameter = {
   formula: "GLOBAL_DISEASE_DEATHS_DAILY / 1440",
   latex: "\\begin{gathered}\nDeaths_{disease,min} \\\\\n= Deaths_{disease,daily} \\times 0.000694 \\\\\n= 150{,}000 \\times 0.000694 \\\\\n= 104\n\\end{gathered}",
   confidenceInterval: [95.44742975347027, 112.72260414210108],
-  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/strategy/earth-optimization-prize.html",
-  manualPageTitle: "The Earth Optimization Prize",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/strategy/declaration-of-optimization.html",
+  manualPageTitle: "Declaration of Optimization",
 };
 
 export const GLOBAL_DISEASE_ECONOMIC_BURDEN_ANNUAL: Parameter = {
@@ -7363,6 +7394,21 @@ export const VOTE_TOKEN_VALUE: Parameter = {
   manualPageTitle: "The Earth Optimization Prize",
 };
 
+export const WAR_CHILDREN_KILLED_SINCE_1900: Parameter = {
+  value: 102300000.0,
+  parameterName: "WAR_CHILDREN_KILLED_SINCE_1900",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-war_children_killed_since_1900",
+  unit: "deaths",
+  displayName: "Children Killed in Wars Since 1900",
+  description: "Estimated children under 18 killed in wars, conflicts, genocides, and policy-induced famines since 1900",
+  sourceType: "calculated",
+  confidence: "high",
+  formula: "WAR_DEATHS_SINCE_1900 × WAR_CHILD_DEATH_PCT",
+  latex: "\\begin{gathered}\nDeaths_{war,child} \\\\\n= Deaths_{war,1900} \\times Pct_{war,child} \\\\\n= 310M \\times 33\\% \\\\\n= 102M\n\\end{gathered}",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
+  manualPageTitle: "The Cost of War",
+};
+
 export const WAR_COSTS_CUMULATIVE_20YR_CURRENT_TRAJECTORY: Parameter = {
   value: 227142000000000.0,
   parameterName: "WAR_COSTS_CUMULATIVE_20YR_CURRENT_TRAJECTORY",
@@ -9044,6 +9090,20 @@ export const NPV_TIME_HORIZON_YEARS: Parameter = {
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
 };
 
+export const NUCLEAR_OVERKILL_FACTOR: Parameter = {
+  value: 20.0,
+  parameterName: "NUCLEAR_OVERKILL_FACTOR",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-nuclear_overkill_factor",
+  unit: "x",
+  displayName: "Nuclear Overkill Factor",
+  description: "How many times the global nuclear arsenal can kill Earth's entire population. Based on total potential deaths from existing arsenals (~158.4B) divided by global population (~8B). See nuclear-weapon-cost-and-casualties appendix.",
+  sourceType: "definition",
+  sourceRef: "nuclear-extinction",
+  confidence: "medium",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/strategy/declaration-of-optimization.html",
+  manualPageTitle: "Declaration of Optimization",
+};
+
 export const PEACE_DIVIDEND_CONFLICT_ELASTICITY: Parameter = {
   value: 1.0,
   parameterName: "PEACE_DIVIDEND_CONFLICT_ELASTICITY",
@@ -9455,6 +9515,22 @@ export const WAR_AVG_YEARS_LIFE_LOST_PER_DEATH: Parameter = {
   manualPageTitle: "The Cost of War",
 };
 
+export const WAR_CHILD_DEATH_PCT: Parameter = {
+  value: 0.33,
+  parameterName: "WAR_CHILD_DEATH_PCT",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-war_child_death_pct",
+  unit: "rate",
+  displayName: "Child Share of War Deaths Since 1900",
+  description: "Estimated share of war deaths since 1900 that were children under 18. Constructed from category-weighted estimates: combat ~3%, civilian ~35%, genocide ~33%, famine ~60%. Conservative aggregate ~33%. Sources: de Waal 2017 (famine child mortality), APA 2001 (civilian child share).",
+  sourceType: "definition",
+  sourceRef: "de-waal-famine-child-mortality-2018",
+  sourceUrl: "https://doi.org/10.1016/j.polgeo.2017.09.004",
+  confidence: "low",
+  confidenceInterval: [0.25, 0.4],
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
+  manualPageTitle: "The Cost of War",
+};
+
 export const WAR_COUNTERFACTUAL_ANNUAL_GROWTH_BOOST: Parameter = {
   value: 0.026,
   parameterName: "WAR_COUNTERFACTUAL_ANNUAL_GROWTH_BOOST",
@@ -9548,6 +9624,7 @@ export const _US_BASE_POLITICAL_SPENDING: Parameter = {
 export const parameters = {
   ADAPTABLE_TRIAL_COST_PER_PATIENT,
   ADAPTABLE_TRIAL_TOTAL_COST,
+  ANNUAL_TERRORISM_DEATH_RISK_DENOMINATOR,
   ANTIDEPRESSANT_TRIAL_EXCLUSION_RATE,
   AVERAGE_MARKET_RETURN_PCT,
   BASELINE_LIVES_SAVED_ANNUAL,
@@ -9775,6 +9852,7 @@ export const parameters = {
   CONTRIBUTION_LIVES_SAVED_PER_PCT_POINT,
   CONTRIBUTION_SUFFERING_HOURS_PER_PCT_POINT,
   CONVENTIONAL_RETIREMENT_HORIZON_MULTIPLE,
+  CUMULATIVE_MILITARY_IN_GOVT_TRIAL_YEARS,
   CURRENT_COMBINATION_EXPLORATION_YEARS,
   CURRENT_KNOWN_SAFE_EXPLORATION_YEARS,
   CURRENT_PATIENT_PARTICIPATION_RATE,
@@ -10022,6 +10100,7 @@ export const parameters = {
   VOTER_SUFFERING_HOURS_PREVENTED,
   VOTE_2_CLAIMS_PAYOUT,
   VOTE_TOKEN_VALUE,
+  WAR_CHILDREN_KILLED_SINCE_1900,
   WAR_COSTS_CUMULATIVE_20YR_CURRENT_TRAJECTORY,
   WAR_COSTS_SAVED_PEACE_TRAJECTORY_20YR,
   WAR_COUNTERFACTUAL_GDP_PER_CAPITA,
@@ -10145,6 +10224,7 @@ export const parameters = {
   MONTHS_PER_YEAR,
   NPV_DISCOUNT_RATE_STANDARD,
   NPV_TIME_HORIZON_YEARS,
+  NUCLEAR_OVERKILL_FACTOR,
   PEACE_DIVIDEND_CONFLICT_ELASTICITY,
   PEACE_DIVIDEND_DIRECT_FISCAL_SAVINGS,
   PHARMA_PHASE_2_3_COST_BARRIER,
@@ -10176,6 +10256,7 @@ export const parameters = {
   US_VS_SWITZERLAND_SPENDING_GAP,
   VICTORY_BOND_FUNDING_PCT,
   WAR_AVG_YEARS_LIFE_LOST_PER_DEATH,
+  WAR_CHILD_DEATH_PCT,
   WAR_COUNTERFACTUAL_ANNUAL_GROWTH_BOOST,
   WAR_DEATHS_SINCE_1900,
   WAR_ENVIRONMENTAL_DESTRUCTION_SINCE_1900,
@@ -10515,6 +10596,20 @@ export const citations: Record<string, Citation> = {
         'container-title': "Cybersecurity Ventures: \\$10.5T Cybercrime",
         URL: "https://cybersecurityventures.com/hackerpocalypse-cybercrime-report-2016/",
         note: "Cybersecurity Ventures: \\$10.5T Cybercrime | Boise State: Cybercrime Costs",
+  },
+  "de-waal-famine-child-mortality-2018": {
+        id: "de-waal-famine-child-mortality-2018",
+        type: "article-journal",
+        title: "The End of Famine? Prospects for the Elimination of Mass Starvation by Political Action",
+        author: [
+          {
+            family: "de Waal",
+            given: "Alex"
+          },
+        ],
+        issued: { 'date-parts': [[2018]] },
+        'container-title': "Political Geography",
+        URL: "https://doi.org/10.1016/j.polgeo.2017.09.004",
   },
   "deworming-cost-per-daly": {
         id: "deworming-cost-per-daly",
@@ -11377,6 +11472,17 @@ export const citations: Record<string, Citation> = {
         ],
         note: "Estimated from major foundation budgets and activities",
   },
+  "nuclear-extinction": {
+        id: "nuclear-extinction",
+        type: "webpage",
+        title: "Nuclear Extinction Events (Estimated 10-100 winter scenarios)",
+        author: [
+          {
+            literal: "Based on FAS arsenal data and climate models"
+          },
+        ],
+        note: "Based on FAS arsenal data and climate models",
+  },
   "odds-of-decisive-vote": {
         id: "odds-of-decisive-vote",
         type: "article-journal",
@@ -12219,11 +12325,11 @@ export const citations: Record<string, Citation> = {
 
 /** Summary statistics */
 export const PARAMETER_STATS = {
-  total: 638,
-  external: 207,
-  calculated: 299,
-  definitions: 132,
-  citations: 149,
+  total: 643,
+  external: 208,
+  calculated: 301,
+  definitions: 134,
+  citations: 151,
 } as const;
 
 // ============================================================================

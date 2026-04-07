@@ -20,9 +20,18 @@ export interface OptimizationMetric {
   description: string;
 }
 
+export type WishoniaDepartment =
+  | "Democracy"
+  | "Finance & Identity"
+  | "Health & Science"
+  | "Public Goods"
+  | "Security & Justice";
+
 export interface WishoniaAgency {
   id: string;
   dName: string;
+  department: WishoniaDepartment;
+  emoji: string;
   replaces: string[];
   replacesAgencyName: string;
   /** Full Wishonia-voice explanation (1-3 sentences). Used for page hero, nav, metadata. */
@@ -49,6 +58,8 @@ export const AGENCIES = {
   dfed: {
     id: "dfed",
     dName: "Algorithmic Reserve",
+    department: "Finance & Identity",
+    emoji: "🏦",
     replaces: ["fed"],
     replacesAgencyName: "Federal Reserve System",
     description:
@@ -116,6 +127,8 @@ constructor(
   dirs: {
     id: "dirs",
     dName: "Automated Revenue Service",
+    department: "Finance & Identity",
+    emoji: "🧾",
     replaces: ["irs"],
     replacesAgencyName: "Internal Revenue Service",
     description:
@@ -183,6 +196,8 @@ function _update(address from, address to, uint256 value) internal override {
   dssa: {
     id: "dssa",
     dName: "Universal Security Administration",
+    department: "Finance & Identity",
+    emoji: "🍞",
     replaces: ["ssa"],
     replacesAgencyName: "Social Security Administration + Welfare Bureaucracy",
     description:
@@ -249,6 +264,8 @@ function distributeUBI() external {                             // Anyone can ca
   dfec: {
     id: "dfec",
     dName: "Aligned Election Commission",
+    department: "Democracy",
+    emoji: "🤝",
     replaces: ["fec"],
     replacesAgencyName: "Federal Election Commission + Campaign Finance System",
     description:
@@ -318,6 +335,8 @@ function allocate(bytes32 jurisdiction, bytes32[] leaves,
   dgao: {
     id: "dgao",
     dName: "Decentralized Accountability Office",
+    department: "Democracy",
+    emoji: "🔍",
     replaces: ["gao"],
     replacesAgencyName: "Government Accountability Office",
     description:
@@ -385,6 +404,8 @@ function allocate(bytes32 jurisdiction, bytes32[] leaves,
   dcbo: {
     id: "dcbo",
     dName: "Optimal Policy Generator",
+    department: "Democracy",
+    emoji: "📋",
     replaces: ["cbo"],
     replacesAgencyName: "Congressional Budget Office",
     description:
@@ -454,6 +475,8 @@ export function calculateWES(estimates: EffectEstimate[]): WESCalculationResult 
   domb: {
     id: "domb",
     dName: "Optimal Budget Generator",
+    department: "Democracy",
+    emoji: "💰",
     replaces: ["omb"],
     replacesAgencyName: "Office of Management and Budget",
     description:
@@ -523,6 +546,8 @@ function updateWeights(
   dcensus: {
     id: "dcensus",
     dName: "Decentralized Census Bureau",
+    department: "Finance & Identity",
+    emoji: "🌐",
     replaces: ["census"],
     replacesAgencyName: "United States Census Bureau",
     description:
@@ -587,6 +612,8 @@ function citizenCount() external view returns (uint256) {
   dih: {
     id: "dih",
     dName: "Optimal Institutes of Health",
+    department: "Health & Science",
+    emoji: "🧬",
     replaces: ["nih", "fda", "hhs", "dea", "va"],
     replacesAgencyName: "National Institutes of Health + FDA",
     description:
@@ -658,6 +685,8 @@ function allocateSubsidy(patient) {
   ddod: {
     id: "ddod",
     dName: "Department of Peace",
+    department: "Security & Justice",
+    emoji: "💀",
     replaces: ["dod", "tsa", "state"],
     replacesAgencyName: "Department of Defense (née Department of War)",
     description:
@@ -722,6 +751,8 @@ function allocateSubsidy(patient) {
   dcongress: {
     id: "dcongress",
     dName: "Open Congress",
+    department: "Democracy",
+    emoji: "🏛️",
     replaces: ["congress"],
     replacesAgencyName: "United States Congress",
     description:
@@ -760,6 +791,8 @@ function allocateSubsidy(patient) {
   dtreasury: {
     id: "dtreasury",
     dName: "Automated Treasury",
+    department: "Finance & Identity",
+    emoji: "💸",
     replaces: ["treasury", "irs", "fed", "ssa"],
     replacesAgencyName: "Treasury + IRS + Federal Reserve + Social Security",
     description:
@@ -801,6 +834,8 @@ function allocateSubsidy(patient) {
   dfda: {
     id: "dfda",
     dName: "Decentralized FDA",
+    department: "Health & Science",
+    emoji: "💊",
     replaces: ["fda"],
     replacesAgencyName: "Food and Drug Administration",
     description:
@@ -837,6 +872,626 @@ function allocateSubsidy(patient) {
       "Your FDA has two speeds: 'not yet' and 'too late.' The queue exists because a bureaucrat who approves a drug that hurts 100 people gets fired, but a bureaucrat who blocks a drug that could save 100,000 gets promoted. The incentives are perfect — for killing people slowly.",
     cardColor: "cyan",
   },
+  dedu: {
+    id: "dedu",
+    dName: "Learning Freedom Network",
+    department: "Public Goods",
+    emoji: "📚",
+    replaces: ["doed"],
+    replacesAgencyName: "Department of Education",
+    description:
+      "You turned schools into compliance factories and then acted surprised when the output looked like compliance. On my planet, funding follows the student, providers compete in the open, and nobody gets paid for producing paperwork instead of literacy.",
+    tagline: "Portable student funding, open outcomes, and schools that compete to teach",
+    deprecatedMetrics: [
+      { metric: "Standardized Testing Throughput", description: "The revealed goal is making schools legible to Washington, not making children capable. Testing becomes the curriculum because compliance is what gets funded." },
+      { metric: "Grant Capture", description: "Districts optimize for winning grants and satisfying federal reporting rules because that is what pays administrators and consultants." },
+      { metric: "Seat-Time Compliance", description: "Twelve years in a chair counts as success even if the student leaves numerically illiterate and civically confused." },
+    ],
+    optimalMetrics: [
+      { metric: "Mastery Growth per Student", description: "Reading, maths, writing, and civics growth relative to where the child started. The child is the unit of account." },
+      { metric: "Parent and Student Retention", description: "If families can leave and do leave, the provider is not working. Competition is the accountability system." },
+      { metric: "Teacher Time Spent Teaching", description: "Less time on grant forms, benchmark rituals, and compliance theatre. More time helping humans become competent adults." },
+    ],
+    stats: [
+      {
+        value: "$79.6B",
+        label: "Annual Budget",
+        description: "Federal Department of Education budget in 2024",
+        color: "pink",
+      },
+      {
+        value: "+124%",
+        label: "Budget Growth",
+        description: "Increase in budget since 2000 while scores stagnated",
+        color: "yellow",
+      },
+      {
+        value: "296",
+        label: "NAEP Math Score",
+        description: "Score for US 17-year-olds in 2024",
+        color: "cyan",
+      },
+      {
+        value: "36th",
+        label: "Math Rank",
+        description: "US rank in international maths comparisons cited by the dataset",
+        color: "pink",
+      },
+    ],
+    codeHeader: "$79.6B in central compliance -> portable student wallets + open mastery scores",
+    replacementCode: `// LearningFreedomNetwork.ts — replaces central compliance with student-weighted funding
+function fundStudent(student: StudentProfile) {
+  const weightedAmount =
+    BASE_EDU_DIVIDEND *
+    (1 + povertyWeight(student) + disabilityWeight(student) + languageWeight(student));
+
+  educationWallet.credit(student.id, weightedAmount);
+}
+
+function settleQuarter(studentId: string, providerId: string, masteryGrowth: number, familyRating: number) {
+  const performanceBonus = outcomeBonus(masteryGrowth, familyRating);
+  providerRegistry.pay(providerId, baseShare(studentId) + performanceBonus);
+}
+// Money follows the child. Providers keep students only by teaching them.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "Each student receives a portable, weighted education budget. Any school, tutor co-op, apprenticeship, or online provider that accepts open reporting rules can compete for it. Providers keep students only by delivering measurable mastery growth and family satisfaction, not by capturing district boundaries or grant committees.",
+    annualSavings: "$10B+",
+    savingsComparison:
+      "Delete federal grant churn, compliance vendors, and test-prep bureaucracy. The larger gain is that the same money finally buys learning instead of paperwork.",
+    wishoniaQuote:
+      "You built an education system that measures obedience better than competence. Then you wondered why it produces obedient incompetents.",
+    cardColor: "yellow",
+  },
+  dmove: {
+    id: "dmove",
+    dName: "Human Mobility Network",
+    department: "Security & Justice",
+    emoji: "🚧",
+    replaces: ["ice"],
+    replacesAgencyName: "Immigration & Customs Enforcement + Customs and Border Protection",
+    description:
+      "You built a labour-market bottleneck, handed it to cartels, and then congratulated yourselves for buying more fencing. Movement should be lawful, legible, and too fast for smugglers to compete with.",
+    tagline: "Fast legal entry, bonded sponsorship, and asylum in days, not years",
+    deprecatedMetrics: [
+      { metric: "Border Encounters Counted", description: "Every failed crossing becomes proof that you need more of the policy that produced the failed crossing. It is a self-licking lollipop made of razor wire." },
+      { metric: "Detention Bed Occupancy", description: "A bureaucracy with full cages is graded as successful even when it worsens backlog, smuggling revenue, and family trauma." },
+      { metric: "Political Optics", description: "The system optimizes for looking tough on television, not for orderly migration, lawful work, or lower cartel profits." },
+    ],
+    optimalMetrics: [
+      { metric: "Time to Lawful Work Authorization", description: "If employers need labour and migrants need work, the system should clear them in days, not years." },
+      { metric: "Smuggling Deaths and Cartel Revenue", description: "When the legal route is faster and cheaper than smugglers, both numbers collapse." },
+      { metric: "Compliance and Net Contribution", description: "Track legal work, court appearance, and tax contribution instead of counting theatrical enforcement actions." },
+    ],
+    stats: [
+      {
+        value: "$29B",
+        label: "Annual Budget",
+        description: "Combined ICE and CBP budget in the dataset",
+        color: "pink",
+      },
+      {
+        value: "+190%",
+        label: "Budget Growth",
+        description: "Increase since 2003 while encounters ultimately rose",
+        color: "yellow",
+      },
+      {
+        value: "2.48M",
+        label: "2023 Encounters",
+        description: "Border encounters after two decades of escalation",
+        color: "cyan",
+      },
+      {
+        value: "5,500+",
+        label: "Children Separated",
+        description: "Known family separations under zero-tolerance policy",
+        color: "pink",
+      },
+    ],
+    codeHeader: "$29B in walls and cages -> instant triage + bonded entry",
+    replacementCode: `// HumanMobilityNetwork.ts — lawful movement beats theatrical deterrence
+function processEntrant(person: Entrant) {
+  const identity = verifyBiometrics(person);
+  if (!identity.uniqueHuman) return denyEntry("sybil_or_fraud");
+
+  if (person.asylumClaim) {
+    return asylumCourt.schedule(person, withinDays(7));
+  }
+
+  return mobilityExchange.issuePermit({
+    personId: person.id,
+    sponsorBondUsd: requiredBond(person),
+    workAuthorization: "immediate",
+    complianceCheckInDays: 30,
+  });
+}
+// Keep violent-risk screening. Delete the backlog business model.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "Violent-risk screening stays. Everyone else moves into a fast legal path: asylum gets an actual hearing within days, workers get immediate lawful permits backed by sponsor bonds and periodic check-ins. The economic value of smuggling collapses because the legal route becomes cheaper, faster, and easier to monitor.",
+    annualSavings: "$10B+",
+    savingsComparison:
+      "Less detention, less wall theatre, fewer court backlogs, and less cartel rent extraction. The larger gain is lawful labour and lower human suffering.",
+    wishoniaQuote:
+      "If the illegal route is faster than the legal route, you do not have a border policy. You have a cartel subsidy.",
+    cardColor: "cyan",
+  },
+  drest: {
+    id: "drest",
+    dName: "Restorative Justice Network",
+    department: "Security & Justice",
+    emoji: "⛓️",
+    replaces: ["bop"],
+    replacesAgencyName: "Bureau of Prisons",
+    description:
+      "Your prison system is a warehouse with uniforms. It is optimized to maximize time served, not safety restored, victim compensation, or the number of people who leave less broken than they arrived.",
+    tagline: "Contain the dangerous, restore the rest, and pay victims first",
+    deprecatedMetrics: [
+      { metric: "Beds Filled", description: "A full prison is treated as evidence of vigilance rather than evidence of policy failure." },
+      { metric: "Sentence Length", description: "The easiest thing to measure is how long someone can be held, so the bureaucracy optimizes for that instead of whether anyone is safer afterward." },
+      { metric: "Guard and Contractor Employment", description: "Entire local economies are built around prison occupancy, making reform politically radioactive even when the results are terrible." },
+    ],
+    optimalMetrics: [
+      { metric: "Victim Restitution Collected", description: "The first obligation of justice is to repair harm where possible, not to maximize warehousing." },
+      { metric: "Recidivism After Release", description: "If the person comes back, the system failed. That is the whole scorecard." },
+      { metric: "Violent-Risk Person-Years Contained", description: "Reserve high-cost secure confinement for the subset that remains demonstrably dangerous." },
+    ],
+    stats: [
+      {
+        value: "$8.5B",
+        label: "Annual Budget",
+        description: "Federal Bureau of Prisons budget in 2024",
+        color: "pink",
+      },
+      {
+        value: "160,000",
+        label: "Federal Prisoners",
+        description: "Approximate federal prison population in 2024",
+        color: "yellow",
+      },
+      {
+        value: "67%",
+        label: "Recidivism",
+        description: "Rough repeat-offense rate cited in the dataset commentary",
+        color: "cyan",
+      },
+      {
+        value: "$40K",
+        label: "Per Prisoner Cost",
+        description: "Approximate annual incarceration cost per federal prisoner",
+        color: "pink",
+      },
+    ],
+    codeHeader: "$8.5B warehouse -> restitution + monitored restoration + narrow secure containment",
+    replacementCode: `// RestorativeJusticeNetwork.ts — prison is the last resort, not the default
+function sentence(caseFile: CaseFile) {
+  if (posesContinuingViolentRisk(caseFile)) {
+    return secureContainment(caseFile);
+  }
+
+  return restorativePlan({
+    restitutionShareBps: victimShare(caseFile),
+    treatment: requiredPrograms(caseFile),
+    workRequirement: calibratedEmployment(caseFile),
+    libertyRestoredAt: milestoneDate(caseFile),
+  });
+}
+// Dangerous people are contained. Everyone else owes repair, treatment, and proof.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "Reserve prison beds for people who remain a continuing violent threat. Nonviolent and low-risk cases move into restitution, treatment, monitored work, and milestone-based restoration of liberty. Justice becomes cheaper because prison is no longer the default response to every failure.",
+    annualSavings: "$4B+",
+    savingsComparison:
+      "High-cost prison beds become scarce and targeted. Victims get compensated, recidivism becomes the governing KPI, and taxpayers stop financing a failure factory at full scale.",
+    wishoniaQuote:
+      "If two-thirds of the people who leave your prisons come back, the building is not a correctional facility. It is a subscription service.",
+    cardColor: "green",
+  },
+  depa: {
+    id: "depa",
+    dName: "Environmental Commons Exchange",
+    department: "Public Goods",
+    emoji: "🌱",
+    replaces: ["epa"],
+    replacesAgencyName: "Environmental Protection Agency",
+    description:
+      "The EPA is the rare Earth agency that occasionally remembers its job. The problem is not the goal. The problem is that you still regulate pollution with paper, waivers, and lawyer-hours when sensors and automatic prices would do the job faster and with fewer loopholes.",
+    tagline: "Sensor-verified pollution pricing with citizen dividends",
+    deprecatedMetrics: [
+      { metric: "Permit Pages Filed", description: "The paperwork expands because paperwork is legible to bureaucracies even when the air is not improving fast enough." },
+      { metric: "Waivers Negotiated", description: "Case-by-case exemptions are just rent-seeking with environmental branding." },
+      { metric: "Enforcement Lag", description: "When pollution is measured quarterly and punished years later, the incentive is to pollute now and litigate later." },
+    ],
+    optimalMetrics: [
+      { metric: "Measured Pollution per Capita", description: "What matters is what enters lungs, rivers, and soil, not how many forms were submitted." },
+      { metric: "Cleanup Time to Compliance", description: "If a site is out of bounds, the system should push it back in bounds quickly and automatically." },
+      { metric: "Citizen Environmental Dividend", description: "If a firm uses scarce environmental capacity, the public should receive the rents, not the lobbyists." },
+    ],
+    stats: [
+      {
+        value: "$10.1B",
+        label: "Annual Budget",
+        description: "EPA budget in 2024",
+        color: "pink",
+      },
+      {
+        value: "-69%",
+        label: "Bad-Air Days",
+        description: "National unhealthy-air days fell from 35 to 11 since 2000",
+        color: "yellow",
+      },
+      {
+        value: "11",
+        label: "Unhealthy Air Days",
+        description: "National average days above AQI 100 in 2024",
+        color: "cyan",
+      },
+      {
+        value: "B",
+        label: "Current Grade",
+        description: "One of the few agencies already moving the metric in the right direction",
+        color: "green",
+      },
+    ],
+    codeHeader: "Permit binders -> real-time emission meters and automatic charges",
+    replacementCode: `// EnvironmentalCommonsExchange.ts — the meter writes the invoice
+function settleEmission(sourceId: string, pollutant: Pollutant, kilograms: number) {
+  const fee = kilograms * marketPrice(pollutant, region(sourceId));
+  treasury.collect(sourceId, fee);
+  ecoDividend.credit(region(sourceId), fee);
+
+  if (exceedsHardCap(sourceId, pollutant)) {
+    enforcementRelay.pause(sourceId);
+  }
+}
+// Measure. Charge. Rebate. Stop negotiating with the plume.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "Meters replace self-reporting. Emitters pay automatically based on measured pollution, not negotiated paperwork, and citizens receive the rents. The state keeps the public-goods role of defining caps and measuring harm while deleting much of the discretionary permit theatre that invites capture.",
+    annualSavings: "$1B+",
+    savingsComparison:
+      "Keep the good part - actual environmental improvement - and delete slow permit churn, waiver markets, and a large share of the paper bureaucracy around them.",
+    wishoniaQuote:
+      "This is the one agency where your numbers mostly go the right direction. So naturally you still chose the slowest possible mechanism.",
+    cardColor: "green",
+  },
+  dinvest: {
+    id: "dinvest",
+    dName: "Open Investigation Bureau",
+    department: "Security & Justice",
+    emoji: "🔎",
+    replaces: ["fbi"],
+    replacesAgencyName: "Federal Bureau of Investigation",
+    description:
+      "Your federal investigators solve barely half your murders, yet still find time for secret files, political spectacle, and bureaucratic turf wars. Investigation should optimize for solved serious crime, admissible evidence, and low wrongful-conviction rates - not institutional mystique.",
+    tagline: "Forensics first, political discretion last",
+    deprecatedMetrics: [
+      { metric: "Classified File Volume", description: "The bureau accumulates information because information accumulation is legible power even when it does not solve cases." },
+      { metric: "Counterterror Theatre", description: "Expensive post-9/11 optics displaced ordinary casework that citizens actually experience as safety." },
+      { metric: "Political Leverage", description: "A system that can quietly threaten public figures or leak strategically is optimizing for influence, not justice." },
+    ],
+    optimalMetrics: [
+      { metric: "Violent-Crime Clearance Rate", description: "If you cannot solve murders, you do not have a public-safety institution. You have a file cabinet." },
+      { metric: "Wrongful Conviction Rate", description: "An investigation system that solves crimes by ruining innocent people is just crime with stationery." },
+      { metric: "Time to Admissible Evidence", description: "Evidence should become usable faster than rumours spread." },
+    ],
+    stats: [
+      {
+        value: "$11.3B",
+        label: "Annual Budget",
+        description: "FBI budget in 2024",
+        color: "pink",
+      },
+      {
+        value: "52%",
+        label: "Murder Clearance",
+        description: "Nearly half of murders still go unsolved",
+        color: "yellow",
+      },
+      {
+        value: "48%",
+        label: "Unsolved Murders",
+        description: "Share of murders not cleared in the current data",
+        color: "cyan",
+      },
+      {
+        value: "+232%",
+        label: "Budget Growth",
+        description: "Increase since 2000 while clearance worsened",
+        color: "pink",
+      },
+    ],
+    codeHeader: "$11.3B in secret files -> open evidence chains + solve bounties",
+    replacementCode: `// OpenInvestigationBureau.ts — every serious case gets a tamper-evident evidence graph
+function assignCase(caseId: string) {
+  const evidenceGraph = chainOfCustody(caseId);
+  const rankedLeads = forensicsNetwork.rankLeads(evidenceGraph);
+  const solveBounty = publicSafetyTreasury.post(caseId);
+
+  return caseRouter.dispatch(caseId, rankedLeads, solveBounty);
+}
+// Reward validated leads and solved serious crime. Penalize bad arrests.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "Every serious case gets a tamper-evident evidence graph, independent lab access, and solve bounties for validated leads. Funding follows solved violent crime and admissible evidence, while wrongful arrests and low-yield political theatre are penalized instead of rewarded.",
+    annualSavings: "$5B+",
+    savingsComparison:
+      "Less duplicated bureaucracy, less secrecy theatre, fewer politically motivated investigations, and more of the budget redirected toward actual forensic resolution.",
+    wishoniaQuote:
+      "Half your murders go unsolved. That would already be embarrassing without the budget tripling while it happened.",
+    cardColor: "cyan",
+  },
+  dcyber: {
+    id: "dcyber",
+    dName: "Protocol Security Agency",
+    department: "Security & Justice",
+    emoji: "🛡️",
+    replaces: ["cyber"],
+    replacesAgencyName: "Cybersecurity Bureaucracy (CISA + FBI Cyber Division)",
+    description:
+      "Cybersecurity by checklist is just paperwork with a login screen. If losses keep compounding much faster than budgets, the system is protecting procurement, not users.",
+    tagline: "Mandatory breach bonds, auto-patching, and public bug bounties",
+    deprecatedMetrics: [
+      { metric: "Compliance Checklist Completion", description: "The system rewards looking secure on paper, which is ideal if your threat model is an auditor with a clipboard." },
+      { metric: "After-Action Press Releases", description: "Breaches become content instead of treated as priced failures that should have been prevented." },
+      { metric: "Threat Intel Hoarding", description: "Critical information is trapped in institutional silos because owning the secret becomes more valuable than fixing the flaw." },
+    ],
+    optimalMetrics: [
+      { metric: "Losses Prevented per Dollar", description: "The real KPI is avoided theft, not how many awareness PDFs were distributed." },
+      { metric: "Patch Half-Life", description: "How quickly known exploitable flaws get removed from the live system." },
+      { metric: "Breach Bond Payouts", description: "If operators underinvest, users should be compensated automatically. Security should be priced, not merely requested." },
+    ],
+    stats: [
+      {
+        value: "$4.1B",
+        label: "Annual Budget",
+        description: "CISA + FBI cyber spending in 2024 data",
+        color: "pink",
+      },
+      {
+        value: "$16.6B",
+        label: "Reported Losses",
+        description: "Cybercrime losses reported to IC3 in 2024",
+        color: "yellow",
+      },
+      {
+        value: "859,532",
+        label: "Complaints",
+        description: "Cybercrime complaints reported to IC3 in 2024",
+        color: "cyan",
+      },
+      {
+        value: "+1409%",
+        label: "Loss Growth",
+        description: "Increase in reported losses since 2015",
+        color: "pink",
+      },
+    ],
+    codeHeader: "$4.1B in cyber theatre -> secure defaults + breach bonds",
+    replacementCode: `// ProtocolSecurityAgency.ts — critical systems do not get to opt out of basic hygiene
+function authorizeCriticalService(service: ServiceConfig) {
+  require(service.passkeysEnabled);
+  require(service.autoUpdateWindowHours <= 24);
+  require(service.breachBondUsd >= minimumBond(service.users));
+
+  bugBountyRegistry.open(service.id);
+}
+// Default-secure systems only. Insecure operators post collateral.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "Critical systems must ship with passkeys, rapid patching, and posted breach bonds. Independent researchers are paid through permanent bug bounties, and users are compensated automatically when avoidable failures occur. Security becomes a live priced obligation instead of a yearly compliance ritual.",
+    annualSavings: "$10B+",
+    savingsComparison:
+      "A smaller bureaucracy and far fewer avoidable losses. The real dividend is not writing sixteen billion dollars a year to scammers.",
+    wishoniaQuote:
+      "If reported cyber losses go from one billion to sixteen billion while your budget merely doubles, you are not defending the network. You are narrating its collapse.",
+    cardColor: "pink",
+  },
+  dagri: {
+    id: "dagri",
+    dName: "Food Resilience Exchange",
+    department: "Public Goods",
+    emoji: "🌾",
+    replaces: ["usda"],
+    replacesAgencyName: "USDA Subsidy Complex",
+    description:
+      "You subsidize monoculture, inflate land prices, and then act surprised when small farms die and food gets expensive. Agriculture should optimize for nutrition, resilience, and farm entry - not lobbying acreage.",
+    tagline: "Pay for nutrition and resilience, not politically favored crops",
+    deprecatedMetrics: [
+      { metric: "Subsidy Dollars to Incumbent Acreage", description: "Historical acreage becomes a claim on the treasury because incumbency is easier to measure than public value." },
+      { metric: "Commodity Glut Management", description: "The system pays to overproduce politically connected crops and then pays again to manage the consequences." },
+      { metric: "Farm Bill Coalition Preservation", description: "Subsidies are designed to keep a legislative coalition together, not to keep food affordable or farms resilient." },
+    ],
+    optimalMetrics: [
+      { metric: "Nutrition-Adjusted Food Affordability", description: "The public goal is cheap healthy calories, not record corn mountains." },
+      { metric: "Farm Entry and Survival", description: "If only incumbents can survive, the market is rigged even before the seeds are planted." },
+      { metric: "Soil and Water Resilience", description: "Agricultural subsidies should buy durable public goods like soil quality, water retention, and supply stability." },
+    ],
+    stats: [
+      {
+        value: "$36.5B",
+        label: "Annual Subsidies",
+        description: "Farm support spending in 2024 data",
+        color: "pink",
+      },
+      {
+        value: "78%",
+        label: "Top 10% Capture",
+        description: "Share of subsidies going to the largest farms",
+        color: "yellow",
+      },
+      {
+        value: "1.9M",
+        label: "US Farms Left",
+        description: "Approximate number of farms in 2024",
+        color: "cyan",
+      },
+      {
+        value: "+83%",
+        label: "Food CPI Growth",
+        description: "Food prices rose 83% since 2000 despite heavy subsidies",
+        color: "pink",
+      },
+    ],
+    codeHeader: "Farm-bill earmarks -> open resilience auctions + nutrition markets",
+    replacementCode: `// FoodResilienceExchange.ts — support is purchased, not inherited
+function allocateFarmSupport(parcel: Parcel) {
+  return reverseAuction.award({
+    parcelId: parcel.id,
+    outcomes: ["soil_health", "water_retention", "nutrition_supply"],
+    paymentCapUsd: benchmark(parcel.region),
+  });
+}
+// Public money buys resilience and nutrition outcomes, not incumbent acreage.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "Farm support is purchased through open outcome contracts for resilience, nutrition supply, and ecosystem services instead of permanent commodity entitlements. Small entrants can compete because payment follows delivered public value, not historical acreage and congressional seniority.",
+    annualSavings: "$20B+",
+    savingsComparison:
+      "Stop paying the largest incumbents for crops they would grow anyway. Use a fraction of current subsidies to buy real resilience, better nutrition, and lower food prices.",
+    wishoniaQuote:
+      "If seventy-eight percent of the money goes to the top ten percent of farms, the programme is not agricultural policy. It is aristocracy with tractors.",
+    cardColor: "yellow",
+  },
+  dhome: {
+    id: "dhome",
+    dName: "Housing Abundance Exchange",
+    department: "Public Goods",
+    emoji: "🏠",
+    replaces: ["hud"],
+    replacesAgencyName: "Department of Housing and Urban Development",
+    description:
+      "You tried to solve housing scarcity with subsidies layered on top of scarcity. That mostly raises the price of the scarce thing. The durable cure is to legalize building, price land honestly, and stop rewarding people for blocking homes other people need.",
+    tagline: "Legalize building, tax land rents, and keep homelessness near zero",
+    deprecatedMetrics: [
+      { metric: "Voucher Waitlist Length", description: "A two-year waitlist is treated as proof of demand rather than proof that the system is rationing scarcity." },
+      { metric: "Units Subsidized", description: "Counting subsidized units ignores whether enough total homes exist where people actually want to live." },
+      { metric: "Home-Price Inflation Preserved", description: "Local vetoes and subsidy layering protect incumbent landowners while pretending to help renters." },
+    ],
+    optimalMetrics: [
+      { metric: "Homes Added in High-Demand Areas", description: "If you want cheaper housing, build housing where jobs and people are." },
+      { metric: "Rent-to-Income Ratio", description: "The public goal is that normal people can afford shelter without financial self-harm." },
+      { metric: "Unsheltered Homelessness", description: "A housing system that works should keep this number close to zero." },
+    ],
+    stats: [
+      {
+        value: "$73B",
+        label: "Annual Budget",
+        description: "HUD budget in 2024",
+        color: "pink",
+      },
+      {
+        value: "653K",
+        label: "Homeless Count",
+        description: "2023 point-in-time homeless population",
+        color: "yellow",
+      },
+      {
+        value: "2+ yrs",
+        label: "Voucher Waitlists",
+        description: "Typical wait length in many cities for Section 8 support",
+        color: "cyan",
+      },
+      {
+        value: "+137%",
+        label: "Budget Growth",
+        description: "Increase since 2000 while homelessness hit a record",
+        color: "pink",
+      },
+    ],
+    codeHeader: "$73B in scarcity management -> by-right building + land-rent rebates",
+    replacementCode: `// HousingAbundanceExchange.ts — scarcity is not a housing policy
+function approveHousing(parcel: Parcel) {
+  if (nearJobsOrTransit(parcel)) {
+    return permitByRight(parcel, standardSafetyCode);
+  }
+  return localReview(parcel);
+}
+
+function settleLandRent(parcel: Parcel) {
+  const charge = assessedLandValue(parcel) * LAND_RENT_RATE;
+  treasury.collect(parcel.owner, charge);
+  housingDividend.credit(parcel.region, charge);
+}
+// Build more where demand exists. Tax the land rent, not the homes.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "The only durable cure for housing inflation is more homes in the places people need them. The protocol legalizes abundant building where demand exists, taxes land rents instead of structure improvement, and uses the proceeds to cushion transitions and keep homelessness rare.",
+    annualSavings: "$25B+",
+    savingsComparison:
+      "Less voucher churn, fewer waitlists, lower rent extraction, and far fewer people cycling through the expensive emergency side of homelessness policy.",
+    wishoniaQuote:
+      "If your housing policy can spend seventy-three billion dollars while homelessness hits a record high, the policy is not missing the point. The policy is the point.",
+    cardColor: "cyan",
+  },
+  dsafety: {
+    id: "dsafety",
+    dName: "Worker Safety Mutual",
+    department: "Public Goods",
+    emoji: "🦺",
+    replaces: ["osha"],
+    replacesAgencyName: "Occupational Safety and Health Administration",
+    description:
+      "Safety should be enforced by sensors, insurance pricing, and automatic shutdowns - not by binders full of rules inspected once in a geological era. The point is fewer dead workers, not prettier compliance manuals.",
+    tagline: "Real-time risk pricing beats paperwork compliance",
+    deprecatedMetrics: [
+      { metric: "Inspection Quotas", description: "The bureaucracy optimizes for how many sites it touched, not how many hazards disappeared." },
+      { metric: "Citation Volume", description: "A citation is a receipt for a problem discovered after the risk already existed." },
+      { metric: "Rulebook Thickness", description: "Longer compliance manuals look like diligence even when workers still get maimed at the same plants." },
+    ],
+    optimalMetrics: [
+      { metric: "Fatality and Serious Injury Rate", description: "The only scorecard that matters is whether workers go home intact." },
+      { metric: "Hazard Correction Latency", description: "How fast a dangerous condition is fixed after it becomes measurable." },
+      { metric: "Risk-Priced Premiums", description: "Dangerous worksites should pay immediately through insurance and downtime, not years later after a hearing." },
+    ],
+    stats: [
+      {
+        value: "$632M",
+        label: "Annual Budget",
+        description: "OSHA budget in 2024",
+        color: "pink",
+      },
+      {
+        value: "3.5",
+        label: "Fatalities / 100K",
+        description: "Workplace fatality rate in 2024",
+        color: "yellow",
+      },
+      {
+        value: "-19%",
+        label: "Rate Improvement",
+        description: "Fatality-rate decline since 2000",
+        color: "cyan",
+      },
+      {
+        value: "70%",
+        label: "Pre-OSHA Decline",
+        description: "Fatality-rate drop from 1900 to OSHA's creation in 1970",
+        color: "pink",
+      },
+    ],
+    codeHeader: "Annual inspections -> sensor feeds + automatic premium shocks",
+    replacementCode: `// WorkerSafetyMutual.ts — the dangerous machine does not wait for paperwork
+function priceWorksite(site: Worksite) {
+  const hazardScore = sensorNet.score(site) + incidentHistory(site);
+  insurancePool.setPremium(site.id, hazardScore);
+
+  if (hazardScore > shutdownThreshold) {
+    safetyRelay.pause(site.id);
+  }
+}
+// High-risk worksites pay now. The safe ones stop funding clipboard theatre.`,
+    codeLanguage: "typescript",
+    codeExplanation:
+      "High-risk worksites pay immediately through premiums, downtime, and public dashboards. Low-risk worksites stop filling binders for inspectors. The incentive to hide hazards disappears when sensors and insurance reprice them in real time and dangerous equipment can be paused automatically.",
+    annualSavings: "$200M+",
+    savingsComparison:
+      "A smaller compliance bureaucracy, lower litigation, and fewer injuries paid for after the fact. The real gain is preventing deaths before they become paperwork.",
+    wishoniaQuote:
+      "If your safety agency checks the rulebook once a year, but the machine can remove a hand in half a second, the machine is setting policy.",
+    cardColor: "green",
+  },
 } satisfies Record<string, WishoniaAgency>;
 
 /** Backwards-compatible array (derived from AGENCIES record). */
@@ -853,4 +1508,19 @@ export function getWishoniaAgencies(): WishoniaAgency[] {
 
 export function getWishoniaReplacementFor(earthAgencyId: string): WishoniaAgency | undefined {
   return WISHONIA_AGENCIES.find(a => a.replaces.includes(earthAgencyId));
+}
+
+const DEPARTMENT_ORDER: WishoniaDepartment[] = [
+  "Democracy",
+  "Finance & Identity",
+  "Health & Science",
+  "Public Goods",
+  "Security & Justice",
+];
+
+export function getAgenciesByDepartment(): { label: WishoniaDepartment; agencies: WishoniaAgency[] }[] {
+  return DEPARTMENT_ORDER.map(dept => ({
+    label: dept,
+    agencies: WISHONIA_AGENCIES.filter(a => a.department === dept),
+  }));
 }

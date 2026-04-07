@@ -19,14 +19,26 @@ import { fileURLToPath } from "node:url";
 import { config as loadDotenv } from "dotenv";
 import {
   draftLegislation,
-  insertCitations,
   generateSourceFootnotes,
   synthesizeLegislationEvidenceBundle,
+  type LegislationResearchPacket,
   type PolicyExemplarInput,
-} from "@optimitron/agent";
-import { createBudgetLegislationBriefs, type BudgetLegislationBrief } from "@optimitron/obg";
-import { createPolicyLegislationBriefs, type PolicyLegislationBrief } from "@optimitron/opg";
-import { OECD_CATEGORY_MAPPINGS, POLICY_EXEMPLARS } from "@optimitron/data";
+  type WishoniaLegislativePromptContext,
+} from "../../agent/src/index.ts";
+import {
+  createBudgetLegislationBriefs,
+  type BudgetLegislationBrief,
+} from "../../obg/src/budget-legislation-brief.ts";
+import {
+  createPolicyLegislationBriefs,
+  type PolicyLegislationBrief,
+} from "../../opg/src/policy-legislation-brief.ts";
+import {
+  getWishoniaLegislativePackageForCategory,
+  OECD_CATEGORY_MAPPINGS,
+  POLICY_EXEMPLARS,
+  resolveWishoniaLegislativePackage,
+} from "@optimitron/data";
 import { usBudgetAnalysis } from "../src/data/us-budget-analysis.js";
 import { usPolicyAnalysis } from "../src/data/us-policy-analysis.js";
 
@@ -203,6 +215,43 @@ function getRelatedPolicyBriefs(
   });
 }
 
+function getWishoniaContext(
+  brief: BudgetLegislationBrief,
+): WishoniaLegislativePromptContext | undefined {
+  const pkg = getWishoniaLegislativePackageForCategory(brief.categoryId);
+  const resolved = pkg ? resolveWishoniaLegislativePackage(pkg) : undefined;
+
+  if (!resolved) {
+    return undefined;
+  }
+
+  return {
+    packageId: resolved.id,
+    packageTitle: resolved.title,
+    shortDescription: resolved.shortDescription,
+    citizenBenefit: resolved.citizenBenefit,
+    defaultSavingsDisposition: resolved.defaultSavingsDisposition,
+    scopeGuardrails: resolved.scopeGuardrails,
+    draftingDirectives: resolved.draftingDirectives,
+    agencies: resolved.agencies.map(({ agency, role, relevance }) => ({
+      id: agency.id,
+      dName: agency.dName,
+      role,
+      relevance,
+      replacesAgencyName: agency.replacesAgencyName,
+      tagline: agency.tagline,
+      description: agency.description,
+      optimalMetrics: agency.optimalMetrics.map(
+        (metric) => `${metric.metric}: ${metric.description}`,
+      ),
+      codeHeader: agency.codeHeader,
+      codeExplanation: agency.codeExplanation,
+      annualSavings: agency.annualSavings,
+      savingsComparison: agency.savingsComparison,
+    })),
+  };
+}
+
 function getDraftEvidence(brief: BudgetLegislationBrief) {
   const category = usBudgetAnalysis.categories.find(
     (budgetCategory) =>
@@ -230,6 +279,7 @@ function sleep(ms: number) {
 function buildLegislationObjective(
   brief: BudgetLegislationBrief,
   relatedPolicies: PolicyLegislationBrief[],
+  wishoniaContext?: WishoniaLegislativePromptContext,
 ): string {
   const relatedPolicySummary =
     relatedPolicies.length > 0
@@ -241,14 +291,34 @@ function buildLegislationObjective(
           .join("; ")
       : "No directly matched OPG policy briefs.";
 
+  const wishoniaSummary = wishoniaContext
+    ? [
+        `Wishonia package: ${wishoniaContext.packageTitle}.`,
+        `Citizen benefit: ${wishoniaContext.citizenBenefit}`,
+        `Default savings disposition: ${wishoniaContext.defaultSavingsDisposition}.`,
+        `Scope guardrails: ${wishoniaContext.scopeGuardrails.join(" ")}`,
+        `Relevant agencies: ${wishoniaContext.agencies
+          .map((agency) => `${agency.dName} (${agency.role})`)
+          .join("; ")}.`,
+      ].join(" ")
+    : "No Wishonia package context.";
+
   return [
-    `Draft federal legislation that replaces inefficient ${brief.categoryName.toLowerCase()} spending`,
-    `with higher-leverage institutions so the United States can move from rank`,
+    `Draft concise federal legislation that directly reforms ${brief.categoryName.toLowerCase()} institutions`,
+    `so the United States can move from rank`,
     `${brief.evidence.rank}/${brief.evidence.totalCountries} toward ${brief.modelCountry}'s`,
-    `${brief.evidence.outcomeName.toLowerCase()} performance while improving median income and healthy life expectancy.`,
+    `${brief.evidence.outcomeName.toLowerCase()} performance.`,
+    `Keep the bill category-faithful: the main provisions must stay about ${brief.categoryName.toLowerCase()},`,
+    `not turn into a general-purpose reallocation manifesto.`,
     `Current overspend ratio: ${brief.evidence.overspendRatio.toFixed(1)}x.`,
     `Potential annual savings: ${formatUsdCompact(brief.evidence.potentialSavingsTotal)}.`,
     `Related policy context: ${relatedPolicySummary}`,
+    wishoniaSummary,
+    `Make any savings disposition short and default to the Optimization Dividend after implementation and transition costs,`,
+    `unless a narrow public-goods exception is truly required.`,
+    `Favor market mechanisms, explicit public-goods tests, public-choice realism,`,
+    `anti-capture safeguards, anti-corruption design, and compensated Pareto improvements where strict Pareto is impossible.`,
+    `Write for normal citizens: plain English, short sections, and obvious personal benefits.`,
   ].join(" ");
 }
 
@@ -258,14 +328,87 @@ function hasPromptLeakage(text: string): boolean {
   );
 }
 
+function hasStructuredCitationGap(text: string): boolean {
+  const hasEvidenceSections = /## Findings|## Key Provisions|## Evidence Appendix/.test(text);
+  const hasRenderedRefs = /\[\d+\]\(https?:\/\/.+?\)/.test(text);
+
+  return hasEvidenceSections && !hasRenderedRefs;
+}
+
+function validateGovernancePacket(packet: LegislationResearchPacket): string[] {
+  const failures: string[] = [];
+
+  if (packet.publicGoodsAndMarketFramework.length === 0) {
+    failures.push("missing public-goods and market framework");
+  }
+
+  if (packet.publicChoiceAndCapture.length === 0) {
+    failures.push("missing public choice / capture analysis");
+  }
+
+  if (packet.paretoAndCompensation.length === 0) {
+    failures.push("missing pareto / compensation analysis");
+  }
+
+  const invalidParetoClaims = packet.paretoAndCompensation.filter(
+    (analysis) =>
+      analysis.status === "strict_pareto" &&
+      /unclear|unknown|none identified|not specified/i.test(analysis.summary),
+  );
+
+  if (invalidParetoClaims.length > 0) {
+    failures.push("strict pareto claim without a defensible summary");
+  }
+
+  for (const provision of packet.keyProvisions) {
+    if (!provision.marketMechanism.trim()) {
+      failures.push(`${provision.title}: missing market mechanism`);
+    }
+    if (!provision.publicGoodsJustification.trim()) {
+      failures.push(`${provision.title}: missing public-goods justification`);
+    }
+    if (!provision.publicChoiceRationale.trim()) {
+      failures.push(`${provision.title}: missing public-choice rationale`);
+    }
+    if (!provision.paretoRationale.trim()) {
+      failures.push(`${provision.title}: missing pareto rationale`);
+    }
+    if (!provision.compensationMechanism.trim()) {
+      failures.push(`${provision.title}: missing compensation mechanism`);
+    }
+    if (!provision.residualRentHandling.trim()) {
+      failures.push(`${provision.title}: missing residual rent handling`);
+    }
+    if (provision.captureRisks.length === 0) {
+      failures.push(`${provision.title}: missing capture risks`);
+    }
+    if (provision.antiCaptureSafeguards.length < 2) {
+      failures.push(`${provision.title}: too few anti-capture safeguards`);
+    }
+    if (provision.corruptionRisks.length === 0) {
+      failures.push(`${provision.title}: missing corruption risks`);
+    }
+    if (provision.antiCorruptionSafeguards.length < 2) {
+      failures.push(`${provision.title}: too few anti-corruption safeguards`);
+    }
+  }
+
+  return failures;
+}
+
 async function draftWithGroundingRetry(
   brief: BudgetLegislationBrief,
   exemplars: PolicyExemplarInput[],
   relatedPolicies: PolicyLegislationBrief[],
+  wishoniaContext?: WishoniaLegislativePromptContext,
 ) {
   const draftEvidence = getDraftEvidence(brief);
   const evidenceBundle = await synthesizeLegislationEvidenceBundle({
-    objective: buildLegislationObjective(brief, relatedPolicies),
+    objective: buildLegislationObjective(
+      brief,
+      relatedPolicies,
+      wishoniaContext,
+    ),
     model: EVIDENCE_MODEL,
     context: {
       categoryName: brief.categoryName,
@@ -292,11 +435,16 @@ async function draftWithGroundingRetry(
     const draft = await draftLegislation(draftEvidence, exemplars, {
       model: DRAFT_MODEL,
       evidenceBundle,
+      wishoniaContext,
     });
-    const hasGrounding = draft.sources.length > 0 && draft.searchQueries.length > 0;
+    const hasGrounding =
+      (draft.sources.length > 0 && draft.searchQueries.length > 0) ||
+      (draft.sources.length >= 8 && draft.citations.length >= 12);
     const leakedPromptText = hasPromptLeakage(draft.legislationText);
+    const citationGap = hasStructuredCitationGap(draft.legislationText);
+    const governanceFailures = validateGovernancePacket(draft.researchPacket);
 
-    if (hasGrounding && !leakedPromptText) {
+    if (hasGrounding && !leakedPromptText && !citationGap && governanceFailures.length === 0) {
       return {
         draft,
         evidenceBundle,
@@ -307,6 +455,10 @@ async function draftWithGroundingRetry(
       const failureReasons = [
         hasGrounding ? null : "grounding metadata missing",
         leakedPromptText ? "prompt leakage placeholders detected" : null,
+        citationGap ? "structured packet rendered without inline citations" : null,
+        governanceFailures.length > 0
+          ? `governance guardrails failed (${governanceFailures.join("; ")})`
+          : null,
       ]
         .filter(Boolean)
         .join("; ");
@@ -395,6 +547,7 @@ async function main() {
   for (const brief of briefs) {
     const exemplars = getExemplarsForCategory(brief.categoryName);
     const relatedPolicies = getRelatedPolicyBriefs(brief, policyBriefs);
+    const wishoniaContext = getWishoniaContext(brief);
 
     console.log(`Drafting legislation for ${brief.categoryName}...`);
     console.log(
@@ -415,6 +568,15 @@ async function main() {
           : "none"
       }`,
     );
+    console.log(
+      `  Wishonia package: ${
+        wishoniaContext
+          ? `${wishoniaContext.packageTitle} (${wishoniaContext.agencies
+              .map((agency) => agency.id)
+              .join(", ")})`
+          : "none"
+      }`,
+    );
     console.log(`  Evidence synthesis model: ${EVIDENCE_MODEL}`);
     console.log(`  Draft model: ${DRAFT_MODEL}`);
 
@@ -424,18 +586,19 @@ async function main() {
         brief,
         exemplars,
         relatedPolicies,
+        wishoniaContext,
       );
-      const citedText = insertCitations(draft);
       const footnotes = generateSourceFootnotes(draft);
+      const title = draft.billTitle || brief.title;
       const output = [
         buildFrontmatter(brief, generatedAt),
-        `# ${brief.title}`,
+        `# ${title}`,
         "",
-        `> Generated by Optimitron OBG + Gemini (search-grounded)`,
+        `> Generated by Optimitron OBG + Gemini (search-grounded structured research packet)`,
         `> Based on ${brief.evidenceSource}`,
         `> Category: ${brief.categoryName} | Overspend: ${brief.evidence.overspendRatio.toFixed(1)}x | US Rank: ${brief.evidence.rank}/${brief.evidence.totalCountries}`,
         "",
-        citedText,
+        draft.legislationText,
         "",
         "---",
         "",
@@ -448,12 +611,32 @@ async function main() {
         `- **Search queries**: ${draft.searchQueries.join("; ")}`,
         `- **Sources cited**: ${draft.sources.length}`,
         `- **Claims with citations**: ${draft.citations.length}`,
+        `- **Rendered bill title**: ${title}`,
+        `- **Structured research model**: ${draft.researchModel}`,
+        `- **Structured findings**: ${draft.researchPacket.findings.length}`,
+        `- **Structured provisions**: ${draft.researchPacket.keyProvisions.length}`,
+        `- **Structured evaluation metrics**: ${draft.researchPacket.evaluationAndSunset.length}`,
         `- **Evidence bundle model**: ${evidenceBundle.model}`,
         `- **Evidence bundle parameters**: ${evidenceBundle.parameters.length}`,
         `- **Evidence bundle insights**: ${evidenceBundle.insights.length}`,
         `- **Evidence bundle summary**: ${evidenceBundle.summary}`,
         `- **Category**: ${brief.categoryName}`,
         `- **Model country**: ${brief.modelCountry}`,
+        `- **Wishonia package**: ${
+          wishoniaContext ? wishoniaContext.packageTitle : "none"
+        }`,
+        `- **Wishonia agencies**: ${
+          wishoniaContext
+            ? wishoniaContext.agencies
+                .map((agency) => `${agency.dName} (${agency.role})`)
+                .join("; ")
+            : "none"
+        }`,
+        `- **Default savings disposition**: ${
+          wishoniaContext
+            ? wishoniaContext.defaultSavingsDisposition
+            : "unspecified"
+        }`,
         `- **Overspend ratio**: ${brief.evidence.overspendRatio.toFixed(1)}x`,
         `- **Potential savings**: ${formatUsdCompact(brief.evidence.potentialSavingsTotal)}`,
         `- **Related OPG policy briefs**: ${

@@ -8,7 +8,7 @@ import {
   PRIZE_POOL_HORIZON_MULTIPLE,
   VICTORY_BOND_ANNUAL_RETURN_PCT,
 } from "@optimitron/data/parameters";
-import { AGENCIES } from "@optimitron/data";
+import { AGENCIES, WISHONIA_AGENCIES } from "@optimitron/data";
 // Precompute for descriptions (same pattern as demo-script.ts)
 const costReduction = Math.round(DFDA_TRIAL_COST_REDUCTION_FACTOR.value);
 const speedup = Math.round(DFDA_COMBINED_TREATMENT_SPEEDUP_MULTIPLIER.value);
@@ -16,6 +16,7 @@ const iabLobbyRatio = Math.round(IAB_VS_DEFENSE_LOBBY_RATIO_AT_1PCT.value);
 const milToTrialRatio = Math.round(MILITARY_TO_GOVERNMENT_CLINICAL_TRIALS_SPENDING_RATIO.value);
 const bondReturn = fmtParam(VICTORY_BOND_ANNUAL_RETURN_PCT);
 const poolMultiple = `${Math.round(PRIZE_POOL_HORIZON_MULTIPLE.value)}x`;
+const wishoniaAgencyCount = WISHONIA_AGENCIES.length;
 
 export const ROUTES = {
   home: "/",
@@ -94,6 +95,10 @@ export function getPolicyPath(name: string): string {
 
 export function getLegislationPath(slug: string): string {
   return `${ROUTES.legislation}/${slug}`;
+}
+
+export function getWishoniaAgencyPath(id: string): string {
+  return `${ROUTES.agencies}/${id}`;
 }
 
 export function getSignInPath(
@@ -225,8 +230,8 @@ export const agenciesLink: NavItem = {
   href: ROUTES.agencies,
   label: "Optimized Governance",
   emoji: "🏛️",
-  description: "Ten agencies running a civilisation. No bureaucracy, no corruption, no seventy-four-thousand-page tax code. Just code.",
-  tagline: "Nine agencies. No bureaucracy. Just code.",
+  description: `${wishoniaAgencyCount} optimized agencies running a civilisation. No bureaucracy, no corruption, no seventy-four-thousand-page tax code. Just code.`,
+  tagline: `${wishoniaAgencyCount} agencies. No bureaucracy. Just code.`,
   matchPrefixes: [ROUTES.agencies],
 
   cta: "See All Agencies",

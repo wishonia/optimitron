@@ -1,5 +1,20 @@
-import { GoogleGenAI } from '@google/genai';
+import { FunctionCallingConfigMode, GoogleGenAI } from '@google/genai';
 import type { StructuredReasoner, StructuredReasoningRequest } from './types.js';
+
+export interface GeminiFunctionCallLike {
+  args?: Record<string, unknown>;
+  name?: string;
+}
+
+export interface GeminiGenerateContentResponseLike {
+  text?: string | (() => string);
+  functionCalls?: GeminiFunctionCallLike[];
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{ text?: string }>;
+    };
+  }>;
+}
 
 export interface GeminiClientLike {
   models: {
@@ -8,11 +23,17 @@ export interface GeminiClientLike {
       contents: string;
       config: {
         maxOutputTokens?: number;
-        responseJsonSchema: Record<string, unknown>;
-        responseMimeType: 'application/json';
         temperature?: number;
+        tools?: Array<Record<string, unknown>>;
+        toolConfig?: {
+          includeServerSideToolInvocations?: boolean;
+          functionCallingConfig?: {
+            allowedFunctionNames?: string[];
+            mode?: FunctionCallingConfigMode;
+          };
+        };
       };
-    }): Promise<{ text?: string | (() => string) }>;
+    }): Promise<GeminiGenerateContentResponseLike>;
   };
 }
 
@@ -24,7 +45,17 @@ export interface GeminiReasonerOptions {
   temperature?: number;
 }
 
-function responseText(response: { text?: string | (() => string) }): string {
+function shouldRetryGeminiError(error: unknown): boolean {
+  return error instanceof Error && /503|unavailable|high demand|overloaded/i.test(error.message);
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolvePromise) => {
+    setTimeout(resolvePromise, ms);
+  });
+}
+
+export function responseText(response: GeminiGenerateContentResponseLike): string {
   if (typeof response.text === 'function') {
     const text = response.text();
     if (text.length > 0) {
@@ -55,6 +86,25 @@ function responseText(response: { text?: string | (() => string) }): string {
   }
 
   throw new Error('Gemini response did not contain text output');
+}
+
+function sanitizeFunctionName(schemaName: string): string {
+  const normalized = schemaName
+    .replace(/[^A-Za-z0-9_.:-]+/g, '_')
+    .replace(/^[^A-Za-z_]+/, '_');
+
+  return normalized.slice(0, 64) || 'structured_output';
+}
+
+function extractFunctionCallArgs(
+  response: GeminiGenerateContentResponseLike,
+  functionName: string,
+): Record<string, unknown> | null {
+  const matchingCall = response.functionCalls?.find(
+    functionCall => functionCall.name === functionName && functionCall.args,
+  );
+
+  return matchingCall?.args ?? null;
 }
 
 function stripMarkdownFences(text: string): string {
@@ -143,7 +193,7 @@ function repairJsonString(text: string): string {
   return result;
 }
 
-function parseJsonResponse(text: string): unknown {
+export function parseJsonResponse(text: string): unknown {
   const sliced = sliceLikelyJson(text);
 
   try {
@@ -175,19 +225,48 @@ export function createGeminiReasoner(
     async generateObject<T>(
       request: StructuredReasoningRequest<T>,
     ): Promise<T> {
-      const response = await client.models.generateContent({
-        model,
-        contents: request.prompt,
-        config: {
-          temperature,
-          maxOutputTokens,
-          responseMimeType: 'application/json',
-          responseJsonSchema: request.responseJsonSchema,
-        },
-      });
+      const functionName = sanitizeFunctionName(request.schemaName);
+      let lastError: unknown;
 
-      const parsed = parseJsonResponse(responseText(response));
-      return request.parse(parsed);
+      for (let attempt = 1; attempt <= 3; attempt += 1) {
+        try {
+          const response = await client.models.generateContent({
+            model,
+            contents: request.prompt,
+            config: {
+              temperature,
+              maxOutputTokens,
+              tools: [{
+                functionDeclarations: [{
+                  name: functionName,
+                  description: `Return the ${request.schemaName} object.`,
+                  parametersJsonSchema: request.responseJsonSchema,
+                }],
+              }],
+              toolConfig: {
+                functionCallingConfig: {
+                  mode: FunctionCallingConfigMode.ANY,
+                  allowedFunctionNames: [functionName],
+                },
+              },
+            },
+          });
+
+          const parsed = extractFunctionCallArgs(response, functionName)
+            ?? parseJsonResponse(responseText(response));
+          return request.parse(parsed);
+        } catch (error) {
+          lastError = error;
+
+          if (!shouldRetryGeminiError(error) || attempt === 3) {
+            break;
+          }
+
+          await sleep(1500 * attempt);
+        }
+      }
+
+      throw lastError;
     },
   };
 }

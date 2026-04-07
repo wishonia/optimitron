@@ -9,7 +9,6 @@ import type { StructuredReasoner } from './types.js';
 
 const DEFAULT_LEGISLATION_EVIDENCE_MODEL =
   process.env['LEGISLATION_EVIDENCE_MODEL'] ?? 'gemini-3.1-pro-preview';
-const STRUCTURED_OUTPUT_FALLBACK_MODEL = 'gemini-2.5-pro';
 
 const MAX_PARAMETER_DESCRIPTION_LENGTH = 320;
 
@@ -255,12 +254,27 @@ function buildCorpusPrompt(parameterList: LegislationEvidenceParameter[]): strin
     .join('\n');
 }
 
+function normalizeReferenceUrl(value: string): string {
+  return value
+    .trim()
+    .replace(/##+/g, '#')
+    .replace(/\/+$/g, '');
+}
+
 function assertKnownReferences(
   insights: z.infer<typeof RawInsightSchema>[],
   parameterMap: Map<string, LegislationEvidenceParameter>,
 ): { parameterNames: string[]; citationIds: string[] } {
   const parameterNames = new Set<string>();
   const citationIds = new Set<string>();
+  const parameterBackedUrls = new Set<string>();
+  const citationIdByUrl = new Map<string, string>();
+
+  for (const [citationId, citation] of Object.entries(parameterCitations)) {
+    if (citation.URL) {
+      citationIdByUrl.set(normalizeReferenceUrl(citation.URL), citationId);
+    }
+  }
 
   for (const insight of insights) {
     for (const parameterRef of insight.parameterRefs) {
@@ -274,13 +288,37 @@ function assertKnownReferences(
       if (parameter.sourceRef) {
         citationIds.add(parameter.sourceRef);
       }
+
+      if (parameter.sourceUrl) {
+        parameterBackedUrls.add(normalizeReferenceUrl(parameter.sourceUrl));
+      }
+
+      if (parameter.manualPageUrl) {
+        parameterBackedUrls.add(normalizeReferenceUrl(parameter.manualPageUrl));
+      }
     }
 
     for (const citationRef of insight.citationRefs) {
-      if (!(citationRef in parameterCitations)) {
+      if (citationRef in parameterCitations) {
+        citationIds.add(citationRef);
+        continue;
+      }
+
+      const normalizedCitationRef = normalizeReferenceUrl(citationRef);
+      const matchedCitationId = citationIdByUrl.get(normalizedCitationRef);
+
+      if (matchedCitationId) {
+        citationIds.add(matchedCitationId);
+        continue;
+      }
+
+      if (parameterBackedUrls.has(normalizedCitationRef)) {
+        continue;
+      }
+
+      if (!/^https?:\/\//i.test(citationRef)) {
         throw new Error(`Unknown citation ref returned by evidence synthesis: ${citationRef}`);
       }
-      citationIds.add(citationRef);
     }
   }
 
@@ -292,6 +330,14 @@ function assertKnownReferences(
 
 function toCitationSummary(citationId: string): LegislationEvidenceCitation {
   const citation = parameterCitations[citationId];
+
+  if (!citation) {
+    return {
+      id: citationId,
+      title: citationId,
+      url: /^https?:\/\//i.test(citationId) ? citationId : undefined,
+    };
+  }
 
   return {
     id: citationId,
@@ -369,13 +415,13 @@ export async function synthesizeLegislationEvidenceBundle(
   });
 
   let raw: z.infer<typeof RawEvidenceBundleSchema>;
-  let model = options.model ?? DEFAULT_LEGISLATION_EVIDENCE_MODEL;
+  const model = options.model ?? DEFAULT_LEGISLATION_EVIDENCE_MODEL;
 
   if (options.reasoner) {
     raw = await runSynthesis(options.reasoner);
   } else {
     const apiKey = resolveGeminiApiKey(options.apiKey);
-    const primaryReasoner = createGeminiReasoner({
+    const reasoner = createGeminiReasoner({
       apiKey,
       model,
       temperature: 0.15,
@@ -383,26 +429,17 @@ export async function synthesizeLegislationEvidenceBundle(
     });
 
     try {
-      raw = await runSynthesis(primaryReasoner);
+      raw = await runSynthesis(reasoner);
     } catch (error) {
-      const shouldFallback =
-        options.model === undefined &&
-        model !== STRUCTURED_OUTPUT_FALLBACK_MODEL &&
+      const shouldRetry =
         error instanceof Error &&
-        /json|unterminated|string|parse/i.test(error.message);
+        /function|tool|json|parse|schema/i.test(error.message);
 
-      if (!shouldFallback) {
+      if (!shouldRetry) {
         throw error;
       }
 
-      model = STRUCTURED_OUTPUT_FALLBACK_MODEL;
-      const fallbackReasoner = createGeminiReasoner({
-        apiKey,
-        model,
-        temperature: 0.15,
-        maxOutputTokens: 4096,
-      });
-      raw = await runSynthesis(fallbackReasoner);
+      raw = await runSynthesis(reasoner);
     }
   }
 

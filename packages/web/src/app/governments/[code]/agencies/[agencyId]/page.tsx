@@ -12,7 +12,7 @@ import type { AgencyGrade } from "@optimitron/data";
 import { GameCTA } from "@/components/ui/game-cta";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
-import { ROUTES } from "@/lib/routes";
+import { getWishoniaAgencyPath, ROUTES } from "@/lib/routes";
 import { AgencyGradeChart } from "@/components/shared/AgencyGradeChart";
 import { HistoricalTrendChart } from "@/components/shared/HistoricalTrendChart";
 import { StatCard } from "@/components/ui/stat-card";
@@ -24,10 +24,10 @@ import { getWishoniaReplacementFor } from "@optimitron/data";
 // ---------------------------------------------------------------------------
 
 const gradeColors: Record<AgencyGrade, string> = {
-  A: "bg-brutal-cyan text-foreground",
-  B: "bg-brutal-cyan text-foreground",
-  C: "bg-brutal-yellow text-foreground",
-  D: "bg-brutal-yellow text-foreground",
+  A: "bg-brutal-cyan text-brutal-cyan-foreground",
+  B: "bg-brutal-cyan text-brutal-cyan-foreground",
+  C: "bg-brutal-yellow text-brutal-yellow-foreground",
+  D: "bg-brutal-yellow text-brutal-yellow-foreground",
   F: "bg-brutal-red text-brutal-red-foreground",
 };
 
@@ -122,7 +122,7 @@ export default async function AgencyDetailPage({ params }: PageProps) {
 
   const wishoniaAgency = getWishoniaReplacementFor(agency.agencyId);
   const replacement = wishoniaAgency
-    ? { href: `/agencies/${wishoniaAgency.id}`, label: `${wishoniaAgency.dName} — ${wishoniaAgency.replacesAgencyName}` }
+    ? { href: getWishoniaAgencyPath(wishoniaAgency.id), label: `${wishoniaAgency.dName} — ${wishoniaAgency.replacesAgencyName}` }
     : undefined;
   const institutionalData = wishoniaAgency;
 
@@ -182,14 +182,14 @@ export default async function AgencyDetailPage({ params }: PageProps) {
           <BrutalCard bgColor="foreground" shadowSize={8} padding="md">
             <div className="flex items-baseline justify-between">
               <div>
-                <div className="text-xs font-black uppercase text-muted-foreground">
+                <div className="text-xs font-black uppercase text-background">
                   Annual Savings If Deprecated
                 </div>
                 <div className="text-3xl sm:text-4xl font-black text-brutal-pink mt-1">
                   {institutionalData.annualSavings}
                 </div>
               </div>
-              <div className="text-sm font-bold text-muted-foreground text-right max-w-[200px]">
+              <div className="text-sm font-bold text-background text-right max-w-[200px]">
                 {institutionalData.savingsComparison}
               </div>
             </div>
@@ -225,13 +225,13 @@ export default async function AgencyDetailPage({ params }: PageProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Spending trend */}
           <BrutalCard bgColor="cyan" shadowSize={8} padding="md">
-            <div className="text-xs font-black uppercase text-muted-foreground mb-1">
+            <div className="text-xs font-black uppercase text-brutal-cyan-foreground mb-1">
               Spending Trend ({spendTrend.startYear}–{spendTrend.endYear})
             </div>
-            <div className="text-3xl font-black text-foreground">
+            <div className="text-3xl font-black text-brutal-cyan-foreground">
               {spendTrend.direction} {spendTrend.changePercent}
             </div>
-            <div className="text-sm font-bold text-muted-foreground mt-2">
+            <div className="text-sm font-bold text-brutal-cyan-foreground mt-2">
               {formatCompact(spendTrend.startValue)} → {formatCompact(spendTrend.endValue)}
             </div>
           </BrutalCard>
@@ -258,10 +258,10 @@ export default async function AgencyDetailPage({ params }: PageProps) {
       {/* Wishonia quote */}
       <section className="mb-12">
         <BrutalCard bgColor="yellow" shadowSize={8} padding="lg">
-          <div className="text-xs font-black uppercase text-muted-foreground mb-2">
+          <div className="text-xs font-black uppercase text-brutal-yellow-foreground mb-2">
             Wishonia Says
           </div>
-          <blockquote className="text-lg sm:text-xl font-bold text-foreground leading-relaxed italic">
+          <blockquote className="text-lg sm:text-xl font-bold text-brutal-yellow-foreground leading-relaxed italic">
             &ldquo;{agency.wishoniaQuote}&rdquo;
           </blockquote>
         </BrutalCard>
