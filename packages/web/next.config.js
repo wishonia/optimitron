@@ -1,5 +1,8 @@
 const path = require("node:path");
 const { withSentryConfig } = require("@sentry/nextjs");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 const { REDIRECTS } = require("./src/lib/redirects");
 
 /** @type {import('next').NextConfig} */
@@ -90,9 +93,9 @@ const nextConfig = {
 const isDev = process.env.NODE_ENV === 'development';
 module.exports = isDev
   ? nextConfig
-  : withSentryConfig(nextConfig, {
+  : withBundleAnalyzer(withSentryConfig(nextConfig, {
       org: "wishonia-org",
       project: "optimitron-web",
       silent: !process.env.CI,
       widenClientFileUpload: true,
-    });
+    }));

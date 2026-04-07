@@ -27,13 +27,7 @@ function fmt(v: number): string {
   return `$${v.toLocaleString()}`;
 }
 
-export function generateStaticParams() {
-  const data = loadScorecardData();
-  return (data?.scorecards ?? []).map((s) => ({
-    code: "US",
-    bioguideId: s.bioguideId,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function OGImage({ params }: { params: Promise<{ code: string; bioguideId: string }> }) {
   const { bioguideId } = await params;

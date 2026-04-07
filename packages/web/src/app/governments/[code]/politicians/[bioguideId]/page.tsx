@@ -76,13 +76,7 @@ function formatScore(value: number): string {
   return `${sign}${formatDollars(Math.abs(value))}`;
 }
 
-export function generateStaticParams() {
-  const data = loadScorecardData();
-  return (data?.scorecards ?? []).map((s) => ({
-    code: "US",
-    bioguideId: s.bioguideId,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { code, bioguideId } = await params;
