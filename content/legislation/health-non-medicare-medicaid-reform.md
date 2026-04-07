@@ -29,10 +29,10 @@ Reforms United States healthcare financing and regulation by replacing pre-marke
 
 ## Findings
 
-- **The Efficacy Lag Mortality Crisis:** The FDA's post-safety efficacy testing mandate causes massive mortality through delay. The 8.2-year efficacy lag prevents patients from accessing safe treatments, causing immense harm that outweighs the benefits of preventing unsafe drugs by a ratio of over 3,000 to 1. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf)
+- **The Efficacy Lag Mortality Crisis:** The FDA's post-safety efficacy testing mandate causes massive mortality through delay. The 8.2-year efficacy lag prevents patients from accessing safe treatments, causing immense preventable mortality while drugs sit waiting for efficacy review after safety has already been demonstrated. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf)
 - **The Pragmatic Trial Cost Arbitrage:** Traditional Phase 3 trials cost approximately $41,000 per patient, creating a $1.56 billion barrier that causes 40% of safe drugs to be abandoned. Pragmatic trials, such as ADAPTABLE, cost as little as $929 per patient, representing a 44x cost reduction. [2](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6248200) [3](https://commonfund.nih.gov/hcscollaboratory)
 - **NIH Misallocation and the Clinical Trial Bottleneck:** Out of a $47 billion budget, the NIH spends only 3.3% on phased clinical trials. This drastically underfunds the exact mechanism that proves treatments work in humans, leaving 6,650 diseases without effective treatments. [4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [5](https://www.nih.gov/about-nih/organization/budget)
-- **Systemic Healthcare Waste:** The US healthcare system wastes between $760 billion and $1.2 trillion annually on administrative complexity and inefficiency. Despite spending $10,333 per capita, the US lags behind South Korea, which spends $3,588 per capita and achieves a life expectancy of 83.5 years. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+- **Systemic Healthcare Waste:** The US healthcare system wastes between $760 billion and $1.2 trillion annually on administrative complexity and inefficiency. Despite spending $10,333 per capita, the US lags behind South Korea, which spends $3,588 per capita and achieves a life expectancy of 83.5 years. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
 
 ## Purpose
 
@@ -60,13 +60,13 @@ To eliminate the 8.2-year regulatory efficacy lag, reduce clinical trial costs b
 **Summary:** Strips the FDA of its pre-market efficacy mandate. Treatments are granted provisional approval immediately after Phase 1 safety validation. Efficacy is tracked continuously post-market via low-cost pragmatic trials and real-world data, generating real-time Outcome Labels. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
 **Modeled on:** Decentralized FDA (Wishonia)
 
-**Market mechanism:** Outcome-based labeling and real-world data competition, allowing patients and doctors to choose treatments based on continuously updated efficacy data. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
-**Public-goods justification:** High-quality, unbiased efficacy data is a non-rivalrous public good that the market under-produces due to patent cliffs and off-label use. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
-**Public-choice rationale:** Incumbent pharmaceutical companies use exorbitant Phase 3 trial costs as a regulatory moat to prevent competition from smaller biotech startups and off-patent compounds. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
+**Market mechanism:** Outcome-based labeling and real-world data competition, allowing patients and doctors to choose treatments based on continuously updated efficacy data.
+**Public-goods justification:** High-quality, unbiased efficacy data is a non-rivalrous public good that the market under-produces due to patent cliffs and off-label use.
+**Public-choice rationale:** Incumbent pharmaceutical companies use exorbitant Phase 3 trial costs as a regulatory moat to prevent competition from smaller biotech startups and off-patent compounds.
 **Pareto status:** Compensated Pareto
-**Pareto rationale:** Patients gain immediate access to safe drugs and startups face lower barriers to entry. Legacy Contract Research Organizations (CROs) and FDA bureaucrats lose their gatekeeping power and revenue streams. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
-**Compensation mechanism:** Transition assistance and severance packages for displaced FDA staff and legacy CRO workers, funded by the reduction in drug prices. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
-**Residual rent handling:** Transparent, rule-bound outcome bounties for discovering new uses for off-patent safe compounds. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
+**Pareto rationale:** Patients gain immediate access to safe drugs and startups face lower barriers to entry. Legacy Contract Research Organizations (CROs) and FDA bureaucrats lose their gatekeeping power and revenue streams.
+**Compensation mechanism:** Transition assistance and severance packages for displaced FDA staff and legacy CRO workers, funded by the reduction in drug prices.
+**Residual rent handling:** Transparent, rule-bound outcome bounties for discovering new uses for off-patent safe compounds.
 
 **Budget effects:**
 - Current cost: $1.56 billion per drug in Phase 2/3 costs.
@@ -76,18 +76,18 @@ To eliminate the 8.2-year regulatory efficacy lag, reduce clinical trial costs b
 
 **Capture risks:**
 - Incumbent pharma lobbying to reinstate pre-market efficacy barriers to protect their monopolies. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
-- Manipulation of real-world electronic health record data to artificially inflate efficacy. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
+- Manipulation of real-world electronic health record data to artificially inflate efficacy.
 
 **Anti-capture safeguards:**
 - Statutory ban on reinstating pre-market efficacy requirements without a supermajority. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
-- Immutable, cryptographically signed data logging on public ledgers (IPFS) for all pragmatic trial results. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
+- Immutable, cryptographically signed data logging on public ledgers (IPFS) for all pragmatic trial results.
 
 **Corruption risks:**
 - Data falsification by decentralized trial participants or providers. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
 
 **Anti-corruption safeguards:**
 - Cryptographic patient identity verification. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
-- Automated dGAO auditing of trial data anomalies. [1](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [3](https://commonfund.nih.gov/hcscollaboratory)
+- Automated dGAO auditing of trial data anomalies.
 
 **Operative clauses:**
 - Amend the Federal Food, Drug, and Cosmetic Act to mandate provisional market approval upon successful completion of Phase 1 safety trials.
@@ -106,13 +106,13 @@ To eliminate the 8.2-year regulatory efficacy lag, reduce clinical trial costs b
 **Summary:** Mandates the NIH to invert its funding portfolio, shifting from 3.3% to 80% allocation for direct, pragmatic clinical trials, subsidizing patients directly rather than academic institutions. [4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [5](https://www.nih.gov/about-nih/organization/budget)
 **Modeled on:** Optimal Institutes of Health (Wishonia)
 
-**Market mechanism:** Patient-directed trial enrollment subsidies, where funding follows the patient to the pragmatic trial of their choice. [4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [5](https://www.nih.gov/about-nih/organization/budget)
-**Public-goods justification:** Clinical trials for off-patent drugs and rare diseases are public goods that private markets will not fund due to lack of patent exclusivity. [4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [5](https://www.nih.gov/about-nih/organization/budget)
-**Public-choice rationale:** Academic researchers capture NIH grants for prestige, overhead, and basic science publications rather than direct patient cures. [4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [5](https://www.nih.gov/about-nih/organization/budget)
+**Market mechanism:** Patient-directed trial enrollment subsidies, where funding follows the patient to the pragmatic trial of their choice.
+**Public-goods justification:** Clinical trials for off-patent drugs and rare diseases are public goods that private markets will not fund due to lack of patent exclusivity.
+**Public-choice rationale:** Academic researchers capture NIH grants for prestige, overhead, and basic science publications rather than direct patient cures.
 **Pareto status:** Compensated Pareto
-**Pareto rationale:** Patients receive vastly more trial opportunities and cures. Basic science researchers lose legacy grant funding. [4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [5](https://www.nih.gov/about-nih/organization/budget)
-**Compensation mechanism:** A 5-year phase-out period for existing basic science grants, allowing researchers to transition to private funding or applied clinical research. [4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [5](https://www.nih.gov/about-nih/organization/budget)
-**Residual rent handling:** Open, transparent competition for trial execution with standardized per-patient subsidies. [4](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [5](https://www.nih.gov/about-nih/organization/budget)
+**Pareto rationale:** Patients receive vastly more trial opportunities and cures. Basic science researchers lose legacy grant funding.
+**Compensation mechanism:** A 5-year phase-out period for existing basic science grants, allowing researchers to transition to private funding or applied clinical research.
+**Residual rent handling:** Open, transparent competition for trial execution with standardized per-patient subsidies.
 
 **Budget effects:**
 - Current cost: $47 billion NIH budget with 3.3% on trials.
@@ -148,16 +148,16 @@ To eliminate the 8.2-year regulatory efficacy lag, reduce clinical trial costs b
   **Response:** Private sector investment, philanthropy, and targeted public goods funding will sustain essential basic science, while the NIH focuses on its core mission of curing humans. [5](https://www.nih.gov/about-nih/organization/budget)
 ### High-Efficiency Financing Transition
 
-**Summary:** Transitions US healthcare financing to a high-efficiency model combining mandatory Health Savings Accounts (HSAs) and national catastrophic insurance, dismantling the administrative bloat of the current system. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+**Summary:** Transitions US healthcare financing to a high-efficiency model combining mandatory Health Savings Accounts (HSAs) and national catastrophic insurance, dismantling the administrative bloat of the current system. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
 **Modeled on:** Singapore 3M Health System, South Korea National Health Insurance
 
-**Market mechanism:** Consumer-driven HSAs combined with transparent, upfront cash pricing for routine care, forcing providers to compete on price and quality. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
-**Public-goods justification:** Catastrophic risk pooling is a necessary safety net to prevent financial ruin from unpredictable, severe health shocks. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
-**Public-choice rationale:** Insurance administrators and billing departments extract massive rents through intentional complexity, justifying their existence via opaque coding requirements. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+**Market mechanism:** Consumer-driven HSAs combined with transparent, upfront cash pricing for routine care, forcing providers to compete on price and quality. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
+**Public-goods justification:** Catastrophic risk pooling is a necessary safety net to prevent financial ruin from unpredictable, severe health shocks. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
+**Public-choice rationale:** Insurance administrators and billing departments extract massive rents through intentional complexity, justifying their existence via opaque coding requirements. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
 **Pareto status:** Compensated Pareto
-**Pareto rationale:** Citizens gain lower costs, transparent pricing, and a cash dividend. Millions of medical billing and insurance administrative workers will lose their jobs. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
-**Compensation mechanism:** Generous severance, retraining, and early retirement packages for displaced administrative workers, funded by the first year of systemic savings. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
-**Residual rent handling:** Standardized, transparent catastrophic premiums with no opaque Pharmacy Benefit Manager (PBM) rebates. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+**Pareto rationale:** Citizens gain lower costs, transparent pricing, and a cash dividend. Millions of medical billing and insurance administrative workers will lose their jobs. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
+**Compensation mechanism:** Generous severance, retraining, and early retirement packages for displaced administrative workers, funded by the first year of systemic savings. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
+**Residual rent handling:** Standardized, transparent catastrophic premiums with no opaque Pharmacy Benefit Manager (PBM) rebates. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
 
 **Budget effects:**
 - Current cost: $1.2 trillion in annual administrative waste.
@@ -166,18 +166,18 @@ To eliminate the 8.2-year regulatory efficacy lag, reduce clinical trial costs b
 - Savings destination: Optimization Dividend
 
 **Capture risks:**
-- Health insurance conglomerates lobbying to maintain complex billing and network restrictions. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+- Health insurance conglomerates lobbying to maintain complex billing and network restrictions. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
 
 **Anti-capture safeguards:**
-- Mandatory single-page, plain-English billing for all procedures. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
-- Statutory ban on PBM rebates and hidden network fees. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+- Mandatory single-page, plain-English billing for all procedures. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
+- Statutory ban on PBM rebates and hidden network fees. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
 
 **Corruption risks:**
-- Misuse of HSA funds for non-medical expenses. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+- Misuse of HSA funds for non-medical expenses. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
 
 **Anti-corruption safeguards:**
-- Automated dTreasury auditing of HSA transactions using merchant category codes and smart contracts. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
-- Public transparency of aggregate provider pricing. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+- Automated dTreasury auditing of HSA transactions using merchant category codes and smart contracts. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
+- Public transparency of aggregate provider pricing. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671) [7](https://data.oecd.org/healthres/health-spending.htm)
 
 **Operative clauses:**
 - Establish a universal catastrophic health insurance pool.
@@ -209,7 +209,7 @@ To eliminate the 8.2-year regulatory efficacy lag, reduce clinical trial costs b
 
 ## Evaluation & Sunset Provisions
 
-- **Healthy Life Expectancy (HALE):** Convergence with South Korea (83.5 years). The ultimate measure of healthcare system performance. [7](https://www.koreaherald.com/view.php?ud=20250730050588)
+- **Healthy Life Expectancy (HALE):** Convergence with South Korea (83.5 years). The ultimate measure of healthcare system performance. [7](https://data.oecd.org/healthres/health-spending.htm)
 - **Average Clinical Trial Cost per Patient:** < $1,000. Ensures the transition to pragmatic trials is successful and sustainable. [3](https://commonfund.nih.gov/hcscollaboratory)
 - **Administrative Spending as % of Total Health Expenditure:** < 5%. Measures the successful elimination of billing and coding waste. [6](https://jamanetwork.com/journals/jama/article-abstract/2674671)
 
@@ -235,7 +235,7 @@ To eliminate the 8.2-year regulatory efficacy lag, reduce clinical trial costs b
 4. [pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341)
 5. [nih.gov](https://www.nih.gov/about-nih/organization/budget)
 6. [jamanetwork.com](https://jamanetwork.com/journals/jama/article-abstract/2674671)
-7. [koreaherald.com](https://www.koreaherald.com/view.php?ud=20250730050588)
+7. [data.oecd.org](https://data.oecd.org/healthres/health-spending.htm)
 8. [data.oecd.org](https://data.oecd.org/gga/general-government-spending.htm)
 
 ---

@@ -29,8 +29,8 @@ A bill to reform federal education funding by adopting the lean administrative m
 
 ## Findings
 
-- **Education Spending Inefficiency:** The United States ranks 11 out of 11 among peer OECD countries in education spending efficiency. The US spends $2,996 per capita to achieve a PISA Math Score of 465 [1.6], while Japan spends only $1,288 per capita to achieve a world-class score of 536 [1.7]. This represents a 2.3x overspend ratio that does not translate to student outcomes. [1](https://www.oecd.org) [2](https://www.mext.go.jp)
-- **High ROI of Early Childhood Education:** Early childhood interventions demonstrate an exceptional return on investment. The Perry Preschool Project showed that participants had 17% higher graduation rates [1.16], earned 25-40% more in adulthood [1.16], and were 70% less likely to be arrested for violent crimes [1.5], yielding up to a 13x ROI. [3](https://invisiblechildren.org) [4](https://www.umich.edu)
+- **Education Spending Inefficiency:** The United States ranks 11 out of 11 among peer OECD countries in education spending efficiency. The US spends $2,996 per capita to achieve a PISA Math Score of 465, while Japan spends only $1,288 per capita to achieve a world-class score of 536. This represents a 2.3x overspend ratio that does not translate to student outcomes. [1](https://www.oecd.org) [2](https://www.mext.go.jp)
+- **High ROI of Early Childhood Education:** Early childhood interventions demonstrate an exceptional return on investment. The Perry Preschool Project showed that participants had 17% higher graduation rates, earned 25-40% more in adulthood, and were 46% less likely to be arrested by age 40, yielding a 7-12x ROI. [3](https://highscope.org/perry-preschool-study) [4](https://www.umich.edu)
 - **Unpaid Caregiving Burden:** Families currently bear an average annual cost of $6,000 in unpaid caregiving. Implementing Universal Pre-K will directly alleviate this burden, serving as a direct economic subsidy to working families and freeing up time for productive economic participation. [5](https://www.aarp.org/caregiving/financial-legal/info-2023/unpaid-caregivers-provide-billions-in-care.html)
 
 ## Purpose
@@ -39,7 +39,7 @@ To elevate United States educational outcomes to match top-performing nations li
 
 ## Public-Goods and Market Framework
 
-- **Positive Externalities of Early Education:** Early childhood education is a classic public good due to its massive positive externalities. The Perry Preschool Project demonstrates that high-quality Pre-K reduces future violent crime by 70% [1.5] and significantly lowers reliance on social safety nets, yielding a 13x ROI for society. Funding this via portable vouchers ensures market competition maximizes the efficiency of this public investment. [3](https://invisiblechildren.org) [4](https://www.umich.edu)
+- **Positive Externalities of Early Education:** Early childhood education is a classic public good due to its massive positive externalities. The Perry Preschool Project demonstrates that high-quality Pre-K reduces future crime arrests by 46% and significantly lowers reliance on social safety nets, yielding a 7-12x ROI for society. Funding this via portable vouchers ensures market competition maximizes the efficiency of this public investment. [3](https://highscope.org/perry-preschool-study) [4](https://www.umich.edu)
 - **Market Pricing for Educational Quality:** By shifting funding from monopolistic district allocations to portable family vouchers, the bill introduces market pricing and competition. Providers must compete for students based on quality and outcomes, which the Optimal Policy Generator (dcbo) will track and publish, solving the information asymmetry problem in the education market. [6](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
 
 ## Public Choice / Capture Analysis
@@ -56,38 +56,38 @@ To elevate United States educational outcomes to match top-performing nations li
 
 ### Universal Pre-K (Ages 3-4) Portable Vouchers
 
-**Summary:** Establishes a universal, portable voucher system for families with children ages 3-4 to access high-quality early childhood education, introducing market competition among providers. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
+**Summary:** Establishes a universal, portable voucher system for families with children ages 3-4 to access high-quality early childhood education, introducing market competition among providers. [4](https://www.umich.edu) [3](https://highscope.org/perry-preschool-study)
 **Modeled on:** Perry Preschool Project, Chicago Child-Parent Centers
 
-**Market mechanism:** Portable family vouchers that allow parents to choose between public, private, or community-based Pre-K providers, forcing providers to compete on quality and outcomes. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
-**Public-goods justification:** Early childhood education generates massive positive externalities, including a 70% reduction in violent crime arrests [1.5] and significantly lower future reliance on social welfare programs. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
-**Public-choice rationale:** Funding families directly rather than funding school districts prevents administrative capture and ensures funds are spent on actual child development rather than bureaucratic expansion. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
+**Market mechanism:** Portable family vouchers that allow parents to choose between public, private, or community-based Pre-K providers, forcing providers to compete on quality and outcomes.
+**Public-goods justification:** Early childhood education generates massive positive externalities, including a 46% reduction in arrests by age 40 and significantly lower future reliance on social welfare programs.
+**Public-choice rationale:** Funding families directly rather than funding school districts prevents administrative capture and ensures funds are spent on actual child development rather than bureaucratic expansion.
 **Pareto status:** Compensated Pareto
-**Pareto rationale:** Families and children gain massive benefits. Existing public Pre-K monopolies may lose guaranteed funding, but are compensated by the opportunity to compete for voucher revenue. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
-**Compensation mechanism:** Incumbent public providers receive a 2-year transition subsidy to adapt to the competitive voucher market. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
-**Residual rent handling:** Voucher pricing is dynamically set by the Optimal Budget Generator (domb) based on local market clearing rates, preventing providers from artificially inflating tuition. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
+**Pareto rationale:** Families and children gain massive benefits. Existing public Pre-K monopolies may lose guaranteed funding, but are compensated by the opportunity to compete for voucher revenue.
+**Compensation mechanism:** Incumbent public providers receive a 2-year transition subsidy to adapt to the competitive voucher market.
+**Residual rent handling:** Voucher pricing is dynamically set by the Optimal Budget Generator (domb) based on local market clearing rates, preventing providers from artificially inflating tuition.
 
 **Capture risks:**
-- Incumbent public school districts lobbying to restrict voucher use to public facilities only. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
-- Private providers forming cartels to fix prices at the maximum voucher value. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
+- Incumbent public school districts lobbying to restrict voucher use to public facilities only. [4](https://www.umich.edu) [3](https://highscope.org/perry-preschool-study)
+- Private providers forming cartels to fix prices at the maximum voucher value. [4](https://www.umich.edu) [3](https://highscope.org/perry-preschool-study)
 
 **Anti-capture safeguards:**
-- Statutory ban on restricting voucher portability. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
-- Real-time transaction visibility on IPFS via the Decentralized Accountability Office (dgao) to monitor pricing anomalies. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
+- Statutory ban on restricting voucher portability. [4](https://www.umich.edu) [3](https://highscope.org/perry-preschool-study)
+- Real-time transaction visibility on IPFS via the Decentralized Accountability Office (dgao) to monitor pricing anomalies. [4](https://www.umich.edu) [3](https://highscope.org/perry-preschool-study)
 
 **Corruption risks:**
-- Fraudulent 'ghost' students claimed by providers to harvest voucher funds. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
+- Fraudulent 'ghost' students claimed by providers to harvest voucher funds. [4](https://www.umich.edu) [3](https://highscope.org/perry-preschool-study)
 
 **Anti-corruption safeguards:**
-- Cryptographic proof-of-attendance protocols. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
-- Immutable ledger auditing by dgao. [4](https://www.umich.edu) [3](https://invisiblechildren.org)
+- Cryptographic proof-of-attendance protocols. [4](https://www.umich.edu) [3](https://highscope.org/perry-preschool-study)
+- Immutable ledger auditing by dgao. [4](https://www.umich.edu) [3](https://highscope.org/perry-preschool-study)
 
 **Operative clauses:**
 - The Automated Treasury shall issue monthly Pre-K vouchers to all families with children ages 3-4.
 - Vouchers may be redeemed at any accredited educational provider, public or private.
 
 **Expected impacts:**
-- **Violent Crime Arrests by Age 18:** -70%. Based on Perry Preschool Project and Chicago Child-Parent Centers data [1.5]. [3](https://invisiblechildren.org)
+- **Violent Crime Arrests by Age 18:** -46%. Based on Perry Preschool Project and Chicago Child-Parent Centers data. [3](https://highscope.org/perry-preschool-study)
 
 **Implementation timeline:** Phased rollout over 24 months, starting with lowest-income quartiles.
 
@@ -142,7 +142,7 @@ To elevate United States educational outcomes to match top-performing nations li
 ## Fiscal Impact
 
 - **Recapture of $579 Billion Annual Overspend:** By reducing per-capita education spending from $2,996 to Japan's floor of $1,288, the federal government will recapture approximately $579 billion annually. This represents a massive reduction in the 17% of GDP currently lost to systemic government waste. [7](https://www.cbo.gov/publication/60039) [1](https://www.oecd.org)
-- **High-ROI Pre-K Investment:** The Universal Pre-K voucher program will require an upfront investment, but based on the 13x ROI demonstrated by the Perry Preschool Project, it will generate long-term fiscal savings through increased tax revenues (from 25-40% higher adult earnings [1.16]) and reduced criminal justice expenditures. [3](https://invisiblechildren.org) [4](https://www.umich.edu)
+- **High-ROI Pre-K Investment:** The Universal Pre-K voucher program will require an upfront investment, but based on the 7-12x ROI demonstrated by the Perry Preschool Project, it will generate long-term fiscal savings through increased tax revenues (from 25-40% higher adult earnings) and reduced criminal justice expenditures. [3](https://highscope.org/perry-preschool-study) [4](https://www.umich.edu)
 
 ## Implementation Timeline
 
@@ -153,12 +153,12 @@ To elevate United States educational outcomes to match top-performing nations li
 
 - **PISA Math Score vs. Spending per Capita:** Achieve a PISA Math Score of 536+ while reducing spending to $1,288/capita (Japan parity).. The core objective is to move the US from rank 11/11 in spending efficiency to rank 1, matching the best comparator. [1](https://www.oecd.org) [2](https://www.mext.go.jp)
 - **Administrative to Instructional Spending Ratio:** 1:10 or lower.. Ensures that the 2.1x economic multiplier of core education investment is not diluted by bureaucratic bloat. [8](https://www.epi.org/publication/bp348-public-investments-outside-core-infrastructure)
-- **Universal Pre-K ROI and Crime Reduction:** Demonstrate a trajectory toward a 13x ROI and a 70% reduction in juvenile justice involvement among cohorts.. Validates the Grade A evidence from the Perry Preschool Project and Chicago Child-Parent Centers. [3](https://invisiblechildren.org) [4](https://www.umich.edu)
+- **Universal Pre-K ROI and Crime Reduction:** Demonstrate a trajectory toward a 7-12x ROI and a 46% reduction in juvenile justice involvement among cohorts. Validates the Grade A evidence from the Perry Preschool Project and Chicago Child-Parent Centers. [3](https://highscope.org/perry-preschool-study) [4](https://www.umich.edu)
 
 ## Evidence Appendix
 
-- **OECD PISA 2022 Results and Spending Efficiency:** Data from the OECD confirms that the US spends significantly more per student than Japan ($15,500 vs $8,301 per FTE, or $2,996 vs $1,288 per capita) yet achieves lower PISA Math scores (465 vs 536) [1.6, 1.7]. This establishes the 2.3x overspend ratio. [1](https://www.oecd.org) [2](https://www.mext.go.jp)
-- **Perry Preschool Project and Early Childhood ROI:** Longitudinal studies of the Perry Preschool Project and Chicago Child-Parent Centers demonstrate that high-quality early childhood education yields up to a 13x ROI, driven by a 70% reduction in violent crime arrests and 25-40% higher adult earnings [1.5, 1.16]. [3](https://invisiblechildren.org) [4](https://www.umich.edu)
+- **OECD PISA 2022 Results and Spending Efficiency:** Data from the OECD confirms that the US spends significantly more per student than Japan ($15,500 vs $8,301 per FTE, or $2,996 vs $1,288 per capita) yet achieves lower PISA Math scores (465 vs 536). This establishes the 2.3x overspend ratio. [1](https://www.oecd.org) [2](https://www.mext.go.jp)
+- **Perry Preschool Project and Early Childhood ROI:** Longitudinal studies of the Perry Preschool Project and Chicago Child-Parent Centers demonstrate that high-quality early childhood education yields a 7-12x ROI, driven by a 46% reduction in arrests by age 40 and 25-40% higher adult earnings. [3](https://highscope.org/perry-preschool-study) [4](https://www.umich.edu)
 - **The Economic Burden of Unpaid Caregiving:** AARP data indicates that families bear an average annual cost of $6,000 in unpaid caregiving. Universal Pre-K directly alleviates this burden, freeing up 20 hours per month for economically productive activities. [5](https://www.aarp.org/caregiving/financial-legal/info-2023/unpaid-caregivers-provide-billions-in-care.html)
 
 ## Open Questions
@@ -173,7 +173,7 @@ To elevate United States educational outcomes to match top-performing nations li
 
 1. [oecd.org](https://www.oecd.org)
 2. [mext.go.jp](https://www.mext.go.jp)
-3. [invisiblechildren.org](https://invisiblechildren.org)
+3. [highscope.org/perry-preschool-study](https://highscope.org/perry-preschool-study)
 4. [umich.edu](https://www.umich.edu)
 5. [aarp.org](https://www.aarp.org/caregiving/financial-legal/info-2023/unpaid-caregivers-provide-billions-in-care.html)
 6. [manual.warondisease.org](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
@@ -195,7 +195,7 @@ To elevate United States educational outcomes to match top-performing nations li
 - **Evidence bundle model**: gemini-3.1-pro-preview
 - **Evidence bundle parameters**: 8
 - **Evidence bundle insights**: 4
-- **Evidence bundle summary**: The parameter corpus, while heavily focused on healthcare and military spending, provides strong economic foundations for the Education Efficiency and Family Dividend Act. It confirms that core education investments yield a high 2.1x economic multiplier, while early childhood interventions can deliver up to a 13x ROI. Furthermore, the data highlights a massive $6,000 annual unpaid caregiving burden on families, which Universal Pre-K will directly alleviate. Finally, the corpus proves that systemic federal waste (17% of GDP) is a solvable problem, validating the bill's mechanism to strip the 2.3x education administrative overspend and return the $579B/yr directly to citizens via the Optimization Dividend.
+- **Evidence bundle summary**: The parameter corpus, while heavily focused on healthcare and military spending, provides strong economic foundations for the Education Efficiency and Family Dividend Act. It confirms that core education investments yield a high 2.1x economic multiplier, while early childhood interventions can deliver a 7-12x ROI. Furthermore, the data highlights a massive $6,000 annual unpaid caregiving burden on families, which Universal Pre-K will directly alleviate. Finally, the corpus proves that systemic federal waste (17% of GDP) is a solvable problem, validating the bill's mechanism to strip the 2.3x education administrative overspend and return the $579B/yr directly to citizens via the Optimization Dividend.
 - **Category**: Education
 - **Model country**: Japan
 - **Wishonia package**: Education Efficiency and Family Dividend Act

@@ -57,28 +57,28 @@ To close the 6.5-year life expectancy gap between the United States and peer nat
 **Summary:** Creates an alternative regulatory and funding pathway for drug efficacy testing using decentralized, pragmatic clinical trials, bypassing traditional NIH and FDA bottlenecks. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
 **Modeled on:** Singapore 3M Health System (market mechanisms), NIH Health Care Systems Research Collaboratory
 
-**Market mechanism:** Open-protocol pragmatic trials where clinical sites compete on cost-per-patient data delivery, utilizing existing electronic health records. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
-**Public-goods justification:** Basic and translational health R&D is a non-rivalrous, non-excludable public good that is underfunded by private markets due to the $1.56B Phase 2/3 cost barrier. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
-**Public-choice rationale:** Bypasses the NIH, which allocates only 3.3% of its budget to clinical trials due to academic capture, and avoids subsidizing the $1.2T inefficient healthcare delivery sector. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
+**Market mechanism:** Open-protocol pragmatic trials where clinical sites compete on cost-per-patient data delivery, utilizing existing electronic health records.
+**Public-goods justification:** Basic and translational health R&D is a non-rivalrous, non-excludable public good that is underfunded by private markets due to the $1.56B Phase 2/3 cost barrier.
+**Public-choice rationale:** Bypasses the NIH, which allocates only 3.3% of its budget to clinical trials due to academic capture, and avoids subsidizing the $1.2T inefficient healthcare delivery sector.
 **Pareto status:** Public-Goods Exception
-**Pareto rationale:** While traditional clinical research organizations (CROs) may lose market share, the massive public health benefits and reduction in the 443-year therapeutic backlog justify the disruption. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
-**Compensation mechanism:** None for CROs; market competition will drive transition. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
-**Residual rent handling:** Trial data must be open-access; funding is tied strictly to patient enrollment and verified data delivery, capping administrative overhead. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
+**Pareto rationale:** While traditional clinical research organizations (CROs) may lose market share, the massive public health benefits and acceleration of the therapeutic pipeline justify the disruption.
+**Compensation mechanism:** None for CROs; market competition will drive transition.
+**Residual rent handling:** Trial data must be open-access; funding is tied strictly to patient enrollment and verified data delivery, capping administrative overhead.
 
 **Capture risks:**
 - Traditional pharmaceutical companies lobbying to maintain high trial costs as a barrier to entry. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
-- NIH attempting to absorb dFDA funding into traditional grant mechanisms. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
+- NIH attempting to absorb dFDA funding into traditional grant mechanisms.
 
 **Anti-capture safeguards:**
 - Statutory firewall separating dFDA funding from NIH appropriations. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
-- Mandatory acceptance of dFDA pragmatic trial data by the FDA for efficacy approvals. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
+- Mandatory acceptance of dFDA pragmatic trial data by the FDA for efficacy approvals.
 
 **Corruption risks:**
 - Falsification of electronic health record data to inflate patient enrollment numbers. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
 
 **Anti-corruption safeguards:**
 - Cryptographic auditing of EHR data streams. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
-- Bounty system for whistleblowers reporting data fraud. [6](https://commonfund.nih.gov/hcscollaboratory) [11](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341/)
+- Bounty system for whistleblowers reporting data fraud.
 
 **Operative clauses:**
 - The Secretary of HHS shall establish the dFDA as an independent agency.
@@ -97,27 +97,27 @@ To close the 6.5-year life expectancy gap between the United States and peer nat
 **Summary:** Reduces military spending by $615B annually to match OECD efficiency floors, reallocating funds to health R&D. Allocates $2.72B annually to Incentive Alignment Bonds to compensate displaced defense workers and out-compete defense lobbying. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
 **Modeled on:** Trade Adjustment Assistance (TAA), Social Impact Bonds
 
-**Market mechanism:** Bonds pay out based on the successful reduction of military overspend and the transition of defense manufacturing capacity to civilian/medical technology. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
-**Public-goods justification:** Overcoming entrenched political dysfunction to reallocate capital to high-multiplier public goods requires explicit buyout mechanisms. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
-**Public-choice rationale:** Defense lobbying ($127M/yr) blocks efficient capital allocation. IABs ($2.72B/yr) outgun this lobbying 21-to-1, aligning political and economic incentives with reform. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
+**Market mechanism:** Bonds pay out based on the successful reduction of military overspend and the transition of defense manufacturing capacity to civilian/medical technology.
+**Public-goods justification:** Overcoming entrenched political dysfunction to reallocate capital to high-multiplier public goods requires explicit buyout mechanisms.
+**Public-choice rationale:** Defense lobbying ($127M/yr) blocks efficient capital allocation. IABs ($2.72B/yr) outgun this lobbying 21-to-1, aligning political and economic incentives with reform.
 **Pareto status:** Compensated Pareto
-**Pareto rationale:** Defense contractors and workers lose revenue/jobs, but are explicitly compensated via IABs and transition funds, making them whole while society benefits from health R&D. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
-**Compensation mechanism:** Incentive Alignment Bonds and direct transition assistance for displaced defense sector workers and communities. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
-**Residual rent handling:** IAB payouts are strictly formulaic, based on verified reductions in DoD spending and local economic indicators, preventing discretionary slush funds. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
+**Pareto rationale:** Defense contractors and workers lose revenue/jobs, but are explicitly compensated via IABs and transition funds, making them whole while society benefits from health R&D.
+**Compensation mechanism:** Incentive Alignment Bonds and direct transition assistance for displaced defense sector workers and communities.
+**Residual rent handling:** IAB payouts are strictly formulaic, based on verified reductions in DoD spending and local economic indicators, preventing discretionary slush funds.
 
 **Capture risks:**
 - Defense contractors capturing the IAB payouts without actually reducing lobbying or transitioning capacity. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
 
 **Anti-capture safeguards:**
 - IAB payouts are contingent on statutory reductions in DoD appropriations. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
-- Strict clawback provisions if lobbying activities continue. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
+- Strict clawback provisions if lobbying activities continue.
 
 **Corruption risks:**
 - Politicians directing IAB funds to favored districts regardless of actual defense displacement. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
 
 **Anti-corruption safeguards:**
 - Algorithmic distribution of IABs based on historical defense contract concentration. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
-- Independent auditing by the GAO. [7](https://www.opensecrets.org/industries/lobbying?ind=D) [8](https://www.opensecrets.org/revolving-door)
+- Independent auditing by the GAO.
 
 **Operative clauses:**
 - DoD baseline budget shall be reduced by $615B annually, phased over 5 years.

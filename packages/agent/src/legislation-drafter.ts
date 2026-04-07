@@ -666,6 +666,13 @@ Hard rules:
 - Every item in findings, provisions, fiscalImpact, implementationTimeline, evaluationAndSunset, and evidenceAppendix must include sourceUrls with real URLs.
 - If a claim cannot be supported, omit it instead of guessing.
 - Do not output placeholders like [from prompt], [best country], TODO, or TBD.
+
+Source quality rules:
+- Cite primary sources: peer-reviewed papers, government databases (OECD, CBO, GAO, WHO, CDC), and official reports. Avoid secondary news articles, advocacy sites, and NGO pages unless they are the original publisher of the data.
+- Every quantitative claim (percentages, dollar amounts, ratios, rankings) must be directly stated in the cited source. Do not extrapolate, round up, or combine numbers from different sources to produce a new statistic.
+- If the exact number is uncertain, use qualifiers like "approximately", "at least", or cite a range rather than asserting false precision.
+- Do not cite URLs that require login, are paywalled without abstract, or are internal project URLs (e.g. warondisease.org, manual.warondisease.org).
+- Each provision's sourceUrls should contain only the 1-3 most relevant sources for that specific provision, not every source from the entire packet. Quality over quantity.
 - Keep operativeClauses short, statutory-style, and implementation-specific.
 - Keep the bill understandable to a normal citizen: plain English, short sentences, and minimal jargon.
 - Keep the bill concise: one short summary paragraph, a small number of core provisions, and no sprawling side quests.
@@ -1075,13 +1082,13 @@ function provisionToMarkdown(
   }
 
   lines.push('');
-  lines.push(`**Market mechanism:** ${provision.marketMechanism}${summaryRefs}`);
-  lines.push(`**Public-goods justification:** ${provision.publicGoodsJustification}${summaryRefs}`);
-  lines.push(`**Public-choice rationale:** ${provision.publicChoiceRationale}${summaryRefs}`);
+  lines.push(`**Market mechanism:** ${provision.marketMechanism}`);
+  lines.push(`**Public-goods justification:** ${provision.publicGoodsJustification}`);
+  lines.push(`**Public-choice rationale:** ${provision.publicChoiceRationale}`);
   lines.push(`**Pareto status:** ${paretoStatusLabel(provision.paretoStatus)}`);
-  lines.push(`**Pareto rationale:** ${provision.paretoRationale}${summaryRefs}`);
-  lines.push(`**Compensation mechanism:** ${provision.compensationMechanism}${summaryRefs}`);
-  lines.push(`**Residual rent handling:** ${provision.residualRentHandling}${summaryRefs}`);
+  lines.push(`**Pareto rationale:** ${provision.paretoRationale}`);
+  lines.push(`**Compensation mechanism:** ${provision.compensationMechanism}`);
+  lines.push(`**Residual rent handling:** ${provision.residualRentHandling}`);
 
   if (provision.currentCost || provision.newCost || provision.netSavings) {
     lines.push('');
@@ -1103,25 +1110,25 @@ function provisionToMarkdown(
   lines.push('');
   lines.push('**Capture risks:**');
   for (const risk of provision.captureRisks) {
-    lines.push(`- ${risk}${summaryRefs}`);
+    lines.push(`- ${risk}`);
   }
 
   lines.push('');
   lines.push('**Anti-capture safeguards:**');
   for (const safeguard of provision.antiCaptureSafeguards) {
-    lines.push(`- ${safeguard}${summaryRefs}`);
+    lines.push(`- ${safeguard}`);
   }
 
   lines.push('');
   lines.push('**Corruption risks:**');
   for (const risk of provision.corruptionRisks) {
-    lines.push(`- ${risk}${summaryRefs}`);
+    lines.push(`- ${risk}`);
   }
 
   lines.push('');
   lines.push('**Anti-corruption safeguards:**');
   for (const safeguard of provision.antiCorruptionSafeguards) {
-    lines.push(`- ${safeguard}${summaryRefs}`);
+    lines.push(`- ${safeguard}`);
   }
 
   lines.push('');

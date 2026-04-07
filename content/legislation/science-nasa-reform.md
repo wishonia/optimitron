@@ -31,8 +31,8 @@ Keeps science bills focused on research allocation, validation throughput, and t
 
 - **The NIH Allocation Bottleneck:** The NIH allocates only 3.3% of its budget to clinical trials, stranding promising discoveries in a 40% 'Valley of Death' attrition rate. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [2](https://pmc.ncbi.nlm.nih.gov/articles/PMC3324971)
 - **Pragmatic Trial Arbitrage:** Pragmatic clinical trials cost 97.7% less than traditional Phase 3 trials ($929 vs $41,000 per patient), offering a 44x cost reduction arbitrage that can dramatically scale research throughput. [3](https://commonfund.nih.gov/hcscollaboratory) [4](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6248200)
-- **The 8.2-Year Efficacy Lag:** Post-safety regulatory delays for efficacy testing cost 8.2 years per drug, resulting in over 100 million preventable deaths historically. [5](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [6](https://www.nber.org/papers/w25483)
-- **The Patient Participation Ceiling:** Current trial participation is artificially capped at 0.08%, despite 44.8% of patients being willing to participate, leaving a 565x physical scaling limit untapped. [7](https://www.fightcancer.org/policy-resources/barriers-patient-enrollment-therapeutic-clinical-trials-cancer) [8](https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-015-1105-3)
+- **The 8.2-Year Efficacy Lag:** Post-safety regulatory delays for efficacy testing cost 8.2 years per drug, resulting in millions of preventable deaths as patients wait years for access to safe treatments. [5](https://go.bio.org/rs/490-EHZ-999/images/ClinicalDevelopmentSuccessRates2011_2020.pdf) [6](https://www.nber.org/papers/w25483)
+- **The Patient Participation Ceiling:** Current trial participation is artificially capped at 0.08%, despite 44.8% of patients being willing to participate, leaving a theoretical 560x expansion in trial capacity untapped. [7](https://www.fightcancer.org/policy-resources/barriers-patient-enrollment-therapeutic-clinical-trials-cancer) [8](https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-015-1105-3)
 
 ## Purpose
 
@@ -58,29 +58,29 @@ To move the United States from rank 25/28 toward the Netherlands's top-tier scie
 **Summary:** Replaces the NIH with the dIH, mandating a shift to validation-first research allocation where 97% of the budget funds pragmatic clinical trials and 3% funds overhead. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
 **Modeled on:** Netherlands NWO/ZonMw efficiency targets, Wishonia dIH
 
-**Market mechanism:** Direct patient subsidies for trial participation proportional to disease burden (DALYs). [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
-**Public-goods justification:** Medical knowledge and clinical trial data are non-rivalrous public goods with a 2x R&D spillover multiplier. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
-**Public-choice rationale:** Legacy grant systems incentivize scientists to spend time writing proposals for peer review rather than conducting trials; direct patient subsidies bypass academic rent-seeking. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
+**Market mechanism:** Direct patient subsidies for trial participation proportional to disease burden (DALYs).
+**Public-goods justification:** Medical knowledge and clinical trial data are non-rivalrous public goods with a 2x R&D spillover multiplier.
+**Public-choice rationale:** Legacy grant systems incentivize scientists to spend time writing proposals for peer review rather than conducting trials; direct patient subsidies bypass academic rent-seeking.
 **Pareto status:** Compensated Pareto
-**Pareto rationale:** Citizens gain faster cures and lower taxes; displaced academic researchers and grant administrators receive transition assistance. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
-**Compensation mechanism:** Transition funding and severance packages for legacy NIH grant administrators and basic researchers. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
-**Residual rent handling:** Open data commons for all trial results (positive and negative) prevents data hoarding and publication bias. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
+**Pareto rationale:** Citizens gain faster cures and lower taxes; displaced academic researchers and grant administrators receive transition assistance.
+**Compensation mechanism:** Transition funding and severance packages for legacy NIH grant administrators and basic researchers.
+**Residual rent handling:** Open data commons for all trial results (positive and negative) prevents data hoarding and publication bias.
 
 **Capture risks:**
-- Academic institutions lobbying to retain basic research carve-outs. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
-- Incumbent research hospitals attempting to monopolize pragmatic trial networks. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
+- Academic institutions lobbying to retain basic research carve-outs.
+- Incumbent research hospitals attempting to monopolize pragmatic trial networks.
 
 **Anti-capture safeguards:**
-- Statutory cap of 3% on administrative overhead. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
-- Algorithmic funding allocation based on DALYs rather than peer-review committees. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
+- Statutory cap of 3% on administrative overhead.
+- Algorithmic funding allocation based on DALYs rather than peer-review committees.
 
 **Corruption risks:**
-- Fraudulent patient enrollment in pragmatic trials to capture subsidies. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
-- Falsification of trial data to secure milestone payments. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
+- Fraudulent patient enrollment in pragmatic trials to capture subsidies.
+- Falsification of trial data to secure milestone payments.
 
 **Anti-corruption safeguards:**
-- Cryptographic identity verification for patients. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
-- Open-ledger tracking of all trial fund flows via IPFS. [1](https://pmc.ncbi.nlm.nih.gov/articles/PMC10349341) [11](https://www.nih.gov/about-nih/organization/budget)
+- Cryptographic identity verification for patients.
+- Open-ledger tracking of all trial fund flows via IPFS.
 
 **Operative clauses:**
 - The National Institutes of Health is hereby abolished and replaced by the Optimal Institutes of Health.
@@ -137,39 +137,39 @@ To move the United States from rank 25/28 toward the Netherlands's top-tier scie
   **Response:** Real-time Outcome Labels provide better, continuous efficacy data than static trials, and patients with terminal illnesses cannot afford to wait 8 years. [6](https://www.nber.org/papers/w25483)
 ### Optimization Dividend and Savings Disposition
 
-**Summary:** Mandates that all structural savings generated by the transition to the dIH and dFDA, estimated at up to $314B annually, be returned directly to citizens as a cash dividend. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+**Summary:** Mandates that all structural savings generated by the transition to the dIH and dFDA, estimated at up to $314B annually, be returned directly to citizens as a cash dividend. [12](https://obg.warondisease.org)
 **Modeled on:** Wishonia Optimization Dividend, implementation_then_dividend rule
 
-**Market mechanism:** Direct cash transfers to citizens. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
-**Public-goods justification:** Returning surplus tax revenue directly to citizens maximizes individual utility and prevents bureaucratic budget maximization. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
-**Public-choice rationale:** Agencies naturally seek to absorb any efficiency savings into new programs; a statutory dividend forces the return of surplus funds to the taxpayers. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+**Market mechanism:** Direct cash transfers to citizens. [12](https://obg.warondisease.org)
+**Public-goods justification:** Returning surplus tax revenue directly to citizens maximizes individual utility and prevents bureaucratic budget maximization. [12](https://obg.warondisease.org)
+**Public-choice rationale:** Agencies naturally seek to absorb any efficiency savings into new programs; a statutory dividend forces the return of surplus funds to the taxpayers. [12](https://obg.warondisease.org)
 **Pareto status:** Compensated Pareto
-**Pareto rationale:** Citizens receive a direct cash benefit, offsetting any perceived loss of legacy government programs. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
-**Compensation mechanism:** The dividend itself compensates taxpayers for past inefficiencies. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
-**Residual rent handling:** Dividend distribution is automated and formulaic, preventing political targeting of funds. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+**Pareto rationale:** Citizens receive a direct cash benefit, offsetting any perceived loss of legacy government programs. [12](https://obg.warondisease.org)
+**Compensation mechanism:** The dividend itself compensates taxpayers for past inefficiencies. [12](https://obg.warondisease.org)
+**Residual rent handling:** Dividend distribution is automated and formulaic, preventing political targeting of funds. [12](https://obg.warondisease.org)
 
 **Capture risks:**
-- Congress attempting to divert the savings into other spending categories before the dividend is paid. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
-- Special interest groups lobbying for carve-outs from the savings pool. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+- Congress attempting to divert the savings into other spending categories before the dividend is paid. [12](https://obg.warondisease.org)
+- Special interest groups lobbying for carve-outs from the savings pool. [12](https://obg.warondisease.org)
 
 **Anti-capture safeguards:**
-- Automatic, algorithmic distribution of the dividend triggered by dCBO and dGAO verified savings reports. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
-- Statutory prohibition on redirecting dIH/dFDA savings to other federal agencies. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+- Automatic, algorithmic distribution of the dividend triggered by dCBO and dGAO verified savings reports. [12](https://obg.warondisease.org)
+- Statutory prohibition on redirecting dIH/dFDA savings to other federal agencies. [12](https://obg.warondisease.org)
 
 **Corruption risks:**
-- Embezzlement during the dividend distribution process. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
-- Identity fraud to claim multiple dividends. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+- Embezzlement during the dividend distribution process. [12](https://obg.warondisease.org)
+- Identity fraud to claim multiple dividends. [12](https://obg.warondisease.org)
 
 **Anti-corruption safeguards:**
-- Public ledger tracking of aggregate dividend disbursements. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
-- Cryptographic identity verification for dividend recipients. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+- Public ledger tracking of aggregate dividend disbursements. [12](https://obg.warondisease.org)
+- Cryptographic identity verification for dividend recipients. [12](https://obg.warondisease.org)
 
 **Operative clauses:**
 - All verified net savings from the abolition of the NIH and FDA shall be deposited into the Optimization Dividend Fund.
 - The Fund shall distribute its balance annually to all eligible citizens.
 
 **Expected impacts:**
-- **Annual Savings Returned to Citizens:** Up to $314B/yr. Represents the elimination of the 1.9x science/health overspend compared to the Netherlands baseline. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+- **Annual Savings Returned to Citizens:** Up to $314B/yr. Represents the elimination of the 1.9x science/health overspend compared to the Netherlands baseline. [12](https://obg.warondisease.org)
 
 **Implementation timeline:** First dividend paid 12 months after the full operational launch of the dIH and dFDA.
 
@@ -183,7 +183,7 @@ To move the United States from rank 25/28 toward the Netherlands's top-tier scie
 
 ## Fiscal Impact
 
-- **Elimination of the 1.9x Overspend and $314B Dividend:** By adopting the efficiency models of the Netherlands and leveraging the 44x cost reduction of pragmatic trials, the US can eliminate its 1.9x overspend in science and health research. This generates an estimated $314B in annual structural savings across the broader health and science budget, which will be distributed as an Optimization Dividend after accounting for transition costs. [12](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+- **Elimination of the 1.9x Overspend and $314B Dividend:** By adopting the efficiency models of the Netherlands and leveraging the 44x cost reduction of pragmatic trials, the US can eliminate its 1.9x overspend in science and health research. This generates an estimated $314B in annual structural savings across the broader health and science budget, which will be distributed as an Optimization Dividend after accounting for transition costs. [12](https://obg.warondisease.org)
 
 ## Implementation Timeline
 
@@ -225,7 +225,7 @@ To move the United States from rank 25/28 toward the Netherlands's top-tier scie
 9. [rethinkingclinicaltrials.org](https://rethinkingclinicaltrials.org)
 10. [elifesciences.org](https://elifesciences.org/articles/27860)
 11. [nih.gov](https://www.nih.gov/about-nih/organization/budget)
-12. [manual.warondisease.org](https://manual.warondisease.org/knowledge/appendix/political-dysfunction-tax.html)
+12. [obg.warondisease.org](https://obg.warondisease.org)
 
 ---
 
