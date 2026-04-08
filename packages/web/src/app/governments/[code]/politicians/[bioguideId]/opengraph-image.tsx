@@ -27,7 +27,7 @@ function fmt(v: number): string {
   return `$${v.toLocaleString()}`;
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 export default async function OGImage({ params }: { params: Promise<{ code: string; bioguideId: string }> }) {
   const { bioguideId } = await params;

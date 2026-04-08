@@ -76,7 +76,7 @@ function formatScore(value: number): string {
   return `${sign}${formatDollars(Math.abs(value))}`;
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400; // re-render at most once per day
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { code, bioguideId } = await params;

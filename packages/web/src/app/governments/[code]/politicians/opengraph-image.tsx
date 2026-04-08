@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { getGovernment } from "@optimitron/data";
 
 export const runtime = "nodejs";
+export const revalidate = 86400;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

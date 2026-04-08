@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
-import { GOVERNMENTS, getGovernment } from "@optimitron/data";
+import { getGovernment } from "@optimitron/data";
 
 export const runtime = "nodejs";
+export const revalidate = 86400;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -10,10 +11,6 @@ function fmt(v: number): string {
   if (v >= 1e9) return `$${(v / 1e9).toFixed(0)}B`;
   if (v >= 1e6) return `$${(v / 1e6).toFixed(0)}M`;
   return `$${v.toLocaleString()}`;
-}
-
-export function generateStaticParams() {
-  return GOVERNMENTS.map((g) => ({ code: g.code }));
 }
 
 export default async function OGImage({ params }: { params: Promise<{ code: string }> }) {

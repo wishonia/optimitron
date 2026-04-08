@@ -1,9 +1,7 @@
 import { ImageResponse } from "next/og";
 import {
-  GOVERNMENTS,
   getGovernment,
   getAgencyPerformance,
-  getAgencyPerformanceByCountry,
 } from "@optimitron/data";
 
 export const runtime = "nodejs";
@@ -17,15 +15,7 @@ function fmt(v: number): string {
   return `$${v.toLocaleString()}`;
 }
 
-export function generateStaticParams() {
-  const result: { code: string; agencyId: string }[] = [];
-  for (const gov of GOVERNMENTS) {
-    for (const a of getAgencyPerformanceByCountry(gov.code)) {
-      result.push({ code: gov.code, agencyId: a.agencyId });
-    }
-  }
-  return result;
-}
+export const revalidate = 86400;
 
 export default async function OGImage({ params }: { params: Promise<{ code: string; agencyId: string }> }) {
   const { code, agencyId } = await params;
