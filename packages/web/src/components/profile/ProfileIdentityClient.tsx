@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 import { ArcadeTag } from "@/components/ui/arcade-tag"
 import { PlayerNameBanner } from "@/components/dashboard/PlayerNameBanner"
 import { ProfileCard } from "@/components/dashboard/ProfileCard"
@@ -25,10 +26,12 @@ export function ProfileIdentityClient({
   linkedAuthProviderIds,
 }: ProfileIdentityClientProps) {
   const router = useRouter()
+  const { update: updateSession } = useSession()
   const [user, setUser] = useState(initialUser)
   const referralLink = buildUserReferralUrl(user)
 
   const refreshPage = () => {
+    void updateSession()
     router.refresh()
   }
 
