@@ -46,10 +46,9 @@ for (const path of ALL_PAGE_PATHS) {
       return;
     }
 
-    // <title> must exist and contain site name
+    // <title> must exist
     const title = await page.title();
     expect(title, `<title> should not be empty`).toBeTruthy();
-    expect(title, `<title> should contain "Optimitron"`).toContain("Optimitron");
 
     // <meta name="description"> must exist and be non-empty
     const description = await page

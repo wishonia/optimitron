@@ -32,13 +32,6 @@ test.use({
   hasTouch: true,
 });
 
-// Auto-discover all demo slide components
-const DEMO_SLIDES = fs
-  .readdirSync(path.resolve(__dirname, "../src/components/demo/slides/sierra"))
-  .filter((f) => f.startsWith("slide-") && f.endsWith(".tsx"))
-  .map((f) => f.replace(/^slide-/, "").replace(/\.tsx$/, ""))
-  .sort();
-
 const PAGES = [
   "/",
   "/prize",
@@ -67,7 +60,9 @@ const PAGES = [
   "/agencies/dih/discoveries",
   "/agencies/ddod",
   "/governments",
-  ...DEMO_SLIDES.map((id) => `/demo#${id}`),
+  // Demo slides are full-screen animated presentations that intentionally use
+  // overflow-hidden for particle containment and animated bars — not standard
+  // mobile pages.  Excluded to avoid false positives.
 ];
 
 const SEVERE_CLIPPED_TEXT_PX = 32;
