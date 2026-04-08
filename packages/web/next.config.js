@@ -98,4 +98,10 @@ module.exports = isDev
       project: "optimitron-web",
       silent: !process.env.CI,
       widenClientFileUpload: true,
+      sourcemaps: {
+        disable: !process.env.SENTRY_AUTH_TOKEN,
+      },
+      release: {
+        create: !!process.env.SENTRY_AUTH_TOKEN,
+      },
     }));
