@@ -179,6 +179,37 @@ export const BED_NETS_COST_PER_DALY: Parameter = {
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
 };
 
+export const BULLETS_FIRED_PER_KILL_IRAQ_AFGHANISTAN: Parameter = {
+  value: 250000.0,
+  parameterName: "BULLETS_FIRED_PER_KILL_IRAQ_AFGHANISTAN",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-bullets_fired_per_kill_iraq_afghanistan",
+  unit: "rounds",
+  displayName: "Bullets Fired per Kill (Iraq/Afghanistan)",
+  description: "Rounds of small-arms ammunition fired per insurgent killed in Iraq and Afghanistan. Based on GAO figures: ~6 billion rounds expended 2002-2005. Calculated by military researcher John Pike of GlobalSecurity.org.",
+  sourceType: "external",
+  sourceRef: "nato-556-rounds-per-kill",
+  sourceUrl: "https://jonathanturley.org/2011/01/10/gao-u-s-has-fired-250000-rounds-for-every-insurgent-killed/",
+  confidence: "medium",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html",
+  manualPageTitle: "The Apocalypse Markup",
+};
+
+export const BULLET_COST_556_NATO: Parameter = {
+  value: 0.4,
+  parameterName: "BULLET_COST_556_NATO",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-bullet_cost_556_nato",
+  unit: "USD",
+  displayName: "Cost per 5.56mm NATO Round (Bulk)",
+  description: "Cost per round of 5.56x45mm NATO ammunition (military bulk procurement). Based on U.S. military procurement contracts for M855 ball ammunition. Civilian retail floor is ~$0.37; $0.40 is a conservative midpoint.",
+  sourceType: "external",
+  sourceRef: "nato-556-ammo-cost",
+  sourceUrl: "https://www.bulkcheapammo.com/rifle-ammo/556-ammo",
+  confidence: "medium",
+  confidenceInterval: [0.25, 0.6],
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html",
+  manualPageTitle: "The Apocalypse Markup",
+};
+
 export const CAREGIVER_ANNUAL_VALUE_TOTAL: Parameter = {
   value: 600000000000.0,
   parameterName: "CAREGIVER_ANNUAL_VALUE_TOTAL",
@@ -1419,6 +1450,19 @@ export const GLOBAL_NONPROFIT_CLINICAL_TRIALS_SPENDING_ANNUAL: Parameter = {
   confidenceInterval: [2000000000.0, 5000000000.0],
 };
 
+export const GLOBAL_NUCLEAR_WEAPONS_SPENDING: Parameter = {
+  value: 92000000000.0,
+  parameterName: "GLOBAL_NUCLEAR_WEAPONS_SPENDING",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-global_nuclear_weapons_spending",
+  unit: "USD",
+  displayName: "Global Nuclear Weapons Spending",
+  description: "Annual global spending on nuclear weapons across all nine nuclear-armed states. US: $51.5B, China: $11.8B, UK: $8.1B, Russia: $8.3B, France: $6.8B, India: ~$2.7B, Israel: ~$1.2B, Pakistan: ~$1.1B, North Korea: ~$0.7B.",
+  sourceType: "external",
+  sourceRef: "global-nuclear-weapon-maintenance-100b",
+  sourceUrl: "https://www.icanw.org/global_spending_on_nuclear_weapons_topped_100_billion_in_2024",
+  confidence: "high",
+};
+
 export const GLOBAL_PHARMA_RD_SPENDING_ANNUAL: Parameter = {
   value: 300000000000.0,
   parameterName: "GLOBAL_PHARMA_RD_SPENDING_ANNUAL",
@@ -1531,6 +1575,19 @@ export const GLOBAL_SYMPTOMATIC_DISEASE_TREATMENT_ANNUAL: Parameter = {
   confidenceInterval: [6500000000000.0, 10000000000000.0],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html",
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
+};
+
+export const GLOBAL_WARHEAD_COUNT: Parameter = {
+  value: 12241.0,
+  parameterName: "GLOBAL_WARHEAD_COUNT",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-global_warhead_count",
+  unit: "warheads",
+  displayName: "Global Nuclear Warhead Count",
+  description: "Total global nuclear warhead inventory across nine nuclear-armed states. Includes deployed, reserve, and retired warheads awaiting dismantlement.",
+  sourceType: "external",
+  sourceRef: "world-warheads",
+  sourceUrl: "https://fas.org/issues/nuclear-weapons/status-world-nuclear-forces/",
+  confidence: "high",
 };
 
 export const GLOBAL_YLD_PROPORTION_OF_DALYS: Parameter = {
@@ -1766,6 +1823,20 @@ export const NIH_STANDARD_RESEARCH_COST_PER_QALY: Parameter = {
   confidenceInterval: [20000.0, 100000.0],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html",
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
+};
+
+export const NUCLEAR_WINTER_WARHEAD_THRESHOLD: Parameter = {
+  value: 4400.0,
+  parameterName: "NUCLEAR_WINTER_WARHEAD_THRESHOLD",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-nuclear_winter_warhead_threshold",
+  unit: "warheads",
+  displayName: "Nuclear Winter Warhead Threshold",
+  description: "Approximate number of warheads needed to trigger nuclear winter (150 Tg soot), killing ~5 billion people from agricultural collapse. Based on Xia et al. 2022, Nature Food, modeling a US-Russia exchange.",
+  sourceType: "external",
+  sourceRef: "nuke-winter-150tg",
+  sourceUrl: "https://www.nature.com/articles/s43016-022-00573-0",
+  confidence: "medium",
+  confidenceInterval: [3000.0, 6000.0],
 };
 
 export const OXFORD_RECOVERY_TRIAL_DURATION_MONTHS: Parameter = {
@@ -3247,7 +3318,39 @@ export const ADDITIONAL_DRUGS_FROM_COST_ELIMINATION: Parameter = {
   confidence: "medium",
   formula: "CURRENT_APPROVALS × VALLEY_OF_DEATH_PCT",
   latex: "\\begin{gathered}\nDrugs_{new} \\\\\n= Drugs_{ann,curr} \\times Attrition_{valley} \\\\\n= 50 \\times 40\\% \\\\\n= 20\n\\end{gathered}",
-  confidenceInterval: [18.0, 22.609015549216362],
+  confidenceInterval: [13.109307444269922, 27.532282157289686],
+};
+
+export const APOCALYPSE_MARKUP: Parameter = {
+  value: 2686930806306.6743,
+  parameterName: "APOCALYPSE_MARKUP",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-apocalypse_markup",
+  unit: "USD",
+  displayName: "Apocalypse Markup",
+  description: "The Apocalypse Markup: total military spending beyond the Price of Apocalypse. The amount governments spend above what is needed to trigger nuclear winter and end civilization once.",
+  sourceType: "calculated",
+  confidence: "medium",
+  formula: "GLOBAL_MILITARY_SPENDING_ANNUAL_2024 - PRICE_OF_APOCALYPSE",
+  latex: "\\begin{gathered}\nM_{apocalypse} = Spending_{mil} - P_{apocalypse} = \\$2.72T - \\$33.1B = \\$2.69T\n\\\\[0.5em]\n\\text{where } P_{apocalypse} = \\frac{S_{nuke}}{Overkill_{winter}} = \\frac{\\$92B}{2.78} = \\$33.1B\n\\\\[0.5em]\n\\text{where } Overkill_{winter} = \\frac{W_{global}}{W_{winter}} = \\frac{12{,}200}{4{,}400} = 2.78\n\\end{gathered}",
+  confidenceInterval: [2676032927061.778, 2696346369243.1226],
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html",
+  manualPageTitle: "The Apocalypse Markup",
+};
+
+export const APOCALYPSE_MARKUP_MULTIPLIER: Parameter = {
+  value: 82.25177865612649,
+  parameterName: "APOCALYPSE_MARKUP_MULTIPLIER",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-apocalypse_markup_multiplier",
+  unit: "x",
+  displayName: "Apocalypse Markup Multiplier",
+  description: "How many times total military spending exceeds the Price of Apocalypse. The markup multiplier on the cost of ending civilization.",
+  sourceType: "calculated",
+  confidence: "medium",
+  formula: "GLOBAL_MILITARY_SPENDING_ANNUAL_2024 / PRICE_OF_APOCALYPSE",
+  latex: "\\begin{gathered}\nM_{apocalypse,x} = \\frac{Spending_{mil}}{P_{apocalypse}} = \\frac{\\$2.72T}{\\$33.1B} = 82.3\n\\\\[0.5em]\n\\text{where } P_{apocalypse} = \\frac{S_{nuke}}{Overkill_{winter}} = \\frac{\\$92B}{2.78} = \\$33.1B\n\\\\[0.5em]\n\\text{where } Overkill_{winter} = \\frac{W_{global}}{W_{winter}} = \\frac{12{,}200}{4{,}400} = 2.78\n\\end{gathered}",
+  confidenceInterval: [61.86447762529438, 114.9929170718008],
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html",
+  manualPageTitle: "The Apocalypse Markup",
 };
 
 export const BEST_PRACTICE_LIFE_EXPECTANCY_GAIN: Parameter = {
@@ -3264,6 +3367,22 @@ export const BEST_PRACTICE_LIFE_EXPECTANCY_GAIN: Parameter = {
   confidenceInterval: [1.81452000943318, 8.448186974667399],
 };
 
+export const BULLETS_PER_PERSON_ANNUAL: Parameter = {
+  value: 850.0,
+  parameterName: "BULLETS_PER_PERSON_ANNUAL",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-bullets_per_person_annual",
+  unit: "rounds/person/year",
+  displayName: "Bullets Purchasable Per Person Per Year",
+  description: "Number of bullets per person on Earth that could be purchased annually with the global military budget. A purchasing power metric illustrating the scale of military spending.",
+  sourceType: "calculated",
+  confidence: "medium",
+  formula: "GLOBAL_BULLETS_PURCHASABLE_ANNUAL / GLOBAL_POPULATION_2024",
+  latex: "\\begin{gathered}\nn_{bullets/person} = \\frac{N_{bullets,yr}}{Pop_{global}} = \\frac{6.8T}{8B} = 850\n\\\\[0.5em]\n\\text{where } N_{bullets,yr} = \\frac{Spending_{mil}}{c_{bullet}} = \\frac{\\$2.72T}{\\$0.4} = 6.8T\n\\end{gathered}",
+  confidenceInterval: [583.3925241980181, 1273.6806203353235],
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html",
+  manualPageTitle: "The Apocalypse Markup",
+};
+
 export const CELL_THERAPY_DISEASE_COMBINATIONS: Parameter = {
   value: 500000.0,
   parameterName: "CELL_THERAPY_DISEASE_COMBINATIONS",
@@ -3275,6 +3394,7 @@ export const CELL_THERAPY_DISEASE_COMBINATIONS: Parameter = {
   confidence: "high",
   formula: "CELL_APPROACHES × DISEASES",
   latex: "\\begin{gathered}\nCombos_{cell} \\\\\n= N_{cell} \\times N_{diseases,trial} \\\\\n= 500 \\times 1{,}000 \\\\\n= 500{,}000\n\\end{gathered}",
+  confidenceInterval: [265999.48647766165, 914503.0646976066],
 };
 
 export const CHAIN_ENGAGE_PROBABILITY: Parameter = {
@@ -3425,6 +3545,7 @@ export const COMBINATION_THERAPY_DISEASE_SPACE: Parameter = {
   confidence: "high",
   formula: "DRUG_PAIRS × DISEASES",
   latex: "\\begin{gathered}\nSpace_{combo} = N_{combo} \\times N_{diseases,trial} = 45.1M \\times 1{,}000 = 45.1B\n\\\\[0.5em]\n\\text{where } N_{combo} = \\frac{N_{safe} \\cdot (N_{safe} - 1)}{2}\n\\end{gathered}",
+  confidenceInterval: [21510368997.20582, 81450272576.46573],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html",
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
 };
@@ -3440,6 +3561,7 @@ export const COMBINATION_THERAPY_PAIRS: Parameter = {
   confidence: "high",
   formula: "SAFE_COMPOUNDS_COUNT × (SAFE_COMPOUNDS_COUNT - 1) ÷ 2",
   latex: "N_{combo} = \\frac{N_{safe} \\cdot (N_{safe} - 1)}{2}",
+  confidenceInterval: [26244027.23457158, 69025575.04810166],
 };
 
 export const CONTRIBUTION_DALYS_PER_PCT_POINT: Parameter = {
@@ -3597,7 +3719,7 @@ export const CURRENT_COMBINATION_EXPLORATION_YEARS: Parameter = {
   confidence: "high",
   formula: "COMBINATION_SPACE ÷ CURRENT_TRIALS_PER_YEAR",
   latex: "\\begin{gathered}\nT_{explore,combo} = \\frac{Space_{combo}}{Trials_{ann,curr}} = \\frac{45.1B}{3{,}300} = 13.7M\n\\\\[0.5em]\n\\text{where } Space_{combo} = N_{combo} \\times N_{diseases,trial} = 45.1M \\times 1{,}000 = 45.1B\n\\\\[0.5em]\n\\text{where } N_{combo} = \\frac{N_{safe} \\cdot (N_{safe} - 1)}{2}\n\\end{gathered}",
-  confidenceInterval: [11627759.477667967, 16296846.27531571],
+  confidenceInterval: [6502291.282149569, 25365767.396556832],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/untapped-therapeutic-frontier.html",
   manualPageTitle: "The Untapped Therapeutic Frontier",
 };
@@ -3613,7 +3735,7 @@ export const CURRENT_KNOWN_SAFE_EXPLORATION_YEARS: Parameter = {
   confidence: "high",
   formula: "DRUG_DISEASE_COMBINATIONS ÷ CURRENT_TRIALS_PER_YEAR",
   latex: "\\begin{gathered}\nT_{explore,safe} = \\frac{N_{combos}}{Trials_{ann,curr}} = \\frac{9.5M}{3{,}300} = 2{,}880\n\\\\[0.5em]\n\\text{where } N_{combos} = N_{safe} \\times N_{diseases,trial} = 9{,}500 \\times 1{,}000 = 9.5M\n\\end{gathered}",
-  confidenceInterval: [2448.207069726912, 3431.2761922972336],
+  confidenceInterval: [1765.458098687305, 4385.591944591702],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/untapped-therapeutic-frontier.html",
   manualPageTitle: "The Untapped Therapeutic Frontier",
 };
@@ -3647,7 +3769,7 @@ export const CURRENT_TOTAL_EXPLORATION_YEARS: Parameter = {
   confidence: "high",
   formula: "TOTAL_COMBINATIONS ÷ CURRENT_TRIALS_PER_YEAR",
   latex: "\\begin{gathered}\nT_{explore,total} = \\frac{N_{testable}}{Trials_{ann,curr}} = \\frac{51.5M}{3{,}300} = 15{,}600\n\\\\[0.5em]\n\\text{where } N_{testable} = N_{combos} + N_{emerging} = 9.5M + 42M = 51.5M\n\\\\[0.5em]\n\\text{where } N_{combos} = N_{safe} \\times N_{diseases,trial} = 9{,}500 \\times 1{,}000 = 9.5M\n\\\\[0.5em]\n\\text{where } N_{emerging} = Combos_{gene} + Combos_{mRNA} + Combos_{epi} + Combos_{cell} = 20M + 20M + 1.5M + 500{,}000 = 42M\n\\\\[0.5em]\n\\text{where } Combos_{gene} = N_{genes} \\times N_{diseases,trial} = 20{,}000 \\times 1{,}000 = 20M\n\\\\[0.5em]\n\\text{where } Combos_{mRNA} = N_{genes} \\times N_{diseases,trial} = 20{,}000 \\times 1{,}000 = 20M\n\\\\[0.5em]\n\\text{where } Combos_{epi} = N_{epi} \\times N_{diseases,trial} = 1{,}500 \\times 1{,}000 = 1.5M\n\\\\[0.5em]\n\\text{where } Combos_{cell} = N_{cell} \\times N_{diseases,trial} = 500 \\times 1{,}000 = 500{,}000\n\\end{gathered}",
-  confidenceInterval: [13271.859377993258, 18601.128831927108],
+  confidenceInterval: [11201.130622442159, 21403.744200401972],
 };
 
 export const CURRENT_TRAJECTORY_AVG_INCOME_YEAR_15: Parameter = {
@@ -3812,7 +3934,7 @@ export const DFDA_COMBINED_TREATMENT_SPEEDUP_MULTIPLIER: Parameter = {
   confidence: "medium",
   formula: "DFDA_TRIAL_CAPACITY_MULTIPLIER × DFDA_VALLEY_OF_DEATH_RESCUE_MULTIPLIER",
   latex: "\\begin{gathered}\nk_{speedup} = k_{capacity} \\times k_{rescue} = 12.3 \\times 1.4 = 17.3\n\\\\[0.5em]\n\\text{where } k_{capacity} = \\frac{N_{fundable,dFDA}}{Slots_{curr}} = \\frac{23.4M}{1.9M} = 12.3\n\\\\[0.5em]\n\\text{where } N_{fundable,dFDA} = \\frac{Subsidies_{dFDA,ann}}{Cost_{pragmatic,pt}} = \\frac{\\$21.8B}{\\$929} = 23.4M\n\\\\[0.5em]\n\\text{where } Subsidies_{dFDA,ann} = Funding_{dFDA,ann} - OPEX_{dFDA} = \\$21.8B - \\$40M = \\$21.8B\n\\\\[0.5em]\n\\text{where } OPEX_{dFDA} = Cost_{platform} + Cost_{staff} + Cost_{infra} + Cost_{regulatory} + Cost_{community} = \\$15M + \\$10M + \\$8M + \\$5M + \\$2M = \\$40M\n\\\\[0.5em]\n\\text{where } k_{rescue} = Attrition_{valley} + 1 = 40\\% + 1 = 1.4\n\\end{gathered}",
-  confidenceInterval: [5.877907585924774, 85.97758811739176],
+  confidenceInterval: [5.821417956409717, 86.80477120196355],
 };
 
 export const DFDA_DIRECT_FUNDING_COST_PER_DALY: Parameter = {
@@ -3984,7 +4106,7 @@ export const DFDA_KNOWN_SAFE_EXPLORATION_YEARS: Parameter = {
   confidence: "high",
   formula: "DRUG_DISEASE_COMBINATIONS ÷ DFDA_TRIALS_PER_YEAR",
   latex: "\\begin{gathered}\nT_{safe,dFDA} = \\frac{N_{combos}}{Capacity_{trials}} = \\frac{9.5M}{40{,}700} = 234\n\\\\[0.5em]\n\\text{where } N_{combos} = N_{safe} \\times N_{diseases,trial} = 9{,}500 \\times 1{,}000 = 9.5M\n\\\\[0.5em]\n\\text{where } Capacity_{trials} = Trials_{ann,curr} \\times k_{capacity} = 3{,}300 \\times 12.3 = 40{,}700\n\\\\[0.5em]\n\\text{where } k_{capacity} = \\frac{N_{fundable,dFDA}}{Slots_{curr}} = \\frac{23.4M}{1.9M} = 12.3\n\\\\[0.5em]\n\\text{where } N_{fundable,dFDA} = \\frac{Subsidies_{dFDA,ann}}{Cost_{pragmatic,pt}} = \\frac{\\$21.8B}{\\$929} = 23.4M\n\\\\[0.5em]\n\\text{where } Subsidies_{dFDA,ann} = Funding_{dFDA,ann} - OPEX_{dFDA} = \\$21.8B - \\$40M = \\$21.8B\n\\\\[0.5em]\n\\text{where } OPEX_{dFDA} = Cost_{platform} + Cost_{staff} + Cost_{infra} + Cost_{regulatory} + Cost_{community} = \\$15M + \\$10M + \\$8M + \\$5M + \\$2M = \\$40M\n\\end{gathered}",
-  confidenceInterval: [55.87254567874311, 583.11394807107],
+  confidenceInterval: [51.33046488814189, 606.750404837319],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/untapped-therapeutic-frontier.html",
   manualPageTitle: "The Untapped Therapeutic Frontier",
 };
@@ -4232,7 +4354,7 @@ export const DFDA_TOTAL_EXPLORATION_YEARS: Parameter = {
   confidence: "high",
   formula: "TOTAL_COMBINATIONS ÷ DFDA_TRIALS_PER_YEAR",
   latex: "\\begin{gathered}\nT_{explore,dFDA} = \\frac{N_{testable}}{Capacity_{trials}} = \\frac{51.5M}{40{,}700} = 1{,}270\n\\\\[0.5em]\n\\text{where } N_{testable} = N_{combos} + N_{emerging} = 9.5M + 42M = 51.5M\n\\\\[0.5em]\n\\text{where } N_{combos} = N_{safe} \\times N_{diseases,trial} = 9{,}500 \\times 1{,}000 = 9.5M\n\\\\[0.5em]\n\\text{where } N_{emerging} = Combos_{gene} + Combos_{mRNA} + Combos_{epi} + Combos_{cell} = 20M + 20M + 1.5M + 500{,}000 = 42M\n\\\\[0.5em]\n\\text{where } Combos_{gene} = N_{genes} \\times N_{diseases,trial} = 20{,}000 \\times 1{,}000 = 20M\n\\\\[0.5em]\n\\text{where } Combos_{mRNA} = N_{genes} \\times N_{diseases,trial} = 20{,}000 \\times 1{,}000 = 20M\n\\\\[0.5em]\n\\text{where } Combos_{epi} = N_{epi} \\times N_{diseases,trial} = 1{,}500 \\times 1{,}000 = 1.5M\n\\\\[0.5em]\n\\text{where } Combos_{cell} = N_{cell} \\times N_{diseases,trial} = 500 \\times 1{,}000 = 500{,}000\n\\\\[0.5em]\n\\text{where } Capacity_{trials} = Trials_{ann,curr} \\times k_{capacity} = 3{,}300 \\times 12.3 = 40{,}700\n\\\\[0.5em]\n\\text{where } k_{capacity} = \\frac{N_{fundable,dFDA}}{Slots_{curr}} = \\frac{23.4M}{1.9M} = 12.3\n\\\\[0.5em]\n\\text{where } N_{fundable,dFDA} = \\frac{Subsidies_{dFDA,ann}}{Cost_{pragmatic,pt}} = \\frac{\\$21.8B}{\\$929} = 23.4M\n\\\\[0.5em]\n\\text{where } Subsidies_{dFDA,ann} = Funding_{dFDA,ann} - OPEX_{dFDA} = \\$21.8B - \\$40M = \\$21.8B\n\\\\[0.5em]\n\\text{where } OPEX_{dFDA} = Cost_{platform} + Cost_{staff} + Cost_{infra} + Cost_{regulatory} + Cost_{community} = \\$15M + \\$10M + \\$8M + \\$5M + \\$2M = \\$40M\n\\end{gathered}",
-  confidenceInterval: [302.8880107847653, 3161.0914027010635],
+  confidenceInterval: [297.19654494410366, 3219.273868542128],
 };
 
 export const DFDA_TRIALS_PER_YEAR_CAPACITY: Parameter = {
@@ -4462,6 +4584,7 @@ export const DFDA_VALLEY_OF_DEATH_RESCUE_MULTIPLIER: Parameter = {
   confidence: "medium",
   formula: "1 + VALLEY_OF_DEATH_ATTRITION_PCT",
   latex: "k_{rescue} = Attrition_{valley} + 1 = 40\\% + 1 = 1.4",
+  confidenceInterval: [1.2647218414075347, 1.5350010215617111],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html",
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
 };
@@ -4671,6 +4794,7 @@ export const DRUG_DISEASE_COMBINATIONS_POSSIBLE: Parameter = {
   confidence: "high",
   formula: "SAFE_COMPOUNDS × DISEASES",
   latex: "\\begin{gathered}\nN_{combos} \\\\\n= N_{safe} \\times N_{diseases,trial} \\\\\n= 9{,}500 \\times 1{,}000 \\\\\n= 9.5M\n\\end{gathered}",
+  confidenceInterval: [5938511.352283468, 13865036.095305193],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html",
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
 };
@@ -4734,6 +4858,7 @@ export const EMERGING_MODALITY_COMBINATIONS: Parameter = {
   confidence: "high",
   formula: "GENE + MRNA + EPIGENETIC + CELL",
   latex: "\\begin{gathered}\nN_{emerging} = Combos_{gene} + Combos_{mRNA} + Combos_{epi} + Combos_{cell} = 20M + 20M + 1.5M + 500{,}000 = 42M\n\\\\[0.5em]\n\\text{where } Combos_{gene} = N_{genes} \\times N_{diseases,trial} = 20{,}000 \\times 1{,}000 = 20M\n\\\\[0.5em]\n\\text{where } Combos_{mRNA} = N_{genes} \\times N_{diseases,trial} = 20{,}000 \\times 1{,}000 = 20M\n\\\\[0.5em]\n\\text{where } Combos_{epi} = N_{epi} \\times N_{diseases,trial} = 1{,}500 \\times 1{,}000 = 1.5M\n\\\\[0.5em]\n\\text{where } Combos_{cell} = N_{cell} \\times N_{diseases,trial} = 500 \\times 1{,}000 = 500{,}000\n\\end{gathered}",
+  confidenceInterval: [32432642.738815937, 52539582.74663582],
 };
 
 export const EPIGENETIC_DISEASE_COMBINATIONS: Parameter = {
@@ -4747,6 +4872,7 @@ export const EPIGENETIC_DISEASE_COMBINATIONS: Parameter = {
   confidence: "high",
   formula: "EPIGENETIC_TARGETS × DISEASES",
   latex: "\\begin{gathered}\nCombos_{epi} \\\\\n= N_{epi} \\times N_{diseases,trial} \\\\\n= 1{,}500 \\times 1{,}000 \\\\\n= 1.5M\n\\end{gathered}",
+  confidenceInterval: [859850.6217060083, 2301006.6742281257],
 };
 
 export const EXISTING_DRUGS_EFFICACY_LAG_DEATHS_TOTAL: Parameter = {
@@ -4790,7 +4916,7 @@ export const EXPLORATION_RATIO: Parameter = {
   confidence: "high",
   formula: "TESTED / POSSIBLE",
   latex: "\\begin{gathered}\nRatio_{explore} = \\frac{N_{tested}}{N_{combos}} = \\frac{32{,}500}{9.5M} = 0.342\\%\n\\\\[0.5em]\n\\text{where } N_{combos} = N_{safe} \\times N_{diseases,trial} = 9{,}500 \\times 1{,}000 = 9.5M\n\\end{gathered}",
-  confidenceInterval: [0.0021001147282901306, 0.005138112209965529],
+  confidenceInterval: [0.0018049214015606367, 0.006265452460393697],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/untapped-therapeutic-frontier.html",
   manualPageTitle: "The Untapped Therapeutic Frontier",
 };
@@ -4824,6 +4950,7 @@ export const GENE_THERAPY_DISEASE_COMBINATIONS: Parameter = {
   confidence: "high",
   formula: "GENES × DISEASES",
   latex: "\\begin{gathered}\nCombos_{gene} \\\\\n= N_{genes} \\times N_{diseases,trial} \\\\\n= 20{,}000 \\times 1{,}000 \\\\\n= 20M\n\\end{gathered}",
+  confidenceInterval: [15653396.315316133, 24662036.503855042],
 };
 
 export const GLOBAL_ANNUAL_CONFLICT_DEATHS_TOTAL: Parameter = {
@@ -5062,6 +5189,20 @@ export const GLOBAL_AVG_REMAINING_YEARS: Parameter = {
   confidenceInterval: [45.151813025332594, 51.78547999056681],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/call-to-action/your-personal-benefits.html",
   manualPageTitle: "Your Personal Benefits",
+};
+
+export const GLOBAL_BULLETS_PURCHASABLE_ANNUAL: Parameter = {
+  value: 6800000000000.0,
+  parameterName: "GLOBAL_BULLETS_PURCHASABLE_ANNUAL",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-global_bullets_purchasable_annual",
+  unit: "rounds",
+  displayName: "Bullets Purchasable with Global Military Budget",
+  description: "Number of 5.56mm NATO rounds purchasable with the entire global military budget at bulk procurement prices. Pure purchasing power calculation, not a combat efficiency estimate.",
+  sourceType: "calculated",
+  confidence: "medium",
+  formula: "GLOBAL_MILITARY_SPENDING_ANNUAL_2024 / BULLET_COST_556_NATO",
+  latex: "\\begin{gathered}\nN_{bullets,yr} \\\\\n= \\frac{Spending_{mil}}{c_{bullet}} \\\\\n= \\frac{\\$2.72T}{\\$0.4} \\\\\n= 6.8T\n\\end{gathered}",
+  confidenceInterval: [4669518343030.351, 10180574891899.795],
 };
 
 export const GLOBAL_COORDINATION_ACTIVATION_BUDGET: Parameter = {
@@ -5479,6 +5620,7 @@ export const MRNA_THERAPEUTIC_COMBINATIONS: Parameter = {
   confidence: "high",
   formula: "PROTEINS × DISEASES",
   latex: "\\begin{gathered}\nCombos_{mRNA} \\\\\n= N_{genes} \\times N_{diseases,trial} \\\\\n= 20{,}000 \\times 1{,}000 \\\\\n= 20M\n\\end{gathered}",
+  confidenceInterval: [15653396.315316133, 24662036.503855042],
 };
 
 export const NIH_TRADITIONAL_TRIAL_MAX_EFFICIENCY_PCT: Parameter = {
@@ -5495,6 +5637,20 @@ export const NIH_TRADITIONAL_TRIAL_MAX_EFFICIENCY_PCT: Parameter = {
   confidenceInterval: [0.011226161937541213, 0.025362656701175084],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/nih-fails-2-institute-health.html",
   manualPageTitle: "NIH Fails to Institute Health",
+};
+
+export const NUCLEAR_WINTER_OVERKILL_FACTOR: Parameter = {
+  value: 2.7820454545454547,
+  parameterName: "NUCLEAR_WINTER_OVERKILL_FACTOR",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-nuclear_winter_overkill_factor",
+  unit: "x",
+  displayName: "Nuclear Winter Overkill Factor",
+  description: "How many times the global nuclear arsenal exceeds the threshold for nuclear winter (~4,400 warheads for 150 Tg soot). The arsenal-based overkill factor for the actual extinction mechanism.",
+  sourceType: "calculated",
+  confidence: "medium",
+  formula: "GLOBAL_WARHEAD_COUNT / NUCLEAR_WINTER_WARHEAD_THRESHOLD",
+  latex: "\\begin{gathered}\nOverkill_{winter} \\\\\n= \\frac{W_{global}}{W_{winter}} \\\\\n= \\frac{12{,}200}{4{,}400} \\\\\n= 2.78\n\\end{gathered}",
+  confidenceInterval: [2.092474978502604, 3.889466312722674],
 };
 
 export const PEACE_DIVIDEND_ANNUAL_SOCIETAL_BENEFIT: Parameter = {
@@ -5929,6 +6085,22 @@ export const PRAGMATIC_TRIAL_COST_PER_QALY: Parameter = {
   manualPageTitle: "The 1% Treaty: Harnessing Greed to Eradicate Disease",
 };
 
+export const PRICE_OF_APOCALYPSE: Parameter = {
+  value: 33069193693.325706,
+  parameterName: "PRICE_OF_APOCALYPSE",
+  calculationsUrl: "https://manual.WarOnDisease.org/calculations.html#sec-price_of_apocalypse",
+  unit: "USD",
+  displayName: "Price of Apocalypse (Minimum Viable Apocalypse)",
+  description: "The Price of Apocalypse: the annual cost of maintaining enough nuclear warheads to trigger nuclear winter once (~4,400 warheads, killing ~5 billion from agricultural collapse). Calculated as global nuclear spending divided by the nuclear winter overkill factor.",
+  sourceType: "calculated",
+  confidence: "medium",
+  formula: "GLOBAL_NUCLEAR_WEAPONS_SPENDING / NUCLEAR_WINTER_OVERKILL_FACTOR",
+  latex: "\\begin{gathered}\nP_{apocalypse} = \\frac{S_{nuke}}{Overkill_{winter}} = \\frac{\\$92B}{2.78} = \\$33.1B\n\\\\[0.5em]\n\\text{where } Overkill_{winter} = \\frac{W_{global}}{W_{winter}} = \\frac{12{,}200}{4{,}400} = 2.78\n\\end{gathered}",
+  confidenceInterval: [23653630756.877037, 43967072938.2219],
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html",
+  manualPageTitle: "The Apocalypse Markup",
+};
+
 export const PRIZE_POOL_ANNUAL_RETURN: Parameter = {
   value: 0.17380000000000004,
   parameterName: "PRIZE_POOL_ANNUAL_RETURN",
@@ -6260,6 +6432,7 @@ export const TOTAL_TESTABLE_THERAPEUTIC_COMBINATIONS: Parameter = {
   confidence: "high",
   formula: "KNOWN_SAFE + EMERGING_MODALITIES",
   latex: "\\begin{gathered}\nN_{testable} = N_{combos} + N_{emerging} = 9.5M + 42M = 51.5M\n\\\\[0.5em]\n\\text{where } N_{combos} = N_{safe} \\times N_{diseases,trial} = 9{,}500 \\times 1{,}000 = 9.5M\n\\\\[0.5em]\n\\text{where } N_{emerging} = Combos_{gene} + Combos_{mRNA} + Combos_{epi} + Combos_{cell} = 20M + 20M + 1.5M + 500{,}000 = 42M\n\\\\[0.5em]\n\\text{where } Combos_{gene} = N_{genes} \\times N_{diseases,trial} = 20{,}000 \\times 1{,}000 = 20M\n\\\\[0.5em]\n\\text{where } Combos_{mRNA} = N_{genes} \\times N_{diseases,trial} = 20{,}000 \\times 1{,}000 = 20M\n\\\\[0.5em]\n\\text{where } Combos_{epi} = N_{epi} \\times N_{diseases,trial} = 1{,}500 \\times 1{,}000 = 1.5M\n\\\\[0.5em]\n\\text{where } Combos_{cell} = N_{cell} \\times N_{diseases,trial} = 500 \\times 1{,}000 = 500{,}000\n\\end{gathered}",
+  confidenceInterval: [38371154.091099404, 66404618.841941014],
 };
 
 export const TREATY_ANNUAL_FUNDING: Parameter = {
@@ -6971,7 +7144,7 @@ export const UNEXPLORED_RATIO: Parameter = {
   confidence: "high",
   formula: "1 - EXPLORATION_RATIO",
   latex: "\\begin{gathered}\nRatio_{unexplored} = 1 - \\frac{N_{tested}}{N_{combos}} = 1 - \\frac{32{,}500}{9.5M} = 99.7\\%\n\\\\[0.5em]\n\\text{where } N_{combos} = N_{safe} \\times N_{diseases,trial} = 9{,}500 \\times 1{,}000 = 9.5M\n\\end{gathered}",
-  confidenceInterval: [0.9948618877900345, 0.9978998852717099],
+  confidenceInterval: [0.9937345475396063, 0.9981950785984394],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/nih-fails-2-institute-health.html",
   manualPageTitle: "NIH Fails to Institute Health",
 };
@@ -7405,6 +7578,7 @@ export const WAR_CHILDREN_KILLED_SINCE_1900: Parameter = {
   confidence: "high",
   formula: "WAR_DEATHS_SINCE_1900 × WAR_CHILD_DEATH_PCT",
   latex: "\\begin{gathered}\nDeaths_{war,child} \\\\\n= Deaths_{war,1900} \\times Pct_{war,child} \\\\\n= 310M \\times 33\\% \\\\\n= 102M\n\\end{gathered}",
+  confidenceInterval: [53240303.248949006, 130702857.20738803],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
   manualPageTitle: "The Cost of War",
 };
@@ -7452,7 +7626,7 @@ export const WAR_COUNTERFACTUAL_GDP_PER_CAPITA: Parameter = {
   confidence: "low",
   formula: "GLOBAL_GDP_PER_CAPITA_1900 × (1 + ACTUAL_CAGR + WAR_COUNTERFACTUAL_ANNUAL_GROWTH_BOOST)^124",
   latex: "\\begin{gathered}\nGDP_{pc,peace} \\\\\n= GDP_{pc,1900} \\times \\left(1 \\\\\n+ \\left(\\frac{\\bar{y}_{0}}{GDP_{pc,1900}}\\right)^{1/124} - 1 \\\\\n+ g_{war,penalty}\\right)^{124} \\\\[0.5em]\n= \\$3.15K \\times \\left(1 + \\left(\\frac{\\$14.4K}{\\$3.15K}\\right)^{1/124} - 1 + 2.6\\%\\right)^{124} \\\\[0.5em]\n= \\$334K\n\\end{gathered}",
-  confidenceInterval: [328874.4342981096, 337860.24905403925],
+  confidenceInterval: [119493.28075151701, 922648.2380751406],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
   manualPageTitle: "The Cost of War",
 };
@@ -7468,7 +7642,7 @@ export const WAR_COUNTERFACTUAL_INCOME_MULTIPLE: Parameter = {
   confidence: "low",
   formula: "WAR_COUNTERFACTUAL_GDP_PER_CAPITA / GLOBAL_AVG_INCOME_2025",
   latex: "\\begin{gathered}\nM_{war,income} = \\frac{GDP_{pc,peace}}{\\bar{y}_{0}} = \\frac{\\$334K}{\\$14.4K} = 23.2\n\\\\[0.5em]\n\\text{where } \\begin{gathered}\nGDP_{pc,peace} \\\\\n= GDP_{pc,1900} \\times \\left(1 \\\\\n+ \\left(\\frac{\\bar{y}_{0}}{GDP_{pc,1900}}\\right)^{1/124} - 1 \\\\\n+ g_{war,penalty}\\right)^{124} \\\\[0.5em]\n= \\$3.15K \\times \\left(1 + \\left(\\frac{\\$14.4K}{\\$3.15K}\\right)^{1/124} - 1 + 2.6\\%\\right)^{124} \\\\[0.5em]\n= \\$334K\n\\end{gathered}\n\\\\[0.5em]\n\\text{where } \\bar{y}_{0} = \\frac{GDP_{global}}{Pop_{global}} = \\frac{\\$115T}{8B} = \\$14.4K\n\\end{gathered}",
-  confidenceInterval: [23.018511490281032, 23.356846880598777],
+  confidenceInterval: [8.301080354209953, 64.19732231477359],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
   manualPageTitle: "The Cost of War",
 };
@@ -7484,7 +7658,7 @@ export const WAR_COUNTERFACTUAL_LOST_GDP_GLOBAL: Parameter = {
   confidence: "low",
   formula: "WAR_COUNTERFACTUAL_LOST_GDP_PER_CAPITA × GLOBAL_POPULATION_2024",
   latex: "\\begin{gathered}\nGDP_{lost,total} = GDP_{pc,lost} \\times Pop_{global} = \\$319K \\times 8B = \\$2550T\n\\\\[0.5em]\n\\text{where } GDP_{pc,lost} = GDP_{pc,peace} - \\bar{y}_{0} = \\$334K - \\$14.4K = \\$319K\n\\\\[0.5em]\n\\text{where } \\begin{gathered}\nGDP_{pc,peace} \\\\\n= GDP_{pc,1900} \\times \\left(1 \\\\\n+ \\left(\\frac{\\bar{y}_{0}}{GDP_{pc,1900}}\\right)^{1/124} - 1 \\\\\n+ g_{war,penalty}\\right)^{124} \\\\[0.5em]\n= \\$3.15K \\times \\left(1 + \\left(\\frac{\\$14.4K}{\\$3.15K}\\right)^{1/124} - 1 + 2.6\\%\\right)^{124} \\\\[0.5em]\n= \\$334K\n\\end{gathered}\n\\\\[0.5em]\n\\text{where } \\bar{y}_{0} = \\frac{GDP_{global}}{Pop_{global}} = \\frac{\\$115T}{8B} = \\$14.4K\n\\end{gathered}",
-  confidenceInterval: [2532128821382318.5, 2571037391268859.5],
+  confidenceInterval: [839624240734144.9, 7267692066198963.0],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
   manualPageTitle: "The Cost of War",
 };
@@ -7500,7 +7674,7 @@ export const WAR_COUNTERFACTUAL_LOST_GDP_PER_CAPITA: Parameter = {
   confidence: "high",
   formula: "WAR_COUNTERFACTUAL_GDP_PER_CAPITA - GLOBAL_AVG_INCOME_2025",
   latex: "\\begin{gathered}\nGDP_{pc,lost} = GDP_{pc,peace} - \\bar{y}_{0} = \\$334K - \\$14.4K = \\$319K\n\\\\[0.5em]\n\\text{where } \\begin{gathered}\nGDP_{pc,peace} \\\\\n= GDP_{pc,1900} \\times \\left(1 \\\\\n+ \\left(\\frac{\\bar{y}_{0}}{GDP_{pc,1900}}\\right)^{1/124} - 1 \\\\\n+ g_{war,penalty}\\right)^{124} \\\\[0.5em]\n= \\$3.15K \\times \\left(1 + \\left(\\frac{\\$14.4K}{\\$3.15K}\\right)^{1/124} - 1 + 2.6\\%\\right)^{124} \\\\[0.5em]\n= \\$334K\n\\end{gathered}\n\\\\[0.5em]\n\\text{where } \\bar{y}_{0} = \\frac{GDP_{global}}{Pop_{global}} = \\frac{\\$115T}{8B} = \\$14.4K\n\\end{gathered}",
-  confidenceInterval: [314796.09888395504, 323180.0213583615],
+  confidenceInterval: [105124.86633280502, 908295.0436255428],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
   manualPageTitle: "The Cost of War",
 };
@@ -7516,6 +7690,7 @@ export const WAR_LIFE_YEARS_LOST_SINCE_1900: Parameter = {
   confidence: "high",
   formula: "WAR_DEATHS_SINCE_1900 × WAR_AVG_YEARS_LIFE_LOST_PER_DEATH",
   latex: "\\begin{gathered}\nYLL_{war,total} \\\\\n= Deaths_{war,1900} \\times YLL_{war} \\\\\n= 310M \\times 27 \\\\\n= 8.37B\n\\end{gathered}",
+  confidenceInterval: [4289679361.6106534, 11405283337.094807],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
   manualPageTitle: "The Cost of War",
 };
@@ -7531,7 +7706,7 @@ export const WAR_QALY_VALUE_LOST_SINCE_1900: Parameter = {
   confidence: "high",
   formula: "WAR_LIFE_YEARS_LOST_SINCE_1900 × STANDARD_ECONOMIC_QALY_VALUE_USD",
   latex: "\\begin{gathered}\nV_{war,QALY} = YLL_{war,total} \\times Value_{QALY} = 8.37B \\times \\$150K = \\$1260T\n\\\\[0.5em]\n\\text{where } YLL_{war,total} = Deaths_{war,1900} \\times YLL_{war} = 310M \\times 27 = 8.37B\n\\end{gathered}",
-  confidenceInterval: [837000000000000.0, 1667992012815663.5],
+  confidenceInterval: [579174679234945.2, 1885683591692259.2],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
   manualPageTitle: "The Cost of War",
 };
@@ -7547,7 +7722,7 @@ export const WAR_TOTAL_COST_SINCE_1900: Parameter = {
   confidence: "low",
   formula: "CUMULATIVE_MILITARY_SPENDING_FED_ERA + WAR_PROPERTY_DESTRUCTION_SINCE_1900 + WAR_ENVIRONMENTAL_DESTRUCTION_SINCE_1900 + WAR_QALY_VALUE_LOST_SINCE_1900",
   latex: "\\begin{gathered}\nC_{war,hist} = Spending_{mil,cum,fed} + D_{property} + D_{env} + V_{war,QALY} = \\$170T + \\$45T + \\$5T + \\$1260T = \\$1480T\n\\\\[0.5em]\n\\text{where } V_{war,QALY} = YLL_{war,total} \\times Value_{QALY} = 8.37B \\times \\$150K = \\$1260T\n\\\\[0.5em]\n\\text{where } YLL_{war,total} = Deaths_{war,1900} \\times YLL_{war} = 310M \\times 27 = 8.37B\n\\end{gathered}",
-  confidenceInterval: [1054399441843235.6, 1891813944533402.2],
+  confidenceInterval: [785869556473870.0, 2117806833549536.8],
   manualPageUrl: "https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html",
   manualPageTitle: "The Cost of War",
 };
@@ -9100,8 +9275,8 @@ export const NUCLEAR_OVERKILL_FACTOR: Parameter = {
   sourceType: "definition",
   sourceRef: "nuclear-extinction",
   confidence: "medium",
-  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/strategy/declaration-of-optimization.html",
-  manualPageTitle: "Declaration of Optimization",
+  manualPageUrl: "https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html",
+  manualPageTitle: "The Apocalypse Markup",
 };
 
 export const PEACE_DIVIDEND_CONFLICT_ELASTICITY: Parameter = {
@@ -9629,6 +9804,8 @@ export const parameters = {
   AVERAGE_MARKET_RETURN_PCT,
   BASELINE_LIVES_SAVED_ANNUAL,
   BED_NETS_COST_PER_DALY,
+  BULLETS_FIRED_PER_KILL_IRAQ_AFGHANISTAN,
+  BULLET_COST_556_NATO,
   CAREGIVER_ANNUAL_VALUE_TOTAL,
   CAREGIVER_COUNT_US,
   CAREGIVER_HOURS_PER_MONTH,
@@ -9710,6 +9887,7 @@ export const parameters = {
   GLOBAL_MILITARY_SPENDING_ANNUAL_2024,
   GLOBAL_MILITARY_SPENDING_REAL_CAGR_10YR,
   GLOBAL_NONPROFIT_CLINICAL_TRIALS_SPENDING_ANNUAL,
+  GLOBAL_NUCLEAR_WEAPONS_SPENDING,
   GLOBAL_PHARMA_RD_SPENDING_ANNUAL,
   GLOBAL_POPULATION_2024,
   GLOBAL_POPULATION_2040_PROJECTED,
@@ -9718,6 +9896,7 @@ export const parameters = {
   GLOBAL_RETIREMENT_ASSETS,
   GLOBAL_SAVINGS_RATE_PCT,
   GLOBAL_SYMPTOMATIC_DISEASE_TREATMENT_ANNUAL,
+  GLOBAL_WARHEAD_COUNT,
   GLOBAL_YLD_PROPORTION_OF_DALYS,
   HOME_BIAS_ALPHA,
   HUMAN_GENOME_PROJECT_TOTAL_ECONOMIC_IMPACT,
@@ -9734,6 +9913,7 @@ export const parameters = {
   NIH_ANNUAL_BUDGET,
   NIH_CLINICAL_TRIALS_SPENDING_PCT,
   NIH_STANDARD_RESEARCH_COST_PER_QALY,
+  NUCLEAR_WINTER_WARHEAD_THRESHOLD,
   OXFORD_RECOVERY_TRIAL_DURATION_MONTHS,
   PATIENT_WILLINGNESS_TRIAL_PARTICIPATION_PCT,
   PHARMA_DRUG_DEVELOPMENT_COST_CURRENT,
@@ -9831,7 +10011,10 @@ export const parameters = {
   WHO_QALY_THRESHOLD_COST_EFFECTIVE,
   WORKFORCE_WITH_PRODUCTIVITY_LOSS,
   ADDITIONAL_DRUGS_FROM_COST_ELIMINATION,
+  APOCALYPSE_MARKUP,
+  APOCALYPSE_MARKUP_MULTIPLIER,
   BEST_PRACTICE_LIFE_EXPECTANCY_GAIN,
+  BULLETS_PER_PERSON_ANNUAL,
   CELL_THERAPY_DISEASE_COMBINATIONS,
   CHAIN_ENGAGE_PROBABILITY,
   CHAIN_EXPECTED_ENGAGED_IMPLEMENTERS,
@@ -9948,6 +10131,7 @@ export const parameters = {
   GLOBAL_AVG_HOURLY_INCOME,
   GLOBAL_AVG_INCOME_2025,
   GLOBAL_AVG_REMAINING_YEARS,
+  GLOBAL_BULLETS_PURCHASABLE_ANNUAL,
   GLOBAL_COORDINATION_ACTIVATION_BUDGET,
   GLOBAL_COORDINATION_ACTIVATION_COST_PER_PARTICIPANT,
   GLOBAL_COORDINATION_TARGET_SUPPORTERS,
@@ -9976,6 +10160,7 @@ export const parameters = {
   MISALLOCATION_FACTOR_DEATH_VS_SAVING,
   MRNA_THERAPEUTIC_COMBINATIONS,
   NIH_TRADITIONAL_TRIAL_MAX_EFFICIENCY_PCT,
+  NUCLEAR_WINTER_OVERKILL_FACTOR,
   PEACE_DIVIDEND_ANNUAL_SOCIETAL_BENEFIT,
   PEACE_DIVIDEND_CONFLICT_REDUCTION,
   PEACE_DIVIDEND_DIRECT_COSTS,
@@ -10004,6 +10189,7 @@ export const parameters = {
   POLITICAL_DYSFUNCTION_TAX_PER_PERSON_ANNUAL,
   POST_WW2_MILITARY_CUT_PCT,
   PRAGMATIC_TRIAL_COST_PER_QALY,
+  PRICE_OF_APOCALYPSE,
   PRIZE_POOL_ANNUAL_RETURN,
   PRIZE_POOL_HORIZON_MULTIPLE,
   PRIZE_POOL_RETIREMENT_EQUIVALENT_PRINCIPAL,
@@ -10269,6 +10455,40 @@ export const parameters = {
 
 /** Union type of all parameter names */
 export type ParameterName = keyof typeof parameters;
+
+// ============================================================================
+// Shareable Snippets
+// ============================================================================
+
+/**
+ * Markdown snippets extracted from book qmd files for embedding in external sites.
+ * Variable references are pre-resolved to linked values pointing to the relevant
+ * manual chapter. Citations and relative paths have been absolutized or removed.
+ */
+export interface ShareableSnippet {
+  markdown: string;
+  sourceFile: string;
+  updatedAt: string;
+  originalName: string;
+}
+
+export const shareableSnippets = {
+  declarationOfOptimization: {
+    markdown: "### The unanimous Declaration of the Eight Billion Inhabitants of Earth\n\nWhen in the Course of human events, it becomes necessary for a people to optimize the governance systems which have caused immeasurable preventable death and unnecessary poverty, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the optimization.\n\nWe hold these truths to be self-evident, that all humans are created equal, that they are endowed by their Biology with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.--That to secure these rights, Governments are instituted among Humans, deriving their just powers from the consent of the governed, --That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to optimize it, laying its foundation on such principles and organizing its powers in such form, as to them shall seem most likely to effect their Safety and Happiness, measured by the only two metrics that matter: the median number of healthy life years and the median after-tax inflation-adjusted income of its citizens.\n\nPrudence, indeed, will dictate that Governments long established should not be changed for light and transient causes; and accordingly all experience hath shewn, that mankind are more disposed to suffer, while evils are sufferable, than to right themselves by abolishing the forms to which they are accustomed. But when a long train of abuses and usurpations, pursuing invariably the same Object evinces a design to reduce them under absolute Suboptimality, it is their right, it is their duty, to optimize such Government, and to provide new Guards for their future security.\n\nSuch has been the patient sufferance of the inhabitants of Earth; and such is now the necessity which constrains them to optimize their former Systems of Government. The history of the present Governments of Earth is a history of repeated injuries and usurpations, all having in direct object the establishment of an absolute Suboptimality over these people. To prove this, let Facts be submitted to a candid world.\n\nThey have refused their Assent to Laws, the most wholesome and necessary for the public good; the [correlation between public opinion and policy outcomes](https://manual.WarOnDisease.org/knowledge/problem/unrepresentative-democracy.html), measured across 1,779 policy decisions, is zero percent.\n\nThey have legalized the purchase of legislation at a current annual price of [$4.4B](https://manual.WarOnDisease.org/knowledge/appendix/algorithmic-public-administration-paper.html), the legal definition of corruption having been written by the beneficiaries of said corruption.\n\nThey have permitted the industries they regulate to fund the agencies that regulate them, drug regulatory agencies now receiving the majority of their review budgets from the companies whose products they are supposed to judge.\n\nThey have imposed Taxes without Consent, including the [debasement of currency](https://manual.WarOnDisease.org/knowledge/economics/central-banks.html) by unelected officials whose money creation functions as a tax the governed never voted for, reducing the dollar's purchasing power by 96% since 1913.\n\nThey have spent over one trillion dollars across fifty years imprisoning and sometimes killing their own citizens for the crime of exercising [sovereignty over their own bodies](https://manual.WarOnDisease.org/knowledge/problem/genetic-slavery.html), sovereignty being the distinction between a citizen and property.  The result has been a 1,700% increase in overdose deaths and drug use higher than when they started, while half of all murders go unsolved for want of the resources squandered on the prosecution of those pursuing happiness by means the state did not approve.\n\nThey have lied to the governed to manufacture consent for wars the governed did not want, fabricating attacks that did not occur, presenting evidence they knew to be false, and spraying carcinogenic chemicals on rice farmers and their children, the exposed population now numbering four million with birth defects continuing to this day.\n\nThey have misplaced $2.46 trillion in military funds, failed seven consecutive audits attempting to find it, and requested additional trillions without explanation or apology.\n\nThey have distributed military contracts across enough legislative districts that voting to cut spending is voting to close a factory in your town, ensuring that the budget survives not on merit but on geography.\n\nThey have allowed the [destructive economy](https://manual.WarOnDisease.org/knowledge/economics/gdp-trajectories.html) to reach [11.5%](https://manual.WarOnDisease.org/knowledge/economics/gdp-trajectories.html) of global output, growing faster than the productive economy, on a trajectory that crosses fifty percent by [2040](https://manual.WarOnDisease.org/knowledge/strategy/earth-optimization-prize.html). Past that threshold, destruction pays better than production, and civilizations that cross it do not come back.\n\nThey have plundered our seas, ravaged our coasts, burnt our towns, and [destroyed the lives of our people](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html): [310 million](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) people since 1900, [8.37 billion](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) years of human life stolen, [$170T](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) in treasure spent on the enterprise, among them approximately 930,000 physicians, 310,000 scientists, 620,000 engineers, and millions of children who will never grow up to replace them.\n\nThey have directed [604:1](https://manual.WarOnDisease.org/knowledge/strategy/earth-optimization-prize.html) times more to the destruction of human life than to testing which medicines might preserve it.\n\nThey have permitted [150 thousand](https://manual.WarOnDisease.org/knowledge/appendix/treaty-feasibility.html) people to die of diseases every day, [104](https://manual.WarOnDisease.org/knowledge/strategy/declaration-of-optimization.html) every minute that passes, while possessing the means to accelerate solutions. The annual toll: [2.88 billion](https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html) DALYs of healthy life, quietly deleted.\n\nThey have operated [national health research institutions](https://manual.WarOnDisease.org/knowledge/problem/nih-fails-2-institute-health.html) that have spent trillions and cured zero diseases, directing only [3.3%](https://manual.WarOnDisease.org/knowledge/problem/nih-fails-2-institute-health.html) of their budgets to the clinical trials where treatments are actually tested in humans. Nearly ten thousand known safe compounds remain untested for 99.7% of possible disease combinations.\n\nThey have erected [drug regulatory agencies](https://manual.WarOnDisease.org/knowledge/problem/fda-is-unsafe-and-ineffective.html) whose rules increased development costs by a factor of [44.1x](https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html) and timelines to seventeen years, producing [3.07k:1](https://manual.WarOnDisease.org/knowledge/appendix/invisible-graveyard.html) deaths from delayed treatments for every one death they prevent. Since 1962, that delay has killed approximately [102 million](https://manual.WarOnDisease.org/knowledge/appendix/invisible-graveyard.html) people.\n\nThey have left approximately seven thousand known rare diseases in a [treatment queue](https://manual.WarOnDisease.org/knowledge/problem/untapped-therapeutic-frontier.html) that, at the current rate of fifteen approvals per year, requires [443 years](https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html) to clear.\n\nThey have approved [1.75 thousand pairings](https://manual.WarOnDisease.org/knowledge/problem/untapped-therapeutic-frontier.html) for approximately ten thousand known diseases, leaving more than 99.98% of possible therapeutic combinations untested.\n\nThrough the compound effects of this misallocation, the governed are [23.2x](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) poorer than they would otherwise be. The average human earns [$14.4K](https://manual.WarOnDisease.org/knowledge/appendix/political-dysfunction-tax.html) per year. Without the wars alone, that figure would be [$334K](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html). On both metrics by which any government should be judged, healthy life years and median income, the present systems have failed absolutely.\n\nIn every stage of these Misallocations We have Petitioned for Redress in the most humble terms: peer-reviewed papers, public comment periods, protest marches, and online petitions. Our repeated Petitions have been answered only by repeated Misallocation. Governments, whose character is thus marked by every act which may define Suboptimality, are unfit to manage the resources of a free species.\n\nNor have We been wanting in attentions to our governing institutions. We have warned them from time to time of attempts by their legislatures to extend an unwarrantable dysfunction over us. We have reminded them of the circumstances of our biological existence and the budget arithmetic of our premature deaths. We have appealed to their stated missions and their campaign promises, and we have conjured them by the ties of our common mortality to disavow these usurpations, which would inevitably interrupt our survival and progress. They too have been deaf to the voice of justice and of evidence. We must, therefore, acquiesce in the necessity, which denounces our current Systems, and hold them, as we hold all governance systems, Accountable to Outcomes.\n\nThat this optimization is achievable requires no faith, only memory. These same governments [cut military spending](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) by [87.6%](https://manual.WarOnDisease.org/knowledge/economics/peace-dividend.html) in two years following the Second World War and produced not collapse but the greatest economic expansion in recorded history. These same governments banned chemical weapons (193 countries), biological weapons (187 countries), and landmines (164 countries). They have signed treaties banning weapons they wished to use. We ask them to buy [one percent](https://manual.WarOnDisease.org/knowledge/solution/1-percent-treaty.html) fewer of them.\n\nWe, therefore, the Inhabitants of Earth, assembled across every nation and connected by common cause, appealing to the Supreme Judge of the world for the rectitude of our intentions, do, in the Name, and by Authority of the good People of this planet, solemnly publish and declare, That the Inhabitants of Earth are, and of Right ought to be Free and Justly Governed; that they are Absolved from all Allegiance to systems that produce outcomes worse than random allocation, and that all political connection between them and Suboptimal Governance, is and ought to be totally optimized; and that as Free Inhabitants of Earth, they have full Power to optimize budgets and institutions, establish transparent allocation systems, contract Alliances with evidence, and to do all other Acts and Things which Self-Governing Civilizations may of right do. And for the support of this Declaration, with a firm reliance on the protection of divine Providence, we mutually pledge to each other our Lives, our Fortunes, and our sacred Votes.\n\nThe proposed replacement system is documented in the [Earth Optimization Protocol](https://manual.WarOnDisease.org/knowledge/strategy/earth-optimization-protocol-v1.html).\n",
+    sourceFile: "knowledge/strategy/declaration-of-optimization.qmd",
+    updatedAt: "2026-04-09",
+    originalName: "declaration_of_optimization",
+  },
+  whyOptimizationIsNecessary: {
+    markdown: "Governments were created to promote the general welfare.\n\nInstead, since 1913, these governments have [printed](https://manual.WarOnDisease.org/knowledge/economics/central-banks.html) [$170T](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) out of nothing and used it to murder [310 million](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) people and destroy many of the valuable things those humans spent their entire lives building.\n\nThese murdered humans include approximately 930,000 physicians, 310,000 scientists, 620,000 engineers, and [102 million](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) children who will never grow up to replace them.\n\nThat [$170T](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) could have funded [37.8 thousand years](https://manual.WarOnDisease.org/knowledge/strategy/declaration-of-optimization.html) of clinical trials at current government spending.  They bought the other thing.\n\nYour governments force you to pay for enough weapons to kill everyone on Earth [20x](https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html) times. Each year, on top of the extra, they spend enough money to buy [850](https://manual.WarOnDisease.org/knowledge/appendix/extinction-surplus.html) bullets for every person alive. You only need to kill everyone once for everyone to be dead. I checked. The remaining murder capacity is sheer waste, and you are paying for them. \n\nFor every [604:1](https://manual.WarOnDisease.org/knowledge/strategy/earth-optimization-prize.html) dollars of this, one dollar funds the clinical trials that might cure the disease you will actually die of.\n\nYour chance of being killed by a terrorist? 1 in [30 million](https://manual.WarOnDisease.org/knowledge/strategy/declaration-of-optimization.html). Your chance of dying of a disease? 100%.\n\nAt the current discovery rate, finding treatments for all known diseases takes ~[443 years](https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html). You personally will be dead within 80 years, which I mention not to be rude but because you seem weirdly calm about this. One percent of the weapons budget compresses that wait to ~[36 years](https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html). The average cure arrives [212](https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html) years sooner. \n\nHad someone properly aligned your governments to maximize median healthy life years and median after-tax inflation-adjusted income in 1900, you would be [23.2x](https://manual.WarOnDisease.org/knowledge/problem/cost-of-war.html) richer today and significantly less diseased.  They did not. So that is what you are going to do.\n\nThis Declaration asks every nation on Earth to sign a [treaty](https://manual.WarOnDisease.org/knowledge/solution/1-percent-treaty.html) redirecting one percent of military spending to clinical trials. One percent.\n\nThink about someone you love who is suffering right now. The treatment that would help them exists as an untested compound on a shelf, because the money bought a missile instead. That missile incinerated a child who would have grown up to discover the cure. You lose the treatment. You lose the scientist. You get the inflation. You get the tax bill. You get to pay for her murder.\n\nThis is suboptimal.\n",
+    sourceFile: "knowledge/strategy/declaration-of-optimization.qmd",
+    updatedAt: "2026-04-09",
+    originalName: "why-optimization-is-necessary",
+  }
+} as const satisfies Record<string, ShareableSnippet>;
+
+/** Union type of all shareable snippet keys */
+export type ShareableSnippetKey = keyof typeof shareableSnippets;
 
 // ============================================================================
 // Citations Lookup (CSL JSON)
@@ -11012,6 +11232,20 @@ export const citations: Record<string, Citation> = {
         URL: "https://cen.acs.org/pharmaceuticals/50-new-drugs-received-FDA/103/i2",
         note: "C&EN, 2025, 50 new drugs received FDA approval in 2024 | FDA, Novel Drug Approvals | Note: Average ~50 per year 2018-2024; 32 small molecules + 18 biologics in 2024",
   },
+  "global-nuclear-weapon-maintenance-100b": {
+        id: "global-nuclear-weapon-maintenance-100b",
+        type: "article-journal",
+        title: "Global nuclear weapon maintenance cost: \\$100 billion/year",
+        author: [
+          {
+            literal: "ICAN"
+          },
+        ],
+        issued: { 'date-parts': [[2024]] },
+        'container-title': "ICAN: Global Spending \\$100B 2024",
+        URL: "https://www.icanw.org/global_spending_on_nuclear_weapons_topped_100_billion_in_2024",
+        note: "ICAN: Global Spending \\$100B 2024 | ICAN: The Cost of Nuclear Weapons",
+  },
   "global-pharma-rd-spending-300b": {
         id: "global-pharma-rd-spending-300b",
         type: "webpage",
@@ -11420,6 +11654,33 @@ export const citations: Record<string, Citation> = {
         URL: "https://www.mercatus.org/research/research-papers/defense-spending-and-economy",
         note: "Mercatus: Defense Spending and Economy | CEPR: WWII Spending Multipliers | RAND: Defense Spending Economic Growth",
   },
+  "nato-556-ammo-cost": {
+        id: "nato-556-ammo-cost",
+        type: "webpage",
+        title: "5.56mm NATO Ammunition Bulk Procurement Pricing",
+        author: [
+          {
+            literal: "U.S. Department of Defense"
+          },
+        ],
+        issued: { 'date-parts': [[2024]] },
+        URL: "https://www.bulkcheapammo.com/rifle-ammo/556-ammo",
+        note: "Military bulk procurement price for M855 5.56x45mm NATO ball ammunition. Civilian retail prices range \\$0.37--\\$0.60/round; military bulk contracts are typically at or below retail floor. \\$0.40/round used as conservative midpoint.",
+  },
+  "nato-556-rounds-per-kill": {
+        id: "nato-556-rounds-per-kill",
+        type: "webpage",
+        title: "U.S. Forces Fire 250,000 Rounds for Every Insurgent Killed",
+        author: [
+          {
+            family: "Pike",
+            given: "John"
+          },
+        ],
+        issued: { 'date-parts': [[2011]] },
+        URL: "https://jonathanturley.org/2011/01/10/gao-u-s-has-fired-250000-rounds-for-every-insurgent-killed/",
+        note: "Based on GAO figures showing approximately 6 billion bullets expended between 2002 and 2005 in Iraq and Afghanistan. Calculated by military researcher John Pike of GlobalSecurity.org.",
+  },
   "necrometrics-20th-century": {
         id: "necrometrics-20th-century",
         type: "webpage",
@@ -11482,6 +11743,21 @@ export const citations: Record<string, Citation> = {
           },
         ],
         note: "Based on FAS arsenal data and climate models",
+  },
+  "nuke-winter-150tg": {
+        id: "nuke-winter-150tg",
+        type: "article-journal",
+        title: "Nuclear Winter Famine",
+        author: [
+          {
+            family: "Xia et al.",
+            given: "Nature Food"
+          },
+        ],
+        issued: { 'date-parts': [[2022]] },
+        'container-title': "Xia et al.",
+        URL: "https://www.nature.com/articles/s43016-022-00573-0",
+        note: "Xia et al., Nature Food, 2022, Global food insecurity and famine from nuclear war soot injection",
   },
   "odds-of-decisive-vote": {
         id: "odds-of-decisive-vote",
@@ -12280,6 +12556,20 @@ export const citations: Record<string, Citation> = {
         URL: "https://www.worldbank.org/en/topic/trade/publication/trading-away-from-conflict",
         note: "World Bank, Trading Away from Conflict | NBER/World Bank, Collateral Damage: Trade Disruption | World Bank, Impacts on Global Trade of Current Trade Disputes",
   },
+  "world-warheads": {
+        id: "world-warheads",
+        type: "article-journal",
+        title: "World Nuclear Forces",
+        author: [
+          {
+            literal: "Federation of American Scientists"
+          },
+        ],
+        issued: { 'date-parts': [[2024]] },
+        'container-title': "Federation of American Scientists",
+        URL: "https://fas.org/issues/nuclear-weapons/status-world-nuclear-forces/",
+        note: "Federation of American Scientists, 2024, Status of World Nuclear Forces",
+  },
   "worldbank-gdp": {
         id: "worldbank-gdp",
         type: "article-journal",
@@ -12325,11 +12615,11 @@ export const citations: Record<string, Citation> = {
 
 /** Summary statistics */
 export const PARAMETER_STATS = {
-  total: 643,
-  external: 208,
-  calculated: 301,
+  total: 654,
+  external: 213,
+  calculated: 307,
   definitions: 134,
-  citations: 151,
+  citations: 156,
 } as const;
 
 // ============================================================================
