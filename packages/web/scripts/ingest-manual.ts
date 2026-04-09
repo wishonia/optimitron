@@ -1,105 +1,59 @@
 /**
- * One-time CLI script: scrapes manual.warondisease.org,
- * uploads to Gemini FileSearchStore, and outputs the store ID.
+ * One-time CLI script: fetches the manual's published search index,
+ * serializes it into a structured text corpus, uploads it to Gemini,
+ * and prints the uploaded file ID.
+ *
+ * Runtime RAG now reads directly from the search index in /api/voice/rag.
+ * This script is only for local experiments with Gemini file uploads.
  *
  * Usage:
  *   npx tsx scripts/ingest-manual.ts
  *
- * After running, set GEMINI_FILE_SEARCH_STORE_ID in your .env file.
+ * After running, set GEMINI_FILE_SEARCH_STORE_ID in your .env file
+ * only if you want to keep experimenting with Gemini file-based grounding.
  */
 
-import './load-env';
-import { GoogleGenAI } from '@google/genai';
-
-const MANUAL_PAGES = [
-  'https://manual.warondisease.org/',
-  'https://manual.warondisease.org/overview',
-  'https://manual.warondisease.org/dfda',
-  'https://manual.warondisease.org/optimocracy',
-  'https://manual.warondisease.org/wishocracy',
-  'https://manual.warondisease.org/rappa',
-  'https://manual.warondisease.org/optimal-policy-generator',
-  'https://manual.warondisease.org/optimal-budget-generator',
-  'https://manual.warondisease.org/incentive-alignment-bonds',
-  'https://manual.warondisease.org/prize',
-  'https://manual.warondisease.org/treasury',
-];
-
-async function fetchPageText(url: string): Promise<string> {
-  // eslint-disable-next-line no-console
-  console.log(`Fetching ${url}...`);
-  const res = await fetch(url);
-  if (!res.ok) {
-    // eslint-disable-next-line no-console
-    console.warn(`  Failed to fetch ${url}: ${res.status}`);
-    return '';
-  }
-
-  const html = await res.text();
-
-  // Simple HTML-to-text extraction (strip tags, decode entities)
-  const text = html
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  return `--- Source: ${url} ---\n\n${text}\n\n`;
-}
+import "./load-env";
+import { GoogleGenAI } from "@google/genai";
+import {
+  formatManualEntryForUpload,
+  getManualSearchIndex,
+} from "../src/lib/manual-search.server";
 
 async function main() {
   const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
   if (!apiKey) {
-    // eslint-disable-next-line no-console
-    console.error('Error: GOOGLE_GENERATIVE_AI_API_KEY environment variable is required');
+    console.error("Error: GOOGLE_GENERATIVE_AI_API_KEY environment variable is required");
     process.exit(1);
   }
 
-  // eslint-disable-next-line no-console
-  console.log('Fetching manual pages...\n');
+  console.log("Fetching manual search index...\n");
 
-  const pages = await Promise.all(MANUAL_PAGES.map(fetchPageText));
-  const combinedText = pages.filter(Boolean).join('\n');
-
-  if (!combinedText) {
-    // eslint-disable-next-line no-console
-    console.error('No content fetched. Check the URLs above.');
+  const entries = await getManualSearchIndex({ forceRefresh: true });
+  if (entries.length === 0) {
+    console.error("No search-index entries fetched. Check the manual endpoint.");
     process.exit(1);
   }
 
-  // eslint-disable-next-line no-console
-  console.log(`\nFetched ${pages.filter(Boolean).length} pages, ${combinedText.length} chars total.`);
-  // eslint-disable-next-line no-console
-  console.log('Uploading to Gemini...\n');
+  const combinedText = entries.map(formatManualEntryForUpload).join("\n\n---\n\n");
+
+  console.log(`Fetched ${entries.length} indexed chapters, ${combinedText.length} chars total.`);
+  console.log("Uploading serialized corpus to Gemini...\n");
 
   const ai = new GoogleGenAI({ apiKey });
-
-  // Upload the combined text as a file
   const file = await ai.files.upload({
-    file: new Blob([combinedText], { type: 'text/plain' }),
+    file: new Blob([combinedText], { type: "text/plain" }),
     config: {
-      displayName: 'optimitron-manual',
-      mimeType: 'text/plain',
+      displayName: "optimitron-manual-search-index",
+      mimeType: "text/plain",
     },
   });
 
-  // eslint-disable-next-line no-console
-  console.log('File uploaded:', file.name);
-  // eslint-disable-next-line no-console
-  console.log('\nTo use RAG grounding, set this in your .env:');
-  // eslint-disable-next-line no-console
+  console.log("File uploaded:", file.name);
+  console.log("\nOptional .env setting for Gemini file experiments:");
   console.log(`  GEMINI_FILE_SEARCH_STORE_ID=${file.name}`);
-  // eslint-disable-next-line no-console
-  console.log('\nNote: For production use, create a proper FileSearchStore corpus');
-  // eslint-disable-next-line no-console
-  console.log('with the Gemini API and upload chunked documents to it.');
+  console.log("\nRuntime voice RAG no longer depends on this upload.");
 }
 
 void main();
