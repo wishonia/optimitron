@@ -24,6 +24,7 @@ import {
   writeAuditReport,
   getDeduplicatedOverflows,
 } from "./utils/audit-helpers";
+import { PUBLIC_PAGE_PATHS } from "./utils/static-pages";
 
 // Force mobile viewport for this entire spec
 test.use({
@@ -32,35 +33,10 @@ test.use({
   hasTouch: true,
 });
 
-const PAGES = [
-  "/",
-  "/prize",
-  "/iab",
-  "/scoreboard",
-  "/about",
-  "/tools",
-  "/wishonia",
-  "/moronia",
-  "/agencies",
-  "/agencies/dcongress",
-  "/agencies/dcongress/wishocracy",
-  "/agencies/dcongress/referendums",
-  "/agencies/dtreasury",
-  "/agencies/dtreasury/dirs",
-  "/agencies/dtreasury/dfed",
-  "/agencies/dtreasury/dssa",
-  "/agencies/dfec",
-  "/agencies/dcbo",
-  "/agencies/domb",
-  "/agencies/dgao",
-  "/agencies/dih",
-  "/agencies/dih/discoveries",
-  "/agencies/ddod",
-  "/governments",
-  // Demo slides are full-screen animated presentations that intentionally use
-  // overflow-hidden for particle containment and animated bars — not standard
-  // mobile pages.  Excluded to avoid false positives.
-];
+// Derived from ROUTES — add a route in routes.ts and it's automatically tested.
+// Demo slides are excluded because they intentionally use overflow-hidden for
+// particle containment and animated bars — not standard mobile pages.
+const PAGES = PUBLIC_PAGE_PATHS.filter((p) => !p.startsWith("/demo"));
 
 const SEVERE_CLIPPED_TEXT_PX = 32;
 
