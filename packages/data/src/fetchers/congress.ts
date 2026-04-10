@@ -8,6 +8,8 @@
  * GitHub: https://github.com/LibraryOfCongress/api.congress.gov
  */
 
+import { dataEnv } from '../env';
+
 const CONGRESS_API_BASE = 'https://api.congress.gov/v3';
 
 /** Default number of items per page (max 250 for Congress API) */
@@ -244,7 +246,7 @@ export interface RawBillVote {
  * Returns `null` if not set — the API works without a key but with lower rate limits.
  */
 export function getCongressApiKey(): string | null {
-  return process.env['CONGRESS_API_KEY'] ?? null;
+  return dataEnv.CONGRESS_API_KEY ?? null;
 }
 
 // ─── Core fetch helper ──────────────────────────────────────────────

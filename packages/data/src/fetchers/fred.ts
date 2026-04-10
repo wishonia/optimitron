@@ -7,6 +7,7 @@
  * API docs: https://fred.stlouisfed.org/docs/api/fred/
  */
 
+import { dataEnv } from '../env';
 import type { DataPoint, FetchOptions } from '../types';
 
 const FRED_API_BASE = 'https://api.stlouisfed.org/fred';
@@ -100,7 +101,7 @@ export class FREDApiKeyMissingError extends Error {
  * Returns `null` if not set (for graceful degradation).
  */
 export function getFREDApiKey(): string | null {
-  return process.env['FRED_API_KEY'] ?? null;
+  return dataEnv.FRED_API_KEY ?? null;
 }
 
 /**

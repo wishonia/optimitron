@@ -150,46 +150,6 @@ test("full demo walkthrough", async ({ page }) => {
   await page.evaluate(() => window.scrollBy({ top: 400, behavior: "smooth" }));
   await pause(SECTION_PAUSE);
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // SECTION 5 — Misconceptions: Myth vs Data
-  // "What your species believes vs what the spreadsheet says"
-  // ══════════════════════════════════════════════════════════════════════════
-  await go(page, "/misconceptions");
-  await pause(BEAT_PAUSE);
-
-  // Show the summary header
-  await scrollTo(page, 0);
-  await pause(BEAT_PAUSE);
-
-  // Scroll through a few myth cards
-  for (let i = 0; i < 4; i++) {
-    await page.evaluate(() => window.scrollBy({ top: 300, behavior: "smooth" }));
-    await pause(900);
-  }
-
-  // Hover over a grade-F card for emphasis
-  const gradeF = page.locator('text="F"').first();
-  if ((await gradeF.count()) > 0) {
-    await gradeF.scrollIntoViewIfNeeded();
-    await gradeF.hover();
-    await pause(1_500);
-  }
-  await pause(SECTION_PAUSE);
-
-  // ══════════════════════════════════════════════════════════════════════════
-  // SECTION 6 — Compare: Country Outcomes
-  // "Which countries are winning, and why"
-  // ══════════════════════════════════════════════════════════════════════════
-  await go(page, "/compare");
-  await pause(BEAT_PAUSE);
-  await scrollTo(page, 0);
-
-  // Scroll through the health data table
-  for (let i = 0; i < 3; i++) {
-    await page.evaluate(() => window.scrollBy({ top: 400, behavior: "smooth" }));
-    await pause(1_000);
-  }
-
   // Toggle between health/drug tabs if they exist
   const drugTab = page.getByRole("button", { name: /drug/i });
   if ((await drugTab.count()) > 0) {
@@ -357,36 +317,7 @@ test("full demo walkthrough", async ({ page }) => {
   await pause(SECTION_PAUSE);
 
   // ══════════════════════════════════════════════════════════════════════════
-  // SECTION 11 — Outcomes & Studies: The Data Engine
-  // "Which policies actually worked. Not which ones were popular."
-  // ══════════════════════════════════════════════════════════════════════════
-  await go(page, "/outcomes");
-  await pause(BEAT_PAUSE);
-  await scrollTo(page, 0);
-
-  // Browse a few outcome cards
-  for (let i = 0; i < 3; i++) {
-    await page.evaluate(() => window.scrollBy({ top: 350, behavior: "smooth" }));
-    await pause(900);
-  }
-
-  // Click into one outcome for depth
-  const firstOutcomeCard = page.locator('a[href*="/outcomes/"]').first();
-  if ((await firstOutcomeCard.count()) > 0) {
-    await firstOutcomeCard.scrollIntoViewIfNeeded();
-    await pause(BEAT_PAUSE);
-    await firstOutcomeCard.click();
-    await page.waitForLoadState("networkidle");
-    await pause(2_000);
-    await page.evaluate(() => window.scrollBy({ top: 400, behavior: "smooth" }));
-    await pause(1_500);
-    await page.evaluate(() => window.scrollBy({ top: 400, behavior: "smooth" }));
-    await pause(1_500);
-  }
-  await pause(SECTION_PAUSE);
-
-  // ══════════════════════════════════════════════════════════════════════════
-  // SECTION 12 — Referral: The Viral Loop
+  // SECTION 11 — Referral: The Viral Loop
   // "Share your link. Each friend who votes earns you VOTE points."
   // ══════════════════════════════════════════════════════════════════════════
   // Simulate visiting a referral link — shows the redirect flow
