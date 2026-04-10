@@ -829,14 +829,14 @@ exports[`schema usage audit > renders deterministic markdown 1`] = `
 
 - Schema: [packages/db/prisma/schema.prisma#L2666](../packages/db/prisma/schema.prisma#L2666)
 - Classification: \`runtime-live\`
-- Direct Prisma usage: 5 files / 8 matches
+- Direct Prisma usage: 5 files / 9 matches
 - Usage counts by bucket:
-  - \`runtime-prisma\`: 5 files / 8 matches
+  - \`runtime-prisma\`: 5 files / 9 matches
   - \`api-routes\`: 2 files / 6 matches
   - \`pages\`: 3 files / 6 matches
   - \`components\`: 3 files / 3 matches
   - \`runtime-libraries\`: 2 files / 6 matches
-  - \`scripts\`: 1 files / 1 matches
+  - \`scripts\`: 1 files / 2 matches
   - \`tests\`: 3 files / 5 matches
   - \`docs\`: 1 files / 2 matches
   - \`schema\`: 1 files / 7 matches
@@ -847,8 +847,8 @@ exports[`schema usage audit > renders deterministic markdown 1`] = `
 - Key files:
   - [packages/web/src/app/agencies/dcongress/referendums/[slug]/page.tsx](../packages/web/src/app/agencies/dcongress/referendums/[slug]/page.tsx) (6 matches)
   - [packages/web/src/app/api/referendums/route.ts](../packages/web/src/app/api/referendums/route.ts) (6 matches)
+  - [packages/db/prisma/seed.ts](../packages/db/prisma/seed.ts) (4 matches)
   - [packages/web/src/app/api/referendums/[slug]/vote/route.ts](../packages/web/src/app/api/referendums/[slug]/vote/route.ts) (4 matches)
-  - [packages/db/prisma/seed.ts](../packages/db/prisma/seed.ts) (2 matches)
   - [packages/web/src/app/agencies/dcongress/referendums/page.tsx](../packages/web/src/app/agencies/dcongress/referendums/page.tsx) (2 matches)
   - [packages/web/src/app/iab/page.tsx](../packages/web/src/app/iab/page.tsx) (1 matches)
   - [packages/web/src/components/dashboard/NotificationPreferencesCard.tsx](../packages/web/src/components/dashboard/NotificationPreferencesCard.tsx) (1 matches)
@@ -1736,7 +1736,7 @@ exports[`schema usage audit > renders deterministic markdown 1`] = `
 | PersonhoodProvider | [packages/db/prisma/schema.prisma#L179](../packages/db/prisma/schema.prisma#L179) | 14 | 86 |
 | PersonhoodVerificationStatus | [packages/db/prisma/schema.prisma#L185](../packages/db/prisma/schema.prisma#L185) | 16 | 86 |
 | QuestionType | [packages/db/prisma/schema.prisma#L400](../packages/db/prisma/schema.prisma#L400) | 8 | 60 |
-| ReferendumStatus | [packages/db/prisma/schema.prisma#L2659](../packages/db/prisma/schema.prisma#L2659) | 9 | 76 |
+| ReferendumStatus | [packages/db/prisma/schema.prisma#L2659](../packages/db/prisma/schema.prisma#L2659) | 9 | 77 |
 | ReferralAnswer | [packages/db/prisma/schema.prisma#L173](../packages/db/prisma/schema.prisma#L173) | 10 | 63 |
 | RelationshipDirection | [packages/db/prisma/schema.prisma#L128](../packages/db/prisma/schema.prisma#L128) | 10 | 101 |
 | SocialPlatform | [packages/db/prisma/schema.prisma#L253](../packages/db/prisma/schema.prisma#L253) | 11 | 68 |
