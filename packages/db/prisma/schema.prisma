@@ -683,6 +683,7 @@ model User {
   verifiedTasks             Task[]                          @relation("TaskVerifiedByUser")
   verifiedTaskClaims        TaskClaim[]                     @relation("TaskClaimVerifiedByUser")
   verifiedTaskMilestones    TaskMilestone[]                 @relation("TaskMilestoneVerifiedByUser")
+  agentComputeDeposits      AgentComputeDeposit[]           @relation("UserAgentComputeDeposits")
 
   @@index([email])
   @@index([username])
@@ -3243,6 +3244,7 @@ model Task {
   sourceArtifacts          TaskSourceArtifact[]    @relation("TaskSourceArtifacts")
   outgoingEdges            TaskEdge[]              @relation("TaskOutgoingEdges")
   incomingEdges            TaskEdge[]              @relation("TaskIncomingEdges")
+  agentRunCosts            AgentRunCost[]          @relation("TaskAgentRunCosts")
 
   @@index([jurisdictionId, status])
   @@index([parentTaskId])
@@ -4153,4 +4155,109 @@ model EmailLog {
   @@index([templateId])
   @@index([status])
   @@index([sentAt])
+}
+
+// ────────────────────────────────────────────────────────────
+// Agent Compute Funding
+// ────────────────────────────────────────────────────────────
+
+enum AgentComputeDepositSource {
+  STRIPE
+  CRYPTO
+  MANUAL
+}
+
+enum AgentRunStatus {
+  RUNNING
+  COMPLETED
+  FAILED
+  PARTIAL
+}
+
+/// A deposit that funds autonomous agent compute
+model AgentComputeDeposit {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Amount deposited in USD
+  amountUsd Float
+
+  /// Where the deposit came from
+  source AgentComputeDepositSource
+
+  /// External reference (Stripe payment ID, tx hash, etc.)
+  externalRef String?
+
+  /// Optional memo from depositor
+  memo String?
+
+  /// How much of this deposit has been spent on agent runs
+  spentUsd Float @default(0)
+
+  /// The user who made the deposit (null for anonymous crypto deposits)
+  depositorUserId String?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  depositorUser User?          @relation("UserAgentComputeDeposits", fields: [depositorUserId], references: [id], onDelete: SetNull)
+  agentRunCosts AgentRunCost[] @relation("DepositAgentRunCosts")
+
+  @@index([depositorUserId])
+  @@index([source])
+  @@index([createdAt])
+  @@index([deletedAt])
+}
+
+/// Cost record for a single agent run, linking spend to impact
+model AgentRunCost {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Agent run identifier (matches AgentRunLog.runId)
+  runId String
+
+  /// AI provider used (gemini, anthropic, openai, etc.)
+  provider String
+
+  /// Total cost in USD for this run
+  costUsd Float
+
+  /// Number of API calls made
+  apiCalls Int
+
+  /// Run status
+  status AgentRunStatus @default(RUNNING)
+
+  /// Optional link to the task this run worked on
+  taskId String?
+
+  /// Optional link to the deposit that funded this run
+  depositId String?
+
+  /// Summary of what the run produced
+  outputSummary String?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  // -- Relations --
+  task    Task?                @relation("TaskAgentRunCosts", fields: [taskId], references: [id], onDelete: SetNull)
+  deposit AgentComputeDeposit? @relation("DepositAgentRunCosts", fields: [depositId], references: [id], onDelete: SetNull)
+
+  @@index([runId])
+  @@index([taskId])
+  @@index([depositId])
+  @@index([provider])
+  @@index([createdAt])
 }

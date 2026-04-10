@@ -300,6 +300,12 @@ export type QuestionType = z.infer<typeof QuestionTypeSchema>;
 export const EmailLogStatusSchema = z.enum(['QUEUED', 'SENT', 'DELIVERED', 'OPENED', 'BOUNCED', 'FAILED']);
 export type EmailLogStatus = z.infer<typeof EmailLogStatusSchema>;
 
+export const AgentComputeDepositSourceSchema = z.enum(['STRIPE', 'CRYPTO', 'MANUAL']);
+export type AgentComputeDepositSource = z.infer<typeof AgentComputeDepositSourceSchema>;
+
+export const AgentRunStatusSchema = z.enum(['RUNNING', 'COMPLETED', 'FAILED', 'PARTIAL']);
+export type AgentRunStatus = z.infer<typeof AgentRunStatusSchema>;
+
 // ============================================================================
 // HELPER: coerce string dates to Date objects
 // ============================================================================
@@ -1583,3 +1589,33 @@ export const EmailLogSchema = z.object({
   createdAt: dateSchema,
 });
 export type EmailLogType = z.infer<typeof EmailLogSchema>;
+
+// ── Agent Compute Funding ──────────────────────────────────────────────────
+
+export const AgentComputeDepositSchema = z.object({
+  id: z.string(),
+  amountUsd: z.number(),
+  source: AgentComputeDepositSourceSchema,
+  externalRef: z.string().nullable().optional(),
+  memo: z.string().nullable().optional(),
+  spentUsd: z.number().default(0),
+  depositorUserId: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type AgentComputeDepositType = z.infer<typeof AgentComputeDepositSchema>;
+
+export const AgentRunCostSchema = z.object({
+  id: z.string(),
+  runId: z.string(),
+  provider: z.string(),
+  costUsd: z.number(),
+  apiCalls: z.number().int(),
+  status: AgentRunStatusSchema.default('RUNNING'),
+  taskId: z.string().nullable().optional(),
+  depositId: z.string().nullable().optional(),
+  outputSummary: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+});

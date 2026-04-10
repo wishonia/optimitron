@@ -68,6 +68,7 @@ export const ROUTES = {
   video: "/video",
   tools: "/tools",
   contribute: "/contribute",
+  fund: "/fund",
   signIn: "/auth/signin",
 } as const;
 
@@ -481,6 +482,16 @@ export const contributeLink: NavItem = {
   cta: "Contribute",
 };
 
+export const fundLink: NavItem = {
+  href: ROUTES.fund,
+  label: "Fund Optimization",
+  emoji: "🪙",
+  description: "Insert coin. AI agents optimise your planet. You get a receipt showing exactly how many suffering-hours your dollar prevented. It is genuinely less complicated than your tax code.",
+  tagline: "Insert coin, optimise Earth",
+
+  cta: "Fund Now",
+};
+
 export interface NavSection {
   id: string;
   label: string;
@@ -491,7 +502,7 @@ export const navSections: NavSection[] = [
   { id: "play", label: "Play", items: [dashboardLink, tasksLink, profileLink, censusLink, checkInLink, settingsLink, wishocracyLink, alignmentLink, referendumLink, prizeLink, demoLink] },
   { id: "optimized-gov", label: "Optimized Governance", items: [dtreasuryLink, opgLink, obgLink, transparencyLink, dihLink, dfdaLink, agenciesLink, departmentOfWarLink] },
   { id: "earth", label: "Earth", items: [governmentsLink, politicianLeaderboardLink, opgLink] },
-  { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink] },
+  { id: "fund", label: "Fund", items: [fundLink, prizeLink, scoreboardLink, iabLink] },
 ];
 
 /** Sections for the /tools page — every tool grouped by purpose */

@@ -1,0 +1,184 @@
+name: CI Triage
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "GitHub Actions run ID to triage"
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: ci-triage-${{ github.event.workflow_run.id || inputs.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' ||
+        (
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.conclusion == 'failure'
+        )
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Enable Corepack
+        run: |
+          corepack enable
+          corepack prepare pnpm@8.14.0 --activate
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build agent package
+        run: pnpm --filter @optimitron/agent run build
+
+      - name: Generate triage report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
+        run: |
+          node packages/agent/dist/ci-triage-cli.js \
+            --repo="$GITHUB_REPOSITORY" \
+            --run-id="$WORKFLOW_RUN_ID" \
+            --json-out=".github/tmp/ci-triage.json" \
+            --markdown-out=".github/tmp/ci-triage.md"
+
+      - name: Upload triage artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: ci-triage-${{ github.event.workflow_run.id || inputs.run_id }}
+          path: .github/tmp/ci-triage.*
+
+      - name: Retry flaky failures once
+        uses: actions/github-script@v8
+        env:
+          TRIAGE_JSON_PATH: .github/tmp/ci-triage.json
+          TRIAGE_MD_PATH: .github/tmp/ci-triage.md
+        with:
+          script: |
+            const fs = require("fs");
+
+            const triage = JSON.parse(fs.readFileSync(process.env.TRIAGE_JSON_PATH, "utf8"));
+            const rerunNotice = triage.autoRerunEligible
+              ? "\nAutomatic retry: requested one rerun of failed jobs because every failure looked flaky or infrastructure-related.\n"
+              : `\nAutomatic retry: skipped. ${triage.autoRerunReason}\n`;
+
+            fs.appendFileSync(process.env.TRIAGE_MD_PATH, rerunNotice);
+
+            if (!triage.autoRerunEligible) {
+              core.notice(`Skipping automatic retry for run ${triage.run.id}: ${triage.autoRerunReason}`);
+              return;
+            }
+
+            await github.request("POST /repos/{owner}/{repo}/actions/runs/{run_id}/rerun-failed-jobs", {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: triage.run.id,
+            });
+            core.notice(`Requested rerun of failed jobs for run ${triage.run.id}.`);
+
+      - name: Publish triage
+        uses: actions/github-script@v8
+        env:
+          TRIAGE_JSON_PATH: .github/tmp/ci-triage.json
+          TRIAGE_MD_PATH: .github/tmp/ci-triage.md
+        with:
+          script: |
+            const fs = require("fs");
+
+            const triage = JSON.parse(fs.readFileSync(process.env.TRIAGE_JSON_PATH, "utf8"));
+            const markdown = fs.readFileSync(process.env.TRIAGE_MD_PATH, "utf8");
+            const runId = triage.run.id;
+            const pullRequests = context.payload.workflow_run?.pull_requests ?? [];
+            const marker = `<!-- ci-triage:run:${runId} -->`;
+
+            if (pullRequests.length > 0) {
+              const prNumber = pullRequests[0].number;
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+              });
+              const existing = comments.find((comment) =>
+                typeof comment.body === "string" &&
+                comment.body.includes(marker) &&
+                comment.user?.type === "Bot",
+              );
+
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: existing.id,
+                  body: markdown,
+                });
+                core.notice(`Updated CI triage comment on PR #${prNumber}.`);
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: prNumber,
+                  body: markdown,
+                });
+                core.notice(`Posted CI triage comment on PR #${prNumber}.`);
+              }
+              return;
+            }
+
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              per_page: 100,
+            });
+            const existingIssue = issues.find((issue) =>
+              !issue.pull_request &&
+              typeof issue.body === "string" &&
+              issue.body.includes(marker) &&
+              issue.user?.type === "Bot",
+            );
+
+            if (existingIssue) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                title: triage.issueTitle,
+                body: markdown,
+              });
+              core.notice(`Updated CI triage issue #${existingIssue.number}.`);
+            } else {
+              const created = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: triage.issueTitle,
+                body: markdown,
+              });
+              core.notice(`Created CI triage issue #${created.data.number}.`);
+            }
