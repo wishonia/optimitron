@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { DM_Sans, Space_Mono, Source_Serif_4, Press_Start_2P, VT323, Creepster } from "next/font/google";
+import { DM_Sans, Space_Mono, Source_Serif_4, Press_Start_2P, VT323, Creepster, Playfair_Display, Libre_Baskerville } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { cookieToInitialState } from "wagmi";
@@ -42,7 +42,18 @@ const creepster = Creepster({
   weight: "400",
   variable: "--v0-font-creepster",
 });
-const fontVariables = `${dmSans.variable} ${spaceMono.variable} ${sourceSerif4.variable} ${pressStart2P.variable} ${vt323.variable} ${creepster.variable}`;
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--v0-font-playfair-display",
+});
+const libreBaskerville = Libre_Baskerville({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--v0-font-libre-baskerville",
+});
+const fontVariables = `${dmSans.variable} ${spaceMono.variable} ${sourceSerif4.variable} ${pressStart2P.variable} ${vt323.variable} ${creepster.variable} ${playfairDisplay.variable} ${libreBaskerville.variable}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(

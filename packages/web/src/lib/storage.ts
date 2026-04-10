@@ -33,6 +33,7 @@ export type VoteStatusCache = {
 
 export type DeclarationSignedState = {
   signedAt: string;
+  name?: string;
 };
 
 export type PendingDeclarationVoteState = {
