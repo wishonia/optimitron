@@ -23,6 +23,23 @@ export function TaskShareButtons({
   const taskUrl = useMemo(() => buildTaskUrl(taskId, getBaseUrl()), [taskId]);
   const shortShareText = `${shareText} ${taskUrl}`.trim();
 
+  async function trackShare() {
+    try {
+      await fetch("/api/share/track", {
+        body: JSON.stringify({
+          taskId,
+          templateLabel: "task-share",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+    } catch {
+      // Share tracking is best-effort only.
+    }
+  }
+
   const shareLinks = [
     {
       href: `https://twitter.com/intent/tweet?text=${encode(shortShareText)}`,
@@ -64,7 +81,14 @@ export function TaskShareButtons({
             size="sm"
             variant="outline"
           >
-            <a href={shareLink.href} rel="noreferrer" target="_blank">
+            <a
+              href={shareLink.href}
+              rel="noreferrer"
+              target="_blank"
+              onClick={() => {
+                void trackShare();
+              }}
+            >
               {shareLink.label}
             </a>
           </Button>
@@ -75,6 +99,7 @@ export function TaskShareButtons({
           type="button"
           variant="outline"
           onClick={() => {
+            void trackShare();
             void navigator.clipboard
               .writeText(taskUrl)
               .then(() => {

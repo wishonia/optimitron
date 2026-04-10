@@ -14,6 +14,7 @@ interface UpsertImportedTaskBundleOptions {
   assigneePersonId?: string | null;
   isPublic?: boolean;
   jurisdictionId?: string | null;
+  ownerUserId?: string | null;
   parentTaskId?: string | null;
   verifiedByUserId?: string | null;
 }
@@ -422,6 +423,9 @@ export async function upsertImportedTaskBundle(
         category: bundle.task.category,
         claimPolicy: bundle.task.claimPolicy,
         contextJson: toJsonValue(bundle.task.contextJson),
+        contactLabel: bundle.task.contactLabel,
+        contactTemplate: bundle.task.contactTemplate,
+        contactUrl: bundle.task.contactUrl,
         deletedAt: null,
         description: bundle.task.description,
         difficulty: bundle.task.difficulty,
@@ -431,6 +435,7 @@ export async function upsertImportedTaskBundle(
         interestTags: bundle.task.interestTags,
         isPublic: options?.isPublic ?? true,
         jurisdictionId: options?.jurisdictionId ?? null,
+        ownerUserId: options?.ownerUserId ?? null,
         roleTitle: bundle.task.roleTitle,
         parentTaskId: options?.parentTaskId ?? null,
         skillTags: bundle.task.skillTags,
@@ -446,6 +451,9 @@ export async function upsertImportedTaskBundle(
         category: bundle.task.category,
         claimPolicy: bundle.task.claimPolicy,
         contextJson: toJsonValue(bundle.task.contextJson),
+        contactLabel: bundle.task.contactLabel,
+        contactTemplate: bundle.task.contactTemplate,
+        contactUrl: bundle.task.contactUrl,
         deletedAt: null,
         description: bundle.task.description,
         difficulty: bundle.task.difficulty,
@@ -455,6 +463,7 @@ export async function upsertImportedTaskBundle(
         interestTags: bundle.task.interestTags,
         isPublic: options?.isPublic ?? true,
         jurisdictionId: options?.jurisdictionId ?? null,
+        ownerUserId: options?.ownerUserId ?? undefined,
         roleTitle: bundle.task.roleTitle,
         parentTaskId: options?.parentTaskId ?? null,
         skillTags: bundle.task.skillTags,

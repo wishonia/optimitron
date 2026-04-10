@@ -5,6 +5,7 @@ import {
   type TaskCategory,
   type TaskDifficulty,
 } from "@optimitron/db";
+import { TaskContactActions } from "@/components/tasks/TaskContactActions";
 import { TaskShareButtons } from "@/components/tasks/TaskShareButtons";
 import { TaskClaimButton } from "@/components/tasks/TaskClaimButton";
 import { Avatar } from "@/components/retroui/Avatar";
@@ -28,11 +29,13 @@ export interface TaskCardTask {
   activeClaimCount: number;
   assigneeAffiliationSnapshot: string | null;
   assigneeOrganization: {
+    contactEmail?: string | null;
     id: string;
     logo: string | null;
     name: string;
     slug: string;
     type: string;
+    website?: string | null;
   } | null;
   assigneePerson: {
     currentAffiliation: string | null;
@@ -44,6 +47,9 @@ export interface TaskCardTask {
   category: TaskCategory;
   claimPolicy: TaskClaimPolicy;
   completedAt: Date | null;
+  contactLabel?: string | null;
+  contactTemplate?: string | null;
+  contactUrl?: string | null;
   description: string;
   difficulty: TaskDifficulty;
   dueAt: Date | null;
@@ -54,11 +60,13 @@ export interface TaskCardTask {
     selectedMetrics?: Record<string, TaskImpactMetricSummary> | null;
   };
   interestTags: string[];
+  isPublic: boolean;
   maxClaims: number | null;
   roleTitle: string | null;
   recommendationScore?: number;
   sourceUrl: string | null;
   status: TaskStatus;
+  taskKey?: string | null;
   title: string;
   skillTags: string[];
   verifiedAt: Date | null;
@@ -138,6 +146,7 @@ export function TaskCard({
     <BrutalCard bgColor={getCardColor(task)} className="h-full" hover padding="lg">
       <div className="flex h-full flex-col gap-4">
         <div className="flex flex-wrap gap-2">
+          <ArcadeTag>{task.taskKey ?? task.id}</ArcadeTag>
           <ArcadeTag>{task.category.toLowerCase()}</ArcadeTag>
           <ArcadeTag>{task.difficulty.toLowerCase()}</ArcadeTag>
           <ArcadeTag>
@@ -261,8 +270,21 @@ export function TaskCard({
           ) : null}
         </div>
 
-        {task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY &&
-        (task.assigneePerson || task.assigneeOrganization) ? (
+        {(task.assigneePerson || task.assigneeOrganization) ? (
+          <TaskContactActions
+            compact
+            delayStats={{
+              currentDelayDays: delayStats.currentDelayDays,
+              currentEconomicValueUsdLost: delayStats.currentEconomicValueUsdLost,
+              currentHumanLivesLost: delayStats.currentHumanLivesLost,
+              currentSufferingHoursLost: delayStats.currentSufferingHoursLost,
+            }}
+            task={task}
+            taskId={task.id}
+          />
+        ) : null}
+
+        {task.isPublic ? (
           <TaskShareButtons
             taskId={task.id}
             shareText={shareText}

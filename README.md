@@ -16,6 +16,20 @@ Optimitron is my attempt to help. It's a universal causal inference engine that 
 
 ---
 
+## Current Product Focus
+
+The canonical first-year roadmap lives at [docs/ROADMAP.md](./docs/ROADMAP.md).
+
+The current product loop is:
+
+1. show the highest-value overdue tasks
+2. make the cost of delay obvious
+3. let people share the task
+4. let people contact the assignee
+5. track whether pressure moves the task forward
+
+---
+
 ## The Problem
 
 Bugs in your meat software kill **150,000** of you every day. That is fifty 9/11s. Nobody invades anybody about it because diseases do not have oil.

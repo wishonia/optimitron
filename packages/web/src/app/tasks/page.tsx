@@ -58,13 +58,12 @@ export default async function TasksPage() {
         <section className="space-y-4">
           <ArcadeTag>Task Network</ArcadeTag>
           <h1 className="text-5xl font-black uppercase leading-none sm:text-6xl">
-            DO THE
-            <span className="text-brutal-pink"> MANUAL</span>
+            Highest-Value
+            <span className="text-brutal-pink"> Tasks</span>
           </h1>
           <p className="max-w-4xl text-lg font-bold leading-8 text-muted-foreground">
-            Every public instruction becomes a task. Some are assigned to the people
-            holding power. The rest are claimable by anyone willing to do something
-            more useful than discourse.
+            Ranked accountability tasks first. Share them. Push the assignee. Then claim
+            the useful supporting work beneath them.
           </p>
           {!userId ? (
             <BrutalCard bgColor="yellow" className="max-w-3xl" padding="md" shadowSize={8}>
@@ -89,10 +88,23 @@ export default async function TasksPage() {
             currentWorstDelayDays={currentWorstDelayDays}
             currentHumanLivesLost={overdueLeaderSummary.currentHumanLivesLost}
             currentSufferingHoursLost={overdueLeaderSummary.currentSufferingHoursLost}
-            href="#overdue-leaders"
+            href="#highest-value-overdue-tasks"
             overdueTaskCount={overdueLeaderSummary.overdueTaskCount}
             sampleTargets={reminderTargets}
           />
+        ) : null}
+
+        {overdueLeaders.length > 0 ? (
+          <Section title="Highest Value Overdue Tasks">
+            <div
+              id="highest-value-overdue-tasks"
+              className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3"
+            >
+              {overdueLeaders.map((task) => (
+                <TaskCard key={task.id} signedIn={Boolean(userId)} task={task} />
+              ))}
+            </div>
+          </Section>
         ) : null}
 
         {userId ? (
@@ -153,16 +165,6 @@ export default async function TasksPage() {
                 </p>
               </BrutalCard>
             )}
-          </Section>
-        ) : null}
-
-        {overdueLeaders.length > 0 ? (
-          <Section title="Overdue Leaders">
-            <div id="overdue-leaders" className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-              {overdueLeaders.map((task) => (
-                <TaskCard key={task.id} signedIn={Boolean(userId)} task={task} />
-              ))}
-            </div>
           </Section>
         ) : null}
 

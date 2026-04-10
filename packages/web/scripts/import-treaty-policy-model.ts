@@ -5,10 +5,12 @@ import { dirname, resolve } from "path";
 import { TaskCategory, TaskClaimPolicy, TaskDifficulty, TaskStatus } from "@optimitron/db";
 import { buildOnePercentTreatyPolicyModelRun } from "../src/lib/tasks/one-percent-treaty-policy-model";
 import { buildImportedTaskBundleFromPolicyModelRun } from "../src/lib/tasks/policy-model-run-to-imported-task-bundle";
+import { buildTreatySignerMilestones } from "../src/lib/tasks/treaty-milestones";
 
 const DEFAULT_PARAMETERS_PATH = "E:/code/disease-eradication-plan/assets/json/parameters.json";
 const DEFAULT_OUTPUT_PATH = "tmp/one-percent-treaty-policy-model-run.json";
 const TREATY_PARENT_TASK_KEY = "program:one-percent-treaty:ratify";
+const TREATY_DUE_AT = new Date("2024-12-31T00:00:00.000Z");
 
 interface CliOptions {
   importDb: boolean;
@@ -60,6 +62,7 @@ async function ensureTreatyParentTask(input: {
       description:
         "Coordinate signature and ratification of the 1% Treaty across national leaders, then keep public pressure on every outstanding signer until the treaty is real.",
       difficulty: TaskDifficulty.EXPERT,
+      dueAt: TREATY_DUE_AT,
       interestTags: ["treaty", "disease-eradication", "peace-dividend"],
       isPublic: true,
       jurisdictionId: input.jurisdictionId,
@@ -74,6 +77,7 @@ async function ensureTreatyParentTask(input: {
       description:
         "Coordinate signature and ratification of the 1% Treaty across national leaders, then keep public pressure on every outstanding signer until the treaty is real.",
       difficulty: TaskDifficulty.EXPERT,
+      dueAt: TREATY_DUE_AT,
       interestTags: ["treaty", "disease-eradication", "peace-dividend"],
       isPublic: true,
       jurisdictionId: input.jurisdictionId,
@@ -104,10 +108,21 @@ async function main() {
     parameterSetHash,
   });
   const imported = buildImportedTaskBundleFromPolicyModelRun(run, {
+    dueAt: TREATY_DUE_AT,
     impactStatement:
       "Thirty seconds for the signer. Civilizational upside if completed.",
     skillTags: ["diplomacy", "executive-action", "treaty-negotiation"],
   });
+  imported.bundle.task.contextJson = {
+    ...imported.bundle.task.contextJson,
+    acceptanceCriteria: [
+      "Executive order or treaty instrument is drafted.",
+      "Relevant legal review is complete.",
+      "Leader signs the treaty or equivalent commitment.",
+      "Implementation authority is designated publicly.",
+      "First public implementation step is announced within 90 days.",
+    ],
+  };
   const outputPath = resolve(
     process.cwd(),
     options.outputPath ?? DEFAULT_OUTPUT_PATH,
@@ -126,9 +141,10 @@ async function main() {
     return;
   }
 
-  const [{ upsertImportedTaskBundle }, { findOrCreatePerson }] = await Promise.all([
+  const [{ upsertImportedTaskBundle }, { findOrCreatePerson }, { syncTaskMilestones }] = await Promise.all([
     import("../src/lib/tasks/import-task-bundle.server"),
     import("../src/lib/person.server"),
+    import("../src/lib/tasks/milestones.server"),
   ]);
 
   const assigneePerson =
@@ -171,6 +187,7 @@ async function main() {
       sortOrder: 0,
     },
   });
+  await syncTaskMilestones(result.taskId, buildTreatySignerMilestones());
 
   console.log(
     JSON.stringify(

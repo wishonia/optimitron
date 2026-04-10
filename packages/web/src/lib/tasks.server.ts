@@ -9,6 +9,7 @@ import {
 import { findOrCreateOrganization } from "@/lib/organization.server";
 import { findOrCreatePerson } from "@/lib/person.server";
 import { prisma } from "@/lib/prisma";
+import { countTaskContactActions } from "@/lib/tasks/contact.server";
 import {
   DEFAULT_TASK_IMPACT_FRAME,
   deriveImpactRatios,
@@ -150,11 +151,13 @@ const taskListSelect = {
   actualEffortSeconds: true,
   assigneeOrganization: {
     select: {
+      contactEmail: true,
       id: true,
       logo: true,
       name: true,
       slug: true,
       type: true,
+      website: true,
     },
   },
   assigneePerson: {
@@ -194,6 +197,9 @@ const taskListSelect = {
   },
   completedAt: true,
   completionEvidence: true,
+  contactLabel: true,
+  contactTemplate: true,
+  contactUrl: true,
   assigneeAffiliationSnapshot: true,
   currentImpactEstimateSet: {
     select: impactEstimateSetSelect,
@@ -222,6 +228,27 @@ const taskListSelect = {
   verifiedAt: true,
 } satisfies Prisma.TaskSelect;
 
+const taskMilestoneSelect = {
+  completedAt: true,
+  description: true,
+  evidenceNote: true,
+  evidenceUrl: true,
+  id: true,
+  key: true,
+  metadataJson: true,
+  sortOrder: true,
+  status: true,
+  title: true,
+  verifiedAt: true,
+  verifiedByUser: {
+    select: {
+      id: true,
+      name: true,
+      username: true,
+    },
+  },
+} satisfies Prisma.TaskMilestoneSelect;
+
 const taskDetailSelect = {
   ...taskListSelect,
   childTasks: {
@@ -233,6 +260,13 @@ const taskDetailSelect = {
     select: taskListSelect,
   },
   contextJson: true,
+  milestones: {
+    where: {
+      deletedAt: null,
+    },
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+    select: taskMilestoneSelect,
+  },
   parentTask: {
     select: {
       id: true,
@@ -492,7 +526,7 @@ export async function getTaskDetailData(
     frameKey?: TaskImpactFrameKey | string | null;
   },
 ) {
-  const [task, viewer] = await Promise.all([
+  const [task, viewer, contactActionCount] = await Promise.all([
     prisma.task.findFirst({
       where: {
         deletedAt: null,
@@ -502,6 +536,7 @@ export async function getTaskDetailData(
       select: taskDetailSelect,
     }),
     userId ? getTaskViewer(userId) : Promise.resolve(null),
+    countTaskContactActions(taskId),
   ]);
 
   if (!task) {
@@ -532,6 +567,7 @@ export async function getTaskDetailData(
         });
 
   return {
+    contactActionCount,
     task: decorateTask(task, {
       frameKey: options?.frameKey,
       userId: viewer?.id ?? null,

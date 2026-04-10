@@ -57,6 +57,9 @@ export function getActivityDescription(
     case ActivityType.RECRUITED_VOTER:
       return "Recruited a new voter. The network grows.";
 
+    case ActivityType.CONTACTED_ASSIGNEE:
+      return "Contacted an accountability target. Pressure applied.";
+
     case ActivityType.VERIFIED_PERSONHOOD:
       return "Verified personhood — confirmed: not a bot. Probably.";
 
@@ -101,6 +104,7 @@ export function getActivityEmoji(type: string): string {
     [ActivityType.SUBMITTED_COMPARISON]: "⚖️",
     [ActivityType.DEPOSITED_PRIZE]: "💰",
     [ActivityType.RECRUITED_VOTER]: "👥",
+    [ActivityType.CONTACTED_ASSIGNEE]: "📣",
     [ActivityType.VERIFIED_PERSONHOOD]: "🪪",
     [ActivityType.TRACKED_MEASUREMENT]: "📊",
     [ActivityType.UPDATED_PROFILE]: "✏️",

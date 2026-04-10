@@ -28,6 +28,9 @@ import type {
 export interface PolicyModelRunImportAssigneeHint {
   actorKey: string | null;
   claimPolicy: TaskClaimPolicy;
+  contactLabel: string | null;
+  contactTemplate: string | null;
+  contactUrl: string | null;
   currentAffiliation: string | null;
   displayName: string;
   organizationKey: string | null;
@@ -42,6 +45,7 @@ export interface PolicyModelRunToTaskBundleOptions {
   category?: TaskCategory;
   claimPolicy?: TaskClaimPolicy;
   difficulty?: TaskDifficulty;
+  dueAt?: Date | null;
   impactStatement?: string | null;
   interestTags?: string[];
   publicationStatus?: TaskImpactPublicationStatus;
@@ -224,6 +228,9 @@ function toAssigneeHint(actor: PolicyExecutionActor | null): PolicyModelRunImpor
   return {
     actorKey: actor.actorKey ?? null,
     claimPolicy: actor.claimPolicyHint ?? TaskClaimPolicy.OPEN_SINGLE,
+    contactLabel: actor.contactLabel ?? null,
+    contactTemplate: actor.contactTemplate ?? null,
+    contactUrl: actor.contactUrl ?? null,
     currentAffiliation: actor.currentAffiliation ?? null,
     displayName: actor.displayName,
     organizationKey: actor.organizationKey ?? null,
@@ -365,9 +372,12 @@ export function buildImportedTaskBundleFromPolicyModelRun(
         assigneeOrganizationName: assigneeActor?.organizationName ?? null,
         assigneeOrganizationSourceRef: assigneeActor?.organizationKey ?? null,
         assigneeOrganizationType: assigneeActor?.organizationType ?? null,
+        contactLabel: assigneeActor?.contactLabel ?? null,
+        contactTemplate: assigneeActor?.contactTemplate ?? null,
+        contactUrl: assigneeActor?.contactUrl ?? null,
         description: deriveTaskDescription(run),
         difficulty: deriveTaskDifficulty(assigneeActor, options?.difficulty),
-        dueAt: null,
+        dueAt: options?.dueAt ?? null,
         estimatedEffortHours: defaultFrame.canonical.estimatedEffortHours.base ?? null,
         impactStatement: options?.impactStatement ?? run.summary,
         interestTags: deriveInterestTags(run, options?.interestTags),

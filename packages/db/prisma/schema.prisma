@@ -193,6 +193,7 @@ enum ActivityType {
   SUBMITTED_COMPARISON
   DEPOSITED_PRIZE
   RECRUITED_VOTER
+  CONTACTED_ASSIGNEE
   VERIFIED_PERSONHOOD
   TRACKED_MEASUREMENT
   UPDATED_PROFILE
@@ -337,6 +338,14 @@ enum TaskClaimStatus {
   VERIFIED
   REJECTED
   ABANDONED
+}
+
+/// Lifecycle state for a milestone attached to a task
+enum TaskMilestoneStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  VERIFIED
 }
 
 /// Non-hierarchical relationship between tasks for causal and dependency modeling
@@ -670,8 +679,10 @@ model User {
   emailLogs                 EmailLog[]                      @relation("UserEmailLogs")
   surveyResponses           SurveyResponse[]                @relation("UserSurveyResponses")
   taskClaims                TaskClaim[]                     @relation("UserTaskClaims")
+  ownedTasks                Task[]                          @relation("TaskOwner")
   verifiedTasks             Task[]                          @relation("TaskVerifiedByUser")
   verifiedTaskClaims        TaskClaim[]                     @relation("TaskClaimVerifiedByUser")
+  verifiedTaskMilestones    TaskMilestone[]                 @relation("TaskMilestoneVerifiedByUser")
 
   @@index([email])
   @@index([username])
@@ -3101,7 +3112,7 @@ model OrganizationMember {
 }
 
 // ============================================================================
-// TASKS / MISSIONS
+// TASKS
 // ============================================================================
 
 /// A public task that can be assigned to a person or claimed by players
@@ -3123,6 +3134,9 @@ model Task {
 
   /// User who verified this task's completion
   verifiedByUserId String?
+
+  /// Optional user who owns this task in personal/project task views
+  ownerUserId String?
 
   /// Current published impact estimate set used by APIs and ranking
   currentImpactEstimateSetId String? @unique
@@ -3187,6 +3201,15 @@ model Task {
   /// Optional due date or target completion date for accountability views
   dueAt DateTime?
 
+  /// Preferred push/contact URL for pressuring the assignee to act on this task
+  contactUrl String?
+
+  /// Human-readable label for the push/contact channel
+  contactLabel String?
+
+  /// Optional prewritten message template used in the push flow
+  contactTemplate String?
+
   /// When the task was completed
   completedAt DateTime?
 
@@ -3212,9 +3235,11 @@ model Task {
   assigneePerson           Person?                 @relation("TaskAssigneePerson", fields: [assigneePersonId], references: [id], onDelete: SetNull)
   assigneeOrganization     Organization?           @relation("TaskAssigneeOrganization", fields: [assigneeOrganizationId], references: [id], onDelete: SetNull)
   verifiedByUser           User?                   @relation("TaskVerifiedByUser", fields: [verifiedByUserId], references: [id], onDelete: SetNull)
+  owner                    User?                   @relation("TaskOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
   currentImpactEstimateSet TaskImpactEstimateSet?  @relation("CurrentTaskImpactEstimateSet", fields: [currentImpactEstimateSetId], references: [id], onDelete: SetNull)
   impactEstimateSets       TaskImpactEstimateSet[] @relation("TaskImpactEstimateSets")
   claims                   TaskClaim[]             @relation("TaskClaims")
+  milestones               TaskMilestone[]         @relation("TaskMilestones")
   sourceArtifacts          TaskSourceArtifact[]    @relation("TaskSourceArtifacts")
   outgoingEdges            TaskEdge[]              @relation("TaskOutgoingEdges")
   incomingEdges            TaskEdge[]              @relation("TaskIncomingEdges")
@@ -3224,6 +3249,7 @@ model Task {
   @@index([assigneePersonId])
   @@index([assigneeOrganizationId])
   @@index([verifiedByUserId])
+  @@index([ownerUserId])
   @@index([claimPolicy, status])
   @@index([category])
   @@index([difficulty])
@@ -3344,6 +3370,67 @@ model SourceArtifact {
   @@index([versionKey])
   @@index([sourceRef])
   @@index([contentHash])
+  @@index([deletedAt])
+}
+
+/// A milestone representing progress toward completing a task
+model TaskMilestone {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Parent task
+  taskId String
+
+  /// Stable milestone key within the task
+  key String
+
+  /// Short milestone title
+  title String
+
+  /// Optional explanatory detail
+  description String?
+
+  /// Current milestone status
+  status TaskMilestoneStatus @default(NOT_STARTED)
+
+  /// Optional supporting evidence URL
+  evidenceUrl String?
+
+  /// Optional curation / evidence note
+  evidenceNote String?
+
+  /// Display order within the task page
+  sortOrder Int @default(0)
+
+  /// When this milestone was completed
+  completedAt DateTime?
+
+  /// When this milestone was verified
+  verifiedAt DateTime?
+
+  /// User who verified this milestone
+  verifiedByUserId String?
+
+  /// Structured milestone metadata for domain-specific display
+  metadataJson Json?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  task           Task  @relation("TaskMilestones", fields: [taskId], references: [id], onDelete: Cascade)
+  verifiedByUser User? @relation("TaskMilestoneVerifiedByUser", fields: [verifiedByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([taskId, key])
+  @@index([taskId, sortOrder])
+  @@index([verifiedByUserId])
+  @@index([status])
   @@index([deletedAt])
 }
 

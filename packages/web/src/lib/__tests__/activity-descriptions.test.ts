@@ -48,6 +48,7 @@ describe("getActivityEmoji", () => {
   it("returns stable emoji tokens for representative activity types", () => {
     expect(getActivityEmoji(ActivityType.VOTED_REFERENDUM)).toBe("🗳️");
     expect(getActivityEmoji(ActivityType.DEPOSITED_PRIZE)).toBe("💰");
+    expect(getActivityEmoji(ActivityType.CONTACTED_ASSIGNEE)).toBe("📣");
   });
 
   it("returns fallback emoji for unknown type", () => {

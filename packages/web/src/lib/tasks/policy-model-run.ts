@@ -164,6 +164,9 @@ export const PolicyModelEvidenceClaimSchema = z.object({
 export const PolicyExecutionActorSchema = z.object({
   actorKey: z.string().nullish(),
   claimPolicyHint: z.nativeEnum(TaskClaimPolicy).nullish(),
+  contactLabel: z.string().nullish(),
+  contactTemplate: z.string().nullish(),
+  contactUrl: z.string().url().nullish(),
   currentAffiliation: z.string().nullish(),
   displayName: z.string().min(1),
   organizationKey: z.string().nullish(),

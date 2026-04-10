@@ -225,6 +225,10 @@ export function createOnePercentTreatyCompileConfig(input: {
         {
           actorKey: "person:president-of-the-united-states",
           claimPolicyHint: TaskClaimPolicy.ASSIGNED_ONLY,
+          contactLabel: "White House contact form",
+          contactTemplate:
+            "Please complete \"{{taskTitle}}\". This task is already {{delayLabel}}. Estimated delay cost so far: {{humanLives}} lives, {{sufferingHours}} suffering hours, and {{economicLoss}}.",
+          contactUrl: "https://www.whitehouse.gov/contact/",
           currentAffiliation: "United States Government",
           displayName: "President of the United States",
           organizationKey: "organization:united-states-government",

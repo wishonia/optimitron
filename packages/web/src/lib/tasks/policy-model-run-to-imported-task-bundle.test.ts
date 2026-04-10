@@ -32,6 +32,9 @@ describe("buildImportedTaskBundleFromPolicyModelRun", () => {
           {
             actorKey: "person:president-of-the-united-states",
             claimPolicyHint: TaskClaimPolicy.ASSIGNED_ONLY,
+            contactLabel: "White House contact form",
+            contactTemplate: "Please complete {{taskTitle}}.",
+            contactUrl: "https://www.whitehouse.gov/contact/",
             currentAffiliation: "United States Government",
             displayName: "President of the United States",
             organizationKey: "organization:united-states-government",
@@ -102,8 +105,10 @@ describe("buildImportedTaskBundleFromPolicyModelRun", () => {
     });
 
     expect(draft.assigneeHint?.displayName).toBe("President of the United States");
+    expect(draft.assigneeHint?.contactUrl).toBe("https://www.whitehouse.gov/contact/");
     expect(draft.bundle.task.claimPolicy).toBe(TaskClaimPolicy.ASSIGNED_ONLY);
     expect(draft.bundle.task.title).toBe("President of the United States signs the 1% Treaty");
+    expect(draft.bundle.task.contactLabel).toBe("White House contact form");
     expect(draft.bundle.impactEstimate.calculationVersion).toBe("treaty-compiler-v1");
     expect(draft.bundle.impactEstimate.frames[0]?.frameSlug).toBe("twenty-year");
     expect(draft.bundle.impactEstimate.frames[0]?.metrics[0]?.metricKey).toBe(

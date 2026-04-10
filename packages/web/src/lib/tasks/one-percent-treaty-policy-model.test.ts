@@ -189,6 +189,9 @@ describe("buildOnePercentTreatyPolicyModelRun", () => {
 
     expect(run.calculationVersion).toBe("one-percent-treaty-compiler-v1");
     expect(run.executionHints?.targetActors[0]?.claimPolicyHint).toBe(TaskClaimPolicy.ASSIGNED_ONLY);
+    expect(run.executionHints?.targetActors[0]?.contactUrl).toBe(
+      "https://www.whitehouse.gov/contact/",
+    );
     expect(frame?.canonical.expectedDalysAverted.base).toBeCloseTo(5_652_436_733.51, 2);
     expect(frame?.canonical.expectedEconomicValueUsd.base).toBeCloseTo(
       847_865_510_026_498.4,

@@ -10,6 +10,8 @@ import { notFound } from "next/navigation";
 import { TaskCard, type TaskCardTask } from "@/components/tasks/task-card";
 import { TaskClaimButton } from "@/components/tasks/TaskClaimButton";
 import { TaskCompleteForm } from "@/components/tasks/TaskCompleteForm";
+import { TaskContactActions } from "@/components/tasks/TaskContactActions";
+import { TaskMilestoneEditor } from "@/components/tasks/TaskMilestoneEditor";
 import { TaskShareButtons } from "@/components/tasks/TaskShareButtons";
 import { TaskVerifyForm } from "@/components/tasks/TaskVerifyForm";
 import { Avatar } from "@/components/retroui/Avatar";
@@ -27,6 +29,7 @@ import {
 } from "@/lib/tasks/accountability";
 import { getSignInPath, tasksLink, ROUTES } from "@/lib/routes";
 import { canTaskAcceptMoreClaims } from "@/lib/tasks/rank-tasks";
+import { readTaskContextSections } from "@/lib/tasks/task-context";
 import { getTaskDetailData } from "@/lib/tasks.server";
 
 function getClaimPolicyLabel(policy: TaskClaimPolicy) {
@@ -54,6 +57,10 @@ function getFallbackInitials(value: string) {
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("");
+}
+
+function getMilestoneStatusLabel(status: string) {
+  return status.replaceAll("_", " ").toLowerCase();
 }
 
 export async function generateMetadata({
@@ -113,7 +120,7 @@ export default async function TaskDetailPage({
     notFound();
   }
 
-  const { task, viewer, viewerClaim } = data;
+  const { contactActionCount, task, viewer, viewerClaim } = data;
   const canClaim = canTaskAcceptMoreClaims({
     activeClaimCount: task.activeClaimCount,
     claimPolicy: task.claimPolicy,
@@ -143,6 +150,14 @@ export default async function TaskDetailPage({
     taskTitle: task.title,
   });
   const fallbackInitials = getFallbackInitials(targetLabel);
+  const contextSections = readTaskContextSections(task.contextJson);
+  const completedMilestoneCount = task.milestones.filter(
+    (milestone) => milestone.status === "COMPLETED" || milestone.status === "VERIFIED",
+  ).length;
+  const provenanceArtifacts =
+    task.currentImpactEstimateSet?.sourceArtifacts?.length
+      ? task.currentImpactEstimateSet.sourceArtifacts
+      : task.sourceArtifacts;
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -167,6 +182,7 @@ export default async function TaskDetailPage({
             <span className="text-muted-foreground">{task.title}</span>
           </nav>
           <div className="flex flex-wrap gap-2">
+            <ArcadeTag>{task.taskKey ?? task.id}</ArcadeTag>
             <ArcadeTag>{task.category.toLowerCase()}</ArcadeTag>
             <ArcadeTag>{task.difficulty.toLowerCase()}</ArcadeTag>
             <ArcadeTag>{getClaimPolicyLabel(task.claimPolicy)}</ArcadeTag>
@@ -331,20 +347,24 @@ export default async function TaskDetailPage({
                 </div>
               ) : null}
 
-              {task.sourceUrl ? (
-                <Button asChild className="font-black uppercase" variant="outline">
-                  <Link href={task.sourceUrl} target="_blank">
-                    Open Source Section
-                  </Link>
-                </Button>
-              ) : null}
-
-              {task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY &&
-              (task.assigneePerson || task.assigneeOrganization) ? (
+              {task.isPublic ? (
                 <TaskShareButtons
                   taskId={task.id}
                   shareText={shareText}
                   taskTitle={task.title}
+                />
+              ) : null}
+              {(task.assigneePerson || task.assigneeOrganization) ? (
+                <TaskContactActions
+                  contactActionCount={contactActionCount}
+                  delayStats={{
+                    currentDelayDays: delayStats.currentDelayDays,
+                    currentEconomicValueUsdLost: delayStats.currentEconomicValueUsdLost,
+                    currentHumanLivesLost: delayStats.currentHumanLivesLost,
+                    currentSufferingHoursLost: delayStats.currentSufferingHoursLost,
+                  }}
+                  task={task}
+                  taskId={task.id}
                 />
               ) : null}
             </div>
@@ -389,8 +409,7 @@ export default async function TaskDetailPage({
                   <Link href={signInHref}>Sign In</Link>
                 </Button>
               ) : null}
-              {task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY &&
-              (task.assigneePerson || task.assigneeOrganization) ? (
+              {task.isPublic ? (
                 <p className="text-sm font-bold text-muted-foreground">
                   This page is built to be shared publicly. The linked OG image follows
                   this task’s live delay clock.
@@ -399,6 +418,194 @@ export default async function TaskDetailPage({
             </div>
           </BrutalCard>
         </div>
+
+        {contextSections.acceptanceCriteria.length > 0 ? (
+          <BrutalCard bgColor="background" padding="lg">
+            <div className="space-y-4">
+              <p className="text-sm font-black uppercase text-brutal-pink">
+                Acceptance Criteria
+              </p>
+              <ul className="space-y-2">
+                {contextSections.acceptanceCriteria.map((criterion) => (
+                  <li key={criterion} className="flex items-start gap-3 text-sm font-bold">
+                    <span className="mt-0.5">[ ]</span>
+                    <span>{criterion}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </BrutalCard>
+        ) : null}
+
+        {task.milestones.length > 0 ? (
+          <BrutalCard bgColor="cyan" padding="lg">
+            <div className="space-y-5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <p className="text-sm font-black uppercase text-brutal-pink">
+                    Milestone Tracker
+                  </p>
+                  <p className="text-sm font-bold text-muted-foreground">
+                    {completedMilestoneCount} of {task.milestones.length} milestones reached
+                  </p>
+                </div>
+                <ArcadeTag>{`${completedMilestoneCount}/${task.milestones.length}`}</ArcadeTag>
+              </div>
+              <div className="space-y-4">
+                {task.milestones.map((milestone) => (
+                  <div
+                    key={milestone.id}
+                    className="border-4 border-foreground bg-background p-4"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="space-y-1">
+                        <p className="text-lg font-black uppercase">{milestone.title}</p>
+                        {milestone.description ? (
+                          <p className="text-sm font-bold text-muted-foreground">
+                            {milestone.description}
+                          </p>
+                        ) : null}
+                      </div>
+                      <ArcadeTag>{getMilestoneStatusLabel(milestone.status)}</ArcadeTag>
+                    </div>
+                    {milestone.evidenceNote ? (
+                      <p className="mt-3 text-sm font-bold">{milestone.evidenceNote}</p>
+                    ) : null}
+                    {milestone.evidenceUrl ? (
+                      <Link
+                        className="mt-2 inline-block text-sm font-black uppercase underline underline-offset-4"
+                        href={milestone.evidenceUrl}
+                        target="_blank"
+                      >
+                        Open Evidence
+                      </Link>
+                    ) : null}
+                    {viewer?.isAdmin ? (
+                      <TaskMilestoneEditor
+                        defaultEvidenceNote={milestone.evidenceNote}
+                        defaultEvidenceUrl={milestone.evidenceUrl}
+                        defaultStatus={milestone.status}
+                        milestoneId={milestone.id}
+                        taskId={task.id}
+                      />
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </BrutalCard>
+        ) : null}
+
+        {(task.sourceUrl || provenanceArtifacts.length > 0 || task.currentImpactEstimateSet) ? (
+          <BrutalCard bgColor="background" padding="lg">
+            <div className="space-y-4">
+              <p className="text-sm font-black uppercase text-brutal-pink">
+                Methodology & Sources
+              </p>
+              {task.currentImpactEstimateSet ? (
+                <div className="grid gap-3 md:grid-cols-3">
+                  <div className="border-4 border-foreground bg-muted/20 p-3">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                      Methodology
+                    </p>
+                    <p className="mt-2 text-sm font-bold">
+                      {task.currentImpactEstimateSet.methodologyKey}
+                    </p>
+                  </div>
+                  <div className="border-4 border-foreground bg-muted/20 p-3">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                      Calculation
+                    </p>
+                    <p className="mt-2 text-sm font-bold">
+                      {task.currentImpactEstimateSet.calculationVersion}
+                    </p>
+                  </div>
+                  <div className="border-4 border-foreground bg-muted/20 p-3">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                      Counterfactual
+                    </p>
+                    <p className="mt-2 text-sm font-bold">
+                      {task.currentImpactEstimateSet.counterfactualKey}
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+              {task.sourceUrl ? (
+                <Button asChild className="font-black uppercase" variant="outline">
+                  <Link href={task.sourceUrl} target="_blank">
+                    Open Primary Source
+                  </Link>
+                </Button>
+              ) : null}
+              {provenanceArtifacts.length > 0 ? (
+                <div className="space-y-2">
+                  {provenanceArtifacts.map((artifactEntry) => (
+                    <div
+                      key={artifactEntry.sourceArtifact.id}
+                      className="border-2 border-foreground/20 bg-background p-3"
+                    >
+                      <p className="text-sm font-black uppercase">
+                        {artifactEntry.sourceArtifact.title ?? artifactEntry.sourceArtifact.sourceKey}
+                      </p>
+                      <p className="text-xs font-bold uppercase text-muted-foreground">
+                        {artifactEntry.sourceArtifact.sourceSystem.toLowerCase()} ·{" "}
+                        {artifactEntry.sourceArtifact.artifactType.toLowerCase()}
+                      </p>
+                      {artifactEntry.sourceArtifact.sourceUrl ? (
+                        <Link
+                          className="mt-2 inline-block text-sm font-black uppercase underline underline-offset-4"
+                          href={artifactEntry.sourceArtifact.sourceUrl}
+                          target="_blank"
+                        >
+                          Open Source
+                        </Link>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </BrutalCard>
+        ) : null}
+
+        {contextSections.currentActivities.length > 0 ? (
+          <BrutalCard bgColor="yellow" padding="lg">
+            <div className="space-y-4">
+              <p className="text-sm font-black uppercase text-brutal-pink">
+                Currently Doing Instead
+              </p>
+              <div className="space-y-4">
+                {contextSections.currentActivities.map((activity, index) => (
+                  <div key={activity.id ?? `${activity.description}-${index}`} className="border-4 border-foreground bg-background p-4">
+                    <p className="text-lg font-black uppercase">{activity.description}</p>
+                    {activity.impactSummary ? (
+                      <p className="mt-2 text-sm font-bold">{activity.impactSummary}</p>
+                    ) : null}
+                    {activity.methodology ? (
+                      <p className="mt-2 text-sm font-bold text-muted-foreground">
+                        Methodology: {activity.methodology}
+                      </p>
+                    ) : null}
+                    {activity.updated ? (
+                      <p className="mt-2 text-xs font-black uppercase text-muted-foreground">
+                        Updated {activity.updated}
+                      </p>
+                    ) : null}
+                    {activity.sourceUrl ? (
+                      <Link
+                        className="mt-2 inline-block text-sm font-black uppercase underline underline-offset-4"
+                        href={activity.sourceUrl}
+                        target="_blank"
+                      >
+                        Open Source
+                      </Link>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </BrutalCard>
+        ) : null}
 
         {task.childTasks.length > 0 ? (
           <BrutalCard bgColor="green" padding="lg">

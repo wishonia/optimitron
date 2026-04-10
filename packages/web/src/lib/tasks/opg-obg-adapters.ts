@@ -109,6 +109,9 @@ export interface ImportedTaskDraft {
   description: string;
   difficulty: TaskDifficulty;
   dueAt: Date | null;
+  contactLabel: string | null;
+  contactTemplate: string | null;
+  contactUrl: string | null;
   estimatedEffortHours: number | null;
   impactStatement: string | null;
   interestTags: string[];
@@ -339,6 +342,9 @@ export function buildOpgRecommendationTaskBundle(input: {
         `${recommendation.recommendationType} ${policyName}.`,
       difficulty: TaskDifficulty.ADVANCED,
       dueAt: null,
+      contactLabel: null,
+      contactTemplate: null,
+      contactUrl: null,
       estimatedEffortHours: null,
       impactStatement: recommendation.rationale ?? null,
       interestTags: ["policy", policyType],
@@ -496,6 +502,9 @@ export function buildObgCategoryTaskBundle(input: {
       description: `${category.recommendation} ${category.name} spending. Current gap: ${category.gap.toLocaleString()}.`,
       difficulty: TaskDifficulty.ADVANCED,
       dueAt: null,
+      contactLabel: null,
+      contactTemplate: null,
+      contactUrl: null,
       estimatedEffortHours: null,
       impactStatement: category.evidenceSource,
       interestTags: ["budget", category.id],

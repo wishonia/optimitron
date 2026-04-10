@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { SectionContainer } from "@/components/ui/section-container";
 import { LiveDeathTicker } from "@/components/animations/LiveDeathTicker";
 import { TAGLINES, CTA } from "@/lib/messaging";
+import { ROUTES } from "@/lib/routes";
 
 const containerVariants = {
   hidden: {},
@@ -96,11 +97,11 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.7 }}
             className="mt-8 flex flex-col sm:flex-row items-center gap-4"
           >
-            <GameCTA href="#vote" variant="primary" size="lg">
-              {CTA.playNow}
+            <GameCTA href={ROUTES.tasks} variant="primary" size="lg">
+              Open Top Tasks
             </GameCTA>
-            <GameCTA href="#rules" variant="yellow" size="lg">
-              {CTA.seeTheRules}
+            <GameCTA href="#vote" variant="yellow" size="lg">
+              {CTA.playNow}
             </GameCTA>
           </motion.div>
 

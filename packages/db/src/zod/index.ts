@@ -89,6 +89,7 @@ export const ActivityTypeSchema = z.enum([
   'SUBMITTED_COMPARISON',
   'DEPOSITED_PRIZE',
   'RECRUITED_VOTER',
+  'CONTACTED_ASSIGNEE',
   'VERIFIED_PERSONHOOD',
   'TRACKED_MEASUREMENT',
   'UPDATED_PROFILE',
@@ -221,6 +222,14 @@ export const TaskClaimStatusSchema = z.enum([
   'ABANDONED',
 ]);
 export type TaskClaimStatus = z.infer<typeof TaskClaimStatusSchema>;
+
+export const TaskMilestoneStatusSchema = z.enum([
+  'NOT_STARTED',
+  'IN_PROGRESS',
+  'COMPLETED',
+  'VERIFIED',
+]);
+export type TaskMilestoneStatus = z.infer<typeof TaskMilestoneStatusSchema>;
 
 export const TaskEdgeTypeSchema = z.enum([
   'DEPENDS_ON',
@@ -1221,7 +1230,7 @@ export const OrganizationMemberSchema = z.object({
 export type OrganizationMemberType = z.infer<typeof OrganizationMemberSchema>;
 
 // ============================================================================
-// TASKS / MISSIONS
+// TASKS
 // ============================================================================
 
 /** Zod schema for the Task model */
@@ -1232,6 +1241,7 @@ export const TaskSchema = z.object({
   assigneePersonId: z.string().nullable().optional(),
   assigneeOrganizationId: z.string().nullable().optional(),
   verifiedByUserId: z.string().nullable().optional(),
+  ownerUserId: z.string().nullable().optional(),
   currentImpactEstimateSetId: z.string().nullable().optional(),
   taskKey: z.string().nullable().optional(),
   title: z.string(),
@@ -1253,6 +1263,9 @@ export const TaskSchema = z.object({
   isPublic: z.boolean().default(true),
   completionEvidence: z.string().nullable().optional(),
   dueAt: nullableDateSchema,
+  contactUrl: z.string().nullable().optional(),
+  contactLabel: z.string().nullable().optional(),
+  contactTemplate: z.string().nullable().optional(),
   completedAt: nullableDateSchema,
   verifiedAt: nullableDateSchema,
   sortOrder: z.number().int().default(0),
@@ -1281,6 +1294,27 @@ export const TaskClaimSchema = z.object({
   deletedAt: nullableDateSchema,
 });
 export type TaskClaimType = z.infer<typeof TaskClaimSchema>;
+
+/** Zod schema for the TaskMilestone model */
+export const TaskMilestoneSchema = z.object({
+  id: z.string(),
+  taskId: z.string(),
+  key: z.string(),
+  title: z.string(),
+  description: z.string().nullable().optional(),
+  status: TaskMilestoneStatusSchema.default('NOT_STARTED'),
+  evidenceUrl: z.string().nullable().optional(),
+  evidenceNote: z.string().nullable().optional(),
+  sortOrder: z.number().int().default(0),
+  completedAt: nullableDateSchema,
+  verifiedAt: nullableDateSchema,
+  verifiedByUserId: z.string().nullable().optional(),
+  metadataJson: nullableJsonSchema,
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskMilestoneType = z.infer<typeof TaskMilestoneSchema>;
 
 /** Zod schema for the SourceArtifact model */
 export const SourceArtifactSchema = z.object({
