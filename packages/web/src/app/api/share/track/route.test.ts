@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
-  requireAuth: vi.fn(),
+  getCurrentUser: vi.fn(),
   grantWishes: vi.fn(),
 }));
 
 vi.mock("@/lib/auth-utils", () => ({
-  requireAuth: mocks.requireAuth,
+  getCurrentUser: mocks.getCurrentUser,
 }));
 
 vi.mock("@/lib/wishes.server", () => ({
@@ -28,23 +28,28 @@ describe("POST /api/share/track", () => {
     mocks.grantWishes.mockResolvedValue(null);
   });
 
-  it("returns 401 when unauthenticated", async () => {
-    mocks.requireAuth.mockRejectedValue(new Error("Unauthorized"));
+  it("returns a no-op success when unauthenticated", async () => {
+    mocks.getCurrentUser.mockResolvedValue(null);
 
     const res = await POST(makeRequest({ templateLabel: "Impact-Focused" }));
 
-    expect(res.status).toBe(401);
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({
+      success: true,
+      tracked: false,
+      wishesEarned: 0,
+    });
   });
 
   it("grants 1 wish on first share", async () => {
-    mocks.requireAuth.mockResolvedValue({ userId: "user-1" });
+    mocks.getCurrentUser.mockResolvedValue({ id: "user-1" });
     mocks.grantWishes.mockResolvedValue({ amount: 1 });
 
     const res = await POST(makeRequest({ templateLabel: "Impact-Focused" }));
 
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body).toEqual({ success: true, wishesEarned: 1 });
+    expect(body).toEqual({ success: true, tracked: true, wishesEarned: 1 });
     expect(mocks.grantWishes).toHaveBeenCalledWith({
       userId: "user-1",
       reason: "SHARE_REPORT",
@@ -55,7 +60,7 @@ describe("POST /api/share/track", () => {
   });
 
   it("works with empty body", async () => {
-    mocks.requireAuth.mockResolvedValue({ userId: "user-1" });
+    mocks.getCurrentUser.mockResolvedValue({ id: "user-1" });
     mocks.grantWishes.mockResolvedValue({ amount: 1 });
 
     const res = await POST(makeRequest());
@@ -71,13 +76,13 @@ describe("POST /api/share/track", () => {
   });
 
   it("returns 0 wishes when deduped", async () => {
-    mocks.requireAuth.mockResolvedValue({ userId: "user-1" });
+    mocks.getCurrentUser.mockResolvedValue({ id: "user-1" });
     mocks.grantWishes.mockResolvedValue(null);
 
     const res = await POST(makeRequest({ templateLabel: "The Math" }));
 
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body).toEqual({ success: true, wishesEarned: 0 });
+    expect(body).toEqual({ success: true, tracked: true, wishesEarned: 0 });
   });
 });

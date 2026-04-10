@@ -1,0 +1,92 @@
+import {
+  TaskCategory,
+  TaskClaimPolicy,
+  TaskDifficulty,
+  TaskStatus,
+} from "@optimitron/db";
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { z } from "zod";
+import { authOptions } from "@/lib/auth";
+import { requireAuth } from "@/lib/auth-utils";
+import { getTaskDetailData, updateOwnedTask } from "@/lib/tasks.server";
+
+export const runtime = "nodejs";
+
+const UpdateTaskBodySchema = z
+  .object({
+    category: z.nativeEnum(TaskCategory).nullish(),
+    claimPolicy: z.nativeEnum(TaskClaimPolicy).nullish(),
+    contactLabel: z.string().nullish(),
+    contactTemplate: z.string().nullish(),
+    contactUrl: z.string().nullish(),
+    description: z.string().nullish(),
+    difficulty: z.nativeEnum(TaskDifficulty).nullish(),
+    dueAt: z.string().datetime().nullish(),
+    estimatedEffortHours: z.number().nonnegative().nullish(),
+    interestTags: z.array(z.string()).nullish(),
+    isPublic: z.boolean().nullish(),
+    maxClaims: z.number().int().positive().nullish(),
+    roleTitle: z.string().nullish(),
+    skillTags: z.array(z.string()).nullish(),
+    status: z.nativeEnum(TaskStatus).nullish(),
+    title: z.string().min(1).nullish(),
+  })
+  .refine((value) => Object.keys(value).length > 0, {
+    message: "At least one field is required.",
+  });
+
+export async function GET(
+  _request: Request,
+  context: { params: Promise<{ id: string }> },
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user.id ?? null;
+    const { id } = await context.params;
+    const data = await getTaskDetailData(id, userId);
+
+    if (!data) {
+      return NextResponse.json({ error: "Task not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ data, success: true });
+  } catch (error) {
+    console.error("[TASKS] Failed to load task detail:", error);
+    return NextResponse.json({ error: "Failed to load task detail." }, { status: 500 });
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  context: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { userId } = await requireAuth();
+    const { id } = await context.params;
+    const parsed = UpdateTaskBodySchema.parse(await request.json());
+    const { dueAt, ...rest } = parsed;
+    const task = await updateOwnedTask(id, userId, {
+      ...rest,
+      dueAt: dueAt == null ? dueAt : new Date(dueAt),
+    });
+
+    return NextResponse.json({ data: task, success: true });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: "Invalid task payload." }, { status: 400 });
+    }
+
+    if (error instanceof Error) {
+      const status = error.message === "Task not found." ? 404 : 400;
+      return NextResponse.json({ error: error.message }, { status });
+    }
+
+    console.error("[TASKS] Failed to update task:", error);
+    return NextResponse.json({ error: "Failed to update task." }, { status: 500 });
+  }
+}

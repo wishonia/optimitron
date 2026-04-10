@@ -1,10 +1,37 @@
-import { TaskImpactFrameKey, TaskStatus } from "@optimitron/db";
+import {
+  TaskCategory,
+  TaskClaimPolicy,
+  TaskDifficulty,
+  TaskImpactFrameKey,
+  TaskStatus,
+} from "@optimitron/db";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { z } from "zod";
 import { authOptions } from "@/lib/auth";
-import { listTasks } from "@/lib/tasks.server";
+import { requireAuth } from "@/lib/auth-utils";
+import { createOwnedTask, listTasks } from "@/lib/tasks.server";
 
 export const runtime = "nodejs";
+
+const CreateTaskBodySchema = z.object({
+  category: z.nativeEnum(TaskCategory).nullish(),
+  claimPolicy: z.nativeEnum(TaskClaimPolicy).nullish(),
+  contactLabel: z.string().nullish(),
+  contactTemplate: z.string().nullish(),
+  contactUrl: z.string().nullish(),
+  description: z.string().nullish(),
+  difficulty: z.nativeEnum(TaskDifficulty).nullish(),
+  dueAt: z.string().datetime().nullish(),
+  estimatedEffortHours: z.number().nonnegative().nullish(),
+  interestTags: z.array(z.string()).nullish(),
+  isPublic: z.boolean().nullish(),
+  maxClaims: z.number().int().positive().nullish(),
+  roleTitle: z.string().nullish(),
+  skillTags: z.array(z.string()).nullish(),
+  status: z.nativeEnum(TaskStatus).nullish(),
+  title: z.string().min(1),
+});
 
 export async function GET(request: Request) {
   try {
@@ -15,6 +42,7 @@ export async function GET(request: Request) {
     const assigneePersonId = searchParams.get("assigneePersonId");
     const rawStatus = searchParams.get("status");
     const rawFrameKey = searchParams.get("frameKey");
+    const rawVisibility = searchParams.get("visibility");
     const status =
       rawStatus && rawStatus in TaskStatus
         ? TaskStatus[rawStatus as keyof typeof TaskStatus]
@@ -23,6 +51,8 @@ export async function GET(request: Request) {
       rawFrameKey && rawFrameKey in TaskImpactFrameKey
         ? TaskImpactFrameKey[rawFrameKey as keyof typeof TaskImpactFrameKey]
         : null;
+    const visibility =
+      rawVisibility === "owned" || rawVisibility === "accessible" ? rawVisibility : "public";
 
     const tasks = await listTasks({
       assigneeOrganizationId,
@@ -30,11 +60,41 @@ export async function GET(request: Request) {
       frameKey,
       status,
       userId,
+      visibility,
     });
 
     return NextResponse.json({ data: tasks, success: true });
   } catch (error) {
     console.error("[TASKS] Failed to list tasks:", error);
     return NextResponse.json({ error: "Failed to list tasks." }, { status: 500 });
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const { userId } = await requireAuth();
+    const parsed = CreateTaskBodySchema.parse(await request.json());
+    const { dueAt, ...rest } = parsed;
+    const task = await createOwnedTask(userId, {
+      ...rest,
+      dueAt: dueAt == null ? null : new Date(dueAt),
+    });
+
+    return NextResponse.json({ data: task, success: true }, { status: 201 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: "Invalid task payload." }, { status: 400 });
+    }
+
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    console.error("[TASKS] Failed to create task:", error);
+    return NextResponse.json({ error: "Failed to create task." }, { status: 500 });
   }
 }

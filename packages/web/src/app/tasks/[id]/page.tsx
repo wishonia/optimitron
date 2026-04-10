@@ -225,7 +225,16 @@ export default async function TaskDetailPage({
                       Accountability Target
                     </p>
                     <p className="text-2xl font-black">
-                      {targetLabel}
+                      {task.assigneePerson ? (
+                        <Link
+                          className="underline underline-offset-4"
+                          href={`/people/${task.assigneePerson.id}`}
+                        >
+                          {targetLabel}
+                        </Link>
+                      ) : (
+                        targetLabel
+                      )}
                       {task.roleTitle ? `, ${task.roleTitle}` : ""}
                     </p>
                     {task.assigneeAffiliationSnapshot ||

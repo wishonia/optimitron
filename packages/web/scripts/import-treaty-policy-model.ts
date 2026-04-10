@@ -2,15 +2,14 @@ import "./load-env";
 import { createHash } from "crypto";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, resolve } from "path";
-import { TaskCategory, TaskClaimPolicy, TaskDifficulty, TaskStatus } from "@optimitron/db";
 import { buildOnePercentTreatyPolicyModelRun } from "../src/lib/tasks/one-percent-treaty-policy-model";
 import { buildImportedTaskBundleFromPolicyModelRun } from "../src/lib/tasks/policy-model-run-to-imported-task-bundle";
+import { ensureTreatyParentTask } from "../src/lib/tasks/treaty-program.server";
+import { TREATY_DUE_AT } from "../src/lib/tasks/treaty-signer-network";
 import { buildTreatySignerMilestones } from "../src/lib/tasks/treaty-milestones";
 
 const DEFAULT_PARAMETERS_PATH = "E:/code/disease-eradication-plan/assets/json/parameters.json";
 const DEFAULT_OUTPUT_PATH = "tmp/one-percent-treaty-policy-model-run.json";
-const TREATY_PARENT_TASK_KEY = "program:one-percent-treaty:ratify";
-const TREATY_DUE_AT = new Date("2024-12-31T00:00:00.000Z");
 
 interface CliOptions {
   importDb: boolean;
@@ -46,55 +45,6 @@ async function resolveJurisdictionId(
 
   return record?.id ?? null;
 }
-
-async function ensureTreatyParentTask(input: {
-  jurisdictionId: string | null;
-}) {
-  const { prisma } = await import("../src/lib/prisma");
-
-  return prisma.task.upsert({
-    where: {
-      taskKey: TREATY_PARENT_TASK_KEY,
-    },
-    update: {
-      category: TaskCategory.GOVERNANCE,
-      claimPolicy: TaskClaimPolicy.ASSIGNED_ONLY,
-      description:
-        "Coordinate signature and ratification of the 1% Treaty across national leaders, then keep public pressure on every outstanding signer until the treaty is real.",
-      difficulty: TaskDifficulty.EXPERT,
-      dueAt: TREATY_DUE_AT,
-      interestTags: ["treaty", "disease-eradication", "peace-dividend"],
-      isPublic: true,
-      jurisdictionId: input.jurisdictionId,
-      skillTags: ["organizing", "diplomacy", "public-pressure"],
-      sortOrder: -100,
-      status: TaskStatus.ACTIVE,
-      title: "Ratify the 1% Treaty",
-    },
-    create: {
-      category: TaskCategory.GOVERNANCE,
-      claimPolicy: TaskClaimPolicy.ASSIGNED_ONLY,
-      description:
-        "Coordinate signature and ratification of the 1% Treaty across national leaders, then keep public pressure on every outstanding signer until the treaty is real.",
-      difficulty: TaskDifficulty.EXPERT,
-      dueAt: TREATY_DUE_AT,
-      interestTags: ["treaty", "disease-eradication", "peace-dividend"],
-      isPublic: true,
-      jurisdictionId: input.jurisdictionId,
-      skillTags: ["organizing", "diplomacy", "public-pressure"],
-      sortOrder: -100,
-      status: TaskStatus.ACTIVE,
-      taskKey: TREATY_PARENT_TASK_KEY,
-      title: "Ratify the 1% Treaty",
-    },
-    select: {
-      id: true,
-      taskKey: true,
-      title: true,
-    },
-  });
-}
-
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const parametersPath = resolve(process.cwd(), options.parametersPath);

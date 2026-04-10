@@ -1,7 +1,9 @@
 import {
   OrgType,
+  TaskCategory,
   TaskClaimPolicy,
   TaskClaimStatus,
+  TaskDifficulty,
   TaskImpactFrameKey,
   TaskStatus,
   type Prisma,
@@ -212,6 +214,7 @@ const taskListSelect = {
   interestTags: true,
   isPublic: true,
   maxClaims: true,
+  ownerUserId: true,
   roleTitle: true,
   parentTaskId: true,
   skillTags: true,
@@ -416,6 +419,50 @@ async function requireTaskReviewer(userId: string) {
   return reviewer;
 }
 
+function getTaskVisibilityWhere(input?: {
+  assigneeOrganizationId?: string | null;
+  assigneePersonId?: string | null;
+  status?: TaskStatus | null;
+  taskId?: string | null;
+  userId?: string | null;
+  visibility?: "public" | "owned" | "accessible";
+}): Prisma.TaskWhereInput {
+  const baseWhere: Prisma.TaskWhereInput = {
+    assigneeOrganizationId: input?.assigneeOrganizationId ?? undefined,
+    assigneePersonId: input?.assigneePersonId ?? undefined,
+    deletedAt: null,
+    id: input?.taskId ?? undefined,
+    status: input?.status ?? undefined,
+  };
+
+  const visibility = input?.visibility ?? "public";
+  if (visibility === "owned") {
+    if (!input?.userId) {
+      return {
+        ...baseWhere,
+        ownerUserId: "__unreachable__",
+      };
+    }
+
+    return {
+      ...baseWhere,
+      ownerUserId: input.userId,
+    };
+  }
+
+  if (visibility === "accessible" && input?.userId) {
+    return {
+      ...baseWhere,
+      OR: [{ isPublic: true }, { ownerUserId: input.userId }],
+    };
+  }
+
+  return {
+    ...baseWhere,
+    isPublic: true,
+  };
+}
+
 function sortTasksForAccountability<T extends ReturnType<typeof decorateTask>>(tasks: T[]) {
   return [...tasks].sort((left, right) => {
     const rightScore = scoreTaskForAccountability(right);
@@ -441,13 +488,10 @@ export async function getTasksPageData(
     frameKey?: TaskImpactFrameKey | string | null;
   },
 ) {
-  const [viewer, allTasks, myClaims] = await Promise.all([
+  const [viewer, allTasks, myClaims, ownedTasks] = await Promise.all([
     userId ? getTaskViewer(userId) : Promise.resolve(null),
     prisma.task.findMany({
-      where: {
-        deletedAt: null,
-        isPublic: true,
-      },
+      where: getTaskVisibilityWhere(),
       orderBy: [{ verifiedAt: "desc" }, { createdAt: "desc" }],
       take: 120,
       select: taskListSelect,
@@ -472,6 +516,17 @@ export async function getTasksPageData(
             verificationNote: true,
             verifiedAt: true,
           },
+          take: 40,
+        })
+      : Promise.resolve([]),
+    userId
+      ? prisma.task.findMany({
+          where: getTaskVisibilityWhere({
+            userId,
+            visibility: "owned",
+          }),
+          orderBy: [{ dueAt: "asc" }, { updatedAt: "desc" }],
+          select: taskListSelect,
           take: 40,
         })
       : Promise.resolve([]),
@@ -503,6 +558,13 @@ export async function getTasksPageData(
           ...entry.task,
           recommendationScore: entry.score,
         }));
+  const decoratedOwnedTasks = ownedTasks.map((task) =>
+    decorateTask(task, {
+      frameKey: options?.frameKey,
+      userId: viewer?.id ?? null,
+    }),
+  );
+  const ownedPrivateTasks = decoratedOwnedTasks.filter((task) => !task.isPublic);
 
   return {
     allTasks: allTasksSorted,
@@ -515,6 +577,7 @@ export async function getTasksPageData(
         userId,
       }),
     })),
+    ownedPrivateTasks,
     viewer,
   };
 }
@@ -528,11 +591,11 @@ export async function getTaskDetailData(
 ) {
   const [task, viewer, contactActionCount] = await Promise.all([
     prisma.task.findFirst({
-      where: {
-        deletedAt: null,
-        id: taskId,
-        isPublic: true,
-      },
+      where: getTaskVisibilityWhere({
+        taskId,
+        userId,
+        visibility: "accessible",
+      }),
       select: taskDetailSelect,
     }),
     userId ? getTaskViewer(userId) : Promise.resolve(null),
@@ -583,15 +646,16 @@ export async function listTasks(options?: {
   frameKey?: TaskImpactFrameKey | string | null;
   status?: TaskStatus | null;
   userId?: string | null;
+  visibility?: "public" | "owned" | "accessible";
 }) {
   const tasks = await prisma.task.findMany({
-    where: {
-      assigneeOrganizationId: options?.assigneeOrganizationId ?? undefined,
-      assigneePersonId: options?.assigneePersonId ?? undefined,
-      deletedAt: null,
-      isPublic: true,
-      status: options?.status ?? undefined,
-    },
+    where: getTaskVisibilityWhere({
+      assigneeOrganizationId: options?.assigneeOrganizationId,
+      assigneePersonId: options?.assigneePersonId,
+      status: options?.status,
+      userId: options?.userId,
+      visibility: options?.visibility,
+    }),
     orderBy: [{ verifiedAt: "desc" }, { createdAt: "desc" }],
     select: taskListSelect,
     take: 100,
@@ -605,6 +669,209 @@ export async function listTasks(options?: {
       }),
     ),
   );
+}
+
+export async function getPersonTaskProfileData(
+  personId: string,
+  userId?: string | null,
+  options?: {
+    frameKey?: TaskImpactFrameKey | string | null;
+  },
+) {
+  const [person, tasks] = await Promise.all([
+    prisma.person.findFirst({
+      where: {
+        deletedAt: null,
+        id: personId,
+      },
+      select: {
+        bio: true,
+        countryCode: true,
+        currentAffiliation: true,
+        displayName: true,
+        id: true,
+        image: true,
+        isPublicFigure: true,
+        sourceRef: true,
+        sourceUrl: true,
+      },
+    }),
+    prisma.task.findMany({
+      where: {
+        assigneePersonId: personId,
+        deletedAt: null,
+        isPublic: true,
+      },
+      orderBy: [{ verifiedAt: "desc" }, { createdAt: "desc" }],
+      select: taskListSelect,
+      take: 100,
+    }),
+  ]);
+
+  if (!person) {
+    return null;
+  }
+
+  const decoratedTasks = sortTasksForAccountability(
+    tasks.map((task) =>
+      decorateTask(task, {
+        frameKey: options?.frameKey,
+        userId,
+      }),
+    ),
+  );
+
+  return {
+    openTasks: decoratedTasks.filter((task) => task.status !== TaskStatus.VERIFIED),
+    person,
+    tasks: decoratedTasks,
+    verifiedTasks: decoratedTasks.filter((task) => task.status === TaskStatus.VERIFIED),
+  };
+}
+
+export async function createOwnedTask(
+  ownerUserId: string,
+  input: {
+    category?: TaskCategory | null;
+    claimPolicy?: TaskClaimPolicy | null;
+    contactLabel?: string | null;
+    contactTemplate?: string | null;
+    contactUrl?: string | null;
+    description?: string | null;
+    difficulty?: TaskDifficulty | null;
+    dueAt?: Date | null;
+    estimatedEffortHours?: number | null;
+    interestTags?: string[] | null;
+    isPublic?: boolean | null;
+    maxClaims?: number | null;
+    roleTitle?: string | null;
+    skillTags?: string[] | null;
+    status?: TaskStatus | null;
+    title: string;
+  },
+) {
+  const title = input.title.trim();
+  const description = input.description?.trim() ?? "";
+
+  if (!title) {
+    throw new Error("Title is required.");
+  }
+
+  if (
+    input.claimPolicy === TaskClaimPolicy.OPEN_MANY &&
+    input.maxClaims != null &&
+    input.maxClaims < 1
+  ) {
+    throw new Error("maxClaims must be at least 1 for OPEN_MANY tasks.");
+  }
+
+  return prisma.task.create({
+    data: {
+      category: input.category ?? TaskCategory.OTHER,
+      claimPolicy: input.claimPolicy ?? TaskClaimPolicy.ASSIGNED_ONLY,
+      contactLabel: input.contactLabel?.trim() || null,
+      contactTemplate: input.contactTemplate?.trim() || null,
+      contactUrl: input.contactUrl?.trim() || null,
+      description,
+      difficulty: input.difficulty ?? TaskDifficulty.INTERMEDIATE,
+      dueAt: input.dueAt ?? null,
+      estimatedEffortHours: input.estimatedEffortHours ?? null,
+      interestTags: input.interestTags?.filter(Boolean) ?? [],
+      isPublic: input.isPublic ?? false,
+      maxClaims:
+        (input.claimPolicy ?? TaskClaimPolicy.ASSIGNED_ONLY) === TaskClaimPolicy.OPEN_MANY
+          ? input.maxClaims ?? null
+          : null,
+      ownerUserId,
+      roleTitle: input.roleTitle?.trim() || null,
+      skillTags: input.skillTags?.filter(Boolean) ?? [],
+      status: input.status ?? TaskStatus.ACTIVE,
+      title,
+    },
+    select: taskDetailSelect,
+  });
+}
+
+export async function updateOwnedTask(
+  taskId: string,
+  ownerUserId: string,
+  input: {
+    category?: TaskCategory | null;
+    claimPolicy?: TaskClaimPolicy | null;
+    contactLabel?: string | null;
+    contactTemplate?: string | null;
+    contactUrl?: string | null;
+    description?: string | null;
+    difficulty?: TaskDifficulty | null;
+    dueAt?: Date | null;
+    estimatedEffortHours?: number | null;
+    interestTags?: string[] | null;
+    isPublic?: boolean | null;
+    maxClaims?: number | null;
+    roleTitle?: string | null;
+    skillTags?: string[] | null;
+    status?: TaskStatus | null;
+    title?: string | null;
+  },
+) {
+  const existingTask = await prisma.task.findFirst({
+    where: {
+      deletedAt: null,
+      id: taskId,
+      ownerUserId,
+    },
+    select: {
+      claimPolicy: true,
+      id: true,
+    },
+  });
+
+  if (!existingTask) {
+    throw new Error("Task not found.");
+  }
+
+  const nextClaimPolicy = input.claimPolicy ?? existingTask.claimPolicy;
+  if (
+    nextClaimPolicy === TaskClaimPolicy.OPEN_MANY &&
+    input.maxClaims != null &&
+    input.maxClaims < 1
+  ) {
+    throw new Error("maxClaims must be at least 1 for OPEN_MANY tasks.");
+  }
+
+  const title = input.title == null ? undefined : input.title.trim();
+  if (title !== undefined && !title) {
+    throw new Error("Title is required.");
+  }
+
+  return prisma.task.update({
+    where: { id: taskId },
+    data: {
+      category: input.category ?? undefined,
+      claimPolicy: input.claimPolicy ?? undefined,
+      contactLabel: input.contactLabel == null ? undefined : input.contactLabel.trim() || null,
+      contactTemplate:
+        input.contactTemplate == null ? undefined : input.contactTemplate.trim() || null,
+      contactUrl: input.contactUrl == null ? undefined : input.contactUrl.trim() || null,
+      description: input.description == null ? undefined : input.description.trim(),
+      difficulty: input.difficulty ?? undefined,
+      dueAt: input.dueAt ?? undefined,
+      estimatedEffortHours: input.estimatedEffortHours ?? undefined,
+      interestTags: input.interestTags?.filter(Boolean) ?? undefined,
+      isPublic: input.isPublic ?? undefined,
+      maxClaims:
+        nextClaimPolicy === TaskClaimPolicy.OPEN_MANY
+          ? input.maxClaims ?? undefined
+          : input.claimPolicy
+            ? null
+            : undefined,
+      roleTitle: input.roleTitle == null ? undefined : input.roleTitle.trim() || null,
+      skillTags: input.skillTags?.filter(Boolean) ?? undefined,
+      status: input.status ?? undefined,
+      title,
+    },
+    select: taskDetailSelect,
+  });
 }
 
 export async function claimTask(taskId: string, userId: string) {

@@ -185,7 +185,18 @@ export function TaskCard({
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
                   Accountability Target
                 </p>
-                <p className="truncate text-sm font-black uppercase">{targetLabel}</p>
+                <p className="truncate text-sm font-black uppercase">
+                  {task.assigneePerson ? (
+                    <Link
+                      className="underline underline-offset-4"
+                      href={`/people/${task.assigneePerson.id}`}
+                    >
+                      {targetLabel}
+                    </Link>
+                  ) : (
+                    targetLabel
+                  )}
+                </p>
               </div>
             </div>
           ) : null}

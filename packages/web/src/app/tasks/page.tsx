@@ -108,6 +108,24 @@ export default async function TasksPage() {
         ) : null}
 
         {userId ? (
+          <Section title="My Private Tasks">
+            {data.ownedPrivateTasks.length > 0 ? (
+              <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                {data.ownedPrivateTasks.map((task) => (
+                  <TaskCard key={task.id} signedIn={Boolean(userId)} task={task} />
+                ))}
+              </div>
+            ) : (
+              <BrutalCard bgColor="background" padding="md">
+                <p className="text-sm font-bold">
+                  Private project tasks will show up here once you create them through the task API.
+                </p>
+              </BrutalCard>
+            )}
+          </Section>
+        ) : null}
+
+        {userId ? (
           <Section title="For You">
             {data.forYou.length > 0 ? (
               <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">

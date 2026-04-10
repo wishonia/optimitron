@@ -30,6 +30,7 @@
     "extract:copy": "tsx scripts/extract-copy.ts",
     "extract:tasks": "tsx scripts/extract-tasks-from-manual.ts",
     "import:treaty-model": "tsx scripts/import-treaty-policy-model.ts",
+    "sync:treaty-signers": "tsx scripts/sync-treaty-signers.ts",
     "draft:legislation": "tsx scripts/draft-legislation.ts"
   },
   "dependencies": {
