@@ -1,23 +1,16 @@
 import Link from "next/link";
-import {
-  TaskClaimPolicy,
-  TaskStatus,
-  type TaskDifficulty,
-} from "@optimitron/db";
+import type { TaskDifficulty } from "@optimitron/db";
 import { TaskClaimButton } from "@/components/tasks/TaskClaimButton";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { ROUTES } from "@/lib/routes";
-import { canTaskAcceptMoreClaims } from "@/lib/tasks/rank-tasks";
 
 interface TopTask {
-  activeClaimCount: number;
-  claimPolicy: TaskClaimPolicy;
+  canClaim: boolean;
   description: string;
   difficulty: TaskDifficulty;
   estimatedEffortHours: number | null;
   id: string;
-  maxClaims: number | null;
   title: string;
   viewerHasClaim: boolean;
 }
@@ -58,16 +51,7 @@ export function TopTasksCard({ tasks }: { tasks: TopTask[] }) {
               </p>
               <div className="flex flex-wrap gap-3">
                 <TaskClaimButton
-                  canClaim={canTaskAcceptMoreClaims({
-                    activeClaimCount: task.activeClaimCount,
-                    claimPolicy: task.claimPolicy,
-                    difficulty: task.difficulty,
-                    estimatedEffortHours: task.estimatedEffortHours,
-                    interestTags: [],
-                    maxClaims: task.maxClaims,
-                    skillTags: [],
-                    status: TaskStatus.ACTIVE,
-                  })}
+                  canClaim={task.canClaim}
                   signedIn
                   signInHref={ROUTES.tasks}
                   taskId={task.id}

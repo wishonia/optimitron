@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { getDashboardData, getTopReferrers } from "@/lib/dashboard.server";
 import { getTasksPageData } from "@/lib/tasks.server";
+import { canTaskAcceptMoreClaims } from "@/lib/tasks/rank-tasks";
+import { TaskStatus } from "@optimitron/db";
 import { DashboardClient } from "@/components/dashboard/DashboardClient";
 import { dashboardLink, getSignInPath, ROUTES } from "@/lib/routes";
 import { getRouteMetadata } from "@/lib/metadata";
@@ -28,13 +30,20 @@ export default async function DashboardPage() {
       initialData={initialData}
       leaderboard={leaderboard}
       topTasks={taskData.forYou.slice(0, 3).map((task) => ({
-        activeClaimCount: task.activeClaimCount,
-        claimPolicy: task.claimPolicy,
+        canClaim: canTaskAcceptMoreClaims({
+          activeClaimCount: task.activeClaimCount,
+          claimPolicy: task.claimPolicy,
+          difficulty: task.difficulty,
+          estimatedEffortHours: task.estimatedEffortHours,
+          interestTags: [],
+          maxClaims: task.maxClaims ?? null,
+          skillTags: [],
+          status: TaskStatus.ACTIVE,
+        }),
         description: task.description,
         difficulty: task.difficulty,
         estimatedEffortHours: task.estimatedEffortHours,
         id: task.id,
-        maxClaims: task.maxClaims ?? null,
         title: task.title,
         viewerHasClaim: task.viewerHasClaim,
       }))}

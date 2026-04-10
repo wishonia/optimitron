@@ -11,6 +11,7 @@
     "test:integration": "tsx src/run-local-db-tests.ts",
     "test:watch": "vitest",
     "db:cli": "tsx src/db-cli.ts",
+    "audit:schema-usage": "tsx src/schema-usage-audit.ts",
     "prisma:generate": "prisma generate",
     "prisma:validate": "prisma validate --schema prisma/schema.prisma",
     "prisma:migrate:dev": "prisma migrate dev --schema prisma/schema.prisma",

@@ -19,7 +19,7 @@ import { TopTasksCard } from "@/components/dashboard/top-tasks-card"
 import { QuestChecklistCard } from "@/components/dashboard/QuestChecklistCard"
 import { ImpactReceiptsCard } from "@/components/dashboard/ImpactReceiptsCard"
 import type { DashboardData, LeaderboardEntry } from "@/types/dashboard"
-import type { TaskClaimPolicy, TaskDifficulty } from "@optimitron/db"
+import type { TaskDifficulty } from "@optimitron/db"
 
 export function DashboardClient({
   initialData,
@@ -29,13 +29,11 @@ export function DashboardClient({
   initialData: DashboardData
   leaderboard: LeaderboardEntry[]
   topTasks: Array<{
-    activeClaimCount: number
-    claimPolicy: TaskClaimPolicy
+    canClaim: boolean
     description: string
     difficulty: TaskDifficulty
     estimatedEffortHours: number | null
     id: string
-    maxClaims: number | null
     title: string
     viewerHasClaim: boolean
   }>
