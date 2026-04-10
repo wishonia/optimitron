@@ -53,6 +53,7 @@ describe("profile daily check-in route", () => {
       },
       history: [],
       profile: {
+        availableHoursPerWeek: null,
         annualHouseholdIncomeUsd: null,
         birthYear: null,
         censusNotes: null,
@@ -63,11 +64,15 @@ describe("profile daily check-in route", () => {
         employmentStatus: null,
         genderIdentity: null,
         householdSize: null,
+        interestTags: [],
         lastIncomeReportedAt: null,
         latitude: null,
         longitude: null,
+        maxTaskDifficulty: null,
         postalCode: null,
+        personId: null,
         regionCode: null,
+        skillTags: [],
         timeZone: null,
       },
     });

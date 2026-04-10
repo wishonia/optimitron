@@ -52,6 +52,13 @@ export function buildCivicVoteUrl(
     : `${baseUrl}/civic/votes`;
 }
 
+export function buildTaskUrl(
+  taskId: string,
+  baseUrl: string = getBaseUrl(),
+): string {
+  return `${baseUrl}${ROUTES.tasks}/${taskId}`;
+}
+
 /** Build a referendum referral link: /agencies/dcongress/referendums/slug?ref=identifier */
 export function buildReferendumReferralUrl(
   slug: string,
@@ -61,4 +68,3 @@ export function buildReferendumReferralUrl(
   const base = `${baseUrl}${ROUTES.referendum}/${slug}`;
   return identifier ? `${base}?ref=${identifier}` : base;
 }
-

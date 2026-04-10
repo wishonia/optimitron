@@ -13,6 +13,7 @@ export const WISH_AMOUNTS: Record<WishReason, number> = {
   REFERRAL: 1,
   PRIZE_DEPOSIT: 1, // per $100 — caller computes actual amount
   SHARE_REPORT: 1,
+  TASK_COMPLETED: 5,
 };
 
 interface GrantWishesParams {
@@ -104,6 +105,7 @@ export function getWishReasonLabel(reason: WishReason): string {
     REFERRAL: "Recruited a Voter",
     PRIZE_DEPOSIT: "Prize Deposit",
     SHARE_REPORT: "Shared Report",
+    TASK_COMPLETED: "Verified Task Completion",
   };
   return labels[reason];
 }
@@ -121,6 +123,7 @@ export function getWishReasonEmoji(reason: WishReason): string {
     REFERRAL: "🤝",
     PRIZE_DEPOSIT: "🏆",
     SHARE_REPORT: "📤",
+    TASK_COMPLETED: "✅",
   };
   return emojis[reason];
 }

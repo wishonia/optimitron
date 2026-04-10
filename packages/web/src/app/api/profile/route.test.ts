@@ -53,6 +53,7 @@ describe("profile route", () => {
       },
       history: [],
       profile: {
+        availableHoursPerWeek: null,
         annualHouseholdIncomeUsd: 120000,
         birthYear: 1990,
         censusNotes: null,
@@ -63,11 +64,15 @@ describe("profile route", () => {
         employmentStatus: "employed_full_time",
         genderIdentity: null,
         householdSize: 3,
+        interestTags: [],
         lastIncomeReportedAt: "2026-03-11T18:00:00.000Z",
         latitude: null,
         longitude: null,
+        maxTaskDifficulty: null,
         postalCode: null,
+        personId: null,
         regionCode: "US-TX",
+        skillTags: [],
         timeZone: "America/Chicago",
       },
     });

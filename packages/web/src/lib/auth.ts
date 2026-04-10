@@ -21,6 +21,7 @@ async function getSessionIdentity(userId: string) {
       image: true,
       name: true,
       newsletterSubscribed: true,
+      personId: true,
       personhoodVerifications: {
         where: {
           deletedAt: null,
@@ -98,6 +99,7 @@ const providers: NextAuthOptions["providers"] = [
         email: user.email,
         name: user.name,
         image: user.image,
+        personId: user.personId,
         referralCode: user.referralCode,
         username: user.username,
       };
@@ -178,6 +180,7 @@ export const authOptions: NextAuthOptions = {
           token.id = identity.id;
           token.email = identity.email;
           token.name = identity.name;
+          token.personId = identity.personId;
           token.personhoodProvider = identity.personhoodProvider;
           token.personhoodVerificationLevel = identity.personhoodVerificationLevel;
           token.personhoodVerified = identity.isVerified;
@@ -201,6 +204,7 @@ export const authOptions: NextAuthOptions = {
         session.user.personhoodVerified = Boolean(token.personhoodVerified);
         session.user.personhoodVerifiedAt =
           (token.personhoodVerifiedAt as string | null | undefined) ?? null;
+        session.user.personId = (token.personId as string | null | undefined) ?? null;
         session.user.referralCode = token.referralCode as string | undefined;
         session.user.username = (token.username as string | null | undefined) ?? null;
         session.user.verifiedProviders = Array.isArray(token.verifiedProviders)

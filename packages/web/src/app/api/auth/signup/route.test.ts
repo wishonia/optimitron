@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+  ensurePersonForUser: vi.fn(),
   hashPassword: vi.fn(),
   findUnique: vi.fn(),
   create: vi.fn(),
@@ -10,6 +11,10 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("@/lib/auth", () => ({
   hashPassword: mocks.hashPassword,
+}));
+
+vi.mock("@/lib/person.server", () => ({
+  ensurePersonForUser: mocks.ensurePersonForUser,
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -34,6 +39,7 @@ import { POST } from "./route";
 describe("signup auth route", () => {
   beforeEach(() => {
     mocks.hashPassword.mockReset();
+    mocks.ensurePersonForUser.mockReset();
     mocks.findUnique.mockReset();
     mocks.create.mockReset();
     mocks.recordReferralAttributionForUser.mockReset();
@@ -100,6 +106,7 @@ describe("signup auth route", () => {
       },
     });
     expect(mocks.recordReferralAttributionForUser).toHaveBeenCalledWith("user_1", "REF123");
+    expect(mocks.ensurePersonForUser).toHaveBeenCalledWith("user_1");
     expect(mocks.sendWelcomeReferralEmailForUser).toHaveBeenCalledWith(
       expect.objectContaining({
         id: "user_1",

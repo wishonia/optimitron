@@ -15,16 +15,30 @@ import { LeaderboardCard } from "@/components/dashboard/LeaderboardCard"
 import { OrganizationsCard } from "@/components/dashboard/OrganizationsCard"
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed"
 import { ShareTemplatesCard } from "@/components/dashboard/ShareTemplatesCard"
+import { TopTasksCard } from "@/components/dashboard/top-tasks-card"
 import { QuestChecklistCard } from "@/components/dashboard/QuestChecklistCard"
 import { ImpactReceiptsCard } from "@/components/dashboard/ImpactReceiptsCard"
 import type { DashboardData, LeaderboardEntry } from "@/types/dashboard"
+import type { TaskClaimPolicy, TaskDifficulty } from "@optimitron/db"
 
 export function DashboardClient({
   initialData,
   leaderboard,
+  topTasks,
 }: {
   initialData: DashboardData
   leaderboard: LeaderboardEntry[]
+  topTasks: Array<{
+    activeClaimCount: number
+    claimPolicy: TaskClaimPolicy
+    description: string
+    difficulty: TaskDifficulty
+    estimatedEffortHours: number | null
+    id: string
+    maxClaims: number | null
+    title: string
+    viewerHasClaim: boolean
+  }>
 }) {
   const referralLink = buildUserReferralUrl(initialData.user)
 
@@ -58,6 +72,8 @@ export function DashboardClient({
           <ReferralLinkCard referralLink={referralLink} className="h-full" />
           <ReferralGoalCard stats={initialData.stats} />
         </div>
+
+        <TopTasksCard tasks={topTasks} />
 
         {/* Quest Checklist */}
         <QuestChecklistCard quests={initialData.questChecklist} />

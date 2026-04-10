@@ -120,10 +120,17 @@ export const OrgTypeSchema = z.enum([
   'RESEARCH_CENTER',
   'NONPROFIT',
   'DAO',
+  'GOVERNMENT',
   'GOVERNMENT_AGENCY',
   'HOSPITAL',
   'BIOTECH',
+  'COMPANY',
+  'FOUNDATION',
+  'INTERGOVERNMENTAL',
+  'MEDIA',
+  'POLITICAL_PARTY',
   'ADVOCACY',
+  'OTHER',
 ]);
 export type OrgType = z.infer<typeof OrgTypeSchema>;
 
@@ -162,8 +169,115 @@ export const WishReasonSchema = z.enum([
   'REFERRAL',
   'PRIZE_DEPOSIT',
   'SHARE_REPORT',
+  'TASK_COMPLETED',
 ]);
 export type WishReason = z.infer<typeof WishReasonSchema>;
+
+export const TaskDifficultySchema = z.enum([
+  'TRIVIAL',
+  'BEGINNER',
+  'INTERMEDIATE',
+  'ADVANCED',
+  'EXPERT',
+]);
+export type TaskDifficulty = z.infer<typeof TaskDifficultySchema>;
+
+export const TaskCategorySchema = z.enum([
+  'ADVOCACY',
+  'RESEARCH',
+  'COMMUNICATION',
+  'ENGINEERING',
+  'ORGANIZING',
+  'OUTREACH',
+  'GOVERNANCE',
+  'SCIENCE',
+  'LEGAL',
+  'CREATIVE',
+  'OTHER',
+]);
+export type TaskCategory = z.infer<typeof TaskCategorySchema>;
+
+export const TaskClaimPolicySchema = z.enum([
+  'ASSIGNED_ONLY',
+  'OPEN_SINGLE',
+  'OPEN_MANY',
+]);
+export type TaskClaimPolicy = z.infer<typeof TaskClaimPolicySchema>;
+
+export const TaskStatusSchema = z.enum([
+  'DRAFT',
+  'ACTIVE',
+  'VERIFIED',
+  'STALE',
+]);
+export type TaskStatus = z.infer<typeof TaskStatusSchema>;
+
+export const TaskClaimStatusSchema = z.enum([
+  'CLAIMED',
+  'IN_PROGRESS',
+  'COMPLETED',
+  'VERIFIED',
+  'REJECTED',
+  'ABANDONED',
+]);
+export type TaskClaimStatus = z.infer<typeof TaskClaimStatusSchema>;
+
+export const TaskEdgeTypeSchema = z.enum([
+  'DEPENDS_ON',
+  'BLOCKS',
+  'INCREASES_PROBABILITY_OF',
+  'ACCELERATES',
+]);
+export type TaskEdgeType = z.infer<typeof TaskEdgeTypeSchema>;
+
+export const SourceSystemSchema = z.enum([
+  'MANUAL',
+  'OPG',
+  'OBG',
+  'PARAMETER_CATALOG',
+  'EXTERNAL',
+  'CURATED',
+  'COMBINED',
+]);
+export type SourceSystem = z.infer<typeof SourceSystemSchema>;
+
+export const SourceArtifactTypeSchema = z.enum([
+  'MANUAL_SECTION',
+  'MANUAL_SNAPSHOT',
+  'OPG_POLICY_RECOMMENDATION',
+  'OPG_POLICY_REPORT',
+  'OBG_BUDGET_CATEGORY',
+  'OBG_BUDGET_REPORT',
+  'PARAMETER_SET',
+  'CALCULATION_RUN',
+  'EXTERNAL_SOURCE',
+]);
+export type SourceArtifactType = z.infer<typeof SourceArtifactTypeSchema>;
+
+export const TaskImpactEstimateKindSchema = z.enum([
+  'FORECAST',
+  'OBSERVED',
+  'HYBRID',
+]);
+export type TaskImpactEstimateKind = z.infer<typeof TaskImpactEstimateKindSchema>;
+
+export const TaskImpactPublicationStatusSchema = z.enum([
+  'DRAFT',
+  'REVIEWED',
+  'PUBLISHED',
+  'SUPERSEDED',
+]);
+export type TaskImpactPublicationStatus = z.infer<typeof TaskImpactPublicationStatusSchema>;
+
+export const TaskImpactFrameKeySchema = z.enum([
+  'IMMEDIATE',
+  'ONE_YEAR',
+  'FIVE_YEAR',
+  'TWENTY_YEAR',
+  'LIFETIME',
+  'CUSTOM',
+]);
+export type TaskImpactFrameKey = z.infer<typeof TaskImpactFrameKeySchema>;
 
 export const QuestionTypeSchema = z.enum([
   'MULTIPLE_CHOICE',
@@ -182,6 +296,25 @@ export type EmailLogStatus = z.infer<typeof EmailLogStatusSchema>;
 // ============================================================================
 const dateSchema = z.coerce.date();
 const nullableDateSchema = z.coerce.date().nullable().optional();
+const nullableJsonSchema = z.unknown().nullable().optional();
+
+/** Zod schema for the Person model */
+export const PersonSchema = z.object({
+  id: z.string(),
+  displayName: z.string(),
+  email: z.string().email().nullable().optional(),
+  image: z.string().nullable().optional(),
+  bio: z.string().nullable().optional(),
+  currentAffiliation: z.string().nullable().optional(),
+  countryCode: z.string().nullable().optional(),
+  isPublicFigure: z.boolean().default(false),
+  sourceUrl: z.string().nullable().optional(),
+  sourceRef: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type PersonType = z.infer<typeof PersonSchema>;
 
 // ============================================================================
 // AUTH / ACCOUNT MODELS
@@ -199,6 +332,7 @@ export const UserSchema = z.object({
   emailVerified: nullableDateSchema,
   newsletterSubscribed: z.boolean().default(true),
   timeZone: z.string().nullable().optional(),
+  personId: z.string().nullable().optional(),
   countryCode: z.string().nullable().optional(),
   regionCode: z.string().nullable().optional(),
   city: z.string().nullable().optional(),
@@ -206,12 +340,35 @@ export const UserSchema = z.object({
   latitude: z.number().nullable().optional(),
   longitude: z.number().nullable().optional(),
   annualHouseholdIncomeUsd: z.number().nullable().optional(),
+  annualPersonalIncomeUsd: z.number().nullable().optional(),
   householdSize: z.number().int().nullable().optional(),
   birthYear: z.number().int().nullable().optional(),
   educationLevel: z.string().nullable().optional(),
   employmentStatus: z.string().nullable().optional(),
   genderIdentity: z.string().nullable().optional(),
   censusNotes: z.string().nullable().optional(),
+  biologicalSex: z.string().nullable().optional(),
+  ethnicityOrRace: z.string().nullable().optional(),
+  maritalStatus: z.string().nullable().optional(),
+  numberOfDependents: z.number().int().nullable().optional(),
+  primaryLanguage: z.string().nullable().optional(),
+  healthInsuranceType: z.string().nullable().optional(),
+  chronicConditionCount: z.number().int().nullable().optional(),
+  disabilityStatus: z.string().nullable().optional(),
+  smokingStatus: z.string().nullable().optional(),
+  alcoholFrequency: z.string().nullable().optional(),
+  heightCm: z.number().nullable().optional(),
+  annualTaxesPaidUsd: z.number().nullable().optional(),
+  monthlyHousingCostUsd: z.number().nullable().optional(),
+  housingStatus: z.string().nullable().optional(),
+  hoursWorkedPerWeek: z.number().int().nullable().optional(),
+  industryOrSector: z.string().nullable().optional(),
+  citizenshipStatus: z.string().nullable().optional(),
+  internetAccessType: z.string().nullable().optional(),
+  skillTags: z.array(z.string()).default([]),
+  interestTags: z.array(z.string()).default([]),
+  availableHoursPerWeek: z.number().int().nullable().optional(),
+  maxTaskDifficulty: TaskDifficultySchema.nullable().optional(),
   censusUpdatedAt: nullableDateSchema,
   bio: z.string().nullable().optional(),
   headline: z.string().nullable().optional(),
@@ -1044,6 +1201,8 @@ export const OrganizationSchema = z.object({
   creatorId: z.string().nullable().optional(),
   website: z.string().nullable().optional(),
   logo: z.string().nullable().optional(),
+  sourceUrl: z.string().nullable().optional(),
+  sourceRef: z.string().nullable().optional(),
   contactEmail: z.string().nullable().optional(),
   createdAt: dateSchema,
   updatedAt: dateSchema,
@@ -1060,6 +1219,214 @@ export const OrganizationMemberSchema = z.object({
   joinedAt: dateSchema,
 });
 export type OrganizationMemberType = z.infer<typeof OrganizationMemberSchema>;
+
+// ============================================================================
+// TASKS / MISSIONS
+// ============================================================================
+
+/** Zod schema for the Task model */
+export const TaskSchema = z.object({
+  id: z.string(),
+  jurisdictionId: z.string().nullable().optional(),
+  parentTaskId: z.string().nullable().optional(),
+  assigneePersonId: z.string().nullable().optional(),
+  assigneeOrganizationId: z.string().nullable().optional(),
+  verifiedByUserId: z.string().nullable().optional(),
+  currentImpactEstimateSetId: z.string().nullable().optional(),
+  taskKey: z.string().nullable().optional(),
+  title: z.string(),
+  description: z.string(),
+  impactStatement: z.string().nullable().optional(),
+  roleTitle: z.string().nullable().optional(),
+  assigneeAffiliationSnapshot: z.string().nullable().optional(),
+  category: TaskCategorySchema.default('OTHER'),
+  difficulty: TaskDifficultySchema.default('INTERMEDIATE'),
+  estimatedEffortHours: z.number().nullable().optional(),
+  actualEffortSeconds: z.number().int().nullable().optional(),
+  actualCashCostUsd: z.number().nullable().optional(),
+  skillTags: z.array(z.string()).default([]),
+  interestTags: z.array(z.string()).default([]),
+  contextJson: nullableJsonSchema,
+  claimPolicy: TaskClaimPolicySchema.default('OPEN_SINGLE'),
+  maxClaims: z.number().int().nullable().optional(),
+  status: TaskStatusSchema.default('ACTIVE'),
+  isPublic: z.boolean().default(true),
+  completionEvidence: z.string().nullable().optional(),
+  dueAt: nullableDateSchema,
+  completedAt: nullableDateSchema,
+  verifiedAt: nullableDateSchema,
+  sortOrder: z.number().int().default(0),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskType = z.infer<typeof TaskSchema>;
+
+/** Zod schema for the TaskClaim model */
+export const TaskClaimSchema = z.object({
+  id: z.string(),
+  taskId: z.string(),
+  userId: z.string(),
+  verifiedByUserId: z.string().nullable().optional(),
+  status: TaskClaimStatusSchema.default('CLAIMED'),
+  completionEvidence: z.string().nullable().optional(),
+  verificationNote: z.string().nullable().optional(),
+  actualEffortSeconds: z.number().int().nullable().optional(),
+  actualCashCostUsd: z.number().nullable().optional(),
+  claimedAt: dateSchema,
+  startedAt: nullableDateSchema,
+  completedAt: nullableDateSchema,
+  verifiedAt: nullableDateSchema,
+  abandonedAt: nullableDateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskClaimType = z.infer<typeof TaskClaimSchema>;
+
+/** Zod schema for the SourceArtifact model */
+export const SourceArtifactSchema = z.object({
+  id: z.string(),
+  sourceSystem: SourceSystemSchema,
+  artifactType: SourceArtifactTypeSchema,
+  sourceKey: z.string(),
+  externalKey: z.string().nullable().optional(),
+  versionKey: z.string().nullable().optional(),
+  title: z.string().nullable().optional(),
+  sourceUrl: z.string().nullable().optional(),
+  sourceRef: z.string().nullable().optional(),
+  contentHash: z.string().nullable().optional(),
+  payloadJson: nullableJsonSchema,
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type SourceArtifactTypeModel = z.infer<typeof SourceArtifactSchema>;
+
+/** Zod schema for the TaskSourceArtifact model */
+export const TaskSourceArtifactSchema = z.object({
+  id: z.string(),
+  taskId: z.string(),
+  sourceArtifactId: z.string(),
+  isPrimary: z.boolean().default(false),
+  createdAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskSourceArtifactType = z.infer<typeof TaskSourceArtifactSchema>;
+
+/** Zod schema for the TaskEdge model */
+export const TaskEdgeSchema = z.object({
+  id: z.string(),
+  fromTaskId: z.string(),
+  toTaskId: z.string(),
+  edgeType: TaskEdgeTypeSchema,
+  probabilityDeltaLow: z.number().nullable().optional(),
+  probabilityDeltaBase: z.number().nullable().optional(),
+  probabilityDeltaHigh: z.number().nullable().optional(),
+  timeDeltaDaysLow: z.number().nullable().optional(),
+  timeDeltaDaysBase: z.number().nullable().optional(),
+  timeDeltaDaysHigh: z.number().nullable().optional(),
+  calculationVersion: z.string().nullable().optional(),
+  assumptionsJson: nullableJsonSchema,
+  notes: z.string().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskEdgeTypeModel = z.infer<typeof TaskEdgeSchema>;
+
+/** Zod schema for the TaskImpactEstimateSet model */
+export const TaskImpactEstimateSetSchema = z.object({
+  id: z.string(),
+  taskId: z.string(),
+  isCurrent: z.boolean().default(false),
+  estimateKind: TaskImpactEstimateKindSchema,
+  publicationStatus: TaskImpactPublicationStatusSchema.default('DRAFT'),
+  sourceSystem: SourceSystemSchema,
+  calculationVersion: z.string(),
+  methodologyKey: z.string(),
+  parameterSetHash: z.string(),
+  counterfactualKey: z.string(),
+  assumptionsJson: nullableJsonSchema,
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskImpactEstimateSetType = z.infer<typeof TaskImpactEstimateSetSchema>;
+
+/** Zod schema for the TaskImpactFrameEstimate model */
+export const TaskImpactFrameEstimateSchema = z.object({
+  id: z.string(),
+  taskImpactEstimateSetId: z.string(),
+  frameKey: TaskImpactFrameKeySchema,
+  frameSlug: z.string(),
+  customFrameLabel: z.string().nullable().optional(),
+  evaluationHorizonYears: z.number(),
+  timeToImpactStartDays: z.number(),
+  adoptionRampYears: z.number(),
+  benefitDurationYears: z.number(),
+  annualDiscountRate: z.number(),
+  summaryStatsJson: nullableJsonSchema,
+  successProbabilityLow: z.number().nullable().optional(),
+  successProbabilityBase: z.number().nullable().optional(),
+  successProbabilityHigh: z.number().nullable().optional(),
+  medianIncomeGrowthEffectPpPerYearLow: z.number().nullable().optional(),
+  medianIncomeGrowthEffectPpPerYearBase: z.number().nullable().optional(),
+  medianIncomeGrowthEffectPpPerYearHigh: z.number().nullable().optional(),
+  medianHealthyLifeYearsEffectLow: z.number().nullable().optional(),
+  medianHealthyLifeYearsEffectBase: z.number().nullable().optional(),
+  medianHealthyLifeYearsEffectHigh: z.number().nullable().optional(),
+  expectedDalysAvertedLow: z.number().nullable().optional(),
+  expectedDalysAvertedBase: z.number().nullable().optional(),
+  expectedDalysAvertedHigh: z.number().nullable().optional(),
+  expectedEconomicValueUsdLow: z.number().nullable().optional(),
+  expectedEconomicValueUsdBase: z.number().nullable().optional(),
+  expectedEconomicValueUsdHigh: z.number().nullable().optional(),
+  estimatedCashCostUsdLow: z.number().nullable().optional(),
+  estimatedCashCostUsdBase: z.number().nullable().optional(),
+  estimatedCashCostUsdHigh: z.number().nullable().optional(),
+  estimatedEffortHoursLow: z.number().nullable().optional(),
+  estimatedEffortHoursBase: z.number().nullable().optional(),
+  estimatedEffortHoursHigh: z.number().nullable().optional(),
+  delayDalysLostPerDayLow: z.number().nullable().optional(),
+  delayDalysLostPerDayBase: z.number().nullable().optional(),
+  delayDalysLostPerDayHigh: z.number().nullable().optional(),
+  delayEconomicValueUsdLostPerDayLow: z.number().nullable().optional(),
+  delayEconomicValueUsdLostPerDayBase: z.number().nullable().optional(),
+  delayEconomicValueUsdLostPerDayHigh: z.number().nullable().optional(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskImpactFrameEstimateType = z.infer<typeof TaskImpactFrameEstimateSchema>;
+
+/** Zod schema for the TaskImpactMetric model */
+export const TaskImpactMetricSchema = z.object({
+  id: z.string(),
+  taskImpactFrameEstimateId: z.string(),
+  metricKey: z.string(),
+  unit: z.string(),
+  lowValue: z.number().nullable().optional(),
+  baseValue: z.number().nullable().optional(),
+  highValue: z.number().nullable().optional(),
+  valueJson: nullableJsonSchema,
+  summaryStatsJson: nullableJsonSchema,
+  displayGroup: z.string().nullable().optional(),
+  metadataJson: nullableJsonSchema,
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskImpactMetricType = z.infer<typeof TaskImpactMetricSchema>;
+
+/** Zod schema for the TaskImpactSourceArtifact model */
+export const TaskImpactSourceArtifactSchema = z.object({
+  id: z.string(),
+  taskImpactEstimateSetId: z.string(),
+  sourceArtifactId: z.string(),
+  isPrimary: z.boolean().default(false),
+  createdAt: dateSchema,
+  deletedAt: nullableDateSchema,
+});
+export type TaskImpactSourceArtifactType = z.infer<typeof TaskImpactSourceArtifactSchema>;
 
 // ============================================================================
 // SURVEY SYSTEM

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+  ensurePersonForUser: vi.fn(),
   findUnique: vi.fn(),
   update: vi.fn(),
   recordReferralAttributionForUser: vi.fn(),
@@ -19,11 +20,16 @@ vi.mock("@/lib/referral.server", () => ({
   recordReferralAttributionForUser: mocks.recordReferralAttributionForUser,
 }));
 
+vi.mock("@/lib/person.server", () => ({
+  ensurePersonForUser: mocks.ensurePersonForUser,
+}));
+
 import { applyPostSigninSync } from "../post-signin-sync.server";
 
 describe("post-signin sync", () => {
   beforeEach(() => {
     mocks.findUnique.mockReset();
+    mocks.ensurePersonForUser.mockReset();
     mocks.update.mockReset();
     mocks.recordReferralAttributionForUser.mockReset();
   });
@@ -55,6 +61,7 @@ describe("post-signin sync", () => {
       },
     });
     expect(mocks.recordReferralAttributionForUser).toHaveBeenCalledWith("user_1", "REF123");
+    expect(mocks.ensurePersonForUser).toHaveBeenCalledWith("user_1");
   });
 
   it("leaves the user unchanged when nothing new is provided", async () => {
@@ -75,5 +82,6 @@ describe("post-signin sync", () => {
     });
 
     expect(mocks.update).not.toHaveBeenCalled();
+    expect(mocks.ensurePersonForUser).toHaveBeenCalledWith("user_1");
   });
 });

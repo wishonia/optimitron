@@ -1,0 +1,526 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import {
+  TaskClaimPolicy,
+  TaskClaimStatus,
+  TaskStatus,
+} from "@optimitron/db";
+import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
+import { TaskCard, type TaskCardTask } from "@/components/tasks/task-card";
+import { TaskClaimButton } from "@/components/tasks/TaskClaimButton";
+import { TaskCompleteForm } from "@/components/tasks/TaskCompleteForm";
+import { TaskShareButtons } from "@/components/tasks/TaskShareButtons";
+import { TaskVerifyForm } from "@/components/tasks/TaskVerifyForm";
+import { Avatar } from "@/components/retroui/Avatar";
+import { Button } from "@/components/retroui/Button";
+import { ArcadeTag } from "@/components/ui/arcade-tag";
+import { BrutalCard } from "@/components/ui/brutal-card";
+import { authOptions } from "@/lib/auth";
+import {
+  aggregateTaskDelayStats,
+  buildTaskShareText,
+  formatCompactCount,
+  formatCompactCurrency,
+  formatDelayDuration,
+  getTaskDelayStats,
+} from "@/lib/tasks/accountability";
+import { getSignInPath, tasksLink, ROUTES } from "@/lib/routes";
+import { canTaskAcceptMoreClaims } from "@/lib/tasks/rank-tasks";
+import { getTaskDetailData } from "@/lib/tasks.server";
+
+function getClaimPolicyLabel(policy: TaskClaimPolicy) {
+  switch (policy) {
+    case TaskClaimPolicy.ASSIGNED_ONLY:
+      return "assigned";
+    case TaskClaimPolicy.OPEN_SINGLE:
+      return "single-active";
+    case TaskClaimPolicy.OPEN_MANY:
+      return "open-many";
+  }
+}
+
+function formatDueDate(value: Date) {
+  return value.toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function getFallbackInitials(value: string) {
+  return value
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const data = await getTaskDetailData(id, null);
+
+  if (!data) {
+    return {
+      title: "Task Detail | Optimitron",
+    };
+  }
+
+  const { task } = data;
+  const delayStats = getTaskDelayStats(task);
+  const targetLabel =
+    task.assigneePerson?.displayName ?? task.assigneeOrganization?.name ?? task.title;
+  const description = buildTaskShareText({
+    currentDelayDays: delayStats.currentDelayDays,
+    currentEconomicValueUsdLost: delayStats.currentEconomicValueUsdLost,
+    currentHumanLivesLost: delayStats.currentHumanLivesLost,
+    currentSufferingHoursLost: delayStats.currentSufferingHoursLost,
+    targetLabel,
+    taskTitle: task.title,
+  });
+
+  return {
+    title: `${task.title} | ${tasksLink.label} | Optimitron`,
+    description,
+    openGraph: {
+      title: task.title,
+      description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: task.title,
+      description,
+    },
+  };
+}
+
+export default async function TaskDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const session = await getServerSession(authOptions);
+  const userId = session?.user.id ?? null;
+  const data = await getTaskDetailData(id, userId);
+
+  if (!data) {
+    notFound();
+  }
+
+  const { task, viewer, viewerClaim } = data;
+  const canClaim = canTaskAcceptMoreClaims({
+    activeClaimCount: task.activeClaimCount,
+    claimPolicy: task.claimPolicy,
+    difficulty: task.difficulty,
+    estimatedEffortHours: task.estimatedEffortHours,
+    interestTags: task.interestTags,
+    maxClaims: task.maxClaims,
+    skillTags: task.skillTags,
+    status: task.status,
+  });
+  const assignedToViewer =
+    viewer?.personId != null && task.assigneePerson?.id === viewer.personId;
+  const signInHref = getSignInPath(`${ROUTES.tasks}/${task.id}`);
+  const reviewableClaims = task.claims.filter(
+    (claim) => claim.status === TaskClaimStatus.COMPLETED,
+  );
+  const delayStats = getTaskDelayStats(task);
+  const childDelaySummary = aggregateTaskDelayStats(task.childTasks);
+  const targetLabel =
+    task.assigneePerson?.displayName ?? task.assigneeOrganization?.name ?? task.title;
+  const shareText = buildTaskShareText({
+    currentDelayDays: delayStats.currentDelayDays,
+    currentEconomicValueUsdLost: delayStats.currentEconomicValueUsdLost,
+    currentHumanLivesLost: delayStats.currentHumanLivesLost,
+    currentSufferingHoursLost: delayStats.currentSufferingHoursLost,
+    targetLabel,
+    taskTitle: task.title,
+  });
+  const fallbackInitials = getFallbackInitials(targetLabel);
+
+  return (
+    <div className="min-h-screen bg-background pb-20">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8">
+        <div className="space-y-4">
+          <nav className="flex flex-wrap items-center gap-2 text-sm font-black uppercase">
+            <Link className="underline underline-offset-4" href={ROUTES.tasks}>
+              Tasks
+            </Link>
+            {task.parentTask ? (
+              <>
+                <span>/</span>
+                <Link
+                  className="underline underline-offset-4"
+                  href={`/tasks/${task.parentTask.id}`}
+                >
+                  {task.parentTask.title}
+                </Link>
+              </>
+            ) : null}
+            <span>/</span>
+            <span className="text-muted-foreground">{task.title}</span>
+          </nav>
+          <div className="flex flex-wrap gap-2">
+            <ArcadeTag>{task.category.toLowerCase()}</ArcadeTag>
+            <ArcadeTag>{task.difficulty.toLowerCase()}</ArcadeTag>
+            <ArcadeTag>{getClaimPolicyLabel(task.claimPolicy)}</ArcadeTag>
+            <ArcadeTag>{task.status.toLowerCase()}</ArcadeTag>
+            {task.dueAt ? (
+              <ArcadeTag>
+                {delayStats.isOverdue
+                  ? `overdue ${formatDelayDuration(delayStats.currentDelayDays)}`
+                  : `due ${formatDueDate(task.dueAt)}`}
+              </ArcadeTag>
+            ) : null}
+            {task.estimatedEffortHours != null ? (
+              <ArcadeTag>{`${task.estimatedEffortHours}h`}</ArcadeTag>
+            ) : null}
+          </div>
+          <h1 className="text-4xl font-black uppercase leading-tight sm:text-5xl">
+            {task.title}
+          </h1>
+          <p className="max-w-5xl text-lg font-bold leading-8 text-muted-foreground">
+            {task.description}
+          </p>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(340px,1fr)]">
+          <BrutalCard bgColor="background" padding="lg">
+            <div className="space-y-6">
+              {task.assigneePerson || task.assigneeOrganization ? (
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-20 w-20 border-4 border-foreground bg-muted">
+                    <Avatar.Image
+                      alt={targetLabel}
+                      src={task.assigneePerson?.image ?? task.assigneeOrganization?.logo ?? undefined}
+                    />
+                    <Avatar.Fallback className="bg-brutal-pink font-black text-background">
+                      {fallbackInitials || "?"}
+                    </Avatar.Fallback>
+                  </Avatar>
+                  <div className="space-y-1">
+                    <p className="text-sm font-black uppercase text-brutal-pink">
+                      Accountability Target
+                    </p>
+                    <p className="text-2xl font-black">
+                      {targetLabel}
+                      {task.roleTitle ? `, ${task.roleTitle}` : ""}
+                    </p>
+                    {task.assigneeAffiliationSnapshot ||
+                    task.assigneeOrganization?.name ||
+                    task.assigneePerson?.currentAffiliation ? (
+                      <p className="text-sm font-bold text-muted-foreground">
+                        {task.assigneeAffiliationSnapshot ??
+                          task.assigneeOrganization?.name ??
+                          task.assigneePerson?.currentAffiliation}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                <div className="border-4 border-foreground bg-muted/20 p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Delay
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">
+                    {formatDelayDuration(delayStats.currentDelayDays)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    since target date
+                  </p>
+                </div>
+                <div className="border-4 border-foreground bg-muted/20 p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Human Lives
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">
+                    {formatCompactCount(delayStats.currentHumanLivesLost)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    delayed so far
+                  </p>
+                </div>
+                <div className="border-4 border-foreground bg-muted/20 p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Suffering Hours
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">
+                    {formatCompactCount(delayStats.currentSufferingHoursLost)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    delayed so far
+                  </p>
+                </div>
+                <div className="border-4 border-foreground bg-muted/20 p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Economic Loss
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">
+                    {formatCompactCurrency(delayStats.currentEconomicValueUsdLost)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    lost so far
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-3">
+                <div className="border-4 border-foreground bg-background p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                    Per Day
+                  </p>
+                  <p className="mt-2 text-xl font-black uppercase">
+                    {formatCompactCurrency(delayStats.delayEconomicValueUsdLostPerDay)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    economic value lost
+                  </p>
+                </div>
+                <div className="border-4 border-foreground bg-background p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                    Per Day
+                  </p>
+                  <p className="mt-2 text-xl font-black uppercase">
+                    {formatCompactCount(delayStats.delayHumanLivesLostPerDay)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    human lives delayed
+                  </p>
+                </div>
+                <div className="border-4 border-foreground bg-background p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                    Per Day
+                  </p>
+                  <p className="mt-2 text-xl font-black uppercase">
+                    {formatCompactCount(delayStats.delaySufferingHoursLostPerDay)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    suffering hours delayed
+                  </p>
+                </div>
+              </div>
+
+              {task.dueAt ? (
+                <div className="space-y-1">
+                  <p className="text-sm font-black uppercase text-brutal-pink">Due</p>
+                  <p className="text-sm font-bold text-muted-foreground">
+                    {formatDueDate(task.dueAt)}
+                  </p>
+                </div>
+              ) : null}
+
+              {task.skillTags.length > 0 ? (
+                <div className="space-y-1">
+                  <p className="text-sm font-black uppercase text-brutal-pink">Skills</p>
+                  <p className="text-sm font-bold">{task.skillTags.join(", ")}</p>
+                </div>
+              ) : null}
+
+              {task.interestTags.length > 0 ? (
+                <div className="space-y-1">
+                  <p className="text-sm font-black uppercase text-brutal-pink">Interests</p>
+                  <p className="text-sm font-bold">{task.interestTags.join(", ")}</p>
+                </div>
+              ) : null}
+
+              {task.sourceUrl ? (
+                <Button asChild className="font-black uppercase" variant="outline">
+                  <Link href={task.sourceUrl} target="_blank">
+                    Open Source Section
+                  </Link>
+                </Button>
+              ) : null}
+
+              {task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY &&
+              (task.assigneePerson || task.assigneeOrganization) ? (
+                <TaskShareButtons
+                  taskId={task.id}
+                  shareText={shareText}
+                  taskTitle={task.title}
+                />
+              ) : null}
+            </div>
+          </BrutalCard>
+
+          <BrutalCard bgColor="yellow" padding="lg">
+            <div className="space-y-4">
+              <p className="text-sm font-black uppercase text-brutal-pink">
+                Action Panel
+              </p>
+              <TaskClaimButton
+                canClaim={canClaim}
+                signedIn={Boolean(userId)}
+                signInHref={signInHref}
+                taskId={task.id}
+                viewerHasClaim={task.viewerHasClaim}
+              />
+              {assignedToViewer ? (
+                <p className="text-sm font-bold">
+                  This task is addressed directly to your linked person record.
+                </p>
+              ) : null}
+              {viewerClaim ? (
+                <div className="space-y-2">
+                  <p className="text-sm font-black uppercase text-brutal-pink">
+                    Your Claim
+                  </p>
+                  <p className="text-sm font-bold">{viewerClaim.status.toLowerCase()}</p>
+                  {viewerClaim.completionEvidence ? (
+                    <p className="text-sm font-bold text-muted-foreground">
+                      {viewerClaim.completionEvidence}
+                    </p>
+                  ) : null}
+                  {(viewerClaim.status === TaskClaimStatus.CLAIMED ||
+                    viewerClaim.status === TaskClaimStatus.IN_PROGRESS) ? (
+                    <TaskCompleteForm taskId={task.id} />
+                  ) : null}
+                </div>
+              ) : null}
+              {!userId ? (
+                <Button asChild className="font-black uppercase" variant="outline">
+                  <Link href={signInHref}>Sign In</Link>
+                </Button>
+              ) : null}
+              {task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY &&
+              (task.assigneePerson || task.assigneeOrganization) ? (
+                <p className="text-sm font-bold text-muted-foreground">
+                  This page is built to be shared publicly. The linked OG image follows
+                  this task’s live delay clock.
+                </p>
+              ) : null}
+            </div>
+          </BrutalCard>
+        </div>
+
+        {task.childTasks.length > 0 ? (
+          <BrutalCard bgColor="green" padding="lg">
+            <div className="space-y-5">
+              <p className="text-sm font-black uppercase text-brutal-pink">
+                Parent Task Rollup
+              </p>
+              <div className="grid gap-3 md:grid-cols-4">
+                <div className="border-4 border-foreground bg-background p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Child Tasks
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">{task.childTasks.length}</p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    direct children
+                  </p>
+                </div>
+                <div className="border-4 border-foreground bg-background p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Overdue
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">
+                    {childDelaySummary.overdueTaskCount}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    still waiting
+                  </p>
+                </div>
+                <div className="border-4 border-foreground bg-background p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Human Cost
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">
+                    {formatCompactCount(childDelaySummary.currentHumanLivesLost)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    delayed so far
+                  </p>
+                </div>
+                <div className="border-4 border-foreground bg-background p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Economic Loss
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">
+                    {formatCompactCurrency(childDelaySummary.currentEconomicValueUsdLost)}
+                  </p>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    lost so far
+                  </p>
+                </div>
+              </div>
+            </div>
+          </BrutalCard>
+        ) : null}
+
+        {viewer?.isAdmin &&
+        task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY &&
+        task.status !== TaskStatus.VERIFIED ? (
+          <BrutalCard bgColor="cyan" padding="lg">
+            <div className="space-y-4">
+              <p className="text-sm font-black uppercase text-brutal-pink">
+                Curator Verification
+              </p>
+              <TaskVerifyForm
+                defaultEvidence={task.completionEvidence}
+                helperText="For assigned-only public tasks, paste the public evidence used to mark the task complete."
+                submitLabel="Verify Assigned Task"
+                taskId={task.id}
+              />
+            </div>
+          </BrutalCard>
+        ) : null}
+
+        {viewer?.isAdmin && reviewableClaims.length > 0 ? (
+          <BrutalCard bgColor="green" padding="lg">
+            <div className="space-y-6">
+              <p className="text-sm font-black uppercase text-brutal-pink">
+                Pending Claim Reviews
+              </p>
+              {reviewableClaims.map((claim) => (
+                <div
+                  key={claim.id}
+                  className="space-y-3 border-t-4 border-primary pt-4 first:border-t-0 first:pt-0"
+                >
+                  <p className="text-lg font-black uppercase">
+                    {(claim.user.username && `@${claim.user.username}`) ||
+                      claim.user.name ||
+                      claim.userId}
+                  </p>
+                  {claim.completionEvidence ? (
+                    <p className="text-sm font-bold text-muted-foreground">
+                      {claim.completionEvidence}
+                    </p>
+                  ) : null}
+                  <TaskVerifyForm
+                    claimId={claim.id}
+                    defaultEvidence={claim.verificationNote}
+                    helperText="Add an optional verification note, then mark the claim verified."
+                    submitLabel="Verify Claim"
+                    taskId={task.id}
+                  />
+                </div>
+              ))}
+            </div>
+          </BrutalCard>
+        ) : null}
+
+        {task.childTasks.length > 0 ? (
+          <section className="space-y-4">
+            <h2 className="text-3xl font-black uppercase">Child Tasks</h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              {task.childTasks.map((childTask: (typeof task.childTasks)[number]) => (
+                <TaskCard
+                  key={childTask.id}
+                  signedIn={Boolean(userId)}
+                  task={childTask as unknown as TaskCardTask}
+                />
+              ))}
+            </div>
+          </section>
+        ) : null}
+      </div>
+    </div>
+  );
+}

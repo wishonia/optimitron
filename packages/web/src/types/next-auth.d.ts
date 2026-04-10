@@ -9,6 +9,7 @@ declare module "next-auth" {
       email?: string | null;
       name?: string | null;
       image?: string | null;
+      personId?: string | null;
       personhoodProvider?: PersonhoodProviderValue | null;
       personhoodVerificationLevel?: string | null;
       personhoodVerified?: boolean;
@@ -24,6 +25,7 @@ declare module "next-auth" {
     email?: string | null;
     name?: string | null;
     image?: string | null;
+    personId?: string | null;
     personhoodProvider?: PersonhoodProviderValue | null;
     personhoodVerificationLevel?: string | null;
     personhoodVerified?: boolean;
@@ -37,6 +39,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
+    personId?: string | null;
     personhoodProvider?: PersonhoodProviderValue | null;
     personhoodVerificationLevel?: string | null;
     personhoodVerified?: boolean;

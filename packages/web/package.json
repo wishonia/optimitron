@@ -28,6 +28,8 @@
     "audit:colors": "tsx scripts/audit-colors.ts",
     "fix:colors": "tsx scripts/fix-colors.ts",
     "extract:copy": "tsx scripts/extract-copy.ts",
+    "extract:tasks": "tsx scripts/extract-tasks-from-manual.ts",
+    "import:treaty-model": "tsx scripts/import-treaty-policy-model.ts",
     "draft:legislation": "tsx scripts/draft-legislation.ts"
   },
   "dependencies": {

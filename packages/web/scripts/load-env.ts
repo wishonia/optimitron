@@ -1,5 +1,8 @@
 import { config } from "dotenv";
+import { fileURLToPath } from "node:url";
 import { resolve } from "node:path";
 
-config({ path: resolve(import.meta.dirname, "../../../.env") });
-config({ path: resolve(import.meta.dirname, "../.env"), override: true });
+const scriptDir = fileURLToPath(new URL(".", import.meta.url));
+
+config({ path: resolve(scriptDir, "../../../.env") });
+config({ path: resolve(scriptDir, "../.env"), override: true });

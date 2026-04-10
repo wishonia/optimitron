@@ -1,0 +1,239 @@
+import { TaskImpactFrameKey } from "@optimitron/db";
+
+export const DEFAULT_TASK_IMPACT_FRAME = TaskImpactFrameKey.TWENTY_YEAR;
+
+export interface TaskImpactMetricSummary {
+  baseValue: number | null;
+  displayGroup: string | null;
+  highValue: number | null;
+  lowValue: number | null;
+  metadataJson: unknown;
+  metricKey: string;
+  summaryStatsJson: unknown;
+  unit: string;
+  valueJson: unknown;
+}
+
+export interface TaskImpactFrameSummary {
+  annualDiscountRate: number;
+  adoptionRampYears: number;
+  benefitDurationYears: number;
+  customFrameLabel: string | null;
+  delayDalysLostPerDayBase: number | null;
+  delayDalysLostPerDayHigh: number | null;
+  delayDalysLostPerDayLow: number | null;
+  delayEconomicValueUsdLostPerDayBase: number | null;
+  delayEconomicValueUsdLostPerDayHigh: number | null;
+  delayEconomicValueUsdLostPerDayLow: number | null;
+  estimatedCashCostUsdBase: number | null;
+  estimatedCashCostUsdHigh: number | null;
+  estimatedCashCostUsdLow: number | null;
+  estimatedEffortHoursBase: number | null;
+  estimatedEffortHoursHigh: number | null;
+  estimatedEffortHoursLow: number | null;
+  evaluationHorizonYears: number;
+  expectedDalysAvertedBase: number | null;
+  expectedDalysAvertedHigh: number | null;
+  expectedDalysAvertedLow: number | null;
+  expectedEconomicValueUsdBase: number | null;
+  expectedEconomicValueUsdHigh: number | null;
+  expectedEconomicValueUsdLow: number | null;
+  frameKey: TaskImpactFrameKey;
+  frameSlug: string;
+  medianHealthyLifeYearsEffectBase: number | null;
+  medianHealthyLifeYearsEffectHigh: number | null;
+  medianHealthyLifeYearsEffectLow: number | null;
+  medianIncomeGrowthEffectPpPerYearBase: number | null;
+  medianIncomeGrowthEffectPpPerYearHigh: number | null;
+  medianIncomeGrowthEffectPpPerYearLow: number | null;
+  metrics: TaskImpactMetricSummary[];
+  successProbabilityBase: number | null;
+  successProbabilityHigh: number | null;
+  successProbabilityLow: number | null;
+  summaryStatsJson: unknown;
+  timeToImpactStartDays: number;
+}
+
+export interface TaskImpactEstimateSetSummary {
+  assumptionsJson: unknown;
+  calculationVersion: string;
+  counterfactualKey: string;
+  createdAt: Date;
+  estimateKind: string;
+  frames: TaskImpactFrameSummary[];
+  id: string;
+  isCurrent: boolean;
+  methodologyKey: string;
+  parameterSetHash: string;
+  publicationStatus: string;
+  sourceArtifacts: TaskImpactSourceArtifactSummary[];
+  sourceSystem: string;
+}
+
+export interface TaskImpactSourceArtifactSummary {
+  isPrimary: boolean;
+  sourceArtifact: {
+    artifactType: string;
+    contentHash: string | null;
+    sourceKey: string;
+    sourceRef: string | null;
+    sourceSystem: string;
+    sourceUrl: string | null;
+    title: string | null;
+    versionKey: string | null;
+  };
+}
+
+export interface TaskImpactSelection {
+  availableFrames: TaskImpactFrameSummary[];
+  currentSet: Omit<TaskImpactEstimateSetSummary, "frames"> | null;
+  metricsByKey: Record<string, TaskImpactMetricSummary>;
+  selectedFrame: TaskImpactFrameSummary | null;
+}
+
+function normalizeFrameSlug(value: string | null | undefined) {
+  if (!value) {
+    return null;
+  }
+
+  return value.trim().toLowerCase();
+}
+
+function toMetricMap(metrics: TaskImpactMetricSummary[]) {
+  return Object.fromEntries(metrics.map((metric) => [metric.metricKey, metric]));
+}
+
+export function getMetricBaseValue(
+  metrics: TaskImpactMetricSummary[],
+  metricKey: string,
+) {
+  return toMetricMap(metrics)[metricKey]?.baseValue ?? null;
+}
+
+export function selectImpactFrame(
+  estimateSet: TaskImpactEstimateSetSummary | null | undefined,
+  requestedFrame: TaskImpactFrameKey | string | null | undefined = DEFAULT_TASK_IMPACT_FRAME,
+): TaskImpactSelection {
+  if (!estimateSet) {
+    return {
+      availableFrames: [],
+      currentSet: null,
+      metricsByKey: {},
+      selectedFrame: null,
+    };
+  }
+
+  const availableFrames = estimateSet.frames;
+  const requestedSlug = normalizeFrameSlug(requestedFrame?.toString());
+
+  const selectedFrame =
+    availableFrames.find((frame) => normalizeFrameSlug(frame.frameSlug) === requestedSlug) ??
+    availableFrames.find((frame) => frame.frameKey === requestedFrame) ??
+    availableFrames.find((frame) => frame.frameKey === DEFAULT_TASK_IMPACT_FRAME) ??
+    availableFrames[0] ??
+    null;
+
+  return {
+    availableFrames,
+    currentSet: {
+      assumptionsJson: estimateSet.assumptionsJson,
+      calculationVersion: estimateSet.calculationVersion,
+      counterfactualKey: estimateSet.counterfactualKey,
+      createdAt: estimateSet.createdAt,
+      estimateKind: estimateSet.estimateKind,
+      id: estimateSet.id,
+      isCurrent: estimateSet.isCurrent,
+      methodologyKey: estimateSet.methodologyKey,
+      parameterSetHash: estimateSet.parameterSetHash,
+      publicationStatus: estimateSet.publicationStatus,
+      sourceArtifacts: estimateSet.sourceArtifacts,
+      sourceSystem: estimateSet.sourceSystem,
+    },
+    metricsByKey: selectedFrame ? toMetricMap(selectedFrame.metrics) : {},
+    selectedFrame,
+  };
+}
+
+export function deriveImpactRatios(frame: TaskImpactFrameSummary | null | undefined) {
+  if (!frame) {
+    return {
+      costPerDalyUsd: null,
+      expectedValuePerDollar: null,
+      expectedValuePerHourDalys: null,
+      expectedValuePerHourUsd: null,
+    };
+  }
+
+  const effortHours = Math.max(frame.estimatedEffortHoursBase ?? 0, 0.0001);
+  const costUsd = Math.max(frame.estimatedCashCostUsdBase ?? 0, 0.0001);
+
+  const expectedValuePerHourDalys = (frame.expectedDalysAvertedBase ?? 0) / effortHours;
+  const expectedValuePerHourUsd = (frame.expectedEconomicValueUsdBase ?? 0) / effortHours;
+  const expectedValuePerDollar = (frame.expectedEconomicValueUsdBase ?? 0) / costUsd;
+  const costPerDalyUsd =
+    (frame.expectedDalysAvertedBase ?? 0) > 0
+      ? (frame.estimatedCashCostUsdBase ?? 0) / (frame.expectedDalysAvertedBase ?? 0)
+      : null;
+
+  return {
+    costPerDalyUsd,
+    expectedValuePerDollar,
+    expectedValuePerHourDalys,
+    expectedValuePerHourUsd,
+  };
+}
+
+function normalizeLog(value: number, logScale: number) {
+  if (!Number.isFinite(value) || value <= 0) {
+    return 0;
+  }
+
+  return Math.min(1, Math.log10(value + 1) / logScale);
+}
+
+export function getNormalizedImpactComponents(frame: TaskImpactFrameSummary | null | undefined) {
+  if (!frame) {
+    return {
+      actorHourComponent: 0,
+      delayComponent: 0,
+      economicComponent: 0,
+      healthComponent: 0,
+    };
+  }
+
+  const derived = deriveImpactRatios(frame);
+  const healthComponent = normalizeLog(derived.expectedValuePerHourDalys ?? 0, 6);
+  const economicComponent = normalizeLog(derived.expectedValuePerHourUsd ?? 0, 12);
+  const delayComponent = Math.max(
+    normalizeLog(frame.delayDalysLostPerDayBase ?? 0, 6),
+    normalizeLog(frame.delayEconomicValueUsdLostPerDayBase ?? 0, 12),
+  );
+
+  return {
+    actorHourComponent: Math.max(healthComponent, economicComponent),
+    delayComponent,
+    economicComponent,
+    healthComponent,
+  };
+}
+
+export function scoreImpactFrame(frame: TaskImpactFrameSummary | null | undefined) {
+  if (!frame) {
+    return 0.35;
+  }
+
+  const { delayComponent, economicComponent, healthComponent } =
+    getNormalizedImpactComponents(frame);
+
+  return (healthComponent + economicComponent + delayComponent) / 3;
+}
+
+export function getPrimarySourceArtifact(
+  sourceArtifacts: TaskImpactSourceArtifactSummary[],
+) {
+  return (
+    sourceArtifacts.find((entry) => entry.isPrimary)?.sourceArtifact ??
+    sourceArtifacts[0]?.sourceArtifact ??
+    null
+  );
+}

@@ -1,3 +1,4 @@
+import { ensurePersonForUser } from "@/lib/person.server";
 import { prisma } from "@/lib/prisma";
 import { recordReferralAttributionForUser } from "@/lib/referral.server";
 
@@ -46,6 +47,8 @@ export async function applyPostSigninSync({
       data: updateData,
     });
   }
+
+  await ensurePersonForUser(userId);
 
   const referralRecorded = await recordReferralAttributionForUser(userId, referralCode);
 

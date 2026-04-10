@@ -1,3 +1,4 @@
+import { TaskDifficulty } from "@optimitron/db";
 import { z } from "zod";
 
 export const HEALTH_VARIABLE_NAME = "Overall Health";
@@ -61,6 +62,34 @@ function nullableInt(min?: number, max?: number) {
   );
 }
 
+function normalizeStringArray(value: unknown) {
+  if (value === null || value === undefined || value === "") {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => (typeof item === "string" ? item.trim() : ""))
+      .filter(Boolean);
+  }
+
+  if (typeof value === "string") {
+    return value
+      .split(/[,\n]/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  return value;
+}
+
+function stringArray(maxItems = 32, maxLength = 64) {
+  return z.preprocess(
+    normalizeStringArray,
+    z.array(z.string().max(maxLength)).max(maxItems).default([]),
+  );
+}
+
 function requireLatLngTogether(
   value: { latitude?: number | null; longitude?: number | null },
   ctx: z.RefinementCtx,
@@ -115,6 +144,14 @@ export const profileSnapshotInputSchema = z
     heightCm: nullableNumber(30, 300),
     // Access
     internetAccessType: nullableString(32),
+    // Skills & tasks
+    skillTags: stringArray(32, 64),
+    interestTags: stringArray(32, 64),
+    availableHoursPerWeek: nullableInt(0, 168),
+    maxTaskDifficulty: z.preprocess(
+      normalizeOptionalString,
+      z.nativeEnum(TaskDifficulty).nullable().optional(),
+    ),
     // Notes
     censusNotes: nullableString(1000),
   })
@@ -157,6 +194,7 @@ export interface DailyCheckInHistoryEntry {
 }
 
 export interface ProfileSnapshotData {
+  personId: string | null;
   // Location
   timeZone: string | null;
   countryCode: string | null;
@@ -194,6 +232,11 @@ export interface ProfileSnapshotData {
   heightCm: number | null;
   // Access
   internetAccessType: string | null;
+  // Skills & tasks
+  skillTags: string[];
+  interestTags: string[];
+  availableHoursPerWeek: number | null;
+  maxTaskDifficulty: TaskDifficulty | null;
   // Notes
   censusNotes: string | null;
   // Metadata
@@ -302,6 +345,14 @@ export const INTERNET_ACCESS_OPTIONS = [
   { label: "Broadband (home internet)", value: "broadband" },
   { label: "Mobile only", value: "mobile_only" },
   { label: "No internet access", value: "none" },
+] as const;
+
+export const TASK_DIFFICULTY_OPTIONS = [
+  { label: "Trivial", value: TaskDifficulty.TRIVIAL },
+  { label: "Beginner", value: TaskDifficulty.BEGINNER },
+  { label: "Intermediate", value: TaskDifficulty.INTERMEDIATE },
+  { label: "Advanced", value: TaskDifficulty.ADVANCED },
+  { label: "Expert", value: TaskDifficulty.EXPERT },
 ] as const;
 
 export const CHRONIC_CONDITION_OPTIONS = [

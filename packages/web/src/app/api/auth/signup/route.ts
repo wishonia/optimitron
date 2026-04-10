@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { hashPassword } from "@/lib/auth";
+import { ensurePersonForUser } from "@/lib/person.server";
 import { prisma } from "@/lib/prisma";
 import { sendWelcomeReferralEmailForUser } from "@/lib/referral-email.server";
 import { recordReferralAttributionForUser } from "@/lib/referral.server";
@@ -50,6 +51,8 @@ export async function POST(req: Request) {
         newsletterSubscribed,
       },
     });
+
+    await ensurePersonForUser(user.id);
 
     await recordReferralAttributionForUser(user.id, referralCode);
 

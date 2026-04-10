@@ -1,0 +1,258 @@
+import { ImageResponse } from "next/og";
+import { notFound } from "next/navigation";
+import {
+  formatCompactCount,
+  formatCompactCurrency,
+  formatDelayDuration,
+  getTaskDelayStats,
+} from "@/lib/tasks/accountability";
+import { getTaskDetailData } from "@/lib/tasks.server";
+
+export const runtime = "nodejs";
+export const revalidate = 3600;
+export const size = { width: 1200, height: 630 };
+export const contentType = "image/png";
+
+export default async function TaskOpengraphImage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const data = await getTaskDetailData(id, null);
+
+  if (!data) {
+    notFound();
+  }
+
+  const { task } = data;
+  const delayStats = getTaskDelayStats(task);
+  const targetLabel =
+    task.assigneePerson?.displayName ?? task.assigneeOrganization?.name ?? task.title;
+  const fallbackInitials = targetLabel
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+
+  return new ImageResponse(
+    <div
+      style={{
+        alignItems: "stretch",
+        background:
+          "linear-gradient(135deg, #f7d64a 0%, #ff6b9d 45%, #111111 100%)",
+        color: "#111111",
+        display: "flex",
+        height: "100%",
+        padding: "40px",
+        width: "100%",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff7ed",
+          border: "6px solid #111111",
+          boxShadow: "18px 18px 0 #111111",
+          display: "flex",
+          gap: "28px",
+          height: "100%",
+          padding: "28px",
+          width: "100%",
+        }}
+      >
+        <div
+          style={{
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+            gap: "18px",
+            justifyContent: "center",
+            width: "300px",
+          }}
+        >
+          <div
+            style={{
+              alignItems: "center",
+              backgroundColor: "#111111",
+              border: "6px solid #111111",
+              color: "#fff7ed",
+              display: "flex",
+              height: "260px",
+              justifyContent: "center",
+              overflow: "hidden",
+              width: "260px",
+            }}
+          >
+            {task.assigneePerson?.image || task.assigneeOrganization?.logo ? (
+              <img
+                alt={targetLabel}
+                height={260}
+                src={task.assigneePerson?.image ?? task.assigneeOrganization?.logo ?? ""}
+                style={{
+                  height: "260px",
+                  objectFit: "cover",
+                  width: "260px",
+                }}
+                width={260}
+              />
+            ) : (
+              <div
+                style={{
+                  alignItems: "center",
+                  display: "flex",
+                  fontSize: 96,
+                  fontWeight: 900,
+                  height: "100%",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
+                {fallbackInitials || "?"}
+              </div>
+            )}
+          </div>
+          <div
+            style={{
+              color: "#e11d48",
+              display: "flex",
+              fontSize: 24,
+              fontWeight: 900,
+              letterSpacing: 1.5,
+              textTransform: "uppercase",
+            }}
+          >
+            {delayStats.isOverdue
+              ? `${formatDelayDuration(delayStats.currentDelayDays)} overdue`
+              : "awaiting action"}
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            flexDirection: "column",
+            gap: "18px",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div
+              style={{
+                color: "#e11d48",
+                display: "flex",
+                fontSize: 22,
+                fontWeight: 900,
+                letterSpacing: 1.4,
+                textTransform: "uppercase",
+              }}
+            >
+              1% Treaty Accountability
+            </div>
+            <div
+              style={{
+                display: "flex",
+                fontSize: 54,
+                fontWeight: 900,
+                letterSpacing: -2,
+                lineHeight: 1,
+              }}
+            >
+              {targetLabel}
+            </div>
+            <div
+              style={{
+                color: "#444444",
+                display: "flex",
+                fontSize: 24,
+                fontWeight: 700,
+                lineHeight: 1.3,
+              }}
+            >
+              {task.title}
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gap: "14px",
+              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+            }}
+          >
+            {[
+              {
+                label: "Delay So Far",
+                value: formatDelayDuration(delayStats.currentDelayDays),
+              },
+              {
+                label: "Lives Delayed",
+                value: formatCompactCount(delayStats.currentHumanLivesLost),
+              },
+              {
+                label: "Suffering Hours",
+                value: formatCompactCount(delayStats.currentSufferingHoursLost),
+              },
+              {
+                label: "Economic Loss",
+                value: formatCompactCurrency(delayStats.currentEconomicValueUsdLost),
+              },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                style={{
+                  backgroundColor: "#ffffff",
+                  border: "4px solid #111111",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  padding: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    color: "#e11d48",
+                    display: "flex",
+                    fontSize: 18,
+                    fontWeight: 900,
+                    letterSpacing: 1.1,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {stat.label}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    fontSize: 32,
+                    fontWeight: 900,
+                    lineHeight: 1.05,
+                  }}
+                >
+                  {stat.value}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div
+            style={{
+              alignItems: "center",
+              color: "#444444",
+              display: "flex",
+              fontSize: 18,
+              fontWeight: 800,
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ display: "flex" }}>optimitron.earth/tasks/{task.id}</div>
+            <div style={{ color: "#111111", display: "flex", textTransform: "uppercase" }}>
+              End war and disease faster
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>,
+    { ...size },
+  );
+}

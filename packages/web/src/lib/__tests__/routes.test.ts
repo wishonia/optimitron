@@ -29,6 +29,7 @@ describe("navigation routes", () => {
       expect.arrayContaining([
         ROUTES.wishocracy,
         ROUTES.alignment,
+        ROUTES.tasks,
         ROUTES.prize,
         ROUTES.dtreasury,
         ROUTES.dgao,

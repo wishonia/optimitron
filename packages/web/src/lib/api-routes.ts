@@ -12,6 +12,13 @@ export const API_ROUTES = {
     root: "/api/profile",
     checkIn: "/api/profile/check-in",
   },
+  tasks: {
+    root: "/api/tasks",
+    claim: (id: string) => `/api/tasks/${id}/claim`,
+    complete: (id: string) => `/api/tasks/${id}/complete`,
+    verify: (id: string) => `/api/tasks/${id}/verify`,
+    reassign: (id: string) => `/api/tasks/${id}/reassign`,
+  },
   push: {
     vapidKey: "/api/push/vapid-key",
     subscribe: "/api/push/subscribe",

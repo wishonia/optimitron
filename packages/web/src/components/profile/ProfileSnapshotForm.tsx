@@ -22,6 +22,7 @@ import {
   INTERNET_ACCESS_OPTIONS,
   MARITAL_STATUS_OPTIONS,
   SMOKING_STATUS_OPTIONS,
+  TASK_DIFFICULTY_OPTIONS,
   type ProfilePageData,
   type ProfileSnapshotData,
 } from "@/lib/profile";
@@ -70,6 +71,11 @@ function toFormState(profile: ProfileSnapshotData) {
     heightCm: profile.heightCm?.toString() ?? "",
     // Access
     internetAccessType: profile.internetAccessType ?? "",
+    // Skills & tasks
+    skillTags: profile.skillTags.join(", "),
+    interestTags: profile.interestTags.join(", "),
+    availableHoursPerWeek: profile.availableHoursPerWeek?.toString() ?? "",
+    maxTaskDifficulty: profile.maxTaskDifficulty ?? "",
     // Notes
     censusNotes: profile.censusNotes ?? "",
   };
@@ -158,7 +164,11 @@ export function ProfileSnapshotForm({ onSaved, profile }: ProfileSnapshotFormPro
 
     startTransition(() => {
       void fetch(API_ROUTES.profile.root, {
-        body: JSON.stringify(formState),
+        body: JSON.stringify({
+          ...formState,
+          interestTags: formState.interestTags,
+          skillTags: formState.skillTags,
+        }),
         headers: { "Content-Type": "application/json" },
         method: "POST",
       })
@@ -320,6 +330,44 @@ export function ProfileSnapshotForm({ onSaved, profile }: ProfileSnapshotFormPro
             {/* ── Access ── */}
             <SectionLabel>Access</SectionLabel>
             <SelectField id="profile-internet" label="Internet Access" options={INTERNET_ACCESS_OPTIONS} value={formState.internetAccessType} onChange={setSelect("internetAccessType")} />
+
+            {/* ── Skills & Tasks ── */}
+            <SectionLabel>Skills &amp; Tasks</SectionLabel>
+            <FormField htmlFor="profile-skill-tags" label="Skills">
+              <Input
+                id="profile-skill-tags"
+                value={formState.skillTags}
+                onChange={set("skillTags")}
+                placeholder="writing, react, organizing, spanish"
+              />
+            </FormField>
+            <FormField htmlFor="profile-interest-tags" label="Interests">
+              <Input
+                id="profile-interest-tags"
+                value={formState.interestTags}
+                onChange={set("interestTags")}
+                placeholder="clinical-trials, treaty, transparency"
+              />
+            </FormField>
+            <FormField htmlFor="profile-available-hours" label="Available Hours / Week">
+              <Input
+                id="profile-available-hours"
+                inputMode="numeric"
+                min={0}
+                max={168}
+                step="1"
+                type="number"
+                value={formState.availableHoursPerWeek}
+                onChange={set("availableHoursPerWeek")}
+              />
+            </FormField>
+            <SelectField
+              id="profile-max-difficulty"
+              label="Max Task Difficulty"
+              options={TASK_DIFFICULTY_OPTIONS}
+              value={formState.maxTaskDifficulty}
+              onChange={setSelect("maxTaskDifficulty")}
+            />
           </div>
 
           <div className="flex flex-wrap gap-3">

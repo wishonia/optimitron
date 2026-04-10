@@ -229,10 +229,17 @@ enum OrgType {
   RESEARCH_CENTER
   NONPROFIT
   DAO
+  GOVERNMENT
   GOVERNMENT_AGENCY
   HOSPITAL
   BIOTECH
+  COMPANY
+  FOUNDATION
+  INTERGOVERNMENTAL
+  MEDIA
+  POLITICAL_PARTY
   ADVOCACY
+  OTHER
 }
 
 /// Approval status of an organization
@@ -275,6 +282,118 @@ enum WishReason {
   REFERRAL
   PRIZE_DEPOSIT
   SHARE_REPORT
+  TASK_COMPLETED
+}
+
+/// Canonical task difficulty used for matching and onboarding
+enum TaskDifficulty {
+  TRIVIAL
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+/// High-level task taxonomy for filtering and recommendations
+enum TaskCategory {
+  ADVOCACY
+  RESEARCH
+  COMMUNICATION
+  ENGINEERING
+  ORGANIZING
+  OUTREACH
+  GOVERNANCE
+  SCIENCE
+  LEGAL
+  CREATIVE
+  OTHER
+}
+
+/// Controls whether a task is assigned directly or how many simultaneous active claims it can accept
+enum TaskClaimPolicy {
+  /// Public accountability item addressed to one person; never claimable by other users
+  ASSIGNED_ONLY
+  /// Claimable, but only one active claimant can hold it at a time
+  OPEN_SINGLE
+  /// Claimable by multiple users at once, optionally capped by maxClaims
+  OPEN_MANY
+}
+
+/// Lifecycle state for a task itself
+enum TaskStatus {
+  DRAFT
+  ACTIVE
+  VERIFIED
+  STALE
+}
+
+/// Lifecycle state for an individual user's claim on a task.
+/// The currently exposed flow is CLAIMED -> COMPLETED -> VERIFIED, with
+/// ABANDONED/REJECTED retained for reclaim and reviewer workflows.
+enum TaskClaimStatus {
+  CLAIMED
+  IN_PROGRESS
+  COMPLETED
+  VERIFIED
+  REJECTED
+  ABANDONED
+}
+
+/// Non-hierarchical relationship between tasks for causal and dependency modeling
+enum TaskEdgeType {
+  DEPENDS_ON
+  BLOCKS
+  INCREASES_PROBABILITY_OF
+  ACCELERATES
+}
+
+/// Upstream source family for tasks, impacts, and analytical artifacts
+enum SourceSystem {
+  MANUAL
+  OPG
+  OBG
+  PARAMETER_CATALOG
+  EXTERNAL
+  CURATED
+  COMBINED
+}
+
+/// Type of upstream artifact used to derive tasks or impact estimates
+enum SourceArtifactType {
+  MANUAL_SECTION
+  MANUAL_SNAPSHOT
+  OPG_POLICY_RECOMMENDATION
+  OPG_POLICY_REPORT
+  OBG_BUDGET_CATEGORY
+  OBG_BUDGET_REPORT
+  PARAMETER_SET
+  CALCULATION_RUN
+  EXTERNAL_SOURCE
+}
+
+/// Whether an impact estimate is ex-ante, ex-post, or mixed
+enum TaskImpactEstimateKind {
+  FORECAST
+  OBSERVED
+  HYBRID
+}
+
+/// Publication lifecycle for an impact estimate set
+enum TaskImpactPublicationStatus {
+  DRAFT
+  REVIEWED
+  PUBLISHED
+  SUPERSEDED
+}
+
+/// Named time horizon for a task impact frame
+enum TaskImpactFrameKey {
+  IMMEDIATE
+  ONE_YEAR
+  FIVE_YEAR
+  TWENTY_YEAR
+  LIFETIME
+  CUSTOM
 }
 
 /// Type of survey question
@@ -299,6 +418,57 @@ enum EmailLogStatus {
 // ============================================================================
 // AUTH / ACCOUNT LAYER
 // ============================================================================
+
+/// Canonical human identity record used for signed-up users and public figures who have tasks
+model Person {
+  /// Unique identifier for this person
+  id String @id @default(cuid())
+
+  /// Public display name
+  displayName String
+
+  /// Optional email for signup linking
+  email String? @unique
+
+  /// Optional portrait or avatar
+  image String?
+
+  /// Optional short biography
+  bio String?
+
+  /// Optional current affiliation or institution
+  currentAffiliation String?
+
+  /// Optional country code for matching and accountability views
+  countryCode String?
+
+  /// Whether this person primarily exists as a public figure / officeholder record
+  isPublicFigure Boolean @default(false)
+
+  /// Source URL used when this person was imported from public/manual data
+  sourceUrl String?
+
+  /// Stable source reference used for idempotent imports
+  sourceRef String? @unique
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  user          User?  @relation("UserPerson")
+  assignedTasks Task[] @relation("TaskAssigneePerson")
+
+  @@index([displayName])
+  @@index([countryCode])
+  @@index([isPublicFigure])
+  @@index([deletedAt])
+}
 
 /// Application user account used for Optimitron and Wishocracy sign-in
 model User {
@@ -331,6 +501,9 @@ model User {
 
   /// Preferred IANA time zone for reminders and daily check-ins
   timeZone String?
+
+  /// Linked canonical person record (signed-up user or claimed public identity)
+  personId String? @unique
 
   /// Country or country code for decentralized census grouping
   countryCode String?
@@ -418,6 +591,18 @@ model User {
   /// Type of internet access
   internetAccessType String?
 
+  /// Free-form capability tags used for task matching
+  skillTags String[] @default([])
+
+  /// Free-form cause / topic tags used for task matching
+  interestTags String[] @default([])
+
+  /// Available volunteer hours per week
+  availableHoursPerWeek Int?
+
+  /// Highest difficulty the user is comfortable claiming
+  maxTaskDifficulty TaskDifficulty?
+
   /// When the census/location snapshot was last updated
   censusUpdatedAt DateTime?
 
@@ -458,6 +643,7 @@ model User {
   deletedAt DateTime?
 
   // -- Relations --
+  person                    Person?                         @relation("UserPerson", fields: [personId], references: [id], onDelete: SetNull)
   accounts                  Account[]
   personhoodVerifications   PersonhoodVerification[]
   referrals                 Referral[]                      @relation("UserReferrals")
@@ -483,6 +669,9 @@ model User {
   socialAccounts            SocialAccount[]                 @relation("UserSocialAccounts")
   emailLogs                 EmailLog[]                      @relation("UserEmailLogs")
   surveyResponses           SurveyResponse[]                @relation("UserSurveyResponses")
+  taskClaims                TaskClaim[]                     @relation("UserTaskClaims")
+  verifiedTasks             Task[]                          @relation("TaskVerifiedByUser")
+  verifiedTaskClaims        TaskClaim[]                     @relation("TaskClaimVerifiedByUser")
 
   @@index([email])
   @@index([username])
@@ -491,6 +680,8 @@ model User {
   @@index([annualHouseholdIncomeUsd])
   @@index([annualPersonalIncomeUsd])
   @@index([censusUpdatedAt])
+  @@index([availableHoursPerWeek])
+  @@index([maxTaskDifficulty])
   @@index([createdAt])
   @@index([referralEmailSequenceStep, referralEmailSequenceLastSentAt])
   @@index([isPublic])
@@ -1880,6 +2071,7 @@ model Jurisdiction {
   referendums     Referendum[]
   organizations   Organization[]
   surveys         Survey[]
+  tasks           Task[]
 
   @@index([type])
   @@index([parentJurisdictionId])
@@ -2850,6 +3042,12 @@ model Organization {
   /// Logo image URL
   logo String?
 
+  /// Source URL used when this organization was imported from external data
+  sourceUrl String?
+
+  /// Stable source reference used for idempotent imports
+  sourceRef String? @unique
+
   /// Contact email address
   contactEmail String?
 
@@ -2863,15 +3061,17 @@ model Organization {
   deletedAt DateTime?
 
   // -- Relations --
-  jurisdiction Jurisdiction?        @relation(fields: [jurisdictionId], references: [id])
-  creator      User?                @relation("OrgCreator", fields: [creatorId], references: [id])
-  members      OrganizationMember[]
+  jurisdiction  Jurisdiction?        @relation(fields: [jurisdictionId], references: [id])
+  creator       User?                @relation("OrgCreator", fields: [creatorId], references: [id])
+  members       OrganizationMember[]
+  assignedTasks Task[]               @relation("TaskAssigneeOrganization")
 
   @@index([slug])
   @@index([type])
   @@index([status])
   @@index([jurisdictionId])
   @@index([creatorId])
+  @@index([deletedAt])
 }
 
 /// Membership link between a user and an organization
@@ -2898,6 +3098,617 @@ model OrganizationMember {
   @@unique([organizationId, userId])
   @@index([userId])
   @@index([organizationId])
+}
+
+// ============================================================================
+// TASKS / MISSIONS
+// ============================================================================
+
+/// A public task that can be assigned to a person or claimed by players
+model Task {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Optional jurisdiction this task advances
+  jurisdictionId String?
+
+  /// Optional parent task for task-tree decomposition
+  parentTaskId String?
+
+  /// Optional person this task is addressed to
+  assigneePersonId String?
+
+  /// Optional organization this task is addressed to
+  assigneeOrganizationId String?
+
+  /// User who verified this task's completion
+  verifiedByUserId String?
+
+  /// Current published impact estimate set used by APIs and ranking
+  currentImpactEstimateSetId String? @unique
+
+  /// Stable task identity for idempotent extraction and imports
+  taskKey String? @unique
+
+  /// Short imperative title
+  title String
+
+  /// Full explanation, deliverable, and acceptance criteria
+  description String
+
+  /// Optional "why this matters" copy
+  impactStatement String?
+
+  /// Optional role title when the task is addressed to a person or organization
+  roleTitle String?
+
+  /// Optional affiliation snapshot captured when the task was authored or reassigned
+  assigneeAffiliationSnapshot String?
+
+  /// Taxonomy for browsing and ranking
+  category TaskCategory @default(OTHER)
+
+  /// Estimated difficulty for matching
+  difficulty TaskDifficulty @default(INTERMEDIATE)
+
+  /// Estimated effort in hours for the person expected to complete the task
+  estimatedEffortHours Float?
+
+  /// Actual effort recorded when the task is completed without a claim row
+  actualEffortSeconds Int?
+
+  /// Actual cash cost recorded when the task is completed without a claim row
+  actualCashCostUsd Float?
+
+  /// Free-form skills needed for the task
+  skillTags String[] @default([])
+
+  /// Free-form topics / causes relevant to the task
+  interestTags String[] @default([])
+
+  /// Optional structured task context that does not justify first-class columns yet
+  contextJson Json?
+
+  /// Controls claimability
+  claimPolicy TaskClaimPolicy @default(OPEN_SINGLE)
+
+  /// Max simultaneous claims when claimPolicy is OPEN_MANY
+  maxClaims Int?
+
+  /// Current task status
+  status TaskStatus @default(ACTIVE)
+
+  /// Whether this task is visible in public accountability views
+  isPublic Boolean @default(true)
+
+  /// Curator-entered completion evidence for assigned-only/public tasks
+  completionEvidence String?
+
+  /// Optional due date or target completion date for accountability views
+  dueAt DateTime?
+
+  /// When the task was completed
+  completedAt DateTime?
+
+  /// When the task was verified
+  verifiedAt DateTime?
+
+  /// Order within siblings when rendering task trees
+  sortOrder Int @default(0)
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  jurisdiction             Jurisdiction?           @relation(fields: [jurisdictionId], references: [id])
+  parentTask               Task?                   @relation("TaskHierarchy", fields: [parentTaskId], references: [id], onDelete: SetNull)
+  childTasks               Task[]                  @relation("TaskHierarchy")
+  assigneePerson           Person?                 @relation("TaskAssigneePerson", fields: [assigneePersonId], references: [id], onDelete: SetNull)
+  assigneeOrganization     Organization?           @relation("TaskAssigneeOrganization", fields: [assigneeOrganizationId], references: [id], onDelete: SetNull)
+  verifiedByUser           User?                   @relation("TaskVerifiedByUser", fields: [verifiedByUserId], references: [id], onDelete: SetNull)
+  currentImpactEstimateSet TaskImpactEstimateSet?  @relation("CurrentTaskImpactEstimateSet", fields: [currentImpactEstimateSetId], references: [id], onDelete: SetNull)
+  impactEstimateSets       TaskImpactEstimateSet[] @relation("TaskImpactEstimateSets")
+  claims                   TaskClaim[]             @relation("TaskClaims")
+  sourceArtifacts          TaskSourceArtifact[]    @relation("TaskSourceArtifacts")
+  outgoingEdges            TaskEdge[]              @relation("TaskOutgoingEdges")
+  incomingEdges            TaskEdge[]              @relation("TaskIncomingEdges")
+
+  @@index([jurisdictionId, status])
+  @@index([parentTaskId])
+  @@index([assigneePersonId])
+  @@index([assigneeOrganizationId])
+  @@index([verifiedByUserId])
+  @@index([claimPolicy, status])
+  @@index([category])
+  @@index([difficulty])
+  @@index([dueAt])
+  @@index([isPublic])
+  @@index([deletedAt])
+}
+
+/// A user's claim on a claimable task
+model TaskClaim {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Task being claimed
+  taskId String
+
+  /// User attempting the task
+  userId String
+
+  /// User who verified or rejected this claim
+  verifiedByUserId String?
+
+  /// Claim lifecycle status
+  status TaskClaimStatus @default(CLAIMED)
+
+  /// Evidence submitted by the claimant
+  completionEvidence String?
+
+  /// Optional reviewer note
+  verificationNote String?
+
+  /// Actual effort spent by the claimant
+  actualEffortSeconds Int?
+
+  /// Actual out-of-pocket cash cost reported by the claimant
+  actualCashCostUsd Float?
+
+  /// When the task was claimed
+  claimedAt DateTime @default(now())
+
+  /// When the claimant started working
+  startedAt DateTime?
+
+  /// When the claimant submitted completion
+  completedAt DateTime?
+
+  /// When the claim was verified or rejected
+  verifiedAt DateTime?
+
+  /// When the claim was abandoned
+  abandonedAt DateTime?
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  task           Task  @relation("TaskClaims", fields: [taskId], references: [id], onDelete: Cascade)
+  user           User  @relation("UserTaskClaims", fields: [userId], references: [id], onDelete: Cascade)
+  verifiedByUser User? @relation("TaskClaimVerifiedByUser", fields: [verifiedByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([taskId, userId])
+  @@index([taskId, status])
+  @@index([userId, status])
+  @@index([verifiedByUserId])
+  @@index([deletedAt])
+}
+
+/// Canonical upstream artifact used to derive tasks or impact estimates
+model SourceArtifact {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Source family that produced this artifact
+  sourceSystem SourceSystem
+
+  /// Artifact subtype
+  artifactType SourceArtifactType
+
+  /// Stable identity for imports and syncs
+  sourceKey String @unique
+
+  /// Optional external identifier from the upstream system
+  externalKey String?
+
+  /// Optional version key or snapshot id
+  versionKey String?
+
+  /// Human-readable label
+  title String?
+
+  /// Source URL for provenance
+  sourceUrl String?
+
+  /// Source reference / section id / slug
+  sourceRef String?
+
+  /// Hash of the artifact payload or content when available
+  contentHash String?
+
+  /// Structured upstream payload retained for reproducibility
+  payloadJson Json?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  taskLinks   TaskSourceArtifact[]       @relation("TaskSourceArtifactLinks")
+  impactLinks TaskImpactSourceArtifact[] @relation("TaskImpactSourceArtifactLinks")
+
+  @@index([sourceSystem, artifactType])
+  @@index([externalKey])
+  @@index([versionKey])
+  @@index([sourceRef])
+  @@index([contentHash])
+  @@index([deletedAt])
+}
+
+/// Link table connecting a task to one or more upstream artifacts
+model TaskSourceArtifact {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Task linked to the source artifact
+  taskId String
+
+  /// Upstream artifact used to derive the task
+  sourceArtifactId String
+
+  /// Whether this is the primary provenance artifact for the task
+  isPrimary Boolean @default(false)
+
+  /// When this link was created
+  createdAt DateTime @default(now())
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  task           Task           @relation("TaskSourceArtifacts", fields: [taskId], references: [id], onDelete: Cascade)
+  sourceArtifact SourceArtifact @relation("TaskSourceArtifactLinks", fields: [sourceArtifactId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, sourceArtifactId])
+  @@index([taskId, isPrimary])
+  @@index([sourceArtifactId, isPrimary])
+  @@index([deletedAt])
+}
+
+/// Directed non-tree relationship between two tasks
+model TaskEdge {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Supporting / upstream task
+  fromTaskId String
+
+  /// Downstream / affected task
+  toTaskId String
+
+  /// Causal or dependency edge type
+  edgeType TaskEdgeType
+
+  /// Low estimate of the probability lift produced by completing the upstream task
+  probabilityDeltaLow Float?
+
+  /// Base estimate of the probability lift produced by completing the upstream task
+  probabilityDeltaBase Float?
+
+  /// High estimate of the probability lift produced by completing the upstream task
+  probabilityDeltaHigh Float?
+
+  /// Low estimate of the number of days accelerated or delayed
+  timeDeltaDaysLow Float?
+
+  /// Base estimate of the number of days accelerated or delayed
+  timeDeltaDaysBase Float?
+
+  /// High estimate of the number of days accelerated or delayed
+  timeDeltaDaysHigh Float?
+
+  /// Version of the calculation logic used to derive this edge
+  calculationVersion String?
+
+  /// Structured assumptions used to derive this edge
+  assumptionsJson Json?
+
+  /// Optional notes or curation comments
+  notes String?
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  fromTask Task @relation("TaskOutgoingEdges", fields: [fromTaskId], references: [id], onDelete: Cascade)
+  toTask   Task @relation("TaskIncomingEdges", fields: [toTaskId], references: [id], onDelete: Cascade)
+
+  @@unique([fromTaskId, toTaskId, edgeType])
+  @@index([fromTaskId, edgeType])
+  @@index([toTaskId, edgeType])
+  @@index([deletedAt])
+}
+
+/// Immutable run of impact calculations for a task
+model TaskImpactEstimateSet {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Task this estimate set belongs to
+  taskId String
+
+  /// Denormalized flag kept in sync with Task.currentImpactEstimateSetId for fast queries
+  isCurrent Boolean @default(false)
+
+  /// Whether this estimate is ex-ante, observed, or hybrid
+  estimateKind TaskImpactEstimateKind
+
+  /// Publication lifecycle for this estimate set
+  publicationStatus TaskImpactPublicationStatus @default(DRAFT)
+
+  /// Primary source family for the estimate set
+  sourceSystem SourceSystem
+
+  /// Version of the calculation logic used to build this estimate set
+  calculationVersion String
+
+  /// Methodology family or model key
+  methodologyKey String
+
+  /// Hash of the parameter set used to generate the estimate
+  parameterSetHash String
+
+  /// Counterfactual definition used for comparison
+  counterfactualKey String
+
+  /// Structured assumptions used to generate the estimate
+  assumptionsJson Json?
+
+  /// When this estimate set was created
+  createdAt DateTime @default(now())
+
+  /// When this estimate set was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  task            Task                       @relation("TaskImpactEstimateSets", fields: [taskId], references: [id], onDelete: Cascade)
+  currentForTask  Task?                      @relation("CurrentTaskImpactEstimateSet")
+  frames          TaskImpactFrameEstimate[]  @relation("TaskImpactEstimateSetFrames")
+  sourceArtifacts TaskImpactSourceArtifact[] @relation("TaskImpactEstimateSetSourceArtifacts")
+
+  @@unique([taskId, estimateKind, sourceSystem, calculationVersion, methodologyKey, parameterSetHash, counterfactualKey])
+  @@index([taskId, isCurrent])
+  @@index([publicationStatus])
+  @@index([sourceSystem])
+  @@index([deletedAt])
+}
+
+/// Impact estimate for a specific evaluation frame
+model TaskImpactFrameEstimate {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Parent estimate set
+  taskImpactEstimateSetId String
+
+  /// Named evaluation frame
+  frameKey TaskImpactFrameKey
+
+  /// Unique frame slug within the estimate set
+  frameSlug String
+
+  /// Optional label when frameKey is CUSTOM
+  customFrameLabel String?
+
+  /// Total horizon evaluated by this frame
+  evaluationHorizonYears Float
+
+  /// Delay from task completion to the start of impact
+  timeToImpactStartDays Float
+
+  /// Years required to reach full adoption / implementation
+  adoptionRampYears Float
+
+  /// Duration of benefits considered in this frame
+  benefitDurationYears Float
+
+  /// Annual discount rate used for present-value calculations
+  annualDiscountRate Float
+
+  /// Optional Monte Carlo summary statistics
+  summaryStatsJson Json?
+
+  /// Low estimate of eventual success probability
+  successProbabilityLow Float?
+
+  /// Base estimate of eventual success probability
+  successProbabilityBase Float?
+
+  /// High estimate of eventual success probability
+  successProbabilityHigh Float?
+
+  /// Low estimate of real after-tax median income growth effect
+  medianIncomeGrowthEffectPpPerYearLow Float?
+
+  /// Base estimate of real after-tax median income growth effect
+  medianIncomeGrowthEffectPpPerYearBase Float?
+
+  /// High estimate of real after-tax median income growth effect
+  medianIncomeGrowthEffectPpPerYearHigh Float?
+
+  /// Low estimate of median healthy life years effect
+  medianHealthyLifeYearsEffectLow Float?
+
+  /// Base estimate of median healthy life years effect
+  medianHealthyLifeYearsEffectBase Float?
+
+  /// High estimate of median healthy life years effect
+  medianHealthyLifeYearsEffectHigh Float?
+
+  /// Low estimate of expected DALYs averted over the frame
+  expectedDalysAvertedLow Float?
+
+  /// Base estimate of expected DALYs averted over the frame
+  expectedDalysAvertedBase Float?
+
+  /// High estimate of expected DALYs averted over the frame
+  expectedDalysAvertedHigh Float?
+
+  /// Low estimate of expected aggregate economic value over the frame
+  expectedEconomicValueUsdLow Float?
+
+  /// Base estimate of expected aggregate economic value over the frame
+  expectedEconomicValueUsdBase Float?
+
+  /// High estimate of expected aggregate economic value over the frame
+  expectedEconomicValueUsdHigh Float?
+
+  /// Low estimate of the cash cost to complete the task
+  estimatedCashCostUsdLow Float?
+
+  /// Base estimate of the cash cost to complete the task
+  estimatedCashCostUsdBase Float?
+
+  /// High estimate of the cash cost to complete the task
+  estimatedCashCostUsdHigh Float?
+
+  /// Low estimate of the effort required to complete the task
+  estimatedEffortHoursLow Float?
+
+  /// Base estimate of the effort required to complete the task
+  estimatedEffortHoursBase Float?
+
+  /// High estimate of the effort required to complete the task
+  estimatedEffortHoursHigh Float?
+
+  /// Low estimate of the DALYs lost per day of delay
+  delayDalysLostPerDayLow Float?
+
+  /// Base estimate of the DALYs lost per day of delay
+  delayDalysLostPerDayBase Float?
+
+  /// High estimate of the DALYs lost per day of delay
+  delayDalysLostPerDayHigh Float?
+
+  /// Low estimate of the aggregate economic value lost per day of delay
+  delayEconomicValueUsdLostPerDayLow Float?
+
+  /// Base estimate of the aggregate economic value lost per day of delay
+  delayEconomicValueUsdLostPerDayBase Float?
+
+  /// High estimate of the aggregate economic value lost per day of delay
+  delayEconomicValueUsdLostPerDayHigh Float?
+
+  /// When this frame was created
+  createdAt DateTime @default(now())
+
+  /// When this frame was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  taskImpactEstimateSet TaskImpactEstimateSet @relation("TaskImpactEstimateSetFrames", fields: [taskImpactEstimateSetId], references: [id], onDelete: Cascade)
+  metrics               TaskImpactMetric[]    @relation("TaskImpactFrameEstimateMetrics")
+
+  @@unique([taskImpactEstimateSetId, frameSlug])
+  @@index([taskImpactEstimateSetId, frameKey])
+  @@index([deletedAt])
+}
+
+/// Extensible metric attached to an impact frame
+model TaskImpactMetric {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Impact frame this metric belongs to
+  taskImpactFrameEstimateId String
+
+  /// Stable metric identifier
+  metricKey String
+
+  /// Unit for display and interpretation
+  unit String
+
+  /// Low estimate value
+  lowValue Float?
+
+  /// Base estimate value
+  baseValue Float?
+
+  /// High estimate value
+  highValue Float?
+
+  /// Structured metric value for categorical or non-numeric metrics
+  valueJson Json?
+
+  /// Optional Monte Carlo summary statistics
+  summaryStatsJson Json?
+
+  /// Optional grouping label for UI presentation
+  displayGroup String?
+
+  /// Arbitrary structured metadata for this metric
+  metadataJson Json?
+
+  /// When this metric was created
+  createdAt DateTime @default(now())
+
+  /// When this metric was last updated
+  updatedAt DateTime @updatedAt
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  taskImpactFrameEstimate TaskImpactFrameEstimate @relation("TaskImpactFrameEstimateMetrics", fields: [taskImpactFrameEstimateId], references: [id], onDelete: Cascade)
+
+  @@unique([taskImpactFrameEstimateId, metricKey])
+  @@index([metricKey])
+  @@index([displayGroup])
+  @@index([deletedAt])
+}
+
+/// Link table connecting an impact estimate set to one or more upstream artifacts
+model TaskImpactSourceArtifact {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Estimate set linked to the source artifact
+  taskImpactEstimateSetId String
+
+  /// Upstream artifact used to derive the impact estimate
+  sourceArtifactId String
+
+  /// Whether this is the primary provenance artifact for the estimate set
+  isPrimary Boolean @default(false)
+
+  /// When this link was created
+  createdAt DateTime @default(now())
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  taskImpactEstimateSet TaskImpactEstimateSet @relation("TaskImpactEstimateSetSourceArtifacts", fields: [taskImpactEstimateSetId], references: [id], onDelete: Cascade)
+  sourceArtifact        SourceArtifact        @relation("TaskImpactSourceArtifactLinks", fields: [sourceArtifactId], references: [id], onDelete: Cascade)
+
+  @@unique([taskImpactEstimateSetId, sourceArtifactId])
+  @@index([taskImpactEstimateSetId, isPrimary])
+  @@index([sourceArtifactId, isPrimary])
+  @@index([deletedAt])
 }
 
 // ============================================================================

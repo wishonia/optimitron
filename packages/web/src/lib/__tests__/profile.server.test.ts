@@ -43,6 +43,10 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/lib/person.server", () => ({
+  ensurePersonForUser: vi.fn(),
+}));
+
 import {
   getProfilePageData,
   saveDailyCheckIn,
@@ -51,6 +55,7 @@ import {
 
 /** Default null values for all 18 new census fields — spread into mock user objects */
 const NULL_NEW_CENSUS_FIELDS = {
+  availableHoursPerWeek: null,
   annualTaxesPaidUsd: null,
   monthlyHousingCostUsd: null,
   housingStatus: null,
@@ -69,6 +74,10 @@ const NULL_NEW_CENSUS_FIELDS = {
   alcoholFrequency: null,
   heightCm: null,
   internetAccessType: null,
+  interestTags: [],
+  maxTaskDifficulty: null,
+  personId: null,
+  skillTags: [],
 };
 
 function createTransactionClient() {

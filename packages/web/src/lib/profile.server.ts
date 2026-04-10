@@ -6,6 +6,7 @@ import {
   Valence,
   type Prisma,
 } from "@optimitron/db";
+import { ensurePersonForUser } from "@/lib/person.server";
 import {
   ANNUAL_HOUSEHOLD_INCOME_VARIABLE_NAME,
   ANNUAL_PERSONAL_INCOME_VARIABLE_NAME,
@@ -28,6 +29,7 @@ const USD_UNIT_NAME = "US Dollars";
 const WELLBEING_CATEGORY_NAME = "Wellbeing";
 
 const profileUserSelect = {
+  personId: true,
   // Location
   timeZone: true,
   countryCode: true,
@@ -65,6 +67,11 @@ const profileUserSelect = {
   heightCm: true,
   // Access
   internetAccessType: true,
+  // Skills & tasks
+  skillTags: true,
+  interestTags: true,
+  availableHoursPerWeek: true,
+  maxTaskDifficulty: true,
   // Notes & meta
   censusNotes: true,
   censusUpdatedAt: true,
@@ -238,6 +245,8 @@ export async function saveProfileSnapshot(userId: string, input: unknown) {
       },
     });
 
+    await ensurePersonForUser(userId, tx);
+
     const hasHouseholdIncome = profile.annualHouseholdIncomeUsd !== null && profile.annualHouseholdIncomeUsd !== undefined;
     const hasPersonalIncome = profile.annualPersonalIncomeUsd !== null && profile.annualPersonalIncomeUsd !== undefined;
 
@@ -349,6 +358,7 @@ export async function saveDailyCheckIn(userId: string, input: unknown) {
 
 function serializeProfileUser(user: ProfileUser, lastIncomeReportedAt: Date | null) {
   return {
+    personId: user.personId,
     // Location
     timeZone: user.timeZone,
     countryCode: user.countryCode,
@@ -386,6 +396,11 @@ function serializeProfileUser(user: ProfileUser, lastIncomeReportedAt: Date | nu
     heightCm: user.heightCm,
     // Access
     internetAccessType: user.internetAccessType,
+    // Skills & tasks
+    skillTags: user.skillTags,
+    interestTags: user.interestTags,
+    availableHoursPerWeek: user.availableHoursPerWeek,
+    maxTaskDifficulty: user.maxTaskDifficulty,
     // Notes & meta
     censusNotes: user.censusNotes,
     censusUpdatedAt: user.censusUpdatedAt ? user.censusUpdatedAt.toISOString() : null,

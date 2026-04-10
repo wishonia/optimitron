@@ -1,5 +1,6 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { Adapter } from "next-auth/adapters";
+import { ensurePersonForUser } from "@/lib/person.server";
 import { prisma } from "@/lib/prisma";
 import {
   createUniqueReferralCode,
@@ -15,7 +16,7 @@ export function createAuthAdapter(): Adapter {
       const username = await createUniqueUsername();
       const referralCode = await createUniqueReferralCode();
 
-      return prisma.user.create({
+      const createdUser = await prisma.user.create({
         data: {
           email: user.email,
           emailVerified: user.emailVerified ?? null,
@@ -25,6 +26,10 @@ export function createAuthAdapter(): Adapter {
           referralCode,
         },
       });
+
+      await ensurePersonForUser(createdUser.id);
+
+      return createdUser;
     },
   };
 }

@@ -54,6 +54,7 @@ export const ROUTES = {
   // Player
   profile: "/profile",
   dashboard: "/dashboard",
+  tasks: "/tasks",
   census: "/census",
   checkIn: "/check-in",
   settings: "/settings",
@@ -306,6 +307,15 @@ export const dashboardLink: NavItem = {
   cta: "Open Dashboard",
 };
 
+export const tasksLink: NavItem = {
+  href: ROUTES.tasks,
+  label: "Tasks",
+  emoji: "🎯",
+  description: "Concrete tasks for actual humans, including the ones who run states and still need reminding. Claim what you can do. Track what others are supposed to do.",
+  tagline: "Claim what you can do. Track what others should do.",
+  cta: "Open Tasks",
+};
+
 export const profileLink: NavItem = {
   href: ROUTES.profile,
   label: "Profile",
@@ -478,7 +488,7 @@ export interface NavSection {
 }
 
 export const navSections: NavSection[] = [
-  { id: "play", label: "Play", items: [dashboardLink, profileLink, censusLink, checkInLink, settingsLink, wishocracyLink, alignmentLink, referendumLink, prizeLink, demoLink] },
+  { id: "play", label: "Play", items: [dashboardLink, tasksLink, profileLink, censusLink, checkInLink, settingsLink, wishocracyLink, alignmentLink, referendumLink, prizeLink, demoLink] },
   { id: "optimized-gov", label: "Optimized Governance", items: [dtreasuryLink, opgLink, obgLink, transparencyLink, dihLink, dfdaLink, agenciesLink, departmentOfWarLink] },
   { id: "earth", label: "Earth", items: [governmentsLink, politicianLeaderboardLink, opgLink] },
   { id: "fund", label: "Fund", items: [prizeLink, scoreboardLink, iabLink] },
@@ -491,7 +501,7 @@ export const toolSections: NavSection[] = [
   { id: "democracy", label: "Democracy", items: [wishocracyLink, alignmentLink, referendumLink] },
   { id: "finance", label: "Finance", items: [prizeLink, iabLink, dtreasuryLink, federalReserveLink, dirsLink, dssaLink] },
   { id: "transparency", label: "Transparency", items: [transparencyLink] },
-  { id: "player", label: "Player", items: [transmitLink, dashboardLink, censusLink, checkInLink] },
+  { id: "player", label: "Player", items: [tasksLink, transmitLink, dashboardLink, censusLink, checkInLink] },
 ];
 
 /** Footer-only internal links */
@@ -499,6 +509,7 @@ export const footerAppLinks: NavItem[] = [
   wishocracyLink,
   alignmentLink,
   dashboardLink,
+  tasksLink,
   profileLink,
   censusLink,
   settingsLink,
