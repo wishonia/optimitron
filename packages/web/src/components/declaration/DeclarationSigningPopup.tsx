@@ -67,9 +67,9 @@ export function DeclarationSigningPopup() {
   return (
     <ReactDialog.Root open={open} onOpenChange={() => { /* block dismiss */ }}>
       <ReactDialog.Portal>
-        <ReactDialog.Overlay className="fixed inset-0 z-50 bg-black/90" />
+        <ReactDialog.Overlay className="fixed inset-0 z-[100] bg-black/90" />
         <ReactDialog.Content
-          className="fixed inset-0 z-50 flex flex-col bg-background"
+          className="fixed inset-0 z-[100] flex flex-col bg-background"
           onEscapeKeyDown={(e) => e.preventDefault()}
           onPointerDownOutside={(e) => e.preventDefault()}
           onInteractOutside={(e) => e.preventDefault()}
@@ -96,6 +96,35 @@ export function DeclarationSigningPopup() {
           >
             <div className="mx-auto max-w-3xl">
               <div className="space-y-6 text-foreground">
+                {/* Why Optimization Is Necessary */}
+                <div className="border-4 border-primary bg-brutal-red p-6 text-brutal-red-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      p: ({ children }) => (
+                        <p className="text-base font-bold leading-8">
+                          {children}
+                        </p>
+                      ),
+                      a: ({ href, children }) => (
+                        <a
+                          href={href ?? "#"}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-black underline underline-offset-4"
+                        >
+                          {children}
+                        </a>
+                      ),
+                    }}
+                  >
+                    {shareableSnippets.whyOptimizationIsNecessary.markdown}
+                  </ReactMarkdown>
+                </div>
+
+                <hr className="border-t-4 border-primary" />
+
+                {/* The Declaration */}
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                   components={{
