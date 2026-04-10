@@ -1,16 +1,5 @@
+import { TaskDifficulty } from "@optimitron/db/enums";
 import { z } from "zod";
-
-/** Local mirror of the Prisma TaskDifficulty enum to avoid pulling the Prisma
- *  client runtime into client bundles. Values must match the schema enum. */
-const TaskDifficulty = {
-  TRIVIAL: "TRIVIAL",
-  BEGINNER: "BEGINNER",
-  INTERMEDIATE: "INTERMEDIATE",
-  ADVANCED: "ADVANCED",
-  EXPERT: "EXPERT",
-} as const;
-
-type TaskDifficulty = (typeof TaskDifficulty)[keyof typeof TaskDifficulty];
 
 export const HEALTH_VARIABLE_NAME = "Overall Health";
 export const HAPPINESS_VARIABLE_NAME = "Happiness";
