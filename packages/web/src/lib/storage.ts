@@ -9,6 +9,8 @@ const STORAGE_KEYS = {
   voteStatusCache: "vote_status_cache",
   chatApiKey: "opto-chat-api-key",
   chatProvider: "opto-chat-provider",
+  declarationSigned: "declaration_signed",
+  pendingDeclarationVote: "pending_declaration_vote",
 } as const;
 
 export type PendingWishocraticAllocation = WishocraticAllocationInput & {
@@ -27,6 +29,15 @@ export type VoteStatusCache = {
   hasVoted: boolean;
   voteAnswer: string;
   referralCode: string;
+};
+
+export type DeclarationSignedState = {
+  signedAt: string;
+};
+
+export type PendingDeclarationVoteState = {
+  answer: string;
+  timestamp: string;
 };
 
 type PendingWishocracyState = {
@@ -148,6 +159,19 @@ export const storage = {
   setPendingTreatyVote: (data: PendingTreatyVoteState) =>
     setStorageItem(STORAGE_KEYS.pendingTreatyVote, data),
   removePendingTreatyVote: () => removeStorageItem(STORAGE_KEYS.pendingTreatyVote),
+
+  getDeclarationSigned: () =>
+    getStorageItem<DeclarationSignedState>(STORAGE_KEYS.declarationSigned),
+  setDeclarationSigned: (data: DeclarationSignedState) =>
+    setStorageItem(STORAGE_KEYS.declarationSigned, data),
+  removeDeclarationSigned: () => removeStorageItem(STORAGE_KEYS.declarationSigned),
+
+  getPendingDeclarationVote: () =>
+    getStorageItem<PendingDeclarationVoteState>(STORAGE_KEYS.pendingDeclarationVote),
+  setPendingDeclarationVote: (data: PendingDeclarationVoteState) =>
+    setStorageItem(STORAGE_KEYS.pendingDeclarationVote, data),
+  removePendingDeclarationVote: () =>
+    removeStorageItem(STORAGE_KEYS.pendingDeclarationVote),
 
   getVoteStatusCache: () => getStorageItem<VoteStatusCache>(STORAGE_KEYS.voteStatusCache),
   setVoteStatusCache: (data: VoteStatusCache) =>

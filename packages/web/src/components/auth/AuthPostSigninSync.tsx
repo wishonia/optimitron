@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { API_ROUTES } from "@/lib/api-routes";
 import { createLogger } from "@/lib/logger";
 import { storage } from "@/lib/storage";
+import { syncPendingDeclarationVote } from "@/lib/declaration-vote-sync";
 
 const logger = createLogger("auth-post-signin-sync");
 
@@ -46,6 +47,7 @@ export function AuthPostSigninSync() {
         }
 
         storage.clearSignupData();
+        void syncPendingDeclarationVote();
       })
       .catch((error) => {
         logger.error("Unable to sync post-sign-in state", error);

@@ -684,6 +684,19 @@ async function seedReferendums() {
     },
   });
   console.log("  ✓ 1% Treaty referendum");
+
+  await prisma.referendum.upsert({
+    where: { slug: "declaration-of-optimization" },
+    update: {},
+    create: {
+      title: "Declaration of Optimization",
+      slug: "declaration-of-optimization",
+      description:
+        "Sign the Declaration of Optimization to declare your support for evidence-based governance.",
+      status: ReferendumStatus.ACTIVE,
+    },
+  });
+  console.log("  ✓ Declaration of Optimization referendum");
 }
 
 export async function seedReferenceData() {
