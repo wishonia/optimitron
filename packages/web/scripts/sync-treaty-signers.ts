@@ -30,6 +30,7 @@ import { buildTreatySignerMilestones } from "../src/lib/tasks/treaty-milestones"
 
 const DEFAULT_PARAMETERS_PATH = "E:/code/disease-eradication-plan/assets/json/parameters.json";
 const DEFAULT_ROSTER = "full";
+const SYNC_CONCURRENCY = 8;
 
 export type TreatySignerRosterMode = "full" | "top";
 
@@ -76,6 +77,16 @@ export function getTreatySignerSlots(options: {
 
   const requested = new Set(options.countryCodes.map((value) => value.trim().toUpperCase()));
   return selectedRoster.filter((slot) => requested.has(slot.countryCode.toUpperCase()));
+}
+
+function chunkArray<TValue>(values: TValue[], size: number) {
+  const chunks: TValue[][] = [];
+
+  for (let index = 0; index < values.length; index += size) {
+    chunks.push(values.slice(index, index + size));
+  }
+
+  return chunks;
 }
 
 export async function syncTreatySigners(options: SyncTreatySignerCliOptions) {
@@ -152,50 +163,66 @@ export async function syncTreatySigners(options: SyncTreatySignerCliOptions) {
   const liveTaskKeys: string[] = [];
   const persisted: Array<Record<string, unknown>> = [];
 
-  for (const { signerDraft, slot, supporterDrafts } of drafts) {
-    const organization = await findOrCreateOrganization({
-      name: slot.governmentName,
-      sourceRef: `organization:government:${slot.countryCode.toLowerCase()}`,
-      sourceUrl: slot.officialSourceUrl ?? slot.contactUrl ?? slot.governmentWebsite,
-      type: OrgType.GOVERNMENT,
-      website: slot.governmentWebsite,
-    });
+  for (const chunk of chunkArray(drafts, SYNC_CONCURRENCY)) {
+    const chunkResults = await Promise.all(
+      chunk.map(async ({ signerDraft, slot, supporterDrafts }) => {
+        const organization = await findOrCreateOrganization({
+          name: slot.governmentName,
+          sourceRef: `organization:government:${slot.countryCode.toLowerCase()}`,
+          sourceUrl: slot.officialSourceUrl ?? slot.contactUrl ?? slot.governmentWebsite,
+          type: OrgType.GOVERNMENT,
+          website: slot.governmentWebsite,
+        });
 
-    const result = await upsertImportedTaskBundle(signerDraft.bundle, {
-      assigneeOrganizationId: organization.id,
-      assigneePersonId: null,
-      isPublic: true,
-      jurisdictionId: null,
-      parentTaskId: parentTask.id,
-    });
+        const result = await upsertImportedTaskBundle(signerDraft.bundle, {
+          assigneeOrganizationId: organization.id,
+          assigneePersonId: null,
+          isPublic: true,
+          jurisdictionId: null,
+          parentTaskId: parentTask.id,
+        });
 
-    await prisma.task.update({
-      where: {
-        id: result.taskId,
-      },
-      data: {
-        sortOrder: slot.sortOrder,
-      },
-    });
+        await prisma.task.update({
+          where: {
+            id: result.taskId,
+          },
+          data: {
+            sortOrder: slot.sortOrder,
+          },
+        });
 
-    await syncTaskMilestones(result.taskId, buildTreatySignerMilestones());
-    await syncTreatySupporterTasks({
-      assigneeOrganizationId: organization.id,
-      parentTaskId: result.taskId,
-      slot,
-    });
+        await syncTaskMilestones(result.taskId, buildTreatySignerMilestones());
+        await syncTreatySupporterTasks({
+          assigneeOrganizationId: organization.id,
+          parentTaskId: result.taskId,
+          slot,
+        });
 
-    liveTaskKeys.push(
-      getTreatySignerTaskKey(slot),
-      ...supporterDrafts.map((draft) => draft.taskKey),
+        return {
+          assigneeOrganizationId: organization.id,
+          countryCode: slot.countryCode,
+          liveTaskKeys: [
+            getTreatySignerTaskKey(slot),
+            ...supporterDrafts.map((draft) => draft.taskKey),
+          ],
+          signerTaskId: result.taskId,
+          signerTaskKey: result.taskKey,
+          sortOrder: slot.sortOrder,
+          supporterTaskKeys: supporterDrafts.map((draft) => draft.taskKey),
+        };
+      }),
     );
-    persisted.push({
-      assigneeOrganizationId: organization.id,
-      countryCode: slot.countryCode,
-      signerTaskId: result.taskId,
-      signerTaskKey: result.taskKey,
-      supporterTaskKeys: supporterDrafts.map((draft) => draft.taskKey),
-    });
+
+    for (const chunkResult of chunkResults.sort((left, right) => left.sortOrder - right.sortOrder)) {
+      liveTaskKeys.push(...chunkResult.liveTaskKeys);
+      persisted.push({
+        assigneeOrganizationId: chunkResult.assigneeOrganizationId,
+        countryCode: chunkResult.countryCode,
+        signerTaskId: chunkResult.signerTaskId,
+        signerTaskKey: chunkResult.signerTaskKey,
+        supporterTaskKeys: chunkResult.supporterTaskKeys,
+      });
+    }
   }
 
   if (options.countryCodes == null) {

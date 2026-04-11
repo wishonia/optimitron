@@ -4,6 +4,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import {
   reviewEarthQueueAndBuildSystemImprovements,
+  reviewTaskTreeBundle,
   type TaskTreeNode,
 } from "@optimitron/agent";
 import {
@@ -20,8 +21,10 @@ import {
 } from "@optimitron/db";
 import type { ImportedTaskBundle } from "../src/lib/tasks/opg-obg-adapters";
 import { upsertImportedTaskBundle } from "../src/lib/tasks/import-task-bundle.server";
+import { prisma } from "../src/lib/prisma";
 import * as tasks from "../src/lib/tasks.server";
-import { syncTreatySigners } from "./sync-treaty-signers";
+import { enrichOptimizeEarthBootstrapRoots } from "../src/lib/optimize-earth-page-context";
+import { getTreatySignerSlots, syncTreatySigners } from "./sync-treaty-signers";
 
 interface ParsedArgs {
   outPath: string | null;
@@ -264,6 +267,30 @@ async function syncSystemTaskNode(
   results: Array<{ taskId: string; taskKey: string; title: string }>,
 ) {
   if (!promotableRefs.has(node.id)) {
+    const existingTask = await prisma.task.findFirst({
+      where: {
+        deletedAt: null,
+        ...(node.taskKey
+          ? {
+              taskKey: node.taskKey,
+            }
+          : {
+              parentTaskId,
+              title: node.title,
+            }),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!existingTask) {
+      return;
+    }
+
+    for (const child of node.children ?? []) {
+      await syncSystemTaskNode(child, existingTask.id, promotableRefs, results);
+    }
     return;
   }
 
@@ -286,14 +313,30 @@ async function syncSystemTaskNode(
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-
-  await syncTreatySigners({
-    countryCodes: null,
-    importDb: true,
-    parametersPath: "E:/code/disease-eradication-plan/assets/json/parameters.json",
-    printJson: false,
-    roster: "full",
+  const targetSignerCount = getTreatySignerSlots({ roster: "full" }).length;
+  const existingSignerCount = await prisma.task.count({
+    where: {
+      deletedAt: null,
+      taskKey: {
+        startsWith: "program:one-percent-treaty:signer:",
+      },
+      NOT: {
+        taskKey: {
+          contains: ":support:",
+        },
+      },
+    },
   });
+
+  if (existingSignerCount < targetSignerCount) {
+    await syncTreatySigners({
+      countryCodes: null,
+      importDb: true,
+      parametersPath: "E:/code/disease-eradication-plan/assets/json/parameters.json",
+      printJson: false,
+      roster: "full",
+    });
+  }
 
   const liveTasks = await tasks.listTasks({
     limit: 5000,
@@ -301,35 +344,75 @@ async function main() {
     visibility: "public",
   });
   const review = reviewEarthQueueAndBuildSystemImprovements(liveTasks);
+  const reviewedRoots = enrichOptimizeEarthBootstrapRoots(review.roots);
+  const enrichedReview = reviewTaskTreeBundle({
+    existingTasks: liveTasks.map((task) => ({
+      assigneeOrganizationId: task.assigneeOrganization?.id ?? null,
+      assigneePersonId: task.assigneePerson?.id ?? null,
+      id: task.id,
+      roleTitle: task.roleTitle ?? null,
+      status: task.status,
+      taskKey: task.taskKey ?? null,
+      title: task.title,
+    })),
+    roots: reviewedRoots,
+  });
   const promotableRefs = new Set(
-    review.proposal.review.decisions
+    enrichedReview.review.decisions
       .filter((decision) => decision.promotable)
       .map((decision) => decision.proposalRef),
   );
 
   const importedSystemTasks: Array<{ taskId: string; taskKey: string; title: string }> = [];
-  for (const root of review.roots) {
+  for (const root of reviewedRoots) {
     await syncSystemTaskNode(root, null, promotableRefs, importedSystemTasks);
   }
 
-  const refreshedTasks = await tasks.listTasks({
+  const finalLiveTasks = await tasks.listTasks({
     limit: 5000,
     status: TaskStatus.ACTIVE,
     visibility: "public",
   });
+  const finalReview = reviewEarthQueueAndBuildSystemImprovements(finalLiveTasks);
+
+  const [activePublicTaskCount, treatySignerCount] = await Promise.all([
+    prisma.task.count({
+      where: {
+        deletedAt: null,
+        isPublic: true,
+        status: TaskStatus.ACTIVE,
+      },
+    }),
+    prisma.task.count({
+      where: {
+        deletedAt: null,
+        isPublic: true,
+        status: TaskStatus.ACTIVE,
+        taskKey: {
+          startsWith: "program:one-percent-treaty:signer:",
+        },
+        NOT: {
+          taskKey: {
+            contains: ":support:",
+          },
+        },
+      },
+    }),
+  ]);
 
   const summary = {
-    activePublicTaskCount: refreshedTasks.length,
-    promotableSystemTaskCount: promotableRefs.size,
-    queueAuditIssues: review.audit.issues.map((issue) => ({
+    activePublicTaskCount,
+    existingSignerCount,
+    promotableSystemTaskCount: enrichedReview.review.promotableCount,
+    queueAuditIssues: finalReview.audit.issues.map((issue) => ({
       code: issue.code,
       message: issue.message,
       severity: issue.severity,
     })),
+    reviewedSystemSummary: finalReview.proposal.review.summary,
     syncedSystemTasks: importedSystemTasks,
-    treatySignerCount: refreshedTasks.filter((task) =>
-      (task.taskKey ?? "").startsWith("program:one-percent-treaty:signer:"),
-    ).length,
+    targetSignerCount,
+    treatySignerCount,
   };
 
   if (args.outPath) {

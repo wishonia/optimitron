@@ -6,9 +6,11 @@ import { fileURLToPath } from "node:url";
 import { reviewEarthQueueAndBuildSystemImprovements, type TaskTreeNode } from "@optimitron/agent";
 import { PrismaClient, TaskStatus } from "@optimitron/db";
 import { PrismaPg } from "@prisma/adapter-pg";
-import * as tasks from "../src/lib/tasks.server";
+import * as taskApi from "../src/lib/tasks.server";
 
-type TaskDetailRecord = NonNullable<Awaited<ReturnType<typeof tasks.getTaskDetailData>>>["task"];
+const tasks = ("default" in taskApi ? taskApi.default : taskApi) as typeof taskApi;
+
+type LiveTaskRecord = Awaited<ReturnType<typeof tasks.listTasks>>[number];
 
 interface FlatTaskRecord {
   category: string | null;
@@ -81,7 +83,7 @@ function buildTreeMap<TTask extends { id: string; parentTaskId?: string | null }
   return byParent;
 }
 
-function renderLiveTaskTree(tasksToRender: TaskDetailRecord[]) {
+function renderLiveTaskTree(tasksToRender: LiveTaskRecord[]) {
   const byParent = buildTreeMap(tasksToRender);
   const allIds = new Set(tasksToRender.map((task) => task.id));
   const roots = tasksToRender.filter(
@@ -91,7 +93,7 @@ function renderLiveTaskTree(tasksToRender: TaskDetailRecord[]) {
   const lines: string[] = [];
   const visited = new Set<string>();
 
-  function renderNode(task: TaskDetailRecord, depth: number) {
+  function renderNode(task: LiveTaskRecord, depth: number) {
     visited.add(task.id);
     const indent = "  ".repeat(depth);
     const evPerHour = formatUsd(task.impact?.expectedValuePerHourUsd);
@@ -196,7 +198,7 @@ async function main() {
   const prisma = new PrismaClient({ adapter, log: ["error"] });
 
   try {
-    const [allTasks, liveTaskIds] = await Promise.all([
+    const [allTasks, liveTasks] = await Promise.all([
       prisma.task.findMany({
         where: { deletedAt: null },
         orderBy: [{ createdAt: "asc" }],
@@ -211,24 +213,12 @@ async function main() {
           title: true,
         },
       }),
-      prisma.task.findMany({
-        where: {
-          deletedAt: null,
-          isPublic: true,
-          status: TaskStatus.ACTIVE,
-        },
-        orderBy: [{ createdAt: "asc" }],
-        select: { id: true },
+      tasks.listTasks({
+        limit: 5000,
+        status: TaskStatus.ACTIVE,
+        visibility: "public",
       }),
     ]);
-
-    const liveResults = await Promise.all(
-      liveTaskIds.map(async ({ id }) => {
-        const record = await tasks.getTaskDetailData(id);
-        return record?.task ?? null;
-      }),
-    );
-    const liveTasks = liveResults.filter((task): task is TaskDetailRecord => task !== null);
     const liveAudit = reviewEarthQueueAndBuildSystemImprovements(liveTasks);
 
     const lines = [

@@ -153,6 +153,11 @@ const impactEstimateSetSelect = {
 const taskListSelect = {
   actualCashCostUsd: true,
   actualEffortSeconds: true,
+  _count: {
+    select: {
+      childTasks: true,
+    },
+  },
   assigneeOrganization: {
     select: {
       contactEmail: true,
@@ -448,6 +453,7 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
   },
 ): T & {
   activeClaimCount: number;
+  activeChildTaskCount: number;
   blockerStatuses: TaskStatus[];
   impact: {
     availableFrames: TaskImpactSelection["availableFrames"];
@@ -530,6 +536,7 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
   return {
     ...task,
     activeClaimCount: countActiveClaims(task),
+    activeChildTaskCount: task._count.childTasks,
     blockerStatuses,
     ...(decoratedChildTasks ? { childTasks: decoratedChildTasks } : {}),
     impact: {
@@ -549,6 +556,7 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
     viewerHasClaim: hasViewerClaim(task, options?.userId ?? null),
   } as T & {
     activeClaimCount: number;
+    activeChildTaskCount: number;
     blockerStatuses: TaskStatus[];
     impact: {
       availableFrames: TaskImpactSelection["availableFrames"];
@@ -734,6 +742,9 @@ export async function getTasksPageData(
           decoratedTasks.filter((task) => !task.viewerHasClaim),
           viewer,
           24,
+          {
+            preferLeafExecution: true,
+          },
         ).map((entry) => ({
           ...entry.task,
           recommendationScore: entry.score,

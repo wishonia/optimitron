@@ -109,20 +109,32 @@ export function classifyEarthTaskFamily(task: Pick<EarthOperatorTask, 'category'
   if (taskKey.includes('one-percent-treaty:signer')) {
     return 'treaty-signer';
   }
-  if (taskKey.startsWith('system:') || category === 'technical') {
-    return 'system-improvement';
-  }
   if (
+    taskKey.includes('growth') ||
+    taskKey.includes('conversion') ||
+    taskKey.includes('overdue-task-list') ||
+    taskKey.includes('crosslink-task-government-politician-pages') ||
+    taskKey.includes('convert-pitch-pages-into-task-traffic') ||
     taskKey.includes('conversion') ||
     title.includes('website') ||
     title.includes('landing page') ||
     title.includes('conversion') ||
+    title.includes('share-and-pressure') ||
+    title.includes('task traffic') ||
+    title.includes('politician') ||
+    title.includes('scoreboard') ||
     title.includes('signup') ||
     title.includes('vote')
   ) {
     return 'growth-conversion';
   }
   if (
+    taskKey.includes('contact-discovery') ||
+    taskKey.includes('discover-missing-signer-office-channels') ||
+    taskKey.includes('discover-country-journalist-and-coalition-targets') ||
+    taskKey.includes('office-channel') ||
+    taskKey.includes('journalist') ||
+    taskKey.includes('coalition') ||
     title.includes('journalist') ||
     title.includes('contact list') ||
     title.includes('email target') ||
@@ -130,6 +142,9 @@ export function classifyEarthTaskFamily(task: Pick<EarthOperatorTask, 'category'
     title.includes('contact discovery')
   ) {
     return 'contact-discovery';
+  }
+  if (taskKey.startsWith('system:') || category === 'technical') {
+    return 'system-improvement';
   }
 
   return 'other';

@@ -11,6 +11,7 @@ import {
 
 export interface RankableTask {
   activeClaimCount?: number;
+  activeChildTaskCount?: number;
   blockerStatuses?: TaskStatus[];
   claimPolicy: TaskClaimPolicy;
   difficulty: TaskDifficulty;
@@ -27,6 +28,10 @@ export interface RankableUser {
   interestTags: string[];
   maxTaskDifficulty: TaskDifficulty | null;
   skillTags: string[];
+}
+
+export interface RankTasksOptions {
+  preferLeafExecution?: boolean;
 }
 
 const DIFFICULTY_ORDER: TaskDifficulty[] = [
@@ -155,6 +160,10 @@ export function blockerProgress(task: Pick<RankableTask, "blockerStatuses">) {
   return resolved / statuses.length;
 }
 
+export function hasActiveChildTasks(task: Pick<RankableTask, "activeChildTaskCount">) {
+  return (task.activeChildTaskCount ?? 0) > 0;
+}
+
 export function scoreTaskForUser(task: RankableTask, user: RankableUser) {
   const skillScore = jaccardScore(task.skillTags, user.skillTags);
   const interestScore = jaccardScore(task.interestTags, user.interestTags);
@@ -191,9 +200,21 @@ export function rankTasksForUser<T extends RankableTask>(
   tasks: T[],
   user: RankableUser,
   limit = 20,
+  options?: RankTasksOptions,
 ) {
-  return tasks
-    .filter((task) => canTaskAcceptMoreClaims(task) && !isTaskBlocked(task))
+  const actionableTasks = tasks.filter(
+    (task) => canTaskAcceptMoreClaims(task) && !isTaskBlocked(task),
+  );
+  const executionPool =
+    options?.preferLeafExecution === true
+      ? actionableTasks.filter((task) => !hasActiveChildTasks(task))
+      : actionableTasks;
+  const selectionPool =
+    options?.preferLeafExecution === true && executionPool.length > 0
+      ? executionPool
+      : actionableTasks;
+
+  return selectionPool
     .map((task) => ({
       score: scoreTaskForUser(task, user),
       task,

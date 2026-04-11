@@ -17,6 +17,26 @@ describe('earth prioritization', () => {
     ).toBe('treaty-support-explainer');
   });
 
+  it('classifies page-leverage system tasks as growth/conversion work', () => {
+    expect(
+      classifyEarthTaskFamily({
+        category: 'OTHER',
+        taskKey: 'system:optimize-earth:weaponize-overdue-task-list',
+        title: 'Turn the overdue leader task list into a memetic share-and-pressure machine',
+      }),
+    ).toBe('growth-conversion');
+  });
+
+  it('classifies system contact discovery tasks correctly', () => {
+    expect(
+      classifyEarthTaskFamily({
+        category: 'OTHER',
+        taskKey: 'system:optimize-earth:discover-country-journalist-and-coalition-targets',
+        title: 'Discover country-specific journalists and coalition targets from the actual treaty queue',
+      }),
+    ).toBe('contact-discovery');
+  });
+
   it('flags a narrow top-20 treaty queue as system-improvement-worthy', () => {
     const tasks: EarthOperatorTask[] = Array.from({ length: 20 }, (_, index) => ({
       category: 'COMMUNICATION',

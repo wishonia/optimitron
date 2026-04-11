@@ -156,6 +156,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           title: { type: "string", description: "Short imperative title" },
           description: { type: "string", description: "Full explanation and acceptance criteria" },
           parentTaskId: { type: "string", description: "Parent task ID for subtask hierarchy" },
+          taskKey: { type: "string", description: "Stable dedup key (e.g. accountability:us:golf-2025)" },
           category: {
             type: "string",
             enum: [
@@ -188,15 +189,32 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
             type: "string",
             description: "Due date (ISO 8601)",
           },
+          completedAt: {
+            type: "string",
+            description: "Completion date (ISO 8601) for tasks that already happened",
+          },
+          verifiedAt: {
+            type: "string",
+            description: "Verification date (ISO 8601) for tasks confirmed as done",
+          },
           claimPolicy: {
             type: "string",
             enum: ["ASSIGNED_ONLY", "OPEN_SINGLE", "OPEN_MANY"],
             description: "Who can claim this task",
           },
+          assigneePersonId: { type: "string", description: "Person ID to assign this task to" },
+          assigneeOrganizationId: { type: "string", description: "Organization ID to assign this task to" },
+          roleTitle: { type: "string", description: "Role of the assignee (e.g. President, Commissioner)" },
+          sourceUrl: { type: "string", description: "URL to the source/evidence for this task" },
           contactUrl: { type: "string", description: "URL for contacting the assignee" },
           contactLabel: { type: "string", description: "Label for the contact channel" },
           impactStatement: { type: "string", description: "Why this matters" },
           isPublic: { type: "boolean", description: "Visible in public views (default true)" },
+          contextJson: {
+            type: "object",
+            description: "Arbitrary structured metadata (activity type, Wishonia commentary, cost breakdowns, etc.)",
+          },
+          sortOrder: { type: "number", description: "Sort priority (lower = higher)" },
         },
         required: ["title", "description"],
       },
@@ -278,6 +296,69 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           difficulty: {
             type: "string",
             enum: ["TRIVIAL", "BEGINNER", "INTERMEDIATE", "ADVANCED", "EXPERT"],
+          },
+          taskKey: { type: "string", description: "Stable dedup key" },
+          assigneePersonId: { type: "string", description: "Person ID to assign (use empty string to clear)" },
+          assigneeOrganizationId: { type: "string", description: "Organization ID to assign (use empty string to clear)" },
+          roleTitle: { type: "string", description: "Role of the assignee" },
+          sourceUrl: { type: "string", description: "URL to the source/evidence" },
+          completedAt: { type: "string", description: "Completion date (ISO 8601), use empty string to clear" },
+          verifiedAt: { type: "string", description: "Verification date (ISO 8601), use empty string to clear" },
+          contextJson: {
+            type: "object",
+            description: "Structured metadata (merged with existing contextJson)",
+          },
+          sortOrder: { type: "number", description: "Sort priority (lower = higher)" },
+        },
+        required: ["taskId"],
+      },
+    },
+    {
+      name: "setTaskImpact",
+      description:
+        "Create or replace the impact estimate for a task. Sets the impact frame (delay costs, expected value, success probability) and optional metrics (lives saved/lost, suffering hours, taxpayer cost, etc.). Negative values represent harm caused.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          taskId: { type: "string", description: "Task ID to attach impact to" },
+          frameKey: {
+            type: "string",
+            enum: ["IMMEDIATE", "ONE_YEAR", "FIVE_YEAR", "TWENTY_YEAR", "LIFETIME"],
+            description: "Time horizon for evaluation (default: FIVE_YEAR)",
+          },
+          frame: {
+            type: "object",
+            description: "Impact frame with delay costs and expected values",
+            properties: {
+              evaluationHorizonYears: { type: "number", description: "Evaluation window in years (default: 5)" },
+              successProbabilityBase: { type: "number", description: "Probability this task succeeds (0-1, default: 1 for completed tasks)" },
+              delayDalysLostPerDayBase: { type: "number", description: "DALYs lost per day of delay (negative = harm caused per day)" },
+              delayEconomicValueUsdLostPerDayBase: { type: "number", description: "USD lost per day of delay (negative = economic harm per day)" },
+              expectedDalysAvertedBase: { type: "number", description: "Total DALYs averted if completed (negative = DALYs caused)" },
+              expectedEconomicValueUsdBase: { type: "number", description: "Total economic value if completed (negative = economic damage)" },
+              estimatedCashCostUsdBase: { type: "number", description: "Cash cost to execute this task" },
+              estimatedEffortHoursBase: { type: "number", description: "Hours of effort" },
+            },
+          },
+          metrics: {
+            type: "array",
+            description: "Custom impact metrics (lives lost, taxpayer cost, suffering hours, etc.)",
+            items: {
+              type: "object",
+              properties: {
+                metricKey: { type: "string", description: "Stable key (e.g. lives_lost, taxpayer_cost_usd, suffering_hours)" },
+                baseValue: { type: "number", description: "Primary estimate (negative = harm)" },
+                lowValue: { type: "number", description: "Low estimate" },
+                highValue: { type: "number", description: "High estimate" },
+                unit: { type: "string", description: "Unit label (e.g. lives, USD, hours)" },
+                displayGroup: { type: "string", description: "UI grouping label" },
+              },
+              required: ["metricKey", "baseValue", "unit"],
+            },
+          },
+          calculationVersion: {
+            type: "string",
+            description: "Version tag for the calculation method (default: agent-estimate-v1)",
           },
         },
         required: ["taskId"],
@@ -539,7 +620,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           availableHoursPerWeek: (a.availableHoursPerWeek as number) ?? null,
         };
         // Rank by fit + impact, excluding blocked tasks
-        const ranked = ranking.rankTasksForUser(allTasks, user, 20);
+        const ranked = ranking.rankTasksForUser(allTasks, user, 100, {
+          preferLeafExecution: true,
+        });
 
         // Filter out tasks currently leased by another agent
         const agentId = (a.agentId as string) ?? null;
@@ -599,17 +682,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           title: a.title as string,
           description: (a.description as string) ?? "",
           parentTaskId: (a.parentTaskId as string) ?? null,
+          taskKey: (a.taskKey as string) ?? null,
           category: a.category ? TaskCategory[a.category as keyof typeof TaskCategory] : TaskCategory.OTHER,
           difficulty: a.difficulty ? TaskDifficulty[a.difficulty as keyof typeof TaskDifficulty] : TaskDifficulty.INTERMEDIATE,
           skillTags: (a.skillTags as string[]) ?? [],
           interestTags: (a.interestTags as string[]) ?? [],
           estimatedEffortHours: (a.estimatedEffortHours as number) ?? null,
           dueAt: a.dueAt ? new Date(a.dueAt as string) : null,
+          completedAt: a.completedAt ? new Date(a.completedAt as string) : null,
+          verifiedAt: a.verifiedAt ? new Date(a.verifiedAt as string) : null,
           claimPolicy: a.claimPolicy ? TaskClaimPolicy[a.claimPolicy as keyof typeof TaskClaimPolicy] : TaskClaimPolicy.OPEN_MANY,
+          assigneePersonId: (a.assigneePersonId as string) ?? null,
+          assigneeOrganizationId: (a.assigneeOrganizationId as string) ?? null,
+          roleTitle: (a.roleTitle as string) ?? null,
+          sourceUrl: (a.sourceUrl as string) ?? null,
           contactUrl: (a.contactUrl as string) ?? null,
           contactLabel: (a.contactLabel as string) ?? null,
           impactStatement: (a.impactStatement as string) ?? null,
           isPublic: a.isPublic !== false,
+          contextJson: a.contextJson ?? undefined,
+          sortOrder: (a.sortOrder as number) ?? undefined,
           // Agent-created tasks MUST start as DRAFT — promotion is a separate step
           status: TaskStatus.DRAFT,
         };
@@ -753,7 +845,38 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         if (a.completionEvidence) updates.completionEvidence = a.completionEvidence;
         if (a.impactStatement) updates.impactStatement = a.impactStatement;
         if (a.difficulty) updates.difficulty = TaskDifficulty[a.difficulty as keyof typeof TaskDifficulty];
-        if (a.status === "COMPLETED") updates.completedAt = new Date();
+        if (a.taskKey) updates.taskKey = a.taskKey;
+        if (a.roleTitle !== undefined) updates.roleTitle = (a.roleTitle as string) || null;
+        if (a.sourceUrl !== undefined) updates.sourceUrl = (a.sourceUrl as string) || null;
+        if (a.sortOrder !== undefined) updates.sortOrder = a.sortOrder;
+        // Assignee fields: empty string clears, string sets
+        if (a.assigneePersonId !== undefined) {
+          updates.assigneePersonId = (a.assigneePersonId as string) || null;
+        }
+        if (a.assigneeOrganizationId !== undefined) {
+          updates.assigneeOrganizationId = (a.assigneeOrganizationId as string) || null;
+        }
+        // Date fields: empty string clears, ISO string sets
+        if (a.completedAt !== undefined) {
+          updates.completedAt = (a.completedAt as string) ? new Date(a.completedAt as string) : null;
+        } else if (a.status === "COMPLETED") {
+          updates.completedAt = new Date();
+        }
+        if (a.verifiedAt !== undefined) {
+          updates.verifiedAt = (a.verifiedAt as string) ? new Date(a.verifiedAt as string) : null;
+        }
+        // contextJson: merge with existing
+        if (a.contextJson) {
+          const existing = await prisma.task.findUniqueOrThrow({
+            where: { id: a.taskId as string },
+            select: { contextJson: true },
+          });
+          const merged = {
+            ...((existing.contextJson as Record<string, unknown>) ?? {}),
+            ...(a.contextJson as Record<string, unknown>),
+          };
+          updates.contextJson = merged;
+        }
         const task = await prisma.task.update({
           where: { id: a.taskId as string },
           data: updates as any,

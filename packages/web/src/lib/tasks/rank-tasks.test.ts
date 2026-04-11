@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import {
   blockerProgress,
   canTaskAcceptMoreClaims,
+  hasActiveChildTasks,
   isTaskBlocked,
   rankTasksForUser,
   scoreTaskForAccountability,
@@ -181,6 +182,41 @@ describe("rankTasksForUser", () => {
     const ranked = rankTasksForUser([noDeps], user, 10);
     expect(ranked).toHaveLength(1);
   });
+
+  it("prefers executable leaf tasks over parent orchestration nodes", () => {
+    const parentTask = {
+      ...strongFitTask,
+      activeChildTaskCount: 3,
+      selectedImpactFrame: {
+        ...strongFitTask.selectedImpactFrame,
+        delayDalysLostPerDayBase: 60_000,
+        delayEconomicValueUsdLostPerDayBase: 30_000_000_000,
+        expectedDalysAvertedBase: 10_000_000,
+        expectedEconomicValueUsdBase: 90_000_000_000_000,
+      },
+    };
+    const leafTask = {
+      ...weakFitTask,
+      activeChildTaskCount: 0,
+      difficulty: TaskDifficulty.INTERMEDIATE,
+      estimatedEffortHours: 3,
+      selectedImpactFrame: {
+        ...weakFitTask.selectedImpactFrame,
+        delayDalysLostPerDayBase: 40_000,
+        delayEconomicValueUsdLostPerDayBase: 18_000_000_000,
+        estimatedEffortHoursBase: 3,
+        expectedDalysAvertedBase: 7_000_000,
+        expectedEconomicValueUsdBase: 70_000_000_000_000,
+      },
+    };
+
+    const ranked = rankTasksForUser([parentTask, leafTask], user, 10, {
+      preferLeafExecution: true,
+    });
+
+    expect(ranked).toHaveLength(1);
+    expect(ranked[0]?.task).toBe(leafTask);
+  });
 });
 
 describe("isTaskBlocked", () => {
@@ -218,5 +254,13 @@ describe("blockerProgress", () => {
 
   it("returns 1 when all blockers are resolved", () => {
     expect(blockerProgress({ blockerStatuses: [TaskStatus.VERIFIED, TaskStatus.VERIFIED] })).toBe(1);
+  });
+});
+
+describe("hasActiveChildTasks", () => {
+  it("returns true only when the task still has child tasks to execute", () => {
+    expect(hasActiveChildTasks({ activeChildTaskCount: 1 })).toBe(true);
+    expect(hasActiveChildTasks({ activeChildTaskCount: 0 })).toBe(false);
+    expect(hasActiveChildTasks({ activeChildTaskCount: undefined })).toBe(false);
   });
 });
