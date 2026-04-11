@@ -12,11 +12,13 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import {
+  AgentRunStatus,
   TaskCategory,
   TaskClaimPolicy,
   TaskDifficulty,
   TaskImpactFrameKey,
   TaskStatus,
+  type Prisma,
 } from "@optimitron/db";
 
 // ---------------------------------------------------------------------------
@@ -149,6 +151,72 @@ function dedupeStrings(values: Array<string | null | undefined>) {
   );
 }
 
+function asStringArray(value: unknown) {
+  return Array.isArray(value)
+    ? value.filter((entry): entry is string => typeof entry === "string")
+    : [];
+}
+
+function mergeTaskContextJson(input: {
+  baseContextJson?: unknown;
+  patchContextJson?: unknown;
+  sourceUrl?: string | null;
+}) {
+  const base = asObject(input.baseContextJson) ?? {};
+  const patch = asObject(input.patchContextJson) ?? {};
+  const merged = { ...base, ...patch };
+  const sourceUrls = dedupeStrings([
+    ...asStringArray(base.sourceUrls),
+    ...asStringArray(patch.sourceUrls),
+    input.sourceUrl ?? null,
+  ]);
+
+  if (sourceUrls.length > 0) {
+    merged.sourceUrls = sourceUrls;
+  }
+
+  return Object.keys(merged).length > 0 ? merged : undefined;
+}
+
+function toInputJsonValue(value: unknown): Prisma.InputJsonValue {
+  return value as Prisma.InputJsonValue;
+}
+
+function toStoredProposalIssues(
+  issues: Array<{ code: string; message: string; severity: string }>,
+) {
+  return issues.map((issue) => ({
+    code: issue.code,
+    message: issue.message,
+    severity: issue.severity,
+  }));
+}
+
+type SummarizableTask = {
+  id: string;
+  title: string;
+  description?: string | null;
+  status?: string | null;
+  category?: string | null;
+  difficulty?: string | null;
+  taskKey?: string | null;
+  dueAt?: Date | string | null;
+  parentTaskId?: string | null;
+  impactStatement?: string | null;
+  contactUrl?: string | null;
+  contactLabel?: string | null;
+  claimPolicy?: string | null;
+  skillTags?: string[] | null;
+  interestTags?: string[] | null;
+  estimatedEffortHours?: number | null;
+  assigneePerson?: { displayName?: string | null } | null;
+  assigneeOrganization?: { name?: string | null } | null;
+  blockerStatuses?: string[] | null;
+  milestones?: unknown[] | null;
+  childTasks?: unknown[] | null;
+  _count?: { childTasks?: number | null } | null;
+};
+
 function buildStoredProposalContext(input: {
   candidate: Record<string, unknown>;
   decision?: {
@@ -244,19 +312,19 @@ function taskProposalCandidateFromRecord(task: {
   id: string;
   isPublic: boolean;
   roleTitle?: string | null;
-  sourceUrl?: string | null;
   status: string;
   taskKey?: string | null;
   title: string;
 }) {
   const context = asObject(task.contextJson);
   const proposal = asObject(context?.proposalV1);
+  const contextSourceUrls = asStringArray(context?.sourceUrls);
   const proposalSourceUrls = Array.isArray(proposal?.sourceUrls)
     ? (proposal?.sourceUrls as string[])
     : [];
   const sourceUrls = dedupeStrings([
+    ...contextSourceUrls,
     ...proposalSourceUrls,
-    task.sourceUrl ?? null,
   ]);
 
   return {
@@ -342,7 +410,7 @@ async function attachProposalImpactEstimate(input: {
   return estimateSet.id;
 }
 
-function summarizeTask(task: Record<string, unknown>) {
+function summarizeTask(task: SummarizableTask) {
   return {
     id: task.id,
     title: task.title,
@@ -360,14 +428,12 @@ function summarizeTask(task: Record<string, unknown>) {
     skillTags: task.skillTags,
     interestTags: task.interestTags,
     estimatedEffortHours: task.estimatedEffortHours,
-    assigneePersonName: (task as any).assigneePerson?.displayName ?? null,
-    assigneeOrgName: (task as any).assigneeOrganization?.name ?? null,
-    blocked: (task as any).blockerStatuses?.some(
-      (s: string) => s !== "COMPLETED" && s !== "VERIFIED",
-    ) ?? false,
-    blockerCount: (task as any).blockerStatuses?.length ?? 0,
-    milestoneCount: (task as any).milestones?.length ?? 0,
-    childTaskCount: (task as any).childTasks?.length ?? (task as any)._count?.childTasks ?? 0,
+    assigneePersonName: task.assigneePerson?.displayName ?? null,
+    assigneeOrgName: task.assigneeOrganization?.name ?? null,
+    blocked: task.blockerStatuses?.some((status) => status !== TaskStatus.VERIFIED) ?? false,
+    blockerCount: task.blockerStatuses?.length ?? 0,
+    milestoneCount: task.milestones?.length ?? 0,
+    childTaskCount: task.childTasks?.length ?? task._count?.childTasks ?? 0,
   };
 }
 
@@ -474,7 +540,7 @@ const TASK_TOOL_DEFINITIONS = [
         description: { type: "string", description: "Full explanation and acceptance criteria" },
         parentTaskId: { type: "string", description: "Parent task ID for subtask hierarchy" },
         taskKey: { type: "string", description: "Stable dedup key (e.g. accountability:us:golf-2025)" },
-        category: { type: "string", enum: ["GOVERNANCE", "HEALTH", "ECONOMIC", "EDUCATION", "ENVIRONMENT", "INFRASTRUCTURE", "RESEARCH", "OUTREACH", "COMMUNICATION", "ORGANIZING", "TECHNICAL", "LEGAL", "OTHER"], description: "Task category" },
+        category: { type: "string", enum: ["ADVOCACY", "RESEARCH", "COMMUNICATION", "ENGINEERING", "ORGANIZING", "OUTREACH", "GOVERNANCE", "SCIENCE", "LEGAL", "CREATIVE", "OTHER"], description: "Task category" },
         difficulty: { type: "string", enum: ["TRIVIAL", "BEGINNER", "INTERMEDIATE", "ADVANCED", "EXPERT"], description: "Estimated difficulty" },
         skillTags: { type: "array", items: { type: "string" }, description: "Skills needed" },
         interestTags: { type: "array", items: { type: "string" }, description: "Related topics/causes" },
@@ -920,7 +986,7 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
                 queueRepairPlan: decision.queueRepairPlan ?? null,
                 rationale: decision.rationale,
                 requiredApproval: decision.requiredApproval,
-                task: summarizeTask(decision.task as Record<string, unknown>),
+                task: summarizeTask(decision.task),
               });
             }
 
@@ -950,7 +1016,7 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
 
           return ok({
             economics,
-            task: summarizeTask(result.task as Record<string, unknown>),
+            task: summarizeTask(result.task),
           });
         }
 
@@ -1008,7 +1074,10 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
             contactLabel: (a.contactLabel as string) ?? null,
             impactStatement: (a.impactStatement as string) ?? null,
             isPublic: a.isPublic !== false,
-            contextJson: a.contextJson ?? undefined,
+            contextJson: mergeTaskContextJson({
+              patchContextJson: a.contextJson,
+              sourceUrl: (a.sourceUrl as string) ?? null,
+            }),
             sortOrder: (a.sortOrder as number) ?? undefined,
             status: TaskStatus.DRAFT,
           };
@@ -1097,7 +1166,6 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
                 assigneeOrganizationId: (candidate.assigneeOrganizationId as string) ?? null,
                 roleTitle: (candidate.roleTitle as string) ?? null,
                 contactUrl: (candidate.contactUrl as string) ?? null,
-                sourceUrl: ((candidate.sourceUrls as string[]) ?? [])[0] ?? null,
                 estimatedEffortHours: (candidate.estimatedEffortHours as number) ?? null,
                 isPublic: (candidate.isPublic as boolean) !== false,
                 impactStatement: (candidate.description as string) ?? null,
@@ -1179,7 +1247,6 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
               id: true,
               isPublic: true,
               roleTitle: true,
-              sourceUrl: true,
               status: true,
               taskKey: true,
               title: true,
@@ -1257,14 +1324,14 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
                   proposalV1: {
                     ...proposal,
                     review: {
-                      issues: decision.issues,
+                      issues: toStoredProposalIssues(decision.issues),
                       promotable: decision.promotable,
                       qualityScore: decision.evaluation.qualityScore,
                       rationale: decision.evaluation.rationale,
                       reviewedAt: new Date().toISOString(),
                     },
                   },
-                },
+                } as Prisma.InputJsonValue,
                 status: TaskStatus.ACTIVE,
               },
             });
@@ -1286,7 +1353,6 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
           if (a.difficulty) updates.difficulty = TaskDifficulty[a.difficulty as keyof typeof TaskDifficulty];
           if (a.taskKey) updates.taskKey = a.taskKey;
           if (a.roleTitle !== undefined) updates.roleTitle = (a.roleTitle as string) || null;
-          if (a.sourceUrl !== undefined) updates.sourceUrl = (a.sourceUrl as string) || null;
           if (a.sortOrder !== undefined) updates.sortOrder = a.sortOrder;
           if (a.assigneePersonId !== undefined) {
             updates.assigneePersonId = (a.assigneePersonId as string) || null;
@@ -1296,22 +1362,26 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
           }
           if (a.completedAt !== undefined) {
             updates.completedAt = (a.completedAt as string) ? new Date(a.completedAt as string) : null;
-          } else if (a.status === "COMPLETED") {
+          } else if (a.status === "VERIFIED") {
             updates.completedAt = new Date();
           }
           if (a.verifiedAt !== undefined) {
             updates.verifiedAt = (a.verifiedAt as string) ? new Date(a.verifiedAt as string) : null;
+          } else if (a.status === "VERIFIED") {
+            updates.verifiedAt = new Date();
           }
-          if (a.contextJson) {
+          if (a.contextJson !== undefined || a.sourceUrl !== undefined) {
             const existing = await prisma.task.findUniqueOrThrow({
               where: { id: a.taskId as string },
               select: { contextJson: true },
             });
-            const merged = {
-              ...((existing.contextJson as Record<string, unknown>) ?? {}),
-              ...(a.contextJson as Record<string, unknown>),
-            };
-            updates.contextJson = merged;
+            updates.contextJson = toInputJsonValue(
+              mergeTaskContextJson({
+                baseContextJson: existing.contextJson,
+                patchContextJson: a.contextJson,
+                sourceUrl: a.sourceUrl !== undefined ? ((a.sourceUrl as string) || null) : null,
+              }) ?? {},
+            );
           }
           const task = await prisma.task.update({
             where: { id: a.taskId as string },
@@ -1536,7 +1606,10 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
               costUsd: a.costUsd as number,
               apiCalls: a.apiCalls as number,
               taskId: (a.taskId as string) ?? null,
-              status: (a.status as string) ?? "COMPLETED",
+              status:
+                (typeof a.status === "string"
+                  ? AgentRunStatus[a.status as keyof typeof AgentRunStatus]
+                  : null) ?? AgentRunStatus.COMPLETED,
               outputSummary: (a.outputSummary as string) ?? null,
               depositId: (a.depositId as string) ?? null,
             },

@@ -158,7 +158,7 @@ function StepCard({
   description: string;
 }) {
   return (
-    <BrutalCard bgColor="yellow" shadowSize={6}>
+    <BrutalCard bgColor="yellow" shadowSize={8}>
       <div className="p-6">
         <div className="flex items-center gap-3 mb-3">
           <span className="inline-flex items-center justify-center w-10 h-10 border-4 border-primary bg-brutal-pink text-brutal-pink-foreground font-black text-xl">
