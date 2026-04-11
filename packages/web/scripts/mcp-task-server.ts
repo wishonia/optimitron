@@ -40,13 +40,14 @@ import {
 // tool listing).
 
 async function getTaskFunctions() {
-  const [tasks, ranking, impact, contact] = await Promise.all([
+  const [tasks, ranking, impact, contact, lease] = await Promise.all([
     import("../src/lib/tasks.server"),
     import("../src/lib/tasks/rank-tasks"),
     import("../src/lib/tasks/impact"),
     import("../src/lib/tasks/contact.server"),
+    import("../src/lib/tasks/agent-lease.server"),
   ]);
-  return { tasks, ranking, impact, contact };
+  return { tasks, ranking, impact, contact, lease };
 }
 
 async function getPrisma() {
@@ -91,6 +92,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
             enum: ["TRIVIAL", "BEGINNER", "INTERMEDIATE", "ADVANCED", "EXPERT"],
             description: "Max difficulty the agent can handle",
           },
+          availableHoursPerWeek: {
+            type: "number",
+            description: "Hours per week the agent can commit",
+          },
+          agentId: {
+            type: "string",
+            description: "Agent's unique identifier (to skip tasks leased by this agent)",
+          },
         },
       },
     },
@@ -103,7 +112,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         properties: {
           status: {
             type: "string",
-            enum: ["ACTIVE", "DRAFT", "PAUSED", "VERIFIED", "COMPLETED", "ARCHIVED"],
+            enum: ["DRAFT", "ACTIVE", "VERIFIED", "STALE"],
             description: "Filter by task status",
           },
           category: {
@@ -140,7 +149,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     {
       name: "createTask",
       description:
-        "Create a new task. Agents use this to decompose work into subtasks.",
+        "Create a new task as DRAFT. Agent-created tasks always start as DRAFT and must be promoted to ACTIVE via a separate review process.",
       inputSchema: {
         type: "object" as const,
         properties: {
@@ -201,7 +210,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           taskId: { type: "string", description: "Task ID" },
           status: {
             type: "string",
-            enum: ["ACTIVE", "DRAFT", "PAUSED", "VERIFIED", "COMPLETED", "ARCHIVED"],
+            enum: ["DRAFT", "ACTIVE", "VERIFIED", "STALE"],
           },
           title: { type: "string" },
           description: { type: "string" },
@@ -254,7 +263,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           milestoneId: { type: "string", description: "Milestone ID" },
           status: {
             type: "string",
-            enum: ["PENDING", "IN_PROGRESS", "COMPLETED", "VERIFIED", "BLOCKED"],
+            enum: ["NOT_STARTED", "IN_PROGRESS", "COMPLETED", "VERIFIED"],
             description: "New milestone status",
           },
           evidence: { type: "string", description: "Evidence for the status change" },
@@ -332,9 +341,56 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
+      name: "acquireLease",
+      description:
+        "Acquire a short-lived lease on a task to prevent other agents from working it simultaneously. Lease auto-expires if not heartbeated.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          taskId: { type: "string", description: "Task ID to lease" },
+          agentId: { type: "string", description: "Unique agent identifier" },
+          leaseSeconds: {
+            type: "number",
+            description: "Lease duration in seconds (default 600)",
+          },
+        },
+        required: ["taskId", "agentId"],
+      },
+    },
+    {
+      name: "heartbeatLease",
+      description:
+        "Extend an active lease. Call periodically to prevent expiry while working.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          taskId: { type: "string", description: "Task ID" },
+          agentId: { type: "string", description: "Agent identifier" },
+          leaseSeconds: {
+            type: "number",
+            description: "New lease duration in seconds (default 600)",
+          },
+        },
+        required: ["taskId", "agentId"],
+      },
+    },
+    {
+      name: "releaseLease",
+      description:
+        "Voluntarily release a lease so another agent can pick up the task.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          taskId: { type: "string", description: "Task ID" },
+          agentId: { type: "string", description: "Agent identifier" },
+        },
+        required: ["taskId", "agentId"],
+      },
+    },
+    {
       name: "recordContactAction",
       description:
-        "Log that an agent or user contacted a task assignee (e.g. submitted a leader contact form).",
+        "Log that an agent or user contacted a task assignee. Subject to server-side cooldown (24h per task+channel).",
       inputSchema: {
         type: "object" as const,
         properties: {
@@ -355,6 +411,23 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           },
         },
         required: ["taskId", "userId", "channel"],
+      },
+    },
+    {
+      name: "checkContactCooldown",
+      description:
+        "Check whether a contact action is allowed for a task+channel, or if cooldown is active.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          taskId: { type: "string", description: "Task ID" },
+          channel: {
+            type: "string",
+            enum: ["email", "link"],
+            description: "Contact channel to check",
+          },
+        },
+        required: ["taskId", "channel"],
       },
     },
     {
@@ -392,21 +465,35 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   try {
     switch (name) {
-      // ── getNextTask ──────────────────────────────────────────
+      // ── getNextTask (capability-aware, lease-aware) ──────────
       case "getNextTask": {
-        const { tasks, ranking } = await getTaskFunctions();
+        const { tasks, ranking, lease } = await getTaskFunctions();
         const allTasks = await tasks.listTasks({ visibility: "public", status: TaskStatus.ACTIVE });
         const user = {
           skillTags: (a.skillTags as string[]) ?? [],
           interestTags: (a.interestTags as string[]) ?? [],
           maxTaskDifficulty: (a.maxDifficulty as TaskDifficulty) ?? null,
-          availableHoursPerWeek: null,
+          availableHoursPerWeek: (a.availableHoursPerWeek as number) ?? null,
         };
-        const ranked = ranking.rankTasksForUser(allTasks, user, 1);
-        if (ranked.length === 0) {
+        // Rank by fit + impact, excluding blocked tasks
+        const ranked = ranking.rankTasksForUser(allTasks, user, 20);
+
+        // Filter out tasks currently leased by another agent
+        const agentId = (a.agentId as string) ?? null;
+        const available = [];
+        for (const entry of ranked) {
+          const taskId = (entry.task as Record<string, unknown>).id as string;
+          const leaseStatus = await lease.isTaskLeased(taskId);
+          if (!leaseStatus.leased || leaseStatus.agentId === agentId) {
+            available.push(entry);
+            break; // Only need the best one
+          }
+        }
+
+        if (available.length === 0) {
           return ok({ message: "No actionable tasks found", task: null });
         }
-        const best = ranked[0]!;
+        const best = available[0]!;
         return ok({
           score: best.score,
           task: summarizeTask(best.task),
@@ -441,7 +528,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         });
       }
 
-      // ── createTask ───────────────────────────────────────────
+      // ── createTask (always DRAFT) ────────────────────────────
       case "createTask": {
         const prisma = await getPrisma();
         const data: Record<string, unknown> = {
@@ -459,10 +546,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           contactLabel: (a.contactLabel as string) ?? null,
           impactStatement: (a.impactStatement as string) ?? null,
           isPublic: a.isPublic !== false,
-          status: TaskStatus.ACTIVE,
+          // Agent-created tasks MUST start as DRAFT — promotion is a separate step
+          status: TaskStatus.DRAFT,
         };
         const task = await prisma.task.create({ data: data as any });
-        return ok({ taskId: task.id, title: task.title });
+        return ok({ taskId: task.id, title: task.title, status: "DRAFT" });
       }
 
       // ── updateTask ───────────────────────────────────────────
@@ -504,13 +592,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       // ── updateMilestone ──────────────────────────────────────
       case "updateMilestone": {
         const prisma = await getPrisma();
+        const { TaskMilestoneStatus } = await import("@optimitron/db");
+        const statusValue = TaskMilestoneStatus[a.status as keyof typeof TaskMilestoneStatus];
         const milestone = await prisma.taskMilestone.update({
           where: { id: a.milestoneId as string },
           data: {
-            status: a.status as string,
+            status: statusValue,
             ...(a.evidence ? { verificationNote: a.evidence as string } : {}),
-            ...(a.status === "COMPLETED" ? { completedAt: new Date() } : {}),
-            ...(a.status === "VERIFIED" ? { verifiedAt: new Date() } : {}),
+            ...(statusValue === TaskMilestoneStatus.COMPLETED ? { completedAt: new Date() } : {}),
+            ...(statusValue === TaskMilestoneStatus.VERIFIED ? { verifiedAt: new Date() } : {}),
           },
         });
         return ok({ milestoneId: milestone.id, status: milestone.status });
@@ -519,11 +609,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       // ── addDependency ────────────────────────────────────────
       case "addDependency": {
         const prisma = await getPrisma();
+        const { TaskEdgeType } = await import("@optimitron/db");
         const edge = await prisma.taskEdge.create({
           data: {
-            sourceTaskId: a.blockerTaskId as string,
-            targetTaskId: a.blockedTaskId as string,
-            label: (a.label as string) ?? "blocks",
+            fromTaskId: a.blockerTaskId as string,
+            toTaskId: a.blockedTaskId as string,
+            edgeType: TaskEdgeType.BLOCKS,
           },
         });
         return ok({ edgeId: edge.id });
@@ -532,32 +623,39 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       // ── getBlockers ──────────────────────────────────────────
       case "getBlockers": {
         const prisma = await getPrisma();
+        const { TaskEdgeType } = await import("@optimitron/db");
         const [blockedBy, blocks] = await Promise.all([
           prisma.taskEdge.findMany({
-            where: { targetTaskId: a.taskId as string },
+            where: {
+              toTaskId: a.taskId as string,
+              edgeType: { in: [TaskEdgeType.BLOCKS, TaskEdgeType.DEPENDS_ON] },
+            },
             include: {
-              sourceTask: { select: { id: true, title: true, status: true } },
+              fromTask: { select: { id: true, title: true, status: true } },
             },
           }),
           prisma.taskEdge.findMany({
-            where: { sourceTaskId: a.taskId as string },
+            where: {
+              fromTaskId: a.taskId as string,
+              edgeType: { in: [TaskEdgeType.BLOCKS, TaskEdgeType.DEPENDS_ON] },
+            },
             include: {
-              targetTask: { select: { id: true, title: true, status: true } },
+              toTask: { select: { id: true, title: true, status: true } },
             },
           }),
         ]);
         return ok({
           blockedBy: blockedBy.map((e) => ({
-            taskId: e.sourceTask.id,
-            title: e.sourceTask.title,
-            status: e.sourceTask.status,
-            label: e.label,
+            taskId: e.fromTask.id,
+            title: e.fromTask.title,
+            status: e.fromTask.status,
+            edgeType: e.edgeType,
           })),
           blocks: blocks.map((e) => ({
-            taskId: e.targetTask.id,
-            title: e.targetTask.title,
-            status: e.targetTask.status,
-            label: e.label,
+            taskId: e.toTask.id,
+            title: e.toTask.title,
+            status: e.toTask.status,
+            edgeType: e.edgeType,
           })),
         });
       }
@@ -580,7 +678,45 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return ok({ id: run.id, runId: run.runId });
       }
 
-      // ── recordContactAction ──────────────────────────────────
+      // ── acquireLease ──────────────────────────────────────────
+      case "acquireLease": {
+        const { lease } = await getTaskFunctions();
+        const result = await lease.acquireLease(
+          a.taskId as string,
+          a.agentId as string,
+          (a.leaseSeconds as number) ?? undefined,
+        );
+        return ok({
+          leaseId: result.id,
+          expiresAt: result.expiresAt.toISOString(),
+        });
+      }
+
+      // ── heartbeatLease ─────────────────────────────────────
+      case "heartbeatLease": {
+        const { lease } = await getTaskFunctions();
+        const result = await lease.heartbeatLease(
+          a.taskId as string,
+          a.agentId as string,
+          (a.leaseSeconds as number) ?? undefined,
+        );
+        return ok({
+          leaseId: result.id,
+          expiresAt: result.expiresAt.toISOString(),
+        });
+      }
+
+      // ── releaseLease ───────────────────────────────────────
+      case "releaseLease": {
+        const { lease } = await getTaskFunctions();
+        const result = await lease.releaseLease(
+          a.taskId as string,
+          a.agentId as string,
+        );
+        return ok({ leaseId: result.id, released: true });
+      }
+
+      // ── recordContactAction (cooldown-enforced) ────────────
       case "recordContactAction": {
         const { contact } = await getTaskFunctions();
         const activity = await contact.recordTaskContactAction({
@@ -591,6 +727,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           href: (a.href as string) ?? null,
         });
         return ok({ activityId: activity.id });
+      }
+
+      // ── checkContactCooldown ───────────────────────────────
+      case "checkContactCooldown": {
+        const { contact } = await getTaskFunctions();
+        const result = await contact.checkContactCooldown(
+          a.taskId as string,
+          a.channel as "email" | "link",
+        );
+        if (result.allowed) {
+          return ok({ allowed: true });
+        }
+        return ok({
+          allowed: false,
+          retryAfter: result.retryAfter.toISOString(),
+        });
       }
 
       // ── getFundingStats ──────────────────────────────────────
@@ -651,6 +803,10 @@ function summarizeTask(task: Record<string, unknown>) {
     estimatedEffortHours: task.estimatedEffortHours,
     assigneePersonName: (task as any).assigneePerson?.displayName ?? null,
     assigneeOrgName: (task as any).assigneeOrganization?.name ?? null,
+    blocked: (task as any).blockerStatuses?.some(
+      (s: string) => s !== "COMPLETED" && s !== "VERIFIED",
+    ) ?? false,
+    blockerCount: (task as any).blockerStatuses?.length ?? 0,
     milestoneCount: (task as any).milestones?.length ?? 0,
     childTaskCount: (task as any).childTasks?.length ?? (task as any)._count?.childTasks ?? 0,
   };

@@ -3245,6 +3245,7 @@ model Task {
   outgoingEdges            TaskEdge[]              @relation("TaskOutgoingEdges")
   incomingEdges            TaskEdge[]              @relation("TaskIncomingEdges")
   agentRunCosts            AgentRunCost[]          @relation("TaskAgentRunCosts")
+  agentLeases              AgentTaskLease[]        @relation("TaskAgentLeases")
 
   @@index([jurisdictionId, status])
   @@index([parentTaskId])
@@ -4260,4 +4261,41 @@ model AgentRunCost {
   @@index([depositId])
   @@index([provider])
   @@index([createdAt])
+}
+
+/// Short-lived agent lease on a task. Prevents multiple agents from working the
+/// same task simultaneously. Separate from TaskClaim (which tracks human work
+/// completion semantics).
+model AgentTaskLease {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Task being worked on
+  taskId String
+
+  /// Agent identity (user ID, agent name, or run ID)
+  agentId String
+
+  /// When the lease expires — agent must heartbeat before this time
+  expiresAt DateTime
+
+  /// Last heartbeat received
+  lastHeartbeatAt DateTime @default(now())
+
+  /// Whether the lease is still active
+  released Boolean @default(false)
+
+  /// When the lease was created
+  createdAt DateTime @default(now())
+
+  /// When the lease was released or expired
+  releasedAt DateTime?
+
+  // -- Relations --
+  task Task @relation("TaskAgentLeases", fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, agentId])
+  @@index([taskId, released, expiresAt])
+  @@index([agentId])
+  @@index([expiresAt])
 }

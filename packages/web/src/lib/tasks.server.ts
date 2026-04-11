@@ -228,6 +228,22 @@ const taskListSelect = {
   status: true,
   taskKey: true,
   title: true,
+  incomingEdges: {
+    where: {
+      deletedAt: null,
+      edgeType: { in: ["BLOCKS", "DEPENDS_ON"] },
+    },
+    select: {
+      edgeType: true,
+      fromTask: {
+        select: {
+          id: true,
+          status: true,
+          title: true,
+        },
+      },
+    },
+  },
   verifiedAt: true,
 } satisfies Prisma.TaskSelect;
 
@@ -325,6 +341,7 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
   },
 ): T & {
   activeClaimCount: number;
+  blockerStatuses: TaskStatus[];
   impact: {
     availableFrames: TaskImpactSelection["availableFrames"];
     confidenceSummary: unknown;
@@ -352,9 +369,12 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
       ? task.childTasks.map((childTask) => decorateTask(childTask, options))
       : undefined;
 
+  const blockerStatuses = task.incomingEdges.map((edge) => edge.fromTask.status as TaskStatus);
+
   return {
     ...task,
     activeClaimCount: countActiveClaims(task),
+    blockerStatuses,
     ...(decoratedChildTasks ? { childTasks: decoratedChildTasks } : {}),
     impact: {
       availableFrames: impactSelection.availableFrames,
@@ -370,6 +390,7 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
     viewerHasClaim: hasViewerClaim(task, options?.userId ?? null),
   } as T & {
     activeClaimCount: number;
+    blockerStatuses: TaskStatus[];
     impact: {
       availableFrames: TaskImpactSelection["availableFrames"];
       confidenceSummary: unknown;

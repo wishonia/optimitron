@@ -12,6 +12,7 @@ import {
 
 export interface RankableTask {
   activeClaimCount?: number;
+  blockerStatuses?: TaskStatus[];
   claimPolicy: TaskClaimPolicy;
   difficulty: TaskDifficulty;
   estimatedEffortHours: number | null;
@@ -126,6 +127,35 @@ export function canTaskAcceptMoreClaims(task: RankableTask) {
   return true;
 }
 
+const RESOLVED_STATUSES = new Set<TaskStatus>([
+  TaskStatus.VERIFIED,
+]);
+
+/**
+ * A task is blocked if any of its blocker/dependency tasks are not yet
+ * completed or verified.
+ */
+export function isTaskBlocked(task: Pick<RankableTask, "blockerStatuses">) {
+  const statuses = task.blockerStatuses;
+  if (!statuses || statuses.length === 0) {
+    return false;
+  }
+  return statuses.some((s) => !RESOLVED_STATUSES.has(s));
+}
+
+/**
+ * Fraction of blockers that are resolved (0 = fully blocked, 1 = unblocked).
+ * Tasks with no blockers return 1.
+ */
+export function blockerProgress(task: Pick<RankableTask, "blockerStatuses">) {
+  const statuses = task.blockerStatuses;
+  if (!statuses || statuses.length === 0) {
+    return 1;
+  }
+  const resolved = statuses.filter((s) => RESOLVED_STATUSES.has(s)).length;
+  return resolved / statuses.length;
+}
+
 export function scoreTaskForUser(task: RankableTask, user: RankableUser) {
   const skillScore = jaccardScore(task.skillTags, user.skillTags);
   const interestScore = jaccardScore(task.interestTags, user.interestTags);
@@ -163,7 +193,7 @@ export function rankTasksForUser<T extends RankableTask>(
   limit = 20,
 ) {
   return tasks
-    .filter((task) => canTaskAcceptMoreClaims(task))
+    .filter((task) => canTaskAcceptMoreClaims(task) && !isTaskBlocked(task))
     .map((task) => ({
       score: scoreTaskForUser(task, user),
       task,

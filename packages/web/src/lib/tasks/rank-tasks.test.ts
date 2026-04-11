@@ -6,7 +6,9 @@ import {
 } from "@optimitron/db";
 import { describe, expect, it } from "vitest";
 import {
+  blockerProgress,
   canTaskAcceptMoreClaims,
+  isTaskBlocked,
   rankTasksForUser,
   scoreTaskForAccountability,
   scoreTaskForUser,
@@ -128,5 +130,73 @@ describe("rankTasksForUser", () => {
   it("keeps accountability scores normalized instead of summing raw units", () => {
     expect(scoreTaskForAccountability(strongFitTask)).toBeGreaterThan(0);
     expect(scoreTaskForAccountability(strongFitTask)).toBeLessThanOrEqual(1);
+  });
+
+  it("excludes blocked tasks from ranking", () => {
+    const blockedTask = {
+      ...strongFitTask,
+      blockerStatuses: [TaskStatus.ACTIVE],
+    };
+    const unblockedTask = {
+      ...weakFitTask,
+      blockerStatuses: [TaskStatus.VERIFIED],
+    };
+
+    const ranked = rankTasksForUser([blockedTask, unblockedTask], user, 10);
+    expect(ranked).toHaveLength(1);
+    expect(ranked[0]?.task).toBe(unblockedTask);
+  });
+
+  it("includes tasks whose blockers are all verified", () => {
+    const resolved = {
+      ...strongFitTask,
+      blockerStatuses: [TaskStatus.VERIFIED, TaskStatus.VERIFIED],
+    };
+    const ranked = rankTasksForUser([resolved], user, 10);
+    expect(ranked).toHaveLength(1);
+  });
+
+  it("includes tasks with no blockers", () => {
+    const noDeps = { ...strongFitTask, blockerStatuses: [] };
+    const ranked = rankTasksForUser([noDeps], user, 10);
+    expect(ranked).toHaveLength(1);
+  });
+});
+
+describe("isTaskBlocked", () => {
+  it("returns false for tasks with no blockers", () => {
+    expect(isTaskBlocked({ blockerStatuses: [] })).toBe(false);
+    expect(isTaskBlocked({ blockerStatuses: undefined })).toBe(false);
+  });
+
+  it("returns true when any blocker is not completed/verified", () => {
+    expect(isTaskBlocked({ blockerStatuses: [TaskStatus.ACTIVE] })).toBe(true);
+    expect(isTaskBlocked({ blockerStatuses: [TaskStatus.VERIFIED, TaskStatus.ACTIVE] })).toBe(true);
+    expect(isTaskBlocked({ blockerStatuses: [TaskStatus.DRAFT] })).toBe(true);
+    expect(isTaskBlocked({ blockerStatuses: [TaskStatus.STALE] })).toBe(true);
+  });
+
+  it("returns false when all blockers are verified", () => {
+    expect(isTaskBlocked({ blockerStatuses: [TaskStatus.VERIFIED] })).toBe(false);
+    expect(isTaskBlocked({ blockerStatuses: [TaskStatus.VERIFIED, TaskStatus.VERIFIED] })).toBe(false);
+  });
+});
+
+describe("blockerProgress", () => {
+  it("returns 1 for tasks with no blockers", () => {
+    expect(blockerProgress({ blockerStatuses: [] })).toBe(1);
+    expect(blockerProgress({ blockerStatuses: undefined })).toBe(1);
+  });
+
+  it("returns 0 when no blockers are resolved", () => {
+    expect(blockerProgress({ blockerStatuses: [TaskStatus.ACTIVE, TaskStatus.DRAFT] })).toBe(0);
+  });
+
+  it("returns fractional progress", () => {
+    expect(blockerProgress({ blockerStatuses: [TaskStatus.VERIFIED, TaskStatus.ACTIVE] })).toBe(0.5);
+  });
+
+  it("returns 1 when all blockers are resolved", () => {
+    expect(blockerProgress({ blockerStatuses: [TaskStatus.VERIFIED, TaskStatus.VERIFIED] })).toBe(1);
   });
 });
