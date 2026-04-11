@@ -68,7 +68,6 @@ export function WishoniaCharacter({
       style={{
         position: "relative",
         width: size,
-        height: size * 1.57,
         cursor: onClick ? "pointer" : undefined,
         transform: "scaleX(-1)",
       }}

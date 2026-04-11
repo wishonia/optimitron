@@ -762,7 +762,7 @@ async function seedTreatyTasks() {
   // Clean slate
   await prisma.taskSourceArtifact.deleteMany({});
   await prisma.taskImpactMetric.deleteMany({});
-  await prisma.taskImpactFrame.deleteMany({});
+  await prisma.taskImpactFrameEstimate.deleteMany({});
   await prisma.taskImpactEstimateSet.deleteMany({});
   await prisma.taskMilestone.deleteMany({});
   await prisma.taskEdge.deleteMany({});
@@ -871,7 +871,6 @@ async function seedTreatyTasks() {
         currentAffiliation: `Government of ${leader.countryName}`,
         isPublicFigure: true,
         sourceRef,
-        roleTitle: leader.roleTitle,
       },
     });
 
@@ -949,7 +948,7 @@ async function createTaskWithImpact(input: {
     data: { currentImpactEstimateSetId: estimateSet.id },
   });
 
-  await prisma.taskImpactFrame.create({
+  await prisma.taskImpactFrameEstimate.create({
     data: {
       taskImpactEstimateSetId: estimateSet.id,
       frameKey: "LIFETIME",
