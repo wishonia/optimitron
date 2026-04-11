@@ -15,9 +15,8 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    // `prisma generate` does not require a live datasource URL, and Prisma's
-    // own config docs recommend using `process.env` instead of `env()` when
-    // the variable may be absent in CI/CD install-only contexts.
-    url: process.env.DATABASE_URL ?? "",
+    // Migrations need a direct (non-pooled) connection for advisory locks.
+    // Fall back to DATABASE_URL for generate and other non-migrate commands.
+    url: process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL || "",
   },
 });

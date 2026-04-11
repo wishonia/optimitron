@@ -32,21 +32,21 @@ ALTER TABLE IF EXISTS "WishocraticCategorySelection" DROP CONSTRAINT IF EXISTS "
 -- DropIndex
 DROP INDEX IF EXISTS "Item_category_idx";
 
--- AlterTable
-ALTER TABLE "AggregationRun" DROP COLUMN "categoryFilter",
-DROP COLUMN "comparisonCount",
-ADD COLUMN     "allocationCount" INTEGER NOT NULL,
-ADD COLUMN     "itemFilter" TEXT;
+-- AlterTable (idempotent — columns may already be dropped/added from partial run)
+ALTER TABLE "AggregationRun" DROP COLUMN IF EXISTS "categoryFilter";
+ALTER TABLE "AggregationRun" DROP COLUMN IF EXISTS "comparisonCount";
+ALTER TABLE "AggregationRun" ADD COLUMN IF NOT EXISTS "allocationCount" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "AggregationRun" ADD COLUMN IF NOT EXISTS "itemFilter" TEXT;
 
 -- AlterTable
-ALTER TABLE "Item" DROP COLUMN "category";
+ALTER TABLE "Item" DROP COLUMN IF EXISTS "category";
 
 -- AlterTable
-ALTER TABLE "User" ADD COLUMN     "availableHoursPerWeek" INTEGER,
-ADD COLUMN     "interestTags" TEXT[] DEFAULT ARRAY[]::TEXT[],
-ADD COLUMN     "maxTaskDifficulty" "TaskDifficulty",
-ADD COLUMN     "personId" TEXT,
-ADD COLUMN     "skillTags" TEXT[] DEFAULT ARRAY[]::TEXT[];
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "availableHoursPerWeek" INTEGER;
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "interestTags" TEXT[] DEFAULT ARRAY[]::TEXT[];
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "maxTaskDifficulty" "TaskDifficulty";
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "personId" TEXT;
+ALTER TABLE "User" ADD COLUMN IF NOT EXISTS "skillTags" TEXT[] DEFAULT ARRAY[]::TEXT[];
 
 -- DropTable
 DROP TABLE IF EXISTS "CategoryAlignmentScore";
@@ -529,74 +529,28 @@ CREATE INDEX IF NOT EXISTS "User_availableHoursPerWeek_idx" ON "User"("available
 -- CreateIndex
 CREATE INDEX IF NOT EXISTS "User_maxTaskDifficulty_idx" ON "User"("maxTaskDifficulty");
 
--- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "WishocraticItemInclusion" ADD CONSTRAINT "WishocraticItemInclusion_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "WishocraticItemInclusion" ADD CONSTRAINT "WishocraticItemInclusion_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "WishocraticItemAlignmentScore" ADD CONSTRAINT "WishocraticItemAlignmentScore_alignmentScoreId_fkey" FOREIGN KEY ("alignmentScoreId") REFERENCES "AlignmentScore"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "WishocraticItemAlignmentScore" ADD CONSTRAINT "WishocraticItemAlignmentScore_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_jurisdictionId_fkey" FOREIGN KEY ("jurisdictionId") REFERENCES "Jurisdiction"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_parentTaskId_fkey" FOREIGN KEY ("parentTaskId") REFERENCES "Task"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_assigneePersonId_fkey" FOREIGN KEY ("assigneePersonId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_verifiedByUserId_fkey" FOREIGN KEY ("verifiedByUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_currentImpactEstimateSetId_fkey" FOREIGN KEY ("currentImpactEstimateSetId") REFERENCES "TaskImpactEstimateSet"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskClaim" ADD CONSTRAINT "TaskClaim_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskClaim" ADD CONSTRAINT "TaskClaim_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskClaim" ADD CONSTRAINT "TaskClaim_verifiedByUserId_fkey" FOREIGN KEY ("verifiedByUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskSourceArtifact" ADD CONSTRAINT "TaskSourceArtifact_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskSourceArtifact" ADD CONSTRAINT "TaskSourceArtifact_sourceArtifactId_fkey" FOREIGN KEY ("sourceArtifactId") REFERENCES "SourceArtifact"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskEdge" ADD CONSTRAINT "TaskEdge_fromTaskId_fkey" FOREIGN KEY ("fromTaskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskEdge" ADD CONSTRAINT "TaskEdge_toTaskId_fkey" FOREIGN KEY ("toTaskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskImpactEstimateSet" ADD CONSTRAINT "TaskImpactEstimateSet_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskImpactFrameEstimate" ADD CONSTRAINT "TaskImpactFrameEstimate_taskImpactEstimateSetId_fkey" FOREIGN KEY ("taskImpactEstimateSetId") REFERENCES "TaskImpactEstimateSet"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskImpactMetric" ADD CONSTRAINT "TaskImpactMetric_taskImpactFrameEstimateId_fkey" FOREIGN KEY ("taskImpactFrameEstimateId") REFERENCES "TaskImpactFrameEstimate"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskImpactSourceArtifact" ADD CONSTRAINT "TaskImpactSourceArtifact_taskImpactEstimateSetId_fkey" FOREIGN KEY ("taskImpactEstimateSetId") REFERENCES "TaskImpactEstimateSet"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskImpactSourceArtifact" ADD CONSTRAINT "TaskImpactSourceArtifact_sourceArtifactId_fkey" FOREIGN KEY ("sourceArtifactId") REFERENCES "SourceArtifact"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "WishPoint" ADD CONSTRAINT "WishPoint_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "WishPoint" ADD CONSTRAINT "WishPoint_activityId_fkey" FOREIGN KEY ("activityId") REFERENCES "Activity"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+-- AddForeignKey (idempotent via DO blocks)
+DO $$ BEGIN ALTER TABLE "User" ADD CONSTRAINT "User_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "WishocraticItemInclusion" ADD CONSTRAINT "WishocraticItemInclusion_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "WishocraticItemInclusion" ADD CONSTRAINT "WishocraticItemInclusion_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "WishocraticItemAlignmentScore" ADD CONSTRAINT "WishocraticItemAlignmentScore_alignmentScoreId_fkey" FOREIGN KEY ("alignmentScoreId") REFERENCES "AlignmentScore"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "WishocraticItemAlignmentScore" ADD CONSTRAINT "WishocraticItemAlignmentScore_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item"("id") ON DELETE RESTRICT ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Task" ADD CONSTRAINT "Task_jurisdictionId_fkey" FOREIGN KEY ("jurisdictionId") REFERENCES "Jurisdiction"("id") ON DELETE SET NULL ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Task" ADD CONSTRAINT "Task_parentTaskId_fkey" FOREIGN KEY ("parentTaskId") REFERENCES "Task"("id") ON DELETE SET NULL ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Task" ADD CONSTRAINT "Task_assigneePersonId_fkey" FOREIGN KEY ("assigneePersonId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Task" ADD CONSTRAINT "Task_verifiedByUserId_fkey" FOREIGN KEY ("verifiedByUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "Task" ADD CONSTRAINT "Task_currentImpactEstimateSetId_fkey" FOREIGN KEY ("currentImpactEstimateSetId") REFERENCES "TaskImpactEstimateSet"("id") ON DELETE SET NULL ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskClaim" ADD CONSTRAINT "TaskClaim_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskClaim" ADD CONSTRAINT "TaskClaim_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskClaim" ADD CONSTRAINT "TaskClaim_verifiedByUserId_fkey" FOREIGN KEY ("verifiedByUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskSourceArtifact" ADD CONSTRAINT "TaskSourceArtifact_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskSourceArtifact" ADD CONSTRAINT "TaskSourceArtifact_sourceArtifactId_fkey" FOREIGN KEY ("sourceArtifactId") REFERENCES "SourceArtifact"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskEdge" ADD CONSTRAINT "TaskEdge_fromTaskId_fkey" FOREIGN KEY ("fromTaskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskEdge" ADD CONSTRAINT "TaskEdge_toTaskId_fkey" FOREIGN KEY ("toTaskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskImpactEstimateSet" ADD CONSTRAINT "TaskImpactEstimateSet_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskImpactFrameEstimate" ADD CONSTRAINT "TaskImpactFrameEstimate_taskImpactEstimateSetId_fkey" FOREIGN KEY ("taskImpactEstimateSetId") REFERENCES "TaskImpactEstimateSet"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskImpactMetric" ADD CONSTRAINT "TaskImpactMetric_taskImpactFrameEstimateId_fkey" FOREIGN KEY ("taskImpactFrameEstimateId") REFERENCES "TaskImpactFrameEstimate"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskImpactSourceArtifact" ADD CONSTRAINT "TaskImpactSourceArtifact_taskImpactEstimateSetId_fkey" FOREIGN KEY ("taskImpactEstimateSetId") REFERENCES "TaskImpactEstimateSet"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "TaskImpactSourceArtifact" ADD CONSTRAINT "TaskImpactSourceArtifact_sourceArtifactId_fkey" FOREIGN KEY ("sourceArtifactId") REFERENCES "SourceArtifact"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "WishPoint" ADD CONSTRAINT "WishPoint_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN ALTER TABLE "WishPoint" ADD CONSTRAINT "WishPoint_activityId_fkey" FOREIGN KEY ("activityId") REFERENCES "Activity"("id") ON DELETE SET NULL ON UPDATE CASCADE; EXCEPTION WHEN duplicate_object THEN NULL; END $$;

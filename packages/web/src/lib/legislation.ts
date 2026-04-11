@@ -59,6 +59,23 @@ const CONTENT_RELATIVE_DIR = "content/legislation";
 const LEGISLATION_DIR = join(REPO_ROOT, CONTENT_RELATIVE_DIR);
 const DEFAULT_REPOSITORY_URL = "https://github.com/mikepsinn/optimitron";
 
+function getLegislationMarkdownFiles() {
+  if (!existsSync(LEGISLATION_DIR)) {
+    throw new Error(
+      `Missing required legislation content directory: ${CONTENT_RELATIVE_DIR}. Run the content validation/build pipeline or restore the committed drafts.`,
+    );
+  }
+
+  const entries = readdirSync(LEGISLATION_DIR).filter((entry) => extname(entry) === ".md");
+  if (entries.length === 0) {
+    throw new Error(
+      `Legislation content directory is empty: ${CONTENT_RELATIVE_DIR}. Expected at least one markdown draft.`,
+    );
+  }
+
+  return entries;
+}
+
 function parseFrontmatter(markdown: string): ParsedLegislationFile {
   if (!markdown.startsWith("---\n")) {
     return {
@@ -193,8 +210,7 @@ function buildEntry(
 }
 
 export function getLegislationEntries(): LegislationEntry[] {
-  return readdirSync(LEGISLATION_DIR)
-    .filter((entry) => extname(entry) === ".md")
+  return getLegislationMarkdownFiles()
     .map((entry) => {
       const slug = entry.replace(/\.md$/, "");
       return buildEntry(slug, join(LEGISLATION_DIR, entry));

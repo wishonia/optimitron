@@ -6,24 +6,26 @@ ALTER TYPE "OrgType" ADD VALUE IF NOT EXISTS 'MEDIA';
 ALTER TYPE "OrgType" ADD VALUE IF NOT EXISTS 'POLITICAL_PARTY';
 ALTER TYPE "OrgType" ADD VALUE IF NOT EXISTS 'OTHER';
 
-ALTER TABLE "Organization"
-ADD COLUMN "sourceUrl" TEXT,
-ADD COLUMN "sourceRef" TEXT;
+ALTER TABLE "Organization" ADD COLUMN IF NOT EXISTS "sourceUrl" TEXT;
+ALTER TABLE "Organization" ADD COLUMN IF NOT EXISTS "sourceRef" TEXT;
 
-CREATE UNIQUE INDEX "Organization_sourceRef_key" ON "Organization"("sourceRef");
-CREATE INDEX "Organization_deletedAt_idx" ON "Organization"("deletedAt");
+CREATE UNIQUE INDEX IF NOT EXISTS "Organization_sourceRef_key" ON "Organization"("sourceRef");
+CREATE INDEX IF NOT EXISTS "Organization_deletedAt_idx" ON "Organization"("deletedAt");
 
-ALTER TABLE "Task"
-RENAME COLUMN "officeTitle" TO "roleTitle";
+DO $$ BEGIN
+  ALTER TABLE "Task" RENAME COLUMN "officeTitle" TO "roleTitle";
+EXCEPTION WHEN undefined_column THEN NULL;
+END $$;
 
-ALTER TABLE "Task"
-ADD COLUMN "assigneeOrganizationId" TEXT,
-ADD COLUMN "dueAt" TIMESTAMP(3);
+ALTER TABLE "Task" ADD COLUMN IF NOT EXISTS "assigneeOrganizationId" TEXT;
+ALTER TABLE "Task" ADD COLUMN IF NOT EXISTS "dueAt" TIMESTAMP(3);
 
-CREATE INDEX "Task_assigneeOrganizationId_idx" ON "Task"("assigneeOrganizationId");
-CREATE INDEX "Task_dueAt_idx" ON "Task"("dueAt");
+CREATE INDEX IF NOT EXISTS "Task_assigneeOrganizationId_idx" ON "Task"("assigneeOrganizationId");
+CREATE INDEX IF NOT EXISTS "Task_dueAt_idx" ON "Task"("dueAt");
 
-ALTER TABLE "Task"
-ADD CONSTRAINT "Task_assigneeOrganizationId_fkey"
-FOREIGN KEY ("assigneeOrganizationId") REFERENCES "Organization"("id")
-ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+  ALTER TABLE "Task" ADD CONSTRAINT "Task_assigneeOrganizationId_fkey"
+  FOREIGN KEY ("assigneeOrganizationId") REFERENCES "Organization"("id")
+  ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;

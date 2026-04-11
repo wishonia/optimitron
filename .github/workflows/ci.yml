@@ -232,6 +232,7 @@ jobs:
       - name: Apply production database migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PRISMA_SCHEMA_DISABLE_ADVISORY_LOCK: "1"
         run: pnpm db:deploy
 
       - name: Deploy production artifact

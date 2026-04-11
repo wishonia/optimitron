@@ -7,20 +7,21 @@ EXCEPTION
   WHEN duplicate_object THEN NULL;
 END $$;
 
-ALTER TABLE "Task"
-ADD COLUMN "ownerUserId" TEXT,
-ADD COLUMN "contactUrl" TEXT,
-ADD COLUMN "contactLabel" TEXT,
-ADD COLUMN "contactTemplate" TEXT;
+ALTER TABLE "Task" ADD COLUMN IF NOT EXISTS "ownerUserId" TEXT;
+ALTER TABLE "Task" ADD COLUMN IF NOT EXISTS "contactUrl" TEXT;
+ALTER TABLE "Task" ADD COLUMN IF NOT EXISTS "contactLabel" TEXT;
+ALTER TABLE "Task" ADD COLUMN IF NOT EXISTS "contactTemplate" TEXT;
 
-CREATE INDEX "Task_ownerUserId_idx" ON "Task"("ownerUserId");
+CREATE INDEX IF NOT EXISTS "Task_ownerUserId_idx" ON "Task"("ownerUserId");
 
-ALTER TABLE "Task"
-ADD CONSTRAINT "Task_ownerUserId_fkey"
-FOREIGN KEY ("ownerUserId") REFERENCES "User"("id")
-ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+  ALTER TABLE "Task" ADD CONSTRAINT "Task_ownerUserId_fkey"
+  FOREIGN KEY ("ownerUserId") REFERENCES "User"("id")
+  ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TABLE "TaskMilestone" (
+CREATE TABLE IF NOT EXISTS "TaskMilestone" (
   "id" TEXT NOT NULL,
   "taskId" TEXT NOT NULL,
   "key" TEXT NOT NULL,
@@ -43,8 +44,8 @@ CREATE TABLE "TaskMilestone" (
   CONSTRAINT "TaskMilestone_verifiedByUserId_fkey" FOREIGN KEY ("verifiedByUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
-CREATE UNIQUE INDEX "TaskMilestone_taskId_key_key" ON "TaskMilestone"("taskId", "key");
-CREATE INDEX "TaskMilestone_taskId_sortOrder_idx" ON "TaskMilestone"("taskId", "sortOrder");
-CREATE INDEX "TaskMilestone_verifiedByUserId_idx" ON "TaskMilestone"("verifiedByUserId");
-CREATE INDEX "TaskMilestone_status_idx" ON "TaskMilestone"("status");
-CREATE INDEX "TaskMilestone_deletedAt_idx" ON "TaskMilestone"("deletedAt");
+CREATE UNIQUE INDEX IF NOT EXISTS "TaskMilestone_taskId_key_key" ON "TaskMilestone"("taskId", "key");
+CREATE INDEX IF NOT EXISTS "TaskMilestone_taskId_sortOrder_idx" ON "TaskMilestone"("taskId", "sortOrder");
+CREATE INDEX IF NOT EXISTS "TaskMilestone_verifiedByUserId_idx" ON "TaskMilestone"("verifiedByUserId");
+CREATE INDEX IF NOT EXISTS "TaskMilestone_status_idx" ON "TaskMilestone"("status");
+CREATE INDEX IF NOT EXISTS "TaskMilestone_deletedAt_idx" ON "TaskMilestone"("deletedAt");
