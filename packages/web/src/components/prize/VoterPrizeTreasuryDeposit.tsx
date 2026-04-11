@@ -81,6 +81,7 @@ export function VoterPrizeTreasuryDeposit() {
   const [step, setStep] = useState<
     "idle" | "approving" | "depositing" | "claiming" | "redeeming"
   >("idle");
+  const [mounted, setMounted] = useState(false);
 
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
@@ -244,6 +245,10 @@ export function VoterPrizeTreasuryDeposit() {
   const { isLoading: isRedeemConfirming, isSuccess: isRedeemConfirmed } =
     useWaitForTransactionReceipt({ hash: redeemHash });
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // After approval, auto-deposit
   useEffect(() => {
     if (isApproveConfirmed && step === "approving" && treasuryAddress) {
@@ -358,7 +363,21 @@ export function VoterPrizeTreasuryDeposit() {
           Connect Wallet
         </h3>
 
-        {!isConnected ? (
+        {!mounted ? (
+          <div className="space-y-3">
+            <p className="text-xs font-bold text-muted-foreground mb-4">
+              Loading wallet options...
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <div className="border-4 border-primary bg-brutal-pink px-4 py-2.5 text-sm font-black uppercase text-brutal-pink-foreground opacity-60">
+                Browser Wallet
+              </div>
+              <div className="border-4 border-primary bg-brutal-pink px-4 py-2.5 text-sm font-black uppercase text-brutal-pink-foreground opacity-60">
+                WalletConnect
+              </div>
+            </div>
+          </div>
+        ) : !isConnected ? (
           <div className="space-y-3">
             <p className="text-xs font-bold text-muted-foreground mb-4">
               Connect your wallet. Your deposit would earn projected yield in the Earth Optimization Prize fund (based on VC-sector diversification) while

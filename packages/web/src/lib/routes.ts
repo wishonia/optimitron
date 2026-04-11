@@ -45,6 +45,8 @@ export const ROUTES = {
   // Earth's Governments
   governments: "/governments",
   politicians: "/politicians",
+  // The Treaty
+  treaty: "/treaty",
   // The Game
   prize: "/prize",
   scoreboard: "/scoreboard",
@@ -422,6 +424,15 @@ export const iabLink: NavItem = {
   cta: "Learn More",
 };
 
+export const treatyLink: NavItem = {
+  href: ROUTES.treaty,
+  label: "The 1% Treaty",
+  emoji: "📜",
+  description: "The full text of the treaty that redirects 1% of military spending to clinical trials. Read it, sign it, share it. Every signature from an official account is verified on the public ledger.",
+  tagline: "1% of war budgets → clinical trials",
+  cta: "Read the Treaty",
+};
+
 export const prizeLink: NavItem = {
   href: ROUTES.prize,
   label: "Prize",
@@ -502,7 +513,7 @@ export const navSections: NavSection[] = [
   { id: "play", label: "Play", items: [dashboardLink, tasksLink, profileLink, censusLink, checkInLink, settingsLink, wishocracyLink, alignmentLink, referendumLink, prizeLink, demoLink] },
   { id: "optimized-gov", label: "Optimized Governance", items: [dtreasuryLink, opgLink, obgLink, transparencyLink, dihLink, dfdaLink, agenciesLink, departmentOfWarLink] },
   { id: "earth", label: "Earth", items: [governmentsLink, politicianLeaderboardLink, opgLink] },
-  { id: "fund", label: "Fund", items: [fundLink, prizeLink, scoreboardLink, iabLink] },
+  { id: "fund", label: "Fund", items: [treatyLink, fundLink, prizeLink, scoreboardLink, iabLink] },
 ];
 
 /** Sections for the /tools page — every tool grouped by purpose */
