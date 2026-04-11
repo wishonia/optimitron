@@ -1,53 +1,36 @@
--- CreateEnum
-CREATE TYPE "WishReason" AS ENUM ('WORLD_ID_VERIFICATION', 'KYC_COMPLETION', 'CENSUS_SNAPSHOT', 'DAILY_CHECKIN', 'WISHOCRATIC_ALLOCATION', 'REFERENDUM_VOTE', 'ALIGNMENT_CHECK', 'REFERRAL', 'PRIZE_DEPOSIT', 'SHARE_REPORT', 'TASK_COMPLETED');
+-- CreateEnum (idempotent — types may already exist from a partial prior run)
+DO $$ BEGIN CREATE TYPE "WishReason" AS ENUM ('WORLD_ID_VERIFICATION', 'KYC_COMPLETION', 'CENSUS_SNAPSHOT', 'DAILY_CHECKIN', 'WISHOCRATIC_ALLOCATION', 'REFERENDUM_VOTE', 'ALIGNMENT_CHECK', 'REFERRAL', 'PRIZE_DEPOSIT', 'SHARE_REPORT', 'TASK_COMPLETED'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskDifficulty" AS ENUM ('TRIVIAL', 'BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT');
+DO $$ BEGIN CREATE TYPE "TaskDifficulty" AS ENUM ('TRIVIAL', 'BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskCategory" AS ENUM ('ADVOCACY', 'RESEARCH', 'COMMUNICATION', 'ENGINEERING', 'ORGANIZING', 'OUTREACH', 'GOVERNANCE', 'SCIENCE', 'LEGAL', 'CREATIVE', 'OTHER');
+DO $$ BEGIN CREATE TYPE "TaskCategory" AS ENUM ('ADVOCACY', 'RESEARCH', 'COMMUNICATION', 'ENGINEERING', 'ORGANIZING', 'OUTREACH', 'GOVERNANCE', 'SCIENCE', 'LEGAL', 'CREATIVE', 'OTHER'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskClaimPolicy" AS ENUM ('ASSIGNED_ONLY', 'OPEN_SINGLE', 'OPEN_MANY');
+DO $$ BEGIN CREATE TYPE "TaskClaimPolicy" AS ENUM ('ASSIGNED_ONLY', 'OPEN_SINGLE', 'OPEN_MANY'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskStatus" AS ENUM ('DRAFT', 'ACTIVE', 'COMPLETED', 'VERIFIED', 'CANCELLED', 'STALE');
+DO $$ BEGIN CREATE TYPE "TaskStatus" AS ENUM ('DRAFT', 'ACTIVE', 'COMPLETED', 'VERIFIED', 'CANCELLED', 'STALE'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskClaimStatus" AS ENUM ('CLAIMED', 'IN_PROGRESS', 'COMPLETED', 'VERIFIED', 'REJECTED', 'ABANDONED');
+DO $$ BEGIN CREATE TYPE "TaskClaimStatus" AS ENUM ('CLAIMED', 'IN_PROGRESS', 'COMPLETED', 'VERIFIED', 'REJECTED', 'ABANDONED'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskEdgeType" AS ENUM ('DEPENDS_ON', 'BLOCKS', 'INCREASES_PROBABILITY_OF', 'ACCELERATES');
+DO $$ BEGIN CREATE TYPE "TaskEdgeType" AS ENUM ('DEPENDS_ON', 'BLOCKS', 'INCREASES_PROBABILITY_OF', 'ACCELERATES'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "SourceSystem" AS ENUM ('MANUAL', 'OPG', 'OBG', 'PARAMETER_CATALOG', 'EXTERNAL', 'CURATED', 'COMBINED');
+DO $$ BEGIN CREATE TYPE "SourceSystem" AS ENUM ('MANUAL', 'OPG', 'OBG', 'PARAMETER_CATALOG', 'EXTERNAL', 'CURATED', 'COMBINED'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "SourceArtifactType" AS ENUM ('MANUAL_SECTION', 'MANUAL_SNAPSHOT', 'OPG_POLICY_RECOMMENDATION', 'OPG_POLICY_REPORT', 'OBG_BUDGET_CATEGORY', 'OBG_BUDGET_REPORT', 'PARAMETER_SET', 'CALCULATION_RUN', 'EXTERNAL_SOURCE');
+DO $$ BEGIN CREATE TYPE "SourceArtifactType" AS ENUM ('MANUAL_SECTION', 'MANUAL_SNAPSHOT', 'OPG_POLICY_RECOMMENDATION', 'OPG_POLICY_REPORT', 'OBG_BUDGET_CATEGORY', 'OBG_BUDGET_REPORT', 'PARAMETER_SET', 'CALCULATION_RUN', 'EXTERNAL_SOURCE'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskImpactEstimateKind" AS ENUM ('FORECAST', 'OBSERVED', 'HYBRID');
+DO $$ BEGIN CREATE TYPE "TaskImpactEstimateKind" AS ENUM ('FORECAST', 'OBSERVED', 'HYBRID'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskImpactPublicationStatus" AS ENUM ('DRAFT', 'REVIEWED', 'PUBLISHED', 'SUPERSEDED');
+DO $$ BEGIN CREATE TYPE "TaskImpactPublicationStatus" AS ENUM ('DRAFT', 'REVIEWED', 'PUBLISHED', 'SUPERSEDED'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- CreateEnum
-CREATE TYPE "TaskImpactFrameKey" AS ENUM ('IMMEDIATE', 'ONE_YEAR', 'FIVE_YEAR', 'TWENTY_YEAR', 'LIFETIME', 'CUSTOM');
+DO $$ BEGIN CREATE TYPE "TaskImpactFrameKey" AS ENUM ('IMMEDIATE', 'ONE_YEAR', 'FIVE_YEAR', 'TWENTY_YEAR', 'LIFETIME', 'CUSTOM'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- DropForeignKey
-ALTER TABLE "CategoryAlignmentScore" DROP CONSTRAINT "CategoryAlignmentScore_alignmentScoreId_fkey";
-
--- DropForeignKey
-ALTER TABLE "CategoryAlignmentScore" DROP CONSTRAINT "CategoryAlignmentScore_itemId_fkey";
-
--- DropForeignKey
-ALTER TABLE "WishocraticCategorySelection" DROP CONSTRAINT "WishocraticCategorySelection_itemId_fkey";
-
--- DropForeignKey
-ALTER TABLE "WishocraticCategorySelection" DROP CONSTRAINT "WishocraticCategorySelection_userId_fkey";
+-- DropForeignKey (IF EXISTS for idempotence)
+ALTER TABLE IF EXISTS "CategoryAlignmentScore" DROP CONSTRAINT IF EXISTS "CategoryAlignmentScore_alignmentScoreId_fkey";
+ALTER TABLE IF EXISTS "CategoryAlignmentScore" DROP CONSTRAINT IF EXISTS "CategoryAlignmentScore_itemId_fkey";
+ALTER TABLE IF EXISTS "WishocraticCategorySelection" DROP CONSTRAINT IF EXISTS "WishocraticCategorySelection_itemId_fkey";
+ALTER TABLE IF EXISTS "WishocraticCategorySelection" DROP CONSTRAINT IF EXISTS "WishocraticCategorySelection_userId_fkey";
 
 -- DropIndex
-DROP INDEX "Item_category_idx";
+DROP INDEX IF EXISTS "Item_category_idx";
 
 -- AlterTable
 ALTER TABLE "AggregationRun" DROP COLUMN "categoryFilter",
@@ -66,13 +49,13 @@ ADD COLUMN     "personId" TEXT,
 ADD COLUMN     "skillTags" TEXT[] DEFAULT ARRAY[]::TEXT[];
 
 -- DropTable
-DROP TABLE "CategoryAlignmentScore";
+DROP TABLE IF EXISTS "CategoryAlignmentScore";
 
 -- DropTable
-DROP TABLE "WishocraticCategorySelection";
+DROP TABLE IF EXISTS "WishocraticCategorySelection";
 
 -- CreateTable
-CREATE TABLE "Person" (
+CREATE TABLE IF NOT EXISTS "Person" (
     "id" TEXT NOT NULL,
     "displayName" TEXT NOT NULL,
     "email" TEXT,
@@ -91,7 +74,7 @@ CREATE TABLE "Person" (
 );
 
 -- CreateTable
-CREATE TABLE "WishocraticItemInclusion" (
+CREATE TABLE IF NOT EXISTS "WishocraticItemInclusion" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "itemId" TEXT NOT NULL,
@@ -104,7 +87,7 @@ CREATE TABLE "WishocraticItemInclusion" (
 );
 
 -- CreateTable
-CREATE TABLE "WishocraticItemAlignmentScore" (
+CREATE TABLE IF NOT EXISTS "WishocraticItemAlignmentScore" (
     "id" TEXT NOT NULL,
     "alignmentScoreId" TEXT NOT NULL,
     "itemId" TEXT NOT NULL,
@@ -114,7 +97,7 @@ CREATE TABLE "WishocraticItemAlignmentScore" (
 );
 
 -- CreateTable
-CREATE TABLE "Task" (
+CREATE TABLE IF NOT EXISTS "Task" (
     "id" TEXT NOT NULL,
     "jurisdictionId" TEXT,
     "parentTaskId" TEXT,
@@ -151,7 +134,7 @@ CREATE TABLE "Task" (
 );
 
 -- CreateTable
-CREATE TABLE "TaskClaim" (
+CREATE TABLE IF NOT EXISTS "TaskClaim" (
     "id" TEXT NOT NULL,
     "taskId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -172,7 +155,7 @@ CREATE TABLE "TaskClaim" (
 );
 
 -- CreateTable
-CREATE TABLE "SourceArtifact" (
+CREATE TABLE IF NOT EXISTS "SourceArtifact" (
     "id" TEXT NOT NULL,
     "sourceSystem" "SourceSystem" NOT NULL,
     "artifactType" "SourceArtifactType" NOT NULL,
@@ -192,7 +175,7 @@ CREATE TABLE "SourceArtifact" (
 );
 
 -- CreateTable
-CREATE TABLE "TaskSourceArtifact" (
+CREATE TABLE IF NOT EXISTS "TaskSourceArtifact" (
     "id" TEXT NOT NULL,
     "taskId" TEXT NOT NULL,
     "sourceArtifactId" TEXT NOT NULL,
@@ -204,7 +187,7 @@ CREATE TABLE "TaskSourceArtifact" (
 );
 
 -- CreateTable
-CREATE TABLE "TaskEdge" (
+CREATE TABLE IF NOT EXISTS "TaskEdge" (
     "id" TEXT NOT NULL,
     "fromTaskId" TEXT NOT NULL,
     "toTaskId" TEXT NOT NULL,
@@ -226,7 +209,7 @@ CREATE TABLE "TaskEdge" (
 );
 
 -- CreateTable
-CREATE TABLE "TaskImpactEstimateSet" (
+CREATE TABLE IF NOT EXISTS "TaskImpactEstimateSet" (
     "id" TEXT NOT NULL,
     "taskId" TEXT NOT NULL,
     "isCurrent" BOOLEAN NOT NULL DEFAULT false,
@@ -246,7 +229,7 @@ CREATE TABLE "TaskImpactEstimateSet" (
 );
 
 -- CreateTable
-CREATE TABLE "TaskImpactFrameEstimate" (
+CREATE TABLE IF NOT EXISTS "TaskImpactFrameEstimate" (
     "id" TEXT NOT NULL,
     "taskImpactEstimateSetId" TEXT NOT NULL,
     "frameKey" "TaskImpactFrameKey" NOT NULL,
@@ -293,7 +276,7 @@ CREATE TABLE "TaskImpactFrameEstimate" (
 );
 
 -- CreateTable
-CREATE TABLE "TaskImpactMetric" (
+CREATE TABLE IF NOT EXISTS "TaskImpactMetric" (
     "id" TEXT NOT NULL,
     "taskImpactFrameEstimateId" TEXT NOT NULL,
     "metricKey" TEXT NOT NULL,
@@ -313,7 +296,7 @@ CREATE TABLE "TaskImpactMetric" (
 );
 
 -- CreateTable
-CREATE TABLE "TaskImpactSourceArtifact" (
+CREATE TABLE IF NOT EXISTS "TaskImpactSourceArtifact" (
     "id" TEXT NOT NULL,
     "taskImpactEstimateSetId" TEXT NOT NULL,
     "sourceArtifactId" TEXT NOT NULL,
@@ -325,7 +308,7 @@ CREATE TABLE "TaskImpactSourceArtifact" (
 );
 
 -- CreateTable
-CREATE TABLE "WishPoint" (
+CREATE TABLE IF NOT EXISTS "WishPoint" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "amount" INTEGER NOT NULL,
@@ -338,213 +321,213 @@ CREATE TABLE "WishPoint" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Person_email_key" ON "Person"("email");
+CREATE UNIQUE INDEX IF NOT EXISTS "Person_email_key" ON "Person"("email");
 
 -- CreateIndex
-CREATE INDEX "Person_displayName_idx" ON "Person"("displayName");
+CREATE INDEX IF NOT EXISTS "Person_displayName_idx" ON "Person"("displayName");
 
-CREATE INDEX "Person_countryCode_idx" ON "Person"("countryCode");
+CREATE INDEX IF NOT EXISTS "Person_countryCode_idx" ON "Person"("countryCode");
 
 -- CreateIndex
-CREATE INDEX "Person_isPublicFigure_idx" ON "Person"("isPublicFigure");
+CREATE INDEX IF NOT EXISTS "Person_isPublicFigure_idx" ON "Person"("isPublicFigure");
 
 -- CreateIndex
-CREATE INDEX "Person_deletedAt_idx" ON "Person"("deletedAt");
+CREATE INDEX IF NOT EXISTS "Person_deletedAt_idx" ON "Person"("deletedAt");
 
 -- CreateIndex
-CREATE INDEX "WishocraticItemInclusion_userId_idx" ON "WishocraticItemInclusion"("userId");
+CREATE INDEX IF NOT EXISTS "WishocraticItemInclusion_userId_idx" ON "WishocraticItemInclusion"("userId");
 
 -- CreateIndex
-CREATE INDEX "WishocraticItemInclusion_itemId_idx" ON "WishocraticItemInclusion"("itemId");
+CREATE INDEX IF NOT EXISTS "WishocraticItemInclusion_itemId_idx" ON "WishocraticItemInclusion"("itemId");
 
 -- CreateIndex
-CREATE INDEX "WishocraticItemInclusion_included_idx" ON "WishocraticItemInclusion"("included");
+CREATE INDEX IF NOT EXISTS "WishocraticItemInclusion_included_idx" ON "WishocraticItemInclusion"("included");
 
 -- CreateIndex
-CREATE INDEX "WishocraticItemInclusion_createdAt_idx" ON "WishocraticItemInclusion"("createdAt");
+CREATE INDEX IF NOT EXISTS "WishocraticItemInclusion_createdAt_idx" ON "WishocraticItemInclusion"("createdAt");
 
 -- CreateIndex
-CREATE INDEX "WishocraticItemInclusion_deletedAt_idx" ON "WishocraticItemInclusion"("deletedAt");
+CREATE INDEX IF NOT EXISTS "WishocraticItemInclusion_deletedAt_idx" ON "WishocraticItemInclusion"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "WishocraticItemInclusion_userId_itemId_key" ON "WishocraticItemInclusion"("userId", "itemId");
+CREATE UNIQUE INDEX IF NOT EXISTS "WishocraticItemInclusion_userId_itemId_key" ON "WishocraticItemInclusion"("userId", "itemId");
 
 -- CreateIndex
-CREATE INDEX "WishocraticItemAlignmentScore_alignmentScoreId_idx" ON "WishocraticItemAlignmentScore"("alignmentScoreId");
+CREATE INDEX IF NOT EXISTS "WishocraticItemAlignmentScore_alignmentScoreId_idx" ON "WishocraticItemAlignmentScore"("alignmentScoreId");
 
 -- CreateIndex
-CREATE INDEX "WishocraticItemAlignmentScore_itemId_idx" ON "WishocraticItemAlignmentScore"("itemId");
+CREATE INDEX IF NOT EXISTS "WishocraticItemAlignmentScore_itemId_idx" ON "WishocraticItemAlignmentScore"("itemId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "WishocraticItemAlignmentScore_alignmentScoreId_itemId_key" ON "WishocraticItemAlignmentScore"("alignmentScoreId", "itemId");
+CREATE UNIQUE INDEX IF NOT EXISTS "WishocraticItemAlignmentScore_alignmentScoreId_itemId_key" ON "WishocraticItemAlignmentScore"("alignmentScoreId", "itemId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Task_currentImpactEstimateSetId_key" ON "Task"("currentImpactEstimateSetId");
+CREATE UNIQUE INDEX IF NOT EXISTS "Task_currentImpactEstimateSetId_key" ON "Task"("currentImpactEstimateSetId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Task_taskKey_key" ON "Task"("taskKey");
+CREATE UNIQUE INDEX IF NOT EXISTS "Task_taskKey_key" ON "Task"("taskKey");
 
 -- CreateIndex
-CREATE INDEX "Task_jurisdictionId_status_idx" ON "Task"("jurisdictionId", "status");
+CREATE INDEX IF NOT EXISTS "Task_jurisdictionId_status_idx" ON "Task"("jurisdictionId", "status");
 
 -- CreateIndex
-CREATE INDEX "Task_parentTaskId_idx" ON "Task"("parentTaskId");
+CREATE INDEX IF NOT EXISTS "Task_parentTaskId_idx" ON "Task"("parentTaskId");
 
 -- CreateIndex
-CREATE INDEX "Task_assigneePersonId_idx" ON "Task"("assigneePersonId");
+CREATE INDEX IF NOT EXISTS "Task_assigneePersonId_idx" ON "Task"("assigneePersonId");
 
 -- CreateIndex
-CREATE INDEX "Task_verifiedByUserId_idx" ON "Task"("verifiedByUserId");
+CREATE INDEX IF NOT EXISTS "Task_verifiedByUserId_idx" ON "Task"("verifiedByUserId");
 
 -- CreateIndex
-CREATE INDEX "Task_currentImpactEstimateSetId_idx" ON "Task"("currentImpactEstimateSetId");
+CREATE INDEX IF NOT EXISTS "Task_currentImpactEstimateSetId_idx" ON "Task"("currentImpactEstimateSetId");
 
 -- CreateIndex
-CREATE INDEX "Task_taskKey_idx" ON "Task"("taskKey");
+CREATE INDEX IF NOT EXISTS "Task_taskKey_idx" ON "Task"("taskKey");
 
 -- CreateIndex
-CREATE INDEX "Task_claimPolicy_status_idx" ON "Task"("claimPolicy", "status");
+CREATE INDEX IF NOT EXISTS "Task_claimPolicy_status_idx" ON "Task"("claimPolicy", "status");
 
 -- CreateIndex
-CREATE INDEX "Task_category_idx" ON "Task"("category");
+CREATE INDEX IF NOT EXISTS "Task_category_idx" ON "Task"("category");
 
 -- CreateIndex
-CREATE INDEX "Task_difficulty_idx" ON "Task"("difficulty");
+CREATE INDEX IF NOT EXISTS "Task_difficulty_idx" ON "Task"("difficulty");
 
 -- CreateIndex
-CREATE INDEX "Task_isPublic_idx" ON "Task"("isPublic");
+CREATE INDEX IF NOT EXISTS "Task_isPublic_idx" ON "Task"("isPublic");
 
 -- CreateIndex
-CREATE INDEX "Task_deletedAt_idx" ON "Task"("deletedAt");
+CREATE INDEX IF NOT EXISTS "Task_deletedAt_idx" ON "Task"("deletedAt");
 
 -- CreateIndex
-CREATE INDEX "TaskClaim_taskId_status_idx" ON "TaskClaim"("taskId", "status");
+CREATE INDEX IF NOT EXISTS "TaskClaim_taskId_status_idx" ON "TaskClaim"("taskId", "status");
 
 -- CreateIndex
-CREATE INDEX "TaskClaim_userId_status_idx" ON "TaskClaim"("userId", "status");
+CREATE INDEX IF NOT EXISTS "TaskClaim_userId_status_idx" ON "TaskClaim"("userId", "status");
 
 -- CreateIndex
-CREATE INDEX "TaskClaim_verifiedByUserId_idx" ON "TaskClaim"("verifiedByUserId");
+CREATE INDEX IF NOT EXISTS "TaskClaim_verifiedByUserId_idx" ON "TaskClaim"("verifiedByUserId");
 
 -- CreateIndex
-CREATE INDEX "TaskClaim_deletedAt_idx" ON "TaskClaim"("deletedAt");
+CREATE INDEX IF NOT EXISTS "TaskClaim_deletedAt_idx" ON "TaskClaim"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TaskClaim_taskId_userId_key" ON "TaskClaim"("taskId", "userId");
+CREATE UNIQUE INDEX IF NOT EXISTS "TaskClaim_taskId_userId_key" ON "TaskClaim"("taskId", "userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "SourceArtifact_sourceKey_key" ON "SourceArtifact"("sourceKey");
+CREATE UNIQUE INDEX IF NOT EXISTS "SourceArtifact_sourceKey_key" ON "SourceArtifact"("sourceKey");
 
 -- CreateIndex
-CREATE INDEX "SourceArtifact_sourceSystem_artifactType_idx" ON "SourceArtifact"("sourceSystem", "artifactType");
+CREATE INDEX IF NOT EXISTS "SourceArtifact_sourceSystem_artifactType_idx" ON "SourceArtifact"("sourceSystem", "artifactType");
 
 -- CreateIndex
-CREATE INDEX "SourceArtifact_externalKey_idx" ON "SourceArtifact"("externalKey");
+CREATE INDEX IF NOT EXISTS "SourceArtifact_externalKey_idx" ON "SourceArtifact"("externalKey");
 
 -- CreateIndex
-CREATE INDEX "SourceArtifact_versionKey_idx" ON "SourceArtifact"("versionKey");
+CREATE INDEX IF NOT EXISTS "SourceArtifact_versionKey_idx" ON "SourceArtifact"("versionKey");
 
 -- CreateIndex
-CREATE INDEX "SourceArtifact_sourceRef_idx" ON "SourceArtifact"("sourceRef");
+CREATE INDEX IF NOT EXISTS "SourceArtifact_sourceRef_idx" ON "SourceArtifact"("sourceRef");
 
 -- CreateIndex
-CREATE INDEX "SourceArtifact_contentHash_idx" ON "SourceArtifact"("contentHash");
+CREATE INDEX IF NOT EXISTS "SourceArtifact_contentHash_idx" ON "SourceArtifact"("contentHash");
 
 -- CreateIndex
-CREATE INDEX "SourceArtifact_deletedAt_idx" ON "SourceArtifact"("deletedAt");
+CREATE INDEX IF NOT EXISTS "SourceArtifact_deletedAt_idx" ON "SourceArtifact"("deletedAt");
 
 -- CreateIndex
-CREATE INDEX "TaskSourceArtifact_taskId_isPrimary_idx" ON "TaskSourceArtifact"("taskId", "isPrimary");
+CREATE INDEX IF NOT EXISTS "TaskSourceArtifact_taskId_isPrimary_idx" ON "TaskSourceArtifact"("taskId", "isPrimary");
 
 -- CreateIndex
-CREATE INDEX "TaskSourceArtifact_sourceArtifactId_isPrimary_idx" ON "TaskSourceArtifact"("sourceArtifactId", "isPrimary");
+CREATE INDEX IF NOT EXISTS "TaskSourceArtifact_sourceArtifactId_isPrimary_idx" ON "TaskSourceArtifact"("sourceArtifactId", "isPrimary");
 
 -- CreateIndex
-CREATE INDEX "TaskSourceArtifact_deletedAt_idx" ON "TaskSourceArtifact"("deletedAt");
+CREATE INDEX IF NOT EXISTS "TaskSourceArtifact_deletedAt_idx" ON "TaskSourceArtifact"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TaskSourceArtifact_taskId_sourceArtifactId_key" ON "TaskSourceArtifact"("taskId", "sourceArtifactId");
+CREATE UNIQUE INDEX IF NOT EXISTS "TaskSourceArtifact_taskId_sourceArtifactId_key" ON "TaskSourceArtifact"("taskId", "sourceArtifactId");
 
 -- CreateIndex
-CREATE INDEX "TaskEdge_fromTaskId_edgeType_idx" ON "TaskEdge"("fromTaskId", "edgeType");
+CREATE INDEX IF NOT EXISTS "TaskEdge_fromTaskId_edgeType_idx" ON "TaskEdge"("fromTaskId", "edgeType");
 
 -- CreateIndex
-CREATE INDEX "TaskEdge_toTaskId_edgeType_idx" ON "TaskEdge"("toTaskId", "edgeType");
+CREATE INDEX IF NOT EXISTS "TaskEdge_toTaskId_edgeType_idx" ON "TaskEdge"("toTaskId", "edgeType");
 
 -- CreateIndex
-CREATE INDEX "TaskEdge_deletedAt_idx" ON "TaskEdge"("deletedAt");
+CREATE INDEX IF NOT EXISTS "TaskEdge_deletedAt_idx" ON "TaskEdge"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TaskEdge_fromTaskId_toTaskId_edgeType_key" ON "TaskEdge"("fromTaskId", "toTaskId", "edgeType");
+CREATE UNIQUE INDEX IF NOT EXISTS "TaskEdge_fromTaskId_toTaskId_edgeType_key" ON "TaskEdge"("fromTaskId", "toTaskId", "edgeType");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactEstimateSet_taskId_isCurrent_idx" ON "TaskImpactEstimateSet"("taskId", "isCurrent");
+CREATE INDEX IF NOT EXISTS "TaskImpactEstimateSet_taskId_isCurrent_idx" ON "TaskImpactEstimateSet"("taskId", "isCurrent");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactEstimateSet_publicationStatus_idx" ON "TaskImpactEstimateSet"("publicationStatus");
+CREATE INDEX IF NOT EXISTS "TaskImpactEstimateSet_publicationStatus_idx" ON "TaskImpactEstimateSet"("publicationStatus");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactEstimateSet_sourceSystem_idx" ON "TaskImpactEstimateSet"("sourceSystem");
+CREATE INDEX IF NOT EXISTS "TaskImpactEstimateSet_sourceSystem_idx" ON "TaskImpactEstimateSet"("sourceSystem");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactEstimateSet_deletedAt_idx" ON "TaskImpactEstimateSet"("deletedAt");
+CREATE INDEX IF NOT EXISTS "TaskImpactEstimateSet_deletedAt_idx" ON "TaskImpactEstimateSet"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TaskImpactEstimateSet_taskId_estimateKind_sourceSystem_calc_key" ON "TaskImpactEstimateSet"("taskId", "estimateKind", "sourceSystem", "calculationVersion", "methodologyKey", "parameterSetHash", "counterfactualKey");
+CREATE UNIQUE INDEX IF NOT EXISTS "TaskImpactEstimateSet_taskId_estimateKind_sourceSystem_calc_key" ON "TaskImpactEstimateSet"("taskId", "estimateKind", "sourceSystem", "calculationVersion", "methodologyKey", "parameterSetHash", "counterfactualKey");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactFrameEstimate_taskImpactEstimateSetId_frameKey_idx" ON "TaskImpactFrameEstimate"("taskImpactEstimateSetId", "frameKey");
+CREATE INDEX IF NOT EXISTS "TaskImpactFrameEstimate_taskImpactEstimateSetId_frameKey_idx" ON "TaskImpactFrameEstimate"("taskImpactEstimateSetId", "frameKey");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactFrameEstimate_deletedAt_idx" ON "TaskImpactFrameEstimate"("deletedAt");
+CREATE INDEX IF NOT EXISTS "TaskImpactFrameEstimate_deletedAt_idx" ON "TaskImpactFrameEstimate"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TaskImpactFrameEstimate_taskImpactEstimateSetId_frameSlug_key" ON "TaskImpactFrameEstimate"("taskImpactEstimateSetId", "frameSlug");
+CREATE UNIQUE INDEX IF NOT EXISTS "TaskImpactFrameEstimate_taskImpactEstimateSetId_frameSlug_key" ON "TaskImpactFrameEstimate"("taskImpactEstimateSetId", "frameSlug");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactMetric_metricKey_idx" ON "TaskImpactMetric"("metricKey");
+CREATE INDEX IF NOT EXISTS "TaskImpactMetric_metricKey_idx" ON "TaskImpactMetric"("metricKey");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactMetric_displayGroup_idx" ON "TaskImpactMetric"("displayGroup");
+CREATE INDEX IF NOT EXISTS "TaskImpactMetric_displayGroup_idx" ON "TaskImpactMetric"("displayGroup");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactMetric_deletedAt_idx" ON "TaskImpactMetric"("deletedAt");
+CREATE INDEX IF NOT EXISTS "TaskImpactMetric_deletedAt_idx" ON "TaskImpactMetric"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TaskImpactMetric_taskImpactFrameEstimateId_metricKey_key" ON "TaskImpactMetric"("taskImpactFrameEstimateId", "metricKey");
+CREATE UNIQUE INDEX IF NOT EXISTS "TaskImpactMetric_taskImpactFrameEstimateId_metricKey_key" ON "TaskImpactMetric"("taskImpactFrameEstimateId", "metricKey");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactSourceArtifact_taskImpactEstimateSetId_isPrimary_idx" ON "TaskImpactSourceArtifact"("taskImpactEstimateSetId", "isPrimary");
+CREATE INDEX IF NOT EXISTS "TaskImpactSourceArtifact_taskImpactEstimateSetId_isPrimary_idx" ON "TaskImpactSourceArtifact"("taskImpactEstimateSetId", "isPrimary");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactSourceArtifact_sourceArtifactId_isPrimary_idx" ON "TaskImpactSourceArtifact"("sourceArtifactId", "isPrimary");
+CREATE INDEX IF NOT EXISTS "TaskImpactSourceArtifact_sourceArtifactId_isPrimary_idx" ON "TaskImpactSourceArtifact"("sourceArtifactId", "isPrimary");
 
 -- CreateIndex
-CREATE INDEX "TaskImpactSourceArtifact_deletedAt_idx" ON "TaskImpactSourceArtifact"("deletedAt");
+CREATE INDEX IF NOT EXISTS "TaskImpactSourceArtifact_deletedAt_idx" ON "TaskImpactSourceArtifact"("deletedAt");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "TaskImpactSourceArtifact_taskImpactEstimateSetId_sourceArti_key" ON "TaskImpactSourceArtifact"("taskImpactEstimateSetId", "sourceArtifactId");
+CREATE UNIQUE INDEX IF NOT EXISTS "TaskImpactSourceArtifact_taskImpactEstimateSetId_sourceArti_key" ON "TaskImpactSourceArtifact"("taskImpactEstimateSetId", "sourceArtifactId");
 
 -- CreateIndex
-CREATE INDEX "WishPoint_userId_idx" ON "WishPoint"("userId");
+CREATE INDEX IF NOT EXISTS "WishPoint_userId_idx" ON "WishPoint"("userId");
 
 -- CreateIndex
-CREATE INDEX "WishPoint_userId_createdAt_idx" ON "WishPoint"("userId", "createdAt");
+CREATE INDEX IF NOT EXISTS "WishPoint_userId_createdAt_idx" ON "WishPoint"("userId", "createdAt");
 
 -- CreateIndex
-CREATE INDEX "WishPoint_reason_idx" ON "WishPoint"("reason");
+CREATE INDEX IF NOT EXISTS "WishPoint_reason_idx" ON "WishPoint"("reason");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_personId_key" ON "User"("personId");
+CREATE UNIQUE INDEX IF NOT EXISTS "User_personId_key" ON "User"("personId");
 
 -- CreateIndex
-CREATE INDEX "User_personId_idx" ON "User"("personId");
+CREATE INDEX IF NOT EXISTS "User_personId_idx" ON "User"("personId");
 
 -- CreateIndex
-CREATE INDEX "User_availableHoursPerWeek_idx" ON "User"("availableHoursPerWeek");
+CREATE INDEX IF NOT EXISTS "User_availableHoursPerWeek_idx" ON "User"("availableHoursPerWeek");
 
 -- CreateIndex
-CREATE INDEX "User_maxTaskDifficulty_idx" ON "User"("maxTaskDifficulty");
+CREATE INDEX IF NOT EXISTS "User_maxTaskDifficulty_idx" ON "User"("maxTaskDifficulty");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE;

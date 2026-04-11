@@ -2,6 +2,7 @@ import Link from "next/link";
 import { TaskMilestoneStatus } from "@optimitron/db";
 import { shareableSnippets } from "@optimitron/data/parameters";
 import { getServerSession } from "next-auth";
+import { TreatySignButton } from "./TreatySignButton";
 import { LegislationMarkdown } from "@/components/legislation/LegislationMarkdown";
 import { Button } from "@/components/retroui/Button";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
@@ -95,12 +96,27 @@ function getStatusLabel(status: SignerStatus["status"]) {
   }
 }
 
+const TREATY_REFERENDUM_SLUG = "one-percent-treaty";
+
 export default async function TreatyPage() {
   const session = await getServerSession(authOptions);
   const signers = await getTreatySignerStatuses();
   const signedCount = signers.filter((s) => s.status === "signed").length;
   const inProgressCount = signers.filter((s) => s.status === "in-progress").length;
   const signInHref = getSignInPath(ROUTES.treaty);
+
+  // Check if the current user already signed the treaty referendum
+  let alreadySigned = false;
+  if (session?.user?.id) {
+    const existingVote = await prisma.referendumVote.findFirst({
+      where: {
+        userId: session.user.id,
+        referendum: { slug: TREATY_REFERENDUM_SLUG },
+      },
+      select: { id: true },
+    });
+    alreadySigned = existingVote != null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -183,16 +199,7 @@ export default async function TreatyPage() {
               </p>
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-4">
-              <p className="text-sm font-bold">
-                Signed in as {session.user.email ?? session.user.name ?? "unknown"}.
-              </p>
-              <p className="text-sm font-bold">
-                Treaty signing flow coming soon. For now, share the treaty page from your official social media account
-                to signal your support.
-              </p>
-              <GameCTA href={ROUTES.tasks}>View Overdue Leaders</GameCTA>
-            </div>
+            <TreatySignButton alreadySigned={alreadySigned} />
           )}
         </div>
       </SectionContainer>
