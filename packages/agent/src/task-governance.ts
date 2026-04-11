@@ -77,7 +77,6 @@ export const TaskProposalSeveritySchema = z.enum(['error', 'warning']);
 export interface TaskProposalIssue {
   code:
     | 'agent-proposals-should-start-draft'
-    | 'bundle-too-large'
     | 'cyclic-blockers'
     | 'duplicate-fingerprint'
     | 'duplicate-task-key'
@@ -98,7 +97,6 @@ export interface TaskProposalIssue {
 export const TaskProposalIssueSchema = z.object({
   code: z.enum([
     'agent-proposals-should-start-draft',
-    'bundle-too-large',
     'cyclic-blockers',
     'duplicate-fingerprint',
     'duplicate-task-key',
@@ -169,13 +167,11 @@ export const TaskPromotionRequestSchema = z.object({
 export type TaskPromotionRequest = z.infer<typeof TaskPromotionRequestSchema>;
 
 export interface TaskProposalReviewPolicy {
-  maxCandidatesPerBundle: number;
   minimumPrivateQualityScore: number;
   minimumQualityScore: number;
 }
 
 export const DEFAULT_TASK_PROPOSAL_REVIEW_POLICY: TaskProposalReviewPolicy = {
-  maxCandidatesPerBundle: 12,
   minimumPrivateQualityScore: 0.2,
   minimumQualityScore: 0.55,
 };
@@ -389,7 +385,6 @@ export function reviewTaskProposalBundle(input: {
   const bundleTaskKeys = new Map<string, string>();
   const bundleFingerprints = new Map<string, string>();
   const issuesByRef = new Map<string, TaskProposalIssue[]>();
-  const bundleTooLarge = parsedInput.candidates.length > policy.maxCandidatesPerBundle;
 
   for (const candidate of parsedInput.candidates) {
     const ref = proposalRef(candidate);
@@ -467,14 +462,6 @@ export function reviewTaskProposalBundle(input: {
         code: 'agent-proposals-should-start-draft',
         message: 'Agent-created tasks should start as DRAFT and be promoted explicitly after review.',
         severity: 'warning',
-      });
-    }
-
-    if (bundleTooLarge) {
-      issues.push({
-        code: 'bundle-too-large',
-        message: `Proposal bundles are capped at ${policy.maxCandidatesPerBundle} tasks to keep agent planning focused and reviewable.`,
-        severity: 'error',
       });
     }
 

@@ -7,10 +7,12 @@ export interface OptimizeEarthPromptOptions {
 const DEFAULT_TASK_SOURCE_LABEL = 'the task database via MCP';
 
 export const OPTIMIZE_EARTH_PROTOCOL_STEPS = [
+  'Audit whether the current queue is sane before trusting the top-ranked task.',
   'Call getNextTask with your capabilities.',
   'If a task is returned, call acquireLease before doing any work.',
   'Work only on the leased task and touch only files required for that task.',
   'If the task runs longer than the lease TTL, call heartbeatLease.',
+  'If the queue is obviously narrow, unsourced, or missing system/growth tasks, propose system-improvement tasks before trusting the frontier.',
   'If no executable task exists, propose only high-value missing tasks or unblockers via proposeTaskBundle.',
   'Do not create ACTIVE tasks directly; agent-created tasks must start as DRAFT.',
   'Respect checkContactCooldown and recordContactAction before outreach.',
@@ -28,6 +30,7 @@ export function buildOptimizeEarthInstruction(input: OptimizeEarthPromptOptions 
 
   return [
     `Optimize earth using ${taskSourceLabel} as the source of truth.`,
+    'First, check whether the current queue is sane; if it is obviously stupid, improve the queue before trusting its top task.',
     'Before editing code or creating tasks, fetch the highest-value executable task and acquire a lease.',
     capabilityLine,
     `Hold at most ${maxParallelTasks} active lease${maxParallelTasks === 1 ? '' : 's'} at a time.`,

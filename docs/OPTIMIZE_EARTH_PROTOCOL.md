@@ -19,20 +19,22 @@ Make many agents safe to run in parallel without:
 
 Every agent must follow this order:
 
-1. Call `getNextTask` with its capabilities.
-2. If no executable task exists:
+1. Audit whether the current queue is sane enough to trust.
+2. If the queue is clearly missing major task families, missing quantified impact, or dominated by a narrow arbitrary cap, propose system-improvement tasks first.
+3. Call `getNextTask` with its capabilities.
+4. If no executable task exists:
    - call `proposeTaskBundle` only for high-value missing tasks or unblockers
    - do not create `ACTIVE` tasks directly
    - stop after logging the skipped run
-3. If a task exists, call `acquireLease`.
-4. Work only on the leased task.
-5. If the work outlives the lease TTL, call `heartbeatLease`.
-6. If the work involves outreach:
+5. If a task exists, call `acquireLease`.
+6. Work only on the leased task.
+7. If the work outlives the lease TTL, call `heartbeatLease`.
+8. If the work involves outreach:
    - preflight with `checkContactCooldown`
    - respect the result
    - log the action with `recordContactAction`
-7. Log the run with `logAgentRun`.
-8. Release the lease when the step is complete or skipped.
+9. Log the run with `logAgentRun`.
+10. Release the lease when the step is complete or skipped.
 
 ## Ownership Model
 
@@ -60,6 +62,7 @@ Agents should not:
 - grab blocked tasks that cannot move
 - generate broad speculative backlogs
 - create duplicate tasks for the same objective
+- trust a stupid queue without first trying to fix it
 
 ## Outreach Rules
 
