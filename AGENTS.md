@@ -4,7 +4,10 @@
 
 ## Multi-Agent Coordination
 
-Multiple AI agents work on this repo in parallel. Each agent is assigned to a **lane** — a set of packages it owns. Agents must not edit files outside their lane.
+Multiple AI agents work on this repo in parallel.
+
+- **Default mode:** lane-based coordination. Each agent is assigned to a set of packages it owns.
+- **Optimize Earth mode:** task-based coordination. If the human says `optimize earth`, the task database becomes the source of truth and the leased task becomes the ownership boundary.
 
 ### Lane Assignments
 
@@ -18,11 +21,35 @@ Multiple AI agents work on this repo in parallel. Each agent is assigned to a **
 
 ### Coordination Rules
 
-1. **One package per agent at a time.** Do not edit files in packages outside your lane.
+1. **In default mode, one package per agent at a time.** Do not edit files in packages outside your lane.
 2. **Types are the contract.** `@optimitron/db` exports are shared by everyone. Changes to the Prisma schema or exported types require explicit human approval.
 3. **Branch per agent.** Use git worktrees. One branch per lane. Never push to main directly.
 4. **Interface changes require coordination.** If you need to change a public export signature that other packages depend on, document the change and stop — let the human merge and coordinate.
 5. **Read the package AGENTS.md.** Each package has its own `AGENTS.md` with scope, exports, rules, and off-limits.
+
+### Optimize Earth Mode
+
+When the human says `optimize earth`, switch from lane ownership to **task ownership**.
+
+Use this protocol exactly:
+
+1. Call `getNextTask` with your capabilities.
+2. If a task is returned, call `acquireLease`.
+3. Work only on the leased task and only touch files required for that task.
+4. If the task runs longer than the lease window, call `heartbeatLease`.
+5. If no executable task exists, call `proposeTaskBundle` for high-value missing tasks or unblockers.
+6. Never create `ACTIVE` tasks directly. Agent-created tasks must start as `DRAFT`.
+7. Never promote tasks unless review passes and the promotion path explicitly allows it.
+8. Before any outreach action, respect `checkContactCooldown` / `recordContactAction`.
+9. Call `logAgentRun` for planned or skipped work, then release the lease when done.
+
+Additional rules in Optimize Earth mode:
+
+- **One active lease per agent.** Do not hold multiple tasks at once.
+- **Task lease supersedes lane boundaries.** A leased task may require edits across packages, but only the files needed for that task may be changed.
+- **No repo-wide refactors from a vague prompt.** If the task does not require it, do not do it.
+- **No freestyle canonical planning.** New tasks enter the system through `proposeTaskBundle`, review, and promotion.
+- **If the task DB/MCP is unavailable, stop and report blocked.** Do not invent an alternate source of truth.
 
 ### What Every Agent Must Do
 
@@ -30,6 +57,7 @@ Multiple AI agents work on this repo in parallel. Each agent is assigned to a **
 - Never import Prisma client in library packages (optimizer, wishocracy, opg, obg, data, agent, hypercerts, storage)
 - Use `import type` for cross-package type imports
 - Follow existing patterns — read surrounding code before writing new code
+- In `optimize earth` mode, follow `docs/OPTIMIZE_EARTH_PROTOCOL.md`
 
 ## Documentation
 

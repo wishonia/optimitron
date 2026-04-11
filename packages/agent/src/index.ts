@@ -10,7 +10,10 @@ export * from './test-output-review.js';
 export * from './legislation-drafter.js';
 export * from './legislation-evidence.js';
 export * from './ci-triage.js';
+export * from './optimize-earth.js';
 export * from './treaty-operator.js';
+export * from './earth-operator.js';
 export * from './task-governance.js';
+export * from './task-runtime.js';
 
 export const VERSION = '0.1.0';
