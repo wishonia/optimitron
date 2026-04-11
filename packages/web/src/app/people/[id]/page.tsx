@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { TaskCard, type TaskCardTask } from "@/components/tasks/task-card";
+import {
+  TaskCard,
+  type TaskCardTask as PersonTaskCardTask,
+} from "@/components/tasks/task-card";
 import { Avatar } from "@/components/retroui/Avatar";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { BrutalCard } from "@/components/ui/brutal-card";
@@ -62,6 +65,39 @@ export default async function PersonDetailPage({
   const fallbackInitials = getFallbackInitials(person.displayName);
   const openSummary = aggregateTaskDelayStats(openTasks);
 
+  // Split verified tasks by impact sign — purely a display concern
+  const harmfulVerified = verifiedTasks.filter((task) => {
+    const econ = (task as PersonTaskCardTask).impact?.selectedFrame?.expectedEconomicValueUsdBase;
+    const dalys = (task as PersonTaskCardTask).impact?.selectedFrame?.expectedDalysAvertedBase;
+    return (econ != null && econ < 0) || (dalys != null && dalys < 0);
+  });
+  const beneficialVerified = verifiedTasks.filter((task) => {
+    const econ = (task as PersonTaskCardTask).impact?.selectedFrame?.expectedEconomicValueUsdBase;
+    return econ != null && econ > 0;
+  });
+  const unmeasuredVerified = verifiedTasks.filter((task) => {
+    const econ = (task as PersonTaskCardTask).impact?.selectedFrame?.expectedEconomicValueUsdBase;
+    const dalys = (task as PersonTaskCardTask).impact?.selectedFrame?.expectedDalysAvertedBase;
+    return econ == null && dalys == null;
+  });
+
+  // Aggregate harm cost from harmful tasks
+  const totalHarmCostUsd = harmfulVerified.reduce((sum, task) => {
+    const econ = (task as PersonTaskCardTask).impact?.selectedFrame?.expectedEconomicValueUsdBase;
+    return sum + (econ != null ? Math.abs(econ) : 0);
+  }, 0);
+
+  // Aggregate cost of unmeasured spending
+  const totalUnmeasuredCostUsd = unmeasuredVerified.reduce((sum, task) => {
+    const cost = (task as PersonTaskCardTask).impact?.selectedFrame?.estimatedCashCostUsdBase;
+    return sum + (cost ?? 0);
+  }, 0);
+
+  const bullshitRatio =
+    openTasks.length > 0
+      ? Math.round((harmfulVerified.length + unmeasuredVerified.length) / openTasks.length)
+      : null;
+
   return (
     <div className="min-h-screen bg-background pb-20">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-8">
@@ -83,9 +119,12 @@ export default async function PersonDetailPage({
               </Avatar>
               <div className="space-y-2">
                 <div className="flex flex-wrap gap-2">
-                  <ArcadeTag>{person.isPublicFigure ? "public-figure" : "person"}</ArcadeTag>
+                  {person.isPublicFigure ? (
+                    <ArcadeTag>employee performance review</ArcadeTag>
+                  ) : (
+                    <ArcadeTag>person</ArcadeTag>
+                  )}
                   {person.countryCode ? <ArcadeTag>{person.countryCode}</ArcadeTag> : null}
-                  {person.sourceRef ? <ArcadeTag>{person.sourceRef}</ArcadeTag> : null}
                 </div>
                 <h1 className="text-4xl font-black uppercase leading-tight sm:text-5xl">
                   {person.displayName}
@@ -111,26 +150,43 @@ export default async function PersonDetailPage({
             {person.bio?.trim()
               ? person.bio
               : person.isPublicFigure
-                ? "Public accountability page for this assignee. It currently tracks public task execution first; term-level welfare scorecards can be layered on once the time-series data is wired in."
+                ? "Public accountability page for this employee of yours. Tracks what they actually did, what it cost, what it achieved (if measured), and what they still have not done."
                 : "Public task profile for this person."}
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {/* Stats grid */}
+        <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
           <BrutalCard bgColor="background" padding="md">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-              Open Tasks
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+              Overdue Tasks
             </p>
             <p className="mt-2 text-3xl font-black uppercase">
               {openTasks.length.toLocaleString("en-US")}
             </p>
           </BrutalCard>
           <BrutalCard bgColor="background" padding="md">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-              Verified Tasks
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+              Harmful Completed
             </p>
             <p className="mt-2 text-3xl font-black uppercase">
-              {verifiedTasks.length.toLocaleString("en-US")}
+              {harmfulVerified.length.toLocaleString("en-US")}
+            </p>
+          </BrutalCard>
+          <BrutalCard bgColor="background" padding="md">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-yellow">
+              Unmeasured Spending
+            </p>
+            <p className="mt-2 text-3xl font-black uppercase">
+              {unmeasuredVerified.length.toLocaleString("en-US")}
+            </p>
+          </BrutalCard>
+          <BrutalCard bgColor="background" padding="md">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-green">
+              Verified Beneficial
+            </p>
+            <p className="mt-2 text-3xl font-black uppercase">
+              {beneficialVerified.length.toLocaleString("en-US")}
             </p>
           </BrutalCard>
           <BrutalCard bgColor="background" padding="md">
@@ -151,25 +207,94 @@ export default async function PersonDetailPage({
           </BrutalCard>
         </div>
 
-        {openTasks.length > 0 ? (
+        {/* Bullshit ratio card */}
+        {person.isPublicFigure && bullshitRatio != null && bullshitRatio > 0 ? (
+          <BrutalCard bgColor="red" padding="lg" shadowSize={12}>
+            <div className="space-y-3">
+              <p className="text-xs font-black uppercase tracking-[0.18em]">
+                Performance Summary
+              </p>
+              <h2 className="text-3xl font-black uppercase leading-tight sm:text-4xl">
+                {bullshitRatio} Wasteful Tasks Completed Per {openTasks.length} Life-Saving{" "}
+                {openTasks.length === 1 ? "Task" : "Tasks"} Still Ignored
+              </h2>
+              {totalHarmCostUsd > 0 ? (
+                <p className="text-lg font-bold">
+                  {formatCompactCurrency(totalHarmCostUsd)} spent on activities that hurt people.{" "}
+                  {totalUnmeasuredCostUsd > 0
+                    ? `${formatCompactCurrency(totalUnmeasuredCostUsd)} spent on things nobody measured.`
+                    : null}{" "}
+                  Thirty seconds not spent on a signature that saves them.
+                </p>
+              ) : null}
+            </div>
+          </BrutalCard>
+        ) : null}
+
+        {/* Harmful activities */}
+        {harmfulVerified.length > 0 ? (
           <section className="space-y-4">
-            <h2 className="text-3xl font-black uppercase">
-              {person.isPublicFigure ? "Incomplete Public Tasks" : "Open Tasks"}
-            </h2>
+            <h2 className="text-3xl font-black uppercase">Harmful Activities Completed</h2>
             <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-              {openTasks.map((task) => (
-                <TaskCard key={task.id} signedIn={Boolean(userId)} task={task as TaskCardTask} />
+              {harmfulVerified.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  signedIn={Boolean(userId)}
+                  task={task as PersonTaskCardTask}
+                />
               ))}
             </div>
           </section>
         ) : null}
 
-        {verifiedTasks.length > 0 ? (
+        {/* Unmeasured spending */}
+        {unmeasuredVerified.length > 0 ? (
           <section className="space-y-4">
-            <h2 className="text-3xl font-black uppercase">Verified Completed Tasks</h2>
+            <h2 className="text-3xl font-black uppercase">Unmeasured Spending</h2>
+            <p className="max-w-4xl text-sm font-bold text-muted-foreground">
+              Money spent with no verified measurement of what it achieved. Cost is known. Value is not.
+            </p>
             <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-              {verifiedTasks.map((task) => (
-                <TaskCard key={task.id} signedIn={Boolean(userId)} task={task as TaskCardTask} />
+              {unmeasuredVerified.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  signedIn={Boolean(userId)}
+                  task={task as PersonTaskCardTask}
+                />
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* Overdue life-saving tasks */}
+        {openTasks.length > 0 ? (
+          <section className="space-y-4">
+            <h2 className="text-3xl font-black uppercase">
+              {person.isPublicFigure ? "Overdue Life-Saving Tasks" : "Open Tasks"}
+            </h2>
+            <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+              {openTasks.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  signedIn={Boolean(userId)}
+                  task={task as PersonTaskCardTask}
+                />
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* Verified beneficial tasks */}
+        {beneficialVerified.length > 0 ? (
+          <section className="space-y-4">
+            <h2 className="text-3xl font-black uppercase">Verified Beneficial Tasks</h2>
+            <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+              {beneficialVerified.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  signedIn={Boolean(userId)}
+                  task={task as PersonTaskCardTask}
+                />
               ))}
             </div>
           </section>

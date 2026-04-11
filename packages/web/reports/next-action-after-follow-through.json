@@ -1,0 +1,40 @@
+{
+  "actionKind": "FUNDING_UNBLOCKER",
+  "auditIssues": [],
+  "autoExecutable": false,
+  "economics": {
+    "estimatedExternalCostUsd": 247.50000000000003,
+    "expectedValuePerHourUsd": 46632603051457416,
+    "fundingGapUsd": 247.50000000000003,
+    "lawfulSpendTypes": [
+      "LABOR",
+      "COMPUTE",
+      "ADS",
+      "SOFTWARE",
+      "SERVICES",
+      "OTHER_LAWFUL"
+    ],
+    "maxRationalSpendUsd": 139897809154372260,
+    "requiredApproval": false,
+    "suggestedActionKind": "FUNDING_UNBLOCKER"
+  },
+  "groundingRefs": [
+    "https://optimitron.earth/tasks",
+    "https://optimitron.earth/tasks/",
+    "https://optimitron.earth/governments/US/politicians"
+  ],
+  "queueRepairPlan": null,
+  "rationale": [
+    "The queue audit is clean, so the optimizer is selecting the highest-value executable work.",
+    "Expected value per hour: 46632603051457416.00 USD.",
+    "Delay cost per day: 94716318292.68 USD.",
+    "Estimated external cost: 247.50 USD.",
+    "Funding gap: 247.50 USD."
+  ],
+  "requiredApproval": false,
+  "task": {
+    "id": "cmntpp8ag000vhcpic913b7xv",
+    "taskKey": "system:optimize-earth:weaponize-overdue-task-list",
+    "title": "Turn the overdue leader task list into a memetic share-and-pressure machine"
+  }
+}

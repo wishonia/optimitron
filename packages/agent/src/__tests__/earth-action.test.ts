@@ -174,6 +174,57 @@ describe('selectNextEarthAction', () => {
     expect(decision.task?.id).toBe('paid_growth');
     expect(decision.economics?.fundingGapUsd).toBe(2_500);
   });
+
+  it('prefers a concrete funding follow-through task over the blocked parent when both exist', () => {
+    const tasks: EarthActionTask[] = [
+      makeTask({
+        category: 'COMMUNICATION',
+        contextJson: {
+          executionV1: {
+            canAgentDoDirectly: false,
+            estimatedExternalCostUsd: 250,
+            lawfulSpendTypes: ['ADS'],
+          },
+        },
+        estimatedEffortHours: 3,
+        id: 'paid_growth_parent',
+        impact: {
+          delayEconomicValueUsdLostPerDay: 95_000_000_000,
+          expectedValuePerHourUsd: 46_000_000_000_000_000,
+        },
+        interestTags: ['growth'],
+        skillTags: ['growth'],
+        taskKey: 'system:optimize-earth:weaponize-overdue-task-list',
+        title: 'Turn the overdue leader task list into a memetic share-and-pressure machine',
+      }),
+      makeTask({
+        category: 'COMMUNICATION',
+        estimatedEffortHours: 2,
+        id: 'budget_brief_child',
+        impact: {
+          delayEconomicValueUsdLostPerDay: 42_000_000_000,
+          expectedValuePerHourUsd: 21_000_000_000_000_000,
+        },
+        interestTags: ['growth', 'funding'],
+        skillTags: ['growth', 'research'],
+        taskKey:
+          'system:optimize-earth:publish-budget-brief:system-optimize-earth-weaponize-overdue-task-list',
+        title:
+          'Publish the quantified budget brief for Turn the overdue leader task list into a memetic share-and-pressure machine',
+      }),
+    ];
+
+    const decision = selectNextEarthAction({
+      agent,
+      policy: {
+        availableExternalBudgetUsd: 0,
+      },
+      tasks,
+    });
+
+    expect(decision.task?.id).toBe('budget_brief_child');
+    expect(decision.task?.taskKey).toContain('publish-budget-brief');
+  });
 });
 
 describe('evaluateEarthTaskEconomics', () => {

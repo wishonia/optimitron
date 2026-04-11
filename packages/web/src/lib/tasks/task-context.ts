@@ -47,3 +47,41 @@ export function readTaskContextSections(contextJson: unknown): TaskAcceptanceCri
     currentActivities,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Leader activity metadata (for accountability ledger display)
+// ---------------------------------------------------------------------------
+
+export interface LeaderActivityContext {
+  activityType: string | null;
+  alternativeUse: string | null;
+  claimedBenefit: string | null;
+  costEfficiencyNote: string | null;
+  measuredOutcome: string | null;
+  taxpayerCostUsd: number | null;
+  wishoniaComment: string | null;
+}
+
+export function readLeaderActivityContext(contextJson: unknown): LeaderActivityContext {
+  if (!isRecord(contextJson)) {
+    return {
+      activityType: null,
+      alternativeUse: null,
+      claimedBenefit: null,
+      costEfficiencyNote: null,
+      measuredOutcome: null,
+      taxpayerCostUsd: null,
+      wishoniaComment: null,
+    };
+  }
+
+  return {
+    activityType: typeof contextJson.activityType === "string" ? contextJson.activityType : null,
+    alternativeUse: typeof contextJson.alternativeUse === "string" ? contextJson.alternativeUse : null,
+    claimedBenefit: typeof contextJson.claimedBenefit === "string" ? contextJson.claimedBenefit : null,
+    costEfficiencyNote: typeof contextJson.costEfficiencyNote === "string" ? contextJson.costEfficiencyNote : null,
+    measuredOutcome: typeof contextJson.measuredOutcome === "string" ? contextJson.measuredOutcome : null,
+    taxpayerCostUsd: typeof contextJson.taxpayerCostUsd === "number" ? contextJson.taxpayerCostUsd : null,
+    wishoniaComment: typeof contextJson.wishoniaComment === "string" ? contextJson.wishoniaComment : null,
+  };
+}

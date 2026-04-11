@@ -24,6 +24,7 @@ import type {
   TaskImpactMetricSummary,
 } from "@/lib/tasks/impact";
 import { canTaskAcceptMoreClaims } from "@/lib/tasks/rank-tasks";
+import { readLeaderActivityContext } from "@/lib/tasks/task-context";
 
 export interface TaskCardTask {
   activeClaimCount: number;
@@ -47,6 +48,7 @@ export interface TaskCardTask {
   category: TaskCategory;
   claimPolicy: TaskClaimPolicy;
   completedAt: Date | null;
+  contextJson?: unknown;
   contactLabel?: string | null;
   contactTemplate?: string | null;
   contactUrl?: string | null;
@@ -73,13 +75,32 @@ export interface TaskCardTask {
   viewerHasClaim: boolean;
 }
 
+function hasNegativeImpact(task: TaskCardTask) {
+  const econ = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
+  const dalys = task.impact?.selectedFrame?.expectedDalysAvertedBase;
+  return (econ != null && econ < 0) || (dalys != null && dalys < 0);
+}
+
+function hasPositiveImpact(task: TaskCardTask) {
+  const econ = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
+  return econ != null && econ > 0;
+}
+
 function getCardColor(task: TaskCardTask): BrutalCardBgColor {
+  if (task.status === TaskStatus.VERIFIED && hasNegativeImpact(task)) {
+    return "red";
+  }
+
   if (task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY) {
     return "yellow";
   }
 
-  if (task.status === TaskStatus.VERIFIED) {
+  if (task.status === TaskStatus.VERIFIED && hasPositiveImpact(task)) {
     return "green";
+  }
+
+  if (task.status === TaskStatus.VERIFIED) {
+    return "yellow"; // unmeasured — neither green (earned) nor red (harmful)
   }
 
   if (task.viewerHasClaim) {
@@ -105,6 +126,57 @@ function formatDueDate(value: Date) {
   });
 }
 
+function HarmInflictedSection({ task }: { task: TaskCardTask }) {
+  const activity = readLeaderActivityContext(task.contextJson);
+  const econ = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
+  const dalys = task.impact?.selectedFrame?.expectedDalysAvertedBase;
+
+  return (
+    <div className="space-y-1 border-t-2 border-foreground/20 pt-2">
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+        Harm Inflicted
+      </p>
+      {activity.taxpayerCostUsd != null ? (
+        <p>{`${formatCompactCurrency(activity.taxpayerCostUsd)} taxpayer cost`}</p>
+      ) : econ != null ? (
+        <p>{`${formatCompactCurrency(Math.abs(econ))} economic damage`}</p>
+      ) : null}
+      {dalys != null ? (
+        <p>{`${formatCompactCount(Math.abs(dalys))} DALYs caused`}</p>
+      ) : null}
+      {activity.wishoniaComment ? (
+        <p className="text-xs italic leading-5">
+          {truncate(activity.wishoniaComment, 160)}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function UnmeasuredSpendingSection({ task }: { task: TaskCardTask }) {
+  const activity = readLeaderActivityContext(task.contextJson);
+  const cost = task.impact?.selectedFrame?.estimatedCashCostUsdBase;
+
+  return (
+    <div className="space-y-1 border-t-2 border-foreground/20 pt-2">
+      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-yellow">
+        Unmeasured Spending
+      </p>
+      {cost != null ? (
+        <p>{`Cost: ${formatCompactCurrency(cost)}`}</p>
+      ) : activity.taxpayerCostUsd != null ? (
+        <p>{`Cost: ${formatCompactCurrency(activity.taxpayerCostUsd)}`}</p>
+      ) : null}
+      <p>Measured value: ???</p>
+      {activity.claimedBenefit ? (
+        <p className="text-xs italic leading-5">
+          {`Claimed: "${truncate(activity.claimedBenefit, 100)}"`}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 export function TaskCard({
   showRecommendationScore = false,
   signedIn,
@@ -114,6 +186,7 @@ export function TaskCard({
   signedIn: boolean;
   task: TaskCardTask;
 }) {
+  const activityContext = readLeaderActivityContext(task.contextJson);
   const delayStats = getTaskDelayStats(task);
   const canClaim = canTaskAcceptMoreClaims({
     activeClaimCount: task.activeClaimCount,
@@ -160,6 +233,9 @@ export function TaskCard({
             <ArcadeTag>
               {task.dueAt.getTime() < Date.now() ? "overdue" : `due ${formatDueDate(task.dueAt)}`}
             </ArcadeTag>
+          ) : null}
+          {activityContext.activityType ? (
+            <ArcadeTag>{activityContext.activityType}</ArcadeTag>
           ) : null}
           {task.estimatedEffortHours != null ? (
             <ArcadeTag>{`${task.estimatedEffortHours}h`}</ArcadeTag>
@@ -242,7 +318,11 @@ export function TaskCard({
           {task.interestTags.length > 0 ? (
             <p>{`Interests: ${task.interestTags.slice(0, 4).join(", ")}`}</p>
           ) : null}
-          {delayStats.isOverdue ? (
+          {task.status === TaskStatus.VERIFIED && hasNegativeImpact(task) ? (
+            <HarmInflictedSection task={task} />
+          ) : task.status === TaskStatus.VERIFIED && !hasNegativeImpact(task) && !hasPositiveImpact(task) ? (
+            <UnmeasuredSpendingSection task={task} />
+          ) : delayStats.isOverdue ? (
             <div className="space-y-1 border-t-2 border-foreground/20 pt-2">
               <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
                 Delay Clock
@@ -257,13 +337,15 @@ export function TaskCard({
         </div>
 
         <div className="mt-auto flex flex-wrap items-center gap-3">
-          <TaskClaimButton
-            canClaim={canClaim}
-            signedIn={signedIn}
-            signInHref={signInHref}
-            taskId={task.id}
-            viewerHasClaim={task.viewerHasClaim}
-          />
+          {task.status !== TaskStatus.VERIFIED ? (
+            <TaskClaimButton
+              canClaim={canClaim}
+              signedIn={signedIn}
+              signInHref={signInHref}
+              taskId={task.id}
+              viewerHasClaim={task.viewerHasClaim}
+            />
+          ) : null}
           <Link
             className="text-sm font-black uppercase underline underline-offset-4"
             href={`/tasks/${task.id}`}
@@ -281,7 +363,7 @@ export function TaskCard({
           ) : null}
         </div>
 
-        {(task.assigneePerson || task.assigneeOrganization) ? (
+        {task.status !== TaskStatus.VERIFIED && (task.assigneePerson || task.assigneeOrganization) ? (
           <TaskContactActions
             compact
             delayStats={{

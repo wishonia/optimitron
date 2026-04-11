@@ -654,6 +654,45 @@ function hasActiveChildren(task: Pick<EarthActionTask, 'activeChildTaskCount'>) 
   return (task.activeChildTaskCount ?? 0) > 0;
 }
 
+function normalizeTaskStem(value: string | null | undefined) {
+  return (value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function isActionFollowThroughTask(task: Pick<EarthActionTask, 'taskKey'>) {
+  const taskKey = (task.taskKey ?? '').toLowerCase();
+  return (
+    taskKey.includes('action-follow-through:') ||
+    taskKey.includes('publish-budget-brief:') ||
+    taskKey.includes('route-proof-pages-into-funding:') ||
+    taskKey.includes('source-counterparties-and-price-ceiling:') ||
+    taskKey.includes('prepare-approval-packet:')
+  );
+}
+
+function referencesFundingBlockedTask(input: {
+  blockedTaskStems: Set<string>;
+  task: Pick<EarthActionTask, 'taskKey' | 'title'>;
+}) {
+  const taskKey = normalizeTaskStem(input.task.taskKey);
+  const title = normalizeTaskStem(input.task.title);
+
+  for (const stem of input.blockedTaskStems) {
+    if (taskKey.includes(stem) || title.includes(stem)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function isFundingBlockedActionKind(actionKind: EarthActionKind) {
+  return actionKind === 'FUNDING_UNBLOCKER' || actionKind === 'PREPARE_PROCUREMENT';
+}
+
 function priorityScoreUsd(task: EarthActionTask, economics: EarthTaskEconomics, actionKind: EarthActionKind) {
   let score = Math.max(
     0,
@@ -689,6 +728,32 @@ export function selectNextEarthAction(input: {
     : input.tasks;
   const leafCandidateTasks = rawCandidateTasks.filter((task) => !hasActiveChildren(task));
   const candidateTasks = leafCandidateTasks.length > 0 ? leafCandidateTasks : rawCandidateTasks;
+  const evaluatedCandidates = candidateTasks.map((task) => ({
+    economics: evaluateEarthTaskEconomics({
+      agent: input.agent,
+      policy,
+      task,
+    }),
+    task,
+  }));
+  const fundingBlockedTaskStems = new Set(
+    evaluatedCandidates
+      .filter(({ economics }) => isFundingBlockedActionKind(economics.suggestedActionKind))
+      .map(({ task }) => normalizeTaskStem(task.taskKey ?? task.title))
+      .filter(Boolean),
+  );
+  const followThroughCoveredBlockedTaskStems = new Set(
+    Array.from(fundingBlockedTaskStems).filter((blockedStem) =>
+      evaluatedCandidates.some(
+        ({ task }) =>
+          isActionFollowThroughTask(task) &&
+          referencesFundingBlockedTask({
+            blockedTaskStems: new Set([blockedStem]),
+            task,
+          }),
+      ),
+    ),
+  );
 
   if (candidateTasks.length === 0) {
     return {
@@ -712,19 +777,30 @@ export function selectNextEarthAction(input: {
     };
   }
 
-  const rankedCandidates = candidateTasks
-    .map((task) => {
-      const economics = evaluateEarthTaskEconomics({
-        agent: input.agent,
-        policy,
-        task,
-      });
+  const rankedCandidates = evaluatedCandidates
+    .filter(({ economics, task }) => {
+      const taskStem = normalizeTaskStem(task.taskKey ?? task.title);
+
+      return !(
+        isFundingBlockedActionKind(economics.suggestedActionKind) &&
+        followThroughCoveredBlockedTaskStems.has(taskStem) &&
+        !isActionFollowThroughTask(task)
+      );
+    })
+    .map(({ economics, task }) => {
       const actionKind = queueNeedsRepair ? 'QUEUE_REPAIR' : economics.suggestedActionKind;
+      const isFollowThrough =
+        isActionFollowThroughTask(task) &&
+        referencesFundingBlockedTask({
+          blockedTaskStems: followThroughCoveredBlockedTaskStems,
+          task,
+        });
+      const baseScore = priorityScoreUsd(task, economics, actionKind);
 
       return {
         actionKind,
         economics,
-        scoreUsd: priorityScoreUsd(task, economics, actionKind),
+        scoreUsd: isFollowThrough ? baseScore * 2.25 : baseScore,
         task,
       };
     })

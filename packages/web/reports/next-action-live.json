@@ -1,0 +1,42 @@
+{
+  "actionKind": "FUNDING_UNBLOCKER",
+  "auditIssues": [],
+  "autoExecutable": false,
+  "economics": {
+    "estimatedExternalCostUsd": 165,
+    "expectedValuePerHourUsd": 20984671373155836,
+    "fundingGapUsd": 165,
+    "lawfulSpendTypes": [
+      "LABOR",
+      "COMPUTE",
+      "ADS",
+      "SOFTWARE",
+      "SERVICES",
+      "OTHER_LAWFUL"
+    ],
+    "maxRationalSpendUsd": 41969342746311670,
+    "requiredApproval": false,
+    "suggestedActionKind": "FUNDING_UNBLOCKER"
+  },
+  "groundingRefs": [
+    "https://optimitron.earth/tasks",
+    "https://optimitron.earth/scoreboard",
+    "https://optimitron.earth/governments/US/politicians",
+    "https://manual.warondisease.org/knowledge/strategy/earth-optimization-prize.html",
+    "https://optimitron.earth/tasks/"
+  ],
+  "queueRepairPlan": null,
+  "rationale": [
+    "The queue audit is clean, so the optimizer is selecting the highest-value executable work.",
+    "Expected value per hour: 20984671373155836.00 USD.",
+    "Delay cost per day: 42622343231.71 USD.",
+    "Estimated external cost: 165.00 USD.",
+    "Funding gap: 165.00 USD."
+  ],
+  "requiredApproval": false,
+  "task": {
+    "id": "cmntsf8b60019q0pi1ppap8s3",
+    "taskKey": "system:optimize-earth:publish-budget-brief:system-optimize-earth-weaponize-overdue-task-list",
+    "title": "Publish the quantified budget brief for Turn the overdue leader task list into a memetic share-and-pressure machine"
+  }
+}

@@ -3,6 +3,8 @@ import "./load-env";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import {
+  type EarthOperatorTask,
+  selectNextEarthAction,
   reviewEarthQueueAndBuildSystemImprovements,
   reviewTaskTreeBundle,
   type TaskTreeNode,
@@ -23,7 +25,12 @@ import type { ImportedTaskBundle } from "../src/lib/tasks/opg-obg-adapters";
 import { upsertImportedTaskBundle } from "../src/lib/tasks/import-task-bundle.server";
 import { prisma } from "../src/lib/prisma";
 import * as tasks from "../src/lib/tasks.server";
-import { enrichOptimizeEarthBootstrapRoots } from "../src/lib/optimize-earth-page-context";
+import {
+  buildActionFollowThroughRoots,
+  enrichOptimizeEarthBootstrapRoots,
+} from "../src/lib/optimize-earth-page-context";
+import { enrichTaskTreeWithManualGrounding } from "../src/lib/optimize-earth-grounding.server";
+import { getEarthExecutionPolicy } from "../src/lib/tasks/action-policy";
 import { getTreatySignerSlots, syncTreatySigners } from "./sync-treaty-signers";
 
 interface ParsedArgs {
@@ -59,7 +66,7 @@ function inferCategory(node: TaskTreeNode) {
     return TaskCategory.RESEARCH;
   }
 
-  return TaskCategory.TECHNICAL;
+  return TaskCategory.ENGINEERING;
 }
 
 function inferDifficulty(node: TaskTreeNode) {
@@ -104,6 +111,98 @@ function inferTags(node: TaskTreeNode) {
   };
 }
 
+const ACTION_FOLLOW_THROUGH_TASK_PREFIXES = [
+  "system:optimize-earth:action-follow-through:",
+  "system:optimize-earth:publish-budget-brief:",
+  "system:optimize-earth:route-proof-pages-into-funding:",
+  "system:optimize-earth:source-counterparties-and-price-ceiling:",
+  "system:optimize-earth:prepare-approval-packet:",
+] as const;
+
+const ACTION_FOLLOW_THROUGH_SLUG_STEMS = [
+  "system-optimize-earth-action-follow-through-",
+  "system-optimize-earth-publish-budget-brief-",
+  "system-optimize-earth-route-proof-pages-into-funding-",
+  "system-optimize-earth-source-counterparties-and-price-ceiling-",
+  "system-optimize-earth-prepare-approval-packet-",
+] as const;
+
+function isManualSourceUrl(sourceUrl: string | null | undefined) {
+  return typeof sourceUrl === "string" && /^https?:\/\/manual\.warondisease\.org\//i.test(sourceUrl);
+}
+
+function classifySourceArtifact(sourceUrl: string | null | undefined) {
+  if (!sourceUrl) {
+    return {
+      artifactType: SourceArtifactType.EXTERNAL_SOURCE,
+      sourceSystem: SourceSystem.CURATED,
+      sourceUrl: null,
+    };
+  }
+
+  return isManualSourceUrl(sourceUrl)
+    ? {
+        artifactType: SourceArtifactType.MANUAL_SECTION,
+        sourceSystem: SourceSystem.MANUAL,
+        sourceUrl,
+      }
+    : {
+        artifactType: SourceArtifactType.EXTERNAL_SOURCE,
+        sourceSystem: SourceSystem.EXTERNAL,
+        sourceUrl,
+      };
+}
+
+function normalizeContextJson(value: unknown): Record<string, unknown> | null {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+async function getEarthOperatorTasks() {
+  const liveTasks = await tasks.listTasks({
+    limit: 5000,
+    status: TaskStatus.ACTIVE,
+    visibility: "public",
+  });
+
+  return liveTasks.map(
+    (task): EarthOperatorTask => ({
+      ...task,
+      contextJson: normalizeContextJson(task.contextJson),
+    }),
+  );
+}
+
+function isRecursiveActionFollowThroughTaskKey(taskKey: string | null | undefined) {
+  if (!taskKey) {
+    return false;
+  }
+
+  const matchingPrefix = ACTION_FOLLOW_THROUGH_TASK_PREFIXES.find((prefix) => taskKey.startsWith(prefix));
+  if (!matchingPrefix) {
+    return false;
+  }
+
+  const suffix = taskKey.slice(matchingPrefix.length).toLowerCase();
+  return ACTION_FOLLOW_THROUGH_SLUG_STEMS.some((stem) => suffix.includes(stem));
+}
+
+function buildSupplementalSourceArtifacts(node: TaskTreeNode, taskKey: string) {
+  return (node.sourceUrls ?? []).map((sourceUrl, index) => ({
+    ...classifySourceArtifact(sourceUrl),
+    contentHash: null,
+    externalKey: null,
+    payloadJson: {
+      taskTreeNodeId: node.id,
+    },
+    sourceKey: `${isManualSourceUrl(sourceUrl) ? "manual" : "external"}:optimize-earth-bootstrap:${toSourceKey(taskKey)}:${index}`,
+    sourceRef: sourceUrl,
+    title: `${node.title} source ${index + 1}`,
+    versionKey: "current",
+  }));
+}
+
 function buildImportedTaskBundleFromNode(node: TaskTreeNode): ImportedTaskBundle {
   const estimatedEffortHours = Math.max(node.estimatedEffortHours ?? 1, 0.1);
   const expectedValuePerHourUsd = node.impact?.expectedValuePerHourUsd ?? null;
@@ -113,6 +212,7 @@ function buildImportedTaskBundleFromNode(node: TaskTreeNode): ImportedTaskBundle
   const taskKey = node.taskKey ?? `system:bootstrap:${toSourceKey(node.id)}`;
   const primarySourceUrl = node.sourceUrls?.[0] ?? null;
   const hasChildren = (node.children?.length ?? 0) > 0;
+  const primarySourceArtifact = classifySourceArtifact(primarySourceUrl);
 
   return {
     impactEstimate: {
@@ -199,34 +299,21 @@ function buildImportedTaskBundleFromNode(node: TaskTreeNode): ImportedTaskBundle
     },
     sourceArtifacts: [
       {
-        artifactType: SourceArtifactType.MANUAL_SECTION,
+        artifactType: primarySourceArtifact.artifactType,
         contentHash: null,
         externalKey: null,
         payloadJson: {
           taskTreeNodeId: node.id,
           taskTreeTaskKey: taskKey,
         },
-        sourceKey: `manual:optimize-earth-bootstrap:${toSourceKey(taskKey)}`,
-        sourceRef: taskKey,
-        sourceSystem: SourceSystem.MANUAL,
-        sourceUrl: primarySourceUrl,
+        sourceKey: `${primarySourceArtifact.sourceSystem.toLowerCase()}:optimize-earth-bootstrap:${toSourceKey(taskKey)}`,
+        sourceRef: primarySourceUrl ?? taskKey,
+        sourceSystem: primarySourceArtifact.sourceSystem,
+        sourceUrl: primarySourceArtifact.sourceUrl,
         title: `Optimize Earth bootstrap: ${node.title}`,
         versionKey: "v1",
       },
-      ...(node.sourceUrls ?? []).map((sourceUrl, index) => ({
-        artifactType: SourceArtifactType.EXTERNAL_SOURCE,
-        contentHash: null,
-        externalKey: null,
-        payloadJson: {
-          taskTreeNodeId: node.id,
-        },
-        sourceKey: `external:optimize-earth-bootstrap:${toSourceKey(taskKey)}:${index}`,
-        sourceRef: sourceUrl,
-        sourceSystem: SourceSystem.EXTERNAL,
-        sourceUrl,
-        title: `${node.title} source ${index + 1}`,
-        versionKey: "current",
-      })),
+      ...buildSupplementalSourceArtifacts(node, taskKey),
     ],
     task: {
       assigneeAffiliationSnapshot: "Optimize Earth System",
@@ -288,6 +375,20 @@ async function syncSystemTaskNode(
       return;
     }
 
+    if (node.taskKey?.trim()) {
+      const bundle = buildImportedTaskBundleFromNode(node);
+      const result = await upsertImportedTaskBundle(bundle, {
+        isPublic: node.isPublic !== false,
+        parentTaskId,
+      });
+
+      results.push({
+        taskId: result.taskId,
+        taskKey: result.taskKey,
+        title: bundle.task.title,
+      });
+    }
+
     for (const child of node.children ?? []) {
       await syncSystemTaskNode(child, existingTask.id, promotableRefs, results);
     }
@@ -313,6 +414,37 @@ async function syncSystemTaskNode(
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  const recursiveActionFollowThroughTasks = await prisma.task.findMany({
+    where: {
+      deletedAt: null,
+      isPublic: true,
+      status: TaskStatus.ACTIVE,
+      taskKey: {
+        startsWith: "system:optimize-earth:",
+      },
+    },
+    select: {
+      id: true,
+      taskKey: true,
+    },
+  });
+  const recursiveActionFollowThroughTaskIds = recursiveActionFollowThroughTasks
+    .filter((task) => isRecursiveActionFollowThroughTaskKey(task.taskKey))
+    .map((task) => task.id);
+
+  if (recursiveActionFollowThroughTaskIds.length > 0) {
+    await prisma.task.updateMany({
+      where: {
+        id: {
+          in: recursiveActionFollowThroughTaskIds,
+        },
+      },
+      data: {
+        status: TaskStatus.STALE,
+      },
+    });
+  }
+
   const targetSignerCount = getTreatySignerSlots({ roster: "full" }).length;
   const existingSignerCount = await prisma.task.count({
     where: {
@@ -338,13 +470,11 @@ async function main() {
     });
   }
 
-  const liveTasks = await tasks.listTasks({
-    limit: 5000,
-    status: TaskStatus.ACTIVE,
-    visibility: "public",
-  });
+  const liveTasks = await getEarthOperatorTasks();
   const review = reviewEarthQueueAndBuildSystemImprovements(liveTasks);
-  const reviewedRoots = enrichOptimizeEarthBootstrapRoots(review.roots);
+  const reviewedRoots = await enrichTaskTreeWithManualGrounding(
+    enrichOptimizeEarthBootstrapRoots(review.roots),
+  );
   const enrichedReview = reviewTaskTreeBundle({
     existingTasks: liveTasks.map((task) => ({
       assigneeOrganizationId: task.assigneeOrganization?.id ?? null,
@@ -368,12 +498,59 @@ async function main() {
     await syncSystemTaskNode(root, null, promotableRefs, importedSystemTasks);
   }
 
-  const finalLiveTasks = await tasks.listTasks({
-    limit: 5000,
-    status: TaskStatus.ACTIVE,
-    visibility: "public",
+  const finalLiveTasks = await getEarthOperatorTasks();
+  const nextActionBeforeFollowThrough = selectNextEarthAction({
+    agent: {
+      availableHoursPerWeek: 10,
+      interestTags: ["growth", "governance", "systems", "funding", "procurement"],
+      maxTaskDifficulty: "ADVANCED",
+      skillTags: ["typescript", "growth", "research", "policy", "funding", "procurement"],
+    },
+    policy: getEarthExecutionPolicy(),
+    tasks: finalLiveTasks,
   });
-  const finalReview = reviewEarthQueueAndBuildSystemImprovements(finalLiveTasks);
+  const actionFollowThroughRoots = await enrichTaskTreeWithManualGrounding(
+    buildActionFollowThroughRoots({
+      action: nextActionBeforeFollowThrough,
+    }),
+  );
+  const actionFollowThroughReview =
+    actionFollowThroughRoots.length === 0
+      ? null
+      : reviewTaskTreeBundle({
+          existingTasks: finalLiveTasks.map((task) => ({
+            assigneeOrganizationId: task.assigneeOrganization?.id ?? null,
+            assigneePersonId: task.assigneePerson?.id ?? null,
+            id: task.id,
+            roleTitle: task.roleTitle ?? null,
+            status: task.status,
+            taskKey: task.taskKey ?? null,
+            title: task.title,
+          })),
+          roots: actionFollowThroughRoots,
+        });
+  const actionFollowThroughPromotableRefs = new Set(
+    actionFollowThroughReview?.review.decisions
+      .filter((decision) => decision.promotable)
+      .map((decision) => decision.proposalRef) ?? [],
+  );
+  const importedActionFollowThroughTasks: Array<{ taskId: string; taskKey: string; title: string }> = [];
+  for (const root of actionFollowThroughRoots) {
+    await syncSystemTaskNode(root, null, actionFollowThroughPromotableRefs, importedActionFollowThroughTasks);
+  }
+
+  const finalTasksAfterFollowThrough = await getEarthOperatorTasks();
+  const finalReview = reviewEarthQueueAndBuildSystemImprovements(finalTasksAfterFollowThrough);
+  const nextActionAfterFollowThrough = selectNextEarthAction({
+    agent: {
+      availableHoursPerWeek: 10,
+      interestTags: ["growth", "governance", "systems", "funding", "procurement"],
+      maxTaskDifficulty: "ADVANCED",
+      skillTags: ["typescript", "growth", "research", "policy", "funding", "procurement"],
+    },
+    policy: getEarthExecutionPolicy(),
+    tasks: finalTasksAfterFollowThrough,
+  });
 
   const [activePublicTaskCount, treatySignerCount] = await Promise.all([
     prisma.task.count({
@@ -402,14 +579,29 @@ async function main() {
 
   const summary = {
     activePublicTaskCount,
+    actionFollowThroughSummary: actionFollowThroughReview?.review.summary ?? null,
     existingSignerCount,
+    nextActionAfterFollowThrough: {
+      actionKind: nextActionAfterFollowThrough.actionKind,
+      requiredApproval: nextActionAfterFollowThrough.requiredApproval,
+      taskKey: nextActionAfterFollowThrough.task?.taskKey ?? null,
+      title: nextActionAfterFollowThrough.task?.title ?? null,
+    },
+    nextActionBeforeFollowThrough: {
+      actionKind: nextActionBeforeFollowThrough.actionKind,
+      requiredApproval: nextActionBeforeFollowThrough.requiredApproval,
+      taskKey: nextActionBeforeFollowThrough.task?.taskKey ?? null,
+      title: nextActionBeforeFollowThrough.task?.title ?? null,
+    },
     promotableSystemTaskCount: enrichedReview.review.promotableCount,
+    promotableActionFollowThroughCount: actionFollowThroughReview?.review.promotableCount ?? 0,
     queueAuditIssues: finalReview.audit.issues.map((issue) => ({
       code: issue.code,
       message: issue.message,
       severity: issue.severity,
     })),
     reviewedSystemSummary: finalReview.proposal.review.summary,
+    syncedActionFollowThroughTasks: importedActionFollowThroughTasks,
     syncedSystemTasks: importedSystemTasks,
     targetSignerCount,
     treatySignerCount,

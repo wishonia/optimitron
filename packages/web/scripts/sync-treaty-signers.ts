@@ -7,6 +7,7 @@ import "../../data/src/generated/country-panel";
 import { getCountryPanelLatest } from "@optimitron/data";
 import { OrgType } from "@optimitron/db";
 import { findOrCreateOrganization } from "../src/lib/organization.server";
+import { findOrCreatePerson } from "../src/lib/person.server";
 import { prisma } from "../src/lib/prisma";
 import { buildOnePercentTreatyPolicyModelRun } from "../src/lib/tasks/one-percent-treaty-policy-model";
 import { upsertImportedTaskBundle } from "../src/lib/tasks/import-task-bundle.server";
@@ -174,9 +175,19 @@ export async function syncTreatySigners(options: SyncTreatySignerCliOptions) {
           website: slot.governmentWebsite,
         });
 
+        // Create/find Person record so the leader has a profile page
+        const person = await findOrCreatePerson({
+          countryCode: slot.countryCode,
+          currentAffiliation: slot.governmentName,
+          displayName: slot.decisionMakerLabel,
+          isPublicFigure: true,
+          roleTitle: slot.roleTitle,
+          sourceUrl: slot.officialSourceUrl ?? slot.contactUrl ?? null,
+        });
+
         const result = await upsertImportedTaskBundle(signerDraft.bundle, {
           assigneeOrganizationId: organization.id,
-          assigneePersonId: null,
+          assigneePersonId: person.id,
           isPublic: true,
           jurisdictionId: null,
           parentTaskId: parentTask.id,

@@ -1,10 +1,31 @@
 {
-  "activePublicTaskCount": 985,
+  "activePublicTaskCount": 990,
+  "actionFollowThroughSummary": null,
   "existingSignerCount": 195,
+  "nextActionAfterFollowThrough": {
+    "actionKind": "FUNDING_UNBLOCKER",
+    "requiredApproval": false,
+    "taskKey": "system:optimize-earth:publish-budget-brief:system-optimize-earth-weaponize-overdue-task-list",
+    "title": "Publish the quantified budget brief for Turn the overdue leader task list into a memetic share-and-pressure machine"
+  },
+  "nextActionBeforeFollowThrough": {
+    "actionKind": "FUNDING_UNBLOCKER",
+    "requiredApproval": false,
+    "taskKey": "system:optimize-earth:publish-budget-brief:system-optimize-earth-weaponize-overdue-task-list",
+    "title": "Publish the quantified budget brief for Turn the overdue leader task list into a memetic share-and-pressure machine"
+  },
   "promotableSystemTaskCount": 0,
+  "promotableActionFollowThroughCount": 0,
   "queueAuditIssues": [],
   "reviewedSystemSummary": "1 of 1 proposed task cleared promotion review.",
-  "syncedSystemTasks": [],
+  "syncedActionFollowThroughTasks": [],
+  "syncedSystemTasks": [
+    {
+      "taskId": "cmntpp6h20001hcpi5ahulk2s",
+      "taskKey": "system:optimize-earth:improve-queue",
+      "title": "Improve the Optimize Earth task-selection system"
+    }
+  ],
   "targetSignerCount": 195,
   "treatySignerCount": 195
 }
