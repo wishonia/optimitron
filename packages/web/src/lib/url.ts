@@ -1,6 +1,7 @@
 import { getUsernameOrReferralCode } from "@/lib/referral.client";
 import { clientEnv } from "@/lib/env";
 import { ROUTES } from "@/lib/routes";
+import { getConfiguredSiteOrigin } from "@/lib/site";
 
 export function getBaseUrl(): string {
   if (typeof window !== "undefined" && window.location?.origin) {
@@ -11,7 +12,7 @@ export function getBaseUrl(): string {
     return clientEnv.NEXT_PUBLIC_BASE_URL;
   }
 
-  return "http://localhost:3001";
+  return getConfiguredSiteOrigin({ allowLocalFallback: true });
 }
 
 /** Build a referral link: /r/identifier — clean URL, redirects to homepage with ref stored */

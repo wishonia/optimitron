@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import { GameScoreBar } from "@/components/game/GameScoreBar";
+import { getConfiguredSiteOrigin } from "@/lib/site";
 import { DEFAULT_THEME } from "@/lib/theme";
 import { wagmiConfig } from "@/lib/wagmi-config";
 
@@ -57,8 +58,7 @@ const fontVariables = `${dmSans.variable} ${spaceMono.variable} ${sourceSerif4.v
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL ??
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3001"),
+    getConfiguredSiteOrigin({ allowLocalFallback: process.env.NODE_ENV !== "production" }),
   ),
   applicationName: "Optimitron",
   title: "Optimitron — The Evidence-Based Earth Optimization Game",

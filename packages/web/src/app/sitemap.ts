@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
 import { ROUTES } from "@/lib/routes";
+import { getConfiguredSiteOrigin } from "@/lib/site";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL ??
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3001");
+const BASE_URL = getConfiguredSiteOrigin({
+  allowLocalFallback: process.env.NODE_ENV !== "production",
+});
 
 /** Static pages — all public routes from the ROUTES config */
 const STATIC_ROUTES: { path: string; priority: number; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] }[] = [

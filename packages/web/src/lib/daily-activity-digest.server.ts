@@ -7,6 +7,7 @@ import { getProvider, getVoterPrizeTreasuryContract } from "@/lib/contracts/serv
 import { createLogger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { ROUTES } from "@/lib/routes";
+import { getConfiguredSiteOrigin } from "@/lib/site";
 
 const logger = createLogger("daily-activity-digest");
 const DAILY_DIGEST_COLLECTION = "app.bsky.feed.post";
@@ -74,8 +75,7 @@ function getTreasuryChainId() {
 }
 
 function getDigestBaseUrl() {
-  const baseUrl = process.env.NEXTAUTH_URL ?? process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3001";
-  return baseUrl.replace(/\/+$/, "");
+  return getConfiguredSiteOrigin({ allowLocalFallback: true });
 }
 
 function padNumber(value: number) {

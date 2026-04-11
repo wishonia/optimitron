@@ -1,8 +1,8 @@
 import type { EarthNextActionDecision, TaskTreeNode } from "@optimitron/agent";
 import { ROUTES } from "./routes";
 import { slugify } from "./slugify";
+import { absoluteCanonicalSiteUrl } from "./site";
 
-const SITE_BASE_URL = "https://optimitron.earth";
 const EARTH_OPTIMIZATION_PRIZE_URL =
   "https://manual.warondisease.org/knowledge/strategy/earth-optimization-prize.html";
 const INCENTIVE_ALIGNMENT_BONDS_URL =
@@ -26,7 +26,7 @@ interface PageContext {
 }
 
 function absoluteUrl(route: string) {
-  return `${SITE_BASE_URL}${route}`;
+  return absoluteCanonicalSiteUrl(route);
 }
 
 function scaleImpact(

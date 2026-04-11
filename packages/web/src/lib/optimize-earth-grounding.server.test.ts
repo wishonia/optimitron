@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { enrichTaskTreeWithManualGrounding } from "./optimize-earth-grounding.server";
+import { OPTIMITRON_CANONICAL_ORIGIN } from "./site";
 
 describe("enrichTaskTreeWithManualGrounding", () => {
   it("preserves existing refs and appends retrieved manual citations recursively", async () => {
@@ -8,13 +9,13 @@ describe("enrichTaskTreeWithManualGrounding", () => {
         {
           description: "Make the overdue task list more memetic.",
           id: "root_growth",
-          sourceUrls: ["https://optimitron.earth/tasks"],
+          sourceUrls: [`${OPTIMITRON_CANONICAL_ORIGIN}/tasks`],
           title: "Weaponize the overdue task list",
           children: [
             {
               description: "Use the politician pages as pressure surfaces.",
               id: "child_growth",
-              sourceUrls: ["https://optimitron.earth/governments/US/politicians"],
+              sourceUrls: [`${OPTIMITRON_CANONICAL_ORIGIN}/governments/US/politicians`],
               title: "Cross-link politician pages",
             },
           ],
@@ -38,13 +39,13 @@ describe("enrichTaskTreeWithManualGrounding", () => {
 
     expect(roots[0]?.sourceUrls).toEqual(
       expect.arrayContaining([
-        "https://optimitron.earth/tasks",
+        `${OPTIMITRON_CANONICAL_ORIGIN}/tasks`,
         "https://manual.warondisease.org/knowledge/strategy/earth-optimization-prize.html",
       ]),
     );
     expect(roots[0]?.children?.[0]?.sourceUrls).toEqual(
       expect.arrayContaining([
-        "https://optimitron.earth/governments/US/politicians",
+        `${OPTIMITRON_CANONICAL_ORIGIN}/governments/US/politicians`,
         "https://manual.warondisease.org/knowledge/appendix/incentive-alignment-bonds-paper.html",
       ]),
     );

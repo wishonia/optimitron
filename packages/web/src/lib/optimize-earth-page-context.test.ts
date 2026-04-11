@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildActionFollowThroughRoots } from "./optimize-earth-page-context";
+import { OPTIMITRON_CANONICAL_ORIGIN } from "./site";
 
 describe("buildActionFollowThroughRoots", () => {
   it("builds grounded funding follow-through tasks for a budget-blocked top action", () => {
@@ -42,7 +43,7 @@ describe("buildActionFollowThroughRoots", () => {
             counterpartyHints: ["growth-operator"],
             estimatedExternalCostUsd: 500,
             fundingGapUsd: 500,
-            groundingRefs: ["https://optimitron.earth/tasks"],
+            groundingRefs: [`${OPTIMITRON_CANONICAL_ORIGIN}/tasks`],
             lawfulSpendTypes: ["ADS"],
             maxRationalSpendUsd: 500_000,
             procurementPriority: "HIGH",
@@ -56,7 +57,7 @@ describe("buildActionFollowThroughRoots", () => {
           requiredApproval: false,
           suggestedActionKind: "FUNDING_UNBLOCKER",
         },
-        groundingRefs: ["https://optimitron.earth/tasks"],
+        groundingRefs: [`${OPTIMITRON_CANONICAL_ORIGIN}/tasks`],
         queueRepairPlan: null,
         rationale: ["Top task is budget-blocked."],
         requiredApproval: false,
@@ -84,7 +85,10 @@ describe("buildActionFollowThroughRoots", () => {
     );
     expect(
       roots[0]?.children?.every((child) =>
-        (child.sourceUrls ?? []).some((url) => url.includes("optimitron.earth") || url.includes("manual.warondisease.org")),
+        (child.sourceUrls ?? []).some(
+          (url) =>
+            url.includes("optimitron.com") || url.includes("manual.warondisease.org"),
+        ),
       ),
     ).toBe(true);
   });
