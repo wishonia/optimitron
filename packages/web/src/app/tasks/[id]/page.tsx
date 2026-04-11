@@ -7,7 +7,10 @@ import {
 } from "@optimitron/db";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
+import { TaskAssignee } from "@/components/tasks/task-assignee";
 import { TaskCard, type TaskCardTask } from "@/components/tasks/task-card";
+import { TaskImpactStats } from "@/components/tasks/task-impact-stats";
+import { TaskMetadataTags } from "@/components/tasks/task-metadata-tags";
 import { TaskRow, TaskTableHeader } from "@/components/tasks/task-row";
 import { TaskClaimButton } from "@/components/tasks/TaskClaimButton";
 import { TaskCompleteForm } from "@/components/tasks/TaskCompleteForm";
@@ -187,23 +190,12 @@ export default async function TaskDetailPage({
             <span>/</span>
             <span className="text-muted-foreground">{task.title}</span>
           </nav>
-          <div className="flex flex-wrap gap-2">
-            <ArcadeTag>{task.taskKey ?? task.id}</ArcadeTag>
-            <ArcadeTag>{task.category.toLowerCase()}</ArcadeTag>
-            <ArcadeTag>{task.difficulty.toLowerCase()}</ArcadeTag>
-            <ArcadeTag>{getClaimPolicyLabel(task.claimPolicy)}</ArcadeTag>
-            <ArcadeTag>{task.status.toLowerCase()}</ArcadeTag>
-            {task.dueAt ? (
-              <ArcadeTag>
-                {delayStats.isOverdue
-                  ? `overdue ${formatDelayDuration(delayStats.currentDelayDays)}`
-                  : `due ${formatDueDate(task.dueAt)}`}
-              </ArcadeTag>
-            ) : null}
-            {task.estimatedEffortHours != null ? (
-              <ArcadeTag>{`${task.estimatedEffortHours}h`}</ArcadeTag>
-            ) : null}
-          </div>
+          <TaskMetadataTags
+            category={task.category}
+            status={task.status}
+            delayStats={delayStats}
+            dueAt={task.dueAt}
+          />
           <h1 className="text-4xl font-black uppercase leading-tight sm:text-5xl">
             {task.title}
           </h1>
@@ -215,46 +207,12 @@ export default async function TaskDetailPage({
         <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(340px,1fr)]">
           <BrutalCard bgColor="background" padding="lg">
             <div className="space-y-6">
-              {task.assigneePerson || task.assigneeOrganization ? (
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-20 w-20 border-4 border-foreground bg-muted">
-                    <Avatar.Image
-                      alt={targetLabel}
-                      src={task.assigneePerson?.image ?? task.assigneeOrganization?.logo ?? undefined}
-                    />
-                    <Avatar.Fallback className="bg-brutal-pink font-black text-background">
-                      {fallbackInitials || "?"}
-                    </Avatar.Fallback>
-                  </Avatar>
-                  <div className="space-y-1">
-                    <p className="text-sm font-black uppercase text-brutal-pink">
-                      Accountability Target
-                    </p>
-                    <p className="text-2xl font-black">
-                      {task.assigneePerson ? (
-                        <Link
-                          className="underline underline-offset-4"
-                          href={`/people/${task.assigneePerson.id}`}
-                        >
-                          {targetLabel}
-                        </Link>
-                      ) : (
-                        targetLabel
-                      )}
-                      {task.roleTitle ? `, ${task.roleTitle}` : ""}
-                    </p>
-                    {task.assigneeAffiliationSnapshot ||
-                    task.assigneeOrganization?.name ||
-                    task.assigneePerson?.currentAffiliation ? (
-                      <p className="text-sm font-bold text-muted-foreground">
-                        {task.assigneeAffiliationSnapshot ??
-                          task.assigneeOrganization?.name ??
-                          task.assigneePerson?.currentAffiliation}
-                      </p>
-                    ) : null}
-                  </div>
-                </div>
-              ) : null}
+              <TaskAssignee
+                person={task.assigneePerson}
+                organization={task.assigneeOrganization}
+                roleTitle={task.roleTitle}
+                affiliationSnapshot={task.assigneeAffiliationSnapshot}
+              />
 
               {isHarmful ? (
                 <>
@@ -395,88 +353,13 @@ export default async function TaskDetailPage({
                 </>
               ) : (
                 <>
-                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                    <div className="border-4 border-foreground bg-muted/20 p-3">
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                        Delay
-                      </p>
-                      <p className="mt-2 text-2xl font-black uppercase">
-                        {formatDelayDuration(delayStats.currentDelayDays)}
-                      </p>
-                      <p className="text-xs font-bold uppercase text-muted-foreground">
-                        since target date
-                      </p>
-                    </div>
-                    <div className="border-4 border-foreground bg-muted/20 p-3">
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                        Human Lives
-                      </p>
-                      <p className="mt-2 text-2xl font-black uppercase">
-                        {formatCompactCount(delayStats.currentHumanLivesLost)}
-                      </p>
-                      <p className="text-xs font-bold uppercase text-muted-foreground">
-                        delayed so far
-                      </p>
-                    </div>
-                    <div className="border-4 border-foreground bg-muted/20 p-3">
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                        Suffering Hours
-                      </p>
-                      <p className="mt-2 text-2xl font-black uppercase">
-                        {formatCompactCount(delayStats.currentSufferingHoursLost)}
-                      </p>
-                      <p className="text-xs font-bold uppercase text-muted-foreground">
-                        delayed so far
-                      </p>
-                    </div>
-                    <div className="border-4 border-foreground bg-muted/20 p-3">
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                        Economic Loss
-                      </p>
-                      <p className="mt-2 text-2xl font-black uppercase">
-                        {formatCompactCurrency(delayStats.currentEconomicValueUsdLost)}
-                      </p>
-                      <p className="text-xs font-bold uppercase text-muted-foreground">
-                        lost so far
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid gap-3 md:grid-cols-3">
-                    <div className="border-4 border-foreground bg-background p-3">
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                        Per Day
-                      </p>
-                      <p className="mt-2 text-xl font-black uppercase">
-                        {formatCompactCurrency(delayStats.delayEconomicValueUsdLostPerDay)}
-                      </p>
-                      <p className="text-xs font-bold uppercase text-muted-foreground">
-                        economic value lost
-                      </p>
-                    </div>
-                    <div className="border-4 border-foreground bg-background p-3">
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                        Per Day
-                      </p>
-                      <p className="mt-2 text-xl font-black uppercase">
-                        {formatCompactCount(delayStats.delayHumanLivesLostPerDay)}
-                      </p>
-                      <p className="text-xs font-bold uppercase text-muted-foreground">
-                        deaths per day from delay
-                      </p>
-                    </div>
-                    <div className="border-4 border-foreground bg-background p-3">
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                        Per Day
-                      </p>
-                      <p className="mt-2 text-xl font-black uppercase">
-                        {formatCompactCount(delayStats.delaySufferingHoursLostPerDay)}
-                      </p>
-                      <p className="text-xs font-bold uppercase text-muted-foreground">
-                        suffering-hours per day
-                      </p>
-                    </div>
-                  </div>
+                  <TaskImpactStats
+                    delayStats={delayStats}
+                    variant="full"
+                    calculationsUrl={
+                      (task.currentImpactEstimateSet?.assumptionsJson as { calculationsUrl?: string } | null)?.calculationsUrl
+                    }
+                  />
                 </>
               )}
 
@@ -773,46 +656,6 @@ export default async function TaskDetailPage({
           </BrutalCard>
         ) : null}
 
-        {task.childTasks.length > 0 ? (
-          <BrutalCard bgColor="green" padding="lg">
-            <div className="space-y-5">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-black uppercase text-brutal-pink">
-                  Subtask Progress
-                </p>
-                <p className="text-sm font-black uppercase">
-                  {task.childTasks.filter((t: { completedAt: Date | null; status: string }) => t.completedAt != null || t.status === "VERIFIED").length} / {task.childTasks.length} subtasks completed
-                </p>
-              </div>
-              <div className="grid gap-3 md:grid-cols-3">
-                <div className="border-4 border-foreground bg-background p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Deaths From Delay
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">
-                    {formatCompactCount(childDelaySummary.currentHumanLivesLost)}
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-background p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Suffering-Hours
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">
-                    {formatCompactCount(childDelaySummary.currentSufferingHoursLost)}
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-background p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Economic Loss
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">
-                    {formatCompactCurrency(childDelaySummary.currentEconomicValueUsdLost)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </BrutalCard>
-        ) : null}
 
         {viewer?.isAdmin &&
         task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY &&

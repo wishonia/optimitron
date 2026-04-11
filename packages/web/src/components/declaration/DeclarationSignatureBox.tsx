@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/retroui/Button";
 import { Input } from "@/components/retroui/Input";
+import { AuthForm } from "@/components/auth/AuthForm";
 import { storage } from "@/lib/storage";
 import { DECLARATION_SLUG } from "@/lib/declaration";
 
@@ -52,20 +53,7 @@ export function DeclarationSignatureBox() {
         <p className="mb-6 text-base text-white/60 [font-family:var(--v0-font-libre-baskerville)]">
           Please sign in to verify and become a signatory of the Declaration of Optimization.
         </p>
-        <div className="flex flex-col gap-3">
-          <button
-            onClick={() => void signIn("google", { callbackUrl: "/dashboard" })}
-            className="flex items-center justify-center gap-2 rounded border-2 border-white/20 bg-white/10 px-6 py-3 text-sm font-black uppercase text-white transition-colors hover:bg-white/20"
-          >
-            Continue with Google
-          </button>
-          <button
-            onClick={() => void signIn(undefined, { callbackUrl: "/dashboard" })}
-            className="text-sm font-bold text-white/40 transition-colors hover:text-white/70"
-          >
-            Other sign-in options
-          </button>
-        </div>
+        <AuthForm callbackUrl="/dashboard" compact />
       </div>
     );
   }

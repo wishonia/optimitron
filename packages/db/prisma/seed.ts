@@ -770,6 +770,19 @@ async function seedTreatyTasks() {
   await prisma.task.deleteMany({});
   console.log("  ✓ Cleared existing tasks");
 
+  // Create "Humanity" organization as assignee for top-level tasks
+  const humanity = await prisma.organization.upsert({
+    where: { slug: "humanity" },
+    update: {},
+    create: {
+      name: "Humanity",
+      slug: "humanity",
+      type: "OTHER",
+      status: "APPROVED",
+      description: "All 8 billion of us.",
+    },
+  });
+
   // Lifetime impact from parameters (total civilizational acceleration, not annual)
   const totalDalys = DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_DALYS.value; // 565B DALYs
   const totalEconValue = DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_ECONOMIC_VALUE.value; // $84.8Q
@@ -783,7 +796,9 @@ async function seedTreatyTasks() {
   // --- Task 1: Ratify the 1% Treaty ---
   const treatyTask = await createTaskWithImpact({
     task: {
+      id: "1-pct-treaty",
       taskKey: "program:one-percent-treaty:ratify",
+      assigneeOrganizationId: humanity.id,
       title: "Ratify the 1% Treaty",
       description: [
         `Redirect 1% of global military spending ($${(annualFunding / 1e9).toFixed(1)}B/year) into pragmatic clinical trials.`,
@@ -811,13 +826,16 @@ async function seedTreatyTasks() {
       benefitDurationYears: accelerationYears,
     },
     methodologyKey: "treaty-lifetime-parameters",
+    calculationsUrl: "https://manual.WarOnDisease.org/knowledge/economics/1-pct-treaty-impact.html",
   });
   console.log(`  ✓ Task: "${treatyTask.title}" (${treatyTask.id})`);
 
   // --- Task 2: Create the Decentralized FDA ---
   const dfdaTask = await createTaskWithImpact({
     task: {
+      id: "dfda",
       taskKey: "program:dfda:create",
+      assigneeOrganizationId: humanity.id,
       title: "Create the Decentralized FDA",
       description: [
         `Build and fund a decentralized FDA platform ($${(annualFunding / 1e9).toFixed(1)}B/year direct funding).`,
@@ -843,6 +861,7 @@ async function seedTreatyTasks() {
       benefitDurationYears: accelerationYears,
     },
     methodologyKey: "dfda-direct-lifetime-parameters",
+    calculationsUrl: "https://manual.WarOnDisease.org/knowledge/appendix/dfda-impact-paper.html",
   });
   console.log(`  ✓ Task: "${dfdaTask.title}" (${dfdaTask.id})`);
 
@@ -876,6 +895,7 @@ async function seedTreatyTasks() {
 
     await createTaskWithImpact({
       task: {
+        id: `1-pct-treaty-signer-${countryCode.toLowerCase()}`,
         taskKey: `program:one-percent-treaty:signer:${countryCode.toLowerCase()}`,
         parentTaskId: treatyTask.id,
         assigneePersonId: person.id,
@@ -926,6 +946,7 @@ async function createTaskWithImpact(input: {
   };
   methodologyKey: string;
   parameterSetHashSuffix?: string;
+  calculationsUrl?: string;
 }) {
   const task = await prisma.task.create({ data: input.task });
 
@@ -940,6 +961,7 @@ async function createTaskWithImpact(input: {
       methodologyKey: input.methodologyKey,
       parameterSetHash: `seed${input.parameterSetHashSuffix ? `-${input.parameterSetHashSuffix}` : ""}`,
       counterfactualKey: "status-quo",
+      assumptionsJson: input.calculationsUrl ? { calculationsUrl: input.calculationsUrl } : undefined,
     },
   });
 
