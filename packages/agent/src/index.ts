@@ -15,5 +15,6 @@ export * from './treaty-operator.js';
 export * from './earth-operator.js';
 export * from './task-governance.js';
 export * from './task-runtime.js';
+export * from './task-tree.js';
 
 export const VERSION = '0.1.0';

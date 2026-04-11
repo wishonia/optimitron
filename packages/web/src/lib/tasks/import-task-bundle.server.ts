@@ -537,5 +537,8 @@ export async function upsertImportedTaskBundle(
       taskId: task.id,
       taskKey: task.taskKey,
     };
+  }, {
+    maxWait: 10_000,
+    timeout: 30_000,
   });
 }
