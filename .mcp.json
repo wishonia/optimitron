@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "optimitron-tasks": {
+      "command": "npx",
+      "args": ["tsx", "packages/web/scripts/mcp-task-server.ts"],
+      "cwd": "E:\\code\\optimitron"
+    }
+  }
+}
