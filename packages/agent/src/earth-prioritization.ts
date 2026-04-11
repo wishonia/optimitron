@@ -2,6 +2,12 @@ import {
   reviewTaskTreeBundle,
   type TaskTreeNode,
 } from './task-tree.js';
+import {
+  CHAIN_WORLD_LEADER_COUNT,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_ECONOMIC_VALUE,
+  TREATY_PEACE_PLUS_RD_ANNUAL_BENEFITS,
+  type Parameter,
+} from '@optimitron/data/parameters';
 import type { EarthOperatorImpact, EarthOperatorTask } from './earth-operator.js';
 
 export type EarthTaskFamily =
@@ -55,6 +61,20 @@ const ALL_FAMILIES: EarthTaskFamily[] = [
   'treaty-support-evidence',
   'treaty-support-explainer',
 ];
+
+function parameterValue(parameter: Pick<Parameter, 'value'>) {
+  return Number.isFinite(parameter.value) ? parameter.value : 0;
+}
+
+const MODELED_WORLD_LEADER_COUNT = Math.max(1, Math.round(parameterValue(CHAIN_WORLD_LEADER_COUNT)));
+const MODELED_TREATY_MAX_ECONOMIC_VALUE_USD = Math.max(
+  1,
+  parameterValue(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_ECONOMIC_VALUE),
+);
+const MODELED_TREATY_ANNUAL_BENEFITS_USD = Math.max(
+  1,
+  parameterValue(TREATY_PEACE_PLUS_RD_ANNUAL_BENEFITS),
+);
 
 function familyCountsRecord() {
   return Object.fromEntries(ALL_FAMILIES.map((family) => [family, 0])) as Record<EarthTaskFamily, number>;
@@ -121,20 +141,20 @@ function buildTaskImpact(input: {
   delayWeight: number;
   hourlyWeight: number;
 }) {
-  const boundedDelayEconomicValueUsdPerDay = Math.min(
-    5_000_000_000,
-    Math.max(1, input.aggregateDelayEconomicValueUsdPerDay * input.delayWeight),
+  const delayEconomicValueUsdPerDay = Math.max(
+    MODELED_TREATY_ANNUAL_BENEFITS_USD,
+    input.aggregateDelayEconomicValueUsdPerDay * input.delayWeight,
   );
-  const boundedExpectedValuePerHourUsd = Math.min(
-    5_000_000_000,
-    Math.max(1, input.aggregateExpectedValuePerHourUsd * input.hourlyWeight),
+  const expectedValuePerHourUsd = Math.max(
+    MODELED_TREATY_MAX_ECONOMIC_VALUE_USD,
+    input.aggregateExpectedValuePerHourUsd * input.hourlyWeight,
   );
 
   return {
     delayDalysLostPerDay: null,
-    delayEconomicValueUsdLostPerDay: boundedDelayEconomicValueUsdPerDay,
+    delayEconomicValueUsdLostPerDay: delayEconomicValueUsdPerDay,
     expectedValuePerHourDalys: null,
-    expectedValuePerHourUsd: boundedExpectedValuePerHourUsd,
+    expectedValuePerHourUsd,
   };
 }
 
@@ -171,11 +191,11 @@ export function evaluateEarthTaskQueue(tasks: EarthOperatorTask[]): EarthQueueAu
 
   const issues: EarthQueueAuditIssue[] = [];
 
-  if (treatySignerCount > 0 && treatySignerCount <= 20 && taskCount >= treatySignerCount * 5) {
+  if (treatySignerCount > 0 && treatySignerCount < MODELED_WORLD_LEADER_COUNT) {
     issues.push({
       code: 'suspected-treaty-roster-cap',
       message:
-        'The treaty queue appears capped at a small signer subset. Expand beyond the seeded roster so the system can pressure every required signer.',
+        `The treaty queue only covers ${treatySignerCount} signer tasks, but the modeled leader count is ${MODELED_WORLD_LEADER_COUNT}. Expand beyond the seeded subset so the system can pressure every required signer.`,
       severity: 'critical',
     });
   }
@@ -251,7 +271,7 @@ export function buildSystemImprovementTaskTree(input: BuildSystemImprovementTree
       delayWeight: 0.6,
       hourlyWeight: 0.5,
     }),
-    isPublic: false,
+    isPublic: true,
     roleTitle: 'System Operator',
     sourceUrls: ['https://optimitron.com/tasks', 'https://optimitron.com/docs/optimize-earth'],
     status: 'DRAFT',
@@ -279,7 +299,7 @@ export function buildSystemImprovementTaskTree(input: BuildSystemImprovementTree
         delayWeight: 0.9,
         hourlyWeight: 1.2,
       }),
-      isPublic: false,
+      isPublic: true,
       roleTitle: 'System Operator',
       sourceUrls: ['https://optimitron.com/tasks'],
       status: 'DRAFT',
@@ -301,7 +321,7 @@ export function buildSystemImprovementTaskTree(input: BuildSystemImprovementTree
         delayWeight: 0.7,
         hourlyWeight: 1,
       }),
-      isPublic: false,
+      isPublic: true,
       roleTitle: 'System Operator',
       sourceUrls: ['https://optimitron.com/tasks'],
       status: 'DRAFT',
@@ -323,7 +343,7 @@ export function buildSystemImprovementTaskTree(input: BuildSystemImprovementTree
         delayWeight: 0.6,
         hourlyWeight: 0.9,
       }),
-      isPublic: false,
+      isPublic: true,
       roleTitle: 'Growth Operator',
       sourceUrls: ['https://optimitron.com/tasks'],
       status: 'DRAFT',
@@ -345,7 +365,7 @@ export function buildSystemImprovementTaskTree(input: BuildSystemImprovementTree
         delayWeight: 0.5,
         hourlyWeight: 0.8,
       }),
-      isPublic: false,
+      isPublic: true,
       roleTitle: 'System Operator',
       sourceUrls: ['https://optimitron.com/tasks'],
       status: 'DRAFT',
@@ -367,7 +387,7 @@ export function buildSystemImprovementTaskTree(input: BuildSystemImprovementTree
         delayWeight: 0.45,
         hourlyWeight: 0.6,
       }),
-      isPublic: false,
+      isPublic: true,
       roleTitle: 'Outreach Operator',
       sourceUrls: ['https://optimitron.com/tasks'],
       status: 'DRAFT',

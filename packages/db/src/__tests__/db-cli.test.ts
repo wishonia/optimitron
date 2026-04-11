@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyEnvEntries,
+  assertSafeLocalTestDatabaseUrl,
   formatDbCliOutput,
   parseDbCliArgs,
   parseEnvFile,
@@ -57,6 +58,20 @@ describe("resolveDatabaseUrl", () => {
 
   it("throws when DATABASE_URL is unavailable", () => {
     expect(() => resolveDatabaseUrl({}, {}, {})).toThrow("DATABASE_URL is not set");
+  });
+});
+
+describe("assertSafeLocalTestDatabaseUrl", () => {
+  it("accepts localhost database URLs", () => {
+    expect(
+      assertSafeLocalTestDatabaseUrl("postgresql://postgres:postgres@localhost:5432/optimitron"),
+    ).toBe("postgresql://postgres:postgres@localhost:5432/optimitron");
+  });
+
+  it("rejects remote database hosts", () => {
+    expect(() =>
+      assertSafeLocalTestDatabaseUrl("postgresql://user:pass@ep-foo-bar.us-east-1.aws.neon.tech/db"),
+    ).toThrow('Refusing to run DB tests against non-local database host "ep-foo-bar.us-east-1.aws.neon.tech".');
   });
 });
 

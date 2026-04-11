@@ -15,7 +15,9 @@ import { countTaskContactActions } from "@/lib/tasks/contact.server";
 import {
   DEFAULT_TASK_IMPACT_FRAME,
   deriveImpactRatios,
+  scaleImpactFrameSummary,
   selectImpactFrame,
+  sumImpactFrameSummaries,
   type TaskImpactSelection,
 } from "@/lib/tasks/impact";
 import {
@@ -215,7 +217,47 @@ const taskListSelect = {
   isPublic: true,
   maxClaims: true,
   ownerUserId: true,
+  outgoingEdges: {
+    where: {
+      deletedAt: null,
+      edgeType: { in: ["BLOCKS", "DEPENDS_ON"] },
+    },
+    select: {
+      edgeType: true,
+      toTask: {
+        select: {
+          currentImpactEstimateSet: {
+            select: impactEstimateSetSelect,
+          },
+          estimatedEffortHours: true,
+          id: true,
+          status: true,
+          taskKey: true,
+          title: true,
+        },
+      },
+    },
+  },
   roleTitle: true,
+  parentTask: {
+    select: {
+      childTasks: {
+        where: {
+          deletedAt: null,
+          isPublic: true,
+        },
+        select: {
+          id: true,
+        },
+      },
+      currentImpactEstimateSet: {
+        select: impactEstimateSetSelect,
+      },
+      id: true,
+      taskKey: true,
+      title: true,
+    },
+  },
   parentTaskId: true,
   skillTags: true,
   sourceArtifacts: {
@@ -286,12 +328,6 @@ const taskDetailSelect = {
     orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
     select: taskMilestoneSelect,
   },
-  parentTask: {
-    select: {
-      id: true,
-      title: true,
-    },
-  },
   verifiedByUser: {
     select: {
       id: true,
@@ -333,6 +369,77 @@ function getPrimaryTaskSourceArtifact(task: TaskListItem | TaskDetailItem) {
   );
 }
 
+function buildParentInheritedImpactFrame(
+  task: TaskListItem | TaskDetailItem,
+  options?: {
+    frameKey?: TaskImpactFrameKey | string | null;
+  },
+) {
+  const parentTask = task.parentTask;
+  if (!parentTask?.currentImpactEstimateSet) {
+    return null;
+  }
+
+  const parentFrame = selectImpactFrame(
+    parentTask.currentImpactEstimateSet,
+    options?.frameKey ?? DEFAULT_TASK_IMPACT_FRAME,
+  ).selectedFrame;
+
+  if (!parentFrame) {
+    return null;
+  }
+
+  const siblingCount = Math.max(parentTask.childTasks.length, 1);
+  const inheritedShare = 1 / siblingCount;
+
+  return scaleImpactFrameSummary(parentFrame, inheritedShare, {
+    customFrameLabel: `Inherited from parent task ${parentTask.title}`,
+    estimatedCashCostUsdBase: null,
+    estimatedCashCostUsdHigh: null,
+    estimatedCashCostUsdLow: null,
+    estimatedEffortHoursBase: task.estimatedEffortHours ?? parentFrame.estimatedEffortHoursBase,
+    estimatedEffortHoursHigh: task.estimatedEffortHours ?? parentFrame.estimatedEffortHoursHigh,
+    estimatedEffortHoursLow: task.estimatedEffortHours ?? parentFrame.estimatedEffortHoursLow,
+    frameSlug: `${parentFrame.frameSlug}-parent-share`,
+    metrics: [],
+  });
+}
+
+function buildDownstreamUnlockedImpactFrame(
+  task: TaskListItem | TaskDetailItem,
+  options?: {
+    frameKey?: TaskImpactFrameKey | string | null;
+  },
+) {
+  const downstreamFrames = task.outgoingEdges
+    .map((edge) =>
+      selectImpactFrame(
+        edge.toTask.currentImpactEstimateSet,
+        options?.frameKey ?? DEFAULT_TASK_IMPACT_FRAME,
+      ).selectedFrame,
+    )
+    .filter((frame): frame is NonNullable<typeof frame> => frame != null);
+
+  if (downstreamFrames.length === 0) {
+    return null;
+  }
+
+  return sumImpactFrameSummaries(downstreamFrames, {
+    customFrameLabel: `Downstream value unlocked by ${task.title}`,
+    estimatedCashCostUsdBase: null,
+    estimatedCashCostUsdHigh: null,
+    estimatedCashCostUsdLow: null,
+    estimatedEffortHoursBase:
+      task.estimatedEffortHours ?? downstreamFrames[0]?.estimatedEffortHoursBase ?? null,
+    estimatedEffortHoursHigh:
+      task.estimatedEffortHours ?? downstreamFrames[0]?.estimatedEffortHoursHigh ?? null,
+    estimatedEffortHoursLow:
+      task.estimatedEffortHours ?? downstreamFrames[0]?.estimatedEffortHoursLow ?? null,
+    frameSlug: `downstream-unlocked-${task.id}`,
+    metrics: [],
+  });
+}
+
 function decorateTask<T extends TaskListItem | TaskDetailItem>(
   task: T,
   options?: {
@@ -358,12 +465,61 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
   sourceUrl: string | null;
   viewerHasClaim: boolean;
 } {
-  const impactSelection = selectImpactFrame(
+  const directImpactSelection = selectImpactFrame(
     task.currentImpactEstimateSet,
     options?.frameKey ?? DEFAULT_TASK_IMPACT_FRAME,
   );
+  const inheritedParentFrame =
+    directImpactSelection.selectedFrame == null ? buildParentInheritedImpactFrame(task, options) : null;
+  const downstreamUnlockedFrame = buildDownstreamUnlockedImpactFrame(task, options);
+  const selectedImpactFrame = sumImpactFrameSummaries(
+    [
+      directImpactSelection.selectedFrame,
+      inheritedParentFrame,
+      downstreamUnlockedFrame,
+    ].filter((frame): frame is NonNullable<typeof frame> => frame != null),
+    directImpactSelection.selectedFrame
+      ? {
+          customFrameLabel: directImpactSelection.selectedFrame.customFrameLabel,
+          estimatedCashCostUsdBase: task.actualCashCostUsd ?? directImpactSelection.selectedFrame.estimatedCashCostUsdBase,
+          estimatedEffortHoursBase: task.estimatedEffortHours ?? directImpactSelection.selectedFrame.estimatedEffortHoursBase,
+          frameKey: directImpactSelection.selectedFrame.frameKey,
+          frameSlug: directImpactSelection.selectedFrame.frameSlug,
+          metrics: directImpactSelection.selectedFrame.metrics,
+        }
+      : {
+          customFrameLabel: inheritedParentFrame?.customFrameLabel ?? downstreamUnlockedFrame?.customFrameLabel ?? null,
+          estimatedCashCostUsdBase: task.actualCashCostUsd ?? null,
+          estimatedCashCostUsdHigh: null,
+          estimatedCashCostUsdLow: null,
+          estimatedEffortHoursBase:
+            task.estimatedEffortHours ??
+            inheritedParentFrame?.estimatedEffortHoursBase ??
+            downstreamUnlockedFrame?.estimatedEffortHoursBase ??
+            null,
+          estimatedEffortHoursHigh:
+            task.estimatedEffortHours ??
+            inheritedParentFrame?.estimatedEffortHoursHigh ??
+            downstreamUnlockedFrame?.estimatedEffortHoursHigh ??
+            null,
+          estimatedEffortHoursLow:
+            task.estimatedEffortHours ??
+            inheritedParentFrame?.estimatedEffortHoursLow ??
+            downstreamUnlockedFrame?.estimatedEffortHoursLow ??
+            null,
+          frameKey:
+            inheritedParentFrame?.frameKey ??
+            downstreamUnlockedFrame?.frameKey ??
+            DEFAULT_TASK_IMPACT_FRAME,
+          frameSlug:
+            inheritedParentFrame?.frameSlug ??
+            downstreamUnlockedFrame?.frameSlug ??
+            "effective-impact",
+          metrics: [],
+        },
+  );
   const primarySourceArtifact = getPrimaryTaskSourceArtifact(task);
-  const derivedImpact = deriveImpactRatios(impactSelection.selectedFrame);
+  const derivedImpact = deriveImpactRatios(selectedImpactFrame);
   const decoratedChildTasks: unknown[] | undefined =
     "childTasks" in task
       ? task.childTasks.map((childTask) => decorateTask(childTask, options))
@@ -377,15 +533,18 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
     blockerStatuses,
     ...(decoratedChildTasks ? { childTasks: decoratedChildTasks } : {}),
     impact: {
-      availableFrames: impactSelection.availableFrames,
-      confidenceSummary: impactSelection.selectedFrame?.summaryStatsJson ?? null,
-      currentSet: impactSelection.currentSet,
-      selectedFrame: impactSelection.selectedFrame,
-      selectedMetrics: impactSelection.metricsByKey,
+      availableFrames: directImpactSelection.availableFrames,
+      confidenceSummary: selectedImpactFrame?.summaryStatsJson ?? null,
+      currentSet: directImpactSelection.currentSet,
+      selectedFrame: selectedImpactFrame,
+      selectedMetrics:
+        selectedImpactFrame?.metrics != null
+          ? Object.fromEntries(selectedImpactFrame.metrics.map((metric) => [metric.metricKey, metric]))
+          : directImpactSelection.metricsByKey,
       ...derivedImpact,
     },
     primarySourceArtifact,
-    selectedImpactFrame: impactSelection.selectedFrame,
+    selectedImpactFrame,
     sourceUrl: primarySourceArtifact?.sourceUrl ?? null,
     viewerHasClaim: hasViewerClaim(task, options?.userId ?? null),
   } as T & {

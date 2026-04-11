@@ -5,7 +5,9 @@ import {
   deriveImpactRatios,
   getNormalizedImpactComponents,
   getPrimarySourceArtifact,
+  scaleImpactFrameSummary,
   selectImpactFrame,
+  sumImpactFrameSummaries,
   type TaskImpactEstimateSetSummary,
 } from "./impact";
 
@@ -184,5 +186,38 @@ describe("impact helpers", () => {
 
     expect(primary?.sourceKey).toBe("opg:test");
     expect(primary?.sourceUrl).toBe("https://opg.example/report");
+  });
+
+  it("scales an impact frame summary for inherited child value", () => {
+    const scaled = scaleImpactFrameSummary(baseEstimateSet.frames[1], 0.25, {
+      estimatedEffortHoursBase: 0.25,
+      frameSlug: "twenty-year-child-share",
+      metrics: [],
+    });
+
+    expect(scaled.expectedEconomicValueUsdBase).toBe(1_250_000);
+    expect(scaled.delayEconomicValueUsdLostPerDayBase).toBe(12_500);
+    expect(scaled.estimatedEffortHoursBase).toBe(0.25);
+    expect(scaled.frameSlug).toBe("twenty-year-child-share");
+  });
+
+  it("sums impact frames for downstream unlocked value", () => {
+    const merged = sumImpactFrameSummaries(
+      [
+        baseEstimateSet.frames[0],
+        scaleImpactFrameSummary(baseEstimateSet.frames[1], 0.5, {
+          metrics: [],
+        }),
+      ],
+      {
+        estimatedEffortHoursBase: 1,
+        frameSlug: "aggregated",
+      },
+    );
+
+    expect(merged?.expectedEconomicValueUsdBase).toBe(2_700_000);
+    expect(merged?.delayEconomicValueUsdLostPerDayBase).toBe(35_000);
+    expect(merged?.estimatedEffortHoursBase).toBe(1);
+    expect(merged?.frameSlug).toBe("aggregated");
   });
 });

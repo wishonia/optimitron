@@ -6,7 +6,6 @@ import {
 import {
   deriveImpactRatios,
   getNormalizedImpactComponents,
-  scoreImpactFrame,
   type TaskImpactFrameSummary,
 } from "@/lib/tasks/impact";
 
@@ -166,9 +165,10 @@ export function scoreTaskForUser(task: RankableTask, user: RankableUser) {
     0.3 * interestScore +
     0.15 * difficultyScore +
     0.05 * effortScore;
-  const impactScore = scoreImpactFrame(task.selectedImpactFrame);
+  const impactScore = scoreTaskForAccountability(task);
+  const capabilityMultiplier = 0.65 + 0.35 * fitScore;
 
-  return fitScore * impactScore;
+  return impactScore * capabilityMultiplier;
 }
 
 export function scoreTaskForAccountability(task: RankableTask) {
@@ -198,6 +198,22 @@ export function rankTasksForUser<T extends RankableTask>(
       score: scoreTaskForUser(task, user),
       task,
     }))
-    .sort((left, right) => right.score - left.score)
+    .sort((left, right) => {
+      if (right.score !== left.score) {
+        return right.score - left.score;
+      }
+
+      const rightAccountability = scoreTaskForAccountability(right.task);
+      const leftAccountability = scoreTaskForAccountability(left.task);
+      if (rightAccountability !== leftAccountability) {
+        return rightAccountability - leftAccountability;
+      }
+
+      const rightValuePerHour =
+        deriveImpactRatios(right.task.selectedImpactFrame).expectedValuePerHourUsd ?? 0;
+      const leftValuePerHour =
+        deriveImpactRatios(left.task.selectedImpactFrame).expectedValuePerHourUsd ?? 0;
+      return rightValuePerHour - leftValuePerHour;
+    })
     .slice(0, limit);
 }

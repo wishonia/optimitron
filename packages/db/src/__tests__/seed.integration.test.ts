@@ -2,11 +2,15 @@ import { afterAll, describe, expect, it } from "vitest";
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { disconnectSeedClient, seedDatabase } from "../../prisma/seed.ts";
+import { assertSafeLocalTestDatabaseUrl } from "../db-cli.js";
 
-const describeIfDatabase = process.env.DATABASE_URL ? describe : describe.skip;
+const databaseUrl = process.env.DATABASE_URL
+  ? assertSafeLocalTestDatabaseUrl(process.env.DATABASE_URL)
+  : null;
+const describeIfDatabase = databaseUrl ? describe : describe.skip;
 
 describeIfDatabase("seedDatabase", () => {
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+  const adapter = new PrismaPg({ connectionString: databaseUrl! });
   const prisma = new PrismaClient({ adapter });
 
   afterAll(async () => {

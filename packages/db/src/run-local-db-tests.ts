@@ -3,7 +3,10 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client.js";
-import { DEFAULT_LOCAL_DATABASE_URL } from "./db-cli.js";
+import {
+  assertSafeLocalTestDatabaseUrl,
+  DEFAULT_LOCAL_DATABASE_URL,
+} from "./db-cli.js";
 
 const currentDir = dirname(fileURLToPath(import.meta.url));
 const packageRoot = resolve(currentDir, "..");
@@ -73,8 +76,9 @@ async function ensureDatabaseExists(databaseUrl: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  const databaseUrl =
-    process.env["OPTIMITRON_TEST_DATABASE_URL"] ?? DEFAULT_LOCAL_DATABASE_URL;
+  const databaseUrl = assertSafeLocalTestDatabaseUrl(
+    process.env["OPTIMITRON_TEST_DATABASE_URL"] ?? DEFAULT_LOCAL_DATABASE_URL,
+  );
   const env = {
     ...process.env,
     DATABASE_URL: databaseUrl,

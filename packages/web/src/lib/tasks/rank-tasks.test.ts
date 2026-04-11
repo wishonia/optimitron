@@ -102,6 +102,26 @@ describe("rankTasksForUser", () => {
     expect(ranked[1]?.task).toBe(weakFitTask);
   });
 
+  it("prioritizes much higher-value executable work over a merely better fit", () => {
+    const modestFitHugeImpactTask = {
+      ...weakFitTask,
+      difficulty: TaskDifficulty.INTERMEDIATE,
+      estimatedEffortHours: 4,
+      selectedImpactFrame: {
+        ...weakFitTask.selectedImpactFrame,
+        delayDalysLostPerDayBase: 50_000,
+        delayEconomicValueUsdLostPerDayBase: 20_000_000_000,
+        estimatedEffortHoursBase: 4,
+        expectedDalysAvertedBase: 5_000_000,
+        expectedEconomicValueUsdBase: 80_000_000_000_000,
+      },
+    };
+
+    const ranked = rankTasksForUser([strongFitTask, modestFitHugeImpactTask], user, 2);
+
+    expect(ranked[0]?.task).toBe(modestFitHugeImpactTask);
+  });
+
   it("enforces claim-capacity constraints before ranking", () => {
     expect(
       canTaskAcceptMoreClaims({

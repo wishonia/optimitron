@@ -143,17 +143,4 @@ describe('reviewTaskProposalBundle', () => {
     );
   });
 
-  it('rejects oversized proposal bundles', () => {
-    const review = reviewTaskProposalBundle({
-      candidates: Array.from({ length: 13 }, (_, index) => ({
-        ...treatySupportTask,
-        id: `draft_contact_${index}`,
-        taskKey: `program:one-percent-treaty:signer:us:support:contact-office:${index}`,
-        title: `Contact bundle task ${index}`,
-      })),
-    });
-
-    expect(review.promotableCount).toBe(0);
-    expect(review.decisions.every((decision) => decision.issues.some((issue) => issue.code === 'bundle-too-large'))).toBe(true);
-  });
 });

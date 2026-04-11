@@ -16,6 +16,7 @@ const repoEnvPath = resolve(currentDir, "../../../.env");
 const packageEnvPath = resolve(currentDir, "../.env");
 export const DEFAULT_LOCAL_DATABASE_URL =
   "postgresql://postgres:postgres@localhost:5432/optimitron";
+const LOCAL_DATABASE_HOSTNAMES = new Set(["localhost", "127.0.0.1", "::1"]);
 
 export function parseEnvFile(content: string): Record<string, string> {
   const entries: Record<string, string> = {};
@@ -67,6 +68,29 @@ export function resolveDatabaseUrl(
   if (!databaseUrl) {
     throw new Error(
       "DATABASE_URL is not set. Checked process.env, ../../.env, and ../.env.",
+    );
+  }
+
+  return databaseUrl;
+}
+
+export function assertSafeLocalTestDatabaseUrl(databaseUrl: string): string {
+  let parsed: URL;
+  try {
+    parsed = new URL(databaseUrl);
+  } catch {
+    throw new Error("Test DATABASE_URL is not a valid URL.");
+  }
+
+  if (parsed.protocol !== "postgres:" && parsed.protocol !== "postgresql:") {
+    throw new Error(
+      `Refusing to run DB tests against unsupported protocol ${parsed.protocol}.`,
+    );
+  }
+
+  if (!LOCAL_DATABASE_HOSTNAMES.has(parsed.hostname)) {
+    throw new Error(
+      `Refusing to run DB tests against non-local database host "${parsed.hostname}".`,
     );
   }
 

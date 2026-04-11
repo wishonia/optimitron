@@ -183,6 +183,123 @@ export function deriveImpactRatios(frame: TaskImpactFrameSummary | null | undefi
   };
 }
 
+type NumericFrameKey =
+  | "delayDalysLostPerDayBase"
+  | "delayDalysLostPerDayHigh"
+  | "delayDalysLostPerDayLow"
+  | "delayEconomicValueUsdLostPerDayBase"
+  | "delayEconomicValueUsdLostPerDayHigh"
+  | "delayEconomicValueUsdLostPerDayLow"
+  | "estimatedCashCostUsdBase"
+  | "estimatedCashCostUsdHigh"
+  | "estimatedCashCostUsdLow"
+  | "estimatedEffortHoursBase"
+  | "estimatedEffortHoursHigh"
+  | "estimatedEffortHoursLow"
+  | "expectedDalysAvertedBase"
+  | "expectedDalysAvertedHigh"
+  | "expectedDalysAvertedLow"
+  | "expectedEconomicValueUsdBase"
+  | "expectedEconomicValueUsdHigh"
+  | "expectedEconomicValueUsdLow"
+  | "medianHealthyLifeYearsEffectBase"
+  | "medianHealthyLifeYearsEffectHigh"
+  | "medianHealthyLifeYearsEffectLow"
+  | "medianIncomeGrowthEffectPpPerYearBase"
+  | "medianIncomeGrowthEffectPpPerYearHigh"
+  | "medianIncomeGrowthEffectPpPerYearLow"
+  | "successProbabilityBase"
+  | "successProbabilityHigh"
+  | "successProbabilityLow";
+
+const NUMERIC_FRAME_KEYS: NumericFrameKey[] = [
+  "delayDalysLostPerDayBase",
+  "delayDalysLostPerDayHigh",
+  "delayDalysLostPerDayLow",
+  "delayEconomicValueUsdLostPerDayBase",
+  "delayEconomicValueUsdLostPerDayHigh",
+  "delayEconomicValueUsdLostPerDayLow",
+  "estimatedCashCostUsdBase",
+  "estimatedCashCostUsdHigh",
+  "estimatedCashCostUsdLow",
+  "estimatedEffortHoursBase",
+  "estimatedEffortHoursHigh",
+  "estimatedEffortHoursLow",
+  "expectedDalysAvertedBase",
+  "expectedDalysAvertedHigh",
+  "expectedDalysAvertedLow",
+  "expectedEconomicValueUsdBase",
+  "expectedEconomicValueUsdHigh",
+  "expectedEconomicValueUsdLow",
+  "medianHealthyLifeYearsEffectBase",
+  "medianHealthyLifeYearsEffectHigh",
+  "medianHealthyLifeYearsEffectLow",
+  "medianIncomeGrowthEffectPpPerYearBase",
+  "medianIncomeGrowthEffectPpPerYearHigh",
+  "medianIncomeGrowthEffectPpPerYearLow",
+  "successProbabilityBase",
+  "successProbabilityHigh",
+  "successProbabilityLow",
+];
+
+function scaleValue(value: number | null | undefined, factor: number) {
+  return value == null ? null : value * factor;
+}
+
+function sumValues(values: Array<number | null | undefined>) {
+  const presentValues = values.filter((value): value is number => value != null);
+  if (presentValues.length === 0) {
+    return null;
+  }
+
+  return presentValues.reduce((sum, value) => sum + value, 0);
+}
+
+export function scaleImpactFrameSummary(
+  frame: TaskImpactFrameSummary,
+  factor: number,
+  overrides?: Partial<TaskImpactFrameSummary>,
+): TaskImpactFrameSummary {
+  const scaled = { ...frame };
+
+  for (const key of NUMERIC_FRAME_KEYS) {
+    scaled[key] = scaleValue(frame[key], factor) as TaskImpactFrameSummary[typeof key];
+  }
+
+  return {
+    ...scaled,
+    customFrameLabel:
+      overrides?.customFrameLabel ?? frame.customFrameLabel ?? `Scaled ${frame.frameSlug}`,
+    metrics: overrides?.metrics ?? frame.metrics,
+    summaryStatsJson: overrides?.summaryStatsJson ?? frame.summaryStatsJson,
+    ...overrides,
+  };
+}
+
+export function sumImpactFrameSummaries(
+  frames: TaskImpactFrameSummary[],
+  overrides?: Partial<TaskImpactFrameSummary>,
+): TaskImpactFrameSummary | null {
+  if (frames.length === 0) {
+    return null;
+  }
+
+  const seed = frames[0]!;
+  const merged = { ...seed };
+
+  for (const key of NUMERIC_FRAME_KEYS) {
+    merged[key] = sumValues(frames.map((frame) => frame[key])) as TaskImpactFrameSummary[typeof key];
+  }
+
+  return {
+    ...merged,
+    customFrameLabel: overrides?.customFrameLabel ?? seed.customFrameLabel ?? "Aggregated impact",
+    metrics: overrides?.metrics ?? [],
+    summaryStatsJson: overrides?.summaryStatsJson ?? null,
+    ...overrides,
+  };
+}
+
 function normalizeLog(value: number, logScale: number) {
   if (!Number.isFinite(value) || value <= 0) {
     return 0;
