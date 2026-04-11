@@ -11,6 +11,7 @@ import {
 import { findOrCreateOrganization } from "@/lib/organization.server";
 import { findOrCreatePerson } from "@/lib/person.server";
 import { prisma } from "@/lib/prisma";
+import { canonicalizeSiteUrl } from "@/lib/site";
 import { countTaskContactActions } from "@/lib/tasks/contact.server";
 import {
   DEFAULT_TASK_IMPACT_FRAME,
@@ -377,6 +378,32 @@ function getPrimaryTaskSourceArtifact(task: TaskListItem | TaskDetailItem) {
   );
 }
 
+function normalizeTaskContextJson(contextJson: Prisma.JsonValue) {
+  if (contextJson == null || typeof contextJson !== "object" || Array.isArray(contextJson)) {
+    return contextJson;
+  }
+
+  const record = { ...(contextJson as Record<string, unknown>) };
+  if (Array.isArray(record.sourceUrls)) {
+    record.sourceUrls = record.sourceUrls.map((value) =>
+      typeof value === "string" ? canonicalizeSiteUrl(value) : value,
+    );
+  }
+
+  return record;
+}
+
+function normalizeSourceArtifact<T extends { sourceRef: string | null; sourceUrl: string | null }>(artifact: T) {
+  return {
+    ...artifact,
+    sourceRef:
+      typeof artifact.sourceRef === "string" && /^https?:\/\//i.test(artifact.sourceRef)
+        ? canonicalizeSiteUrl(artifact.sourceRef)
+        : artifact.sourceRef,
+    sourceUrl: canonicalizeSiteUrl(artifact.sourceUrl),
+  };
+}
+
 function buildParentInheritedImpactFrame(
   task: TaskListItem | TaskDetailItem,
   options?: {
@@ -595,7 +622,6 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
           metrics: [],
         },
   );
-  const primarySourceArtifact = getPrimaryTaskSourceArtifact(task);
   const derivedImpact = deriveImpactRatios(selectedImpactFrame);
   const decoratedChildTasks: unknown[] | undefined =
     "childTasks" in task
@@ -603,6 +629,14 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
       : undefined;
 
   const blockerStatuses = task.incomingEdges.map((edge) => edge.fromTask.status as TaskStatus);
+  const normalizedSourceArtifacts = task.sourceArtifacts.map((entry) => ({
+    ...entry,
+    sourceArtifact: normalizeSourceArtifact(entry.sourceArtifact),
+  }));
+  const normalizedPrimarySourceArtifact =
+    normalizedSourceArtifacts.find((entry) => entry.isPrimary)?.sourceArtifact ??
+    normalizedSourceArtifacts[0]?.sourceArtifact ??
+    null;
 
   return {
     ...task,
@@ -610,6 +644,8 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
     activeChildTaskCount: task._count.childTasks,
     blockerStatuses,
     ...(decoratedChildTasks ? { childTasks: decoratedChildTasks } : {}),
+    contactUrl: canonicalizeSiteUrl(task.contactUrl),
+    contextJson: normalizeTaskContextJson(task.contextJson),
     impact: {
       availableFrames: directImpactSelection.availableFrames,
       confidenceSummary: selectedImpactFrame?.summaryStatsJson ?? null,
@@ -621,11 +657,12 @@ function decorateTask<T extends TaskListItem | TaskDetailItem>(
           : directImpactSelection.metricsByKey,
       ...derivedImpact,
     },
-    primarySourceArtifact,
+    primarySourceArtifact: normalizedPrimarySourceArtifact,
     selectedImpactFrame,
-    sourceUrl: primarySourceArtifact?.sourceUrl ?? null,
+    sourceArtifacts: normalizedSourceArtifacts,
+    sourceUrl: normalizedPrimarySourceArtifact?.sourceUrl ?? null,
     viewerHasClaim: hasViewerClaim(task, options?.userId ?? null),
-  } as T & {
+  } as unknown as T & {
     activeClaimCount: number;
     activeChildTaskCount: number;
     blockerStatuses: TaskStatus[];

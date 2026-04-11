@@ -3,16 +3,16 @@
   "actionFollowThroughSummary": null,
   "existingSignerCount": 195,
   "nextActionAfterFollowThrough": {
-    "actionKind": "FUNDING_UNBLOCKER",
+    "actionKind": "EXECUTE_DIRECT",
     "requiredApproval": false,
-    "taskKey": "system:optimize-earth:publish-budget-brief:system-optimize-earth-weaponize-overdue-task-list",
-    "title": "Publish the quantified budget brief for Turn the overdue leader task list into a memetic share-and-pressure machine"
+    "taskKey": "system:optimize-earth:ground-task-generation-in-existing-pages-and-manual",
+    "title": "Ground task generation in existing pages and the Wishonia/manual context"
   },
   "nextActionBeforeFollowThrough": {
-    "actionKind": "FUNDING_UNBLOCKER",
+    "actionKind": "EXECUTE_DIRECT",
     "requiredApproval": false,
-    "taskKey": "system:optimize-earth:publish-budget-brief:system-optimize-earth-weaponize-overdue-task-list",
-    "title": "Publish the quantified budget brief for Turn the overdue leader task list into a memetic share-and-pressure machine"
+    "taskKey": "system:optimize-earth:ground-task-generation-in-existing-pages-and-manual",
+    "title": "Ground task generation in existing pages and the Wishonia/manual context"
   },
   "promotableSystemTaskCount": 0,
   "promotableActionFollowThroughCount": 0,

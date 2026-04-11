@@ -1,11 +1,11 @@
 {
-  "actionKind": "FUNDING_UNBLOCKER",
+  "actionKind": "EXECUTE_DIRECT",
   "auditIssues": [],
-  "autoExecutable": false,
+  "autoExecutable": true,
   "economics": {
-    "estimatedExternalCostUsd": 165,
-    "expectedValuePerHourUsd": 20984671373155836,
-    "fundingGapUsd": 165,
+    "estimatedExternalCostUsd": null,
+    "expectedValuePerHourUsd": 42393275501324920,
+    "fundingGapUsd": 0,
     "lawfulSpendTypes": [
       "LABOR",
       "COMPUTE",
@@ -14,29 +14,28 @@
       "SERVICES",
       "OTHER_LAWFUL"
     ],
-    "maxRationalSpendUsd": 41969342746311670,
+    "maxRationalSpendUsd": 84786551002649840,
     "requiredApproval": false,
-    "suggestedActionKind": "FUNDING_UNBLOCKER"
+    "suggestedActionKind": "EXECUTE_DIRECT"
   },
   "groundingRefs": [
-    "https://optimitron.earth/tasks",
-    "https://optimitron.earth/scoreboard",
-    "https://optimitron.earth/governments/US/politicians",
-    "https://manual.warondisease.org/knowledge/strategy/earth-optimization-prize.html",
-    "https://optimitron.earth/tasks/"
+    "https://optimitron.com/tasks",
+    "https://optimitron.com/governments",
+    "https://optimitron.com/governments/US/politicians",
+    "https://optimitron.com/video",
+    "https://optimitron.com/wishonia",
+    "https://manual.warondisease.org/"
   ],
   "queueRepairPlan": null,
   "rationale": [
     "The queue audit is clean, so the optimizer is selecting the highest-value executable work.",
-    "Expected value per hour: 20984671373155836.00 USD.",
-    "Delay cost per day: 42622343231.71 USD.",
-    "Estimated external cost: 165.00 USD.",
-    "Funding gap: 165.00 USD."
+    "Expected value per hour: 42393275501324920.00 USD.",
+    "Delay cost per day: 86105743902.44 USD."
   ],
   "requiredApproval": false,
   "task": {
-    "id": "cmntsf8b60019q0pi1ppap8s3",
-    "taskKey": "system:optimize-earth:publish-budget-brief:system-optimize-earth-weaponize-overdue-task-list",
-    "title": "Publish the quantified budget brief for Turn the overdue leader task list into a memetic share-and-pressure machine"
+    "id": "cmntppcn40037hcpidk9yze38",
+    "taskKey": "system:optimize-earth:ground-task-generation-in-existing-pages-and-manual",
+    "title": "Ground task generation in existing pages and the Wishonia/manual context"
   }
 }

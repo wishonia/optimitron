@@ -58,6 +58,24 @@ function inferCategory(node: TaskTreeNode) {
   const taskKey = node.taskKey ?? "";
   const title = node.title.toLowerCase();
 
+  if (
+    taskKey.includes("publish-budget-brief") ||
+    taskKey.includes("route-proof-pages-into-funding") ||
+    title.includes("budget brief") ||
+    title.includes("proof-page traffic")
+  ) {
+    return TaskCategory.COMMUNICATION;
+  }
+
+  if (
+    taskKey.includes("source-counterparties-and-price-ceiling") ||
+    taskKey.includes("prepare-approval-packet") ||
+    title.includes("counterparties") ||
+    title.includes("approval packet")
+  ) {
+    return TaskCategory.RESEARCH;
+  }
+
   if (taskKey.includes("growth") || title.includes("website") || title.includes("conversion")) {
     return TaskCategory.COMMUNICATION;
   }
@@ -83,6 +101,41 @@ function inferDifficulty(node: TaskTreeNode) {
 function inferTags(node: TaskTreeNode) {
   const title = node.title.toLowerCase();
   const taskKey = node.taskKey ?? "";
+
+  if (taskKey.includes("publish-budget-brief") || title.includes("budget brief")) {
+    return {
+      interestTags: ["funding", "procurement", "systems", "growth"],
+      skillTags: ["funding", "research", "policy", "copywriting", "writing"],
+    };
+  }
+
+  if (taskKey.includes("route-proof-pages-into-funding") || title.includes("proof-page traffic")) {
+    return {
+      interestTags: ["growth", "funding", "conversion", "distribution"],
+      skillTags: ["growth", "copywriting", "typescript", "web-ui", "conversion-rate-optimization"],
+    };
+  }
+
+  if (taskKey.includes("source-counterparties-and-price-ceiling") || title.includes("counterparties")) {
+    return {
+      interestTags: ["procurement", "funding", "research"],
+      skillTags: ["procurement", "research", "policy", "negotiation"],
+    };
+  }
+
+  if (taskKey.includes("prepare-approval-packet") || title.includes("approval packet")) {
+    return {
+      interestTags: ["funding", "systems", "governance"],
+      skillTags: ["funding", "policy", "research", "writing"],
+    };
+  }
+
+  if (taskKey.includes("action-follow-through")) {
+    return {
+      interestTags: ["funding", "procurement", "systems"],
+      skillTags: ["funding", "systems-design", "policy", "research"],
+    };
+  }
 
   if (taskKey.includes("expand-treaty-signer-roster")) {
     return {

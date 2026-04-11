@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ShareOverdueListButtons } from "@/components/tasks/ShareOverdueListButtons";
 import { Button } from "@/components/retroui/Button";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { BrutalCard } from "@/components/ui/brutal-card";
@@ -17,6 +18,7 @@ interface ReminderActionCardProps {
   harmfulTaskCount?: number;
   overdueTaskCount: number;
   sampleTargets: string[];
+  tasksUrl: string;
   totalHarmCostUsd?: number;
 }
 
@@ -69,6 +71,7 @@ export function ReminderActionCard({
   harmfulTaskCount,
   overdueTaskCount,
   sampleTargets,
+  tasksUrl,
   totalHarmCostUsd,
 }: ReminderActionCardProps) {
   const escalated = getEscalatedCopy(currentWorstDelayDays, harmfulTaskCount, totalHarmCostUsd);
@@ -135,10 +138,32 @@ export function ReminderActionCard({
           <Button asChild className="font-black uppercase">
             <Link href={href}>Open Overdue Leaders</Link>
           </Button>
-          <Link className="text-sm font-black uppercase underline underline-offset-4" href={href}>
-            Jump to the accountability list
+          <Link
+            className="text-sm font-black uppercase underline underline-offset-4"
+            href="/governments"
+          >
+            Government Scorecards
+          </Link>
+          <Link
+            className="text-sm font-black uppercase underline underline-offset-4"
+            href="/scoreboard"
+          >
+            Humanity Scoreboard
+          </Link>
+          <Link
+            className="text-sm font-black uppercase underline underline-offset-4"
+            href="/politicians"
+          >
+            Politician Voting Records
           </Link>
         </div>
+
+        <ShareOverdueListButtons
+          economicLoss={formatCompactCurrency(currentEconomicValueUsdLost)}
+          livesLost={formatCompactCount(currentHumanLivesLost)}
+          overdueCount={overdueTaskCount}
+          tasksUrl={tasksUrl}
+        />
       </div>
     </BrutalCard>
   );

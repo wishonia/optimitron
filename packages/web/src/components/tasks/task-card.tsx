@@ -352,6 +352,14 @@ export function TaskCard({
           >
             Details
           </Link>
+          {task.assigneePerson?.isPublicFigure ? (
+            <Link
+              className="text-sm font-black uppercase underline underline-offset-4"
+              href={`/people/${task.assigneePerson.id}`}
+            >
+              Full Record
+            </Link>
+          ) : null}
           {task.sourceUrl ? (
             <Link
               className="text-sm font-black uppercase underline underline-offset-4"
@@ -359,6 +367,14 @@ export function TaskCard({
               target="_blank"
             >
               Source
+            </Link>
+          ) : null}
+          {task.claimPolicy === TaskClaimPolicy.ASSIGNED_ONLY ? (
+            <Link
+              className="text-sm font-black uppercase underline underline-offset-4"
+              href="/governments"
+            >
+              Scorecard
             </Link>
           ) : null}
         </div>

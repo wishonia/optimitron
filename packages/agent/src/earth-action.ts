@@ -50,6 +50,7 @@ export interface EarthActionTask extends EarthOperatorTask {
   selectedImpactFrame?: {
     delayDalysLostPerDayBase?: number | null;
     delayEconomicValueUsdLostPerDayBase?: number | null;
+    estimatedCashCostUsdBase?: number | null;
     estimatedEffortHoursBase?: number | null;
     expectedDalysAvertedBase?: number | null;
     expectedEconomicValueUsdBase?: number | null;
@@ -152,6 +153,17 @@ function normalizeTags(values: string[] | undefined) {
   return Array.from(
     new Set(
       (values ?? [])
+        .map((value) => value.trim().toLowerCase())
+        .filter(Boolean),
+    ),
+  );
+}
+
+function mergeTags(...groups: Array<string[] | undefined>) {
+  return Array.from(
+    new Set(
+      groups
+        .flatMap((group) => group ?? [])
         .map((value) => value.trim().toLowerCase())
         .filter(Boolean),
     ),
@@ -333,13 +345,128 @@ function priorityFromValue(task: EarthActionTask) {
   );
 }
 
+function impliedTaskTags(task: EarthActionTask, family: EarthTaskFamily) {
+  const taskKey = (task.taskKey ?? '').toLowerCase();
+  const title = task.title.toLowerCase();
+  const roleTitle = (task.roleTitle ?? '').toLowerCase();
+
+  if (taskKey.includes('publish-budget-brief') || title.includes('budget brief')) {
+    return {
+      interestTags: ['funding', 'procurement', 'systems', 'growth'],
+      skillTags: ['funding', 'research', 'policy', 'copywriting', 'writing'],
+    };
+  }
+
+  if (taskKey.includes('route-proof-pages-into-funding') || title.includes('proof-page traffic')) {
+    return {
+      interestTags: ['growth', 'funding', 'conversion', 'distribution'],
+      skillTags: ['growth', 'copywriting', 'typescript', 'web-ui', 'conversion-rate-optimization'],
+    };
+  }
+
+  if (taskKey.includes('source-counterparties-and-price-ceiling') || title.includes('source counterparties')) {
+    return {
+      interestTags: ['procurement', 'funding', 'research'],
+      skillTags: ['procurement', 'research', 'policy', 'negotiation'],
+    };
+  }
+
+  if (taskKey.includes('prepare-approval-packet') || title.includes('approval packet')) {
+    return {
+      interestTags: ['funding', 'systems', 'governance'],
+      skillTags: ['funding', 'policy', 'research', 'writing'],
+    };
+  }
+
+  if (taskKey.includes('action-follow-through') || title.includes('funding/procurement')) {
+    return {
+      interestTags: ['funding', 'procurement', 'systems'],
+      skillTags: ['funding', 'policy', 'research', 'systems-design'],
+    };
+  }
+
+  if (family === 'growth-conversion') {
+    return {
+      interestTags: ['growth', 'distribution', 'conversion'],
+      skillTags: ['growth', 'copywriting', 'web-ui', 'typescript'],
+    };
+  }
+
+  if (family === 'contact-discovery') {
+    return {
+      interestTags: ['outreach', 'research', 'journalism'],
+      skillTags: ['research', 'organizing', 'journalism', 'contact-discovery'],
+    };
+  }
+
+  if (family === 'system-improvement' || roleTitle.includes('system operator')) {
+    return {
+      interestTags: ['systems', 'optimize-earth', 'queue-quality'],
+      skillTags: ['typescript', 'systems-design', 'research', 'policy'],
+    };
+  }
+
+  if (roleTitle.includes('growth operator')) {
+    return {
+      interestTags: ['growth', 'distribution', 'conversion'],
+      skillTags: ['growth', 'copywriting', 'typescript', 'web-ui'],
+    };
+  }
+
+  if (roleTitle.includes('funding operator')) {
+    return {
+      interestTags: ['funding', 'procurement'],
+      skillTags: ['funding', 'research', 'policy', 'writing'],
+    };
+  }
+
+  if (roleTitle.includes('procurement operator')) {
+    return {
+      interestTags: ['procurement', 'funding'],
+      skillTags: ['procurement', 'research', 'policy', 'negotiation'],
+    };
+  }
+
+  if (roleTitle.includes('outreach operator')) {
+    return {
+      interestTags: ['outreach', 'research'],
+      skillTags: ['research', 'organizing', 'journalism'],
+    };
+  }
+
+  return {
+    interestTags: [],
+    skillTags: [],
+  };
+}
+
 function capabilityFit(task: EarthActionTask, agent: EarthActionAgentCapabilities) {
-  const skillFit = jaccardScore(task.skillTags, agent.skillTags);
-  const interestFit = jaccardScore(task.interestTags, agent.interestTags);
+  const family = classifyEarthTaskFamily(task);
+  const implied = impliedTaskTags(task, family);
+  const skillFit = jaccardScore(mergeTags(task.skillTags, implied.skillTags), agent.skillTags);
+  const interestFit = jaccardScore(mergeTags(task.interestTags, implied.interestTags), agent.interestTags);
   const difficultyFit = difficultyFitScore(task.difficulty ?? null, agent.maxTaskDifficulty ?? null);
   const effortFit = hoursFitScore(task.estimatedEffortHours ?? null, agent.availableHoursPerWeek ?? null);
 
   return 0.45 * skillFit + 0.25 * interestFit + 0.2 * difficultyFit + 0.1 * effortFit;
+}
+
+function isInternalOperatorTask(task: EarthActionTask, family: EarthTaskFamily) {
+  if (isActionFollowThroughTask(task)) {
+    return true;
+  }
+
+  const roleTitle = (task.roleTitle ?? '').toLowerCase();
+  if (
+    roleTitle.includes('system operator') ||
+    roleTitle.includes('growth operator') ||
+    roleTitle.includes('funding operator') ||
+    roleTitle.includes('procurement operator')
+  ) {
+    return true;
+  }
+
+  return family === 'growth-conversion' || family === 'system-improvement' || family === 'contact-discovery';
 }
 
 function deriveCanAgentDoDirectly(
@@ -360,33 +487,39 @@ function deriveCanAgentDoDirectly(
     return false;
   }
 
-  return capabilityFit(task, agent) >= 0.35;
+  const fit = capabilityFit(task, agent);
+  if (fit >= 0.35) {
+    return true;
+  }
+
+  return isInternalOperatorTask(task, family) && fit >= 0.2;
 }
 
-function estimateExternalCostUsd(
+function explicitEstimatedCashCostUsd(
   task: EarthActionTask,
-  family: EarthTaskFamily,
-  policy: EarthExecutionPolicy,
-  canAgentDoDirectly: boolean,
   existing: ReturnType<typeof readExecutionContext>,
 ) {
   if (existing?.estimatedExternalCostUsd != null) {
     return clampNonNegative(existing.estimatedExternalCostUsd);
   }
 
+  if (typeof task.selectedImpactFrame?.estimatedCashCostUsdBase === 'number') {
+    return clampNonNegative(task.selectedImpactFrame.estimatedCashCostUsdBase);
+  }
+
+  return null;
+}
+
+function estimateExternalCostUsd(
+  task: EarthActionTask,
+  canAgentDoDirectly: boolean,
+  existing: ReturnType<typeof readExecutionContext>,
+) {
   if (canAgentDoDirectly) {
     return null;
   }
 
-  const effortHours = Math.max(0.25, task.estimatedEffortHours ?? 1);
-  const laborMultiplier =
-    family === 'growth-conversion'
-      ? 1.1
-      : family === 'contact-discovery'
-        ? 0.9
-        : 1;
-
-  return effortHours * policy.defaultExternalLaborRateUsdPerHour * laborMultiplier;
+  return explicitEstimatedCashCostUsd(task, existing);
 }
 
 function deriveMaxRationalSpendUsd(task: EarthActionTask, existing: ReturnType<typeof readExecutionContext>) {
@@ -453,8 +586,6 @@ function mergeExecutionContext(input: {
   );
   const estimatedExternalCostUsd = estimateExternalCostUsd(
     input.task,
-    input.family,
-    input.policy,
     canAgentDoDirectly,
     existing,
   );

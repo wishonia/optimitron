@@ -228,6 +228,30 @@ describe('selectNextEarthAction', () => {
 });
 
 describe('evaluateEarthTaskEconomics', () => {
+  it('keeps internal follow-through tasks direct when no explicit cash cost is present', () => {
+    const economics = evaluateEarthTaskEconomics({
+      agent,
+      task: makeTask({
+        category: 'COMMUNICATION',
+        estimatedEffortHours: 2,
+        id: 'task_budget_brief',
+        impact: {
+          delayEconomicValueUsdLostPerDay: 42_000_000_000,
+          expectedValuePerHourUsd: 21_000_000_000_000_000,
+        },
+        roleTitle: 'Funding Operator',
+        taskKey:
+          'system:optimize-earth:publish-budget-brief:system-optimize-earth-weaponize-overdue-task-list',
+        title:
+          'Publish the quantified budget brief for Turn the overdue leader task list into a memetic share-and-pressure machine',
+      }),
+    });
+
+    expect(economics.estimatedExternalCostUsd).toBeNull();
+    expect(economics.fundingGapUsd).toBe(0);
+    expect(economics.suggestedActionKind).toBe('EXECUTE_DIRECT');
+  });
+
   it('marks an allowed affordable paid task as auto-executable procurement', () => {
     const economics = evaluateEarthTaskEconomics({
       agent,

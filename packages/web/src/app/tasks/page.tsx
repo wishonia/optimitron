@@ -6,9 +6,13 @@ import { TaskCard } from "@/components/tasks/task-card";
 import { Button } from "@/components/retroui/Button";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { BrutalCard } from "@/components/ui/brutal-card";
+import { SectionContainer } from "@/components/ui/section-container";
+import { SectionHeader } from "@/components/ui/section-header";
+import { GameCTA } from "@/components/ui/game-cta";
 import { authOptions } from "@/lib/auth";
 import { getRouteMetadata } from "@/lib/metadata";
 import { getSignInPath, tasksLink, ROUTES } from "@/lib/routes";
+import { getConfiguredSiteOrigin } from "@/lib/site";
 import { aggregateTaskDelayStats, getTaskDelayStats } from "@/lib/tasks/accountability";
 import { getTasksPageData } from "@/lib/tasks.server";
 
@@ -51,6 +55,7 @@ export default async function TasksPage() {
   const reminderTargets = overdueLeaders
     .slice(0, 4)
     .map((task) => task.assigneePerson?.displayName ?? task.assigneeOrganization?.name ?? task.title);
+  const tasksUrl = `${getConfiguredSiteOrigin({ allowLocalFallback: true })}${ROUTES.tasks}`;
 
   // Compute harm stats from verified tasks with negative impact
   const harmfulVerifiedTasks = data.allTasks.filter((task) => {
@@ -104,6 +109,7 @@ export default async function TasksPage() {
             href="#highest-value-overdue-tasks"
             overdueTaskCount={overdueLeaderSummary.overdueTaskCount}
             sampleTargets={reminderTargets}
+            tasksUrl={tasksUrl}
             totalHarmCostUsd={totalHarmCostUsd}
           />
         ) : null}
@@ -208,6 +214,60 @@ export default async function TasksPage() {
           </div>
         </Section>
       </div>
+
+      <SectionContainer bgColor="cyan">
+        <SectionHeader
+          title="What Happens Next"
+          subtitle="Sharing is step one. Here's how the pressure turns into policy."
+        />
+        <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
+          <BrutalCard bgColor="background" padding="lg" hover>
+            <div className="flex flex-col gap-3">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                Step 1
+              </p>
+              <h3 className="text-xl font-black uppercase">Share The List</h3>
+              <p className="text-sm font-bold leading-6">
+                Every share puts a named leader in front of their constituents.
+                Social pressure is the cheapest lobby.
+              </p>
+              <GameCTA href="#highest-value-overdue-tasks" size="sm">
+                Back To The List
+              </GameCTA>
+            </div>
+          </BrutalCard>
+          <BrutalCard bgColor="background" padding="lg" hover>
+            <div className="flex flex-col gap-3">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                Step 2
+              </p>
+              <h3 className="text-xl font-black uppercase">Fund The Campaign</h3>
+              <p className="text-sm font-bold leading-6">
+                Deposit to the Earth Optimization Prize. Zero downside. Your
+                principal earns yield even if the treaty fails.
+              </p>
+              <GameCTA href={ROUTES.prize} size="sm">
+                See The Prize
+              </GameCTA>
+            </div>
+          </BrutalCard>
+          <BrutalCard bgColor="background" padding="lg" hover>
+            <div className="flex flex-col gap-3">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                Step 3
+              </p>
+              <h3 className="text-xl font-black uppercase">Track The Score</h3>
+              <p className="text-sm font-bold leading-6">
+                The scoreboard tracks verified voters, prize pool growth, and
+                the real-time cost of delay. Watch the numbers move.
+              </p>
+              <GameCTA href={ROUTES.scoreboard} size="sm">
+                Humanity Scoreboard
+              </GameCTA>
+            </div>
+          </BrutalCard>
+        </div>
+      </SectionContainer>
     </div>
   );
 }

@@ -9,6 +9,26 @@ function normalizePath(path: string) {
   return path.startsWith("/") ? path : `/${path}`;
 }
 
+export function canonicalizeSiteUrl(url: string | null | undefined) {
+  if (!url?.trim()) {
+    return url ?? null;
+  }
+
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    if (host === "optimitron.earth" || host === "www.optimitron.earth") {
+      parsed.protocol = "https:";
+      parsed.hostname = "optimitron.com";
+      return parsed.toString();
+    }
+
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
 export function getConfiguredSiteOrigin(options?: {
   allowLocalFallback?: boolean;
 }) {
