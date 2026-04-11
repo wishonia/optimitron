@@ -186,7 +186,7 @@ export default async function TaskOpengraphImage({
                 value: formatDelayDuration(delayStats.currentDelayDays),
               },
               {
-                label: "Lives Delayed",
+                label: "Deaths From Delay",
                 value: formatCompactCount(delayStats.currentHumanLivesLost),
               },
               {

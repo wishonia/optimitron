@@ -191,7 +191,7 @@ export default async function PersonDetailPage({
           </BrutalCard>
           <BrutalCard bgColor="background" padding="md">
             <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-              Lives Delayed
+              Deaths From Delay
             </p>
             <p className="mt-2 text-3xl font-black uppercase">
               {formatCompactCount(openSummary.currentHumanLivesLost)}

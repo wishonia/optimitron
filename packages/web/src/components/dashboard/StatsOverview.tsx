@@ -22,7 +22,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-bold uppercase text-muted-foreground">Wishes</p>
-                      <p className="text-4xl font-black text-brutal-yellow">{stats.wishes}</p>
+                      <p className="text-4xl font-black text-foreground">{stats.wishes}</p>
                     </div>
                     <Star className="h-12 w-12 text-brutal-yellow" />
                   </div>
@@ -69,7 +69,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-bold uppercase text-muted-foreground">Badges</p>
-                      <p className="text-4xl font-black text-brutal-yellow">{stats.badges}</p>
+                      <p className="text-4xl font-black text-foreground">{stats.badges}</p>
                     </div>
                     <Award className="h-12 w-12 text-brutal-yellow" />
                   </div>

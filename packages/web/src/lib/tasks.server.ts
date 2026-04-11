@@ -172,6 +172,7 @@ const taskListSelect = {
   },
   assigneePerson: {
     select: {
+      countryCode: true,
       currentAffiliation: true,
       displayName: true,
       id: true,

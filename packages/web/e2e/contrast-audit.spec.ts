@@ -18,11 +18,15 @@ import AxeBuilder from "@axe-core/playwright";
 import * as fs from "fs";
 import * as path from "path";
 import { navigateAndSettle, writeAuditReport } from "./utils/audit-helpers";
+import { signInDemoUser } from "./utils/auth";
 import { getContrastViolations } from "./utils/computed-contrast";
-import { PUBLIC_PAGE_PATHS } from "./utils/static-pages";
+import { ALL_PAGE_PATHS, AUTH_REQUIRED_PATHS } from "./utils/static-pages";
 
 const SEVERE_NORMAL_CONTRAST_RATIO = 2.25;
 const SEVERE_LARGE_CONTRAST_RATIO = 2;
+const REDIRECT_ALLOWED_PATHS = new Set([
+  "/politicians",
+]);
 
 function isSevereContrastFailure(ratio: number, required: number): boolean {
   return ratio < (required <= 3 ? SEVERE_LARGE_CONTRAST_RATIO : SEVERE_NORMAL_CONTRAST_RATIO);
@@ -35,10 +39,21 @@ const DEMO_SLIDES = fs
   .map((f) => f.replace(/^slide-/, "").replace(/\.tsx$/, ""))
   .sort();
 
-// All static routes + individual demo slides
-const PAGES = [
-  ...PUBLIC_PAGE_PATHS,
-  ...DEMO_SLIDES.map((id) => `/demo#${id}`),
+type AuditPage = {
+  requiresAuth: boolean;
+  url: string;
+};
+
+// All route pages + individual demo slides
+const PAGES: AuditPage[] = [
+  ...ALL_PAGE_PATHS.map((url) => ({
+    requiresAuth: AUTH_REQUIRED_PATHS.has(url),
+    url,
+  })),
+  ...DEMO_SLIDES.map((id) => ({
+    requiresAuth: false,
+    url: `/demo#${id}`,
+  })),
 ];
 
 // ── Types ───────────────────────────────────────────────────────
@@ -57,12 +72,63 @@ interface ContrastViolation {
 
 const allViolations: ContrastViolation[] = [];
 
+async function prepareAuditPage(
+  page: import("@playwright/test").Page,
+  url: string,
+  requiresAuth: boolean,
+) {
+  if (requiresAuth) {
+    const signedIn = await signInDemoUser(page);
+    if (!signedIn) {
+      test.skip(true, "Auth API not available (needs database)");
+      return;
+    }
+  }
+
+  const response = await navigateAndSettle(page, url);
+  const status = response?.status() ?? 0;
+
+  if (status >= 500) {
+    test.skip(true, `${url} returned ${status} (needs database)`);
+    return;
+  }
+
+  expect(
+    status,
+    `${url} should load before contrast auditing runs.`,
+  ).toBeLessThan(400);
+
+  if (!REDIRECT_ALLOWED_PATHS.has(url.split("#")[0] ?? url)) {
+    assertAuditLocation(page, url);
+  }
+}
+
+function assertAuditLocation(
+  page: import("@playwright/test").Page,
+  url: string,
+) {
+  const [expectedPath, expectedHash] = url.split("#");
+  const current = new URL(page.url());
+
+  expect(
+    current.pathname,
+    `${url} redirected to ${current.pathname} before contrast auditing.`,
+  ).toBe(expectedPath);
+
+  if (expectedHash) {
+    expect(
+      current.hash,
+      `${url} should preserve its hash target during contrast auditing.`,
+    ).toBe(`#${expectedHash}`);
+  }
+}
+
 // ── Desktop pass (default viewport from config) ─────────────────
 
 test.describe("Contrast — desktop", () => {
-  for (const url of PAGES) {
+  for (const { url, requiresAuth } of PAGES) {
     test(`contrast desktop: ${url}`, async ({ page }) => {
-      await navigateAndSettle(page, url);
+      await prepareAuditPage(page, url, requiresAuth);
 
       const pageViolations: ContrastViolation[] = [];
 
@@ -162,9 +228,9 @@ test.describe("Contrast — mobile", () => {
     hasTouch: true,
   });
 
-  for (const url of PAGES) {
+  for (const { url, requiresAuth } of PAGES) {
     test(`contrast mobile: ${url}`, async ({ page }) => {
-      await navigateAndSettle(page, url);
+      await prepareAuditPage(page, url, requiresAuth);
 
       const pageViolations: ContrastViolation[] = [];
 

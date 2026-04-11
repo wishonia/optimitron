@@ -1,7 +1,7 @@
 /**
  * Shared helpers for the contrast and mobile-responsiveness audit specs.
  */
-import type { Page } from "@playwright/test";
+import type { Page, Response } from "@playwright/test";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -82,12 +82,12 @@ export async function forceAnimationsComplete(page: Page): Promise<void> {
 export async function navigateAndSettle(
   page: Page,
   url: string,
-): Promise<void> {
+): Promise<Response | null> {
   const isDemoSlide = url.includes("#");
   // Demo page loads 60+ lazy slide components — needs more time.
   // Dev server on first compile can also be slow.
   const timeout = isDemoSlide ? 60_000 : 30_000;
-  await page.goto(url, { waitUntil: "domcontentloaded", timeout });
+  const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout });
 
   if (isDemoSlide) {
     const slideId = url.split("#")[1]!;
@@ -99,6 +99,8 @@ export async function navigateAndSettle(
 
   // Force all animated content to be visible
   await forceAnimationsComplete(page);
+
+  return response;
 }
 
 /**

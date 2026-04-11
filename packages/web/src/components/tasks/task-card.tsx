@@ -39,6 +39,7 @@ export interface TaskCardTask {
     website?: string | null;
   } | null;
   assigneePerson: {
+    countryCode: string | null;
     currentAffiliation: string | null;
     displayName: string;
     id: string;
@@ -259,7 +260,7 @@ export function TaskCard({
               </Avatar>
               <div className="min-w-0">
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                  Accountability Target
+                  Assignee
                 </p>
                 <p className="truncate text-sm font-black uppercase">
                   {task.assigneePerson ? (
@@ -330,7 +331,7 @@ export function TaskCard({
               <p>{`${formatDelayDuration(delayStats.currentDelayDays)} overdue`}</p>
               <p>{`${formatCompactCurrency(delayStats.currentEconomicValueUsdLost)} lost so far`}</p>
               {delayStats.currentHumanLivesLost != null ? (
-                <p>{`${formatCompactCount(delayStats.currentHumanLivesLost)} lives delayed`}</p>
+                <p>{`${formatCompactCount(delayStats.currentHumanLivesLost)} deaths from delay`}</p>
               ) : null}
             </div>
           ) : null}

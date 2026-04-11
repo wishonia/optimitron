@@ -15,33 +15,7 @@ import {
   AUTH_REQUIRED_PATHS,
   PUBLIC_PAGE_PATHS,
 } from "./utils/static-pages";
-
-// ---------------------------------------------------------------------------
-// Helper: sign in via credentials API
-// ---------------------------------------------------------------------------
-
-async function signInViaApi(
-  request: import("@playwright/test").APIRequestContext,
-): Promise<boolean> {
-  const csrfResponse = await request.get("/api/auth/csrf");
-  if (csrfResponse.status() >= 500) return false;
-
-  const { csrfToken } = (await csrfResponse.json()) as { csrfToken: string };
-
-  const signInResponse = await request.post(
-    "/api/auth/callback/credentials",
-    {
-      form: {
-        email: "demo@optimitron.org",
-        password: "demo1234",
-        csrfToken,
-        json: "true",
-      },
-    },
-  );
-
-  return signInResponse.status() < 400;
-}
+import { signInDemoUser } from "./utils/auth";
 
 // ---------------------------------------------------------------------------
 // Public pages — no auth needed
@@ -95,11 +69,8 @@ for (const path of PUBLIC_PAGE_PATHS) {
 // ---------------------------------------------------------------------------
 
 for (const path of [...AUTH_REQUIRED_PATHS]) {
-  test(`${path} loads without errors (authenticated)`, async ({
-    page,
-    request,
-  }) => {
-    const signedIn = await signInViaApi(request);
+  test(`${path} loads without errors (authenticated)`, async ({ page }) => {
+    const signedIn = await signInDemoUser(page);
     if (!signedIn) {
       test.skip(true, "Auth API not available (needs database)");
       return;
@@ -123,11 +94,8 @@ for (const path of [...AUTH_REQUIRED_PATHS]) {
     expect(errors).toEqual([]);
   });
 
-  test(`${path} has valid page metadata (authenticated)`, async ({
-    page,
-    request,
-  }) => {
-    const signedIn = await signInViaApi(request);
+  test(`${path} has valid page metadata (authenticated)`, async ({ page }) => {
+    const signedIn = await signInDemoUser(page);
     if (!signedIn) {
       test.skip(true, "Auth API not available (needs database)");
       return;

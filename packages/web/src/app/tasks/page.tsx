@@ -1,14 +1,11 @@
 import Link from "next/link";
-import { TaskClaimPolicy, TaskStatus } from "@optimitron/db";
+import { TaskClaimPolicy } from "@optimitron/db";
 import { getServerSession } from "next-auth";
 import { ReminderActionCard } from "@/components/tasks/ReminderActionCard";
-import { TaskCard } from "@/components/tasks/task-card";
+import { TaskRow, TaskTableHeader } from "@/components/tasks/task-row";
 import { Button } from "@/components/retroui/Button";
 import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { BrutalCard } from "@/components/ui/brutal-card";
-import { SectionContainer } from "@/components/ui/section-container";
-import { SectionHeader } from "@/components/ui/section-header";
-import { GameCTA } from "@/components/ui/game-cta";
 import { authOptions } from "@/lib/auth";
 import { getRouteMetadata } from "@/lib/metadata";
 import { getSignInPath, tasksLink, ROUTES } from "@/lib/routes";
@@ -33,41 +30,34 @@ function Section({
   );
 }
 
+function TaskList({ tasks }: { tasks: Parameters<typeof TaskRow>[0]["task"][] }) {
+  if (tasks.length === 0) return null;
+  return (
+    <div className="overflow-hidden border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+      <TaskTableHeader />
+      <div className="divide-y-2 divide-foreground/10">
+        {tasks.map((task) => (
+          <TaskRow key={task.id} task={task} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default async function TasksPage() {
   const session = await getServerSession(authOptions);
   const userId = session?.user.id ?? null;
   const data = await getTasksPageData(userId);
   const signInHref = getSignInPath(ROUTES.tasks);
   const overdueLeaders = data.allTasks.filter((task) => {
-    if (task.claimPolicy !== TaskClaimPolicy.ASSIGNED_ONLY) {
-      return false;
-    }
-
+    if (task.claimPolicy !== TaskClaimPolicy.ASSIGNED_ONLY) return false;
     return getTaskDelayStats(task).isOverdue;
   });
   const overdueLeaderSummary = aggregateTaskDelayStats(overdueLeaders);
-  const currentWorstDelayDays = overdueLeaders.reduce((maxDelay, task) => {
-    return Math.max(maxDelay, getTaskDelayStats(task).currentDelayDays);
-  }, 0);
   const remainingTasks = data.allTasks.filter(
     (task) => !overdueLeaders.some((overdueTask) => overdueTask.id === task.id),
   );
-  const reminderTargets = overdueLeaders
-    .slice(0, 4)
-    .map((task) => task.assigneePerson?.displayName ?? task.assigneeOrganization?.name ?? task.title);
   const tasksUrl = `${getConfiguredSiteOrigin({ allowLocalFallback: true })}${ROUTES.tasks}`;
-
-  // Compute harm stats from verified tasks with negative impact
-  const harmfulVerifiedTasks = data.allTasks.filter((task) => {
-    if (task.status !== TaskStatus.VERIFIED) return false;
-    const econ = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
-    const dalys = task.impact?.selectedFrame?.expectedDalysAvertedBase;
-    return (econ != null && econ < 0) || (dalys != null && dalys < 0);
-  });
-  const totalHarmCostUsd = harmfulVerifiedTasks.reduce((sum, task) => {
-    const econ = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
-    return sum + (econ != null ? Math.abs(econ) : 0);
-  }, 0);
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -102,172 +92,57 @@ export default async function TasksPage() {
         {overdueLeaders.length > 0 ? (
           <ReminderActionCard
             currentEconomicValueUsdLost={overdueLeaderSummary.currentEconomicValueUsdLost}
-            currentWorstDelayDays={currentWorstDelayDays}
             currentHumanLivesLost={overdueLeaderSummary.currentHumanLivesLost}
             currentSufferingHoursLost={overdueLeaderSummary.currentSufferingHoursLost}
-            harmfulTaskCount={harmfulVerifiedTasks.length}
-            href="#highest-value-overdue-tasks"
             overdueTaskCount={overdueLeaderSummary.overdueTaskCount}
-            sampleTargets={reminderTargets}
             tasksUrl={tasksUrl}
-            totalHarmCostUsd={totalHarmCostUsd}
           />
         ) : null}
 
         {overdueLeaders.length > 0 ? (
-          <Section title="Highest Value Overdue Tasks">
-            <div
-              id="highest-value-overdue-tasks"
-              className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3"
-            >
-              {overdueLeaders.map((task) => (
-                <TaskCard key={task.id} signedIn={Boolean(userId)} task={task} />
-              ))}
-            </div>
+          <Section title="Overdue Leaders">
+            <TaskList tasks={overdueLeaders} />
           </Section>
         ) : null}
 
-        {userId ? (
+        {userId && data.ownedPrivateTasks.length > 0 ? (
           <Section title="My Private Tasks">
-            {data.ownedPrivateTasks.length > 0 ? (
-              <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-                {data.ownedPrivateTasks.map((task) => (
-                  <TaskCard key={task.id} signedIn={Boolean(userId)} task={task} />
-                ))}
-              </div>
-            ) : (
-              <BrutalCard bgColor="background" padding="md">
-                <p className="text-sm font-bold">
-                  Private project tasks will show up here once you create them through the task API.
-                </p>
-              </BrutalCard>
-            )}
+            <TaskList tasks={data.ownedPrivateTasks} />
           </Section>
         ) : null}
 
-        {userId ? (
+        {userId && data.forYou.length > 0 ? (
           <Section title="For You">
-            {data.forYou.length > 0 ? (
-              <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-                {data.forYou.slice(0, 12).map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    showRecommendationScore
-                    signedIn={Boolean(userId)}
-                    task={task}
-                  />
-                ))}
-              </div>
-            ) : (
-              <BrutalCard bgColor="background" padding="md">
-                <p className="text-sm font-bold">
-                  Add skills, interests, and available hours in your census profile to improve matching.
-                </p>
-              </BrutalCard>
-            )}
+            <TaskList tasks={data.forYou.slice(0, 12)} />
           </Section>
         ) : null}
 
         {data.assignedToYou.length > 0 ? (
           <Section title="Assigned To You">
-            <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-              {data.assignedToYou.map((task) => (
-                <TaskCard key={task.id} signedIn={Boolean(userId)} task={task} />
-              ))}
-            </div>
+            <TaskList tasks={data.assignedToYou} />
           </Section>
         ) : null}
 
-        {userId ? (
+        {userId && data.myClaims.length > 0 ? (
           <Section title="My Claims">
-            {data.myClaims.length > 0 ? (
-              <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-                {data.myClaims.map((claim) => (
-                  <TaskCard
-                    key={claim.id}
-                    signedIn={Boolean(userId)}
-                    task={{
-                      ...claim.task,
-                      activeClaimCount: claim.task.claims.filter((taskClaim) =>
-                        ["CLAIMED", "IN_PROGRESS", "COMPLETED"].includes(taskClaim.status),
-                      ).length,
-                      viewerHasClaim: true,
-                    }}
-                  />
-                ))}
-              </div>
-            ) : (
-              <BrutalCard bgColor="background" padding="md">
-                <p className="text-sm font-bold">
-                  No active claims yet. Claim something real.
-                </p>
-              </BrutalCard>
-            )}
+            <TaskList
+              tasks={data.myClaims.map((claim) => ({
+                ...claim.task,
+                activeClaimCount: claim.task.claims.filter((taskClaim) =>
+                  ["CLAIMED", "IN_PROGRESS", "COMPLETED"].includes(taskClaim.status),
+                ).length,
+                viewerHasClaim: true,
+              }))}
+            />
           </Section>
         ) : null}
 
-        <Section title="All Tasks">
-          <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
-            {remainingTasks.slice(0, 24).map((task) => (
-                <TaskCard key={task.id} signedIn={Boolean(userId)} task={task} />
-            ))}
-          </div>
-        </Section>
+        {remainingTasks.length > 0 ? (
+          <Section title="All Tasks">
+            <TaskList tasks={remainingTasks.slice(0, 50)} />
+          </Section>
+        ) : null}
       </div>
-
-      <SectionContainer bgColor="cyan">
-        <SectionHeader
-          title="What Happens Next"
-          subtitle="Sharing is step one. Here's how the pressure turns into policy."
-        />
-        <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3">
-          <BrutalCard bgColor="background" padding="lg" hover>
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                Step 1
-              </p>
-              <h3 className="text-xl font-black uppercase">Share The List</h3>
-              <p className="text-sm font-bold leading-6">
-                Every share puts a named leader in front of their constituents.
-                Social pressure is the cheapest lobby.
-              </p>
-              <GameCTA href="#highest-value-overdue-tasks" size="sm">
-                Back To The List
-              </GameCTA>
-            </div>
-          </BrutalCard>
-          <BrutalCard bgColor="background" padding="lg" hover>
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                Step 2
-              </p>
-              <h3 className="text-xl font-black uppercase">Fund The Campaign</h3>
-              <p className="text-sm font-bold leading-6">
-                Deposit to the Earth Optimization Prize. Zero downside. Your
-                principal earns yield even if the treaty fails.
-              </p>
-              <GameCTA href={ROUTES.prize} size="sm">
-                See The Prize
-              </GameCTA>
-            </div>
-          </BrutalCard>
-          <BrutalCard bgColor="background" padding="lg" hover>
-            <div className="flex flex-col gap-3">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                Step 3
-              </p>
-              <h3 className="text-xl font-black uppercase">Track The Score</h3>
-              <p className="text-sm font-bold leading-6">
-                The scoreboard tracks verified voters, prize pool growth, and
-                the real-time cost of delay. Watch the numbers move.
-              </p>
-              <GameCTA href={ROUTES.scoreboard} size="sm">
-                Humanity Scoreboard
-              </GameCTA>
-            </div>
-          </BrutalCard>
-        </div>
-      </SectionContainer>
     </div>
   );
 }

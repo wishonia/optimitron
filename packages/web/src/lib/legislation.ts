@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { extname, join } from "node:path";
+import { dirname, extname, join, parse } from "node:path";
 
 export type LegislationStatus = "draft" | "reviewed";
 
@@ -47,26 +47,68 @@ interface BuildEntryOptions {
   includeMarkdown?: boolean;
 }
 
-const currentCwd = process.cwd();
-const WEB_ROOT = existsSync(join(currentCwd, "src", "app"))
-  ? currentCwd
-  : join(currentCwd, "packages", "web");
-const REPO_ROOT = existsSync(join(currentCwd, "packages"))
-  ? currentCwd
-  : join(WEB_ROOT, "..", "..");
-const REPO_PACKAGE_JSON = join(REPO_ROOT, "package.json");
 const CONTENT_RELATIVE_DIR = "content/legislation";
-const LEGISLATION_DIR = join(REPO_ROOT, CONTENT_RELATIVE_DIR);
 const DEFAULT_REPOSITORY_URL = "https://github.com/mikepsinn/optimitron";
 
+function findAncestorContaining(startDir: string, relativePath: string) {
+  let current = startDir;
+  const { root } = parse(startDir);
+
+  while (true) {
+    if (existsSync(join(current, relativePath))) {
+      return current;
+    }
+
+    if (current === root) return null;
+
+    current = dirname(current);
+  }
+}
+
+function resolveRepoRoot() {
+  const candidates = [
+    process.cwd(),
+    typeof __dirname === "string" ? __dirname : null,
+  ].filter((value): value is string => Boolean(value));
+
+  for (const candidate of candidates) {
+    const repoRoot = findAncestorContaining(candidate, "pnpm-lock.yaml");
+    if (repoRoot) {
+      return repoRoot;
+    }
+  }
+
+  throw new Error(
+    `Could not resolve the Optimitron repo root from ${candidates.join(", ")}.`,
+  );
+}
+
+function resolveLegislationDir() {
+  const candidates = [
+    process.cwd(),
+    typeof __dirname === "string" ? __dirname : null,
+  ].filter((value): value is string => Boolean(value));
+
+  for (const candidate of candidates) {
+    const repoRoot = findAncestorContaining(candidate, CONTENT_RELATIVE_DIR);
+    if (repoRoot) {
+      return join(repoRoot, CONTENT_RELATIVE_DIR);
+    }
+  }
+
+  return join(resolveRepoRoot(), CONTENT_RELATIVE_DIR);
+}
+
 function getLegislationMarkdownFiles() {
-  if (!existsSync(LEGISLATION_DIR)) {
+  const legislationDir = resolveLegislationDir();
+
+  if (!existsSync(legislationDir)) {
     throw new Error(
       `Missing required legislation content directory: ${CONTENT_RELATIVE_DIR}. Run the content validation/build pipeline or restore the committed drafts.`,
     );
   }
 
-  const entries = readdirSync(LEGISLATION_DIR).filter((entry) => extname(entry) === ".md");
+  const entries = readdirSync(legislationDir).filter((entry) => extname(entry) === ".md");
   if (entries.length === 0) {
     throw new Error(
       `Legislation content directory is empty: ${CONTENT_RELATIVE_DIR}. Expected at least one markdown draft.`,
@@ -156,7 +198,8 @@ function extractSummary(markdown: string): string {
 
 function getRepositoryBaseUrl(): string {
   try {
-    const pkg = JSON.parse(readFileSync(REPO_PACKAGE_JSON, "utf-8")) as {
+    const repoPackageJson = join(resolveRepoRoot(), "package.json");
+    const pkg = JSON.parse(readFileSync(repoPackageJson, "utf-8")) as {
       repository?: { url?: string } | string;
     };
 
@@ -210,16 +253,18 @@ function buildEntry(
 }
 
 export function getLegislationEntries(): LegislationEntry[] {
+  const legislationDir = resolveLegislationDir();
+
   return getLegislationMarkdownFiles()
     .map((entry) => {
       const slug = entry.replace(/\.md$/, "");
-      return buildEntry(slug, join(LEGISLATION_DIR, entry));
+      return buildEntry(slug, join(legislationDir, entry));
     })
     .sort((left, right) => left.title.localeCompare(right.title));
 }
 
 export function getLegislationBySlug(slug: string): (LegislationEntry & { markdown: string }) | null {
-  const fullPath = join(LEGISLATION_DIR, `${slug}.md`);
+  const fullPath = join(resolveLegislationDir(), `${slug}.md`);
 
   if (!existsSync(fullPath)) {
     return null;

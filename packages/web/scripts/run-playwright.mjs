@@ -13,6 +13,7 @@ const LOCAL_BASE_URL_CANDIDATES = [
   DEFAULT_BASE_URL,
   "http://localhost:3001",
 ].filter(Boolean);
+const isCI = parseBoolean(process.env.CI);
 
 const MODE_SPECS = {
   all: [
@@ -20,7 +21,12 @@ const MODE_SPECS = {
     "e2e/contrast-audit.spec.ts",
     "e2e/mobile-responsiveness-audit.spec.ts",
   ],
-  smoke: ["e2e/smoke.spec.ts"],
+  smoke: isCI
+    ? [
+        "e2e/smoke.spec.ts",
+        "e2e/contrast-audit.spec.ts",
+      ]
+    : ["e2e/smoke.spec.ts"],
   contrast: ["e2e/contrast-audit.spec.ts"],
   mobile: ["e2e/mobile-responsiveness-audit.spec.ts"],
 };
@@ -33,8 +39,6 @@ const mode = requestedMode && requestedMode in MODE_SPECS ? requestedMode : "all
 const passthroughArgs = requestedMode && requestedMode in MODE_SPECS
   ? scriptArgs.slice(1)
   : scriptArgs;
-
-const isCI = parseBoolean(process.env.CI);
 
 main().catch((error) => {
   console.error(error instanceof Error ? error.message : String(error));
@@ -166,7 +170,7 @@ function printHelp() {
 
 Modes:
   all        Run smoke, contrast, and mobile audits (default)
-  smoke      Run only smoke tests
+  smoke      Run smoke tests locally; in CI also includes the contrast audit
   contrast   Run only the contrast audit
   mobile     Run only the mobile responsiveness audit
 

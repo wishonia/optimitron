@@ -461,7 +461,7 @@ export default async function TaskDetailPage({
                         {formatCompactCount(delayStats.delayHumanLivesLostPerDay)}
                       </p>
                       <p className="text-xs font-bold uppercase text-muted-foreground">
-                        human lives delayed
+                        deaths per day from delay
                       </p>
                     </div>
                     <div className="border-4 border-foreground bg-background p-3">
@@ -472,7 +472,7 @@ export default async function TaskDetailPage({
                         {formatCompactCount(delayStats.delaySufferingHoursLostPerDay)}
                       </p>
                       <p className="text-xs font-bold uppercase text-muted-foreground">
-                        suffering hours delayed
+                        suffering-hours per day
                       </p>
                     </div>
                   </div>

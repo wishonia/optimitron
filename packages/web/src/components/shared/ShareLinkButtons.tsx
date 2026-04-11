@@ -1,7 +1,18 @@
 "use client";
 
+import type { ComponentType } from "react";
 import { useState } from "react";
+import {
+  FaXTwitter,
+  FaLinkedinIn,
+  FaRedditAlien,
+  FaFacebookF,
+  FaEnvelope,
+  FaLink,
+} from "react-icons/fa6";
+import { SiBluesky } from "react-icons/si";
 import { Button } from "@/components/retroui/Button";
+import { cn } from "@/lib/utils";
 
 interface ShareLinkButtonsProps {
   /** The full URL to share */
@@ -14,6 +25,10 @@ interface ShareLinkButtonsProps {
   onShare?: () => void;
   /** Optional label above the buttons */
   label?: string;
+  /** Optional label class override for colored surfaces */
+  labelClassName?: string;
+  /** "text" shows word labels (default), "icon" shows platform icons only */
+  variant?: "text" | "icon";
 }
 
 function encode(value: string) {
@@ -32,42 +47,95 @@ export function ShareLinkButtons({
   emailSubject,
   onShare,
   label,
+  labelClassName,
+  variant = "text",
 }: ShareLinkButtonsProps) {
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
   const shortShare = `${shareText} ${url}`.trim();
   const subject = emailSubject ?? shareText.slice(0, 120);
 
-  const shareLinks = [
+  const shareLinks: { href: string; label: string; icon: ComponentType<{ className?: string }> }[] = [
     {
       href: `https://twitter.com/intent/tweet?text=${encode(shortShare)}`,
       label: "X",
+      icon: FaXTwitter,
     },
     {
       href: `https://bsky.app/intent/compose?text=${encode(shortShare)}`,
       label: "Bluesky",
+      icon: SiBluesky,
     },
     {
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encode(url)}`,
       label: "LinkedIn",
+      icon: FaLinkedinIn,
     },
     {
       href: `https://www.facebook.com/sharer/sharer.php?u=${encode(url)}`,
       label: "Facebook",
+      icon: FaFacebookF,
     },
     {
       href: `https://www.reddit.com/submit?url=${encode(url)}&title=${encode(shareText)}`,
       label: "Reddit",
+      icon: FaRedditAlien,
     },
     {
       href: `mailto:?subject=${encode(subject)}&body=${encode(shortShare)}`,
       label: "Email",
+      icon: FaEnvelope,
     },
   ];
+
+  if (variant === "icon") {
+    return (
+      <div className="flex flex-wrap items-center gap-1">
+        {shareLinks.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            rel="noreferrer"
+            target="_blank"
+            title={`Share on ${link.label}`}
+            className="inline-flex h-7 w-7 items-center justify-center border-2 border-foreground bg-background text-foreground transition-transform hover:translate-y-[-1px] hover:bg-muted"
+            onClick={() => onShare?.()}
+          >
+            <link.icon className="h-3.5 w-3.5" />
+          </a>
+        ))}
+        <button
+          type="button"
+          title={copyState === "copied" ? "Copied!" : "Copy link"}
+          className="inline-flex h-7 w-7 items-center justify-center border-2 border-foreground bg-background text-foreground transition-transform hover:translate-y-[-1px] hover:bg-muted"
+          onClick={() => {
+            onShare?.();
+            void navigator.clipboard
+              .writeText(url)
+              .then(() => {
+                setCopyState("copied");
+                window.setTimeout(() => setCopyState("idle"), 1500);
+              })
+              .catch(() => {
+                setCopyState("error");
+                window.setTimeout(() => setCopyState("idle"), 2000);
+              });
+          }}
+        >
+          <FaLink className="h-3.5 w-3.5" />
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-2">
       {label ? (
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+        <p
+          className={cn(
+            "text-xs font-black uppercase tracking-[0.18em] text-brutal-pink",
+            labelClassName,
+          )}
+        >
           {label}
         </p>
       ) : null}
