@@ -8,6 +8,7 @@ import {
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { TaskCard, type TaskCardTask } from "@/components/tasks/task-card";
+import { TaskRow, TaskTableHeader } from "@/components/tasks/task-row";
 import { TaskClaimButton } from "@/components/tasks/TaskClaimButton";
 import { TaskCompleteForm } from "@/components/tasks/TaskCompleteForm";
 import { TaskContactActions } from "@/components/tasks/TaskContactActions";
@@ -775,39 +776,29 @@ export default async function TaskDetailPage({
         {task.childTasks.length > 0 ? (
           <BrutalCard bgColor="green" padding="lg">
             <div className="space-y-5">
-              <p className="text-sm font-black uppercase text-brutal-pink">
-                Parent Task Rollup
-              </p>
-              <div className="grid gap-3 md:grid-cols-4">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-black uppercase text-brutal-pink">
+                  Subtask Progress
+                </p>
+                <p className="text-sm font-black uppercase">
+                  {task.childTasks.filter((t: { completedAt: Date | null; status: string }) => t.completedAt != null || t.status === "VERIFIED").length} / {task.childTasks.length} subtasks completed
+                </p>
+              </div>
+              <div className="grid gap-3 md:grid-cols-3">
                 <div className="border-4 border-foreground bg-background p-3">
                   <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Child Tasks
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">{task.childTasks.length}</p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    direct children
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-background p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Overdue
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">
-                    {childDelaySummary.overdueTaskCount}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    still waiting
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-background p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Human Cost
+                    Deaths From Delay
                   </p>
                   <p className="mt-2 text-2xl font-black uppercase">
                     {formatCompactCount(childDelaySummary.currentHumanLivesLost)}
                   </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    delayed so far
+                </div>
+                <div className="border-4 border-foreground bg-background p-3">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                    Suffering-Hours
+                  </p>
+                  <p className="mt-2 text-2xl font-black uppercase">
+                    {formatCompactCount(childDelaySummary.currentSufferingHoursLost)}
                   </p>
                 </div>
                 <div className="border-4 border-foreground bg-background p-3">
@@ -816,9 +807,6 @@ export default async function TaskDetailPage({
                   </p>
                   <p className="mt-2 text-2xl font-black uppercase">
                     {formatCompactCurrency(childDelaySummary.currentEconomicValueUsdLost)}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    lost so far
                   </p>
                 </div>
               </div>
@@ -880,15 +868,17 @@ export default async function TaskDetailPage({
 
         {task.childTasks.length > 0 ? (
           <section className="space-y-4">
-            <h2 className="text-3xl font-black uppercase">Child Tasks</h2>
-            <div className="grid gap-4 md:grid-cols-2">
-              {task.childTasks.map((childTask: (typeof task.childTasks)[number]) => (
-                <TaskCard
-                  key={childTask.id}
-                  signedIn={Boolean(userId)}
-                  task={childTask as unknown as TaskCardTask}
-                />
-              ))}
+            <h2 className="text-3xl font-black uppercase">Subtasks</h2>
+            <div className="overflow-hidden border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+              <TaskTableHeader />
+              <div className="divide-y-2 divide-foreground/10">
+                {task.childTasks.map((childTask: (typeof task.childTasks)[number]) => (
+                  <TaskRow
+                    key={childTask.id}
+                    task={childTask as unknown as TaskCardTask}
+                  />
+                ))}
+              </div>
             </div>
           </section>
         ) : null}

@@ -67,7 +67,9 @@ export const ROUTES = {
   // Meta
   about: "/about",
   declaration: "/declaration",
+  developers: "/developers",
   demo: "/demo",
+  search: "/search",
   video: "/video",
   tools: "/tools",
   contribute: "/contribute",
@@ -320,6 +322,16 @@ export const tasksLink: NavItem = {
   cta: "Open Tasks",
 };
 
+export const searchLink: NavItem = {
+  href: ROUTES.search,
+  label: "Search",
+  emoji: "🔎",
+  description: "Search pages, tasks, and the manual from one screen. Because spelunking through menus is not a serious information architecture.",
+  tagline: "Search pages, tasks, and manual docs from one place",
+  matchPrefixes: [ROUTES.search],
+  cta: "Search Site",
+};
+
 export const profileLink: NavItem = {
   href: ROUTES.profile,
   label: "Profile",
@@ -389,6 +401,50 @@ export const toolsLink: NavItem = {
   matchPrefixes: [ROUTES.tools],
 
   cta: "Open Armory",
+};
+
+export const efficiencyLink: NavItem = {
+  href: ROUTES.efficiency,
+  label: "Efficiency Audit",
+  emoji: "📉",
+  description: "The shopping-list autopsy: where budgets are bloated, where they are starving, and which deltas actually move welfare instead of headlines.",
+  tagline: "Where budgets are bloated, starved, and fixable",
+  matchPrefixes: [ROUTES.efficiency],
+
+  cta: "Audit Waste",
+};
+
+export const dividendLink: NavItem = {
+  href: ROUTES.dividend,
+  label: "Dividend",
+  emoji: "💵",
+  description: "Translate the spending deltas into household cash. If governance improved, this is what the median adult would actually notice in their bank account.",
+  tagline: "What better budgets pay back to actual humans",
+  matchPrefixes: [ROUTES.dividend],
+
+  cta: "See Dividend",
+};
+
+export const governmentSizeLink: NavItem = {
+  href: ROUTES.governmentSize,
+  label: "Government Size",
+  emoji: "📏",
+  description: "A size-and-composition check on the state itself. Not just how much it spends, but how the whole machine is proportioned.",
+  tagline: "How large the state is, and how it is shaped",
+  matchPrefixes: [ROUTES.governmentSize],
+
+  cta: "See Size Audit",
+};
+
+export const legislationLink: NavItem = {
+  href: ROUTES.legislation,
+  label: "Legislation",
+  emoji: "📚",
+  description: "Draft bills and legislative pathways tied back to the budget and policy evidence. Not vibes. Not slogans. Actual text.",
+  tagline: "Draft bills grounded in the evidence base",
+  matchPrefixes: [ROUTES.legislation],
+
+  cta: "Browse Legislation",
 };
 
 export const governmentsLink: NavItem = {
@@ -520,10 +576,67 @@ export interface NavSection {
 }
 
 export const navSections: NavSection[] = [
-  { id: "play", label: "Play", items: [dashboardLink, tasksLink, profileLink, censusLink, checkInLink, settingsLink, wishocracyLink, alignmentLink, referendumLink, prizeLink, demoLink] },
-  { id: "optimized-gov", label: "Optimized Governance", items: [dtreasuryLink, opgLink, obgLink, transparencyLink, dihLink, dfdaLink, agenciesLink, departmentOfWarLink] },
-  { id: "earth", label: "Earth", items: [governmentsLink, politicianLeaderboardLink, opgLink] },
-  { id: "fund", label: "Fund", items: [treatyLink, fundLink, prizeLink, scoreboardLink, iabLink] },
+  {
+    id: "start-here",
+    label: "Start Here",
+    items: [aboutLink, videoLink, demoLink, declarationLink],
+  },
+  {
+    id: "take-action",
+    label: "Take Action",
+    items: [
+      treatyLink,
+      prizeLink,
+      fundLink,
+      tasksLink,
+      wishocracyLink,
+      alignmentLink,
+      referendumLink,
+      contributeLink,
+    ],
+  },
+  {
+    id: "track-results",
+    label: "Track Results",
+    items: [
+      scoreboardLink,
+      governmentsLink,
+      politicianLeaderboardLink,
+      opgLink,
+      obgLink,
+      efficiencyLink,
+      dividendLink,
+      governmentSizeLink,
+      legislationLink,
+      transparencyLink,
+    ],
+  },
+  {
+    id: "systems",
+    label: "Explore Systems",
+    items: [
+      dtreasuryLink,
+      federalReserveLink,
+      dirsLink,
+      dssaLink,
+      agenciesLink,
+      departmentOfWarLink,
+      dihLink,
+      dfdaLink,
+      iabLink,
+      toolsLink,
+    ],
+  },
+  {
+    id: "account",
+    label: "Your Account",
+    items: [dashboardLink, profileLink, transmitLink, censusLink, checkInLink, settingsLink],
+  },
+  {
+    id: "futures",
+    label: "Future Scenarios",
+    items: [wishoniaWorldLink, moroniaLink],
+  },
 ];
 
 /** Sections for the /tools page — every tool grouped by purpose */

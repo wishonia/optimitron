@@ -27,15 +27,24 @@ describe("navigation routes", () => {
 
     expect(allNavHrefs).toEqual(
       expect.arrayContaining([
+        ROUTES.treaty,
         ROUTES.wishocracy,
         ROUTES.alignment,
         ROUTES.tasks,
         ROUTES.prize,
+        ROUTES.fund,
         ROUTES.dtreasury,
+        ROUTES.efficiency,
+        ROUTES.legislation,
+        ROUTES.tools,
         ROUTES.dgao,
         ROUTES.governments,
       ]),
     );
+  });
+
+  it("uses intent-based navigation buckets instead of the old generic fund section", () => {
+    expect(navSections.map((section) => section.id)).not.toContain("fund");
   });
 
   it("surfaces the core evidence explorers in the explore links", () => {

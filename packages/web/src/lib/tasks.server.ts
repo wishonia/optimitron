@@ -11,6 +11,7 @@ import {
 import { findOrCreateOrganization } from "@/lib/organization.server";
 import { findOrCreatePerson } from "@/lib/person.server";
 import { prisma } from "@/lib/prisma";
+import { getSearchTerms, scoreSearchRecord } from "@/lib/site-search";
 import { canonicalizeSiteUrl } from "@/lib/site";
 import { countTaskContactActions } from "@/lib/tasks/contact.server";
 import {
@@ -320,6 +321,31 @@ const taskMilestoneSelect = {
   },
 } satisfies Prisma.TaskMilestoneSelect;
 
+const taskSearchSelect = {
+  assigneeOrganization: {
+    select: {
+      name: true,
+    },
+  },
+  assigneePerson: {
+    select: {
+      currentAffiliation: true,
+      displayName: true,
+    },
+  },
+  category: true,
+  description: true,
+  difficulty: true,
+  id: true,
+  interestTags: true,
+  roleTitle: true,
+  skillTags: true,
+  status: true,
+  taskKey: true,
+  title: true,
+  verifiedAt: true,
+} satisfies Prisma.TaskSelect;
+
 const taskDetailSelect = {
   ...taskListSelect,
   childTasks: {
@@ -349,7 +375,21 @@ const taskDetailSelect = {
 
 type TaskListItem = Prisma.TaskGetPayload<{ select: typeof taskListSelect }>;
 type TaskDetailItem = Prisma.TaskGetPayload<{ select: typeof taskDetailSelect }>;
+type TaskSearchItem = Prisma.TaskGetPayload<{ select: typeof taskSearchSelect }>;
 type TaskViewer = Awaited<ReturnType<typeof getTaskViewer>>;
+
+export interface TaskSearchResult {
+  assigneeLabel: string | null;
+  category: TaskCategory;
+  difficulty: TaskDifficulty;
+  href: string;
+  id: string;
+  score: number;
+  snippet: string | null;
+  status: TaskStatus;
+  taskKey: string | null;
+  title: string;
+}
 
 function countActiveClaims(task: TaskListItem | TaskDetailItem) {
   return task.claims.filter((claim) =>
@@ -402,6 +442,52 @@ function normalizeSourceArtifact<T extends { sourceRef: string | null; sourceUrl
         ? canonicalizeSiteUrl(artifact.sourceRef)
         : artifact.sourceRef,
     sourceUrl: canonicalizeSiteUrl(artifact.sourceUrl),
+  };
+}
+
+function mapTaskSearchResult(
+  task: TaskSearchItem,
+  searchTerms: ReturnType<typeof getSearchTerms>,
+): TaskSearchResult {
+  const assigneeParts = [
+    task.assigneePerson?.displayName,
+    task.assigneePerson?.currentAffiliation,
+    task.assigneeOrganization?.name,
+  ].filter((value): value is string => Boolean(value?.trim()));
+  const href = `/tasks/${task.id}`;
+  const snippet = [
+    task.description,
+    task.roleTitle,
+    assigneeParts.length > 0 ? `Assigned to ${assigneeParts.join(" / ")}` : null,
+  ]
+    .filter((value): value is string => Boolean(value?.trim()))
+    .join(" ");
+
+  return {
+    assigneeLabel: assigneeParts[0] ?? null,
+    category: task.category,
+    difficulty: task.difficulty,
+    href,
+    id: task.id,
+    score: scoreSearchRecord(searchTerms, {
+      title: task.title,
+      description: snippet,
+      href,
+      keywords: [
+        task.category,
+        task.difficulty,
+        task.status,
+        task.taskKey ?? "",
+        ...task.interestTags,
+        ...task.skillTags,
+        ...assigneeParts,
+      ],
+      section: "Tasks",
+    }),
+    snippet: snippet || null,
+    status: task.status,
+    taskKey: task.taskKey,
+    title: task.title,
   };
 }
 
@@ -785,8 +871,26 @@ export async function getTasksPageData(
     frameKey?: TaskImpactFrameKey | string | null;
   },
 ) {
-  const [viewer, allTasks, myClaims, ownedTasks] = await Promise.all([
+  const [viewer, topLevelTasks, allTasks, myClaims, ownedTasks] = await Promise.all([
     userId ? getTaskViewer(userId) : Promise.resolve(null),
+    prisma.task.findMany({
+      where: {
+        deletedAt: null,
+        isPublic: true,
+        parentTaskId: null,
+        childTasks: { some: { deletedAt: null } },
+      },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+      select: {
+        ...taskListSelect,
+        childTasks: {
+          where: { deletedAt: null, isPublic: true },
+          orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+          select: taskListSelect,
+        },
+      },
+      take: 10,
+    }),
     prisma.task.findMany({
       where: getTaskVisibilityWhere(),
       orderBy: [{ verifiedAt: "desc" }, { createdAt: "desc" }],
@@ -866,8 +970,31 @@ export async function getTasksPageData(
   );
   const ownedPrivateTasks = decoratedOwnedTasks.filter((task) => !task.isPublic);
 
+  const topLevelTaskIds = new Set(topLevelTasks.map((t) => t.id));
+  const topLevelChildIds = new Set(
+    topLevelTasks.flatMap((t) => t.childTasks.map((c) => c.id)),
+  );
+
+  const decoratedTopLevel = topLevelTasks.map((task) => ({
+    ...decorateTask(task, {
+      frameKey: options?.frameKey,
+      userId: viewer?.id ?? null,
+    }),
+    childTasks: task.childTasks.map((child) =>
+      decorateTask(child, {
+        frameKey: options?.frameKey,
+        userId: viewer?.id ?? null,
+      }),
+    ),
+  }));
+
+  // Filter top-level and their children out of "all tasks" to avoid duplication
+  const filteredAllTasks = allTasksSorted.filter(
+    (t) => !topLevelTaskIds.has(t.id) && !topLevelChildIds.has(t.id),
+  );
+
   return {
-    allTasks: allTasksSorted,
+    allTasks: filteredAllTasks,
     assignedToYou,
     forYou,
     myClaims: myClaims.map((claim) => ({
@@ -878,6 +1005,7 @@ export async function getTasksPageData(
       }),
     })),
     ownedPrivateTasks,
+    topLevelTasks: decoratedTopLevel,
     viewer,
   };
 }
@@ -970,6 +1098,109 @@ export async function listTasks(options?: {
       }),
     ),
   );
+}
+
+export async function searchTasks(
+  query: string,
+  options?: {
+    limit?: number | null;
+    userId?: string | null;
+  },
+): Promise<TaskSearchResult[]> {
+  const searchTerms = getSearchTerms(query);
+  const limit = Math.max(options?.limit ?? 12, 1);
+
+  if (!searchTerms.normalizedQuery) {
+    return [];
+  }
+
+  const searchPhrases = Array.from(
+    new Set([searchTerms.normalizedQuery, ...searchTerms.terms]),
+  );
+
+  const tasks = await prisma.task.findMany({
+    where: {
+      AND: [
+        getTaskVisibilityWhere({
+          userId: options?.userId,
+          visibility: options?.userId ? "accessible" : "public",
+        }),
+        {
+          OR: searchPhrases.flatMap((term) => [
+            {
+              title: {
+                contains: term,
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: term,
+                mode: "insensitive",
+              },
+            },
+            {
+              taskKey: {
+                contains: term,
+                mode: "insensitive",
+              },
+            },
+            {
+              roleTitle: {
+                contains: term,
+                mode: "insensitive",
+              },
+            },
+            {
+              assigneeOrganization: {
+                is: {
+                  name: {
+                    contains: term,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            },
+            {
+              assigneePerson: {
+                is: {
+                  displayName: {
+                    contains: term,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            },
+            {
+              assigneePerson: {
+                is: {
+                  currentAffiliation: {
+                    contains: term,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            },
+          ]),
+        },
+      ],
+    },
+    orderBy: [{ verifiedAt: "desc" }, { createdAt: "desc" }],
+    select: taskSearchSelect,
+    take: Math.max(limit * 4, 24),
+  });
+
+  return tasks
+    .map((task) => mapTaskSearchResult(task, searchTerms))
+    .filter((task) => task.score > 0)
+    .sort((left, right) => {
+      if (right.score !== left.score) {
+        return right.score - left.score;
+      }
+
+      return left.title.localeCompare(right.title);
+    })
+    .slice(0, limit);
 }
 
 export async function getPersonTaskProfileData(

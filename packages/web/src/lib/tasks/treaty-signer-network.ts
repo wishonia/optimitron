@@ -332,19 +332,18 @@ export function buildTreatySignerImportDraft(input: {
     contactUrl: slot.contactUrl,
     currentAffiliation: slot.governmentName,
     displayName: slot.decisionMakerLabel,
-    isPublicFigure: false,
-    organizationKey: `organization:government:${slot.countryCode.toLowerCase()}`,
-    organizationName: slot.governmentName,
-    organizationType: OrgType.GOVERNMENT,
+    isPublicFigure: true,
+    organizationKey: null,
+    organizationName: null,
+    organizationType: null,
     role: "decision_maker",
     roleTitle: slot.roleTitle,
   };
 
   cloned.bundle.task.assigneeAffiliationSnapshot = slot.governmentName;
-  cloned.bundle.task.assigneeOrganizationName = slot.governmentName;
-  cloned.bundle.task.assigneeOrganizationSourceRef =
-    `organization:government:${slot.countryCode.toLowerCase()}`;
-  cloned.bundle.task.assigneeOrganizationType = OrgType.GOVERNMENT;
+  cloned.bundle.task.assigneeOrganizationName = null;
+  cloned.bundle.task.assigneeOrganizationSourceRef = null;
+  cloned.bundle.task.assigneeOrganizationType = null;
   cloned.bundle.task.claimPolicy = TaskClaimPolicy.ASSIGNED_ONLY;
   cloned.bundle.task.contactLabel = slot.contactLabel;
   cloned.bundle.task.contactTemplate = buildSignerContactTemplate();
@@ -365,7 +364,7 @@ export function buildTreatySignerImportDraft(input: {
   cloned.bundle.task.skillTags = buildCountrySkillTags(slot);
   cloned.bundle.task.status = TaskStatus.ACTIVE;
   cloned.bundle.task.taskKey = taskKey;
-  cloned.bundle.task.title = `${slot.decisionMakerLabel} signs the 1% Treaty`;
+  cloned.bundle.task.title = "Sign the 1% Treaty";
   cloned.bundle.task.contextJson = {
     ...cloned.bundle.task.contextJson,
     acceptanceCriteria: buildTreatyAcceptanceCriteria(slot),

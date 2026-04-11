@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
-import { Menu, User } from "lucide-react";
+import { Menu, Search, User } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -13,6 +13,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import { Input } from "@/components/retroui/Input";
 import { Accordion } from "@/components/retroui/Accordion";
 import {
   ROUTES,
@@ -20,6 +21,7 @@ import {
   isNavItemActive,
   navSections,
   profileLink,
+  searchLink,
 } from "@/lib/routes";
 
 function AvatarButton({
@@ -53,10 +55,39 @@ function AvatarButton({
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [open, setOpen] = useState(false);
+  const [navQuery, setNavQuery] = useState("");
   const isAuthenticated = status === "authenticated";
   const user = session?.user ?? null;
+  const normalizedNavQuery = navQuery.trim().toLowerCase();
+  const fullSearchHref = normalizedNavQuery
+    ? `${searchLink.href}?q=${encodeURIComponent(navQuery.trim())}`
+    : searchLink.href;
+  const filteredSections = navSections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => {
+        if (!normalizedNavQuery) {
+          return true;
+        }
+
+        const haystack = [
+          section.label,
+          item.label,
+          item.description,
+          item.tagline,
+          item.href,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return haystack.includes(normalizedNavQuery);
+      }),
+    }))
+    .filter((section) => section.items.length > 0);
 
   return (
     <nav className="sticky top-0 z-50 border-b-4 border-primary bg-brutal-yellow text-brutal-yellow-foreground">
@@ -73,9 +104,25 @@ export default function Navbar() {
 
           {/* Right side: Avatar + Hamburger */}
           <div className="flex items-center gap-3">
+            <Link
+              href={searchLink.href}
+              className="flex h-10 w-10 items-center justify-center border-4 border-primary bg-background text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-foreground hover:text-background hover:shadow-none"
+              title={searchLink.label}
+              aria-label={searchLink.label}
+            >
+              <Search className="h-5 w-5 stroke-[3px]" />
+            </Link>
             <AvatarButton user={user} isAuthenticated={isAuthenticated} />
 
-            <Sheet open={open} onOpenChange={setOpen}>
+            <Sheet
+              open={open}
+              onOpenChange={(nextOpen) => {
+                setOpen(nextOpen);
+                if (!nextOpen) {
+                  setNavQuery("");
+                }
+              }}
+            >
               <SheetTrigger asChild>
                 <button
                   type="button"
@@ -94,8 +141,40 @@ export default function Navbar() {
                   Site navigation menu
                 </SheetDescription>
 
-                <Accordion type="multiple" defaultValue={navSections.map((s) => s.id)} className="w-full">
-                  {navSections.map((section) => (
+                <form
+                  className="mb-4 space-y-3"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    setOpen(false);
+                    router.push(fullSearchHref);
+                  }}
+                >
+                  <div className="relative">
+                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      aria-label="Filter navigation"
+                      className="h-11 border-4 border-primary bg-background pl-10 text-sm font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                      onChange={(event) => setNavQuery(event.target.value)}
+                      placeholder="Filter nav or search the whole site"
+                      type="search"
+                      value={navQuery}
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full border-4 border-primary bg-brutal-pink px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-brutal-pink-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                  >
+                    {normalizedNavQuery ? `Search "${navQuery.trim()}"` : "Open Full Search"}
+                  </button>
+                </form>
+
+                <Accordion
+                  key={filteredSections.map((section) => section.id).join("|")}
+                  type="multiple"
+                  defaultValue={filteredSections.map((section) => section.id)}
+                  className="w-full"
+                >
+                  {filteredSections.map((section) => (
                     <Accordion.Item key={section.id} value={section.id} className="!border-0 !bg-transparent !shadow-none !rounded-none">
                       <Accordion.Header className="text-xs font-black uppercase tracking-widest py-3 text-brutal-yellow-foreground/60 hover:no-underline">
                         {section.label}
@@ -104,16 +183,31 @@ export default function Navbar() {
                         <div className="flex flex-col">
                           {section.items.map((item) => {
                             const active = isNavItemActive(pathname, item);
+                            const linkClass = `flex items-center gap-3 px-3 py-3 min-h-[44px] text-sm font-bold uppercase transition-colors rounded-md ${
+                              active
+                                ? "bg-background/40 text-brutal-yellow-foreground"
+                                : "hover:bg-background/30"
+                            }`;
+
+                            if (item.external) {
+                              return (
+                                <SheetClose asChild key={item.href}>
+                                  <a
+                                    href={item.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={linkClass}
+                                  >
+                                    {item.emoji && <span className="text-base">{item.emoji}</span>}
+                                    {item.label}
+                                  </a>
+                                </SheetClose>
+                              );
+                            }
+
                             return (
                               <SheetClose asChild key={item.href}>
-                                <Link
-                                  href={item.href}
-                                  className={`flex items-center gap-3 px-3 py-3 min-h-[44px] text-sm font-bold uppercase transition-colors rounded-md ${
-                                    active
-                                      ? "bg-background/40 text-brutal-yellow-foreground"
-                                      : "hover:bg-background/30"
-                                  }`}
-                                >
+                                <Link href={item.href} className={linkClass}>
                                   {item.emoji && <span className="text-base">{item.emoji}</span>}
                                   {item.label}
                                 </Link>
@@ -125,6 +219,12 @@ export default function Navbar() {
                     </Accordion.Item>
                   ))}
                 </Accordion>
+
+                {normalizedNavQuery && filteredSections.length === 0 ? (
+                  <div className="mt-4 border-4 border-primary bg-background px-4 py-3 text-sm font-bold text-foreground">
+                    No menu matches for &quot;{navQuery.trim()}&quot;. Use full search instead.
+                  </div>
+                ) : null}
 
                 {/* Auth section */}
                 <div className="border-t border-primary/30 mt-4 pt-4 space-y-2">
