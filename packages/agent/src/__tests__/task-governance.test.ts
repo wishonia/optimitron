@@ -118,4 +118,42 @@ describe('reviewTaskProposalBundle', () => {
       'agent-proposals-should-start-draft',
     );
   });
+
+  it('rejects low-quality proposals below the promotion threshold', () => {
+    const review = reviewTaskProposalBundle({
+      candidates: [
+        {
+          ...treatySupportTask,
+          estimatedEffortHours: 10,
+          impact: {
+            delayDalysLostPerDay: 1,
+            delayEconomicValueUsdLostPerDay: 10,
+            expectedValuePerHourDalys: 1,
+            expectedValuePerHourUsd: 25,
+          },
+          taskKey: 'program:one-percent-treaty:signer:us:support:weak-proposal',
+          title: 'Weak low-value proposal',
+        },
+      ],
+    });
+
+    expect(review.promotableCount).toBe(0);
+    expect(review.decisions[0]?.issues.map((issue) => issue.code)).toContain(
+      'quality-below-threshold',
+    );
+  });
+
+  it('rejects oversized proposal bundles', () => {
+    const review = reviewTaskProposalBundle({
+      candidates: Array.from({ length: 13 }, (_, index) => ({
+        ...treatySupportTask,
+        id: `draft_contact_${index}`,
+        taskKey: `program:one-percent-treaty:signer:us:support:contact-office:${index}`,
+        title: `Contact bundle task ${index}`,
+      })),
+    });
+
+    expect(review.promotableCount).toBe(0);
+    expect(review.decisions.every((decision) => decision.issues.some((issue) => issue.code === 'bundle-too-large'))).toBe(true);
+  });
 });

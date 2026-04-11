@@ -77,10 +77,12 @@ export const TaskProposalSeveritySchema = z.enum(['error', 'warning']);
 export interface TaskProposalIssue {
   code:
     | 'agent-proposals-should-start-draft'
+    | 'bundle-too-large'
     | 'cyclic-blockers'
     | 'duplicate-fingerprint'
     | 'duplicate-task-key'
     | 'invalid-contact-url'
+    | 'quality-below-threshold'
     | 'missing-assignee-context'
     | 'missing-description'
     | 'missing-effort-estimate'
@@ -96,10 +98,12 @@ export interface TaskProposalIssue {
 export const TaskProposalIssueSchema = z.object({
   code: z.enum([
     'agent-proposals-should-start-draft',
+    'bundle-too-large',
     'cyclic-blockers',
     'duplicate-fingerprint',
     'duplicate-task-key',
     'invalid-contact-url',
+    'quality-below-threshold',
     'missing-assignee-context',
     'missing-description',
     'missing-effort-estimate',
@@ -163,6 +167,16 @@ export const TaskPromotionRequestSchema = z.object({
 });
 
 export type TaskPromotionRequest = z.infer<typeof TaskPromotionRequestSchema>;
+
+export interface TaskProposalReviewPolicy {
+  maxCandidatesPerBundle: number;
+  minimumQualityScore: number;
+}
+
+export const DEFAULT_TASK_PROPOSAL_REVIEW_POLICY: TaskProposalReviewPolicy = {
+  maxCandidatesPerBundle: 12,
+  minimumQualityScore: 0.55,
+};
 
 function normalizeText(value: string | null | undefined) {
   return value?.trim().toLowerCase() ?? '';
@@ -362,6 +376,7 @@ export function reviewTaskProposalBundle(input: {
   existingTasks?: ExistingTaskSummary[];
 }): TaskBundleReview {
   const parsedInput = TaskProposalBundleInputSchema.parse(input);
+  const policy = DEFAULT_TASK_PROPOSAL_REVIEW_POLICY;
   const existingTasks = parsedInput.existingTasks ?? [];
   const existingTaskKeys = new Set(existingTasks.map((task) => task.taskKey?.trim()).filter(Boolean) as string[]);
   const existingFingerprints = new Set(existingTasks.map((task) => fingerprint(task)));
@@ -372,6 +387,7 @@ export function reviewTaskProposalBundle(input: {
   const bundleTaskKeys = new Map<string, string>();
   const bundleFingerprints = new Map<string, string>();
   const issuesByRef = new Map<string, TaskProposalIssue[]>();
+  const bundleTooLarge = parsedInput.candidates.length > policy.maxCandidatesPerBundle;
 
   for (const candidate of parsedInput.candidates) {
     const ref = proposalRef(candidate);
@@ -452,6 +468,14 @@ export function reviewTaskProposalBundle(input: {
       });
     }
 
+    if (bundleTooLarge) {
+      issues.push({
+        code: 'bundle-too-large',
+        message: `Proposal bundles are capped at ${policy.maxCandidatesPerBundle} tasks to keep agent planning focused and reviewable.`,
+        severity: 'error',
+      });
+    }
+
     if (taskKey) {
       const existingHolder = bundleTaskKeys.get(taskKey);
       if (existingHolder) {
@@ -501,8 +525,14 @@ export function reviewTaskProposalBundle(input: {
     const ref = proposalRef(candidate);
     const issues = issuesByRef.get(ref) ?? [];
     const evaluation = evaluateTaskProposal(candidate);
-    const promotable =
-      !issues.some((issue) => issue.severity === 'error') && evaluation.qualityScore >= 0.35;
+    if (evaluation.qualityScore < policy.minimumQualityScore) {
+      issues.push({
+        code: 'quality-below-threshold',
+        message: `Quality score ${evaluation.qualityScore.toFixed(2)} is below the promotion threshold of ${policy.minimumQualityScore.toFixed(2)}.`,
+        severity: 'error',
+      });
+    }
+    const promotable = !issues.some((issue) => issue.severity === 'error');
 
     return {
       evaluation,
