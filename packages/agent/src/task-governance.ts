@@ -170,11 +170,13 @@ export type TaskPromotionRequest = z.infer<typeof TaskPromotionRequestSchema>;
 
 export interface TaskProposalReviewPolicy {
   maxCandidatesPerBundle: number;
+  minimumPrivateQualityScore: number;
   minimumQualityScore: number;
 }
 
 export const DEFAULT_TASK_PROPOSAL_REVIEW_POLICY: TaskProposalReviewPolicy = {
   maxCandidatesPerBundle: 12,
+  minimumPrivateQualityScore: 0.2,
   minimumQualityScore: 0.55,
 };
 
@@ -525,10 +527,12 @@ export function reviewTaskProposalBundle(input: {
     const ref = proposalRef(candidate);
     const issues = issuesByRef.get(ref) ?? [];
     const evaluation = evaluateTaskProposal(candidate);
-    if (evaluation.qualityScore < policy.minimumQualityScore) {
+    const minimumQualityScore =
+      (candidate.isPublic ?? true) ? policy.minimumQualityScore : policy.minimumPrivateQualityScore;
+    if (evaluation.qualityScore < minimumQualityScore) {
       issues.push({
         code: 'quality-below-threshold',
-        message: `Quality score ${evaluation.qualityScore.toFixed(2)} is below the promotion threshold of ${policy.minimumQualityScore.toFixed(2)}.`,
+        message: `Quality score ${evaluation.qualityScore.toFixed(2)} is below the promotion threshold of ${minimumQualityScore.toFixed(2)}.`,
         severity: 'error',
       });
     }
