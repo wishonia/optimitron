@@ -8,6 +8,7 @@ const DEFAULT_TASK_SOURCE_LABEL = 'the task database via MCP';
 
 export const OPTIMIZE_EARTH_PROTOCOL_STEPS = [
   'Audit whether the current queue is sane before trusting the top-ranked task.',
+  'If the queue is clearly broken and the repo provides bootstrap:optimize-earth, run it once before trusting the frontier.',
   'Call getNextTask with your capabilities.',
   'If a task is returned, call acquireLease before doing any work.',
   'Work only on the leased task and touch only files required for that task.',
@@ -31,6 +32,7 @@ export function buildOptimizeEarthInstruction(input: OptimizeEarthPromptOptions 
   return [
     `Optimize earth using ${taskSourceLabel} as the source of truth.`,
     'First, check whether the current queue is sane; if it is obviously stupid, improve the queue before trusting its top task.',
+    'If the repo exposes pnpm --filter @optimitron/web run bootstrap:optimize-earth and the queue is clearly broken, run that once before calling getNextTask.',
     'Before editing code or creating tasks, fetch the highest-value executable task and acquire a lease.',
     capabilityLine,
     `Hold at most ${maxParallelTasks} active lease${maxParallelTasks === 1 ? '' : 's'} at a time.`,

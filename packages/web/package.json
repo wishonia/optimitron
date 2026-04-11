@@ -33,6 +33,7 @@
     "sync:treaty-signers": "tsx scripts/sync-treaty-signers.ts",
     "mcp:tasks": "tsx scripts/mcp-task-server.ts",
     "report:task-tree": "tsx scripts/export-task-tree.ts",
+    "bootstrap:optimize-earth": "tsx scripts/bootstrap-optimize-earth.ts",
     "draft:legislation": "tsx scripts/draft-legislation.ts"
   },
   "dependencies": {

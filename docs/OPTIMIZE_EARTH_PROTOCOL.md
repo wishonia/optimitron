@@ -20,7 +20,7 @@ Make many agents safe to run in parallel without:
 Every agent must follow this order:
 
 1. Audit whether the current queue is sane enough to trust.
-2. If the queue is clearly missing major task families, missing quantified impact, or dominated by a narrow arbitrary cap, propose system-improvement tasks first.
+2. If the queue is clearly missing major task families, missing quantified impact, or dominated by a narrow arbitrary cap, run `pnpm --filter @optimitron/web run bootstrap:optimize-earth` if the repo provides it, then propose system-improvement tasks first.
 3. Call `getNextTask` with its capabilities.
 4. If no executable task exists:
    - call `proposeTaskBundle` only for high-value missing tasks or unblockers

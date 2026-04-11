@@ -34,7 +34,7 @@ When the human says `optimize earth`, switch from lane ownership to **task owner
 Use this protocol exactly:
 
 1. Audit whether the current queue is sane enough to trust.
-2. If the queue is obviously narrow, arbitrarily capped, missing quantified impact, or missing system/growth tasks, propose system-improvement tasks first.
+2. If the queue is obviously narrow, arbitrarily capped, missing quantified impact, or missing system/growth tasks, run `pnpm --filter @optimitron/web run bootstrap:optimize-earth` if available, then propose system-improvement tasks first.
 3. Call `getNextTask` with your capabilities.
 4. If a task is returned, call `acquireLease`.
 5. Work only on the leased task and only touch files required for that task.

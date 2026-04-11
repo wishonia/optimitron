@@ -824,6 +824,7 @@ export async function listTasks(options?: {
   assigneeOrganizationId?: string | null;
   assigneePersonId?: string | null;
   frameKey?: TaskImpactFrameKey | string | null;
+  limit?: number | null;
   status?: TaskStatus | null;
   userId?: string | null;
   visibility?: "public" | "owned" | "accessible";
@@ -838,7 +839,7 @@ export async function listTasks(options?: {
     }),
     orderBy: [{ verifiedAt: "desc" }, { createdAt: "desc" }],
     select: taskListSelect,
-    take: 100,
+    ...(options?.limit == null ? {} : { take: options.limit }),
   });
 
   return sortTasksForAccountability(

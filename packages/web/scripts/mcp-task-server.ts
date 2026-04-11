@@ -527,7 +527,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       // ── getNextTask (capability-aware, lease-aware) ──────────
       case "getNextTask": {
         const { tasks, ranking, lease } = await getTaskFunctions();
-        const allTasks = await tasks.listTasks({ visibility: "public", status: TaskStatus.ACTIVE });
+        const allTasks = await tasks.listTasks({
+          limit: 5000,
+          visibility: "public",
+          status: TaskStatus.ACTIVE,
+        });
         const user = {
           skillTags: (a.skillTags as string[]) ?? [],
           interestTags: (a.interestTags as string[]) ?? [],
@@ -563,12 +567,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case "listTasks": {
         const { tasks } = await getTaskFunctions();
         const status = a.status ? TaskStatus[a.status as keyof typeof TaskStatus] : null;
+        const limit = Math.min(Number(a.limit) || 20, 50);
         const list = await tasks.listTasks({
           status,
           assigneePersonId: (a.assigneePersonId as string) ?? null,
+          limit,
           visibility: "public",
         });
-        const limit = Math.min(Number(a.limit) || 20, 50);
         let filtered = list;
         if (a.parentTaskId) {
           filtered = list.filter((t: { parentTaskId?: string | null }) => t.parentTaskId === a.parentTaskId);

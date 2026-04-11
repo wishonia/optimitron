@@ -2,6 +2,9 @@ import "./load-env";
 import { createHash } from "crypto";
 import { readFile } from "fs/promises";
 import { resolve } from "path";
+import { pathToFileURL } from "url";
+import "../../data/src/generated/country-panel";
+import { getCountryPanelLatest } from "@optimitron/data";
 import { OrgType } from "@optimitron/db";
 import { findOrCreateOrganization } from "../src/lib/organization.server";
 import { prisma } from "../src/lib/prisma";
@@ -15,7 +18,9 @@ import {
   getTreatySignerTaskKey,
   TOP_TREATY_SIGNER_SLOTS,
   TREATY_DUE_AT,
+  type TreatySignerSlot,
 } from "../src/lib/tasks/treaty-signer-network";
+import { buildFullTreatySignerSlots } from "../src/lib/tasks/treaty-signer-roster";
 import {
   ensureTreatyParentTask,
   softDeleteMissingTreatySignerNetworkTasks,
@@ -24,18 +29,24 @@ import {
 import { buildTreatySignerMilestones } from "../src/lib/tasks/treaty-milestones";
 
 const DEFAULT_PARAMETERS_PATH = "E:/code/disease-eradication-plan/assets/json/parameters.json";
+const DEFAULT_ROSTER = "full";
 
-interface CliOptions {
+export type TreatySignerRosterMode = "full" | "top";
+
+export interface SyncTreatySignerCliOptions {
   countryCodes: string[] | null;
   importDb: boolean;
   parametersPath: string;
   printJson: boolean;
+  roster: TreatySignerRosterMode;
 }
 
-function parseArgs(argv: string[]): CliOptions {
+export function parseArgs(argv: string[]): SyncTreatySignerCliOptions {
   const getValue = (prefix: string) =>
     argv.find((arg) => arg.startsWith(`${prefix}=`))?.slice(prefix.length + 1) ?? null;
   const countryCodeValue = getValue("--country-codes");
+  const rosterValue = getValue("--roster");
+  const roster = rosterValue === "top" ? "top" : DEFAULT_ROSTER;
 
   return {
     countryCodes:
@@ -48,11 +59,26 @@ function parseArgs(argv: string[]): CliOptions {
     importDb: argv.includes("--import-db"),
     parametersPath: getValue("--parameters") ?? DEFAULT_PARAMETERS_PATH,
     printJson: argv.includes("--print-json"),
+    roster,
   };
 }
 
-async function main() {
-  const options = parseArgs(process.argv.slice(2));
+export function getTreatySignerSlots(options: {
+  countryCodes?: string[] | null;
+  roster?: TreatySignerRosterMode;
+} = {}): TreatySignerSlot[] {
+  const fullRoster = buildFullTreatySignerSlots(getCountryPanelLatest(), TOP_TREATY_SIGNER_SLOTS);
+  const selectedRoster = options.roster === "top" ? TOP_TREATY_SIGNER_SLOTS : fullRoster;
+
+  if (options.countryCodes == null) {
+    return selectedRoster;
+  }
+
+  const requested = new Set(options.countryCodes.map((value) => value.trim().toUpperCase()));
+  return selectedRoster.filter((slot) => requested.has(slot.countryCode.toUpperCase()));
+}
+
+export async function syncTreatySigners(options: SyncTreatySignerCliOptions) {
   const parametersPath = resolve(process.cwd(), options.parametersPath);
   const rawJson = await readFile(parametersPath, "utf8");
   const rawExport = JSON.parse(rawJson);
@@ -71,12 +97,10 @@ async function main() {
     skillTags: ["diplomacy", "executive-action", "treaty-negotiation"],
   });
 
-  const selectedSlots =
-    options.countryCodes == null
-      ? TOP_TREATY_SIGNER_SLOTS
-      : TOP_TREATY_SIGNER_SLOTS.filter((slot) =>
-          options.countryCodes?.includes(slot.countryCode),
-        );
+  const selectedSlots = getTreatySignerSlots({
+    countryCodes: options.countryCodes,
+    roster: options.roster,
+  });
 
   if (selectedSlots.length === 0) {
     throw new Error("No treaty signer slots matched the requested filter.");
@@ -182,6 +206,7 @@ async function main() {
     JSON.stringify(
       {
         parentTaskId: parentTask.id,
+        roster: options.roster,
         signerCount: persisted.length,
         synced: persisted,
       },
@@ -191,7 +216,15 @@ async function main() {
   );
 }
 
-void main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+async function main() {
+  await syncTreatySigners(parseArgs(process.argv.slice(2)));
+}
+
+const isMain = process.argv[1] != null && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isMain) {
+  void main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}
