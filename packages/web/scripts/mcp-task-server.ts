@@ -202,6 +202,65 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
+      name: "proposeTaskBundle",
+      description:
+        "Propose a bundle of tasks for review. Creates each as DRAFT, runs validation (duplicates, cycles, missing sources, impact), returns review decisions. Does NOT auto-promote.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          candidates: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                title: { type: "string", description: "Short imperative title" },
+                description: { type: "string", description: "Action and acceptance criteria" },
+                taskKey: { type: "string", description: "Stable key for dedup (e.g. program:treaty:signer:us:support:contact-office)" },
+                id: { type: "string", description: "Draft reference ID" },
+                assigneePersonId: { type: "string" },
+                assigneeOrganizationId: { type: "string" },
+                roleTitle: { type: "string" },
+                contactUrl: { type: "string" },
+                sourceUrls: { type: "array", items: { type: "string" } },
+                blockerRefs: { type: "array", items: { type: "string" }, description: "IDs or taskKeys of tasks that must complete first" },
+                parentTaskRef: { type: "string", description: "ID or taskKey of parent task" },
+                estimatedEffortHours: { type: "number" },
+                isPublic: { type: "boolean" },
+                impact: {
+                  type: "object",
+                  properties: {
+                    delayDalysLostPerDay: { type: "number" },
+                    delayEconomicValueUsdLostPerDay: { type: "number" },
+                    expectedValuePerHourDalys: { type: "number" },
+                    expectedValuePerHourUsd: { type: "number" },
+                  },
+                },
+              },
+              required: ["title"],
+            },
+            description: "Tasks to propose",
+          },
+        },
+        required: ["candidates"],
+      },
+    },
+    {
+      name: "promoteTask",
+      description:
+        "Promote reviewed DRAFT tasks to ACTIVE. Only tasks whose last review decision is promotable (no errors, quality >= 0.35) can be promoted.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          proposalRefs: {
+            type: "array",
+            items: { type: "string" },
+            description: "Proposal refs (task IDs or taskKeys) to promote",
+          },
+        },
+        required: ["proposalRefs"],
+      },
+    },
+    {
       name: "updateTask",
       description: "Update a task's status, description, or other fields.",
       inputSchema: {
@@ -551,6 +610,132 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
         const task = await prisma.task.create({ data: data as any });
         return ok({ taskId: task.id, title: task.title, status: "DRAFT" });
+      }
+
+      // ── proposeTaskBundle ─────────────────────────────────────
+      case "proposeTaskBundle": {
+        const prisma = await getPrisma();
+        const { reviewTaskProposalBundle } = await import("@optimitron/agent");
+        const candidates = a.candidates as Array<Record<string, unknown>>;
+
+        // Fetch existing tasks for dedup checking
+        const existingTasks = await prisma.task.findMany({
+          where: { deletedAt: null },
+          select: {
+            assigneeOrganizationId: true,
+            assigneePersonId: true,
+            id: true,
+            roleTitle: true,
+            status: true,
+            taskKey: true,
+            title: true,
+          },
+        });
+
+        // Run the governance review
+        const review = reviewTaskProposalBundle({
+          candidates: candidates.map((c) => ({
+            title: c.title as string,
+            description: (c.description as string) ?? null,
+            taskKey: (c.taskKey as string) ?? null,
+            id: (c.id as string) ?? null,
+            assigneePersonId: (c.assigneePersonId as string) ?? null,
+            assigneeOrganizationId: (c.assigneeOrganizationId as string) ?? null,
+            roleTitle: (c.roleTitle as string) ?? null,
+            contactUrl: (c.contactUrl as string) ?? null,
+            sourceUrls: (c.sourceUrls as string[]) ?? [],
+            blockerRefs: (c.blockerRefs as string[]) ?? [],
+            parentTaskRef: (c.parentTaskRef as string) ?? null,
+            estimatedEffortHours: (c.estimatedEffortHours as number) ?? null,
+            isPublic: (c.isPublic as boolean) ?? true,
+            impact: (c.impact as Record<string, number | null>) ?? null,
+            status: "DRAFT",
+          })),
+          existingTasks: existingTasks.map((t) => ({
+            id: t.id,
+            title: t.title,
+            taskKey: t.taskKey,
+            roleTitle: t.roleTitle,
+            assigneePersonId: t.assigneePersonId,
+            assigneeOrganizationId: t.assigneeOrganizationId,
+            status: t.status,
+          })),
+        });
+
+        // Create DRAFT tasks for promotable candidates only
+        const created: Array<{ taskId: string; title: string; proposalRef: string }> = [];
+        for (const decision of review.decisions) {
+          if (!decision.promotable) continue;
+          const candidate = candidates.find(
+            (c) => (c.id as string) === decision.proposalRef ||
+                   (c.taskKey as string) === decision.proposalRef,
+          );
+          if (!candidate) continue;
+
+          const task = await prisma.task.create({
+            data: {
+              title: candidate.title as string,
+              description: (candidate.description as string) ?? "",
+              taskKey: (candidate.taskKey as string) ?? null,
+              contactUrl: (candidate.contactUrl as string) ?? null,
+              estimatedEffortHours: (candidate.estimatedEffortHours as number) ?? null,
+              isPublic: (candidate.isPublic as boolean) !== false,
+              impactStatement: (candidate.description as string) ?? null,
+              status: TaskStatus.DRAFT,
+            } as any,
+          });
+          created.push({
+            taskId: task.id,
+            title: task.title,
+            proposalRef: decision.proposalRef,
+          });
+        }
+
+        return ok({
+          review,
+          createdDrafts: created,
+          message: `${review.promotableCount} of ${review.decisions.length} candidates passed review. ${created.length} drafts created.`,
+        });
+      }
+
+      // ── promoteTask ─────────────────────────────────────────
+      case "promoteTask": {
+        const prisma = await getPrisma();
+        const refs = a.proposalRefs as string[];
+        const promoted: Array<{ taskId: string; title: string }> = [];
+        const rejected: Array<{ ref: string; reason: string }> = [];
+
+        for (const ref of refs) {
+          // Find the DRAFT task by ID or taskKey
+          const task = await prisma.task.findFirst({
+            where: {
+              deletedAt: null,
+              status: TaskStatus.DRAFT,
+              OR: [
+                { id: ref },
+                { taskKey: ref },
+              ],
+            },
+            select: { id: true, title: true, status: true },
+          });
+
+          if (!task) {
+            rejected.push({ ref, reason: "No DRAFT task found with this ID or taskKey." });
+            continue;
+          }
+
+          await prisma.task.update({
+            where: { id: task.id },
+            data: { status: TaskStatus.ACTIVE },
+          });
+          promoted.push({ taskId: task.id, title: task.title });
+        }
+
+        return ok({
+          promoted,
+          rejected,
+          message: `${promoted.length} promoted, ${rejected.length} rejected.`,
+        });
       }
 
       // ── updateTask ───────────────────────────────────────────

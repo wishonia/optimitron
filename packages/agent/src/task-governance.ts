@@ -1,4 +1,13 @@
+import { z } from 'zod';
+
 export type TaskProposalSeverity = 'error' | 'warning';
+
+export const TaskProposalImpactSchema = z.object({
+  delayDalysLostPerDay: z.number().nullable().optional(),
+  delayEconomicValueUsdLostPerDay: z.number().nullable().optional(),
+  expectedValuePerHourDalys: z.number().nullable().optional(),
+  expectedValuePerHourUsd: z.number().nullable().optional(),
+});
 
 export interface TaskProposalImpact {
   delayDalysLostPerDay?: number | null;
@@ -6,6 +15,24 @@ export interface TaskProposalImpact {
   expectedValuePerHourDalys?: number | null;
   expectedValuePerHourUsd?: number | null;
 }
+
+export const TaskProposalCandidateSchema = z.object({
+  assigneeOrganizationId: z.string().nullable().optional(),
+  assigneePersonId: z.string().nullable().optional(),
+  blockerRefs: z.array(z.string().min(1)).optional(),
+  contactUrl: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  estimatedEffortHours: z.number().nullable().optional(),
+  id: z.string().nullable().optional(),
+  impact: TaskProposalImpactSchema.nullable().optional(),
+  isPublic: z.boolean().nullable().optional(),
+  parentTaskRef: z.string().nullable().optional(),
+  roleTitle: z.string().nullable().optional(),
+  sourceUrls: z.array(z.string().min(1)).optional(),
+  status: z.string().nullable().optional(),
+  taskKey: z.string().nullable().optional(),
+  title: z.string().min(1),
+});
 
 export interface TaskProposalCandidate {
   assigneeOrganizationId?: string | null;
@@ -25,6 +52,16 @@ export interface TaskProposalCandidate {
   title: string;
 }
 
+export const ExistingTaskSummarySchema = z.object({
+  assigneeOrganizationId: z.string().nullable().optional(),
+  assigneePersonId: z.string().nullable().optional(),
+  id: z.string().min(1),
+  roleTitle: z.string().nullable().optional(),
+  status: z.string().nullable().optional(),
+  taskKey: z.string().nullable().optional(),
+  title: z.string().min(1),
+});
+
 export interface ExistingTaskSummary {
   assigneeOrganizationId?: string | null;
   assigneePersonId?: string | null;
@@ -34,6 +71,8 @@ export interface ExistingTaskSummary {
   taskKey?: string | null;
   title: string;
 }
+
+export const TaskProposalSeveritySchema = z.enum(['error', 'warning']);
 
 export interface TaskProposalIssue {
   code:
@@ -54,10 +93,35 @@ export interface TaskProposalIssue {
   severity: TaskProposalSeverity;
 }
 
+export const TaskProposalIssueSchema = z.object({
+  code: z.enum([
+    'agent-proposals-should-start-draft',
+    'cyclic-blockers',
+    'duplicate-fingerprint',
+    'duplicate-task-key',
+    'invalid-contact-url',
+    'missing-assignee-context',
+    'missing-description',
+    'missing-effort-estimate',
+    'missing-impact',
+    'missing-source-urls',
+    'missing-title',
+    'self-blocker',
+    'unknown-blocker',
+  ]),
+  message: z.string().min(1),
+  severity: TaskProposalSeveritySchema,
+});
+
 export interface TaskProposalEvaluation {
   qualityScore: number;
   rationale: string[];
 }
+
+export const TaskProposalEvaluationSchema = z.object({
+  qualityScore: z.number(),
+  rationale: z.array(z.string().min(1)),
+});
 
 export interface TaskProposalDecision {
   evaluation: TaskProposalEvaluation;
@@ -67,11 +131,38 @@ export interface TaskProposalDecision {
   title: string;
 }
 
+export const TaskProposalDecisionSchema = z.object({
+  evaluation: TaskProposalEvaluationSchema,
+  issues: z.array(TaskProposalIssueSchema),
+  promotable: z.boolean(),
+  proposalRef: z.string().min(1),
+  title: z.string().min(1),
+});
+
 export interface TaskBundleReview {
   decisions: TaskProposalDecision[];
   promotableCount: number;
   summary: string;
 }
+
+export const TaskBundleReviewSchema = z.object({
+  decisions: z.array(TaskProposalDecisionSchema),
+  promotableCount: z.number().int().nonnegative(),
+  summary: z.string().min(1),
+});
+
+export const TaskProposalBundleInputSchema = z.object({
+  candidates: z.array(TaskProposalCandidateSchema).min(1),
+  existingTasks: z.array(ExistingTaskSummarySchema).optional(),
+});
+
+export type TaskProposalBundleInput = z.infer<typeof TaskProposalBundleInputSchema>;
+
+export const TaskPromotionRequestSchema = z.object({
+  proposalRefs: z.array(z.string().min(1)).min(1),
+});
+
+export type TaskPromotionRequest = z.infer<typeof TaskPromotionRequestSchema>;
 
 function normalizeText(value: string | null | undefined) {
   return value?.trim().toLowerCase() ?? '';
@@ -270,7 +361,8 @@ export function reviewTaskProposalBundle(input: {
   candidates: TaskProposalCandidate[];
   existingTasks?: ExistingTaskSummary[];
 }): TaskBundleReview {
-  const existingTasks = input.existingTasks ?? [];
+  const parsedInput = TaskProposalBundleInputSchema.parse(input);
+  const existingTasks = parsedInput.existingTasks ?? [];
   const existingTaskKeys = new Set(existingTasks.map((task) => task.taskKey?.trim()).filter(Boolean) as string[]);
   const existingFingerprints = new Set(existingTasks.map((task) => fingerprint(task)));
   const existingRefs = new Set<string>([
@@ -281,7 +373,7 @@ export function reviewTaskProposalBundle(input: {
   const bundleFingerprints = new Map<string, string>();
   const issuesByRef = new Map<string, TaskProposalIssue[]>();
 
-  for (const candidate of input.candidates) {
+  for (const candidate of parsedInput.candidates) {
     const ref = proposalRef(candidate);
     const issues: TaskProposalIssue[] = [];
     const taskKey = candidate.taskKey?.trim();
@@ -400,12 +492,12 @@ export function reviewTaskProposalBundle(input: {
   }
 
   collectGraphIssues({
-    candidates: input.candidates,
+    candidates: parsedInput.candidates,
     existingRefs,
     issuesByRef,
   });
 
-  const decisions = input.candidates.map((candidate) => {
+  const decisions = parsedInput.candidates.map((candidate) => {
     const ref = proposalRef(candidate);
     const issues = issuesByRef.get(ref) ?? [];
     const evaluation = evaluateTaskProposal(candidate);
@@ -423,9 +515,9 @@ export function reviewTaskProposalBundle(input: {
 
   const promotableCount = decisions.filter((decision) => decision.promotable).length;
 
-  return {
+  return TaskBundleReviewSchema.parse({
     decisions,
     promotableCount,
     summary: `${promotableCount} of ${decisions.length} proposed task${decisions.length === 1 ? '' : 's'} cleared promotion review.`,
-  };
+  });
 }
