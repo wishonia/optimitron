@@ -29,7 +29,7 @@ import {
 } from "@/lib/tasks/accountability";
 import { getSignInPath, tasksLink, ROUTES } from "@/lib/routes";
 import { canTaskAcceptMoreClaims } from "@/lib/tasks/rank-tasks";
-import { readTaskContextSections } from "@/lib/tasks/task-context";
+import { readLeaderActivityContext, readTaskContextSections } from "@/lib/tasks/task-context";
 import { getTaskDetailData } from "@/lib/tasks.server";
 
 function getClaimPolicyLabel(policy: TaskClaimPolicy) {
@@ -151,6 +151,11 @@ export default async function TaskDetailPage({
   });
   const fallbackInitials = getFallbackInitials(targetLabel);
   const contextSections = readTaskContextSections(task.contextJson);
+  const activityContext = readLeaderActivityContext(task.contextJson);
+  const econValue = task.impact?.selectedFrame?.expectedEconomicValueUsdBase ?? null;
+  const dalysValue = task.impact?.selectedFrame?.expectedDalysAvertedBase ?? null;
+  const isHarmful = (econValue != null && econValue < 0) || (dalysValue != null && dalysValue < 0);
+  const isUnmeasured = task.status === TaskStatus.VERIFIED && econValue == null && dalysValue == null;
   const completedMilestoneCount = task.milestones.filter(
     (milestone) => milestone.status === "COMPLETED" || milestone.status === "VERIFIED",
   ).length;
@@ -250,88 +255,229 @@ export default async function TaskDetailPage({
                 </div>
               ) : null}
 
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                <div className="border-4 border-foreground bg-muted/20 p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Delay
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">
-                    {formatDelayDuration(delayStats.currentDelayDays)}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    since target date
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-muted/20 p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Human Lives
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">
-                    {formatCompactCount(delayStats.currentHumanLivesLost)}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    delayed so far
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-muted/20 p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Suffering Hours
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">
-                    {formatCompactCount(delayStats.currentSufferingHoursLost)}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    delayed so far
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-muted/20 p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
-                    Economic Loss
-                  </p>
-                  <p className="mt-2 text-2xl font-black uppercase">
-                    {formatCompactCurrency(delayStats.currentEconomicValueUsdLost)}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    lost so far
-                  </p>
-                </div>
-              </div>
+              {isHarmful ? (
+                <>
+                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                    {activityContext.taxpayerCostUsd != null ? (
+                      <div className="border-4 border-foreground bg-brutal-red text-brutal-red-foreground p-3">
+                        <p className="text-xs font-black uppercase tracking-[0.18em]">
+                          Taxpayer Cost
+                        </p>
+                        <p className="mt-2 text-2xl font-black uppercase">
+                          {formatCompactCurrency(activityContext.taxpayerCostUsd)}
+                        </p>
+                        <p className="text-xs font-bold uppercase">
+                          your money
+                        </p>
+                      </div>
+                    ) : econValue != null ? (
+                      <div className="border-4 border-foreground bg-brutal-red text-brutal-red-foreground p-3">
+                        <p className="text-xs font-black uppercase tracking-[0.18em]">
+                          Economic Damage
+                        </p>
+                        <p className="mt-2 text-2xl font-black uppercase">
+                          {formatCompactCurrency(Math.abs(econValue))}
+                        </p>
+                        <p className="text-xs font-bold uppercase">
+                          harm caused
+                        </p>
+                      </div>
+                    ) : null}
+                    {dalysValue != null ? (
+                      <div className="border-4 border-foreground bg-brutal-red text-brutal-red-foreground p-3">
+                        <p className="text-xs font-black uppercase tracking-[0.18em]">
+                          DALYs Caused
+                        </p>
+                        <p className="mt-2 text-2xl font-black uppercase">
+                          {formatCompactCount(Math.abs(dalysValue))}
+                        </p>
+                        <p className="text-xs font-bold uppercase">
+                          disability-adjusted life years
+                        </p>
+                      </div>
+                    ) : null}
+                    {task.impact?.selectedMetrics?.lives_saved_if_success?.baseValue != null ? (
+                      <div className="border-4 border-foreground bg-brutal-red text-brutal-red-foreground p-3">
+                        <p className="text-xs font-black uppercase tracking-[0.18em]">
+                          Casualties
+                        </p>
+                        <p className="mt-2 text-2xl font-black uppercase">
+                          {formatCompactCount(Math.abs(task.impact.selectedMetrics.lives_saved_if_success.baseValue))}
+                        </p>
+                        <p className="text-xs font-bold uppercase">
+                          lives lost
+                        </p>
+                      </div>
+                    ) : null}
+                  </div>
 
-              <div className="grid gap-3 md:grid-cols-3">
-                <div className="border-4 border-foreground bg-background p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                    Per Day
-                  </p>
-                  <p className="mt-2 text-xl font-black uppercase">
-                    {formatCompactCurrency(delayStats.delayEconomicValueUsdLostPerDay)}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    economic value lost
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-background p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                    Per Day
-                  </p>
-                  <p className="mt-2 text-xl font-black uppercase">
-                    {formatCompactCount(delayStats.delayHumanLivesLostPerDay)}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    human lives delayed
-                  </p>
-                </div>
-                <div className="border-4 border-foreground bg-background p-3">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                    Per Day
-                  </p>
-                  <p className="mt-2 text-xl font-black uppercase">
-                    {formatCompactCount(delayStats.delaySufferingHoursLostPerDay)}
-                  </p>
-                  <p className="text-xs font-bold uppercase text-muted-foreground">
-                    suffering hours delayed
-                  </p>
-                </div>
-              </div>
+                  {activityContext.wishoniaComment ? (
+                    <BrutalCard bgColor="red" padding="md">
+                      <p className="text-sm font-bold italic leading-7">
+                        {activityContext.wishoniaComment}
+                      </p>
+                    </BrutalCard>
+                  ) : null}
+
+                  {activityContext.alternativeUse ? (
+                    <BrutalCard bgColor="green" padding="md">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-green-foreground">
+                        What This Money Could Have Done
+                      </p>
+                      <p className="mt-2 text-sm font-bold leading-7">
+                        {activityContext.alternativeUse}
+                      </p>
+                    </BrutalCard>
+                  ) : null}
+                </>
+              ) : isUnmeasured ? (
+                <>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {activityContext.taxpayerCostUsd != null || task.impact?.selectedFrame?.estimatedCashCostUsdBase != null ? (
+                      <div className="border-4 border-foreground bg-brutal-yellow text-brutal-yellow-foreground p-3">
+                        <p className="text-xs font-black uppercase tracking-[0.18em]">
+                          Cost
+                        </p>
+                        <p className="mt-2 text-2xl font-black uppercase">
+                          {formatCompactCurrency(activityContext.taxpayerCostUsd ?? task.impact?.selectedFrame?.estimatedCashCostUsdBase ?? 0)}
+                        </p>
+                        <p className="text-xs font-bold uppercase">
+                          taxpayer money spent
+                        </p>
+                      </div>
+                    ) : null}
+                    <div className="border-4 border-foreground bg-brutal-yellow text-brutal-yellow-foreground p-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em]">
+                        Measured Value
+                      </p>
+                      <p className="mt-2 text-2xl font-black uppercase">
+                        ???
+                      </p>
+                      <p className="text-xs font-bold uppercase">
+                        nobody checked
+                      </p>
+                    </div>
+                  </div>
+
+                  {activityContext.claimedBenefit ? (
+                    <div className="space-y-1">
+                      <p className="text-sm font-black uppercase text-brutal-pink">Claimed Benefit</p>
+                      <p className="text-sm font-bold italic">{`"${activityContext.claimedBenefit}"`}</p>
+                    </div>
+                  ) : null}
+
+                  {activityContext.costEfficiencyNote ? (
+                    <div className="space-y-1">
+                      <p className="text-sm font-black uppercase text-brutal-pink">Reality Check</p>
+                      <p className="text-sm font-bold">{activityContext.costEfficiencyNote}</p>
+                    </div>
+                  ) : null}
+
+                  {activityContext.wishoniaComment ? (
+                    <BrutalCard bgColor="red" padding="md">
+                      <p className="text-sm font-bold italic leading-7">
+                        {activityContext.wishoniaComment}
+                      </p>
+                    </BrutalCard>
+                  ) : null}
+
+                  {activityContext.alternativeUse ? (
+                    <BrutalCard bgColor="green" padding="md">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-green-foreground">
+                        What This Money Could Have Done
+                      </p>
+                      <p className="mt-2 text-sm font-bold leading-7">
+                        {activityContext.alternativeUse}
+                      </p>
+                    </BrutalCard>
+                  ) : null}
+                </>
+              ) : (
+                <>
+                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="border-4 border-foreground bg-muted/20 p-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                        Delay
+                      </p>
+                      <p className="mt-2 text-2xl font-black uppercase">
+                        {formatDelayDuration(delayStats.currentDelayDays)}
+                      </p>
+                      <p className="text-xs font-bold uppercase text-muted-foreground">
+                        since target date
+                      </p>
+                    </div>
+                    <div className="border-4 border-foreground bg-muted/20 p-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                        Human Lives
+                      </p>
+                      <p className="mt-2 text-2xl font-black uppercase">
+                        {formatCompactCount(delayStats.currentHumanLivesLost)}
+                      </p>
+                      <p className="text-xs font-bold uppercase text-muted-foreground">
+                        delayed so far
+                      </p>
+                    </div>
+                    <div className="border-4 border-foreground bg-muted/20 p-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                        Suffering Hours
+                      </p>
+                      <p className="mt-2 text-2xl font-black uppercase">
+                        {formatCompactCount(delayStats.currentSufferingHoursLost)}
+                      </p>
+                      <p className="text-xs font-bold uppercase text-muted-foreground">
+                        delayed so far
+                      </p>
+                    </div>
+                    <div className="border-4 border-foreground bg-muted/20 p-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-red">
+                        Economic Loss
+                      </p>
+                      <p className="mt-2 text-2xl font-black uppercase">
+                        {formatCompactCurrency(delayStats.currentEconomicValueUsdLost)}
+                      </p>
+                      <p className="text-xs font-bold uppercase text-muted-foreground">
+                        lost so far
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3 md:grid-cols-3">
+                    <div className="border-4 border-foreground bg-background p-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                        Per Day
+                      </p>
+                      <p className="mt-2 text-xl font-black uppercase">
+                        {formatCompactCurrency(delayStats.delayEconomicValueUsdLostPerDay)}
+                      </p>
+                      <p className="text-xs font-bold uppercase text-muted-foreground">
+                        economic value lost
+                      </p>
+                    </div>
+                    <div className="border-4 border-foreground bg-background p-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                        Per Day
+                      </p>
+                      <p className="mt-2 text-xl font-black uppercase">
+                        {formatCompactCount(delayStats.delayHumanLivesLostPerDay)}
+                      </p>
+                      <p className="text-xs font-bold uppercase text-muted-foreground">
+                        human lives delayed
+                      </p>
+                    </div>
+                    <div className="border-4 border-foreground bg-background p-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
+                        Per Day
+                      </p>
+                      <p className="mt-2 text-xl font-black uppercase">
+                        {formatCompactCount(delayStats.delaySufferingHoursLostPerDay)}
+                      </p>
+                      <p className="text-xs font-bold uppercase text-muted-foreground">
+                        suffering hours delayed
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
 
               {task.dueAt ? (
                 <div className="space-y-1">
@@ -363,7 +509,7 @@ export default async function TaskDetailPage({
                   taskTitle={task.title}
                 />
               ) : null}
-              {(task.assigneePerson || task.assigneeOrganization) ? (
+              {task.status !== TaskStatus.VERIFIED && (task.assigneePerson || task.assigneeOrganization) ? (
                 <TaskContactActions
                   contactActionCount={contactActionCount}
                   delayStats={{
@@ -379,18 +525,28 @@ export default async function TaskDetailPage({
             </div>
           </BrutalCard>
 
-          <BrutalCard bgColor="yellow" padding="lg">
+          <BrutalCard bgColor={isHarmful ? "red" : isUnmeasured ? "yellow" : "yellow"} padding="lg">
             <div className="space-y-4">
               <p className="text-sm font-black uppercase text-brutal-pink">
-                Action Panel
+                {isHarmful ? "Harm Record" : isUnmeasured ? "Spending Record" : "Action Panel"}
               </p>
-              <TaskClaimButton
-                canClaim={canClaim}
-                signedIn={Boolean(userId)}
-                signInHref={signInHref}
-                taskId={task.id}
-                viewerHasClaim={task.viewerHasClaim}
-              />
+              {task.status !== TaskStatus.VERIFIED ? (
+                <TaskClaimButton
+                  canClaim={canClaim}
+                  signedIn={Boolean(userId)}
+                  signInHref={signInHref}
+                  taskId={task.id}
+                  viewerHasClaim={task.viewerHasClaim}
+                />
+              ) : (
+                <p className="text-sm font-bold">
+                  {isHarmful
+                    ? "This activity has been completed and verified. The damage is done."
+                    : isUnmeasured
+                      ? "This spending occurred. Whether it helped anyone remains unmeasured."
+                      : "This task has been verified as complete."}
+                </p>
+              )}
               {assignedToViewer ? (
                 <p className="text-sm font-bold">
                   This task is addressed directly to your linked person record.

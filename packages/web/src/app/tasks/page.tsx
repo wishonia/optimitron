@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TaskClaimPolicy } from "@optimitron/db";
+import { TaskClaimPolicy, TaskStatus } from "@optimitron/db";
 import { getServerSession } from "next-auth";
 import { ReminderActionCard } from "@/components/tasks/ReminderActionCard";
 import { TaskCard } from "@/components/tasks/task-card";
@@ -52,6 +52,18 @@ export default async function TasksPage() {
     .slice(0, 4)
     .map((task) => task.assigneePerson?.displayName ?? task.assigneeOrganization?.name ?? task.title);
 
+  // Compute harm stats from verified tasks with negative impact
+  const harmfulVerifiedTasks = data.allTasks.filter((task) => {
+    if (task.status !== TaskStatus.VERIFIED) return false;
+    const econ = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
+    const dalys = task.impact?.selectedFrame?.expectedDalysAvertedBase;
+    return (econ != null && econ < 0) || (dalys != null && dalys < 0);
+  });
+  const totalHarmCostUsd = harmfulVerifiedTasks.reduce((sum, task) => {
+    const econ = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
+    return sum + (econ != null ? Math.abs(econ) : 0);
+  }, 0);
+
   return (
     <div className="min-h-screen bg-background pb-20">
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-8">
@@ -88,9 +100,11 @@ export default async function TasksPage() {
             currentWorstDelayDays={currentWorstDelayDays}
             currentHumanLivesLost={overdueLeaderSummary.currentHumanLivesLost}
             currentSufferingHoursLost={overdueLeaderSummary.currentSufferingHoursLost}
+            harmfulTaskCount={harmfulVerifiedTasks.length}
             href="#highest-value-overdue-tasks"
             overdueTaskCount={overdueLeaderSummary.overdueTaskCount}
             sampleTargets={reminderTargets}
+            totalHarmCostUsd={totalHarmCostUsd}
           />
         ) : null}
 
