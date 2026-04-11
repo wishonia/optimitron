@@ -7,6 +7,9 @@ import {
 describe('optimize earth prompt helpers', () => {
   it('publishes the DB-first protocol steps', () => {
     expect(OPTIMIZE_EARTH_PROTOCOL_STEPS).toContain(
+      'Check the current branch or PR for broken GitHub Actions if that information is available.',
+    );
+    expect(OPTIMIZE_EARTH_PROTOCOL_STEPS).toContain(
       'Call getQueueAudit, then call getNextAction with your capabilities.',
     );
     expect(OPTIMIZE_EARTH_PROTOCOL_STEPS).toContain(
@@ -22,6 +25,9 @@ describe('optimize earth prompt helpers', () => {
 
     expect(instruction).toContain(
       'Optimize earth using the task database via MCP as the source of truth.',
+    );
+    expect(instruction).toContain(
+      'First, check the current branch or PR for broken GitHub Actions if that information is available; if repo code is breaking CI, fix that before trusting the queue.',
     );
     expect(instruction).toContain(
       'Advertise these capabilities when calling getNextAction: typescript, policy analysis.',

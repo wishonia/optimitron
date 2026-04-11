@@ -180,10 +180,31 @@ export async function syncTreatySigners(options: SyncTreatySignerCliOptions) {
           countryCode: slot.countryCode,
           currentAffiliation: slot.governmentName,
           displayName: slot.decisionMakerLabel,
+          email: slot.contactEmail ?? undefined,
           isPublicFigure: true,
           roleTitle: slot.roleTitle,
           sourceUrl: slot.officialSourceUrl ?? slot.contactUrl ?? null,
         });
+
+        // If we have a contact email, ensure a User record exists so the
+        // leader (or their staff) can sign in via magic link and sign the treaty.
+        if (slot.contactEmail) {
+          const normalizedEmail = slot.contactEmail.trim().toLowerCase();
+          const existingUser = await prisma.user.findUnique({
+            where: { email: normalizedEmail },
+            select: { id: true },
+          });
+
+          if (!existingUser) {
+            await prisma.user.create({
+              data: {
+                email: normalizedEmail,
+                name: slot.decisionMakerLabel,
+                personId: person.id,
+              },
+            });
+          }
+        }
 
         const result = await upsertImportedTaskBundle(signerDraft.bundle, {
           assigneeOrganizationId: organization.id,

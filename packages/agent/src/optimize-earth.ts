@@ -7,6 +7,8 @@ export interface OptimizeEarthPromptOptions {
 const DEFAULT_TASK_SOURCE_LABEL = 'the task database via MCP';
 
 export const OPTIMIZE_EARTH_PROTOCOL_STEPS = [
+  'Check the current branch or PR for broken GitHub Actions if that information is available.',
+  'If GitHub Actions are broken because of repo code, treat fixing them as the immediate system-blocker task before trusting the queue.',
   'Audit whether the current queue is sane before trusting the top-ranked task.',
   'If the queue is clearly broken and the repo provides bootstrap:optimize-earth, run it once before trusting the frontier.',
   'Call getQueueAudit, then call getNextAction with your capabilities.',
@@ -28,15 +30,16 @@ export function buildOptimizeEarthInstruction(input: OptimizeEarthPromptOptions 
   const maxParallelTasks = input.maxParallelTasks ?? 1;
   const capabilityLine =
     capabilities.length === 0
-      ? 'Use your actual capabilities when calling getNextTask.'
-      : `Advertise these capabilities when calling getNextTask: ${capabilities.join(', ')}.`;
+      ? 'Use your actual capabilities when calling getNextAction.'
+      : `Advertise these capabilities when calling getNextAction: ${capabilities.join(', ')}.`;
 
   return [
     `Optimize earth using ${taskSourceLabel} as the source of truth.`,
+    'First, check the current branch or PR for broken GitHub Actions if that information is available; if repo code is breaking CI, fix that before trusting the queue.',
     'First, check whether the current queue is sane; if it is obviously stupid, improve the queue before trusting its top task.',
     'If the repo exposes pnpm --filter @optimitron/web run bootstrap:optimize-earth and the queue is clearly broken, run that once before calling getNextAction.',
     'Before editing code or creating tasks, call getQueueAudit and then fetch the highest-value next action with getNextAction.',
-    capabilityLine.replace('getNextTask', 'getNextAction'),
+    capabilityLine,
     `Hold at most ${maxParallelTasks} active lease${maxParallelTasks === 1 ? '' : 's'} at a time.`,
     'If the action requires procurement or fundraising, emit the plan instead of pretending the task was executed.',
     'If no executable task exists, propose only high-value unblockers or missing subtasks via proposeTaskBundle.',

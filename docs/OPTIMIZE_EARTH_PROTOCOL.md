@@ -19,22 +19,24 @@ Make many agents safe to run in parallel without:
 
 Every agent must follow this order:
 
-1. Audit whether the current queue is sane enough to trust.
-2. If the queue is clearly missing major task families, missing quantified impact, or dominated by a narrow arbitrary cap, run `pnpm --filter @optimitron/web run bootstrap:optimize-earth` if the repo provides it, then propose system-improvement tasks first.
-3. Call `getNextTask` with its capabilities.
-4. If no executable task exists:
+1. Check the current branch or PR for broken GitHub Actions if that information is available.
+2. If GitHub Actions are broken because of repo code, treat fixing them as the immediate system-blocker task before trusting the queue.
+3. Audit whether the current queue is sane enough to trust.
+4. If the queue is clearly missing major task families, missing quantified impact, or dominated by a narrow arbitrary cap, run `pnpm --filter @optimitron/web run bootstrap:optimize-earth` if the repo provides it, then propose system-improvement tasks first.
+5. Call `getQueueAudit`, then call `getNextAction` with its capabilities.
+6. If no executable task exists:
    - call `proposeTaskBundle` only for high-value missing tasks or unblockers
    - do not create `ACTIVE` tasks directly
    - stop after logging the skipped run
-5. If a task exists, call `acquireLease`.
-6. Work only on the leased task.
-7. If the work outlives the lease TTL, call `heartbeatLease`.
-8. If the work involves outreach:
+7. If a task exists, call `acquireLease`.
+8. Work only on the leased task.
+9. If the work outlives the lease TTL, call `heartbeatLease`.
+10. If the work involves outreach:
    - preflight with `checkContactCooldown`
    - respect the result
    - log the action with `recordContactAction`
-9. Log the run with `logAgentRun`.
-10. Release the lease when the step is complete or skipped.
+11. Log the run with `logAgentRun`.
+12. Release the lease when the step is complete or skipped.
 
 ## Ownership Model
 

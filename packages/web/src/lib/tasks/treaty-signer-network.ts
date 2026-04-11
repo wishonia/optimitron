@@ -54,6 +54,7 @@ const SCALEABLE_METRIC_KEYS = new Set([
 ]);
 
 export interface TreatySignerSlot {
+  contactEmail: string | null;
   contactLabel: string | null;
   contactUrl: string | null;
   countryCode: string;
@@ -543,6 +544,7 @@ export function buildTreatySupporterTaskDrafts(
 
 export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
   {
+    contactEmail: null,
     contactLabel: "White House contact form",
     contactUrl: "https://www.whitehouse.gov/contact/",
     countryCode: "US",
@@ -556,6 +558,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 0,
   },
   {
+    contactEmail: null,
     contactLabel: "State Council contact page",
     contactUrl: "https://english.www.gov.cn/contactus/",
     countryCode: "CN",
@@ -569,6 +572,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 1,
   },
   {
+    contactEmail: null,
     contactLabel: "Kremlin contacts",
     contactUrl: "http://en.kremlin.ru/contacts",
     countryCode: "RU",
@@ -582,6 +586,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 2,
   },
   {
+    contactEmail: "internetpost@bundeskanzler.de",
     contactLabel: "Federal Government contact page",
     contactUrl: "https://www.bundesregierung.de/breg-en/service/contact/contact-the-federal-government-1957540",
     countryCode: "DE",
@@ -595,6 +600,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 3,
   },
   {
+    contactEmail: null,
     contactLabel: "Write to the Prime Minister",
     contactUrl: "https://www.pmindia.gov.in/en/interact-with-honble-pm/",
     countryCode: "IN",
@@ -608,6 +614,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 4,
   },
   {
+    contactEmail: null,
     contactLabel: "Email Number 10",
     contactUrl: "https://email.number10.gov.uk/",
     countryCode: "GB",
@@ -621,6 +628,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 5,
   },
   {
+    contactEmail: null,
     contactLabel: "Saudi government portal",
     contactUrl: "https://www.my.gov.sa/wps/portal/snp/main",
     countryCode: "SA",
@@ -634,6 +642,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 6,
   },
   {
+    contactEmail: null,
     contactLabel: "Contact the President of Ukraine",
     contactUrl: "https://www.president.gov.ua/en/office/contacts",
     countryCode: "UA",
@@ -647,6 +656,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 7,
   },
   {
+    contactEmail: null,
     contactLabel: "Write to the President",
     contactUrl: "https://www.elysee.fr/ecrire-au-president-de-la-republique/",
     countryCode: "FR",
@@ -660,6 +670,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 8,
   },
   {
+    contactEmail: null,
     contactLabel: "Prime Minister's Office contact page",
     contactUrl: "https://www.kantei.go.jp/foreign/forms/comment_ssl.html",
     countryCode: "JP",
@@ -673,6 +684,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 9,
   },
   {
+    contactEmail: null,
     contactLabel: "Office of the President of Korea",
     contactUrl: "https://www.president.go.kr/",
     countryCode: "KR",
@@ -686,6 +698,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 10,
   },
   {
+    contactEmail: "pm_eng@pmo.gov.il",
     contactLabel: "Contact the Prime Minister",
     contactUrl: "https://www.gov.il/en/pages/contact_the_prime_minister",
     countryCode: "IL",
@@ -699,6 +712,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 11,
   },
   {
+    contactEmail: "kontakt@kprm.gov.pl",
     contactLabel: "Contact the Prime Minister",
     contactUrl: "https://www.gov.pl/web/primeminister/contact",
     countryCode: "PL",
@@ -712,6 +726,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 12,
   },
   {
+    contactEmail: "presidente@governo.it",
     contactLabel: "Contact the Government",
     contactUrl: "https://www.governo.it/en/contact-us",
     countryCode: "IT",
@@ -725,6 +740,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 13,
   },
   {
+    contactEmail: null,
     contactLabel: "Contact the Prime Minister",
     contactUrl: "https://www.pm.gov.au/contact-your-pm",
     countryCode: "AU",
@@ -738,6 +754,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 14,
   },
   {
+    contactEmail: "pm@pm.gc.ca",
     contactLabel: "Contact the Prime Minister",
     contactUrl: "https://pm.gc.ca/en/connect/contact",
     countryCode: "CA",
@@ -751,6 +768,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 15,
   },
   {
+    contactEmail: null,
     contactLabel: "Contact the Presidency",
     contactUrl: "https://www.tccb.gov.tr/en/contact/",
     countryCode: "TR",
@@ -764,6 +782,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 16,
   },
   {
+    contactEmail: "presidente.gobierno@la-moncloa.es",
     contactLabel: "Contact Moncloa",
     contactUrl: "https://www.lamoncloa.gob.es/contacto/Paginas/index.aspx",
     countryCode: "ES",
@@ -777,6 +796,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 17,
   },
   {
+    contactEmail: "ministerpresident@minaz.nl",
     contactLabel: "Contact the Dutch Government",
     contactUrl: "https://www.government.nl/contact",
     countryCode: "NL",
@@ -790,6 +810,7 @@ export const TOP_TREATY_SIGNER_SLOTS: TreatySignerSlot[] = [
     sortOrder: 18,
   },
   {
+    contactEmail: null,
     contactLabel: "Presidency of Algeria",
     contactUrl: "https://www.el-mouradia.dz/en/",
     countryCode: "DZ",

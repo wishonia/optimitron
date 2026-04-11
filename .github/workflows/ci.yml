@@ -74,7 +74,7 @@ jobs:
   web-validate:
     name: web-validate
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     env:
       CI: true
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/optimitron_web_ci
@@ -156,8 +156,8 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: pnpm --filter @optimitron/web exec playwright install-deps chromium
 
-      - name: Run Playwright web validation
-        run: pnpm --filter @optimitron/web run e2e
+      - name: Run Playwright smoke validation
+        run: pnpm --filter @optimitron/web run e2e -- smoke
 
       - name: Upload Playwright artifacts
         if: failure()

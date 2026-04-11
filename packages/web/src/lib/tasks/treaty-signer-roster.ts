@@ -191,6 +191,7 @@ function buildGenericTreatySignerSlot(row: TreatySignerRosterRow): TreatySignerS
   const iso3 = row.jurisdictionIso3.toUpperCase();
 
   return {
+    contactEmail: null,
     contactLabel: null,
     contactUrl: null,
     countryCode: iso3,

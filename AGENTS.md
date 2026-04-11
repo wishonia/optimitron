@@ -33,17 +33,19 @@ When the human says `optimize earth`, switch from lane ownership to **task owner
 
 Use this protocol exactly:
 
-1. Audit whether the current queue is sane enough to trust.
-2. If the queue is obviously narrow, arbitrarily capped, missing quantified impact, or missing system/growth tasks, run `pnpm --filter @optimitron/web run bootstrap:optimize-earth` if available, then propose system-improvement tasks first.
-3. Call `getNextTask` with your capabilities.
-4. If a task is returned, call `acquireLease`.
-5. Work only on the leased task and only touch files required for that task.
-6. If the task runs longer than the lease window, call `heartbeatLease`.
-7. If no executable task exists, call `proposeTaskBundle` for high-value missing tasks or unblockers.
-8. Never create `ACTIVE` tasks directly. Agent-created tasks must start as `DRAFT`.
-9. Never promote tasks unless review passes and the promotion path explicitly allows it.
-10. Before any outreach action, respect `checkContactCooldown` / `recordContactAction`.
-11. Call `logAgentRun` for planned or skipped work, then release the lease when done.
+1. Check the current branch/PR for broken GitHub Actions if that information is available.
+2. If GitHub Actions are broken because of repo code, treat fixing them as the immediate system-blocker task before trusting the queue.
+3. Audit whether the current queue is sane enough to trust.
+4. If the queue is obviously narrow, arbitrarily capped, missing quantified impact, or missing system/growth tasks, run `pnpm --filter @optimitron/web run bootstrap:optimize-earth` if available, then propose system-improvement tasks first.
+5. Call `getQueueAudit`, then call `getNextAction` with your capabilities.
+6. If an action returns a task, call `acquireLease`.
+7. Work only on the leased task and only touch files required for that task.
+8. If the task runs longer than the lease window, call `heartbeatLease`.
+9. If no executable task exists, call `proposeTaskBundle` for high-value missing tasks or unblockers.
+10. Never create `ACTIVE` tasks directly. Agent-created tasks must start as `DRAFT`.
+11. Never promote tasks unless review passes and the promotion path explicitly allows it.
+12. Before any outreach action, respect `checkContactCooldown` / `recordContactAction`.
+13. Call `logAgentRun` for planned or skipped work, then release the lease when done.
 
 Additional rules in Optimize Earth mode:
 
