@@ -104,6 +104,103 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
       },
     },
     {
+      name: "getQueueAudit",
+      description:
+        "Audit whether the active public queue is sane enough to trust. Returns queue issues, family coverage, and recommended system-improvement proposals when the frontier is broken.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {},
+      },
+    },
+    {
+      name: "getNextAction",
+      description:
+        "Get the mathematically best next action, not just the next task. Audits queue sanity first, then chooses between direct execution, agent delegation, procurement prep, funding unblockers, or queue repair.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          skillTags: {
+            type: "array",
+            items: { type: "string" },
+            description: "Agent's skill tags for capability matching",
+          },
+          interestTags: {
+            type: "array",
+            items: { type: "string" },
+            description: "Agent's interest tags for capability matching",
+          },
+          maxDifficulty: {
+            type: "string",
+            enum: ["TRIVIAL", "BEGINNER", "INTERMEDIATE", "ADVANCED", "EXPERT"],
+            description: "Max difficulty the agent can handle",
+          },
+          availableHoursPerWeek: {
+            type: "number",
+            description: "Hours per week the agent can commit",
+          },
+          agentId: {
+            type: "string",
+            description: "Agent identifier for future logging/correlation",
+          },
+        },
+      },
+    },
+    {
+      name: "evaluateTaskEconomics",
+      description:
+        "Evaluate the execution economics for a single task. Returns whether the current agent should execute directly, delegate, prepare procurement, or raise money first.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          taskId: { type: "string", description: "Task ID" },
+          skillTags: {
+            type: "array",
+            items: { type: "string" },
+            description: "Agent's skill tags for capability matching",
+          },
+          interestTags: {
+            type: "array",
+            items: { type: "string" },
+            description: "Agent's interest tags for capability matching",
+          },
+          maxDifficulty: {
+            type: "string",
+            enum: ["TRIVIAL", "BEGINNER", "INTERMEDIATE", "ADVANCED", "EXPERT"],
+            description: "Max difficulty the agent can handle",
+          },
+          availableHoursPerWeek: {
+            type: "number",
+            description: "Hours per week the agent can commit",
+          },
+        },
+        required: ["taskId"],
+      },
+    },
+    {
+      name: "recordTaskActuals",
+      description:
+        "Record actual cash cost and effort on a task for non-claim execution paths. This updates task-level actuals and stores the latest execution note in contextJson.executionV1.lastActuals.",
+      inputSchema: {
+        type: "object" as const,
+        properties: {
+          taskId: { type: "string", description: "Task ID" },
+          actualCashCostUsd: {
+            type: "number",
+            description: "Observed external cash cost in USD",
+          },
+          actualEffortSeconds: {
+            type: "number",
+            description: "Observed effort in seconds",
+          },
+          note: {
+            type: "string",
+            description: "Short execution note or procurement/funding rationale",
+          },
+        },
+        required: ["taskId"],
+      },
+    },
+    {
       name: "listTasks",
       description:
         "List tasks with optional filters. Returns up to 50 tasks sorted by accountability score.",
@@ -265,7 +362,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     {
       name: "promoteTask",
       description:
-        "Promote reviewed DRAFT tasks to ACTIVE. Only tasks whose last review decision is promotable (no errors, quality >= 0.35) can be promoted.",
+        "Promote reviewed DRAFT tasks to ACTIVE. Promotion reruns governance review and rejects tasks that fail the current checks.",
       inputSchema: {
         type: "object" as const,
         properties: {
@@ -599,6 +696,247 @@ function err(message: string) {
   };
 }
 
+function toTaskDifficulty(value: unknown) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  return TaskDifficulty[value as keyof typeof TaskDifficulty] ?? null;
+}
+
+function buildAgentCapabilities(args: Record<string, unknown>) {
+  return {
+    availableHoursPerWeek: (args.availableHoursPerWeek as number) ?? null,
+    interestTags: (args.interestTags as string[]) ?? [],
+    maxTaskDifficulty: toTaskDifficulty(args.maxDifficulty)?.toString() ?? null,
+    skillTags: (args.skillTags as string[]) ?? [],
+  };
+}
+
+async function listActivePublicEarthTasks() {
+  const { tasks } = await getTaskFunctions();
+  return tasks.listTasks({
+    limit: 5000,
+    visibility: "public",
+    status: TaskStatus.ACTIVE,
+  });
+}
+
+function asObject(value: unknown) {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function dedupeStrings(values: Array<string | null | undefined>) {
+  return Array.from(
+    new Set(values.map((value) => value?.trim() ?? "").filter(Boolean)),
+  );
+}
+
+function buildStoredProposalContext(input: {
+  candidate: Record<string, unknown>;
+  decision?: {
+    evaluation?: { qualityScore?: number; rationale?: string[] };
+    issues?: Array<{ code: string; message: string; severity: string }>;
+    promotable?: boolean;
+    proposalRef?: string;
+  } | null;
+}) {
+  return {
+    proposalV1: {
+      assigneeOrganizationId: (input.candidate.assigneeOrganizationId as string) ?? null,
+      assigneePersonId: (input.candidate.assigneePersonId as string) ?? null,
+      blockerRefs: (input.candidate.blockerRefs as string[]) ?? [],
+      contactUrl: (input.candidate.contactUrl as string) ?? null,
+      description: (input.candidate.description as string) ?? null,
+      estimatedEffortHours: (input.candidate.estimatedEffortHours as number) ?? null,
+      impact: (input.candidate.impact as Record<string, number | null>) ?? null,
+      isPublic: (input.candidate.isPublic as boolean) ?? true,
+      parentTaskRef: (input.candidate.parentTaskRef as string) ?? null,
+      proposalRef:
+        input.decision?.proposalRef ??
+        (input.candidate.id as string) ??
+        (input.candidate.taskKey as string) ??
+        null,
+      review: input.decision
+        ? {
+            issues: input.decision.issues ?? [],
+            promotable: input.decision.promotable ?? false,
+            qualityScore: input.decision.evaluation?.qualityScore ?? null,
+            rationale: input.decision.evaluation?.rationale ?? [],
+            reviewedAt: new Date().toISOString(),
+          }
+        : null,
+      roleTitle: (input.candidate.roleTitle as string) ?? null,
+      sourceUrls: (input.candidate.sourceUrls as string[]) ?? [],
+      status: "DRAFT",
+      taskKey: (input.candidate.taskKey as string) ?? null,
+      title: input.candidate.title as string,
+    },
+  };
+}
+
+function inferProposalCategory(candidate: Record<string, unknown>) {
+  const text = [
+    (candidate.taskKey as string) ?? "",
+    (candidate.title as string) ?? "",
+    (candidate.description as string) ?? "",
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  if (text.includes("growth") || text.includes("conversion") || text.includes("traffic")) {
+    return TaskCategory.COMMUNICATION;
+  }
+  if (text.includes("contact") || text.includes("journalist") || text.includes("research")) {
+    return TaskCategory.RESEARCH;
+  }
+  if (text.includes("system:") || text.includes("queue") || text.includes("ranking")) {
+    return TaskCategory.ENGINEERING;
+  }
+
+  return TaskCategory.OTHER;
+}
+
+function inferProposalDifficulty(candidate: Record<string, unknown>) {
+  const effort = (candidate.estimatedEffortHours as number) ?? 0;
+  if (effort >= 6) {
+    return TaskDifficulty.ADVANCED;
+  }
+  if (effort >= 2) {
+    return TaskDifficulty.INTERMEDIATE;
+  }
+  return TaskDifficulty.BEGINNER;
+}
+
+function matchCandidateToDecision(
+  candidate: Record<string, unknown>,
+  decision: { proposalRef: string; title: string },
+) {
+  return (
+    (candidate.id as string) === decision.proposalRef ||
+    (candidate.taskKey as string) === decision.proposalRef ||
+    (((candidate.id as string) ?? "").length === 0 &&
+      ((candidate.taskKey as string) ?? "").length === 0 &&
+      (candidate.title as string) === decision.title)
+  );
+}
+
+function taskProposalCandidateFromRecord(task: {
+  assigneeOrganizationId?: string | null;
+  assigneePersonId?: string | null;
+  contactUrl?: string | null;
+  contextJson?: unknown;
+  description: string | null;
+  estimatedEffortHours?: number | null;
+  id: string;
+  isPublic: boolean;
+  roleTitle?: string | null;
+  sourceUrl?: string | null;
+  status: string;
+  taskKey?: string | null;
+  title: string;
+}) {
+  const context = asObject(task.contextJson);
+  const proposal = asObject(context?.proposalV1);
+  const proposalSourceUrls = Array.isArray(proposal?.sourceUrls)
+    ? (proposal?.sourceUrls as string[])
+    : [];
+  const sourceUrls = dedupeStrings([
+    ...proposalSourceUrls,
+    task.sourceUrl ?? null,
+  ]);
+
+  return {
+    assigneeOrganizationId:
+      (proposal?.assigneeOrganizationId as string) ?? task.assigneeOrganizationId ?? null,
+    assigneePersonId:
+      (proposal?.assigneePersonId as string) ?? task.assigneePersonId ?? null,
+    blockerRefs: ((proposal?.blockerRefs as string[]) ?? []) as string[],
+    contactUrl: (proposal?.contactUrl as string) ?? task.contactUrl ?? null,
+    description: (proposal?.description as string) ?? task.description ?? null,
+    estimatedEffortHours:
+      (proposal?.estimatedEffortHours as number) ?? task.estimatedEffortHours ?? null,
+    id: task.id,
+    impact: (proposal?.impact as Record<string, number | null>) ?? null,
+    isPublic: (proposal?.isPublic as boolean) ?? task.isPublic,
+    parentTaskRef: (proposal?.parentTaskRef as string) ?? null,
+    roleTitle: (proposal?.roleTitle as string) ?? task.roleTitle ?? null,
+    sourceUrls,
+    status: task.status,
+    taskKey: (proposal?.taskKey as string) ?? task.taskKey ?? null,
+    title: (proposal?.title as string) ?? task.title,
+  };
+}
+
+async function attachProposalImpactEstimate(input: {
+  prisma: Awaited<ReturnType<typeof getPrisma>>;
+  taskId: string;
+  estimatedEffortHours: number | null;
+  impact: Record<string, number | null> | null;
+}) {
+  const impact = input.impact;
+  if (!impact) {
+    return null;
+  }
+
+  const hasMeaningfulImpact = Object.values(impact).some(
+    (value) => typeof value === "number" && value > 0,
+  );
+  if (!hasMeaningfulImpact) {
+    return null;
+  }
+
+  const estimateSet = await input.prisma.taskImpactEstimateSet.create({
+    data: {
+      assumptionsJson: {
+        source: "mcp-proposal",
+      },
+      calculationVersion: "mcp-proposal-v1",
+      counterfactualKey: "status-quo",
+      estimateKind: "FORECAST",
+      isCurrent: true,
+      methodologyKey: "agent-proposal",
+      parameterSetHash: `mcp-proposal:${input.taskId}`,
+      publicationStatus: "DRAFT",
+      sourceSystem: "MANUAL",
+      taskId: input.taskId,
+    },
+  });
+
+  await input.prisma.taskImpactFrameEstimate.create({
+    data: {
+      taskImpactEstimateSetId: estimateSet.id,
+      frameKey: TaskImpactFrameKey.TWENTY_YEAR,
+      frameSlug: "twenty-year-proposal",
+      evaluationHorizonYears: 20,
+      successProbabilityBase: 0.6,
+      delayDalysLostPerDayBase: (impact.delayDalysLostPerDay as number) ?? null,
+      delayEconomicValueUsdLostPerDayBase:
+        (impact.delayEconomicValueUsdLostPerDay as number) ?? null,
+      expectedDalysAvertedBase: null,
+      expectedEconomicValueUsdBase:
+        input.estimatedEffortHours == null || impact.expectedValuePerHourUsd == null
+          ? null
+          : impact.expectedValuePerHourUsd * input.estimatedEffortHours,
+      estimatedCashCostUsdBase: null,
+      estimatedEffortHoursBase: input.estimatedEffortHours ?? null,
+      adoptionRampYears: 0,
+      annualDiscountRate: 0.03,
+      benefitDurationYears: 20,
+      timeToImpactStartDays: 0,
+    },
+  });
+
+  await input.prisma.task.update({
+    where: { id: input.taskId },
+    data: { currentImpactEstimateSetId: estimateSet.id },
+  });
+
+  return estimateSet.id;
+}
+
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   const a = (args ?? {}) as Record<string, unknown>;
@@ -643,6 +981,96 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         return ok({
           score: best.score,
           task: summarizeTask(best.task),
+        });
+      }
+
+      // ── getQueueAudit ───────────────────────────────────────
+      case "getQueueAudit": {
+        const { reviewEarthQueueAndBuildSystemImprovements } = await import("@optimitron/agent");
+        const allTasks = await listActivePublicEarthTasks();
+        const review = reviewEarthQueueAndBuildSystemImprovements(allTasks as any);
+        return ok({
+          audit: review.audit,
+          recommendedTaskKeys: review.proposal.candidates
+            .map((candidate) => candidate.taskKey)
+            .filter((value): value is string => typeof value === "string" && value.length > 0),
+          reviewSummary: review.proposal.review.summary,
+        });
+      }
+
+      // ── getNextAction ───────────────────────────────────────
+      case "getNextAction": {
+        const { lease } = await getTaskFunctions();
+        const { selectNextEarthAction } = await import("@optimitron/agent");
+        const { getEarthExecutionPolicy } = await import("../src/lib/tasks/action-policy");
+        const policy = getEarthExecutionPolicy();
+        const agentCapabilities = buildAgentCapabilities(a);
+        const agentId = (a.agentId as string) ?? null;
+        let candidateTasks = await listActivePublicEarthTasks();
+
+        while (candidateTasks.length > 0) {
+          const decision = selectNextEarthAction({
+            agent: agentCapabilities,
+            policy,
+            tasks: candidateTasks as any,
+          });
+
+          if (!decision.task) {
+            return ok({
+              actionKind: decision.actionKind,
+              audit: decision.audit,
+              autoExecutable: decision.autoExecutable,
+              economics: decision.economics,
+              groundingRefs: decision.groundingRefs,
+              queueRepairPlan: decision.queueRepairPlan ?? null,
+              rationale: decision.rationale,
+              requiredApproval: decision.requiredApproval,
+              task: null,
+            });
+          }
+
+          const leaseStatus = await lease.isTaskLeased(decision.task.id);
+          if (!leaseStatus.leased || leaseStatus.agentId === agentId) {
+            return ok({
+              actionKind: decision.actionKind,
+              audit: decision.audit,
+              autoExecutable: decision.autoExecutable,
+              economics: decision.economics,
+              groundingRefs: decision.groundingRefs,
+              queueRepairPlan: decision.queueRepairPlan ?? null,
+              rationale: decision.rationale,
+              requiredApproval: decision.requiredApproval,
+              task: summarizeTask(decision.task as Record<string, unknown>),
+            });
+          }
+
+          candidateTasks = candidateTasks.filter((task) => task.id !== decision.task?.id);
+        }
+
+        return ok({
+          actionKind: "QUEUE_REPAIR",
+          message: "No unleased action is currently available.",
+          task: null,
+        });
+      }
+
+      // ── evaluateTaskEconomics ───────────────────────────────
+      case "evaluateTaskEconomics": {
+        const { tasks } = await getTaskFunctions();
+        const { evaluateEarthTaskEconomics } = await import("@optimitron/agent");
+        const { getEarthExecutionPolicy } = await import("../src/lib/tasks/action-policy");
+        const result = await tasks.getTaskDetailData(a.taskId as string);
+        if (!result) return err("Task not found");
+
+        const economics = evaluateEarthTaskEconomics({
+          agent: buildAgentCapabilities(a),
+          policy: getEarthExecutionPolicy(),
+          task: result.task as any,
+        });
+
+        return ok({
+          economics,
+          task: summarizeTask(result.task as Record<string, unknown>),
         });
       }
 
@@ -713,6 +1141,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       case "proposeTaskBundle": {
         const prisma = await getPrisma();
         const { reviewTaskProposalBundle } = await import("@optimitron/agent");
+        const { TaskEdgeType } = await import("@optimitron/db");
         const candidates = a.candidates as Array<Record<string, unknown>>;
 
         // Fetch existing tasks for dedup checking
@@ -759,13 +1188,29 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           })),
         });
 
-        // Create DRAFT tasks for promotable candidates only
+        const existingRefToTaskId = new Map<string, string>();
+        for (const task of existingTasks) {
+          existingRefToTaskId.set(task.id, task.id);
+          if (task.taskKey) {
+            existingRefToTaskId.set(task.taskKey, task.id);
+          }
+        }
+
+        // Create DRAFT tasks for promotable candidates only, preserving proposal metadata.
         const created: Array<{ taskId: string; title: string; proposalRef: string }> = [];
+        const createdRefToTaskId = new Map<string, string>();
+        const createdDecisionByTaskId = new Map<
+          string,
+          {
+            candidate: Record<string, unknown>;
+            decision: (typeof review.decisions)[number];
+          }
+        >();
+
         for (const decision of review.decisions) {
           if (!decision.promotable) continue;
           const candidate = candidates.find(
-            (c) => (c.id as string) === decision.proposalRef ||
-                   (c.taskKey as string) === decision.proposalRef,
+            (c) => matchCandidateToDecision(c, decision),
           );
           if (!candidate) continue;
 
@@ -774,18 +1219,77 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
               title: candidate.title as string,
               description: (candidate.description as string) ?? "",
               taskKey: (candidate.taskKey as string) ?? null,
+              category: inferProposalCategory(candidate),
+              difficulty: inferProposalDifficulty(candidate),
+              assigneePersonId: (candidate.assigneePersonId as string) ?? null,
+              assigneeOrganizationId: (candidate.assigneeOrganizationId as string) ?? null,
+              roleTitle: (candidate.roleTitle as string) ?? null,
               contactUrl: (candidate.contactUrl as string) ?? null,
+              sourceUrl: ((candidate.sourceUrls as string[]) ?? [])[0] ?? null,
               estimatedEffortHours: (candidate.estimatedEffortHours as number) ?? null,
               isPublic: (candidate.isPublic as boolean) !== false,
               impactStatement: (candidate.description as string) ?? null,
+              contextJson: buildStoredProposalContext({
+                candidate,
+                decision,
+              }),
               status: TaskStatus.DRAFT,
             } as any,
           });
+          await attachProposalImpactEstimate({
+            estimatedEffortHours: (candidate.estimatedEffortHours as number) ?? null,
+            impact: (candidate.impact as Record<string, number | null>) ?? null,
+            prisma,
+            taskId: task.id,
+          });
+
           created.push({
             taskId: task.id,
             title: task.title,
             proposalRef: decision.proposalRef,
           });
+          createdRefToTaskId.set(decision.proposalRef, task.id);
+          if (candidate.taskKey) {
+            createdRefToTaskId.set(candidate.taskKey as string, task.id);
+          }
+          if (candidate.id) {
+            createdRefToTaskId.set(candidate.id as string, task.id);
+          }
+          createdDecisionByTaskId.set(task.id, { candidate, decision });
+        }
+
+        for (const [taskId, { candidate }] of createdDecisionByTaskId.entries()) {
+          const parentTaskRef = (candidate.parentTaskRef as string) ?? null;
+          if (parentTaskRef) {
+            const parentTaskId =
+              createdRefToTaskId.get(parentTaskRef) ??
+              existingRefToTaskId.get(parentTaskRef) ??
+              null;
+            if (parentTaskId) {
+              await prisma.task.update({
+                where: { id: taskId },
+                data: { parentTaskId },
+              });
+            }
+          }
+
+          for (const blockerRef of ((candidate.blockerRefs as string[]) ?? []).filter(Boolean)) {
+            const blockerTaskId =
+              createdRefToTaskId.get(blockerRef) ??
+              existingRefToTaskId.get(blockerRef) ??
+              null;
+            if (!blockerTaskId) {
+              continue;
+            }
+
+            await prisma.taskEdge.create({
+              data: {
+                edgeType: TaskEdgeType.BLOCKS,
+                fromTaskId: blockerTaskId,
+                toTaskId: taskId,
+              },
+            }).catch(() => undefined);
+          }
         }
 
         return ok({
@@ -801,29 +1305,120 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const refs = a.proposalRefs as string[];
         const promoted: Array<{ taskId: string; title: string }> = [];
         const rejected: Array<{ ref: string; reason: string }> = [];
+        const { reviewTaskProposalBundle } = await import("@optimitron/agent");
+
+        const draftTasks = await prisma.task.findMany({
+          where: {
+            deletedAt: null,
+            status: TaskStatus.DRAFT,
+            OR: refs.flatMap((ref) => [{ id: ref }, { taskKey: ref }]),
+          },
+          select: {
+            assigneeOrganizationId: true,
+            assigneePersonId: true,
+            contactUrl: true,
+            contextJson: true,
+            description: true,
+            estimatedEffortHours: true,
+            id: true,
+            isPublic: true,
+            roleTitle: true,
+            sourceUrl: true,
+            status: true,
+            taskKey: true,
+            title: true,
+          },
+        });
+
+        const foundRefs = new Set<string>();
+        for (const task of draftTasks) {
+          foundRefs.add(task.id);
+          if (task.taskKey) {
+            foundRefs.add(task.taskKey);
+          }
+        }
 
         for (const ref of refs) {
-          // Find the DRAFT task by ID or taskKey
-          const task = await prisma.task.findFirst({
-            where: {
-              deletedAt: null,
-              status: TaskStatus.DRAFT,
-              OR: [
-                { id: ref },
-                { taskKey: ref },
-              ],
-            },
-            select: { id: true, title: true, status: true },
-          });
-
-          if (!task) {
+          if (!foundRefs.has(ref)) {
             rejected.push({ ref, reason: "No DRAFT task found with this ID or taskKey." });
+          }
+        }
+
+        if (draftTasks.length === 0) {
+          return ok({
+            promoted,
+            rejected,
+            message: `${promoted.length} promoted, ${rejected.length} rejected.`,
+          });
+        }
+
+        const existingTasks = await prisma.task.findMany({
+          where: {
+            deletedAt: null,
+            id: {
+              notIn: draftTasks.map((task) => task.id),
+            },
+          },
+          select: {
+            assigneeOrganizationId: true,
+            assigneePersonId: true,
+            id: true,
+            roleTitle: true,
+            status: true,
+            taskKey: true,
+            title: true,
+          },
+        });
+
+        const review = reviewTaskProposalBundle({
+          candidates: draftTasks.map((task) => taskProposalCandidateFromRecord(task)),
+          existingTasks: existingTasks.map((task) => ({
+            assigneeOrganizationId: task.assigneeOrganizationId,
+            assigneePersonId: task.assigneePersonId,
+            id: task.id,
+            roleTitle: task.roleTitle,
+            status: task.status,
+            taskKey: task.taskKey,
+            title: task.title,
+          })),
+        });
+        const decisionByProposalRef = new Map(
+          review.decisions.map((decision) => [decision.proposalRef, decision]),
+        );
+
+        for (const task of draftTasks) {
+          const decision = decisionByProposalRef.get(task.id);
+          if (!decision?.promotable) {
+            rejected.push({
+              ref: task.taskKey ?? task.id,
+              reason:
+                decision?.issues.map((issue) => issue.message).join(" ") ??
+                "Task failed promotion review.",
+            });
             continue;
           }
 
+          const context = asObject(task.contextJson) ?? {};
+          const proposal = asObject(context.proposalV1) ?? {};
+
           await prisma.task.update({
             where: { id: task.id },
-            data: { status: TaskStatus.ACTIVE },
+            data: {
+              contextJson: {
+                ...context,
+                proposalV1: {
+                  ...proposal,
+                  review: {
+                    issues: decision.issues,
+                    promotable: decision.promotable,
+                    qualityScore: decision.evaluation.qualityScore,
+                    rationale: decision.evaluation.rationale,
+                    reviewedAt: new Date().toISOString(),
+                  },
+                },
+              },
+              status: TaskStatus.ACTIVE,
+            },
           });
           promoted.push({ taskId: task.id, title: task.title });
         }
@@ -882,6 +1477,168 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           data: updates as any,
         });
         return ok({ taskId: task.id, status: task.status, title: task.title });
+      }
+
+      // ── recordTaskActuals ───────────────────────────────────
+      case "recordTaskActuals": {
+        const prisma = await getPrisma();
+        const existing = await prisma.task.findUnique({
+          where: { id: a.taskId as string },
+          select: {
+            actualCashCostUsd: true,
+            actualEffortSeconds: true,
+            contextJson: true,
+            id: true,
+            title: true,
+          },
+        });
+        if (!existing) return err("Task not found");
+
+        const context = asObject(existing.contextJson) ?? {};
+        const executionV1 = asObject(context.executionV1) ?? {};
+        const note = (a.note as string) ?? null;
+        const actualCashCostUsd =
+          (a.actualCashCostUsd as number) ?? existing.actualCashCostUsd ?? null;
+        const actualEffortSeconds =
+          (a.actualEffortSeconds as number) ?? existing.actualEffortSeconds ?? null;
+
+        const task = await prisma.task.update({
+          where: { id: a.taskId as string },
+          data: {
+            actualCashCostUsd,
+            actualEffortSeconds,
+            contextJson: {
+              ...context,
+              executionV1: {
+                ...executionV1,
+                lastActuals: {
+                  actualCashCostUsd,
+                  actualEffortSeconds,
+                  note,
+                  recordedAt: new Date().toISOString(),
+                },
+              },
+            },
+          },
+        });
+
+        return ok({
+          actualCashCostUsd: task.actualCashCostUsd,
+          actualEffortSeconds: task.actualEffortSeconds,
+          taskId: task.id,
+          title: task.title,
+        });
+      }
+
+      // ── setTaskImpact ─────────────────────────────────────────
+      case "setTaskImpact": {
+        const prisma = await getPrisma();
+        const taskId = a.taskId as string;
+
+        // Verify task exists
+        const task = await prisma.task.findUnique({
+          where: { id: taskId },
+          select: { id: true, taskKey: true },
+        });
+        if (!task) return err("Task not found");
+
+        const frameInput = (a.frame as Record<string, number | null> | undefined) ?? {};
+        const metricsInput = (a.metrics as Array<Record<string, unknown>> | undefined) ?? [];
+        const frameKeyStr = (a.frameKey as string) ?? "FIVE_YEAR";
+        const frameKey = TaskImpactFrameKey[frameKeyStr as keyof typeof TaskImpactFrameKey] ?? TaskImpactFrameKey.FIVE_YEAR;
+        const calculationVersion = (a.calculationVersion as string) ?? "agent-estimate-v1";
+        const frameSlug = `${frameKeyStr.toLowerCase()}-agent`;
+
+        const result = await prisma.$transaction(async (tx) => {
+          // Create or find the estimate set
+          const estimateSet = await tx.taskImpactEstimateSet.create({
+            data: {
+              assumptionsJson: {},
+              calculationVersion,
+              counterfactualKey: "status-quo",
+              estimateKind: "FORECAST",
+              isCurrent: false,
+              methodologyKey: "agent-direct",
+              parameterSetHash: `agent:${new Date().toISOString()}`,
+              publicationStatus: "DRAFT",
+              sourceSystem: "MANUAL",
+              taskId,
+            },
+          });
+
+          // Create the impact frame
+          const frame = await tx.taskImpactFrameEstimate.create({
+            data: {
+              taskImpactEstimateSetId: estimateSet.id,
+              frameKey,
+              frameSlug,
+              evaluationHorizonYears: (frameInput.evaluationHorizonYears as number) ?? 5,
+              successProbabilityBase: (frameInput.successProbabilityBase as number) ?? null,
+              delayDalysLostPerDayBase: (frameInput.delayDalysLostPerDayBase as number) ?? null,
+              delayEconomicValueUsdLostPerDayBase: (frameInput.delayEconomicValueUsdLostPerDayBase as number) ?? null,
+              expectedDalysAvertedBase: (frameInput.expectedDalysAvertedBase as number) ?? null,
+              expectedEconomicValueUsdBase: (frameInput.expectedEconomicValueUsdBase as number) ?? null,
+              estimatedCashCostUsdBase: (frameInput.estimatedCashCostUsdBase as number) ?? null,
+              estimatedEffortHoursBase: (frameInput.estimatedEffortHoursBase as number) ?? null,
+              adoptionRampYears: 0,
+              annualDiscountRate: 0.03,
+              benefitDurationYears: (frameInput.evaluationHorizonYears as number) ?? 5,
+              timeToImpactStartDays: 0,
+            },
+          });
+
+          // Create metrics
+          for (const metric of metricsInput) {
+            await tx.taskImpactMetric.create({
+              data: {
+                taskImpactFrameEstimateId: frame.id,
+                metricKey: metric.metricKey as string,
+                baseValue: (metric.baseValue as number) ?? null,
+                lowValue: (metric.lowValue as number) ?? null,
+                highValue: (metric.highValue as number) ?? null,
+                unit: (metric.unit as string) ?? "unknown",
+                displayGroup: (metric.displayGroup as string) ?? null,
+              },
+            });
+          }
+
+          // Mark previous current sets as non-current
+          await tx.taskImpactEstimateSet.updateMany({
+            where: {
+              taskId,
+              isCurrent: true,
+              NOT: { id: estimateSet.id },
+            },
+            data: { isCurrent: false },
+          });
+
+          // Set this as current
+          await tx.taskImpactEstimateSet.update({
+            where: { id: estimateSet.id },
+            data: { isCurrent: true },
+          });
+
+          // Link to task
+          await tx.task.update({
+            where: { id: taskId },
+            data: { currentImpactEstimateSetId: estimateSet.id },
+          });
+
+          return {
+            estimateSetId: estimateSet.id,
+            frameId: frame.id,
+            metricCount: metricsInput.length,
+          };
+        }, {
+          maxWait: 10_000,
+          timeout: 30_000,
+        });
+
+        return ok({
+          taskId,
+          ...result,
+          message: `Impact estimate set with ${result.metricCount} metrics attached to task.`,
+        });
       }
 
       // ── claimTask ────────────────────────────────────────────

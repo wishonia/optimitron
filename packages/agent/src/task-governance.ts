@@ -77,10 +77,12 @@ export const TaskProposalSeveritySchema = z.enum(['error', 'warning']);
 export interface TaskProposalIssue {
   code:
     | 'agent-proposals-should-start-draft'
+    | 'bundle-too-large'
     | 'cyclic-blockers'
     | 'duplicate-fingerprint'
     | 'duplicate-task-key'
     | 'invalid-contact-url'
+    | 'missing-grounding-refs'
     | 'quality-below-threshold'
     | 'missing-assignee-context'
     | 'missing-description'
@@ -97,10 +99,12 @@ export interface TaskProposalIssue {
 export const TaskProposalIssueSchema = z.object({
   code: z.enum([
     'agent-proposals-should-start-draft',
+    'bundle-too-large',
     'cyclic-blockers',
     'duplicate-fingerprint',
     'duplicate-task-key',
     'invalid-contact-url',
+    'missing-grounding-refs',
     'quality-below-threshold',
     'missing-assignee-context',
     'missing-description',
@@ -167,11 +171,13 @@ export const TaskPromotionRequestSchema = z.object({
 export type TaskPromotionRequest = z.infer<typeof TaskPromotionRequestSchema>;
 
 export interface TaskProposalReviewPolicy {
+  maximumBundleSize: number;
   minimumPrivateQualityScore: number;
   minimumQualityScore: number;
 }
 
 export const DEFAULT_TASK_PROPOSAL_REVIEW_POLICY: TaskProposalReviewPolicy = {
+  maximumBundleSize: 12,
   minimumPrivateQualityScore: 0.2,
   minimumQualityScore: 0.55,
 };
@@ -224,6 +230,74 @@ function isValidHttpUrl(value: string | null | undefined) {
   } catch {
     return false;
   }
+}
+
+function isLikelyGroundingRef(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return false;
+  }
+
+  if (
+    trimmed.startsWith('/') ||
+    trimmed.startsWith('manual-section:') ||
+    trimmed.startsWith('source-artifact:')
+  ) {
+    return true;
+  }
+
+  try {
+    const url = new URL(trimmed);
+    const host = url.hostname.toLowerCase();
+    return (
+      host === 'optimitron.earth' ||
+      host === 'www.optimitron.earth' ||
+      host === 'optimitron.com' ||
+      host === 'www.optimitron.com' ||
+      host === 'manual.warondisease.org' ||
+      host === 'warondisease.org' ||
+      host.endsWith('.warondisease.org')
+    );
+  } catch {
+    return false;
+  }
+}
+
+function looksLikeStrategicTask(task: TaskProposalCandidate) {
+  const haystack = [
+    task.taskKey ?? '',
+    task.title,
+    task.description ?? '',
+  ]
+    .join(' ')
+    .toLowerCase();
+
+  return [
+    'system:',
+    'optimize-earth',
+    'growth',
+    'conversion',
+    'funnel',
+    'distribution',
+    'traffic',
+    'memetic',
+    'queue',
+    'ranking',
+    'generator',
+    'bootstrap',
+    'ground task generation',
+    'marketing',
+    'procurement',
+    'funding',
+    'fundraise',
+    'budget',
+    'page',
+    'scoreboard',
+    'politician',
+    'task list',
+    'wishonia',
+    'manual',
+  ].some((needle) => haystack.includes(needle));
 }
 
 function hasMeaningfulImpact(impact: TaskProposalImpact | null | undefined) {
@@ -385,6 +459,7 @@ export function reviewTaskProposalBundle(input: {
   const bundleTaskKeys = new Map<string, string>();
   const bundleFingerprints = new Map<string, string>();
   const issuesByRef = new Map<string, TaskProposalIssue[]>();
+  const bundleTooLarge = parsedInput.candidates.length > policy.maximumBundleSize;
 
   for (const candidate of parsedInput.candidates) {
     const ref = proposalRef(candidate);
@@ -392,6 +467,14 @@ export function reviewTaskProposalBundle(input: {
     const taskKey = candidate.taskKey?.trim();
     const currentFingerprint = fingerprint(candidate);
     const sourceUrls = uniqueStrings(candidate.sourceUrls);
+
+    if (bundleTooLarge) {
+      issues.push({
+        code: 'bundle-too-large',
+        message: `Bundle contains ${parsedInput.candidates.length} tasks, above the review cap of ${policy.maximumBundleSize}. Split it into smaller grounded batches.`,
+        severity: 'error',
+      });
+    }
 
     if (!candidate.title.trim()) {
       issues.push({
@@ -429,6 +512,18 @@ export function reviewTaskProposalBundle(input: {
       issues.push({
         code: 'missing-source-urls',
         message: 'Public executable tasks need at least one supporting source URL.',
+        severity: 'error',
+      });
+    }
+
+    if (
+      looksLikeStrategicTask(candidate) &&
+      !sourceUrls.some((sourceUrl) => isLikelyGroundingRef(sourceUrl))
+    ) {
+      issues.push({
+        code: 'missing-grounding-refs',
+        message:
+          'System/growth/procurement tasks must cite a concrete Optimitron page, route, manual section, or source artifact instead of generic strategy references.',
         severity: 'error',
       });
     }

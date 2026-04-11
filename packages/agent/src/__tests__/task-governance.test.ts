@@ -143,4 +143,78 @@ describe('reviewTaskProposalBundle', () => {
     );
   });
 
+  it('rejects vague system/growth tasks that are not grounded in actual pages or manual sources', () => {
+    const review = reviewTaskProposalBundle({
+      candidates: [
+        {
+          description:
+            'Improve marketing and make the funnel better somehow with more memes and better copy.',
+          estimatedEffortHours: 2,
+          id: 'draft_growth_slop',
+          impact: {
+            delayEconomicValueUsdLostPerDay: 2_500_000,
+            expectedValuePerHourUsd: 250_000,
+          },
+          isPublic: true,
+          roleTitle: 'Growth Operator',
+          sourceUrls: ['https://example.com/marketing-playbook'],
+          status: 'DRAFT',
+          taskKey: 'system:optimize-earth:improve-marketing-funnel',
+          title: 'Improve the marketing funnel',
+        },
+      ],
+    });
+
+    expect(review.promotableCount).toBe(0);
+    expect(review.decisions[0]?.issues.map((issue) => issue.code)).toContain(
+      'missing-grounding-refs',
+    );
+  });
+
+  it('accepts grounded system tasks that cite actual Optimitron/manual surfaces', () => {
+    const review = reviewTaskProposalBundle({
+      candidates: [
+        {
+          description:
+            'Use the overdue task list, politician pages, and the manual context to add share hooks and deep links that turn outrage into concrete pressure.',
+          estimatedEffortHours: 3,
+          id: 'draft_grounded_growth',
+          impact: {
+            delayEconomicValueUsdLostPerDay: 50_000_000,
+            expectedValuePerHourUsd: 3_000_000,
+          },
+          isPublic: true,
+          roleTitle: 'Growth Operator',
+          sourceUrls: [
+            'https://optimitron.earth/tasks',
+            'https://optimitron.earth/governments/US/politicians',
+            'https://manual.warondisease.org/knowledge/strategy/earth-optimization-protocol-v1',
+          ],
+          status: 'DRAFT',
+          taskKey: 'system:optimize-earth:weaponize-overdue-task-list',
+          title: 'Turn the overdue leader task list into a memetic pressure machine',
+        },
+      ],
+    });
+
+    expect(review.promotableCount).toBe(1);
+    expect(review.decisions[0]?.issues).toHaveLength(0);
+  });
+
+  it('rejects oversized proposal bundles', () => {
+    const review = reviewTaskProposalBundle({
+      candidates: Array.from({ length: 13 }, (_, index) => ({
+        ...treatySupportTask,
+        id: `draft_${index}`,
+        taskKey: `program:one-percent-treaty:signer:test-${index}:support:contact-office`,
+        title: `Contact signer ${index}`,
+      })),
+    });
+
+    expect(review.promotableCount).toBe(0);
+    expect(review.decisions.every((decision) =>
+      decision.issues.some((issue) => issue.code === 'bundle-too-large'),
+    )).toBe(true);
+  });
+
 });

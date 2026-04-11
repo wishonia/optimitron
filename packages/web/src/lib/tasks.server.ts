@@ -213,6 +213,7 @@ const taskListSelect = {
   currentImpactEstimateSet: {
     select: impactEstimateSetSelect,
   },
+  contextJson: true,
   description: true,
   difficulty: true,
   dueAt: true,
@@ -229,6 +230,8 @@ const taskListSelect = {
     },
     select: {
       edgeType: true,
+      probabilityDeltaBase: true,
+      timeDeltaDaysBase: true,
       toTask: {
         select: {
           currentImpactEstimateSet: {
@@ -416,14 +419,82 @@ function buildDownstreamUnlockedImpactFrame(
     frameKey?: TaskImpactFrameKey | string | null;
   },
 ) {
-  const downstreamFrames = task.outgoingEdges
-    .map((edge) =>
-      selectImpactFrame(
-        edge.toTask.currentImpactEstimateSet,
-        options?.frameKey ?? DEFAULT_TASK_IMPACT_FRAME,
-      ).selectedFrame,
-    )
-    .filter((frame): frame is NonNullable<typeof frame> => frame != null);
+  const downstreamFrames = task.outgoingEdges.flatMap((edge) => {
+    const frame = selectImpactFrame(
+      edge.toTask.currentImpactEstimateSet,
+      options?.frameKey ?? DEFAULT_TASK_IMPACT_FRAME,
+    ).selectedFrame;
+
+    if (!frame) {
+      return [];
+    }
+
+    const weightedFrames: NonNullable<TaskImpactSelection["selectedFrame"]>[] = [];
+    const probabilityDelta =
+      edge.probabilityDeltaBase != null && edge.probabilityDeltaBase > 0
+        ? edge.probabilityDeltaBase
+        : null;
+    const timeDeltaDays =
+      edge.timeDeltaDaysBase != null && edge.timeDeltaDaysBase > 0
+        ? edge.timeDeltaDaysBase
+        : null;
+
+    if (probabilityDelta != null) {
+      weightedFrames.push(
+        scaleImpactFrameSummary(frame, probabilityDelta, {
+          customFrameLabel: `Probability-weighted downstream value unlocked by ${task.title}`,
+          frameSlug: `${frame.frameSlug}-probability-delta-${task.id}`,
+          metrics: [],
+        }),
+      );
+    }
+
+    if (timeDeltaDays != null) {
+      weightedFrames.push({
+        ...frame,
+        customFrameLabel: `Time-accelerated downstream value unlocked by ${task.title}`,
+        delayDalysLostPerDayBase: frame.delayDalysLostPerDayBase,
+        delayDalysLostPerDayHigh: frame.delayDalysLostPerDayHigh,
+        delayDalysLostPerDayLow: frame.delayDalysLostPerDayLow,
+        delayEconomicValueUsdLostPerDayBase: frame.delayEconomicValueUsdLostPerDayBase,
+        delayEconomicValueUsdLostPerDayHigh: frame.delayEconomicValueUsdLostPerDayHigh,
+        delayEconomicValueUsdLostPerDayLow: frame.delayEconomicValueUsdLostPerDayLow,
+        estimatedCashCostUsdBase: null,
+        estimatedCashCostUsdHigh: null,
+        estimatedCashCostUsdLow: null,
+        estimatedEffortHoursBase:
+          task.estimatedEffortHours ?? frame.estimatedEffortHoursBase ?? null,
+        estimatedEffortHoursHigh:
+          task.estimatedEffortHours ?? frame.estimatedEffortHoursHigh ?? null,
+        estimatedEffortHoursLow:
+          task.estimatedEffortHours ?? frame.estimatedEffortHoursLow ?? null,
+        expectedDalysAvertedBase:
+          (frame.delayDalysLostPerDayBase ?? 0) * timeDeltaDays,
+        expectedDalysAvertedHigh:
+          frame.delayDalysLostPerDayHigh == null ? null : frame.delayDalysLostPerDayHigh * timeDeltaDays,
+        expectedDalysAvertedLow:
+          frame.delayDalysLostPerDayLow == null ? null : frame.delayDalysLostPerDayLow * timeDeltaDays,
+        expectedEconomicValueUsdBase:
+          (frame.delayEconomicValueUsdLostPerDayBase ?? 0) * timeDeltaDays,
+        expectedEconomicValueUsdHigh:
+          frame.delayEconomicValueUsdLostPerDayHigh == null
+            ? null
+            : frame.delayEconomicValueUsdLostPerDayHigh * timeDeltaDays,
+        expectedEconomicValueUsdLow:
+          frame.delayEconomicValueUsdLostPerDayLow == null
+            ? null
+            : frame.delayEconomicValueUsdLostPerDayLow * timeDeltaDays,
+        frameSlug: `${frame.frameSlug}-time-delta-${task.id}`,
+        metrics: [],
+      });
+    }
+
+    if (weightedFrames.length === 0) {
+      weightedFrames.push(frame);
+    }
+
+    return weightedFrames;
+  });
 
   if (downstreamFrames.length === 0) {
     return null;
