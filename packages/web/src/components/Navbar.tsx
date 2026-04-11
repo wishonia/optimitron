@@ -106,11 +106,11 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href={searchLink.href}
-              className="flex h-10 w-10 items-center justify-center border-4 border-primary bg-background text-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-foreground hover:text-background hover:shadow-none"
+              className="inline-flex h-10 w-10 items-center justify-center text-brutal-yellow-foreground/80 transition-colors hover:text-brutal-yellow-foreground"
               title={searchLink.label}
               aria-label={searchLink.label}
             >
-              <Search className="h-5 w-5 stroke-[3px]" />
+              <Search className="h-5 w-5 stroke-[2.5px]" />
             </Link>
             <AvatarButton user={user} isAuthenticated={isAuthenticated} />
 

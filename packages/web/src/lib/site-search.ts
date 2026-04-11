@@ -70,7 +70,7 @@ function buildDocumentFromNavItem(section: string, item: NavItem): StaticSiteSea
 const extraStaticDocuments: StaticSiteSearchDocument[] = [
   {
     href: ROUTES.home,
-    title: "Homepage",
+    title: "Optimitron",
     description:
       "Landing page for the Earth Optimization Game, the 1% Treaty, the prize mechanics, and the core argument for fixing public systems with evidence.",
     section: "Start Here",

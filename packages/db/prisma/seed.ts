@@ -37,6 +37,16 @@ import {
   getUSWishocraticCatalogRecords,
 } from "@optimitron/data";
 import {
+  DFDA_DIRECT_FUNDING_QUEUE_CLEARANCE_NPV,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_DALYS,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_ECONOMIC_VALUE,
+  DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_YEARS,
+  EVENTUALLY_AVOIDABLE_DALY_PCT,
+  GLOBAL_ANNUAL_DALY_BURDEN,
+  TREATY_ANNUAL_FUNDING,
+} from "@optimitron/data/parameters";
+import { WORLD_LEADERS } from "@optimitron/data/datasets/world-leaders";
+import {
   normalizeSeedScopes,
   parseSeedScopes,
   type SeedScope,
@@ -732,7 +742,234 @@ export async function seedDatabase(options: SeedDatabaseOptions = {}) {
     await seedDemoData();
   }
 
+  if (scopes.includes("tasks")) {
+    await seedTreatyTasks();
+  }
+
   console.log("\n🎉 Seed complete!");
+}
+
+// ---------------------------------------------------------------------------
+// Treaty Tasks — parent task + per-country signer subtasks with impact data
+// ---------------------------------------------------------------------------
+
+const TREATY_DUE_AT = new Date("2024-12-31T00:00:00.000Z");
+const TREATY_CAMPAIGN_COST_USD = 1_000_000_000; // $1B lobbying campaign
+
+async function seedTreatyTasks() {
+  console.log("📋 Seeding treaty tasks...");
+
+  // Clean slate
+  await prisma.taskSourceArtifact.deleteMany({});
+  await prisma.taskImpactMetric.deleteMany({});
+  await prisma.taskImpactFrame.deleteMany({});
+  await prisma.taskImpactEstimateSet.deleteMany({});
+  await prisma.taskMilestone.deleteMany({});
+  await prisma.taskEdge.deleteMany({});
+  await prisma.taskClaim.deleteMany({});
+  await prisma.task.deleteMany({});
+  console.log("  ✓ Cleared existing tasks");
+
+  // Lifetime impact from parameters (total civilizational acceleration, not annual)
+  const totalDalys = DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_DALYS.value; // 565B DALYs
+  const totalEconValue = DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_ECONOMIC_VALUE.value; // $84.8Q
+  const accelerationYears = DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_YEARS.value; // 212 years
+  const annualAvoidableDalys = GLOBAL_ANNUAL_DALY_BURDEN.value * EVENTUALLY_AVOIDABLE_DALY_PCT.value; // 2.67B/yr
+  const delayDalysPerDay = annualAvoidableDalys / 365;
+  const delayEconPerDay = delayDalysPerDay * 150_000; // $150K/QALY standard valuation
+  const annualFunding = TREATY_ANNUAL_FUNDING.value; // $27.2B/yr
+  const dfdaDirectFundingNpv = DFDA_DIRECT_FUNDING_QUEUE_CLEARANCE_NPV.value; // $475.7B
+
+  // --- Task 1: Ratify the 1% Treaty ---
+  const treatyTask = await createTaskWithImpact({
+    task: {
+      taskKey: "program:one-percent-treaty:ratify",
+      title: "Ratify the 1% Treaty",
+      description: [
+        `Redirect 1% of global military spending ($${(annualFunding / 1e9).toFixed(1)}B/year) into pragmatic clinical trials.`,
+        `Accelerates cure for average disease by ${Math.round(accelerationYears)} years.`,
+        `Total impact: ${(totalDalys / 1e9).toFixed(0)}B healthy life-years saved, ${(totalEconValue / 1e15).toFixed(1)} quadrillion in economic value.`,
+        `Every day of delay costs ${(delayDalysPerDay / 1e6).toFixed(1)}M DALYs and $${(delayEconPerDay / 1e12).toFixed(1)}T.`,
+      ].join(" "),
+      category: "GOVERNANCE",
+      difficulty: "EXPERT",
+      status: "ACTIVE",
+      isPublic: true,
+      dueAt: TREATY_DUE_AT,
+      sortOrder: -100,
+      skillTags: ["organizing", "diplomacy", "public-pressure"],
+      interestTags: ["treaty", "disease-eradication", "peace-dividend"],
+      claimPolicy: "OPEN_MANY",
+    },
+    impact: {
+      estimatedCashCostUsdBase: TREATY_CAMPAIGN_COST_USD,
+      expectedEconomicValueUsdBase: totalEconValue,
+      expectedDalysAvertedBase: totalDalys,
+      delayEconomicValueUsdLostPerDayBase: delayEconPerDay,
+      delayDalysLostPerDayBase: delayDalysPerDay,
+      successProbabilityBase: 0.01,
+      benefitDurationYears: accelerationYears,
+    },
+    methodologyKey: "treaty-lifetime-parameters",
+  });
+  console.log(`  ✓ Task: "${treatyTask.title}" (${treatyTask.id})`);
+
+  // --- Task 2: Create the Decentralized FDA ---
+  const dfdaTask = await createTaskWithImpact({
+    task: {
+      taskKey: "program:dfda:create",
+      title: "Create the Decentralized FDA",
+      description: [
+        `Build and fund a decentralized FDA platform ($${(annualFunding / 1e9).toFixed(1)}B/year direct funding).`,
+        `Same 12.3X trial capacity increase and ${Math.round(accelerationYears)}-year disease cure acceleration as the treaty path, but funded directly instead of via military spending redirect.`,
+        `Higher cost ($${(dfdaDirectFundingNpv / 1e9).toFixed(0)}B NPV vs $${(TREATY_CAMPAIGN_COST_USD / 1e9).toFixed(0)}B treaty campaign) but no political dependency.`,
+      ].join(" "),
+      category: "GOVERNANCE",
+      difficulty: "EXPERT",
+      status: "ACTIVE",
+      isPublic: true,
+      sortOrder: -90,
+      skillTags: ["engineering", "fundraising", "clinical-trials"],
+      interestTags: ["dfda", "disease-eradication", "clinical-trials"],
+      claimPolicy: "OPEN_MANY",
+    },
+    impact: {
+      estimatedCashCostUsdBase: dfdaDirectFundingNpv,
+      expectedEconomicValueUsdBase: totalEconValue,
+      expectedDalysAvertedBase: totalDalys,
+      delayEconomicValueUsdLostPerDayBase: delayEconPerDay,
+      delayDalysLostPerDayBase: delayDalysPerDay,
+      successProbabilityBase: 0.10,
+      benefitDurationYears: accelerationYears,
+    },
+    methodologyKey: "dfda-direct-lifetime-parameters",
+  });
+  console.log(`  ✓ Task: "${dfdaTask.title}" (${dfdaTask.id})`);
+
+  // --- Signer child tasks for the treaty ---
+  const leaderCount = WORLD_LEADERS.length;
+  let created = 0;
+
+  for (const leader of WORLD_LEADERS) {
+    const sourceRef = `wikidata:${leader.wikidataId}`;
+    const countryCode = leader.countryCode.toUpperCase();
+    const share = 1 / leaderCount;
+
+    const person = await prisma.person.upsert({
+      where: { sourceRef },
+      update: {
+        displayName: leader.leaderName,
+        image: leader.leaderImageUrl,
+        countryCode,
+        currentAffiliation: `Government of ${leader.countryName}`,
+        isPublicFigure: true,
+      },
+      create: {
+        displayName: leader.leaderName,
+        image: leader.leaderImageUrl,
+        countryCode,
+        currentAffiliation: `Government of ${leader.countryName}`,
+        isPublicFigure: true,
+        sourceRef,
+        roleTitle: leader.roleTitle,
+      },
+    });
+
+    await createTaskWithImpact({
+      task: {
+        taskKey: `program:one-percent-treaty:signer:${countryCode.toLowerCase()}`,
+        parentTaskId: treatyTask.id,
+        assigneePersonId: person.id,
+        assigneeAffiliationSnapshot: `Government of ${leader.countryName}`,
+        roleTitle: leader.roleTitle,
+        title: "Sign the 1% Treaty",
+        description: `Secure ${leader.leaderName}'s signature on the 1% Treaty for ${leader.countryName}.`,
+        category: "GOVERNANCE",
+        difficulty: "EXPERT",
+        status: "ACTIVE",
+        isPublic: true,
+        dueAt: TREATY_DUE_AT,
+        claimPolicy: "ASSIGNED_ONLY",
+        skillTags: ["diplomacy", "public-pressure"],
+        interestTags: ["treaty", "disease-eradication", `country-${countryCode.toLowerCase()}`],
+        estimatedEffortHours: 0.5,
+      },
+      impact: {
+        estimatedCashCostUsdBase: TREATY_CAMPAIGN_COST_USD * share,
+        expectedEconomicValueUsdBase: totalEconValue * share,
+        expectedDalysAvertedBase: totalDalys * share,
+        delayEconomicValueUsdLostPerDayBase: delayEconPerDay * share,
+        delayDalysLostPerDayBase: delayDalysPerDay * share,
+        successProbabilityBase: 0.01,
+        benefitDurationYears: accelerationYears,
+      },
+      methodologyKey: "treaty-per-country-lifetime",
+      parameterSetHashSuffix: countryCode,
+    });
+
+    created += 1;
+  }
+
+  console.log(`  ✓ ${created} signer tasks with leader photos`);
+}
+
+/** Helper: create a task + impact estimate set + LIFETIME frame in one call. */
+async function createTaskWithImpact(input: {
+  task: Parameters<typeof prisma.task.create>[0]["data"];
+  impact: {
+    estimatedCashCostUsdBase: number;
+    expectedEconomicValueUsdBase: number;
+    expectedDalysAvertedBase: number;
+    delayEconomicValueUsdLostPerDayBase: number;
+    delayDalysLostPerDayBase: number;
+    successProbabilityBase: number;
+    benefitDurationYears: number;
+  };
+  methodologyKey: string;
+  parameterSetHashSuffix?: string;
+}) {
+  const task = await prisma.task.create({ data: input.task });
+
+  const estimateSet = await prisma.taskImpactEstimateSet.create({
+    data: {
+      taskId: task.id,
+      isCurrent: true,
+      estimateKind: "FORECAST",
+      publicationStatus: "PUBLISHED",
+      sourceSystem: "PARAMETER_CATALOG",
+      calculationVersion: "seed-v1",
+      methodologyKey: input.methodologyKey,
+      parameterSetHash: `seed${input.parameterSetHashSuffix ? `-${input.parameterSetHashSuffix}` : ""}`,
+      counterfactualKey: "status-quo",
+    },
+  });
+
+  await prisma.task.update({
+    where: { id: task.id },
+    data: { currentImpactEstimateSetId: estimateSet.id },
+  });
+
+  await prisma.taskImpactFrame.create({
+    data: {
+      taskImpactEstimateSetId: estimateSet.id,
+      frameKey: "LIFETIME",
+      frameSlug: "lifetime",
+      evaluationHorizonYears: input.impact.benefitDurationYears,
+      timeToImpactStartDays: 365,
+      adoptionRampYears: 5,
+      benefitDurationYears: input.impact.benefitDurationYears,
+      annualDiscountRate: 0,
+      successProbabilityBase: input.impact.successProbabilityBase,
+      expectedEconomicValueUsdBase: input.impact.expectedEconomicValueUsdBase,
+      expectedDalysAvertedBase: input.impact.expectedDalysAvertedBase,
+      delayEconomicValueUsdLostPerDayBase: input.impact.delayEconomicValueUsdLostPerDayBase,
+      delayDalysLostPerDayBase: input.impact.delayDalysLostPerDayBase,
+      estimatedCashCostUsdBase: input.impact.estimatedCashCostUsdBase,
+      estimatedEffortHoursBase: 0.5,
+    },
+  });
+
+  return task;
 }
 
 // ---------------------------------------------------------------------------

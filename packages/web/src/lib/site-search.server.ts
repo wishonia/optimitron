@@ -28,6 +28,20 @@ export interface SiteSearchResults {
   totalResults: number;
 }
 
+function dedupeManualResults(results: ManualSiteSearchResult[]) {
+  const seen = new Set<string>();
+
+  return results.filter((result) => {
+    const key = `${result.href.toLowerCase()}::${result.title.toLowerCase()}`;
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
 function getManualEntryHref(entry: ManualSearchEntry) {
   const rawUrl = entry.url?.trim();
 
@@ -81,18 +95,20 @@ export async function searchSiteContent(
     (async () => {
       try {
         const manualIndex = await getManualSearchIndex();
-        const manualResults = searchManualContent(
+        const manualResults = dedupeManualResults(
+          searchManualContent(
           manualIndex,
           trimmedQuery,
           8,
           3200,
         ).results.map((result) => ({
-          description: result.entry.description ?? "Manual reference",
-          href: getManualEntryHref(result.entry),
-          score: Number(result.score.toFixed(3)),
-          section: result.entry.section ?? result.entry.sections?.[0] ?? null,
-          title: result.entry.title ?? "Untitled",
-        }));
+            description: result.entry.description ?? "Manual reference",
+            href: getManualEntryHref(result.entry),
+            score: Number(result.score.toFixed(3)),
+            section: result.entry.section ?? result.entry.sections?.[0] ?? null,
+            title: result.entry.title ?? "Untitled",
+          })),
+        );
 
         return {
           manual: manualResults,

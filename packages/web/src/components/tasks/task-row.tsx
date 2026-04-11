@@ -9,7 +9,7 @@ import {
 import type { TaskCardTask } from "./task-card";
 import { TaskRowShare } from "./task-row-share";
 
-export type TaskSortKey = "title" | "assignee" | "status" | "expectedValue" | "delayCost";
+export type TaskSortKey = "title" | "assignee" | "status" | "expectedValue" | "delayCost" | "costPerDaly";
 
 function formatDueDate(value: Date) {
   return value.toLocaleDateString("en-US", {
@@ -46,8 +46,9 @@ const SORT_LABELS: Record<TaskSortKey, string> = {
   title: "Task",
   assignee: "Assignee",
   status: "Status",
-  expectedValue: "Expected Value",
+  expectedValue: "Economic Value",
   delayCost: "Delay Cost/Day",
+  costPerDaly: "Cost/DALY",
 };
 
 export function TaskTableHeader({
@@ -82,6 +83,7 @@ export function TaskTableHeader({
       {headerCell("status", `hidden shrink-0 sm:block ${hdr}`)}
       {headerCell("expectedValue", `hidden w-28 shrink-0 text-right lg:block ${hdr}`)}
       {headerCell("delayCost", `hidden w-28 shrink-0 text-right lg:block ${hdr}`)}
+      {headerCell("costPerDaly", `hidden w-24 shrink-0 text-right xl:block ${hdr}`)}
       <span className="hidden shrink-0 md:block text-xs font-bold uppercase tracking-wide text-muted-foreground">
         Share
       </span>
@@ -116,6 +118,7 @@ export function TaskRow({
   const isOverdue = task.dueAt != null && task.dueAt.getTime() < Date.now();
   const econValue = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
   const delayCost = task.impact?.selectedFrame?.delayEconomicValueUsdLostPerDayBase;
+  const costPerDaly = task.impact?.costPerDalyUsd;
 
   return (
     <div
@@ -161,6 +164,9 @@ export function TaskRow({
           {delayCost != null && delayCost > 0 ? (
             <StatusBadge>{formatCompactCurrency(delayCost)}/day</StatusBadge>
           ) : null}
+          {costPerDaly != null ? (
+            <StatusBadge>${costPerDaly < 1 ? costPerDaly.toFixed(2) : formatCompactCurrency(costPerDaly)}/DALY</StatusBadge>
+          ) : null}
         </div>
       </div>
 
@@ -189,6 +195,11 @@ export function TaskRow({
         {delayCost != null && delayCost > 0 ? `${formatCompactCurrency(delayCost)}/day` : "—"}
       </span>
 
+      {/* Cost/DALY — xl desktop only */}
+      <span className="hidden w-24 shrink-0 text-right text-xs font-bold text-muted-foreground xl:block">
+        {costPerDaly != null ? `$${costPerDaly < 1 ? costPerDaly.toFixed(2) : formatCompactCurrency(costPerDaly)}` : "—"}
+      </span>
+
       <div className="hidden shrink-0 md:block">
         {task.isPublic ? (
           <TaskRowShare shareText={shareText} taskId={task.id} />
@@ -211,6 +222,9 @@ export function getTaskSortValue(task: TaskCardTask, key: TaskSortKey): string |
       return task.impact?.selectedFrame?.expectedEconomicValueUsdBase ?? 0;
     case "delayCost":
       return task.impact?.selectedFrame?.delayEconomicValueUsdLostPerDayBase ?? 0;
+    case "costPerDaly":
+      // Lower cost/DALY = more cost-effective, so invert for "best first" sorting
+      return task.impact?.costPerDalyUsd ?? Infinity;
     case "assignee":
       return task.assigneePerson?.displayName ?? task.assigneeOrganization?.name ?? "";
     case "status":

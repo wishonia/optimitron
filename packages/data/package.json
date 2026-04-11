@@ -13,7 +13,8 @@
     "./datasets/us-politician-scorecards": "./src/datasets/us-politician-scorecards.ts",
     "./datasets/median-income-series": "./src/datasets/median-income-series.ts",
     "./datasets/international-comparisons": "./src/datasets/international-comparisons.ts",
-    "./fetchers/world-leaders": "./src/fetchers/world-leaders.ts"
+    "./fetchers/world-leaders": "./src/fetchers/world-leaders.ts",
+    "./datasets/world-leaders": "./src/datasets/world-leaders.ts"
   },
   "scripts": {
     "build": "tsc --noEmit",
@@ -26,7 +27,8 @@
     "data:refresh:economic": "tsx ./scripts/generate-economic-indicators.ts",
     "data:refresh:agencies": "tsx ./scripts/generate-agency-data.ts",
     "data:refresh:politicians": "tsx ./scripts/generate-politician-scorecards.ts",
-    "data:import-csvs": "tsx ./scripts/import-csv-datasets.ts"
+    "data:import-csvs": "tsx ./scripts/import-csv-datasets.ts",
+    "data:refresh:leaders": "tsx ./scripts/generate-world-leaders.ts"
   },
   "keywords": [
     "data",

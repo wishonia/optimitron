@@ -1,4 +1,4 @@
-export const SEED_SCOPES = ["reference", "bootstrap", "demo"] as const;
+export const SEED_SCOPES = ["reference", "bootstrap", "demo", "tasks"] as const;
 
 export type SeedScope = (typeof SEED_SCOPES)[number];
 
@@ -28,7 +28,7 @@ export function parseSeedScopes(args: string[]): SeedScope[] {
 
     const rawValue = args[index + 1];
     if (!rawValue) {
-      throw new Error("Missing value after --scope. Expected one of: all, reference, bootstrap, demo.");
+      throw new Error("Missing value after --scope. Expected one of: all, reference, bootstrap, demo, tasks.");
     }
 
     index += 1;

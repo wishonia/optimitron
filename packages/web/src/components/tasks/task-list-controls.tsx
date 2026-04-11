@@ -10,8 +10,9 @@ import {
 import type { TaskCardTask } from "./task-card";
 
 const SORT_OPTIONS: { key: TaskSortKey; label: string }[] = [
-  { key: "expectedValue", label: "Expected Value" },
+  { key: "expectedValue", label: "Economic Value" },
   { key: "delayCost", label: "Delay Cost/Day" },
+  { key: "costPerDaly", label: "Cost/DALY" },
   { key: "title", label: "Task Name" },
   { key: "assignee", label: "Assignee" },
   { key: "status", label: "Due Date" },
@@ -38,18 +39,18 @@ export function SortableTaskList({
           ? valA.localeCompare(valB)
           : valB.localeCompare(valA);
       }
-      const numA = Number(valA);
-      const numB = Number(valB);
-      return sortDir === "asc" ? numA - numB : numB - numA;
+      return sortDir === "asc"
+        ? Number(valA) - Number(valB)
+        : Number(valB) - Number(valA);
     });
   }, [tasks, sortKey, sortDir]);
 
-  function handleSort(key: TaskSortKey) {
+  function handleHeaderSort(key: TaskSortKey) {
     if (key === sortKey) {
       setSortDir((d) => (d === "asc" ? "desc" : "asc"));
     } else {
       setSortKey(key);
-      setSortDir(key === "title" || key === "assignee" ? "asc" : "desc");
+      setSortDir(key === "title" || key === "assignee" || key === "costPerDaly" ? "asc" : "desc");
     }
   }
 
@@ -57,7 +58,7 @@ export function SortableTaskList({
 
   return (
     <div className="overflow-hidden border-2 border-primary bg-background">
-      {/* Mobile sort dropdown */}
+      {/* Mobile sort controls */}
       <div className="flex items-center gap-2 border-b border-foreground/10 px-4 py-2 lg:hidden">
         <label htmlFor="task-sort" className="text-xs font-bold uppercase text-muted-foreground">
           Sort by
@@ -69,7 +70,7 @@ export function SortableTaskList({
           onChange={(e) => {
             const key = e.target.value as TaskSortKey;
             setSortKey(key);
-            setSortDir(key === "title" || key === "assignee" ? "asc" : "desc");
+            setSortDir(key === "title" || key === "assignee" || key === "costPerDaly" ? "asc" : "desc");
           }}
         >
           {SORT_OPTIONS.map((opt) => (
@@ -87,7 +88,7 @@ export function SortableTaskList({
         </button>
       </div>
 
-      <TaskTableHeader sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
+      <TaskTableHeader sortKey={sortKey} sortDir={sortDir} onSort={handleHeaderSort} />
       <div className="divide-y divide-foreground/10">
         {sorted.map((task) => (
           <TaskRow key={task.id} task={task} />

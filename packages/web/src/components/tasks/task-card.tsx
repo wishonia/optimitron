@@ -59,6 +59,7 @@ export interface TaskCardTask {
   estimatedEffortHours: number | null;
   id: string;
   impact?: {
+    costPerDalyUsd?: number | null;
     selectedFrame?: TaskImpactFrameSummary | null;
     selectedMetrics?: Record<string, TaskImpactMetricSummary> | null;
   };
