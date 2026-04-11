@@ -97,6 +97,9 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.7 }}
             className="mt-8 flex flex-col sm:flex-row items-center gap-4"
           >
+            <GameCTA href={ROUTES.declaration} variant="secondary" size="lg">
+              Read Declaration
+            </GameCTA>
             <GameCTA href={ROUTES.tasks} variant="primary" size="lg">
               Open Top Tasks
             </GameCTA>

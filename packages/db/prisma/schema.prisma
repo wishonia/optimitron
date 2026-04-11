@@ -685,6 +685,8 @@ model User {
   verifiedTaskClaims        TaskClaim[]                     @relation("TaskClaimVerifiedByUser")
   verifiedTaskMilestones    TaskMilestone[]                 @relation("TaskMilestoneVerifiedByUser")
   agentComputeDeposits      AgentComputeDeposit[]           @relation("UserAgentComputeDeposits")
+  oauthAuthCodes            OAuthAuthCode[]                 @relation("UserOAuthAuthCodes")
+  oauthGrants               OAuthGrant[]                    @relation("UserOAuthGrants")
 
   @@index([email])
   @@index([username])
@@ -4335,4 +4337,126 @@ model AgentTaskLease {
   @@index([taskId, released, expiresAt])
   @@index([agentId])
   @@index([expiresAt])
+}
+
+// ============================================================================
+// OAuth — MCP Remote Server Authentication
+// ============================================================================
+
+/// OAuth client registered via MCP dynamic client registration.
+/// Persisted so we can show "Connected Apps" in user settings and support
+/// multiple apps (Claude Desktop, custom agents, third-party integrations).
+model OAuthClient {
+  /// Internal primary key
+  id String @id @default(cuid())
+
+  /// Public client identifier issued during registration
+  clientId String @unique @default(cuid())
+
+  /// Human-readable client name shown in consent UI
+  clientName String?
+
+  /// Allowed redirect URIs for the authorization flow
+  redirectUris String[]
+
+  /// Allowed grant types (default: authorization_code, refresh_token)
+  grantTypes String[] @default(["authorization_code", "refresh_token"])
+
+  /// Requested default scopes
+  scope String?
+
+  /// Client metadata URI for developer info
+  clientUri String?
+
+  /// When this client was registered
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  // -- Relations --
+  authCodes OAuthAuthCode[]
+  grants    OAuthGrant[]
+}
+
+/// Short-lived authorization code issued during the OAuth consent flow.
+/// Used once, then exchanged for access + refresh tokens.
+model OAuthAuthCode {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// The authorization code string
+  code String @unique
+
+  /// Client that requested the code
+  clientId String
+
+  /// User who authorized the request
+  userId String
+
+  /// Redirect URI used in the request (must match on token exchange)
+  redirectUri String
+
+  /// PKCE code challenge (S256 hash)
+  codeChallenge String
+
+  /// Granted scopes
+  scopes String[]
+
+  /// When this code expires (10 minutes from creation)
+  expiresAt DateTime
+
+  /// Whether this code has been exchanged (prevents replay)
+  used Boolean @default(false)
+
+  /// When this record was created
+  createdAt DateTime @default(now())
+
+  // -- Relations --
+  client OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+  user   User        @relation("UserOAuthAuthCodes", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+/// Persistent record of a user granting an OAuth client access.
+/// Enables "Connected Apps" UI, token revocation, and refresh token tracking.
+model OAuthGrant {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Client that was granted access
+  clientId String
+
+  /// User who granted access
+  userId String
+
+  /// Scopes the user approved
+  scopes String[]
+
+  /// SHA-256 hash of the refresh token (for lookup during refresh)
+  refreshTokenHash String? @unique
+
+  /// Whether the grant is still active (false = revoked)
+  active Boolean @default(true)
+
+  /// When the grant was created
+  createdAt DateTime @default(now())
+
+  /// When this record was last updated
+  updatedAt DateTime @updatedAt
+
+  /// When the grant was revoked (null if still active)
+  revokedAt DateTime?
+
+  // -- Relations --
+  client OAuthClient @relation(fields: [clientId], references: [clientId], onDelete: Cascade)
+  user   User        @relation("UserOAuthGrants", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([clientId, userId])
+  @@index([clientId])
+  @@index([userId])
+  @@index([refreshTokenHash])
 }

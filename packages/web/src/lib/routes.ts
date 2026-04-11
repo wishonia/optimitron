@@ -66,6 +66,7 @@ export const ROUTES = {
   moronia: "/moronia",
   // Meta
   about: "/about",
+  declaration: "/declaration",
   demo: "/demo",
   video: "/video",
   tools: "/tools",
@@ -327,6 +328,15 @@ export const profileLink: NavItem = {
   tagline: "Your name, your face, your connected accounts",
 
   cta: "View Profile",
+};
+
+export const declarationLink: NavItem = {
+  href: ROUTES.declaration,
+  label: "Declaration",
+  emoji: "📜",
+  description: "The Declaration of Optimization: why optimization is necessary, what signatories commit to, and how to publicly endorse it.",
+  tagline: "Why optimization is necessary and what signatories commit to",
+  cta: "Read Declaration",
 };
 
 export const censusLink: NavItem = {

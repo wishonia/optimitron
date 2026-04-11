@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import type { State } from "wagmi";
+import { usePathname, useSearchParams } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
 import { AuthPostSigninSync } from "@/components/auth/AuthPostSigninSync";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -19,13 +20,21 @@ export function Providers({
   children: ReactNode;
   initialState?: State;
 }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const declarationRequested = searchParams.get("declaration") === "1";
+  const showDeclarationPopup =
+    ENABLE_DECLARATION_POPUP && pathname === "/";
+
   return (
     <SessionProvider>
       <ThemeProvider>
         <Web3Provider initialState={initialState}>
           <WishPointProvider>
             <AuthPostSigninSync />
-            {ENABLE_DECLARATION_POPUP ? <DeclarationSigningPopup /> : null}
+            {showDeclarationPopup ? (
+              <DeclarationSigningPopup forceOpen={declarationRequested} />
+            ) : null}
             {children}
           </WishPointProvider>
         </Web3Provider>

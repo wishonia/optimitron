@@ -42,6 +42,7 @@ const STATIC_ROUTES: { path: string; priority: number; changeFrequency: Metadata
   { path: ROUTES.moronia, priority: 0.6, changeFrequency: "monthly" },
   // Meta
   { path: ROUTES.about, priority: 0.5, changeFrequency: "monthly" },
+  { path: ROUTES.declaration, priority: 0.8, changeFrequency: "monthly" },
   { path: ROUTES.tools, priority: 0.6, changeFrequency: "weekly" },
   { path: ROUTES.contribute, priority: 0.5, changeFrequency: "monthly" },
   { path: ROUTES.fund, priority: 0.6, changeFrequency: "weekly" },

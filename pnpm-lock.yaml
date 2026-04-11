@@ -620,6 +620,9 @@ importers:
       import-in-the-middle:
         specifier: ^3.0.0
         version: 3.0.0
+      jose:
+        specifier: ^6.2.2
+        version: 6.2.2
       katex:
         specifier: ^0.16.38
         version: 0.16.43
