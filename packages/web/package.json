@@ -32,6 +32,7 @@
     "import:treaty-model": "tsx scripts/import-treaty-policy-model.ts",
     "sync:treaty-signers": "tsx scripts/sync-treaty-signers.ts",
     "mcp:tasks": "tsx scripts/mcp-task-server.ts",
+    "report:task-tree": "tsx scripts/export-task-tree.ts",
     "draft:legislation": "tsx scripts/draft-legislation.ts"
   },
   "dependencies": {
