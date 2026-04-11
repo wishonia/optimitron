@@ -1,4 +1,4 @@
-import { TaskStatus } from "@optimitron/db";
+import { TaskStatus } from "@optimitron/db/enums";
 import { getMetricBaseValue, type TaskImpactFrameSummary, type TaskImpactMetricSummary } from "./impact";
 
 const DAY_MS = 1000 * 60 * 60 * 24;

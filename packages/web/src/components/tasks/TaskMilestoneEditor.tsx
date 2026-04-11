@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TaskMilestoneStatus } from "@optimitron/db";
+import { TaskMilestoneStatus } from "@optimitron/db/enums";
 import { Button } from "@/components/retroui/Button";
 
 interface TaskMilestoneEditorProps {

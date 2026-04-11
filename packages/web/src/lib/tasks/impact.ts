@@ -1,4 +1,4 @@
-import { TaskImpactFrameKey } from "@optimitron/db";
+import { TaskImpactFrameKey } from "@optimitron/db/enums";
 
 export const DEFAULT_TASK_IMPACT_FRAME = TaskImpactFrameKey.TWENTY_YEAR;
 

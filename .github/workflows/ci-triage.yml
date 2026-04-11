@@ -23,6 +23,7 @@ concurrency:
 
 jobs:
   triage:
+    continue-on-error: true
     if: >-
       ${{
         github.event_name == 'workflow_dispatch' ||
@@ -53,16 +54,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build agent package
-        run: pnpm --filter @optimitron/agent run build
-
       - name: Generate triage report
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id || inputs.run_id }}
         run: |
-          node packages/agent/dist/ci-triage-cli.js \
+          pnpm --filter @optimitron/agent exec tsx src/ci-triage-cli.ts \
             --repo="$GITHUB_REPOSITORY" \
             --run-id="$WORKFLOW_RUN_ID" \
             --json-out=".github/tmp/ci-triage.json" \
