@@ -46,6 +46,7 @@ vi.mock("@optimitron/hypercerts", () => ({
 import { PersonhoodVerificationStatus } from "@optimitron/db";
 import { createAppPasswordAgent } from "@optimitron/hypercerts";
 import { prisma } from "@/lib/prisma";
+import { OPTIMITRON_CANONICAL_ORIGIN } from "@/lib/site";
 import {
   buildDailyActivityDigestText,
   getDailyActivityDigestSummary,
@@ -61,7 +62,8 @@ describe("daily activity digest", () => {
     vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.ATPROTO_DID = "did:plc:optimitron";
     process.env.ATPROTO_PASSWORD = "app-password";
-    process.env.NEXTAUTH_URL = "https://optimitron.org";
+    process.env.NEXTAUTH_URL = OPTIMITRON_CANONICAL_ORIGIN;
+    process.env.NEXT_PUBLIC_BASE_URL = OPTIMITRON_CANONICAL_ORIGIN;
     process.env.TREASURY_CHAIN_ID = "84532";
     delete process.env.DAILY_DIGEST_TIME_ZONE;
     delete process.env.ATPROTO_PDS_URL;
@@ -157,7 +159,7 @@ describe("daily activity digest", () => {
         prizeDepositAmount: "1250000000",
         hasActivity: true,
       },
-      "https://optimitron.org",
+      OPTIMITRON_CANONICAL_ORIGIN,
     );
 
     expect(text).toBe(
@@ -167,7 +169,7 @@ describe("daily activity digest", () => {
         "5 verified with World ID",
         "3 referrals captured",
         "2 PRIZE deposits totaling $1,250",
-        "https://optimitron.org/scoreboard",
+        `${OPTIMITRON_CANONICAL_ORIGIN}/scoreboard`,
       ].join("\n"),
     );
   });
@@ -205,7 +207,7 @@ describe("daily activity digest", () => {
           "Optimitron daily digest for Mar 30, 2026",
           "4 votes cast",
           "1 verified with World ID",
-          "https://optimitron.org/scoreboard",
+          `${OPTIMITRON_CANONICAL_ORIGIN}/scoreboard`,
         ].join("\n"),
         langs: ["en"],
       }),
@@ -228,7 +230,7 @@ describe("daily activity digest", () => {
         "Optimitron daily digest for Mar 30, 2026",
         "4 votes cast",
         "1 verified with World ID",
-        "https://optimitron.org/scoreboard",
+        `${OPTIMITRON_CANONICAL_ORIGIN}/scoreboard`,
       ].join("\n"),
       ref: {
         uri: "at://did:plc:optimitron/app.bsky.feed.post/daily-digest-2026-03-30",
