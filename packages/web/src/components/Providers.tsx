@@ -9,6 +9,9 @@ import { Web3Provider } from "@/components/providers/Web3Provider";
 import { WishPointProvider } from "@/components/wishes/WishPointProvider";
 import { DeclarationSigningPopup } from "@/components/declaration/DeclarationSigningPopup";
 
+const ENABLE_DECLARATION_POPUP =
+  process.env.NEXT_PUBLIC_ENABLE_DECLARATION_POPUP === "true";
+
 export function Providers({
   children,
   initialState,
@@ -22,7 +25,7 @@ export function Providers({
         <Web3Provider initialState={initialState}>
           <WishPointProvider>
             <AuthPostSigninSync />
-            <DeclarationSigningPopup />
+            {ENABLE_DECLARATION_POPUP ? <DeclarationSigningPopup /> : null}
             {children}
           </WishPointProvider>
         </Web3Provider>

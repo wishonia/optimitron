@@ -31,7 +31,6 @@ const REDIRECTS = [
   { source: "/federal-reserve", destination: "/agencies/dtreasury/dfed", permanent: true },
   { source: "/department-of-war", destination: "/agencies/ddod", permanent: true },
   { source: "/treasury", destination: "/agencies/dtreasury", permanent: true },
-  { source: "/contribute", destination: "/prize", permanent: true },
   { source: "/politicians", destination: "/politicians/US", permanent: false },
 ];
 

@@ -656,6 +656,7 @@ model User {
   accounts                  Account[]
   personhoodVerifications   PersonhoodVerification[]
   referrals                 Referral[]                      @relation("UserReferrals")
+  referralClicks            ReferralClick[]                 @relation("UserReferralClicks")
   sessions                  Session[]
   referral                  Referral?                       @relation("UserReferral")
   wishocraticAllocations    WishocraticAllocation[]         @relation("UserWishocraticAllocations")
@@ -2171,6 +2172,42 @@ model Referral {
 
   @@index([userId])
   @@index([referredByUserId])
+  @@index([createdAt])
+  @@index([deletedAt])
+}
+
+/// Logs every hit on a /r/[code] referral link so we can trace
+/// where shares originated (HTTP referer) and detect viral spikes.
+model ReferralClick {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// The referral code from the URL (username or referralCode)
+  code String
+
+  /// The user who owns this referral code (resolved at click time, nullable if code is invalid)
+  referrerUserId String?
+
+  /// HTTP Referer header — e.g. "https://x.com/PMCanada/status/123..."
+  refererUrl String?
+
+  /// User-Agent header (helps distinguish bots from real clicks)
+  userAgent String?
+
+  /// IP-derived country code for geographic analysis (no full IP stored)
+  countryCode String?
+
+  /// When this click occurred
+  createdAt DateTime @default(now())
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  // -- Relations --
+  referrer User? @relation("UserReferralClicks", fields: [referrerUserId], references: [id])
+
+  @@index([code])
+  @@index([referrerUserId])
   @@index([createdAt])
   @@index([deletedAt])
 }

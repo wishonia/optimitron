@@ -196,13 +196,22 @@ export async function syncTreatySigners(options: SyncTreatySignerCliOptions) {
           });
 
           if (!existingUser) {
-            await prisma.user.create({
-              data: {
-                email: normalizedEmail,
-                name: slot.decisionMakerLabel,
-                personId: person.id,
-              },
-            });
+            try {
+              await prisma.user.create({
+                data: {
+                  email: normalizedEmail,
+                  name: slot.decisionMakerLabel,
+                  personId: person.id,
+                },
+              });
+            } catch (userCreateError) {
+              // Race condition or constraint violation — user may have been
+              // created between the findUnique and create calls. Safe to skip.
+              console.warn(
+                `[TREATY SYNC] Could not create user for ${slot.countryCode} (${normalizedEmail}):`,
+                userCreateError instanceof Error ? userCreateError.message : userCreateError,
+              );
+            }
           }
         }
 

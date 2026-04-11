@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { NavItemLink } from "@/components/navigation/NavItemLink";
 import {
   fmtParam,
@@ -324,9 +323,7 @@ export default async function PrizePage() {
 
       {/* CITIZEN DASHBOARD */}
       <section id="dashboard" className="mb-16">
-        <Suspense>
-          <CitizenDashboardWrapper />
-        </Suspense>
+        <CitizenDashboardWrapper />
       </section>
 
       {/* TECHNICAL DETAILS */}
