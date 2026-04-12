@@ -684,6 +684,9 @@ model User {
   verifiedTasks             Task[]                          @relation("TaskVerifiedByUser")
   verifiedTaskClaims        TaskClaim[]                     @relation("TaskClaimVerifiedByUser")
   verifiedTaskMilestones    TaskMilestone[]                 @relation("TaskMilestoneVerifiedByUser")
+  taskComments              TaskComment[]                   @relation("TaskCommentAuthor")
+  moderatedTaskComments     TaskComment[]                   @relation("TaskCommentModerator")
+  taskCommentVotes          TaskCommentVote[]               @relation("TaskCommentVoter")
   agentComputeDeposits      AgentComputeDeposit[]           @relation("UserAgentComputeDeposits")
   oauthAuthCodes            OAuthAuthCode[]                 @relation("UserOAuthAuthCodes")
   oauthGrants               OAuthGrant[]                    @relation("UserOAuthGrants")
@@ -3280,6 +3283,7 @@ model Task {
   impactEstimateSets       TaskImpactEstimateSet[] @relation("TaskImpactEstimateSets")
   claims                   TaskClaim[]             @relation("TaskClaims")
   milestones               TaskMilestone[]         @relation("TaskMilestones")
+  comments                 TaskComment[]           @relation("TaskComments")
   sourceArtifacts          TaskSourceArtifact[]    @relation("TaskSourceArtifacts")
   outgoingEdges            TaskEdge[]              @relation("TaskOutgoingEdges")
   incomingEdges            TaskEdge[]              @relation("TaskIncomingEdges")
@@ -3474,6 +3478,129 @@ model TaskMilestone {
   @@index([verifiedByUserId])
   @@index([status])
   @@index([deletedAt])
+}
+
+/// Public comment on a task — user posts, Wishonia auto-replies, third-party agent posts
+model TaskComment {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Task this comment belongs to
+  taskId String
+
+  /// Parent comment if this is a reply; null for top-level comments
+  parentCommentId String?
+
+  /// User who authored the comment (Wishonia is a regular User)
+  authorUserId String
+
+  /// Markdown body. Supports GFM plus: $math$, $$block math$$, ```mermaid, ```chart
+  message String
+
+  /// Optional extra image / video / evidence URL beyond what's inline in the markdown
+  mediaUrl String?
+
+  /// Parsed @username mentions for future notification hooks
+  mentionedUserIds String[] @default([])
+
+  /// Cached upvote count — always written in the same transaction as vote changes
+  upvoteCount Int @default(0)
+
+  /// Cached downvote count
+  downvoteCount Int @default(0)
+
+  /// Derived score (upvoteCount - downvoteCount), used for Top sort
+  voteScore Int @default(0)
+
+  /// Cached reply count — incremented when a child comment is inserted
+  replyCount Int @default(0)
+
+  /// Reserved for future Hot sort algorithm; populated when Hot sort UI is added
+  hotScore Float @default(0)
+
+  /// Materialized path for fast subtree queries, e.g. "/parent-id/this-id"
+  path String @default("")
+
+  /// Structured citations (RAG sources) when the author is Wishonia or another agent
+  citationsJson Json?
+
+  /// When the message was last edited (null = not edited)
+  editedAt DateTime?
+
+  /// Soft-delete timestamp
+  deletedAt DateTime?
+
+  /// Whether a curator hid this comment
+  hiddenByCurator Boolean @default(false)
+
+  /// Reason the comment was moderated (if hidden)
+  moderationReason String?
+
+  /// User who moderated this comment
+  moderatedByUserId String?
+
+  /// When the comment was moderated
+  moderatedAt DateTime?
+
+  /// Integrity version counter — incremented on every update for reconciliation
+  version Int @default(0)
+
+  /// When this comment was created
+  createdAt DateTime @default(now())
+
+  /// When this comment was last updated
+  updatedAt DateTime @updatedAt
+
+  // -- Relations --
+  task          Task              @relation("TaskComments", fields: [taskId], references: [id], onDelete: Cascade)
+  parentComment TaskComment?      @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: SetNull)
+  replies       TaskComment[]     @relation("CommentReplies")
+  authorUser    User              @relation("TaskCommentAuthor", fields: [authorUserId], references: [id], onDelete: Cascade)
+  moderatedBy   User?             @relation("TaskCommentModerator", fields: [moderatedByUserId], references: [id], onDelete: SetNull)
+  votes         TaskCommentVote[] @relation("TaskCommentVotes")
+
+  @@index([taskId, createdAt])
+  @@index([taskId, voteScore])
+  @@index([taskId, hotScore])
+  @@index([parentCommentId])
+  @@index([authorUserId, createdAt])
+  @@index([deletedAt])
+  @@index([path])
+}
+
+/// A user's vote on a task comment (+1 or -1)
+model TaskCommentVote {
+  /// Unique identifier
+  id String @id @default(cuid())
+
+  /// Comment being voted on
+  commentId String
+
+  /// User casting the vote
+  userId String
+
+  /// +1 for upvote, -1 for downvote
+  value Int
+
+  /// Hash of the voter's IP (for brigade detection, never displayed)
+  ipHash String?
+
+  /// Hash of the voter's user-agent (for sockpuppet detection)
+  userAgentHash String?
+
+  /// When the vote was cast
+  createdAt DateTime @default(now())
+
+  /// When the vote was last updated
+  updatedAt DateTime @updatedAt
+
+  // -- Relations --
+  comment TaskComment @relation("TaskCommentVotes", fields: [commentId], references: [id], onDelete: Cascade)
+  user    User        @relation("TaskCommentVoter", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+  @@index([userId])
+  @@index([commentId, createdAt])
 }
 
 /// Link table connecting a task to one or more upstream artifacts

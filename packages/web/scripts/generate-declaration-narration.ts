@@ -33,20 +33,27 @@ import { shareableSnippets } from "@optimitron/data/parameters";
 
 import { GoogleGenAI } from "@google/genai";
 
+// ---------- Voice config ----------
+// Currently: pro-kore-angry — more gravitas and controlled emotion
 let VOICE = "Kore";
-let INSTRUCTIONS =
-  "Speak in a patient, warm, slightly quick tone. You are an alien governance AI reading a declaration aloud.";
-let MODEL = "gemini-2.5-flash-preview-tts";
+let INSTRUCTIONS = "Controlled anger. Barely contained.";
+let MODEL = "gemini-2.5-pro-preview-tts";
 
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const w = require("@optimitron/wishonia-widget");
-  VOICE = w.WISHONIA_VOICE ?? VOICE;
-  INSTRUCTIONS = w.WISHONIA_SPEAKING_INSTRUCTIONS ?? INSTRUCTIONS;
-  MODEL = w.WISHONIA_TTS_MODEL ?? MODEL;
-} catch {
-  // defaults are fine
-}
+// Previous config (uncomment to switch back):
+// let VOICE = "Kore";
+// let INSTRUCTIONS =
+//   "Speak in a patient, warm, slightly quick tone. You are an alien governance AI reading a declaration aloud.";
+// let MODEL = "gemini-2.5-flash-preview-tts";
+//
+// try {
+//   // eslint-disable-next-line @typescript-eslint/no-require-imports
+//   const w = require("@optimitron/wishonia-widget");
+//   VOICE = w.WISHONIA_VOICE ?? VOICE;
+//   INSTRUCTIONS = w.WISHONIA_SPEAKING_INSTRUCTIONS ?? INSTRUCTIONS;
+//   MODEL = w.WISHONIA_TTS_MODEL ?? MODEL;
+// } catch {
+//   // defaults are fine
+// }
 
 // ---------------------------------------------------------------------------
 // Slide generation (mirrors DeclarationStepper.tsx logic exactly)
@@ -150,14 +157,17 @@ function convertToWav(audioData: Uint8Array, mimeType: string): Uint8Array {
   return result;
 }
 
+const FALLBACK_MODEL = "gemini-2.5-pro-preview-tts";
+
 async function generateSpeechOnce(
   text: string,
   apiKey: string,
+  modelId: string,
 ): Promise<Uint8Array> {
   const client = new GoogleGenAI({ apiKey });
   const plainText = softenForTts(stripMarkdown(text));
   const result = await client.models.generateContent({
-    model: MODEL,
+    model: modelId,
     contents: [
       { role: "user", parts: [{ text: `${INSTRUCTIONS}\n\n${plainText}` }] },
     ],
@@ -191,20 +201,38 @@ async function generateSpeech(
   text: string,
   apiKey: string,
 ): Promise<Uint8Array> {
-  const maxAttempts = 4;
+  const maxAttempts = 3;
   let lastError: Error | null = null;
+
+  // Try flash first
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      return await generateSpeechOnce(text, apiKey);
+      return await generateSpeechOnce(text, apiKey, MODEL);
     } catch (err) {
       lastError = err instanceof Error ? err : new Error(String(err));
       if (attempt < maxAttempts) {
         const backoff = 2000 * attempt;
-        console.log(`     ⟳ attempt ${attempt} failed (${lastError.message}), retrying in ${backoff}ms...`);
+        console.log(`     ⟳ flash attempt ${attempt} failed (${lastError.message}), retrying in ${backoff}ms...`);
         await new Promise((r) => setTimeout(r, backoff));
       }
     }
   }
+
+  // Fall back to pro
+  console.log(`     ⤵ flash exhausted, falling back to ${FALLBACK_MODEL}...`);
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await generateSpeechOnce(text, apiKey, FALLBACK_MODEL);
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+      if (attempt < maxAttempts) {
+        const backoff = 2000 * attempt;
+        console.log(`     ⟳ pro attempt ${attempt} failed (${lastError.message}), retrying in ${backoff}ms...`);
+        await new Promise((r) => setTimeout(r, backoff));
+      }
+    }
+  }
+
   throw lastError ?? new Error("Unknown TTS failure");
 }
 

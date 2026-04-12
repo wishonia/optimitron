@@ -69,6 +69,11 @@ const TOOL_SCOPES: Record<string, McpScope[]> = {
   // search
   searchManual: ["search"],
   askWishonia: ["search"],
+  // task comments
+  postTaskComment: ["tasks:personal"],
+  voteTaskComment: ["tasks:personal"],
+  deleteTaskComment: ["tasks:personal"],
+  getTaskComments: ["tasks:read"],
 };
 
 function hasScope(grantedScopes: McpScope[] | undefined, toolName: string): boolean {
@@ -857,6 +862,84 @@ const TASK_TOOL_DEFINITIONS = [
         question: { type: "string", description: "Your question for Wishonia" },
       },
       required: ["question"],
+    },
+  },
+  {
+    name: "postTaskComment",
+    description: `Post a comment on a task. Message is GitHub-flavored markdown with these extensions:
+- Math: $inline$ or $$block$$ (rendered via KaTeX)
+- Diagrams: \`\`\`mermaid ... \`\`\` fences (rendered via Mermaid)
+- Charts: \`\`\`chart { ...Chart.js config JSON... } \`\`\` fences
+- Images: ![alt](url) inline
+- Tables, lists, strikethrough, code blocks, blockquotes — all standard
+Max length: 20,000 characters. Rate limit: 5 comments per task per hour.
+Posting a comment automatically triggers a Wishonia auto-reply in the background.`,
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        taskId: { type: "string", description: "Task ID to comment on" },
+        parentCommentId: {
+          type: "string",
+          description: "Optional parent comment ID if this is a reply",
+        },
+        message: {
+          type: "string",
+          description: "Markdown body (1-20000 chars, supports math/mermaid/chart fences)",
+        },
+        mediaUrl: {
+          type: "string",
+          description: "Optional evidence URL (tweet, screenshot, article)",
+        },
+      },
+      required: ["taskId", "message"],
+    },
+  },
+  {
+    name: "voteTaskComment",
+    description: "Upvote (+1), downvote (-1), or remove vote (0) on a task comment.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        commentId: { type: "string", description: "Comment ID to vote on" },
+        value: {
+          type: "number",
+          description: "+1 upvote, -1 downvote, 0 remove vote",
+        },
+      },
+      required: ["commentId", "value"],
+    },
+  },
+  {
+    name: "deleteTaskComment",
+    description: "Soft-delete your own comment (or any comment if you are a curator).",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        commentId: { type: "string", description: "Comment ID to delete" },
+      },
+      required: ["commentId"],
+    },
+  },
+  {
+    name: "getTaskComments",
+    description:
+      "Fetch paginated comments for a task. Returns comments with vote scores, nested replies, and recent activity events.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        taskId: { type: "string", description: "Task ID to read comments for" },
+        sort: {
+          type: "string",
+          description: "'new' (default) or 'top'",
+          enum: ["new", "top"],
+        },
+        cursor: {
+          type: "string",
+          description: "ISO timestamp cursor from a previous response's nextCursor",
+        },
+        limit: { type: "number", description: "Default 50, max 100" },
+      },
+      required: ["taskId"],
     },
   },
 ];
@@ -1725,6 +1808,123 @@ export function createMcpServer(userId?: string, scopes?: McpScope[]): Server {
           const answer = response.text ?? "I seem to have lost my train of thought. Try again.";
 
           return ok({ answer, citations: ragResult.citations });
+        }
+
+        // ── postTaskComment ────────────────────────────────────
+        case "postTaskComment": {
+          if (!userId) return err("Authentication required");
+          const {
+            countUserCommentsInWindow,
+            postComment,
+          } = await import("./tasks/task-comments.server");
+          const { generateAndPostWishoniaReply } = await import(
+            "./tasks/wishonia-task-reply.server"
+          );
+
+          const taskId = a.taskId as string;
+          const message =
+            typeof a.message === "string" ? (a.message as string).trim() : "";
+          if (!taskId || message.length === 0) {
+            return err("taskId and message are required");
+          }
+          if (message.length > 20_000) {
+            return err("Message exceeds 20,000 character limit");
+          }
+          const parentCommentId =
+            typeof a.parentCommentId === "string" && a.parentCommentId.length > 0
+              ? (a.parentCommentId as string)
+              : null;
+          const mediaUrl =
+            typeof a.mediaUrl === "string" && a.mediaUrl.length > 0
+              ? (a.mediaUrl as string)
+              : null;
+
+          // Rate limit: 5 per user per task per hour
+          const recentCount = await countUserCommentsInWindow(
+            taskId,
+            userId,
+            60 * 60 * 1000,
+          );
+          if (recentCount >= 5) {
+            return err("Rate limit exceeded: max 5 comments per task per hour");
+          }
+
+          const comment = await postComment({
+            taskId,
+            authorUserId: userId,
+            parentCommentId,
+            message,
+            mediaUrl,
+          });
+
+          void generateAndPostWishoniaReply({
+            taskId,
+            parentCommentId: comment.id,
+            userComment: message,
+            userCommentAuthorId: userId,
+          });
+
+          return ok({ comment });
+        }
+
+        // ── voteTaskComment ────────────────────────────────────
+        case "voteTaskComment": {
+          if (!userId) return err("Authentication required");
+          const { voteComment } = await import("./tasks/task-comments.server");
+          const commentId = a.commentId as string;
+          const value = a.value as number;
+          if (!commentId || (value !== 1 && value !== -1 && value !== 0)) {
+            return err("commentId and value (1 | -1 | 0) are required");
+          }
+          const result = await voteComment({
+            commentId,
+            userId,
+            value: value as 1 | -1 | 0,
+          });
+          return ok(result);
+        }
+
+        // ── deleteTaskComment ──────────────────────────────────
+        case "deleteTaskComment": {
+          if (!userId) return err("Authentication required");
+          const { deleteComment } = await import("./tasks/task-comments.server");
+          const commentId = a.commentId as string;
+          if (!commentId) return err("commentId is required");
+          await deleteComment({ commentId, userId });
+          return ok({ success: true });
+        }
+
+        // ── getTaskComments ────────────────────────────────────
+        case "getTaskComments": {
+          const {
+            getTaskCommentFeed,
+            getTaskActivityTimeline,
+          } = await import("./tasks/task-comments.server");
+          const taskId = a.taskId as string;
+          if (!taskId) return err("taskId is required");
+          const sort = a.sort === "top" ? "top" : "new";
+          const cursorRaw = a.cursor as string | undefined;
+          const cursor = cursorRaw ? new Date(cursorRaw) : null;
+          const limit = typeof a.limit === "number" ? (a.limit as number) : 50;
+
+          const [feed, activities] = await Promise.all([
+            getTaskCommentFeed({
+              taskId,
+              sort,
+              cursor: cursor && !Number.isNaN(cursor.getTime()) ? cursor : null,
+              limit,
+              currentUserId: userId ?? null,
+            }),
+            cursor
+              ? Promise.resolve([])
+              : getTaskActivityTimeline(taskId, 50),
+          ]);
+
+          return ok({
+            comments: feed.comments,
+            nextCursor: feed.nextCursor?.toISOString() ?? null,
+            activityEvents: activities,
+          });
         }
 
         default:

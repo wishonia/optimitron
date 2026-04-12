@@ -49,7 +49,10 @@ const DEFAULT_TEXT =
   "104 every minute that passes, while possessing the means to accelerate solutions. " +
   "The annual toll: 2.88 billion years of healthy life lost to disease and disability, quietly deleted.";
 
-const MODEL = "gemini-2.5-flash-preview-tts";
+const MODELS: Record<string, string> = {
+  flash: "gemini-2.5-flash-preview-tts",
+  pro: "gemini-2.5-pro-preview-tts",
+};
 
 // ---------------------------------------------------------------------------
 // WAV conversion
@@ -105,12 +108,13 @@ async function generateSpeech(
   text: string,
   voice: string,
   instructions: string,
+  model: string,
   apiKey: string,
 ): Promise<Uint8Array> {
   const client = new GoogleGenAI({ apiKey });
   const prompt = instructions ? `${instructions}\n\n${text}` : text;
   const result = await client.models.generateContent({
-    model: MODEL,
+    model,
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     config: {
       responseModalities: ["AUDIO"],
@@ -170,40 +174,45 @@ async function main() {
   const CONCURRENCY = 4;
 
   const combos = VOICES.flatMap((voice) =>
-    Object.entries(STYLES).map(([style, instructions]) => ({
-      voice,
-      style,
-      instructions,
-    })),
+    Object.entries(STYLES).flatMap(([style, instructions]) =>
+      Object.entries(MODELS).map(([modelKey, model]) => ({
+        voice,
+        style,
+        instructions,
+        modelKey,
+        model,
+      })),
+    ),
   );
 
   // Filter to only what needs generating
-  const toGenerate = combos.filter(({ voice, style }) => {
-    const mp3Path = join(OUTPUT_DIR, `${voice.toLowerCase()}-${style}.mp3`);
+  const toGenerate = combos.filter(({ voice, style, modelKey }) => {
+    const filename = `${modelKey}-${voice.toLowerCase()}-${style}`;
+    const mp3Path = join(OUTPUT_DIR, `${filename}.mp3`);
     if (existsSync(mp3Path)) {
-      console.log(`  ✓  ${voice.toLowerCase()}-${style} — exists, skipping`);
+      console.log(`  ✓  ${filename} — exists, skipping`);
       return false;
     }
     return true;
   });
 
   const total = combos.length;
-  console.log(`\n🎙️  TTS Voice Tester — ${VOICES.length} voices × ${Object.keys(STYLES).length} styles = ${total} samples`);
+  console.log(`\n🎙️  TTS Voice Tester — ${VOICES.length} voices × ${Object.keys(STYLES).length} styles × ${Object.keys(MODELS).length} models = ${total} samples`);
   console.log(`📝 Text: "${text.slice(0, 80)}${text.length > 80 ? "..." : ""}"`);
   console.log(`🔄 ${toGenerate.length} to generate (${total - toGenerate.length} cached), ${CONCURRENCY} parallel\n`);
 
   let done = 0;
   let errors = 0;
 
-  async function processOne({ voice, style, instructions }: typeof combos[number]) {
-    const filename = `${voice.toLowerCase()}-${style}`;
+  async function processOne({ voice, style, instructions, modelKey, model }: typeof combos[number]) {
+    const filename = `${modelKey}-${voice.toLowerCase()}-${style}`;
     const mp3Path = join(OUTPUT_DIR, `${filename}.mp3`);
     const tempWav = join(OUTPUT_DIR, `_temp_${filename}.wav`);
 
     console.log(`  🔄 ${filename} — generating...`);
 
     try {
-      const wavBytes = await generateSpeech(text, voice, instructions, apiKey);
+      const wavBytes = await generateSpeech(text, voice, instructions, model, apiKey);
       writeFileSync(tempWav, wavBytes);
       wavToMp3(tempWav, mp3Path);
       if (existsSync(tempWav)) unlinkSync(tempWav);

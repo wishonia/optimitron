@@ -1,65 +1,14 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { RichMarkdown } from "@/components/markdown/rich-markdown";
 
 /**
  * Render a task description as markdown with the neobrutalist typography system.
- * Task descriptions should always be markdown and should always contain
- * completion instructions.
+ *
+ * Backwards-compat shim — delegates to the unified `RichMarkdown` renderer that
+ * also handles inline math, mermaid diagrams, chart fences, and everything else
+ * across the app. This keeps existing call sites working without changes.
  */
 export function TaskDescription({ markdown }: { markdown: string }) {
-  return (
-    <div className="task-description space-y-4">
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          h1: ({ children }) => (
-            <h1 className="text-2xl font-black uppercase tracking-tight">{children}</h1>
-          ),
-          h2: ({ children }) => (
-            <h2 className="mt-6 text-xl font-black uppercase tracking-tight">{children}</h2>
-          ),
-          h3: ({ children }) => (
-            <h3 className="mt-4 text-base font-black uppercase tracking-tight">{children}</h3>
-          ),
-          p: ({ children }) => (
-            <p className="text-base font-bold leading-7 text-muted-foreground">{children}</p>
-          ),
-          strong: ({ children }) => <strong className="font-black text-foreground">{children}</strong>,
-          ul: ({ children }) => (
-            <ul className="list-disc space-y-2 pl-6 text-base font-bold text-muted-foreground">
-              {children}
-            </ul>
-          ),
-          ol: ({ children }) => (
-            <ol className="list-decimal space-y-2 pl-6 text-base font-bold text-muted-foreground">
-              {children}
-            </ol>
-          ),
-          li: ({ children }) => <li className="leading-7">{children}</li>,
-          a: ({ href, children }) => (
-            <a
-              href={href}
-              className="font-black text-brutal-pink underline underline-offset-4 hover:text-foreground"
-              target={href?.startsWith("http") ? "_blank" : undefined}
-              rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
-            >
-              {children}
-            </a>
-          ),
-          blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-brutal-pink bg-muted px-4 py-3 text-base font-bold text-foreground">
-              {children}
-            </blockquote>
-          ),
-          code: ({ children }) => (
-            <code className="border-2 border-primary bg-muted px-1.5 py-0.5 text-sm">{children}</code>
-          ),
-        }}
-      >
-        {markdown}
-      </ReactMarkdown>
-    </div>
-  );
+  return <RichMarkdown markdown={markdown} className="task-description" />;
 }
 
 /**
@@ -68,11 +17,11 @@ export function TaskDescription({ markdown }: { markdown: string }) {
  * paragraph, truncated to maxLength chars.
  */
 export function getTaskDescriptionSummary(markdown: string, maxLength = 220): string {
-  // Strip markdown headings, links, bold, italic, code
-  const firstParagraph = markdown
-    .split(/\n\s*\n/)
-    .map((block) => block.trim())
-    .find((block) => block.length > 0 && !block.startsWith("#")) ?? markdown;
+  const firstParagraph =
+    markdown
+      .split(/\n\s*\n/)
+      .map((block) => block.trim())
+      .find((block) => block.length > 0 && !block.startsWith("#")) ?? markdown;
 
   const plain = firstParagraph
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // [text](url) → text

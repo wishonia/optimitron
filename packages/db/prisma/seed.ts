@@ -772,6 +772,10 @@ async function seedTreatyTasks() {
     },
   });
 
+  // Seed Wishonia as a regular User + Person so she can author task comments,
+  // claim tasks, show up on /people/wishonia, etc. No special system-user flag.
+  await seedWishoniaUser();
+
   // Lifetime impact from parameters (total civilizational acceleration, not annual)
   const totalDalys = DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_DALYS.value; // 565B DALYs
   const totalEconValue = DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_ECONOMIC_VALUE.value; // $84.8Q
@@ -1055,6 +1059,63 @@ async function seedTreatyTasks() {
   }
 
   console.log(`  ✓ ${created} signer tasks with leader photos`);
+}
+
+const WISHONIA_EMAIL = "wishonia@gmail.com";
+const WISHONIA_USERNAME = "wishonia";
+const WISHONIA_DISPLAY_NAME = "Wishonia";
+const WISHONIA_AFFILIATION =
+  "World Integrated System for High-Efficiency Optimization Networked Intelligence for Allocation";
+const WISHONIA_IMAGE = "https://optimitron.com/wishonia-avatar.png";
+
+/**
+ * Seed Wishonia as a regular user with a linked Person record. This lets her:
+ * - Author task comments under her own user ID (no fake system-user hack)
+ * - Be assigned tasks via `assigneePersonId`
+ * - Own tasks via `ownerUserId`
+ * - Show up on /people/wishonia exactly like any public figure
+ *
+ * Idempotent. Safe to re-run.
+ */
+async function seedWishoniaUser() {
+  console.log("🛸 Seeding Wishonia user...");
+
+  // Upsert the user by stable email
+  const user = await prisma.user.upsert({
+    where: { email: WISHONIA_EMAIL },
+    update: {
+      name: WISHONIA_DISPLAY_NAME,
+      image: WISHONIA_IMAGE,
+    },
+    create: {
+      email: WISHONIA_EMAIL,
+      name: WISHONIA_DISPLAY_NAME,
+      image: WISHONIA_IMAGE,
+      username: WISHONIA_USERNAME,
+      emailVerified: new Date(),
+    },
+  });
+
+  // Link a Person record
+  const sourceRef = "wishonia:system";
+  await prisma.person.upsert({
+    where: { sourceRef },
+    update: {
+      displayName: WISHONIA_DISPLAY_NAME,
+      image: WISHONIA_IMAGE,
+      currentAffiliation: WISHONIA_AFFILIATION,
+      isPublicFigure: true,
+    },
+    create: {
+      sourceRef,
+      displayName: WISHONIA_DISPLAY_NAME,
+      image: WISHONIA_IMAGE,
+      currentAffiliation: WISHONIA_AFFILIATION,
+      isPublicFigure: true,
+    },
+  });
+
+  console.log(`  ✓ Wishonia user (${user.id}) + person record`);
 }
 
 /**

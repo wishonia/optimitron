@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { TaskAssignee } from "@/components/tasks/task-assignee";
 import { TaskCard, type TaskCardTask } from "@/components/tasks/task-card";
+import { TaskCommentFeed } from "@/components/tasks/task-comment-feed";
 import { TaskDescription } from "@/components/tasks/task-description";
 import { TaskImpactHighlights } from "@/components/tasks/task-impact-highlights";
 import { TaskImpactStats } from "@/components/tasks/task-impact-stats";
@@ -37,6 +38,11 @@ import { getSignInPath, tasksLink, ROUTES } from "@/lib/routes";
 import { canTaskAcceptMoreClaims } from "@/lib/tasks/rank-tasks";
 import { readLeaderActivityContext, readTaskContextSections } from "@/lib/tasks/task-context";
 import { getTaskDetailData } from "@/lib/tasks.server";
+import {
+  getTaskActivityTimeline,
+  getTaskCommentFeed,
+} from "@/lib/tasks/task-comments.server";
+import { getWishoniaUserId } from "@/lib/wishonia.server";
 
 function getClaimPolicyLabel(policy: TaskClaimPolicy) {
   switch (policy) {
@@ -120,7 +126,12 @@ export default async function TaskDetailPage({
   const { id } = await params;
   const session = await getServerSession(authOptions);
   const userId = session?.user.id ?? null;
-  const data = await getTaskDetailData(id, userId);
+  const [data, commentFeed, activityTimeline, wishoniaUserId] = await Promise.all([
+    getTaskDetailData(id, userId),
+    getTaskCommentFeed({ taskId: id, sort: "new", limit: 100, currentUserId: userId }),
+    getTaskActivityTimeline(id, 50),
+    getWishoniaUserId().catch(() => null),
+  ]);
 
   if (!data) {
     notFound();
@@ -682,6 +693,23 @@ export default async function TaskDetailPage({
             />
           </section>
         ) : null}
+
+        <TaskCommentFeed
+          taskId={task.id}
+          initialComments={commentFeed.comments.map((c) => ({
+            ...c,
+            createdAt: c.createdAt instanceof Date ? c.createdAt.toISOString() : c.createdAt,
+            editedAt: c.editedAt instanceof Date ? c.editedAt.toISOString() : c.editedAt,
+            deletedAt: c.deletedAt instanceof Date ? c.deletedAt.toISOString() : c.deletedAt,
+          }))}
+          initialActivities={activityTimeline.map((a) => ({
+            ...a,
+            createdAt: a.createdAt instanceof Date ? a.createdAt.toISOString() : a.createdAt,
+          }))}
+          currentUserId={userId}
+          wishoniaUserId={wishoniaUserId}
+          signInHref={signInHref}
+        />
       </div>
     </div>
   );
