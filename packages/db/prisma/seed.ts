@@ -796,7 +796,7 @@ async function seedTreatyTasks() {
       description: [
         `Redirect 1% of global military spending (${p(TREATY_ANNUAL_FUNDING, `**$${(annualFunding / 1e9).toFixed(1)}B/year**`)}) into pragmatic clinical trials. This accelerates the cure for the average disease by ${p(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_YEARS, `**${Math.round(accelerationYears)} years**`)}, saves ${p(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_DALYS, `**${(totalDalys / 1e9).toFixed(0)}B healthy life-years**`)}, and generates ${p(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_ECONOMIC_VALUE, `**$${(totalEconValue / 1e15).toFixed(1)} quadrillion**`)} in economic value over its benefit horizon.`,
         "",
-        `Every day of delay costs ${p(GLOBAL_ANNUAL_DALY_BURDEN, `**${(delayDalysPerDay / 1e6).toFixed(1)}M DALYs**`)} and ${p(GLOBAL_ANNUAL_DALY_BURDEN, `**$${(delayEconPerDay / 1e12).toFixed(1)}T**`)}.`,
+        `Every year of delay costs ${p(GLOBAL_ANNUAL_DALY_BURDEN, `**${(annualAvoidableDalys / 1e9).toFixed(2)}B healthy years**`)} of human life and ${p(GLOBAL_ANNUAL_DALY_BURDEN, `**$${((annualAvoidableDalys * 150_000) / 1e12).toFixed(0)}T**`)} in economic value.`,
         "",
         "## How to Complete",
         "",
@@ -886,6 +886,85 @@ async function seedTreatyTasks() {
     calculationsUrl: "https://manual.WarOnDisease.org/knowledge/appendix/dfda-impact-paper.html",
   });
   console.log(`  ✓ Task: "${dfdaTask.title}" (${dfdaTask.id})`);
+
+  // --- Task 3: Fund the bed nets funding gap (benchmark/competing task) ---
+  // Numbers from GiveWell's published analysis of Against Malaria Foundation:
+  // - ~$5,500 per death averted (2024 marginal cost)
+  // - ~$1B annual funding gap to reach universal coverage in sub-Saharan Africa
+  // - ~200K preventable malaria deaths/year at full coverage
+  // - Children under 5 are ~80% of deaths; avg ~40 healthy life-years per death averted
+  // Source: https://www.givewell.org/charities/amf
+  const AMF_ANNUAL_FUNDING_GAP = 1_000_000_000; // $1B/yr
+  const AMF_ANNUAL_LIVES_SAVED = 182_000; // at full funding
+  const AMF_QALY_PER_LIFE = 40; // avg remaining life for a child under 5
+  const AMF_ANNUAL_HEALTHY_YEARS_SAVED = AMF_ANNUAL_LIVES_SAVED * AMF_QALY_PER_LIFE; // ~7.28M/yr
+  const AMF_ECON_VALUE_PER_QALY = 150_000;
+  const AMF_ANNUAL_ECON_VALUE = AMF_ANNUAL_HEALTHY_YEARS_SAVED * AMF_ECON_VALUE_PER_QALY;
+  const AMF_BENEFIT_DURATION_YEARS = 20; // assume 20yr of continued funding
+  const AMF_TOTAL_HEALTHY_YEARS = AMF_ANNUAL_HEALTHY_YEARS_SAVED * AMF_BENEFIT_DURATION_YEARS;
+  const AMF_TOTAL_ECON_VALUE = AMF_ANNUAL_ECON_VALUE * AMF_BENEFIT_DURATION_YEARS;
+  const AMF_TOTAL_COST = AMF_ANNUAL_FUNDING_GAP * AMF_BENEFIT_DURATION_YEARS;
+
+  const amfOrg = await prisma.organization.upsert({
+    where: { slug: "against-malaria-foundation" },
+    update: {},
+    create: {
+      name: "Against Malaria Foundation",
+      slug: "against-malaria-foundation",
+      type: "NONPROFIT",
+      status: "APPROVED",
+      description: "Distributes long-lasting insecticide-treated bed nets in sub-Saharan Africa. GiveWell's top-rated charity for cost-effective disease prevention.",
+      website: "https://www.againstmalaria.com",
+    },
+  });
+
+  const bedNetsTask = await createTaskWithImpact({
+    task: {
+      id: "bed-nets-funding-gap",
+      taskKey: "program:amf:bed-nets-funding-gap",
+      assigneeOrganizationId: amfOrg.id,
+      title: "Fund the Bed Nets Funding Gap",
+      description: [
+        `Close the **~$1B/year funding gap** for bed net distribution in sub-Saharan Africa. Full funding would save approximately **182,000 lives per year** — overwhelmingly children under 5 — at a marginal cost of roughly **$5,500 per life saved**.`,
+        "",
+        `Bed nets remain the most thoroughly studied, most-trusted cost-effective health intervention in the world. This task exists on the list so you can see exactly how it ranks against everything else. Sort by **Cost per Healthy Year** and see where it falls.`,
+        "",
+        "## How to Complete",
+        "",
+        "**1. Donate directly** at [Against Malaria Foundation](https://www.againstmalaria.com/Donation.aspx).",
+        "",
+        "**2. Verify via GiveWell** — they publish independent cost-effectiveness analysis and track every funding gap: [GiveWell AMF page](https://www.givewell.org/charities/amf).",
+        "",
+        "**3. Mark this task complete** with evidence of your contribution.",
+        "",
+        "## Context",
+        "",
+        "Approximately 600,000 people die of malaria each year, roughly 80% of them children under 5 in sub-Saharan Africa. Bed nets at current coverage prevent millions of cases annually, but coverage has plateaued around 60-70% because the marginal net requires reaching harder-to-serve populations. The remaining gap is real, absorbable, and well-studied.",
+      ].join("\n"),
+      category: "GOVERNANCE",
+      difficulty: "BEGINNER",
+      status: "ACTIVE",
+      isPublic: true,
+      sortOrder: -80,
+      skillTags: ["fundraising", "global-health"],
+      interestTags: ["malaria", "bed-nets", "global-health", "givewell"],
+      claimPolicy: "OPEN_MANY",
+      contactLabel: "Donate to AMF",
+      contactUrl: "https://www.againstmalaria.com/Donation.aspx",
+    },
+    impact: {
+      estimatedCashCostUsdBase: AMF_TOTAL_COST,
+      expectedEconomicValueUsdBase: AMF_TOTAL_ECON_VALUE,
+      expectedDalysAvertedBase: AMF_TOTAL_HEALTHY_YEARS,
+      delayEconomicValueUsdLostPerDayBase: AMF_ANNUAL_ECON_VALUE / 365,
+      delayDalysLostPerDayBase: AMF_ANNUAL_HEALTHY_YEARS_SAVED / 365,
+      successProbabilityBase: 0.95, // very high — well-studied intervention
+      benefitDurationYears: AMF_BENEFIT_DURATION_YEARS,
+    },
+    methodologyKey: "amf-givewell-marginal-analysis",
+    calculationsUrl: "https://www.givewell.org/charities/amf/supplementary-information",
+  });
+  console.log(`  ✓ Task: "${bedNetsTask.title}" (${bedNetsTask.id})`);
 
   // --- Signer child tasks for the treaty ---
   const leaderCount = WORLD_LEADERS.length;
@@ -1001,11 +1080,43 @@ async function createTaskWithImpact(input: {
 }) {
   const { id: taskId, ...taskData } = input.task;
 
+  // Prisma 7 requires relation syntax (not scalar FK fields) in both create and update.
+  const {
+    assigneeOrganizationId,
+    assigneePersonId,
+    parentTaskId,
+    ...taskScalars
+  } = taskData as typeof taskData & {
+    assigneeOrganizationId?: string | null;
+    assigneePersonId?: string | null;
+    parentTaskId?: string | null;
+  };
+  const createRelations: Record<string, unknown> = {};
+  const updateRelations: Record<string, unknown> = {};
+  if (assigneeOrganizationId) {
+    createRelations.assigneeOrganization = { connect: { id: assigneeOrganizationId } };
+    updateRelations.assigneeOrganization = { connect: { id: assigneeOrganizationId } };
+  } else if (assigneeOrganizationId === null) {
+    updateRelations.assigneeOrganization = { disconnect: true };
+  }
+  if (assigneePersonId) {
+    createRelations.assigneePerson = { connect: { id: assigneePersonId } };
+    updateRelations.assigneePerson = { connect: { id: assigneePersonId } };
+  } else if (assigneePersonId === null) {
+    updateRelations.assigneePerson = { disconnect: true };
+  }
+  if (parentTaskId) {
+    createRelations.parentTask = { connect: { id: parentTaskId } };
+    updateRelations.parentTask = { connect: { id: parentTaskId } };
+  } else if (parentTaskId === null) {
+    updateRelations.parentTask = { disconnect: true };
+  }
+
   // Upsert the task itself
   const task = await prisma.task.upsert({
     where: { id: taskId },
-    create: { id: taskId, ...taskData },
-    update: taskData,
+    create: { id: taskId, ...taskScalars, ...createRelations },
+    update: { ...taskScalars, ...updateRelations },
   });
 
   // Delete old impact estimate sets for this task (cascade deletes frames/metrics)

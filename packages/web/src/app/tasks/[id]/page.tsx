@@ -13,7 +13,7 @@ import { TaskDescription } from "@/components/tasks/task-description";
 import { TaskImpactHighlights } from "@/components/tasks/task-impact-highlights";
 import { TaskImpactStats } from "@/components/tasks/task-impact-stats";
 import { TaskMetadataTags } from "@/components/tasks/task-metadata-tags";
-import { TaskRow, TaskTableHeader } from "@/components/tasks/task-row";
+import { SortableTaskList } from "@/components/tasks/task-list-controls";
 import { TaskClaimButton } from "@/components/tasks/TaskClaimButton";
 import { TaskCompleteForm } from "@/components/tasks/TaskCompleteForm";
 import { TaskContactActions } from "@/components/tasks/TaskContactActions";
@@ -384,10 +384,12 @@ export default async function TaskDetailPage({
                 <>
                   <TaskImpactStats
                     delayStats={delayStats}
-                    variant="full"
                     calculationsUrl={
                       (task.currentImpactEstimateSet?.assumptionsJson as { calculationsUrl?: string } | null)?.calculationsUrl
                     }
+                    totalHealthyYears={task.impact?.selectedFrame?.expectedDalysAvertedBase}
+                    totalEconomicValue={task.impact?.selectedFrame?.expectedEconomicValueUsdBase}
+                    benefitDurationYears={task.impact?.selectedFrame?.benefitDurationYears}
                   />
                   <TaskImpactHighlights taskKey={task.taskKey} />
                 </>
@@ -673,19 +675,11 @@ export default async function TaskDetailPage({
         ) : null}
 
         {task.childTasks.length > 0 ? (
-          <section className="space-y-4">
-            <h2 className="text-3xl font-black uppercase">Subtasks</h2>
-            <div className="overflow-hidden border-4 border-primary bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-              <TaskTableHeader />
-              <div className="divide-y-2 divide-foreground/10">
-                {task.childTasks.map((childTask: (typeof task.childTasks)[number]) => (
-                  <TaskRow
-                    key={childTask.id}
-                    task={childTask as unknown as TaskCardTask}
-                  />
-                ))}
-              </div>
-            </div>
+          <section className="space-y-3">
+            <h2 className="text-lg font-bold uppercase tracking-wide">Subtasks</h2>
+            <SortableTaskList
+              tasks={task.childTasks as unknown as TaskCardTask[]}
+            />
           </section>
         ) : null}
       </div>

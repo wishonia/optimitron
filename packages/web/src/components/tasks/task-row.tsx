@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Avatar } from "@/components/retroui/Avatar";
 import {
   buildTaskShareText,
+  formatCompactCount,
   formatCompactCurrency,
   formatDelayDuration,
   getTaskDelayStats,
@@ -9,10 +10,16 @@ import {
 import type { TaskCardTask } from "./task-card";
 import { TaskRowShare } from "./task-row-share";
 
-export type TaskSortKey = "title" | "assignee" | "status" | "expectedValue" | "delayCost" | "costPerDaly";
+export type TaskSortKey =
+  | "title"
+  | "assignee"
+  | "status"
+  | "annualHealthyYears"
+  | "annualEconLoss"
+  | "costPerHealthyYear";
 
-/** Format cost/DALY with enough precision for sub-penny values (e.g. $0.00177). */
-function formatCostPerDaly(value: number): string {
+/** Format cost per healthy year with enough precision for sub-penny values (e.g. $0.00177). */
+function formatCostPerHealthyYear(value: number): string {
   if (value >= 1) {
     return formatCompactCurrency(value);
   }
@@ -83,9 +90,9 @@ const SORT_LABELS: Record<TaskSortKey, string> = {
   title: "Task",
   assignee: "Assignee",
   status: "Status",
-  expectedValue: "Economic Value",
-  delayCost: "Delay Cost/Day",
-  costPerDaly: "Cost/DALY",
+  annualHealthyYears: "Healthy Years / Year",
+  annualEconLoss: "Economic Loss / Year",
+  costPerHealthyYear: "Cost / Healthy Year",
 };
 
 export function TaskTableHeader({
@@ -118,9 +125,9 @@ export function TaskTableHeader({
       {headerCell("assignee", `hidden w-36 shrink-0 sm:block ${hdr}`)}
       {headerCell("title", `min-w-0 flex-1 ${hdr}`)}
       {headerCell("status", `hidden shrink-0 sm:block ${hdr}`)}
-      {headerCell("expectedValue", `hidden w-28 shrink-0 text-right lg:block ${hdr}`)}
-      {headerCell("delayCost", `hidden w-28 shrink-0 text-right lg:block ${hdr}`)}
-      {headerCell("costPerDaly", `hidden w-24 shrink-0 text-right xl:block ${hdr}`)}
+      {headerCell("annualHealthyYears", `hidden w-32 shrink-0 text-right lg:block ${hdr}`)}
+      {headerCell("annualEconLoss", `hidden w-32 shrink-0 text-right lg:block ${hdr}`)}
+      {headerCell("costPerHealthyYear", `hidden w-28 shrink-0 text-right xl:block ${hdr}`)}
       <span className="hidden shrink-0 md:block text-xs font-bold uppercase tracking-wide text-muted-foreground">
         Share
       </span>
@@ -153,9 +160,14 @@ export function TaskRow({
   });
 
   const isOverdue = task.dueAt != null && task.dueAt.getTime() < Date.now();
-  const econValue = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
-  const delayCost = task.impact?.selectedFrame?.delayEconomicValueUsdLostPerDayBase;
-  const costPerDaly = task.impact?.costPerDalyUsd;
+
+  // Annualized rates: per-day × 365 = per-year delay cost
+  const perDayDalys = task.impact?.selectedFrame?.delayDalysLostPerDayBase;
+  const perDayEcon = task.impact?.selectedFrame?.delayEconomicValueUsdLostPerDayBase;
+  const annualHealthyYears = perDayDalys != null && perDayDalys > 0 ? perDayDalys * 365 : null;
+  const annualEconLoss = perDayEcon != null && perDayEcon > 0 ? perDayEcon * 365 : null;
+  const costPerHealthyYear = task.impact?.costPerDalyUsd;
+
   const calculationsUrl =
     (task.currentImpactEstimateSet?.assumptionsJson as { calculationsUrl?: string } | null)
       ?.calculationsUrl ?? null;
@@ -220,14 +232,14 @@ export function TaskRow({
           ) : task.status === "VERIFIED" ? (
             <StatusBadge variant="done">verified</StatusBadge>
           ) : null}
-          {econValue != null ? (
-            <StatusBadge>{formatCompactCurrency(econValue)} value</StatusBadge>
+          {annualHealthyYears != null ? (
+            <StatusBadge>{formatCompactCount(annualHealthyYears)} healthy years/yr lost</StatusBadge>
           ) : null}
-          {delayCost != null && delayCost > 0 ? (
-            <StatusBadge>{formatCompactCurrency(delayCost)}/day</StatusBadge>
+          {annualEconLoss != null ? (
+            <StatusBadge>{formatCompactCurrency(annualEconLoss)}/yr lost</StatusBadge>
           ) : null}
-          {costPerDaly != null ? (
-            <StatusBadge>{formatCostPerDaly(costPerDaly)}/DALY</StatusBadge>
+          {costPerHealthyYear != null ? (
+            <StatusBadge>{formatCostPerHealthyYear(costPerHealthyYear)}/healthy year</StatusBadge>
           ) : null}
         </div>
       </div>
@@ -247,14 +259,26 @@ export function TaskRow({
         ) : null}
       </div>
 
-      {/* Expected Value — desktop only */}
-      <ImpactCell value={econValue != null ? formatCompactCurrency(econValue) : "—"} href={calculationsUrl} className="hidden w-28 lg:block" />
+      {/* Healthy Years Lost Per Year — desktop */}
+      <ImpactCell
+        value={annualHealthyYears != null ? formatCompactCount(annualHealthyYears) : "—"}
+        href={calculationsUrl}
+        className="hidden w-32 lg:block"
+      />
 
-      {/* Delay Cost/Day — desktop only */}
-      <ImpactCell value={delayCost != null && delayCost > 0 ? `${formatCompactCurrency(delayCost)}/day` : "—"} href={calculationsUrl} className="hidden w-28 lg:block" />
+      {/* Economic Loss Per Year — desktop */}
+      <ImpactCell
+        value={annualEconLoss != null ? formatCompactCurrency(annualEconLoss) : "—"}
+        href={calculationsUrl}
+        className="hidden w-32 lg:block"
+      />
 
-      {/* Cost/DALY — xl desktop only */}
-      <ImpactCell value={costPerDaly != null ? formatCostPerDaly(costPerDaly) : "—"} href={calculationsUrl} className="hidden w-24 xl:block" />
+      {/* Cost per Healthy Year — xl desktop */}
+      <ImpactCell
+        value={costPerHealthyYear != null ? formatCostPerHealthyYear(costPerHealthyYear) : "—"}
+        href={calculationsUrl}
+        className="hidden w-28 xl:block"
+      />
 
       <div className="hidden shrink-0 md:block">
         {task.isPublic ? (
@@ -274,12 +298,16 @@ export function TaskRow({
 
 export function getTaskSortValue(task: TaskCardTask, key: TaskSortKey): string | number {
   switch (key) {
-    case "expectedValue":
-      return task.impact?.selectedFrame?.expectedEconomicValueUsdBase ?? 0;
-    case "delayCost":
-      return task.impact?.selectedFrame?.delayEconomicValueUsdLostPerDayBase ?? 0;
-    case "costPerDaly":
-      // Lower cost/DALY = more cost-effective, so invert for "best first" sorting
+    case "annualHealthyYears": {
+      const perDay = task.impact?.selectedFrame?.delayDalysLostPerDayBase;
+      return perDay != null ? perDay * 365 : 0;
+    }
+    case "annualEconLoss": {
+      const perDay = task.impact?.selectedFrame?.delayEconomicValueUsdLostPerDayBase;
+      return perDay != null ? perDay * 365 : 0;
+    }
+    case "costPerHealthyYear":
+      // Lower cost/DALY = more cost-effective, so put best-first via ascending sort
       return task.impact?.costPerDalyUsd ?? Infinity;
     case "assignee":
       return task.assigneePerson?.displayName ?? task.assigneeOrganization?.name ?? "";
