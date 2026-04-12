@@ -4,6 +4,7 @@ import { ArcadeTag } from "@/components/ui/arcade-tag";
 import { BrutalCard } from "@/components/ui/brutal-card";
 import { GameCTA } from "@/components/ui/game-cta";
 import { Progress } from "@/components/retroui/Progress";
+import { getTaskDescriptionSummary } from "@/components/tasks/task-description";
 import {
   aggregateTaskDelayStats,
   formatCompactCount,
@@ -45,9 +46,7 @@ export function TopTaskCard({ task }: TopTaskCardProps) {
         </Link>
 
         <p className="max-w-3xl text-sm font-bold leading-7 text-muted-foreground">
-          {task.description.length > 300
-            ? `${task.description.slice(0, 300).trimEnd()}...`
-            : task.description}
+          {getTaskDescriptionSummary(task.description, 300)}
         </p>
 
         {total > 0 ? (

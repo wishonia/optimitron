@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { TaskAssignee } from "@/components/tasks/task-assignee";
 import { TaskCard, type TaskCardTask } from "@/components/tasks/task-card";
+import { TaskDescription } from "@/components/tasks/task-description";
 import { TaskImpactHighlights } from "@/components/tasks/task-impact-highlights";
 import { TaskImpactStats } from "@/components/tasks/task-impact-stats";
 import { TaskMetadataTags } from "@/components/tasks/task-metadata-tags";
@@ -126,6 +127,9 @@ export default async function TaskDetailPage({
   }
 
   const { contactActionCount, task, viewer, viewerClaim } = data;
+  const hasOtherPersonAssignee =
+    task.assigneePerson != null && task.assigneePerson.id !== viewer?.personId;
+  const canShowClaimButton = !hasOtherPersonAssignee;
   const canClaim = canTaskAcceptMoreClaims({
     activeClaimCount: task.activeClaimCount,
     claimPolicy: task.claimPolicy,
@@ -200,9 +204,33 @@ export default async function TaskDetailPage({
           <h1 className="text-4xl font-black uppercase leading-tight sm:text-5xl">
             {task.title}
           </h1>
-          <p className="max-w-5xl text-lg font-bold leading-8 text-muted-foreground">
-            {task.description}
-          </p>
+          <div className="max-w-5xl">
+            <TaskDescription markdown={task.description} />
+          </div>
+          {task.isPublic ? (
+            <div className="space-y-2">
+              {task.assigneePerson && delayStats.isOverdue ? (
+                <p className="text-sm font-bold text-foreground">
+                  Please inform {task.assigneePerson.displayName} that their task is{" "}
+                  {formatDelayDuration(delayStats.currentDelayDays)} overdue
+                  {delayStats.delayDalysLostPerDay != null
+                    ? ` and this is resulting in ${formatCompactCount(delayStats.delayDalysLostPerDay)} DALYs lost per day.`
+                    : "."}
+                </p>
+              ) : null}
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-xs font-bold uppercase text-muted-foreground">
+                  Share:
+                </span>
+                <TaskShareButtons
+                  taskId={task.id}
+                  shareText={shareText}
+                  taskTitle={task.title}
+                  variant="icon"
+                />
+              </div>
+            </div>
+          ) : null}
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(340px,1fr)]">
@@ -365,36 +393,6 @@ export default async function TaskDetailPage({
                 </>
               )}
 
-              {task.dueAt ? (
-                <div className="space-y-1">
-                  <p className="text-sm font-black uppercase text-brutal-pink">Due</p>
-                  <p className="text-sm font-bold text-muted-foreground">
-                    {formatDueDate(task.dueAt)}
-                  </p>
-                </div>
-              ) : null}
-
-              {task.skillTags.length > 0 ? (
-                <div className="space-y-1">
-                  <p className="text-sm font-black uppercase text-brutal-pink">Skills</p>
-                  <p className="text-sm font-bold">{task.skillTags.join(", ")}</p>
-                </div>
-              ) : null}
-
-              {task.interestTags.length > 0 ? (
-                <div className="space-y-1">
-                  <p className="text-sm font-black uppercase text-brutal-pink">Interests</p>
-                  <p className="text-sm font-bold">{task.interestTags.join(", ")}</p>
-                </div>
-              ) : null}
-
-              {task.isPublic ? (
-                <TaskShareButtons
-                  taskId={task.id}
-                  shareText={shareText}
-                  taskTitle={task.title}
-                />
-              ) : null}
               {task.status !== TaskStatus.VERIFIED && (task.assigneePerson || task.assigneeOrganization) ? (
                 <TaskContactActions
                   contactActionCount={contactActionCount}
@@ -413,10 +411,12 @@ export default async function TaskDetailPage({
 
           <BrutalCard bgColor={isHarmful ? "red" : isUnmeasured ? "yellow" : "yellow"} padding="lg">
             <div className="space-y-4">
-              <p className="text-sm font-black uppercase text-brutal-pink">
-                {isHarmful ? "Harm Record" : isUnmeasured ? "Spending Record" : "Action Panel"}
-              </p>
-              {task.status !== TaskStatus.VERIFIED ? (
+              {isHarmful || isUnmeasured ? (
+                <p className="text-sm font-black uppercase text-brutal-pink">
+                  {isHarmful ? "Harm Record" : "Spending Record"}
+                </p>
+              ) : null}
+              {task.status !== TaskStatus.VERIFIED && canShowClaimButton ? (
                 <TaskClaimButton
                   canClaim={canClaim}
                   signedIn={Boolean(userId)}
@@ -424,6 +424,12 @@ export default async function TaskDetailPage({
                   taskId={task.id}
                   viewerHasClaim={task.viewerHasClaim}
                 />
+              ) : task.status !== TaskStatus.VERIFIED && hasOtherPersonAssignee ? (
+                <p className="text-sm font-bold">
+                  Assigned to {task.assigneePerson?.displayName}. If that&apos;s you, sign in
+                  with your verified account to mark this complete. Otherwise, use the share
+                  and contact buttons below to push them.
+                </p>
               ) : (
                 <p className="text-sm font-bold">
                   {isHarmful
@@ -459,12 +465,6 @@ export default async function TaskDetailPage({
                 <Button asChild className="font-black uppercase" variant="outline">
                   <Link href={signInHref}>Sign In</Link>
                 </Button>
-              ) : null}
-              {task.isPublic ? (
-                <p className="text-sm font-bold text-muted-foreground">
-                  This page is built to be shared publicly. The linked OG image follows
-                  this task’s live delay clock.
-                </p>
               ) : null}
             </div>
           </BrutalCard>
@@ -547,72 +547,33 @@ export default async function TaskDetailPage({
           </BrutalCard>
         ) : null}
 
-        {(task.sourceUrl || provenanceArtifacts.length > 0 || task.currentImpactEstimateSet) ? (
+        {task.sourceUrl || provenanceArtifacts.length > 0 ? (
           <BrutalCard bgColor="background" padding="lg">
-            <div className="space-y-4">
-              <p className="text-sm font-black uppercase text-brutal-pink">
-                Methodology & Sources
-              </p>
-              {task.currentImpactEstimateSet ? (
-                <div className="grid gap-3 md:grid-cols-3">
-                  <div className="border-4 border-foreground bg-muted/20 p-3">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                      Methodology
-                    </p>
-                    <p className="mt-2 text-sm font-bold">
-                      {task.currentImpactEstimateSet.methodologyKey}
-                    </p>
-                  </div>
-                  <div className="border-4 border-foreground bg-muted/20 p-3">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                      Calculation
-                    </p>
-                    <p className="mt-2 text-sm font-bold">
-                      {task.currentImpactEstimateSet.calculationVersion}
-                    </p>
-                  </div>
-                  <div className="border-4 border-foreground bg-muted/20 p-3">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-brutal-pink">
-                      Counterfactual
-                    </p>
-                    <p className="mt-2 text-sm font-bold">
-                      {task.currentImpactEstimateSet.counterfactualKey}
-                    </p>
-                  </div>
-                </div>
-              ) : null}
+            <div className="space-y-3">
+              <p className="text-sm font-black uppercase text-brutal-pink">Sources</p>
               {task.sourceUrl ? (
-                <Button asChild className="font-black uppercase" variant="outline">
-                  <Link href={task.sourceUrl} target="_blank">
-                    Open Primary Source
-                  </Link>
-                </Button>
+                <Link
+                  className="inline-block text-sm font-bold underline underline-offset-4"
+                  href={task.sourceUrl}
+                  target="_blank"
+                >
+                  Open primary source
+                </Link>
               ) : null}
               {provenanceArtifacts.length > 0 ? (
                 <div className="space-y-2">
-                  {provenanceArtifacts.map((artifactEntry) => (
-                    <div
-                      key={artifactEntry.sourceArtifact.id}
-                      className="border-2 border-foreground/20 bg-background p-3"
-                    >
-                      <p className="text-sm font-black uppercase">
+                  {provenanceArtifacts.map((artifactEntry) =>
+                    artifactEntry.sourceArtifact.sourceUrl ? (
+                      <Link
+                        key={artifactEntry.sourceArtifact.id}
+                        className="block text-sm font-bold underline underline-offset-4"
+                        href={artifactEntry.sourceArtifact.sourceUrl}
+                        target="_blank"
+                      >
                         {artifactEntry.sourceArtifact.title ?? artifactEntry.sourceArtifact.sourceKey}
-                      </p>
-                      <p className="text-xs font-bold uppercase text-muted-foreground">
-                        {artifactEntry.sourceArtifact.sourceSystem.toLowerCase()} ·{" "}
-                        {artifactEntry.sourceArtifact.artifactType.toLowerCase()}
-                      </p>
-                      {artifactEntry.sourceArtifact.sourceUrl ? (
-                        <Link
-                          className="mt-2 inline-block text-sm font-black uppercase underline underline-offset-4"
-                          href={artifactEntry.sourceArtifact.sourceUrl}
-                          target="_blank"
-                        >
-                          Open Source
-                        </Link>
-                      ) : null}
-                    </div>
-                  ))}
+                      </Link>
+                    ) : null,
+                  )}
                 </div>
               ) : null}
             </div>

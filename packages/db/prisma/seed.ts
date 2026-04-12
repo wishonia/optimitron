@@ -759,17 +759,6 @@ const TREATY_CAMPAIGN_COST_USD = 1_000_000_000; // $1B lobbying campaign
 async function seedTreatyTasks() {
   console.log("📋 Seeding treaty tasks...");
 
-  // Clean slate
-  await prisma.taskSourceArtifact.deleteMany({});
-  await prisma.taskImpactMetric.deleteMany({});
-  await prisma.taskImpactFrameEstimate.deleteMany({});
-  await prisma.taskImpactEstimateSet.deleteMany({});
-  await prisma.taskMilestone.deleteMany({});
-  await prisma.taskEdge.deleteMany({});
-  await prisma.taskClaim.deleteMany({});
-  await prisma.task.deleteMany({});
-  console.log("  ✓ Cleared existing tasks");
-
   // Create "Humanity" organization as assignee for top-level tasks
   const humanity = await prisma.organization.upsert({
     where: { slug: "humanity" },
@@ -793,6 +782,10 @@ async function seedTreatyTasks() {
   const annualFunding = TREATY_ANNUAL_FUNDING.value; // $27.2B/yr
   const dfdaDirectFundingNpv = DFDA_DIRECT_FUNDING_QUEUE_CLEARANCE_NPV.value; // $475.7B
 
+  // Helper to render a parameter value as a markdown link to its calculation source
+  const p = (param: { calculationsUrl?: string }, label: string) =>
+    param.calculationsUrl ? `[${label}](${param.calculationsUrl})` : label;
+
   // --- Task 1: Ratify the 1% Treaty ---
   const treatyTask = await createTaskWithImpact({
     task: {
@@ -801,11 +794,28 @@ async function seedTreatyTasks() {
       assigneeOrganizationId: humanity.id,
       title: "Ratify the 1% Treaty",
       description: [
-        `Redirect 1% of global military spending ($${(annualFunding / 1e9).toFixed(1)}B/year) into pragmatic clinical trials.`,
-        `Accelerates cure for average disease by ${Math.round(accelerationYears)} years.`,
-        `Total impact: ${(totalDalys / 1e9).toFixed(0)}B healthy life-years saved, ${(totalEconValue / 1e15).toFixed(1)} quadrillion in economic value.`,
-        `Every day of delay costs ${(delayDalysPerDay / 1e6).toFixed(1)}M DALYs and $${(delayEconPerDay / 1e12).toFixed(1)}T.`,
-      ].join(" "),
+        `Redirect 1% of global military spending (${p(TREATY_ANNUAL_FUNDING, `**$${(annualFunding / 1e9).toFixed(1)}B/year**`)}) into pragmatic clinical trials. This accelerates the cure for the average disease by ${p(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_YEARS, `**${Math.round(accelerationYears)} years**`)}, saves ${p(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_DALYS, `**${(totalDalys / 1e9).toFixed(0)}B healthy life-years**`)}, and generates ${p(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_ECONOMIC_VALUE, `**$${(totalEconValue / 1e15).toFixed(1)} quadrillion**`)} in economic value over its benefit horizon.`,
+        "",
+        `Every day of delay costs ${p(GLOBAL_ANNUAL_DALY_BURDEN, `**${(delayDalysPerDay / 1e6).toFixed(1)}M DALYs**`)} and ${p(GLOBAL_ANNUAL_DALY_BURDEN, `**$${(delayEconPerDay / 1e12).toFixed(1)}T**`)}.`,
+        "",
+        "## How to Complete",
+        "",
+        "Your employees — the world leaders listed in the subtasks below — have not signed the treaty yet. Your job is to remind them. Claim this task, do the work, and mark it complete when you have done your part.",
+        "",
+        "**1. Sign the treaty yourself** at [/treaty](/treaty). This votes YES on the global referendum and registers you as a verified supporter.",
+        "",
+        "**2. Grab your referral link** from your [dashboard](/dashboard) and share it on social media. Every verified voter you recruit is counted in the petition total leaders see.",
+        "",
+        "**3. Pick a specific leader** from the subtasks below and push them. Use the contact link, copy the prefilled message, and share that leader's task page with their constituents.",
+        "",
+        "**4. Fund the campaign** by depositing into the [Earth Optimization Prize](/prize). Your principal earns yield if the treaty fails and a proportional prize share if it succeeds — zero downside.",
+        "",
+        "**5. Watch the numbers** on the [scoreboard](/scoreboard) and come back here to mark this task complete once you have done your part.",
+        "",
+        "## Progress",
+        "",
+        "See the list of signer subtasks below for per-country status. Each leader is an independent blocker.",
+      ].join("\n"),
       category: "GOVERNANCE",
       difficulty: "EXPERT",
       status: "ACTIVE",
@@ -838,10 +848,22 @@ async function seedTreatyTasks() {
       assigneeOrganizationId: humanity.id,
       title: "Create the Decentralized FDA",
       description: [
-        `Build and fund a decentralized FDA platform ($${(annualFunding / 1e9).toFixed(1)}B/year direct funding).`,
-        `Same 12.3X trial capacity increase and ${Math.round(accelerationYears)}-year disease cure acceleration as the treaty path, but funded directly instead of via military spending redirect.`,
-        `Higher cost ($${(dfdaDirectFundingNpv / 1e9).toFixed(0)}B NPV vs $${(TREATY_CAMPAIGN_COST_USD / 1e9).toFixed(0)}B treaty campaign) but no political dependency.`,
-      ].join(" "),
+        `Build and fund a **decentralized FDA platform** that runs pragmatic clinical trials at **12.3× current capacity**, accelerating the cure for the average disease by ${p(DFDA_TRIAL_CAPACITY_PLUS_EFFICACY_LAG_YEARS, `**${Math.round(accelerationYears)} years**`)} — the same impact as the 1% Treaty, but without political dependency.`,
+        "",
+        `Requires ${p(DFDA_DIRECT_FUNDING_QUEUE_CLEARANCE_NPV, `**$${(dfdaDirectFundingNpv / 1e9).toFixed(0)}B NPV**`)} in direct funding (vs $${(TREATY_CAMPAIGN_COST_USD / 1e9).toFixed(0)}B for the treaty lobbying campaign). Higher total cost, but far higher probability of success because it does not require 100+ governments to agree.`,
+        "",
+        "## How to Complete",
+        "",
+        "Claim this task if you are actively contributing to the decentralized FDA. Mark it complete when you have done your part.",
+        "",
+        "**1. Engineers**: read the [dFDA spec](https://dfda-spec.warondisease.org) and contribute to the reference implementation.",
+        "",
+        "**2. Funders**: back the $475.7B NPV directly, or deposit to the [Earth Optimization Prize](/prize) which doubles as interim funding.",
+        "",
+        "**3. Clinicians and trial operators**: join the dFDA network as a pragmatic-trial site.",
+        "",
+        "**4. Everyone else**: share the plan. Grab your referral link from your [dashboard](/dashboard) and spread it. The dFDA is an independent path forward — it does not depend on the 1% Treaty, and the two efforts reinforce each other.",
+      ].join("\n"),
       category: "GOVERNANCE",
       difficulty: "EXPERT",
       status: "ACTIVE",
@@ -902,7 +924,31 @@ async function seedTreatyTasks() {
         assigneeAffiliationSnapshot: `Government of ${leader.countryName}`,
         roleTitle: leader.roleTitle,
         title: "Sign the 1% Treaty",
-        description: `Secure ${leader.leaderName}'s signature on the 1% Treaty for ${leader.countryName}.`,
+        description: [
+          `**${leader.leaderName}** (${leader.roleTitle}, ${leader.countryName}) signs the 1% Treaty, redirecting 1% of ${leader.countryName}'s military spending into pragmatic clinical trials.`,
+          "",
+          `This task is **significantly overdue**. Every day ${leader.leaderName} delays, people die who did not have to.`,
+          "",
+          "## How to Complete",
+          "",
+          `### If you ARE ${leader.leaderName}`,
+          "",
+          "1. Sign in with your verified identity.",
+          "2. Visit [/treaty](/treaty) and sign the treaty on behalf of your government.",
+          "3. Post the signed confirmation from your **official verified social media account** as proof.",
+          "4. Submit the proof URL as completion evidence below. A curator will verify and mark this task complete.",
+          "",
+          `### If you are NOT ${leader.leaderName}`,
+          "",
+          `Inform them that their task is significantly overdue and this has resulted in many deaths.`,
+          "",
+          `1. **Share this task page** on social media using the share buttons above. Tag [@${leader.leaderName}](https://www.google.com/search?q=${encodeURIComponent(`${leader.leaderName} official social media`)}) directly.`,
+          `2. **Contact them** using the contact link below. Copy the prefilled message and send it.`,
+          `3. **Sign the treaty yourself** at [/treaty](/treaty). Grab your referral link from your [dashboard](/dashboard) and share it — every verified voter you recruit strengthens the petition against them.`,
+          `4. **Recruit other ${leader.countryName} citizens** to do the same. Local pressure is the cheapest lobby.`,
+          "",
+          `Then come back here and mark this task complete with what you did.`,
+        ].join("\n"),
         category: "GOVERNANCE",
         difficulty: "EXPERT",
         status: "ACTIVE",
@@ -932,9 +978,14 @@ async function seedTreatyTasks() {
   console.log(`  ✓ ${created} signer tasks with leader photos`);
 }
 
-/** Helper: create a task + impact estimate set + LIFETIME frame in one call. */
+/**
+ * Helper: upsert a task + impact estimate set + LIFETIME frame.
+ * Idempotent — safe to re-run after changing description/impact values without
+ * losing existing claims, edges, or other task state.
+ * Requires `task.id` to be set for upsert-by-id behavior.
+ */
 async function createTaskWithImpact(input: {
-  task: Parameters<typeof prisma.task.create>[0]["data"];
+  task: Parameters<typeof prisma.task.create>[0]["data"] & { id: string };
   impact: {
     estimatedCashCostUsdBase: number;
     expectedEconomicValueUsdBase: number;
@@ -948,8 +999,21 @@ async function createTaskWithImpact(input: {
   parameterSetHashSuffix?: string;
   calculationsUrl?: string;
 }) {
-  const task = await prisma.task.create({ data: input.task });
+  const { id: taskId, ...taskData } = input.task;
 
+  // Upsert the task itself
+  const task = await prisma.task.upsert({
+    where: { id: taskId },
+    create: { id: taskId, ...taskData },
+    update: taskData,
+  });
+
+  // Delete old impact estimate sets for this task (cascade deletes frames/metrics)
+  await prisma.taskImpactEstimateSet.deleteMany({
+    where: { taskId: task.id },
+  });
+
+  // Create fresh estimate set
   const estimateSet = await prisma.taskImpactEstimateSet.create({
     data: {
       taskId: task.id,

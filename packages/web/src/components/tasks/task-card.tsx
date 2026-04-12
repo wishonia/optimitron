@@ -5,6 +5,7 @@ import {
   type TaskCategory,
   type TaskDifficulty,
 } from "@optimitron/db";
+import { getTaskDescriptionSummary } from "@/components/tasks/task-description";
 import { TaskContactActions } from "@/components/tasks/TaskContactActions";
 import { TaskShareButtons } from "@/components/tasks/TaskShareButtons";
 import { TaskClaimButton } from "@/components/tasks/TaskClaimButton";
@@ -63,6 +64,9 @@ export interface TaskCardTask {
     selectedFrame?: TaskImpactFrameSummary | null;
     selectedMetrics?: Record<string, TaskImpactMetricSummary> | null;
   };
+  currentImpactEstimateSet?: {
+    assumptionsJson: unknown;
+  } | null;
   interestTags: string[];
   isPublic: boolean;
   maxClaims: number | null;
@@ -284,7 +288,7 @@ export function TaskCard({
             </h3>
           </Link>
           <p className="text-sm font-bold leading-6">
-            {truncate(task.description, 220)}
+            {getTaskDescriptionSummary(task.description, 220)}
           </p>
         </div>
 
@@ -339,7 +343,9 @@ export function TaskCard({
         </div>
 
         <div className="mt-auto flex flex-wrap items-center gap-3">
-          {task.status !== TaskStatus.VERIFIED ? (
+          {task.status !== TaskStatus.VERIFIED &&
+          !task.assigneeOrganization &&
+          !task.assigneePerson ? (
             <TaskClaimButton
               canClaim={canClaim}
               signedIn={signedIn}

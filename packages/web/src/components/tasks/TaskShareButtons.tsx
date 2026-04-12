@@ -8,12 +8,14 @@ interface TaskShareButtonsProps {
   taskId: string;
   shareText: string;
   taskTitle: string;
+  variant?: "text" | "icon";
 }
 
 export function TaskShareButtons({
   taskId,
   shareText,
   taskTitle,
+  variant,
 }: TaskShareButtonsProps) {
   const taskUrl = useMemo(() => buildTaskUrl(taskId, getBaseUrl()), [taskId]);
 
@@ -37,10 +39,11 @@ export function TaskShareButtons({
   return (
     <ShareLinkButtons
       emailSubject={taskTitle}
-      label="Share This Task"
+      label={variant === "icon" ? undefined : "Share This Task"}
       onShare={() => { void trackShare(); }}
       shareText={shareText}
       url={taskUrl}
+      variant={variant}
     />
   );
 }

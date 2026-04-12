@@ -30,6 +30,31 @@ function formatDueDate(value: Date) {
   });
 }
 
+function ImpactCell({
+  value,
+  href,
+  className,
+}: {
+  value: string;
+  href: string | null;
+  className?: string;
+}) {
+  const base = `${className ?? ""} shrink-0 text-right text-xs font-bold text-muted-foreground`;
+  if (href && value !== "—") {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${base} underline underline-offset-4 hover:text-foreground`}
+      >
+        {value}
+      </a>
+    );
+  }
+  return <span className={base}>{value}</span>;
+}
+
 function StatusBadge({ children, variant = "default" }: { children: React.ReactNode; variant?: "default" | "overdue" | "done" }) {
   const colors = {
     default: "bg-muted text-muted-foreground",
@@ -131,24 +156,49 @@ export function TaskRow({
   const econValue = task.impact?.selectedFrame?.expectedEconomicValueUsdBase;
   const delayCost = task.impact?.selectedFrame?.delayEconomicValueUsdLostPerDayBase;
   const costPerDaly = task.impact?.costPerDalyUsd;
+  const calculationsUrl =
+    (task.currentImpactEstimateSet?.assumptionsJson as { calculationsUrl?: string } | null)
+      ?.calculationsUrl ?? null;
+  const assigneeHref = task.assigneePerson
+    ? `/people/${task.assigneePerson.id}`
+    : null;
+
+  const avatarEl = (
+    <Avatar className="h-8 w-8 shrink-0 border-2 border-foreground bg-muted">
+      <Avatar.Image
+        alt={targetLabel}
+        src={task.assigneePerson?.image ?? task.assigneeOrganization?.logo ?? undefined}
+      />
+      <Avatar.Fallback className="bg-brutal-pink text-xs font-black text-background">
+        {fallbackInitials || "?"}
+      </Avatar.Fallback>
+    </Avatar>
+  );
 
   return (
     <div
       className={`flex items-center gap-3 border-l-4 px-4 py-3 transition-colors hover:bg-muted/50 ${getLeftBorderColor(task)}`}
     >
-      <Avatar className="h-8 w-8 shrink-0 border-2 border-foreground bg-muted">
-        <Avatar.Image
-          alt={targetLabel}
-          src={task.assigneePerson?.image ?? task.assigneeOrganization?.logo ?? undefined}
-        />
-        <Avatar.Fallback className="bg-brutal-pink text-xs font-black text-background">
-          {fallbackInitials || "?"}
-        </Avatar.Fallback>
-      </Avatar>
+      {assigneeHref ? (
+        <Link href={assigneeHref} className="shrink-0" title={targetLabel}>
+          {avatarEl}
+        </Link>
+      ) : (
+        avatarEl
+      )}
 
-      <span className="hidden w-36 shrink-0 truncate text-xs font-bold uppercase sm:block">
-        {targetLabel}
-      </span>
+      {assigneeHref ? (
+        <Link
+          href={assigneeHref}
+          className="hidden w-36 shrink-0 truncate text-xs font-bold uppercase underline-offset-4 hover:underline sm:block"
+        >
+          {targetLabel}
+        </Link>
+      ) : (
+        <span className="hidden w-36 shrink-0 truncate text-xs font-bold uppercase sm:block">
+          {targetLabel}
+        </span>
+      )}
 
       <div className="min-w-0 flex-1">
         <Link
@@ -198,19 +248,13 @@ export function TaskRow({
       </div>
 
       {/* Expected Value — desktop only */}
-      <span className="hidden w-28 shrink-0 text-right text-xs font-bold text-muted-foreground lg:block">
-        {econValue != null ? formatCompactCurrency(econValue) : "—"}
-      </span>
+      <ImpactCell value={econValue != null ? formatCompactCurrency(econValue) : "—"} href={calculationsUrl} className="hidden w-28 lg:block" />
 
       {/* Delay Cost/Day — desktop only */}
-      <span className="hidden w-28 shrink-0 text-right text-xs font-bold text-muted-foreground lg:block">
-        {delayCost != null && delayCost > 0 ? `${formatCompactCurrency(delayCost)}/day` : "—"}
-      </span>
+      <ImpactCell value={delayCost != null && delayCost > 0 ? `${formatCompactCurrency(delayCost)}/day` : "—"} href={calculationsUrl} className="hidden w-28 lg:block" />
 
       {/* Cost/DALY — xl desktop only */}
-      <span className="hidden w-24 shrink-0 text-right text-xs font-bold text-muted-foreground xl:block">
-        {costPerDaly != null ? formatCostPerDaly(costPerDaly) : "—"}
-      </span>
+      <ImpactCell value={costPerDaly != null ? formatCostPerDaly(costPerDaly) : "—"} href={calculationsUrl} className="hidden w-24 xl:block" />
 
       <div className="hidden shrink-0 md:block">
         {task.isPublic ? (

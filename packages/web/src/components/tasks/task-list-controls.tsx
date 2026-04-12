@@ -18,6 +18,19 @@ const SORT_OPTIONS: { key: TaskSortKey; label: string }[] = [
   { key: "status", label: "Due Date" },
 ];
 
+function matchesFilter(task: TaskCardTask, filter: string): boolean {
+  if (!filter) return true;
+  const q = filter.toLowerCase();
+  const title = task.title.toLowerCase();
+  const assignee = (
+    task.assigneePerson?.displayName ??
+    task.assigneeOrganization?.name ??
+    ""
+  ).toLowerCase();
+  const description = task.description.toLowerCase();
+  return title.includes(q) || assignee.includes(q) || description.includes(q);
+}
+
 export function SortableTaskList({
   tasks,
   defaultSortKey = "expectedValue",
@@ -29,9 +42,11 @@ export function SortableTaskList({
 }) {
   const [sortKey, setSortKey] = useState<TaskSortKey>(defaultSortKey);
   const [sortDir, setSortDir] = useState<"asc" | "desc">(defaultSortDir);
+  const [filter, setFilter] = useState("");
 
   const sorted = useMemo(() => {
-    return [...tasks].sort((a, b) => {
+    const filtered = tasks.filter((t) => matchesFilter(t, filter));
+    return filtered.sort((a, b) => {
       const valA = getTaskSortValue(a, sortKey);
       const valB = getTaskSortValue(b, sortKey);
       if (typeof valA === "string" && typeof valB === "string") {
@@ -43,7 +58,7 @@ export function SortableTaskList({
         ? Number(valA) - Number(valB)
         : Number(valB) - Number(valA);
     });
-  }, [tasks, sortKey, sortDir]);
+  }, [tasks, sortKey, sortDir, filter]);
 
   function handleHeaderSort(key: TaskSortKey) {
     if (key === sortKey) {
@@ -58,41 +73,54 @@ export function SortableTaskList({
 
   return (
     <div className="overflow-hidden border-2 border-primary bg-background">
-      {/* Mobile sort controls */}
-      <div className="flex items-center gap-2 border-b border-foreground/10 px-4 py-2 lg:hidden">
-        <label htmlFor="task-sort" className="text-xs font-bold uppercase text-muted-foreground">
-          Sort by
-        </label>
-        <select
-          id="task-sort"
-          className="border-2 border-foreground bg-background px-2 py-1 text-xs font-bold"
-          value={sortKey}
-          onChange={(e) => {
-            const key = e.target.value as TaskSortKey;
-            setSortKey(key);
-            setSortDir(key === "title" || key === "assignee" || key === "costPerDaly" ? "asc" : "desc");
-          }}
-        >
-          {SORT_OPTIONS.map((opt) => (
-            <option key={opt.key} value={opt.key}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-        <button
-          type="button"
-          className="border-2 border-foreground bg-background px-2 py-1 text-xs font-bold"
-          onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
-        >
-          {sortDir === "asc" ? "\u2191 Asc" : "\u2193 Desc"}
-        </button>
+      {/* Top controls: filter + mobile sort */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-foreground/10 px-4 py-2">
+        <input
+          type="search"
+          placeholder="Filter tasks..."
+          className="ml-auto w-full border-2 border-foreground bg-background px-2 py-1 text-xs font-bold placeholder:text-muted-foreground sm:w-48"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        />
+        <div className="flex items-center gap-2 lg:hidden">
+          <label htmlFor="task-sort" className="text-xs font-bold uppercase text-muted-foreground">
+            Sort
+          </label>
+          <select
+            id="task-sort"
+            className="border-2 border-foreground bg-background px-2 py-1 text-xs font-bold"
+            value={sortKey}
+            onChange={(e) => {
+              const key = e.target.value as TaskSortKey;
+              setSortKey(key);
+              setSortDir(key === "title" || key === "assignee" || key === "costPerDaly" ? "asc" : "desc");
+            }}
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.key} value={opt.key}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            className="border-2 border-foreground bg-background px-2 py-1 text-xs font-bold"
+            onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+          >
+            {sortDir === "asc" ? "\u2191" : "\u2193"}
+          </button>
+        </div>
       </div>
 
       <TaskTableHeader sortKey={sortKey} sortDir={sortDir} onSort={handleHeaderSort} />
       <div className="divide-y divide-foreground/10">
-        {sorted.map((task) => (
-          <TaskRow key={task.id} task={task} />
-        ))}
+        {sorted.length > 0 ? (
+          sorted.map((task) => <TaskRow key={task.id} task={task} />)
+        ) : (
+          <div className="px-4 py-6 text-center text-xs font-bold text-muted-foreground">
+            No tasks match &quot;{filter}&quot;.
+          </div>
+        )}
       </div>
     </div>
   );
