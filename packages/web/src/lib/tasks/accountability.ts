@@ -174,7 +174,8 @@ export function formatCompactCount(value: number | null | undefined, options?: I
   }
 
   return new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: value >= 100 ? 0 : 1,
+    maximumSignificantDigits: 3,
+    minimumSignificantDigits: Math.abs(value) >= 1 ? 3 : 1,
     notation: Math.abs(value) >= 1000 ? "compact" : "standard",
     ...options,
   }).format(value);
@@ -187,7 +188,8 @@ export function formatCompactCurrency(value: number | null | undefined) {
 
   return new Intl.NumberFormat("en-US", {
     currency: "USD",
-    maximumFractionDigits: value >= 100 ? 0 : 1,
+    maximumSignificantDigits: 3,
+    minimumSignificantDigits: Math.abs(value) >= 1 ? 3 : 1,
     notation: Math.abs(value) >= 1000 ? "compact" : "standard",
     style: "currency",
   }).format(value);

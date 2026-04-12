@@ -90,6 +90,20 @@ function stripMarkdown(md: string): string {
     .trim();
 }
 
+/**
+ * Rephrase phrases that trigger Gemini TTS content filters.
+ * Only affects spoken audio — on-screen text is unchanged.
+ */
+function softenForTts(text: string): string {
+  return text
+    .replace(/\bmurdered humans\b/gi, "lost humans")
+    .replace(/\bkilled by a terrorist\b/gi, "dying from terrorism")
+    .replace(/\bmurdered\b/gi, "killed")
+    .replace(/\bchildren who will never grow up\b/gi, "children lost before adulthood")
+    .replace(/\bThey bought the other thing\b/g, "They chose otherwise")
+    .replace(/\b37,778\b/g, "nearly 38 thousand");
+}
+
 // ---------------------------------------------------------------------------
 // WAV conversion
 // ---------------------------------------------------------------------------
@@ -136,12 +150,12 @@ function convertToWav(audioData: Uint8Array, mimeType: string): Uint8Array {
   return result;
 }
 
-async function generateSpeech(
+async function generateSpeechOnce(
   text: string,
   apiKey: string,
 ): Promise<Uint8Array> {
   const client = new GoogleGenAI({ apiKey });
-  const plainText = stripMarkdown(text);
+  const plainText = softenForTts(stripMarkdown(text));
   const result = await client.models.generateContent({
     model: MODEL,
     contents: [
@@ -152,11 +166,19 @@ async function generateSpeech(
       speechConfig: {
         voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } },
       },
+      safetySettings: [
+        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+      ],
     },
   });
-  const part = result.candidates?.[0]?.content?.parts?.[0];
+  const cand = result.candidates?.[0];
+  const part = cand?.content?.parts?.[0];
   if (!part?.inlineData?.data) {
-    throw new Error("No audio data received from Gemini TTS");
+    const reason = cand?.finishReason ?? "UNKNOWN";
+    throw new Error(`No audio data (finishReason=${reason})`);
   }
   const audioData = new Uint8Array(
     Buffer.from(part.inlineData.data, "base64"),
@@ -165,15 +187,36 @@ async function generateSpeech(
   return convertToWav(audioData, mime);
 }
 
+async function generateSpeech(
+  text: string,
+  apiKey: string,
+): Promise<Uint8Array> {
+  const maxAttempts = 4;
+  let lastError: Error | null = null;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return await generateSpeechOnce(text, apiKey);
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+      if (attempt < maxAttempts) {
+        const backoff = 2000 * attempt;
+        console.log(`     ⟳ attempt ${attempt} failed (${lastError.message}), retrying in ${backoff}ms...`);
+        await new Promise((r) => setTimeout(r, backoff));
+      }
+    }
+  }
+  throw lastError ?? new Error("Unknown TTS failure");
+}
+
 // ---------------------------------------------------------------------------
 // Manifest
 // ---------------------------------------------------------------------------
 
 interface ManifestEntry {
-  hash: string;
   file: string;
   generatedAt: string;
 }
+/** Keyed by text hash (sha256 first 16 hex chars) */
 type Manifest = Record<string, ManifestEntry>;
 
 const OUTPUT_DIR = join(__dirname, "..", "public", "audio", "declaration");
@@ -234,15 +277,20 @@ async function main() {
     `\n🎙️  Declaration Narration Generator — ${slides.length} slides\n`,
   );
 
-  // Pre-scan
-  const toGenerate: SlideEntry[] = [];
+  // Pre-scan — keyed by text hash. Same text = same file, regardless of slide id.
+  const hashToSlide = new Map<string, SlideEntry>();
   for (const slide of slides) {
-    const hash = hashText(slide.text);
-    const mp3Path = join(OUTPUT_DIR, `${slide.id}.mp3`);
-    if (manifest[slide.id]?.hash === hash && existsSync(mp3Path)) {
+    const hash = hashText(stripMarkdown(slide.text));
+    if (!hashToSlide.has(hash)) hashToSlide.set(hash, slide);
+  }
+
+  const toGenerate: { hash: string; slide: SlideEntry }[] = [];
+  for (const [hash, slide] of hashToSlide) {
+    const mp3Path = join(OUTPUT_DIR, `${hash}.mp3`);
+    if (manifest[hash] && existsSync(mp3Path)) {
       cached++;
     } else {
-      toGenerate.push(slide);
+      toGenerate.push({ hash, slide });
     }
   }
 
@@ -256,15 +304,13 @@ async function main() {
     );
   } else {
     console.log("\n  Nothing to do — all audio is up to date!\n");
-    return;
   }
 
-  for (const slide of toGenerate) {
-    const hash = hashText(slide.text);
-    const mp3File = `${slide.id}.mp3`;
+  for (const { hash, slide } of toGenerate) {
+    const mp3File = `${hash}.mp3`;
     const mp3Path = join(OUTPUT_DIR, mp3File);
 
-    console.log(`  🔄 ${slide.id} — generating...`);
+    console.log(`  🔄 ${slide.id} (${hash}) — generating...`);
 
     try {
       const wavBytes = await generateSpeech(slide.text, apiKey);
@@ -272,8 +318,7 @@ async function main() {
       wavToMp3(TEMP_WAV, mp3Path);
       if (existsSync(TEMP_WAV)) unlinkSync(TEMP_WAV);
 
-      manifest[slide.id] = {
-        hash,
+      manifest[hash] = {
         file: mp3File,
         generatedAt: new Date().toISOString(),
       };
@@ -291,10 +336,10 @@ async function main() {
     }
   }
 
-  // Prune manifest entries for slides that no longer exist
-  const validIds = new Set(slides.map((s) => s.id));
+  // Prune manifest entries + files whose hash is no longer in the current slides
+  const validHashes = new Set(hashToSlide.keys());
   for (const key of Object.keys(manifest)) {
-    if (!validIds.has(key)) {
+    if (!validHashes.has(key)) {
       const entry = manifest[key];
       if (entry) {
         const staleFile = join(OUTPUT_DIR, entry.file);

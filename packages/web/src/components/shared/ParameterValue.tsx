@@ -3,14 +3,13 @@
 import React, { useState } from "react"
 import { Dialog } from "@/components/retroui/Dialog"
 import { Badge } from "@/components/retroui/Badge"
-import { ExternalLink, Info, FlaskConical, BookOpen, type LucideIcon } from "lucide-react"
+import { ExternalLink, Info, FlaskConical, BookOpen, X, type LucideIcon } from "lucide-react"
 import {
   fmtParam,
   fmtParamValueOnly,
   citations,
   type Parameter,
   type Citation,
-  type SourceType,
 } from "@optimitron/data/parameters"
 import { Latex } from "@/components/ui/latex"
 import { cn } from "@/lib/utils"
@@ -84,22 +83,32 @@ export function ParameterValue({
           {text}
         </button>
       </Dialog.Trigger>
-      <Dialog.Content size="md">
-        <Dialog.Header>
-          {param.displayName ?? "Parameter Details"}
-        </Dialog.Header>
-        <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
-          <ParameterDetailContent param={param} />
+      <Dialog.Content
+        size="screen"
+        className="!w-[95vw] !max-w-[900px] max-h-[90vh] !grid-cols-[minmax(0,1fr)] overflow-hidden"
+      >
+        <div className="flex min-w-0 items-start justify-between gap-4 border-b-2 border-primary bg-primary px-4 py-3 text-primary-foreground">
+          <h2 className="min-w-0 flex-1 truncate text-base font-black uppercase leading-tight">
+            {param.displayName ?? "Parameter Details"}
+          </h2>
+          <Dialog.Close asChild>
+            <button
+              type="button"
+              aria-label="Close"
+              className="shrink-0 border-2 border-primary-foreground p-1 hover:bg-primary-foreground/10"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </Dialog.Close>
+        </div>
+        <div className="min-w-0 p-4 max-h-[calc(90vh-56px)] overflow-auto">
+          <div className="min-w-0 w-full max-w-full space-y-4">
+            <ParameterDetailContent param={param} />
+          </div>
         </div>
       </Dialog.Content>
     </Dialog>
   )
-}
-
-const sourceTypeLabels: Record<SourceType, string> = {
-  external: "From External Source",
-  calculated: "Calculated From Other Values",
-  definition: "Fixed Assumption",
 }
 
 function ParameterDetailContent({
@@ -114,12 +123,12 @@ function ParameterDetailContent({
   const fullValue = fmtParam(param)
 
   return (
-    <div className="space-y-3">
+    <div className="min-w-0 space-y-3">
       {/* Value + unit prominently displayed */}
-      <div className="text-2xl font-black">{fullValue}</div>
+      <div className="text-2xl font-black break-words">{fullValue}</div>
 
       {param.description && (
-        <p className="text-sm font-bold leading-relaxed text-muted-foreground">
+        <p className="text-sm font-bold leading-relaxed text-muted-foreground break-words">
           {param.description}
         </p>
       )}
@@ -130,48 +139,39 @@ function ParameterDetailContent({
       )}
 
       {param.latex ? (
-        <div className="overflow-x-auto rounded-none border-2 border-primary bg-muted p-3">
+        <div className="min-w-0 max-w-full overflow-x-auto rounded-none border-2 border-primary bg-muted p-3">
           <Latex block>{param.latex}</Latex>
         </div>
       ) : param.formula ? (
-        <div className="text-sm">
+        <div className="text-sm break-words">
           <span className="font-bold">Formula: </span>
-          <code className="bg-muted px-1.5 py-0.5 rounded-none border-2 border-primary text-xs">
+          <code className="bg-muted px-1.5 py-0.5 rounded-none border-2 border-primary text-xs break-all">
             {param.formula}
           </code>
         </div>
       ) : null}
 
       {/* Badges row */}
-      <div className="flex flex-wrap items-center gap-2">
-        {param.sourceType && (
-          <Badge
-            variant="outline"
-            className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary"
-          >
-            {sourceTypeLabels[param.sourceType]}
-          </Badge>
-        )}
-        {param.confidence && (
-          <ConfidenceBadge confidence={param.confidence} />
-        )}
-        {param.peerReviewed && (
-          <Badge
-            variant="outline"
-            className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary bg-brutal-cyan text-brutal-cyan-foreground"
-          >
-            peer-reviewed
-          </Badge>
-        )}
-        {param.conservative && (
-          <Badge
-            variant="outline"
-            className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary bg-brutal-green text-brutal-green-foreground"
-          >
-            conservative estimate
-          </Badge>
-        )}
-      </div>
+      {param.peerReviewed || param.conservative ? (
+        <div className="flex flex-wrap items-center gap-2">
+          {param.peerReviewed && (
+            <Badge
+              variant="outline"
+              className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary bg-brutal-cyan text-brutal-cyan-foreground"
+            >
+              peer-reviewed
+            </Badge>
+          )}
+          {param.conservative && (
+            <Badge
+              variant="outline"
+              className="text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary bg-brutal-green text-brutal-green-foreground"
+            >
+              conservative estimate
+            </Badge>
+          )}
+        </div>
+      ) : null}
 
       {/* Links section */}
       <div className="space-y-3 pt-3 border-t-2 border-primary/20">
@@ -304,30 +304,3 @@ function MetaLink({
   )
 }
 
-const confidenceColorMap: Record<string, string> = {
-  high: "bg-brutal-green text-brutal-green-foreground",
-  medium: "bg-brutal-yellow text-brutal-yellow-foreground",
-  low: "bg-brutal-red text-brutal-red-foreground",
-  estimated: "bg-muted text-muted-foreground",
-}
-
-const confidenceLabelMap: Record<string, string> = {
-  high: "High Confidence",
-  medium: "Medium Confidence",
-  low: "Low Confidence",
-  estimated: "Rough Estimate",
-}
-
-function ConfidenceBadge({ confidence }: { confidence: string }) {
-  return (
-    <Badge
-      variant="outline"
-      className={cn(
-        "text-[10px] px-1.5 py-0 h-5 font-bold uppercase border-primary",
-        confidenceColorMap[confidence] ?? "bg-muted"
-      )}
-    >
-      {confidenceLabelMap[confidence] ?? confidence}
-    </Badge>
-  )
-}

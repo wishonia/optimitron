@@ -81,14 +81,24 @@ const INTRO_TEXT =
 const TOTAL_SLIDES = 1 + ALL_SLIDES.length + 1;
 const SIGNATURE_INDEX = TOTAL_SLIDES - 1;
 
-/** Slide IDs must match the generation script */
-function getSlideId(slideIndex: number): string | null {
-  if (slideIndex === 0) return "intro";
-  const contentIndex = slideIndex - 1;
-  if (contentIndex < WHY_SLIDES.length) return `why-${contentIndex}`;
-  const declIndex = contentIndex - WHY_SLIDES.length;
-  if (declIndex < DECLARATION_SLIDES.length) return `decl-${declIndex}`;
-  return null; // signature slide
+/** Strip markdown to match what the generation script hashed */
+function stripMarkdownForHash(md: string): string {
+  return md
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/#{1,6}\s+/g, "")
+    .replace(/[*_`~]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** SHA-256 first 16 hex chars — matches generation script */
+async function hashText(text: string): Promise<string> {
+  const data = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+    .slice(0, 16);
 }
 
 // ---------------------------------------------------------------------------
@@ -96,7 +106,6 @@ function getSlideId(slideIndex: number): string | null {
 // ---------------------------------------------------------------------------
 
 interface DeclarationManifestEntry {
-  hash: string;
   file: string;
 }
 type DeclarationManifest = Record<string, DeclarationManifestEntry>;
@@ -161,38 +170,30 @@ interface AudioResult {
 
 const audioCache = new Map<string, AudioResult>();
 
-async function getSlideAudio(
-  slideId: string,
-  text: string,
-): Promise<AudioResult | null> {
-  if (audioCache.has(slideId)) {
-    const cached = audioCache.get(slideId)!;
+async function getSlideAudio(text: string): Promise<AudioResult | null> {
+  const plainText = stripMarkdownForHash(text);
+  const hash = await hashText(plainText);
+
+  if (audioCache.has(hash)) {
+    const cached = audioCache.get(hash)!;
     cached.audio.currentTime = 0;
     return cached;
   }
 
-  // Try pre-generated MP3 first
+  // Try pre-generated MP3 first (looked up by content hash)
   const manifest = await getDeclarationManifest();
-  if (manifest?.[slideId]) {
-    const entry = manifest[slideId];
-    const audio = await loadAudio(
-      `/audio/declaration/${entry.file}?v=${entry.hash}`,
-    );
+  if (manifest?.[hash]) {
+    const entry = manifest[hash];
+    const audio = await loadAudio(`/audio/declaration/${entry.file}`);
     if (audio) {
       const analyser = wireAnalyser(audio);
       const result = { audio, analyser };
-      audioCache.set(slideId, result);
+      audioCache.set(hash, result);
       return result;
     }
   }
 
   // Fallback: real-time Gemini TTS
-  const plainText = text
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/#{1,6}\s+/g, "")
-    .replace(/[*_`~]/g, "")
-    .trim();
-
   try {
     const resp = await fetch("/api/demo/tts", {
       method: "POST",
@@ -206,7 +207,7 @@ async function getSlideAudio(
     if (audio) {
       const analyser = wireAnalyser(audio);
       const result = { audio, analyser };
-      audioCache.set(slideId, result);
+      audioCache.set(hash, result);
       return result;
     }
   } catch {
@@ -348,11 +349,8 @@ export function DeclarationStepper() {
   /** Preload audio for a slide */
   const preloadSlideAudio = useCallback(
     (slideIndex: number) => {
-      const slideId = getSlideId(slideIndex);
       const text = getSlideText(slideIndex);
-      if (slideId && text) {
-        void getSlideAudio(slideId, text);
-      }
+      if (text) void getSlideAudio(text);
     },
     [getSlideText],
   );
@@ -366,14 +364,13 @@ export function DeclarationStepper() {
       // Each call gets a unique ID — stale async results are ignored
       const requestId = ++playRequestId.current;
 
-      const slideId = getSlideId(slideIndex);
       const text = getSlideText(slideIndex);
-      if (!slideId || !text) return;
+      if (!text) return;
 
       // Preload next
       preloadSlideAudio(slideIndex + 1);
 
-      const result = await getSlideAudio(slideId, text);
+      const result = await getSlideAudio(text);
       // Stale request — a newer playSlide call happened while we were loading
       if (requestId !== playRequestId.current) return;
 

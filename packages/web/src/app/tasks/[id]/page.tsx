@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { TaskAssignee } from "@/components/tasks/task-assignee";
 import { TaskCard, type TaskCardTask } from "@/components/tasks/task-card";
+import { TaskImpactHighlights } from "@/components/tasks/task-impact-highlights";
 import { TaskImpactStats } from "@/components/tasks/task-impact-stats";
 import { TaskMetadataTags } from "@/components/tasks/task-metadata-tags";
 import { TaskRow, TaskTableHeader } from "@/components/tasks/task-row";
@@ -360,6 +361,7 @@ export default async function TaskDetailPage({
                       (task.currentImpactEstimateSet?.assumptionsJson as { calculationsUrl?: string } | null)?.calculationsUrl
                     }
                   />
+                  <TaskImpactHighlights taskKey={task.taskKey} />
                 </>
               )}
 

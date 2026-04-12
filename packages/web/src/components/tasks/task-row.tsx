@@ -11,6 +11,18 @@ import { TaskRowShare } from "./task-row-share";
 
 export type TaskSortKey = "title" | "assignee" | "status" | "expectedValue" | "delayCost" | "costPerDaly";
 
+/** Format cost/DALY with enough precision for sub-penny values (e.g. $0.00177). */
+function formatCostPerDaly(value: number): string {
+  if (value >= 1) {
+    return formatCompactCurrency(value);
+  }
+  if (value >= 0.01) {
+    return `$${value.toFixed(2)}`;
+  }
+  // Sub-penny — use 3 significant figures
+  return `$${value.toPrecision(3)}`;
+}
+
 function formatDueDate(value: Date) {
   return value.toLocaleDateString("en-US", {
     day: "numeric",
@@ -165,7 +177,7 @@ export function TaskRow({
             <StatusBadge>{formatCompactCurrency(delayCost)}/day</StatusBadge>
           ) : null}
           {costPerDaly != null ? (
-            <StatusBadge>${costPerDaly < 1 ? costPerDaly.toFixed(2) : formatCompactCurrency(costPerDaly)}/DALY</StatusBadge>
+            <StatusBadge>{formatCostPerDaly(costPerDaly)}/DALY</StatusBadge>
           ) : null}
         </div>
       </div>
@@ -197,7 +209,7 @@ export function TaskRow({
 
       {/* Cost/DALY — xl desktop only */}
       <span className="hidden w-24 shrink-0 text-right text-xs font-bold text-muted-foreground xl:block">
-        {costPerDaly != null ? `$${costPerDaly < 1 ? costPerDaly.toFixed(2) : formatCompactCurrency(costPerDaly)}` : "—"}
+        {costPerDaly != null ? formatCostPerDaly(costPerDaly) : "—"}
       </span>
 
       <div className="hidden shrink-0 md:block">

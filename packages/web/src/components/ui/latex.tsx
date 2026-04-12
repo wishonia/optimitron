@@ -12,27 +12,23 @@ interface LatexProps {
 export function Latex({ children, block = false, className = '' }: LatexProps) {
   if (block) {
     return (
-      <div className={`my-4 overflow-x-auto ${className}`}>
-        <div className="inline-block min-w-full latex-block-wrapper">
+      <div className={`my-4 w-full max-w-full overflow-x-auto ${className}`}>
+        <div className="latex-block-wrapper">
           <BlockMath math={children} />
         </div>
         <style jsx global>{`
           .latex-block-wrapper .katex-display {
-            font-size: 1.1em;
+            font-size: 0.75em;
+            margin: 0;
           }
           @media (max-width: 768px) {
             .latex-block-wrapper .katex-display {
-              font-size: 0.85em;
+              font-size: 0.6em;
             }
           }
           @media (max-width: 640px) {
             .latex-block-wrapper .katex-display {
-              font-size: 0.75em;
-            }
-          }
-          @media (max-width: 480px) {
-            .latex-block-wrapper .katex-display {
-              font-size: 0.65em;
+              font-size: 0.5em;
             }
           }
         `}</style>
